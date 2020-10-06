@@ -270,6 +270,8 @@ footer .social li a:hover {
   color: black;
   border: 1px solid #000000;
   position: relative;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 .stake-popup .pop-contract .arrow-triangle {
@@ -283,6 +285,11 @@ footer .social li a:hover {
   border-bottom: 10px solid #000000;
   top: 0px;
   right: -5px;
+}
+
+.stake-popup .pop-contract:hover {
+  -webkit-box-shadow: 0px 0px 4px 1px #1f1e1e;
+          box-shadow: 0px 0px 4px 1px #1f1e1e;
 }
 
 .blur-me {

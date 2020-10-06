@@ -6,11 +6,8 @@ class Stake extends Component {
         const { token, shadowClass, handlePopup, handleClaim, handleWithdraw } = this.props
         const { name, amounts, liqLink } = token
         const isStaked = parseFloat(amounts.lp) > 0 ? true : false
-        // console.log(amounts.lp);
         const isSingle = name.indexOf("_") == -1 ? true : false
-        const provideText = isSingle ? "single asset pool" : isStaked ? "provide more" : "single asset pool"
         const provideWrapClasses = isSingle ? "single-asset-wrap" : "provide-liquidity-wrap"
-        const provideClasses = isSingle ? "single-asset" : "provide-liquidity"
         const stakedClass = isStaked ? "staked" : ""
         const shadowClasses = shadowClass ? shadowClass : "blue-200-shadow"
         const stakedText = isStaked ? "more" : "here"
@@ -26,7 +23,7 @@ class Stake extends Component {
                 }
                 {isStaked &&
                     <div className="boxes">
-                        <div className="box">
+                        <div className="box percentage">
                             <div className="box-title-wrap">
                                 <div className="box-title">you own {token.amounts.pool}% <br /> of the pool</div>
                             </div>
@@ -35,17 +32,18 @@ class Stake extends Component {
                         <div className="box">
                             <div className="box-title-wrap">
                                 <div className="box-title">
-                                    <CountUp
-                                        start={parseFloat(token.amounts.dea)}
-                                        end={parseFloat(token.amounts.newdea)}
-                                        delay={0}
-                                        duration={2}
-                                        decimals={6}
-                                    >
-                                        {({ countUpRef }) => (
-                                            <span ref={countUpRef} />
-                                        )}
-                                    </CountUp> DEA claimable</div>
+                                    {token.amounts.newdea === "0" ? "0 " :
+                                        <CountUp
+                                            start={parseFloat(token.amounts.dea)}
+                                            end={parseFloat(token.amounts.newdea)}
+                                            delay={0}
+                                            duration={2}
+                                            decimals={6}
+                                        >
+                                            {({ countUpRef }) => (
+                                                <span ref={countUpRef} />
+                                            )}
+                                        </CountUp>}DEA claimable</div>
                             </div>
                             <div className="box-btn" onClick={() => handleClaim(name)}>
                                 claim DEA</div>

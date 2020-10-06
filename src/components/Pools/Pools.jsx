@@ -318,7 +318,7 @@ class Pools extends Component {
                 <div className="beta-btn">We are currently in beta DEA</div>
                 <div className="pools-unlock">
                     <div className="liquidity-title">DEUS <br />Liquidity Pools</div>
-                    <div className="decription">We also provide single asset pools</div>
+                    <div className="decription">provide Liquidity to <br /> Uniswap or single assets <br /> and earn DEA</div>
                     <div className="pools-btn unlock-btn" onClick={this.handleConnectWallet}>Unlock Wallet</div>
                     <a className="pools-btn learn-more-btn" href="/learn-more-dea">Learn more about DEA</a>
                 </div>
@@ -338,7 +338,7 @@ class Pools extends Component {
                         <div style={{ position: 'relative' }}>
                             <div className="staking-pools">
                                 <div className="title">Staking Pools </div>
-                                <div className="desc">We also provide <br /> single asset pools</div>
+                                <div className="desc">provide Liquidity to <br /> Uniswap or single assets <br /> and earn DEA</div>
                             </div>
                             <div className="row-2">
                                 {/* <Stake shadowClass={`yellow-400-shadow`} stake={stake2} handleClaim={this.handleClaim} handleLP={this.handleLP} handleWithdraw={this.handleWithdraw} /> */}

@@ -441,6 +441,7 @@
                     // z-index: 10;
                     display: flex;
                     justify-content: center;
+                    // position: relative;
                 }
 
 
@@ -471,9 +472,16 @@
                             font-size: 13px;
                             background: #353535;
                             padding: 0 30px;
-
+                            
                         }
 
+
+                        .percentage{
+                            clip-path: polygon(27% 0, 100% 0, 100% 100%, 0 100%, 0 94%);
+                        }
+                        .lp-deposited{
+                            clip-path: polygon(0 0, 73% 0, 101% 101%, 0 100%, 0 100%);
+                        }
 
                     }
 

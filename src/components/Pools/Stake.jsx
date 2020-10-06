@@ -23,9 +23,9 @@ class Stake extends Component {
                 }
                 {isStaked &&
                     <div className="boxes">
-                        <div className="box percentage">
+                        <div className="box">
                             <div className="box-title-wrap">
-                                <div className="box-title">you own {token.amounts.pool}% <br /> of the pool</div>
+                                <div className="box-title percentage">you own {token.amounts.pool}% <br /> of the pool</div>
                             </div>
                             <a className="box-btn" href={liqLink} target="_blank" rel="noopener noreferrer">provide more</a>
                         </div>
@@ -50,7 +50,7 @@ class Stake extends Component {
                         </div>
                         <div className="box">
                             <div className="box-title-wrap" >
-                                <div className="box-title">
+                                <div className="box-title lp-deposited">
                                     {amounts.lp} Lp tokens deposited</div>
                             </div>
                             <div className="box-btn" onClick={() => handleWithdraw(name, amounts.lp)}>

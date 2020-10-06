@@ -158,7 +158,7 @@ class Pools extends Component {
             const token = stakes[tokenName]
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
                 token.amounts.dea = token.amounts.newdea
-                token.amounts.newdea = parseFloat(getStayledNumber(amount))
+                token.amounts.newdea = getStayledNumber(amount)
                 this.setState({ stakes })
             })
         }

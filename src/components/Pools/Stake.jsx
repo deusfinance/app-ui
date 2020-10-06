@@ -36,7 +36,7 @@ class Stake extends Component {
                             <div className="box-title-wrap">
                                 <div className="box-title">
                                     <CountUp
-                                        start={token.amounts.dea}
+                                        start={parseFloat(token.amounts.dea)}
                                         end={parseFloat(token.amounts.newdea)}
                                         delay={0}
                                         duration={2}

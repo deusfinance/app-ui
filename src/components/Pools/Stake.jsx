@@ -28,7 +28,7 @@ class Stake extends Component {
                     <div className="boxes">
                         <div className="box">
                             <div className="box-title-wrap">
-                                <div className="box-title">you own {token.amounts.pool}% of the pool</div>
+                                <div className="box-title">you own {token.amounts.pool}% <br /> of the pool</div>
                             </div>
                             <a className="box-btn" href={liqLink} target="_blank" rel="noopener noreferrer">provide more</a>
                         </div>

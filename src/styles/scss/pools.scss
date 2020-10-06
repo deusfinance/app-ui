@@ -447,7 +447,7 @@
 
 
                 .box {
-                    margin: 0 8px;
+                    margin: 0 3px;
                     z-index: 100;
                     // width: 180px;
                     // height: 90px;
@@ -477,10 +477,10 @@
 
 
                         .percentage{
-                            clip-path: polygon(27% 0, 100% 0, 100% 100%, 0 100%, 0 94%);
+                            clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%, 0 77%);
                         }
                         .lp-deposited{
-                            clip-path: polygon(0 0, 73% 0, 101% 101%, 0 100%, 0 100%);
+                            clip-path: polygon(0 0, 78% 0, 107% 100%, 0 100%, 0 100%);
                         }
 
                     }

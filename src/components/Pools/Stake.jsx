@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import CountUp from 'react-countup';
 
 class Stake extends Component {
     render() {
         const { token, shadowClass, handlePopup, handleClaim, handleWithdraw } = this.props
         const { name, amounts, liqLink } = token
         const isStaked = parseFloat(amounts.lp) > 0 ? true : false
-        console.log(amounts.lp);
+        // console.log(amounts.lp);
         const isSingle = name.indexOf("_") == -1 ? true : false
         const provideText = isSingle ? "single asset pool" : isStaked ? "provide more" : "single asset pool"
         const provideWrapClasses = isSingle ? "single-asset-wrap" : "provide-liquidity-wrap"
@@ -34,7 +35,17 @@ class Stake extends Component {
                         <div className="box">
                             <div className="box-title-wrap">
                                 <div className="box-title">
-                                    {amounts.dea} DEA claimable</div>
+                                    <CountUp
+                                        start={token.amounts.dea}
+                                        end={parseFloat(token.amounts.newdea)}
+                                        delay={0}
+                                        duration={2}
+                                        decimals={6}
+                                    >
+                                        {({ countUpRef }) => (
+                                            <span ref={countUpRef} />
+                                        )}
+                                    </CountUp> DEA claimable</div>
                             </div>
                             <div className="box-btn" onClick={() => handleClaim(name)}>
                                 claim DEA</div>

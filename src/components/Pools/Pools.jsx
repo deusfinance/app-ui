@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Stake from './Stake';
 import { connectWallet } from '../../services/StaticPriceSale'
 import * as stakeService from '../../services/StakingService'
 import { getStayledNumber } from '../../utils/utils'
@@ -6,7 +7,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import '../../styles/scss/pools.css';
-import Stake from './Stake';
 
 
 class Pools extends Component {
@@ -26,6 +26,7 @@ class Pools extends Component {
                 name: "deus_eth",
                 amounts: {
                     dea: 0,
+                    newdea: 0,
                     apy: 0,
                     lp: 0,
                     pool: 0,
@@ -37,6 +38,7 @@ class Pools extends Component {
                 name: "deus",
                 amounts: {
                     dea: 0,
+                    newdea: 0,
                     apy: 0,
                     lp: 0,
                     pool: 0,
@@ -61,6 +63,7 @@ class Pools extends Component {
         this.isConnected()
         setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
+        this.handleUpdateDEA()
     }
 
     handleStakeState = (state) => {
@@ -135,7 +138,8 @@ class Pools extends Component {
                 })
             })
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = getStayledNumber(amount)
+                token.amounts.dea = token.amounts.newdea
+                token.amounts.newdea = getStayledNumber(amount)
                 this.setState({ stakes })
             })
             stakeService.getUserWalletStakedTokenBalance(token.name).then((amount) => {
@@ -147,6 +151,19 @@ class Pools extends Component {
 
 
     }
+
+    handleUpdateDEA = () => setInterval(() => {
+        const { stakes } = this.state
+        for (const tokenName in stakes) {
+            const token = stakes[tokenName]
+            stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
+                token.amounts.dea = token.amounts.newdea
+                token.amounts.newdea = parseFloat(getStayledNumber(amount))
+                this.setState({ stakes })
+            })
+        }
+    }, 5000)
+
 
     handleStake = () => {
         const { staking } = this.state
@@ -236,8 +253,28 @@ class Pools extends Component {
     }
 
 
-    counterSlow = () => {
+    counterClaim = async (stakedToken, targetDea) => {
+        if (targetDea == 0) return
+        const { stakes } = this.state
+        const token = stakes[stakedToken]
+        const { dea } = token.amounts
+        let seed = 0.001
+        seed = targetDea < dea ? seed * -1 : seed
+        const counter = Math.abs(targetDea - dea) / seed
+        console.log(counter);
+        for (let i = 0; i < counter; i++) {
+            token.dea += seed
+            this.setState({ stakes })
+        }
+    }
 
+    getCalimableDEA = async (stakedToken) => {
+        try {
+            const amount = await stakeService.getNumberOfPendingRewardTokens(stakedToken)
+            // this.counterClaim(stakedToken, getStayledNumber(amount))
+        } catch (error) {
+            return 0
+        }
     }
 
 
@@ -253,6 +290,7 @@ class Pools extends Component {
         // const stake2 = this.state.stakes[1]
 
         return (<>
+
             {showPopup &&
                 <div className="stake-popup ">
                     <div className="pop-x" onClick={() => this.handlePopup(false)}>X</div>

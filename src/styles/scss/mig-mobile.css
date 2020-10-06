@@ -1,0 +1,228 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .clear-fix {
+    clear: both;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .vertical-center {
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  footer {
+    height: 57px;
+    margin-top: 40px;
+    background: linear-gradient(238deg, #231827, #232323);
+  }
+  
+  footer .social {
+    height: 100%;
+    text-align: right;
+    font-family: Comfortaa;
+    list-style-type: none;
+    font-size: 20px;
+    line-height: 57px;
+  }
+  
+  footer .social li {
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    width: 200px;
+  }
+  
+  footer .social li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 400;
+  }
+  
+  footer .social li a:hover {
+    opacity: 75%;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .wrapper {
+      margin: auto;
+      height: 100%;
+      min-width: 100%;
+    }
+    footer {
+      height: 50px;
+      margin-top: 50px;
+    }
+    footer .social {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+      height: 100%;
+      text-align: right;
+      font-family: Comfortaa;
+      list-style-type: none;
+      font-size: 16px;
+      line-height: 16px;
+    }
+    footer .social li {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+    }
+  }
+  
+  @font-face {
+    font-family: Lambok;
+    src: url("../../assets/fonts/Lombok.ttf");
+  }
+  
+  @font-face {
+    font-family: Comfortaa;
+    src: url("../../assets/fonts/Comfortaa.ttf");
+  }
+  
+  @font-face {
+    font-family: Segoe UI;
+    src: url("../../assets/fonts/SegoeUI.woff");
+  }
+  
+  @font-face {
+    font-family: Roboto Medium;
+    src: url("../../assets/fonts/Roboto-Medium.ttf");
+  }
+  
+  .exchange-mobile {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    color: #ffffff;
+    text-align: center;
+  }
+  
+  .exchange-mobile .title {
+    margin-top: 40px;
+  }
+  
+  .exchange-mobile .title .deus-sw {
+    font-family: Lambok;
+    font-size: 60px;
+  }
+  
+  .exchange-mobile .title .swap {
+    margin-left: -10px;
+    font-family: Comfortaa;
+    font-size: 30px;
+  }
+  
+  .exchange-mobile .reason {
+    font-size: 16px;
+    margin-top: 15px;
+    font-family: Comfortaa;
+    padding: 0 5px;
+  }
+  
+  .exchange-mobile .giphy {
+    margin: 0 auto;
+    width: 150px;
+    border-radius: 50%;
+    margin-top: 25px;
+  }
+  
+  .exchange-mobile .giphy img {
+    position: relative;
+    margin: 0 auto;
+    width: 150px;
+    border-radius: 50%;
+  }
+  
+  .exchange-mobile .bottom {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+  }
+  
+  .exchange-mobile .app {
+    font-size: 12px;
+    font-family: Comfortaa;
+    margin-top: 40px;
+  }
+  
+  .exchange-mobile .follow {
+    /* margin-top: 30px; */
+    font-size: 12px;
+    font-family: Comfortaa;
+  }
+  
+  .exchange-mobile footer {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .exchange-mobile .msocial {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    height: 100%;
+    text-align: right;
+    font-family: Comfortaa;
+    list-style-type: none;
+    font-size: 18px;
+  }
+  
+  .exchange-mobile .msocial li {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  
+  .exchange-mobile .msocial li a {
+    color: #ffffff;
+  }
+  /*# sourceMappingURL=exchange-mobile.css.map */

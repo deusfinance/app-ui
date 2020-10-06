@@ -1,0 +1,20 @@
+@font-face {
+  font-family: Lambok;
+  src: url("../../assets/fonts/Lombok.ttf");
+}
+
+@font-face {
+  font-family: Comfortaa;
+  src: url("../../assets/fonts/Comfortaa.ttf");
+}
+
+@font-face {
+  font-family: Segoe UI;
+  src: url("../../assets/fonts/SegoeUI.woff");
+}
+
+@font-face {
+  font-family: Roboto Medium;
+  src: url("../../assets/fonts/Roboto-Medium.ttf");
+}
+/*# sourceMappingURL=fonts.css.map */

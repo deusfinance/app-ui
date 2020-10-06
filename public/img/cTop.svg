@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="26px" height="27px" viewBox="0 0 26 27" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <desc>Created with Lunacy</desc>
+  <g id="Group" transform="translate(1.5 1.5)">
+    <path d="M0 11.8458C0 5.30353 5.07511 0 11.3356 0C17.596 0 22.6711 5.30353 22.6711 11.8458C22.6711 18.388 17.596 23.6915 11.3356 23.6915C5.07511 23.6915 0 18.388 0 11.8458Z" id="Ellipse-2" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3" />
+    <path d="M8.81661 0L17.6332 15.3298L0 15.3298L8.81661 0Z" transform="translate(2.519043 2.787171)" id="Triangle" fill="#EFFB69" stroke="none" />
+  </g>
+</svg>

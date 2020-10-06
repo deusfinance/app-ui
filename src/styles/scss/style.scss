@@ -1,0 +1,322 @@
+@import 'base';
+@import 'fonts';
+
+
+body {
+    // overflow-y: auto;
+    background: #f49;
+    background: linear-gradient(233deg, #190b1b, #181818);
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    // height: 100%;
+    // width: 100%;
+}
+
+
+
+
+
+.home-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    max-width: 1200px;
+    height: 100%;
+}
+
+.giphy {
+    margin-top: 150px;
+    margin-right: 10px;
+
+    img {
+        border-radius: 50%;
+    }
+}
+
+.home-content {
+    margin-top: 190px;
+    margin-left: 10px;
+    text-align: left;
+
+    .deus {
+        font-family: Lambok;
+        color: #ffffff;
+        font-size: 96px;
+        font-weight: 400;
+        line-height: 96px;
+
+        .finance {
+            margin-left: -12px;
+            font-family: Comfortaa;
+            font-size: 30px;
+            font-weight: 300;
+        }
+    }
+
+    .asset {
+        color: #ffffff;
+        font-family: Comfortaa;
+
+        .tokenization {
+            margin-top: 82px;
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 27px;
+        }
+
+        .trasnpose {
+            margin-top: 5px;
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 14px;
+        }
+    }
+
+    .features {
+        letter-spacing: 0.05rem;
+        line-height: 22px;
+        list-style-type: none;
+        margin-top: 98px;
+        color: #ffffff;
+        font-family: Comfortaa;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .btns {
+        height: 50px;
+        margin-top: 80px;
+
+        a {
+            margin-top: 5px;
+            text-decoration: none;
+            width: 180px;
+            height: 100%;
+            padding: 13px 35px;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Comfortaa;
+            font-size: 18px;
+            font-weight: 700;
+
+            &:hover {
+                -webkit-transition: 0.15s ease-in-out;
+                transition: 0.15s ease-in-out;
+            }
+        }
+
+        .learn {
+            background: transparent;
+            border-radius: 8px;
+            border: solid 3px #6e398d;
+            margin-left: 26px;
+
+            &:hover {
+                border-color: #8e48b6;
+            }
+        }
+
+        .private {
+            background: transparent;
+
+            border-radius: 8px;
+            border: solid 3px #5fc5be;
+
+            &:hover {
+                border-color: #98f1ec;
+            }
+        }
+    }
+
+
+
+    .cbtns {
+        margin-top: 54px;
+
+        .solidity {
+            margin-left: 35px;
+        }
+
+        a {
+            text-decoration: none;
+            height: 53px;
+
+            img {
+                &:hover {
+                    opacity: 0.75 !important;
+                }
+
+                height: 53px;
+                width: 150px;
+            }
+        }
+    }
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .home-wrapper {
+        // display: flex;
+        // justify-content: space-between;
+        margin: auto;
+        // max-width: 1200px;
+        height: 100%;
+        // min-width: 100%;
+    }
+
+
+    footer {
+        height: 50px;
+        margin-top: 50px;
+
+        .social {
+            display: flex;
+            justify-content: space-around;
+            height: 100%;
+            text-align: right;
+            font-family: Comfortaa;
+            list-style-type: none;
+            font-size: 16px;
+            line-height: 16px;
+   
+            li {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+    }
+
+
+
+
+    .giphy {
+        margin: 0 auto;
+
+        margin-top: 150px;
+
+        img {
+            position: absolute;
+            top: 100px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 150px;
+            border-radius: 50%;
+        }
+    }
+
+    
+    .home-content {
+        margin-top: 100px;
+        padding-right: 10px;
+
+        .deus {
+            font-size: 65px;
+            line-height: 65px;
+
+            .finance {
+                margin-left: -10px;
+                font-family: Comfortaa;
+                font-size: 20px;
+            }
+        }
+
+        .asset {
+            .tokenization {
+                // max-width: 85%;
+                margin-top: 60px;
+                font-size: 20px;
+                font-weight: 300;
+                line-height: 27px;
+            }
+
+            .trasnpose {
+                margin-top: 7px;
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 14px;
+            }
+        }
+
+        .features {
+            letter-spacing: 0.05rem;
+            line-height: 22px;
+            list-style-type: none;
+            margin-top: 60px;
+            color: #ffffff;
+            font-family: Comfortaa;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .btns {
+            height: 40px;
+            margin-top: 80px;
+
+            a {
+                width: 100px;
+                height: 100%;
+                padding: 10px 15px;
+                font-size: 18px;
+            }
+        }
+
+        .description {
+            white-space: pre-line;
+            width: 100%;
+            margin-top: 70px;
+            font-size: 14px;
+            line-height: 14px;
+        }
+
+        .cbtns {
+            display: flex;
+            margin-top: 54px;
+
+            .solidity {
+                margin-left: 27px;
+            }
+
+
+
+            a {
+                text-decoration: none;
+                height: 53px;
+                font-size: 15px;
+
+                img {
+                    &:hover {
+                        opacity: 0.75 !important;
+                    }
+
+                    height: 53px;
+                    width: 150px;
+                }
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 320px) {
+    .home-content .btns a {
+        font-size: 15px;
+
+    }
+
+    .home-content .btns .learn {
+        margin-left: 18px;
+    }
+
+
+    .home-content .cbtns a img {
+        height: 53px;
+        width: 120px;
+    }
+
+    .home-content .cbtns .solidity {
+        margin-left: 18px;
+    }
+}

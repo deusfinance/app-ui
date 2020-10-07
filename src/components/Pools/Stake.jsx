@@ -38,7 +38,7 @@ class Stake extends Component {
                                             end={parseFloat(token.amounts.newdea)}
                                             delay={0}
                                             duration={50}
-                                            decimals={6}
+                                            decimals={3}
                                         >
                                             {({ countUpRef }) => (
                                                 <span ref={countUpRef} />

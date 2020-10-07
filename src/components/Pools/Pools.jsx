@@ -17,6 +17,7 @@ class Pools extends Component {
             name: "",
             amount: "",
             contract: "",
+            coin_name: "",
             isApprove: true
         },
         wallet: {
@@ -33,6 +34,7 @@ class Pools extends Component {
                     pool: 0,
                     currLp: 0,
                 },
+                coin_name: "UNI-V2-DEUS/ETH",
                 stakingLink: "0xCC284f82cD51A31bA045839F009cB208246Bb5f9",
                 liqLink: "https://app.uniswap.org/#/add/ETH/0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             },
@@ -46,6 +48,7 @@ class Pools extends Component {
                     pool: 0,
                     currLp: 0,
                 },
+                coin_name: "DEUS",
                 stakingLink: "0x2a0C5fc61619372A811e093f0D5Ec4050aE0124d",
                 liqLink: "https://app.uniswap.org/#/add/ETH/0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
 
@@ -142,7 +145,7 @@ class Pools extends Component {
                 })
             })
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = token.amounts.newdea
+                token.amounts.dea = 0
                 token.amounts.newdea = getStayledNumber(amount)
                 this.setState({ stakes })
             })
@@ -162,11 +165,12 @@ class Pools extends Component {
             const token = stakes[tokenName]
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
                 token.amounts.dea = token.amounts.newdea
+                console.log(amount);
                 token.amounts.newdea = getStayledNumber(amount)
                 this.setState({ stakes })
             })
         }
-    }, 5000)
+    }, 15000)
 
 
     handleStake = () => {
@@ -251,7 +255,8 @@ class Pools extends Component {
     handlePopup = (stakedToken, bool) => {
         const { staking } = this.state
         if (bool) {
-            staking.contract = "https://rinkeby.etherscan.io/address/" + this.state.stakes[stakedToken].stakingLink
+            staking.contract = "" + this.state.stakes[stakedToken].stakingLink
+            staking.coin_name = this.state.stakes[stakedToken].coin_name
         }
         staking.amount = ""
         staking.isApprove = true
@@ -260,34 +265,12 @@ class Pools extends Component {
     }
 
 
-    counterClaim = async (stakedToken, targetDea) => {
-        if (targetDea == 0) return
-        const { stakes } = this.state
-        const token = stakes[stakedToken]
-        const { dea } = token.amounts
-        let seed = 0.001
-        seed = targetDea < dea ? seed * -1 : seed
-        const counter = Math.abs(targetDea - dea) / seed
-        console.log(counter);
-        for (let i = 0; i < counter; i++) {
-            token.dea += seed
-            this.setState({ stakes })
-        }
-    }
-
-    getCalimableDEA = async (stakedToken) => {
-        try {
-            const amount = await stakeService.getNumberOfPendingRewardTokens(stakedToken)
-            // this.counterClaim(stakedToken, getStayledNumber(amount))
-        } catch (error) {
-            return 0
-        }
-    }
 
 
     render() {
         const { isConnected, showPopup, staking } = this.state
         const { stakes } = this.state
+        const contractEndpoint = "https://rinkeby.etherscan.io/address"
         // const { deus_eth, deus } = stakes
         // console.log(deus_eth);
         let marginPool = 150
@@ -304,13 +287,13 @@ class Pools extends Component {
                     <div className="pop-title">Stake your Tokens to earn DEA</div>
                     <div className="stake-wrap">
                         <div className="pop-input-wrap">
-                            <div className="pop-input-label">Amount: {stakes[staking.name].amounts.currLp} LP</div>
+                            <div className="pop-input-label">Amount: {stakes[staking.name].amounts.currLp} {stakes[staking.name].coin_name}</div>
                             <div className="pop-input" >
                                 <div className="pop-max" onClick={() => this.handleMaxLP(stakes[staking.name].amounts.currLp)}>max</div>
                                 <input type="number" name="stake-amount" placeholder="0.0" value={staking.amount} onChange={(e) => this.setStakingAmount(e.currentTarget.value)} />
                             </div>
                         </div>
-                        <a className="pop-contract" href={staking.contract} target="_blank" rel="noopener noreferrer">bring me to the contract
+                        <a className="pop-contract" href={contractEndpoint + "/" + this.state.stakes[staking.name].stakingLink} target="_blank" rel="noopener noreferrer">bring me to the contract
                 <div className="arrow-triangle"></div>
                         </a>
                         <div className="pop-btns">

@@ -72,6 +72,8 @@ class Pools extends Component {
         setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
         this.handleUpdateDEA()
+        window.addEventListener('resize', this.resize)
+
     }
 
     handleStakeState = (state) => {
@@ -268,6 +270,11 @@ class Pools extends Component {
     }
 
 
+    resize = () => this.handleScroller()
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resize)
+    }
 
 
     render() {

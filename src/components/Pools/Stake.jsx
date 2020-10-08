@@ -2,6 +2,34 @@ import React, { Component } from 'react'
 import CountUp from 'react-countup';
 
 class Stake extends Component {
+
+
+    state = {
+        startDea: "",
+        endDea: ""
+    }
+
+    componentDidMount() {
+        const { token } = this.props
+        const { name, amounts } = token
+        const endDea =
+            this.setState({ startDea: amounts.dea, endDea: amounts.end })
+    }
+    countDecimal = (number) => {
+        const strnum = number.toString()
+        let pointIndex = strnum.indexOf(".")
+
+        for (var i = pointIndex + 1; i < strnum.length; i++) {
+            if (strnum.charAt(i) === '0') {
+                continue
+            } else {
+                break
+            }
+        }
+        return i - pointIndex + 1;
+    }
+
+
     render() {
         const { token, shadowClass, handlePopup, handleClaim, handleWithdraw } = this.props
         const { name, amounts, liqLink } = token
@@ -11,6 +39,10 @@ class Stake extends Component {
         const stakedClass = isStaked ? "staked" : ""
         const shadowClasses = shadowClass ? shadowClass : "blue-200-shadow"
         const stakedText = isStaked ? "more" : "here"
+        const diffDea = amounts.pool * 0.07936428253968254 / 100
+        const decimals = this.countDecimal(diffDea)
+
+        // const startClaimDEA = amounts.dea == "0" ? amounts.newdea - diffDea > 0 ? amounts.newdea - diffDea : 0 : amounts.dea
         return (<div className={`triangle-wrap  ${shadowClasses}`}>
             <div className={`triangle ${stakedClass}`}>
                 <div className="stake-here" onClick={() => handlePopup(name, true)}>Stake <br /> {stakedText}</div>
@@ -35,10 +67,12 @@ class Stake extends Component {
                                     {token.amounts.newdea === "0" ? "0 " :
                                         <CountUp
                                             start={parseFloat(token.amounts.dea)}
-                                            end={parseFloat(token.amounts.newdea)}
+                                            end={parseFloat(token.amounts.dea) + diffDea}
                                             delay={0}
-                                            duration={50}
-                                            decimals={3}
+                                            duration={15}
+                                            decimals={decimals}
+                                            useEasing={false}
+                                        // onEnd={(token) => this.getNewClaimableDEA(token)}
                                         >
                                             {({ countUpRef }) => (
                                                 <span ref={countUpRef} />

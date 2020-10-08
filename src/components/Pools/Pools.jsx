@@ -145,8 +145,7 @@ class Pools extends Component {
                 })
             })
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = 0
-                token.amounts.newdea = getStayledNumber(amount)
+                token.amounts.dea = getStayledNumber(amount)
                 this.setState({ stakes })
             })
             stakeService.getUserWalletStakedTokenBalance(token.name).then((amount) => {
@@ -155,22 +154,19 @@ class Pools extends Component {
             })
 
         }
-
-
     }
 
     handleUpdateDEA = () => setInterval(() => {
         const { stakes } = this.state
         for (const tokenName in stakes) {
             const token = stakes[tokenName]
-            stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = token.amounts.newdea
-                console.log(amount);
-                token.amounts.newdea = getStayledNumber(amount)
-                this.setState({ stakes })
-            })
+            console.log("Called " + token.amounts.dea);
+            const diffDea = token.amounts.pool * 0.07936428253968254 / 100
+            token.amounts.dea = getStayledNumber(parseFloat(token.amounts.dea) + diffDea)
+            console.log("edned " + (parseFloat(token.amounts.dea) + diffDea));
         }
-    }, 15000)
+        this.setState({ stakes })
+    }, 14600)
 
 
     handleStake = () => {
@@ -234,7 +230,7 @@ class Pools extends Component {
 
     handleConnectWallet = async () => {
         try {
-            const rep = await connectWallet()
+            const rep = await connectWallet(this.isConnected())
             console.log(rep ? "connected to metamask" : "");
             this.isConnected()
         } catch (error) {

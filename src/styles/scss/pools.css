@@ -665,6 +665,7 @@ footer .social li a:hover {
 
 #main-wrap::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   background-color: transparent;
 }
@@ -678,6 +679,7 @@ footer .social li a:hover {
 #main-wrap::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #cdd477;
 }
 

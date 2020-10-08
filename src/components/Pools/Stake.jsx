@@ -9,12 +9,6 @@ class Stake extends Component {
         endDea: ""
     }
 
-    componentDidMount() {
-        const { token } = this.props
-        const { name, amounts } = token
-        const endDea =
-            this.setState({ startDea: amounts.dea, endDea: amounts.end })
-    }
     countDecimal = (number) => {
         const strnum = number.toString()
         let pointIndex = strnum.indexOf(".")
@@ -57,7 +51,7 @@ class Stake extends Component {
                     <div className="boxes">
                         <div className="box">
                             <div className="box-title-wrap">
-                                <div className="box-title percentage">you own {token.amounts.pool}% <br /> of the pool</div>
+                                <div className="box-title percentage">you own {parseFloat(token.amounts.pool).toFixed(2)}% <br /> of the pool</div>
                             </div>
                             <a className="box-btn" href={liqLink} target="_blank" rel="noopener noreferrer">provide more</a>
                         </div>
@@ -67,9 +61,9 @@ class Stake extends Component {
                                     {token.amounts.newdea === "0" ? "0 " :
                                         <CountUp
                                             start={parseFloat(token.amounts.dea)}
-                                            end={parseFloat(token.amounts.dea) + diffDea}
+                                            end={parseFloat(token.amounts.dea) + 24 * diffDea}
                                             delay={0}
-                                            duration={15}
+                                            duration={360}
                                             decimals={decimals}
                                             useEasing={false}
                                         // onEnd={(token) => this.getNewClaimableDEA(token)}

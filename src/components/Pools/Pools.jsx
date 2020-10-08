@@ -60,7 +60,6 @@ class Pools extends Component {
         super(props);
         // create a ref to store the textInput DOM element
         this.scrollRef = React.createRef();
-        // this.focusTextInput = this.focusTextInput.bind(this);
     }
 
 
@@ -68,7 +67,7 @@ class Pools extends Component {
     componentDidMount() {
         document.title = 'DEUS pools';
         this.isConnected()
-        // setTimeout(() => this.isConnected(), 1000);
+        setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
         this.handleUpdateDEA()
     }
@@ -140,7 +139,7 @@ class Pools extends Component {
                 token.amounts.lp = getStayledNumber(amount)
                 this.setState({ stakes })
                 stakeService.getTotalStakedToken(token.name).then((amount) => {
-                    token.amounts.pool = token.amounts.lp == "0" || amount == "0" ? 0 : ((token.amounts.lp / amount) * 100).toFixed(2)
+                    token.amounts.pool = token.amounts.lp == "0" || amount == "0" ? 0 : (token.amounts.lp / amount) * 100
                     this.setState({ stakes })
                 })
             })
@@ -160,13 +159,13 @@ class Pools extends Component {
         const { stakes } = this.state
         for (const tokenName in stakes) {
             const token = stakes[tokenName]
-            console.log("Called " + token.amounts.dea);
-            const diffDea = token.amounts.pool * 0.07936428253968254 / 100
+            const fixedCoeffic = 0.07936428253968254
+            const diffDea = token.amounts.pool * fixedCoeffic / 100
             token.amounts.dea = getStayledNumber(parseFloat(token.amounts.dea) + diffDea)
-            console.log("edned " + (parseFloat(token.amounts.dea) + diffDea));
+            // console.log("edned " + (parseFloat(token.amounts.dea) + diffDea));
         }
         this.setState({ stakes })
-    }, 14600)
+    }, 6 * 60 * 1000)
 
 
     handleStake = () => {

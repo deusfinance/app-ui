@@ -273,15 +273,6 @@ class Pools extends Component {
     render() {
         const { isConnected, showPopup, staking } = this.state
         const { stakes } = this.state
-        const contractEndpoint = "https://rinkeby.etherscan.io/address"
-        // const { deus_eth, deus } = stakes
-        // console.log(deus_eth);
-        let marginPool = 150
-        if (window.innerWidth < 1500) {
-            marginPool = 250
-        }
-        // const stake2 = this.state.stakes[1]
-
         return (<>
 
             {showPopup &&
@@ -296,7 +287,7 @@ class Pools extends Component {
                                 <input type="number" name="stake-amount" placeholder="0.0" value={staking.amount} onChange={(e) => this.setStakingAmount(e.currentTarget.value)} />
                             </div>
                         </div>
-                        <a className="pop-contract" href={contractEndpoint + "/" + this.state.stakes[staking.name].stakingLink} target="_blank" rel="noopener noreferrer">bring me to the contract
+                        <a className="pop-contract" href={config.contractEndpoint + "/" + this.state.stakes[staking.name].stakingLink} target="_blank" rel="noopener noreferrer">bring me to the contract
                 <div className="arrow-triangle"></div>
                         </a>
                         <div className="pop-btns">
@@ -324,7 +315,7 @@ class Pools extends Component {
                 <div className="pools-btn unlock-btn connected" onClick={this.handleConnectWallet}>{this.showAddress()}</div>
                 <div className="pools-wrapper" id="pools-wrap">
                     <img className="line-top-img" src="../img/line-top.png" alt="line-top" />
-                    <div className="pools" style={{ marginTop: marginPool + "px" }}>
+                    <div className="pools">
                         <div className="row-1">
                             <Stake shadowClass={`blue-200-shadow`} token={stakes.deus_eth} handlePopup={this.handlePopup} handleClaim={this.handleClaim} handleLP={this.handleLP} handleWithdraw={this.handleWithdraw} />
                         </div>

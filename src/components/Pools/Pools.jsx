@@ -68,7 +68,7 @@ class Pools extends Component {
     componentDidMount() {
         document.title = 'DEUS pools';
         this.isConnected()
-        setTimeout(() => this.isConnected(), 1000);
+        // setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
         this.handleUpdateDEA()
     }
@@ -232,7 +232,7 @@ class Pools extends Component {
         try {
             const rep = await connectWallet(this.isConnected())
             console.log(rep ? "connected to metamask" : "");
-            this.isConnected()
+            // this.isConnected()
         } catch (error) {
             console.log("didnt connect to metamask");
         }

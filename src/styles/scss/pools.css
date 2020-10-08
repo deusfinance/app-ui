@@ -41,6 +41,25 @@ a {
   text-decoration: none;
 }
 
+.Toastify__toast {
+  border-radius: 6px;
+  font-family: Comfortaa;
+  font-weight: bold;
+}
+
+.Toastify__toast--success {
+  color: #1a111d;
+  background: #00FFC8;
+}
+
+.Toastify__toast--warning {
+  background: #D2386C;
+}
+
+.Toastify__toast--info {
+  background: #0072B5;
+}
+
 footer {
   height: 57px;
   margin-top: 40px;
@@ -741,5 +760,11 @@ footer .social li a:hover {
 
 .scrollable-min::-webkit-scrollbar-track {
   background: #d1f07f;
+}
+
+@media screen and (max-width: 1500px) {
+  .main-wrap .pools-wrapper .pools {
+    margin-top: 250px;
+  }
 }
 /*# sourceMappingURL=pools.css.map */

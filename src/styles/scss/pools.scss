@@ -626,4 +626,15 @@
     background: #d1f07f ; 
   }
 
+  @media screen and (max-width: 1500px) {
 
+    .main-wrap{
+        .pools-wrapper{
+            .pools{
+                margin-top: 250px;
+            }
+        }
+    }
+  }
+
+  

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import * as config from '../../config';
 import CountUp from 'react-countup';
 
 class Stake extends Component {
@@ -61,9 +62,9 @@ class Stake extends Component {
                                     {token.amounts.newdea === "0" ? "0 " :
                                         <CountUp
                                             start={parseFloat(token.amounts.dea)}
-                                            end={parseFloat(token.amounts.dea) + 24 * diffDea}
+                                            end={parseFloat(token.amounts.newdea)}
                                             delay={0}
-                                            duration={360}
+                                            duration={config.ClaimableDuration}
                                             decimals={decimals}
                                             useEasing={false}
                                         // onEnd={(token) => this.getNewClaimableDEA(token)}

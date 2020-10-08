@@ -4,8 +4,9 @@ import { connectWallet } from '../../services/StaticPriceSale'
 import * as stakeService from '../../services/StakingService'
 import { getStayledNumber } from '../../utils/utils'
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import * as config from '../../config';
 
+import 'react-toastify/dist/ReactToastify.css';
 import '../../styles/scss/pools.css';
 
 
@@ -37,6 +38,7 @@ class Pools extends Component {
                 coin_name: "UNI-V2-DEUS/ETH",
                 stakingLink: "0xCC284f82cD51A31bA045839F009cB208246Bb5f9",
                 liqLink: "https://app.uniswap.org/#/add/ETH/0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+                rewardRatio: 0,
             },
             deus: {
                 name: "deus",
@@ -51,7 +53,7 @@ class Pools extends Component {
                 coin_name: "DEUS",
                 stakingLink: "0x2a0C5fc61619372A811e093f0D5Ec4050aE0124d",
                 liqLink: "https://app.uniswap.org/#/add/ETH/0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
-
+                rewardRatio: 0,
             },
         },
     }
@@ -138,15 +140,20 @@ class Pools extends Component {
             stakeService.getNumberOfStakedTokens(token.name).then((amount) => {
                 token.amounts.lp = getStayledNumber(amount)
                 this.setState({ stakes })
+
                 stakeService.getTotalStakedToken(token.name).then((amount) => {
                     token.amounts.pool = token.amounts.lp == "0" || amount == "0" ? 0 : (token.amounts.lp / amount) * 100
                     this.setState({ stakes })
+
+                    stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
+                        token.amounts.dea = getStayledNumber(amount)
+                        token.rewardRatio = token.amounts.pool * config.FixedRatio / 100
+                        token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
+                        this.setState({ stakes })
+                    })
                 })
             })
-            stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = getStayledNumber(amount)
-                this.setState({ stakes })
-            })
+
             stakeService.getUserWalletStakedTokenBalance(token.name).then((amount) => {
                 token.amounts.currLp = getStayledNumber(amount)
                 this.setState({ stakes })
@@ -159,13 +166,14 @@ class Pools extends Component {
         const { stakes } = this.state
         for (const tokenName in stakes) {
             const token = stakes[tokenName]
-            const fixedCoeffic = 0.07936428253968254
-            const diffDea = token.amounts.pool * fixedCoeffic / 100
-            token.amounts.dea = getStayledNumber(parseFloat(token.amounts.dea) + diffDea)
-            // console.log("edned " + (parseFloat(token.amounts.dea) + diffDea));
+            stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
+                token.amounts.dea = getStayledNumber(parseFloat(amount))
+                token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
+                this.setState({ stakes })
+            })
         }
-        this.setState({ stakes })
-    }, 6 * 60 * 1000)
+
+    }, (config.ClaimableDuration) * 1000)
 
 
     handleStake = () => {
@@ -279,7 +287,7 @@ class Pools extends Component {
             {showPopup &&
                 <div className="stake-popup ">
                     <div className="pop-x" onClick={() => this.handlePopup(false)}>X</div>
-                    <div className="pop-title">Stake your Tokens to earn DEA</div>
+                    <div className="pop-title">Stake your tokens to earn DEA</div>
                     <div className="stake-wrap">
                         <div className="pop-input-wrap">
                             <div className="pop-input-label">Amount: {stakes[staking.name].amounts.currLp} {stakes[staking.name].coin_name}</div>

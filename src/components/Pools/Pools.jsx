@@ -311,13 +311,13 @@ class Pools extends Component {
                     <div className="liquidity-title">DEUS <br />Liquidity Pools</div>
                     <div className="decription">provide Liquidity to <br /> Uniswap or single assets <br /> and earn DEA</div>
                     <div className="pools-btn unlock-btn" onClick={this.handleConnectWallet}>Unlock Wallet</div>
-                    <a className="pools-btn learn-more-btn" href="/learn-more-dea">Learn more about DEA</a>
+                    <a className="pools-btn learn-more-btn" href="https://medium.com/@deusfinance/dea-part-ii-release-of-dea-and-the-staking-reward-program-46b065322936" target="_blank" rel="noopener noreferrer">Learn more about DEA</a>
                 </div>
             </div>}
             {isConnected && <div className="main-wrap  " id="main-wrap" ref={this.scrollRef} onClick={this.handleScrollerCenter}>
                 <div className="right-btn">
                     <div className="pools-btn beta-btn ">We are currently in BETA</div>
-                    <a className="pools-btn learn-more-btn" href="/learn-more-dea">Learn more about DEA</a>
+                    <a className="pools-btn learn-more-btn" href="https://medium.com/@deusfinance/dea-part-ii-release-of-dea-and-the-staking-reward-program-46b065322936" target="_blank" rel="noopener noreferrer">Learn more about DEA</a>
                 </div>
                 <div className="pools-btn unlock-btn connected" onClick={this.handleConnectWallet}>{this.showAddress()}</div>
                 <div className="pools-wrapper" id="pools-wrap">

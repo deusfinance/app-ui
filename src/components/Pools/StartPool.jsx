@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 const StartPool = ({ handleConnectWallet, isConnected }) => {
     return (!isConnected && <div className="pools-unlock-wrap" id="pools-unlock-wrap">

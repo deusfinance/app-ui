@@ -294,7 +294,7 @@ class Pools extends Component {
                                 <input type="number" name="stake-amount" placeholder="0.0" value={staking.amount} onChange={(e) => this.setStakingAmount(e.currentTarget.value)} />
                             </div>
                         </div>
-                        <a className="pop-contract" href={config.contractEndpoint + "/" + this.state.stakes[staking.name].stakingLink} target="_blank" rel="noopener noreferrer">bring me to the contract
+                        <a className="pop-contract" href={config.contractEndpoint + "/" + this.state.stakes[staking.name].stakingLink} target="_blank" rel="noopener noreferrer">show me  the contract
                 <div className="arrow-triangle"></div>
                         </a>
                         <div className="pop-btns">

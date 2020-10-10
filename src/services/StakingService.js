@@ -6,8 +6,20 @@ if (isConnected()) {
     network = getChainAndAddress().network;
 }
 
+ethereum.on('accountsChanged', function(accounts) {
+    location.reload();
+});
+
+ethereum.on('chainChanged', function(chainId) {
+    location.reload();
+});
+
 function connectWallet(initFunction) {
-    return window.ethereum.enable();
+    return window.ethereum.enable().thne(res => {
+        if (window.ethereum && window.ethereum.selectedAddress) {
+            initFunction();
+        }
+    });
 }
 
 function getChainAndAddress() {
@@ -205,6 +217,7 @@ function getTotalStakedToken(stakedToken) {
 
 
 export {
+    connectWallet,
     stakingPools,
     approve,
     stake,

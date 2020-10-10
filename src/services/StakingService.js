@@ -84,8 +84,7 @@ function isConnected() {
 }
 
 function _getWei(number) {
-    const value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
-    return Web3.utils.toWei(String(value), 'ether')
+    return Web3.utils.toWei(String(number), 'ether')
 }
 
 
@@ -99,7 +98,7 @@ function approve(stakedToken, amount, listener) {
         if (!('metamaskStakedTokenContract' in pool)) {
             pool.metamaskStakedTokenContract = new metamaskWeb3.eth.Contract(pool.stakedTokenContractABI, pool.stakedTokenAddr);
         }
-        return pool.metamaskStakedTokenContract.methods.approve(pool.stakingAddr, _getWei(1e30)) // amount = 1e30
+        return pool.metamaskStakedTokenContract.methods.approve(pool.stakingAddr, _getWei(10 ** 20)) // amount = 1e30
             .send({ from: window.ethereum.selectedAddress })
             .on('transactionHash', () => listener("transactionHash"))
             .on('receipt', () => listener("receipt"))
@@ -116,7 +115,7 @@ function getAllowances(stakedToken) {
                 return Web3.utils.fromWei(amount, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -149,7 +148,7 @@ function getUserWalletStakedTokenBalance(stakedToken) {
                 return Web3.utils.fromWei(balance, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -180,7 +179,7 @@ function getNumberOfStakedTokens(stakedToken) {
                 return Web3.utils.fromWei(user.depositAmount, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -194,7 +193,7 @@ function getNumberOfPendingRewardTokens(stakedToken) {
                 return Web3.utils.fromWei(amount, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -209,7 +208,7 @@ function getTotalStakedToken(stakedToken) {
                 return Web3.utils.fromWei(balance, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }

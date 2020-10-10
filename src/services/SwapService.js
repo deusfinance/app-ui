@@ -6,13 +6,15 @@ if (isConnected()) {
     network = getChainAndAddress().network;
 }
 
-// window.ethereum.on('accountsChanged', function(accounts) {
-//     window.location.reload();
-// });
+window.ethereum.on('accountsChanged', function(accounts) {
+    // window.location.reload();
+    console.log(1);
+});
 
-// window.ethereum.on('chainChanged', function(chainId) {
-//     window.location.reload();
-// });
+window.ethereum.on('chainChanged', function(chainId) {
+    // window.location.reload();
+    console.log(2);
+});
 
 function connectWallet(initFunction) {
     return window.ethereum.enable().thne(res => {
@@ -73,7 +75,7 @@ function getEtherBalance() {
             return Web3.utils.fromWei(balance, 'ether');
         })
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -85,7 +87,7 @@ function getTokenBalance() {
             return Web3.utils.fromWei(balance, 'ether');
         })
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -99,7 +101,7 @@ function getTokenAmountIfBuying(etherAmount) {
 }
 
 function getEtherAmountRequiredForPurchasingToken(tokenAmount) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         resolve(0);
     })
 }
@@ -115,7 +117,7 @@ function buyToken(etherAmount, tokenAmount, listener) {
             }).on('transactionHash', () => listener("transactionHash"))
             .on('receipt', () => listener("receipt"))
             .on('error', () => listener("error"))
-        // .on('confirmation', () => listener("confirmation"))
+            // .on('confirmation', () => listener("confirmation"))
 
     });
 }
@@ -128,7 +130,7 @@ function getEtherAmountIfSellingToken(tokenAmount) {
 }
 
 function getTokenAmountRequiredForGettingEther(tokenAmount) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
         resolve(0);
     })
 }
@@ -148,7 +150,7 @@ function sellToken(tokenAmount, etherAmount, listener) {
                     .on('error', () => listener("error"))
             })
             .on('error', () => listener("error"))
-        // .on('confirmation', () => listener("confirmation"))
+            // .on('confirmation', () => listener("confirmation"))
     });
 }
 
@@ -159,7 +161,7 @@ function getWithdrawableAmount() {
             return Web3.utils.fromWei(amount, 'ether');
         })
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }

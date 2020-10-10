@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connectWallet } from '../../services/StaticPriceSale'
+import { connectWallet } from '../../services/SwapService'
 import * as stakeService from '../../services/StakingService'
 import { getStayledNumber } from '../../utils/utils'
 import { ToastContainer, toast } from 'react-toastify';
@@ -164,7 +164,7 @@ class PoolsContainer extends Component {
             this.setState({ stakes })
 
             stakeService.getTotalStakedToken(token.name).then((amount) => {
-                token.amounts.pool = token.amounts.lp == "0" || amount == "0" ? 0 : (token.amounts.lp / amount) * 100
+                token.amounts.pool = token.amounts.lp === "0" || amount === "0" ? 0 : (token.amounts.lp / amount) * 100
                 this.setState({ stakes })
 
                 stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
@@ -276,6 +276,7 @@ class PoolsContainer extends Component {
         if (bool) {
             staking.contract = "" + this.state.stakes[stakedToken].stakingLink
             staking.coin_name = this.state.stakes[stakedToken].coin_name
+            this.getTokenAllAmounts(stakedToken)
         }
         staking.amount = ""
         staking.isApprove = true

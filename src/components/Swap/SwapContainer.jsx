@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import * as swapService from '../../services/StaticPriceSale'
-import { ToastContainer, toast } from 'react-toastify';
-import Footer from './../common/Footer';
+import * as swapService from '../../services/SwapService'
+import { toast } from 'react-toastify';
+import Footer from '../common/Footer';
 import DesktopSwap from './DesktopSwap';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,7 +11,7 @@ import MobileSwap from './MobileSwap';
 import { isDesktop } from '../../utils/utils';
 
 
-class Container extends Component {
+class SwapContainer extends Component {
 
     state = {
         swap: {
@@ -429,4 +429,4 @@ class Container extends Component {
     }
 }
 
-export default Container;
+export default SwapContainer;

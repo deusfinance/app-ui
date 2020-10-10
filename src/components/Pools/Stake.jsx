@@ -12,7 +12,12 @@ class Stake extends Component {
 
     countDecimal = (number) => {
         const strnum = number.toString()
+
         let pointIndex = strnum.indexOf(".")
+
+        if (strnum.charAt(pointIndex - 1) !== '0') { //if rewardRatio is bigger than 1 so we haven't decimal number for counting 
+            return 0;
+        }
 
         for (var i = pointIndex + 1; i < strnum.length; i++) {
             if (strnum.charAt(i) === '0') {
@@ -27,17 +32,15 @@ class Stake extends Component {
 
     render() {
         const { token, shadowClass, handlePopup, handleClaim, handleWithdraw } = this.props
-        const { name, amounts, liqLink } = token
+        const { name, amounts, liqLink, rewardRatio } = token
         const isStaked = parseFloat(amounts.lp) > 0 ? true : false
-        const isSingle = name.indexOf("_") == -1 ? true : false
+        const isSingle = name.indexOf("_") === -1 ? true : false
         const provideWrapClasses = isSingle ? "single-asset-wrap" : "provide-liquidity-wrap"
         const stakedClass = isStaked ? "staked" : ""
         const shadowClasses = shadowClass ? shadowClass : "blue-200-shadow"
         const stakedText = isStaked ? "more" : "here"
-        const diffDea = amounts.pool * 0.07936428253968254 / 100
-        const decimals = this.countDecimal(diffDea)
+        const decimals = this.countDecimal(rewardRatio)
 
-        // const startClaimDEA = amounts.dea == "0" ? amounts.newdea - diffDea > 0 ? amounts.newdea - diffDea : 0 : amounts.dea
         return (<div className={`triangle-wrap  ${shadowClasses}`}>
             <div className={`triangle ${stakedClass}`}>
                 <div className="stake-here" onClick={() => handlePopup(name, true)}>Stake <br /> {stakedText}</div>

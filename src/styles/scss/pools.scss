@@ -16,8 +16,6 @@
 }
 
 
-
-
 .stake-popup{
     z-index: 10;
     color: #000000;
@@ -448,10 +446,8 @@
                 .box {
                     margin: 0 3px;
                     z-index: 100;
-                    // width: 180px;
-                    // height: 90px;
                     display: flex;
-                    justify-content: start;
+                    justify-content: flex-start;
                     flex-direction: column;
 
                     .box-title-wrap {
@@ -609,22 +605,17 @@
     }
 }
 
-.scrollable {
-    // scrollbar-color: #d1f07f  transparent; 
-    scrollbar-color: #d3d3d3 transparent;
-  }
+// .scrollable {
+//     scrollbar-color: #d3d3d3 transparent;
+//   }
   
-  .scrollable-min::-webkit-scrollbar {
-    scrollbar-color: #d1f07f transparent;
-    // scrollbar-width: thin;
-    // width: 20px;
-    // height: 20px;
-  }
+//   .scrollable-min::-webkit-scrollbar {
+//     scrollbar-color: #d1f07f transparent;
+//   }
 
-  .scrollable-min::-webkit-scrollbar-track {
-    // border-radius: 0;
-    background: #d1f07f ; 
-  }
+//   .scrollable-min::-webkit-scrollbar-track {
+//     background: #d1f07f ; 
+//   }
 
   @media screen and (max-width: 1500px) {
 

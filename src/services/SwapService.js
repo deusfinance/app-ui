@@ -24,22 +24,22 @@ function connectWallet() {
     return window.ethereum.enable();
 }
 
-function getChainAndAddress() {
-    let networkNames = {
-        "0x1": "Mainnet",
-        "0x3": "Ropsten",
-        "0x4": "Rinkeby",
-        "0x2a": "Kovan",
-    }
-    return {
-        netword: networkNames[window.ethereum.chainId],
-        addres: window.ethereum.selectedAddress
-    };
-}
+// function getChainAndAddress() {
+//     let networkNames = {
+//         "0x1": "Mainnet",
+//         "0x3": "Ropsten",
+//         "0x4": "Rinkeby",
+//         "0x2a": "Kovan",
+//     }
+//     return {
+//         netword: networkNames[window.ethereum.chainId],
+//         addres: window.ethereum.selectedAddress
+//     };
+// }
 
-function isConnected() {
-    return window.ethereum.selectedAddress != null;
-}
+// function isConnected() {
+//     return window.ethereum.selectedAddress != null;
+// }
 
 function getEtherBalance() {
     if (window.ethereum && window.ethereum.selectedAddress) {

@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Navbar from './components/common/Navbar';
 import Home from './components/Home';
 import NotFound from './components/NotFound';
-import PoolsContainer from './components/Pools/Container';
+import PoolsContainer from './components/Pools/PoolsContainer';
 
 
 import './styles/scss/style.css';

@@ -6,13 +6,13 @@ if (isConnected()) {
     network = getChainAndAddress().network;
 }
 
-ethereum.on('accountsChanged', function(accounts) {
-    location.reload();
-});
+// window.ethereum.on('accountsChanged', function(accounts) {
+//     window.location.reload();
+// });
 
-ethereum.on('chainChanged', function(chainId) {
-    location.reload();
-});
+// window.ethereum.on('chainChanged', function(chainId) {
+//     window.location.reload();
+// });
 
 function connectWallet(initFunction) {
     return window.ethereum.enable().thne(res => {

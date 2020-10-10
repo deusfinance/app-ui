@@ -6,13 +6,13 @@ if (isConnected()) {
     network = getChainAndAddress().network;
 }
 
-ethereum.on('accountsChanged', function(accounts) {
-    location.reload();
-});
+// window.ethereum.on('accountsChanged', function(accounts) {
+//     window.location.reload();
+// });
 
-ethereum.on('chainChanged', function(chainId) {
-    location.reload();
-});
+// window.ethereum.on('chainChanged', function(chainId) {
+//     window.location.reload();
+// });
 
 function connectWallet(initFunction) {
     return window.ethereum.enable().thne(res => {
@@ -76,6 +76,8 @@ let stakingPools = {
 
 for (const poolName in stakingPools) {
     let pool = stakingPools[poolName];
+    console.log(pool.stakingAddr);
+    console.log(pool.stakedTokenAddr);
     pool.infuraStakingContract = new infuraWeb3.eth.Contract(pool.stakingContractABI, pool.stakingAddr);
     pool.infuraStakedTokenContract = new infuraWeb3.eth.Contract(pool.stakedTokenContractABI, pool.stakedTokenAddr);
 }

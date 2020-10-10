@@ -37,9 +37,6 @@ if (isConnected()) {
 }
 
 
-
-
-
 for (const poolName in stakingPools) {
     let pool = stakingPools[poolName];
     console.log(pool.stakingAddr);
@@ -50,15 +47,15 @@ for (const poolName in stakingPools) {
 
 
 
-window.ethereum.on('accountsChanged', function (accounts) {
-    window.location.reload();
-    // console.log(1);
-});
+// window.ethereum.on('accountsChanged', function (accounts) {
+//     window.location.reload();
+//     // console.log(1);
+// });
 
-window.ethereum.on('chainChanged', function (chainId) {
-    window.location.reload();
-    // console.log(2);
-});
+// window.ethereum.on('chainChanged', function (chainId) {
+//     window.location.reload();
+//     // console.log(2);
+// });
 
 function connectWallet(initFunction) {
     return window.ethereum.enable().thne(res => {

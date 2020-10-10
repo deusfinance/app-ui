@@ -22,7 +22,7 @@ class PoolsContainer extends Component {
             contract: "",
             coin_name: "",
             isApprove: true,
-            approveClass: true,
+            showApprove: true,
         },
         wallet: {
             address: null,
@@ -215,9 +215,6 @@ class PoolsContainer extends Component {
         stakeService.approve(staking.name, staking.amount, this.handleStakeState)
     }
 
-
-
-
     handleClaim = (stakedToken) => {
         stakeService.withdraw(stakedToken, 0, this.handleStakeState)
         console.log("0 handleClaim clicked")
@@ -279,16 +276,18 @@ class PoolsContainer extends Component {
     }
 
     handlePopup = (stakedToken, bool) => {
+        console.log(stakedToken);
         const { staking } = this.state
         const token = this.state.stakes[stakedToken]
         if (bool) {
             staking.contract = "" + token.stakingLink
             staking.coin_name = token.coin_name
             this.getTokenAllAmounts(stakedToken)
+            staking.isApprove = token.amounts.allowances > 100000 ? false : true
+            staking.showApprove = token.amounts.allowances > 100000 ? false : true
+            staking.name = stakedToken
         }
         staking.amount = ""
-        staking.isApprove = token.allowances > 100000 ? false : true
-        staking.name = stakedToken
         this.setState({ showPopup: bool, staking })
     }
 

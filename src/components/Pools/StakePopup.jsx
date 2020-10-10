@@ -5,7 +5,7 @@ const StakePopup = ({ showPopup, handlePopup, stakes, staking, handleMaxLP, setS
     return (<>
         {showPopup &&
             <div className="stake-popup ">
-                <div className="pop-x" onClick={() => handlePopup(false)}>X</div>
+                <div className="pop-x" onClick={() => handlePopup(staking.name, false)}>X</div>
                 <div className="pop-title">Stake your tokens to earn DEA</div>
                 <div className="stake-wrap">
                     <div className="pop-input-wrap">
@@ -19,8 +19,8 @@ const StakePopup = ({ showPopup, handlePopup, stakes, staking, handleMaxLP, setS
                         <div className="arrow-triangle"></div>
                     </a>
                     <div className="pop-btns">
-                        <button className="approve" onClick={() => handleApprove()} disabled={staking.isApprove && staking.amount > 0 ? false : true}>Approve</button>
-                        <button className="stake" onClick={() => handleStake()} disabled={staking.isApprove ? true : false}>Stake</button>
+                        {staking.showApprove && <button className="approve" onClick={() => handleApprove()} disabled={staking.isApprove && staking.amount > 0 ? false : true}>Approve</button>}
+                        <button className="stake" onClick={() => handleStake()} disabled={!staking.isApprove && staking.amount > 0 ? false : true}>Stake</button>
                     </div>
                 </div>
             </div>}

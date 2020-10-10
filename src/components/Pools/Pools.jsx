@@ -4,8 +4,9 @@ import { connectWallet } from '../../services/StaticPriceSale'
 import * as stakeService from '../../services/StakingService'
 import { getStayledNumber } from '../../utils/utils'
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import * as config from '../../config';
 
+import 'react-toastify/dist/ReactToastify.css';
 import '../../styles/scss/pools.css';
 
 
@@ -37,6 +38,7 @@ class Pools extends Component {
                 coin_name: "UNI-V2-DEUS/ETH",
                 stakingLink: "0xCC284f82cD51A31bA045839F009cB208246Bb5f9",
                 liqLink: "https://app.uniswap.org/#/add/ETH/0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+                rewardRatio: 0,
             },
             deus: {
                 name: "deus",
@@ -51,7 +53,7 @@ class Pools extends Component {
                 coin_name: "DEUS",
                 stakingLink: "0x2a0C5fc61619372A811e093f0D5Ec4050aE0124d",
                 liqLink: "https://app.uniswap.org/#/add/ETH/0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
-
+                rewardRatio: 0,
             },
         },
     }
@@ -60,7 +62,6 @@ class Pools extends Component {
         super(props);
         // create a ref to store the textInput DOM element
         this.scrollRef = React.createRef();
-        // this.focusTextInput = this.focusTextInput.bind(this);
     }
 
 
@@ -71,6 +72,8 @@ class Pools extends Component {
         setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
         this.handleUpdateDEA()
+        window.addEventListener('resize', this.resize)
+
     }
 
     handleStakeState = (state) => {
@@ -139,24 +142,26 @@ class Pools extends Component {
             stakeService.getNumberOfStakedTokens(token.name).then((amount) => {
                 token.amounts.lp = getStayledNumber(amount)
                 this.setState({ stakes })
+
                 stakeService.getTotalStakedToken(token.name).then((amount) => {
-                    token.amounts.pool = token.amounts.lp == "0" || amount == "0" ? 0 : ((token.amounts.lp / amount) * 100).toFixed(2)
+                    token.amounts.pool = token.amounts.lp == "0" || amount == "0" ? 0 : (token.amounts.lp / amount) * 100
                     this.setState({ stakes })
+
+                    stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
+                        token.amounts.dea = getStayledNumber(amount)
+                        token.rewardRatio = token.amounts.pool * config.FixedRatio / 100
+                        token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
+                        this.setState({ stakes })
+                    })
                 })
             })
-            stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = 0
-                token.amounts.newdea = getStayledNumber(amount)
-                this.setState({ stakes })
-            })
+
             stakeService.getUserWalletStakedTokenBalance(token.name).then((amount) => {
                 token.amounts.currLp = getStayledNumber(amount)
                 this.setState({ stakes })
             })
 
         }
-
-
     }
 
     handleUpdateDEA = () => setInterval(() => {
@@ -164,13 +169,13 @@ class Pools extends Component {
         for (const tokenName in stakes) {
             const token = stakes[tokenName]
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = token.amounts.newdea
-                console.log(amount);
-                token.amounts.newdea = getStayledNumber(amount)
+                token.amounts.dea = getStayledNumber(parseFloat(amount))
+                token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
                 this.setState({ stakes })
             })
         }
-    }, 15000)
+
+    }, (config.ClaimableDuration) * 1000)
 
 
     handleStake = () => {
@@ -234,9 +239,9 @@ class Pools extends Component {
 
     handleConnectWallet = async () => {
         try {
-            const rep = await connectWallet()
+            const rep = await connectWallet(this.isConnected())
             console.log(rep ? "connected to metamask" : "");
-            this.isConnected()
+            // this.isConnected()
         } catch (error) {
             console.log("didnt connect to metamask");
         }
@@ -265,26 +270,22 @@ class Pools extends Component {
     }
 
 
+    resize = () => this.handleScroller()
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resize)
+    }
 
 
     render() {
         const { isConnected, showPopup, staking } = this.state
         const { stakes } = this.state
-        const contractEndpoint = "https://rinkeby.etherscan.io/address"
-        // const { deus_eth, deus } = stakes
-        // console.log(deus_eth);
-        let marginPool = 150
-        if (window.innerWidth < 1500) {
-            marginPool = 250
-        }
-        // const stake2 = this.state.stakes[1]
-
         return (<>
 
             {showPopup &&
                 <div className="stake-popup ">
                     <div className="pop-x" onClick={() => this.handlePopup(false)}>X</div>
-                    <div className="pop-title">Stake your Tokens to earn DEA</div>
+                    <div className="pop-title">Stake your tokens to earn DEA</div>
                     <div className="stake-wrap">
                         <div className="pop-input-wrap">
                             <div className="pop-input-label">Amount: {stakes[staking.name].amounts.currLp} {stakes[staking.name].coin_name}</div>
@@ -293,7 +294,7 @@ class Pools extends Component {
                                 <input type="number" name="stake-amount" placeholder="0.0" value={staking.amount} onChange={(e) => this.setStakingAmount(e.currentTarget.value)} />
                             </div>
                         </div>
-                        <a className="pop-contract" href={contractEndpoint + "/" + this.state.stakes[staking.name].stakingLink} target="_blank" rel="noopener noreferrer">bring me to the contract
+                        <a className="pop-contract" href={config.contractEndpoint + "/" + this.state.stakes[staking.name].stakingLink} target="_blank" rel="noopener noreferrer">bring me to the contract
                 <div className="arrow-triangle"></div>
                         </a>
                         <div className="pop-btns">
@@ -321,7 +322,7 @@ class Pools extends Component {
                 <div className="pools-btn unlock-btn connected" onClick={this.handleConnectWallet}>{this.showAddress()}</div>
                 <div className="pools-wrapper" id="pools-wrap">
                     <img className="line-top-img" src="../img/line-top.png" alt="line-top" />
-                    <div className="pools" style={{ marginTop: marginPool + "px" }}>
+                    <div className="pools">
                         <div className="row-1">
                             <Stake shadowClass={`blue-200-shadow`} token={stakes.deus_eth} handlePopup={this.handlePopup} handleClaim={this.handleClaim} handleLP={this.handleLP} handleWithdraw={this.handleWithdraw} />
                         </div>

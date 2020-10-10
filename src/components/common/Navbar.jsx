@@ -10,7 +10,8 @@ const Navbar = () => {
 
     const navClass = isDesktop() ? "right" : "nav-mobile"
 
-    let Navs = [{ id: "pools", text: "LP-Pools", path: "/pools" }, { id: "exchange", text: <span className="deus-sw" >DEUS <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "/home" },]
+    // let Navs = [{ id: "pools", text: "LP-Pools", path: "/pools" }, { id: "exchange", text: <span className="deus-sw" >DEUS <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "/home" },]
+    let Navs = [{ id: "pools", text: "LP-Pools", path: "/pools" }, { id: "home", text: "Home", path: "/home" },]
 
     return (<nav>
         {isDesktop() && <div className="left">

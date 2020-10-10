@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connectWallet } from '../../services/SwapService'
-import * as stakeService from '../../services/StakingService'
+import * as stakeService from '../../services/StakeService'
 import { getStayledNumber } from '../../utils/utils'
 import { ToastContainer, toast } from 'react-toastify';
 import * as config from '../../config';

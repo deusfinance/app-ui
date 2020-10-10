@@ -109,7 +109,7 @@ function getAllowances(stakedToken) {
                 return Web3.utils.fromWei(amount, 'ether');
             });
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             resolve(0);
         })
     }
@@ -136,17 +136,13 @@ function stake(stakedToken, amount, listener) {
 
 function getUserWalletStakedTokenBalance(stakedToken) {
     if (window.ethereum && window.ethereum.selectedAddress) {
-<<<<<<< HEAD
-        // let pool = stakingPools[stakedToken];
-=======
->>>>>>> 351a4d9f28c970d20047943673b033e23d794e55
         let stakedTokenContract = stakingPools[stakedToken].infuraStakedTokenContract;
         return stakedTokenContract.methods.balanceOf(window.ethereum.selectedAddress).call()
             .then(balance => {
                 return Web3.utils.fromWei(balance, 'ether');
             });
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             resolve(0);
         })
     }
@@ -177,7 +173,7 @@ function getNumberOfStakedTokens(stakedToken) {
                 return Web3.utils.fromWei(user.depositAmount, 'ether');
             });
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             resolve(0);
         })
     }
@@ -191,7 +187,7 @@ function getNumberOfPendingRewardTokens(stakedToken) {
                 return Web3.utils.fromWei(amount, 'ether');
             });
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             resolve(0);
         })
     }
@@ -206,7 +202,7 @@ function getTotalStakedToken(stakedToken) {
                 return Web3.utils.fromWei(balance, 'ether');
             });
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             resolve(0);
         })
     }

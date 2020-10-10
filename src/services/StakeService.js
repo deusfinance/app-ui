@@ -136,6 +136,7 @@ function stake(stakedToken, amount, listener) {
 
 function getUserWalletStakedTokenBalance(stakedToken) {
     if (window.ethereum && window.ethereum.selectedAddress) {
+        let pool = stakingPools[stakedToken];
         let stakedTokenContract = stakingPools[stakedToken].infuraStakedTokenContract;
         return stakedTokenContract.methods.balanceOf(window.ethereum.selectedAddress).call()
             .then(balance => {

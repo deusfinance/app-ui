@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connectWallet } from '../../services/SwapService'
-import * as stakeService from '../../services/StakeService'
+import * as stakeService from '../../services/StakingService'
 import { getStayledNumber } from '../../utils/utils'
 import { ToastContainer, toast } from 'react-toastify';
 import * as config from '../../config';
@@ -21,7 +21,8 @@ class PoolsContainer extends Component {
             amount: "",
             contract: "",
             coin_name: "",
-            isApprove: true
+            isApprove: true,
+            approveClass: true,
         },
         wallet: {
             address: null,
@@ -36,6 +37,7 @@ class PoolsContainer extends Component {
                     lp: 0,
                     pool: 0,
                     currLp: 0,
+                    allowances: 0,
                 },
                 coin_name: "UNI-V2-DEUS/ETH",
                 stakingLink: "0xCC284f82cD51A31bA045839F009cB208246Bb5f9",
@@ -51,10 +53,12 @@ class PoolsContainer extends Component {
                     lp: 0,
                     pool: 0,
                     currLp: 0,
+                    allowances: 0,
                 },
+                isDeusLink: true,
                 coin_name: "DEUS",
                 stakingLink: "0x2a0C5fc61619372A811e093f0D5Ec4050aE0124d",
-                liqLink: "https://app.uniswap.org/#/add/ETH/0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+                liqLink: "/swap",
                 rewardRatio: 0,
             },
         },
@@ -179,6 +183,10 @@ class PoolsContainer extends Component {
             token.amounts.currLp = getStayledNumber(amount)
             this.setState({ stakes })
         })
+        stakeService.getAllowances(token.name).then((amount) => {
+            token.amounts.currLp = getStayledNumber(amount)
+            this.setState({ stakes })
+        })
     }
 
     handleUpdateDEA = () => setInterval(() => {
@@ -272,13 +280,14 @@ class PoolsContainer extends Component {
 
     handlePopup = (stakedToken, bool) => {
         const { staking } = this.state
+        const token = this.state.stakes[stakedToken]
         if (bool) {
-            staking.contract = "" + this.state.stakes[stakedToken].stakingLink
-            staking.coin_name = this.state.stakes[stakedToken].coin_name
+            staking.contract = "" + token.stakingLink
+            staking.coin_name = token.coin_name
             this.getTokenAllAmounts(stakedToken)
         }
         staking.amount = ""
-        staking.isApprove = true
+        staking.isApprove = token.allowances > 100000 ? false : true
         staking.name = stakedToken
         this.setState({ showPopup: bool, staking })
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as config from '../../config';
 import CountUp from 'react-countup';
+import { Link } from 'react-router-dom';
 
 class Stake extends Component {
 
@@ -30,9 +31,22 @@ class Stake extends Component {
     }
 
 
+    provideLiquidityButton = (token) => {
+        return token.isDeusLink
+            ? <Link className="provide-liquidity" to={token.liqLink}>provide Liquidity</Link>
+            : <a className="provide-liquidity" href={token.liqLink} target="_blank" rel="noopener noreferrer">provide Liquidity</a>
+    }
+
+    provideMoreButton = (token) => {
+        return token.isDeusLink
+            ? <Link className="box-btn" to={token.liqLink}>provide more</Link>
+            : <a className="box-btn" href={token.liqLink} target="_blank" rel="noopener noreferrer">provide more</a>
+    }
+
+
     render() {
         const { token, shadowClass, handlePopup, handleClaim, handleWithdraw } = this.props
-        const { name, amounts, liqLink, rewardRatio } = token
+        const { name, amounts, rewardRatio } = token
         const isStaked = parseFloat(amounts.lp) > 0 ? true : false
         const isSingle = name.indexOf("_") === -1 ? true : false
         const provideWrapClasses = isSingle ? "single-asset-wrap" : "provide-liquidity-wrap"
@@ -48,7 +62,7 @@ class Stake extends Component {
                 <div className="apy"> {amounts.apy}% APY</div>
                 {!isStaked && <div className={provideWrapClasses}>
                     {isSingle && <div className="single-asset" >single asset pool</div>}
-                    {!isSingle && <a className="provide-liquidity" href={liqLink} target="_blank" rel="noopener noreferrer">provide Liquidity</a>}
+                    {!isSingle && this.provideLiquidityButton(token)}
                 </div>
                 }
                 {isStaked &&
@@ -57,7 +71,7 @@ class Stake extends Component {
                             <div className="box-title-wrap">
                                 <div className="box-title percentage">you own {parseFloat(token.amounts.pool).toFixed(2)}% <br /> of the pool</div>
                             </div>
-                            <a className="box-btn" href={liqLink} target="_blank" rel="noopener noreferrer">provide more</a>
+                            {this.provideMoreButton(token)}
                         </div>
                         <div className="box">
                             <div className="box-title-wrap">

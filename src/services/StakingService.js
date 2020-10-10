@@ -39,8 +39,6 @@ if (isConnected()) {
 
 for (const poolName in stakingPools) {
     let pool = stakingPools[poolName];
-    console.log(pool.stakingAddr);
-    console.log(pool.stakedTokenAddr);
     pool.infuraStakingContract = new infuraWeb3.eth.Contract(pool.stakingContractABI, pool.stakingAddr);
     pool.infuraStakedTokenContract = new infuraWeb3.eth.Contract(pool.stakedTokenContractABI, pool.stakedTokenAddr);
 }
@@ -109,9 +107,10 @@ function getAllowances(stakedToken) {
     if (window.ethereum && window.ethereum.selectedAddress) {
         let pool = stakingPools[stakedToken];
         let stakedTokenContract = pool.infuraStakedTokenContract;
-        return stakedTokenContract.methods.allowance(window.ethereum.selectedAddress, pool.stakedTokenAddr)
+        return stakedTokenContract.methods.allowance(window.ethereum.selectedAddress, pool.stakingAddr)
             .call().then(amount => {
-                return Web3.utils.fromWei(amount, 'ether');
+                let result = Web3.utils.fromWei(amount, 'ether');
+                return result;
             });
     } else {
         return new Promise(function(resolve, reject) {
@@ -121,7 +120,6 @@ function getAllowances(stakedToken) {
 }
 
 function stake(stakedToken, amount, listener) {
-    console.log(stakedToken + "\t" + amount);
     window.ethereum.enable().then(r => {
         if (metamaskWeb3 === null) {
             metamaskWeb3 = new Web3(Web3.givenProvider);

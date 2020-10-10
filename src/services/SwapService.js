@@ -2,16 +2,20 @@
 import Web3 from 'web3'
 
 let network = 'rinkeby';
+let INFURA_URL = 'wss://' + network + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+
+let infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(INFURA_URL));
+
 if (isConnected()) {
     network = getChainAndAddress().network;
 }
 
-window.ethereum.on('accountsChanged', function(accounts) {
+window.ethereum.on('accountsChanged', function (accounts) {
     // window.location.reload();
     console.log(1);
 });
 
-window.ethereum.on('chainChanged', function(chainId) {
+window.ethereum.on('chainChanged', function (chainId) {
     // window.location.reload();
     console.log(2);
 });
@@ -60,9 +64,6 @@ const DEUSTokenAddr = {
     Mainnet: '0x3b62f3820e0b035cc4ad602dece6d796bc325325'
 }[network];
 
-let INFURA_URL = 'wss://' + network + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
-
-let infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(INFURA_URL));
 
 
 let AutomaticMarketMakerContract = new infuraWeb3.eth.Contract(AutomaticMarketMakerABI, AutomaticMarketMakerAddr);
@@ -75,7 +76,7 @@ function getEtherBalance() {
             return Web3.utils.fromWei(balance, 'ether');
         })
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             resolve(0);
         })
     }
@@ -87,7 +88,7 @@ function getTokenBalance() {
             return Web3.utils.fromWei(balance, 'ether');
         })
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             resolve(0);
         })
     }
@@ -101,7 +102,7 @@ function getTokenAmountIfBuying(etherAmount) {
 }
 
 function getEtherAmountRequiredForPurchasingToken(tokenAmount) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         resolve(0);
     })
 }
@@ -117,7 +118,7 @@ function buyToken(etherAmount, tokenAmount, listener) {
             }).on('transactionHash', () => listener("transactionHash"))
             .on('receipt', () => listener("receipt"))
             .on('error', () => listener("error"))
-            // .on('confirmation', () => listener("confirmation"))
+        // .on('confirmation', () => listener("confirmation"))
 
     });
 }
@@ -130,7 +131,7 @@ function getEtherAmountIfSellingToken(tokenAmount) {
 }
 
 function getTokenAmountRequiredForGettingEther(tokenAmount) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         resolve(0);
     })
 }
@@ -150,7 +151,7 @@ function sellToken(tokenAmount, etherAmount, listener) {
                     .on('error', () => listener("error"))
             })
             .on('error', () => listener("error"))
-            // .on('confirmation', () => listener("confirmation"))
+        // .on('confirmation', () => listener("confirmation"))
     });
 }
 
@@ -161,7 +162,7 @@ function getWithdrawableAmount() {
             return Web3.utils.fromWei(amount, 'ether');
         })
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             resolve(0);
         })
     }

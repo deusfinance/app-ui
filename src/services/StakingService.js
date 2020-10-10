@@ -99,7 +99,7 @@ function approve(stakedToken, amount, listener) {
         if (!('metamaskStakedTokenContract' in pool)) {
             pool.metamaskStakedTokenContract = new metamaskWeb3.eth.Contract(pool.stakedTokenContractABI, pool.stakedTokenAddr);
         }
-        return pool.metamaskStakedTokenContract.methods.approve(pool.stakingAddr, _getWei(1e30)) // amount = 1e30
+        return pool.metamaskStakedTokenContract.methods.approve(pool.stakingAddr, _getWei(10 ** 20)) // amount = 1e30
             .send({ from: window.ethereum.selectedAddress })
             .on('transactionHash', () => listener("transactionHash"))
             .on('receipt', () => listener("receipt"))

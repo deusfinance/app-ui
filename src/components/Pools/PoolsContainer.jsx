@@ -184,7 +184,7 @@ class PoolsContainer extends Component {
             this.setState({ stakes })
         })
         stakeService.getAllowances(token.name).then((amount) => {
-            token.amounts.currLp = getStayledNumber(amount)
+            token.amounts.allowances = getStayledNumber(amount)
             this.setState({ stakes })
         })
     }

@@ -88,7 +88,6 @@ function _getWei(number) {
 }
 
 
-
 function approve(stakedToken, amount, listener) {
     window.ethereum.enable().then(r => {
         if (metamaskWeb3 === null) {

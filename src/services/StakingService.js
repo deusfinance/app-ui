@@ -81,13 +81,6 @@ for (const poolName in stakingPools) {
 }
 
 
-
-function _getWei(number) {
-    // return Web3.utils.toBN(Web3.utils.toWei(number, 'ether'));
-    return Web3.utils.toWei(String(number), 'ether');
-}
-
-
 function approve(stakedToken, amount, listener) {
     window.ethereum.enable().then(r => {
         if (metamaskWeb3 === null) {

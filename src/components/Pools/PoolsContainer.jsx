@@ -191,7 +191,6 @@ class PoolsContainer extends Component {
                 this.setState({ stakes })
             })
         }
-
     }, (config.ClaimableDuration) * 1000)
 
 

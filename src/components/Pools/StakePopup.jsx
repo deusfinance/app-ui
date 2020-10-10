@@ -16,7 +16,7 @@ const StakePopup = ({ showPopup, handlePopup, stakes, staking, handleMaxLP, setS
                         </div>
                     </div>
                     <a className="pop-contract" href={config.contractEndpoint + "/" + stakes[staking.name].stakingLink} target="_blank" rel="noopener noreferrer">show me  the contract
-        <div className="arrow-triangle"></div>
+                        <div className="arrow-triangle"></div>
                     </a>
                     <div className="pop-btns">
                         <button className="approve" onClick={() => handleApprove()} disabled={staking.isApprove && staking.amount > 0 ? false : true}>Approve</button>

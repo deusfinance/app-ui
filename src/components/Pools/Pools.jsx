@@ -16,7 +16,7 @@ class Pools extends Component {
     stakeProvider = (stakedTokens) => {
         const { tokens, shadows } = this.orders
         const { handleClaim, handleLP, handlePopup, handleWithdraw, stakes } = this.props
-        return stakedTokens.map(stakedTokenIndex => <Stake shadowClass={shadows[stakedTokenIndex - 1]} token={stakes[tokens[stakedTokenIndex - 1]]} handlePopup={handlePopup} handleClaim={handleClaim} handleLP={handleLP} handleWithdraw={handleWithdraw} />)
+        return stakedTokens.map((stakedTokenIndex, key) => <Stake key={key} shadowClass={shadows[stakedTokenIndex - 1]} token={stakes[tokens[stakedTokenIndex - 1]]} handlePopup={handlePopup} handleClaim={handleClaim} handleLP={handleLP} handleWithdraw={handleWithdraw} />)
     }
 
     render() {

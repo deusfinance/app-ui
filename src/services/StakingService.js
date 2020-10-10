@@ -1,8 +1,37 @@
 //Be name khoda
 import Web3 from 'web3'
 
+let network = 'rinkeby';
+if (isConnected()) {
+    network = getChainAndAddress().network;
+}
 
-const network = 'rinkeby';
+function connectWallet(initFunction) {
+    return window.ethereum.enable();
+}
+
+function getChainAndAddress() {
+    let networkNames = {
+        "0x1": "Mainnet",
+        "0x3": "Ropsten",
+        "0x4": "Rinkeby",
+        "0x2a": "Kovan",
+    }
+
+    return {
+        network: networkNames[window.ethereum.chainId],
+        addres: window.ethereum.selectedAddress
+    };
+}
+
+function isConnected() {
+    return window.ethereum.selectedAddress != null;
+}
+
+function _getWei(number) {
+    const value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
+    return Web3.utils.toWei(String(value), 'ether')
+}
 
 const INFURA_URL = 'wss://' + network + '.infura.io/ws/v3/3bbb2243f4d24357a630ee39fb1f5bca';
 let infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(INFURA_URL));
@@ -56,12 +85,27 @@ function approve(stakedToken, amount, listener) {
         if (!('metamaskStakedTokenContract' in pool)) {
             pool.metamaskStakedTokenContract = new metamaskWeb3.eth.Contract(pool.stakedTokenContractABI, pool.stakedTokenAddr);
         }
-        return pool.metamaskStakedTokenContract.methods.approve(pool.stakingAddr, _getWei(amount))
+        return pool.metamaskStakedTokenContract.methods.approve(pool.stakingAddr, _getWei(1e30)) // amount = 1e30
             .send({ from: window.ethereum.selectedAddress })
             .on('transactionHash', () => listener("transactionHash"))
             .on('receipt', () => listener("receipt"))
             .on('error', () => listener("error"));
     })
+}
+
+function getAllowances(stakedToken) {
+    if (window.ethereum && window.ethereum.selectedAddress) {
+        let pool = stakingPools[stakedToken];
+        let stakedTokenContract = pool.infuraStakedTokenContract;
+        return stakedTokenContract.methods.allowance(window.ethereum.selectedAddress, pool.stakedTokenAddr)
+            .call().then(amount => {
+                return Web3.utils.fromWei(amount, 'ether');
+            });
+    } else {
+        return new Promise(function(resolve, reject) {
+            resolve(0);
+        })
+    }
 }
 
 function stake(stakedToken, amount, listener) {
@@ -85,14 +129,13 @@ function stake(stakedToken, amount, listener) {
 
 function getUserWalletStakedTokenBalance(stakedToken) {
     if (window.ethereum && window.ethereum.selectedAddress) {
-        let pool = stakingPools[stakedToken];
         let stakedTokenContract = stakingPools[stakedToken].infuraStakedTokenContract;
         return stakedTokenContract.methods.balanceOf(window.ethereum.selectedAddress).call()
             .then(balance => {
                 return Web3.utils.fromWei(balance, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -123,7 +166,7 @@ function getNumberOfStakedTokens(stakedToken) {
                 return Web3.utils.fromWei(user.depositAmount, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -137,7 +180,7 @@ function getNumberOfPendingRewardTokens(stakedToken) {
                 return Web3.utils.fromWei(amount, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -152,7 +195,7 @@ function getTotalStakedToken(stakedToken) {
                 return Web3.utils.fromWei(balance, 'ether');
             });
     } else {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             resolve(0);
         })
     }
@@ -166,6 +209,7 @@ export {
     approve,
     stake,
     withdraw,
+    getAllowances,
     getUserWalletStakedTokenBalance,
     getNumberOfStakedTokens,
     getNumberOfPendingRewardTokens,

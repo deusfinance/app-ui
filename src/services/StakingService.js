@@ -2,8 +2,6 @@
 import Web3 from 'web3'
 
 
-
-
 let network = 'rinkeby';
 const INFURA_URL = 'wss://' + network + '.infura.io/ws/v3/3bbb2243f4d24357a630ee39fb1f5bca';
 let infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(INFURA_URL));

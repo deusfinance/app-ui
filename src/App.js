@@ -5,7 +5,9 @@ import Home from './components/Home';
 import NotFound from './components/NotFound';
 import PoolsContainer from './components/Pools/PoolsContainer';
 import SwapContainer from './components/Swap/SwapContainer';
+import SecurityMobile from './components/SecurityMobile';
 
+import { isDesktop } from './utils/utils';
 
 import './styles/scss/style.css';
 
@@ -15,7 +17,7 @@ function App() {
     <Navbar />
     <Switch>
       <Route exact path="/home" component={Home} />
-      <Route exact path="/pools" component={PoolsContainer} />
+      <Route exact path="/pools" component={isDesktop() ? PoolsContainer : SecurityMobile} />
       <Route exact path="/swap" component={SwapContainer} />
       <Route path="/not-found" component={NotFound} />
       <Redirect exact from="/" to="/home" />

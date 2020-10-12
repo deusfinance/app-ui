@@ -339,7 +339,7 @@ class SwapContainer extends Component {
         const { swap } = this.state
         this.handleSwapState("waiting")
         try {
-            const res = swapService.sellToken(swap.from.amount, swap.to.amount, this.handleSwapState)
+            const res = swapService.sellToken(swap.to.amount, swap.from.amount, this.handleSwapState)
             console.log(res ? "transaction done" : "");
         } catch (error) {
             console.log("transaction didnt done", error);

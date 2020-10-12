@@ -340,7 +340,7 @@ body {
     border-radius: 50%;
   }
   .home-content {
-    margin-top: 100px;
+    margin-top: 200px;
     padding-right: 10px;
   }
   .home-content .deus {
@@ -428,5 +428,34 @@ body {
   .home-content .cbtns .solidity {
     margin-left: 18px;
   }
+}
+
+.deo-wrap {
+  text-align: left;
+  float: left;
+  margin-top: -53px;
+  color: #ffffff;
+  font-family: 'Segoe UI';
+  padding-left: 40px;
+  font-family: Comfortaa;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 57px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+.deo-wrap img {
+  border-radius: 50%;
+  padding: 2px;
+  width: 45px;
+  height: 45px;
+  margin-right: 20px;
 }
 /*# sourceMappingURL=style.css.map */

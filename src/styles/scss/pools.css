@@ -358,6 +358,7 @@ footer .social li a:hover {
   padding-top: 150px;
   text-align: center;
   overflow: hidden;
+  height: 1200px;
 }
 
 .pools-unlock-wrap .pools-unlock .liquidity-title {
@@ -410,6 +411,32 @@ footer .social li a:hover {
   text-align: center;
   position: relative;
   width: 2300px;
+}
+
+.pools-wrapper .dea-amount-wrap {
+  position: absolute;
+  top: 90px;
+  right: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: auto;
+  width: 1500px;
+  color: #ffffff;
+  font-family: "Segoe UI";
+}
+
+.pools-wrapper .dea-amount-wrap .title {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.pools-wrapper .dea-amount-wrap .dea-price, .pools-wrapper .dea-amount-wrap .total-value {
+  text-align: center;
+  font-size: 20px;
+  margin: auto;
+  width: 50%;
 }
 
 .pools-wrapper .connected {

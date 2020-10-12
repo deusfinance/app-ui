@@ -18,7 +18,7 @@ class Swap extends Component {
 
     render() {
 
-        const { tokens, swap, handleTokenInputChange, handleMax, isBuy, switchOrder, perDeus, handleSwap, SwapState, showPopup, handleApproveSell } = this.props
+        const { tokens, swap, handleTokenInputChange, handleMax, isBuy, switchOrder, perDeus, handleSwap, SwapState } = this.props
         const { from, to } = swap
         const fromToken = <div className="tokenbox">
             <div className="balance">Balance: <span>{tokens[from.name].balance}</span> </div>

@@ -1,11 +1,7 @@
 //Be name khoda
 import Web3 from 'web3'
 
-let network = 'rinkeby';
-let INFURA_URL = 'wss://' + network + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
-
-let infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(INFURA_URL));
-
+let network = 'Mainnet';
 if (isConnected()) {
     network = getChainAndAddress().network;
 }
@@ -64,6 +60,9 @@ const DEUSTokenAddr = {
     Mainnet: '0x3b62f3820e0b035cc4ad602dece6d796bc325325'
 }[network];
 
+let INFURA_URL = 'wss://' + network + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+
+let infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(INFURA_URL));
 
 
 let AutomaticMarketMakerContract = new infuraWeb3.eth.Contract(AutomaticMarketMakerABI, AutomaticMarketMakerAddr);
@@ -137,6 +136,7 @@ function getTokenAmountRequiredForGettingEther(tokenAmount) {
 }
 
 function sellToken(tokenAmount, etherAmount, listener) {
+    console.log("sell " + tokenAmount + "\t" + etherAmount);
     return window.ethereum.enable().then(r => {
         let metamaskWeb3 = new Web3(Web3.givenProvider);
         AutomaticMarketMakerContract = new metamaskWeb3.eth.Contract(AutomaticMarketMakerABI, AutomaticMarketMakerAddr);

@@ -77,6 +77,7 @@
             }
         }
 
+
         
         .pop-input-label{
             font-size: 15px;
@@ -203,7 +204,7 @@
         padding-top: 150px;
         text-align: center;
         overflow: hidden;
-
+        height: 1200px;
         .liquidity-title {
             margin-top: 50px;
             font-family: "Segoe UI";
@@ -277,6 +278,30 @@
     // }
 
 
+
+    .dea-amount-wrap{
+        position: absolute;
+        top: 90px;
+        right: 0;
+        left: 0;
+        display: flex;
+        margin: auto;
+        width: 1500px;
+    color: #ffffff;
+    font-family: "Segoe UI";
+    .title{
+        font-size: 22px;
+margin-bottom: 5px;
+    }
+        .dea-price,.total-value{
+            text-align: center;
+        font-size: 20px;
+
+        // position: absolute;
+            margin: auto;
+            width: 50%;
+        }
+    }
 
 
 

@@ -1,0 +1,96 @@
+@import 'base';
+@import 'fonts';
+
+.exchange-mobile {
+    overflow-y: hidden;
+    overflow-x: hidden;
+
+    color: #ffffff;
+    text-align: center;
+
+    .title {
+        margin-top: 40px;
+
+        .deus-sw {
+            font-family: Lambok;
+            font-size: 60px;
+        }
+
+        .swap {
+            margin-left: -10px;
+            font-family: Comfortaa;
+            font-size: 30px;
+        }
+    }
+
+    .reason {
+        font-size: 16px;
+        margin-top: 15px;
+        font-family: Comfortaa;
+        padding: 0 5px;
+    }
+
+    .giphy {
+        margin: 0 auto;
+        width: 150px;
+        border-radius: 50%;
+        margin-top: 25px;
+
+        img {
+            position: relative;
+            // top: 275px;
+            // left: 0;
+            // right: 0;
+            margin: 0 auto;
+            width: 150px;
+            border-radius: 50%;
+        }
+    }
+
+    .bottom {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .app {
+        font-size: 11px;
+        // margin-top: 50px;
+        font-family: Comfortaa;
+    }
+
+    .follow {
+        margin-top: 25px;
+        font-size: 11px;
+        font-family: Comfortaa;
+    }
+
+    footer {
+        width: 100%;
+        margin-top: 20px;
+        // position: absolute;
+        // bottom: 0;
+    }
+
+    .msocial {
+        display: flex;
+        justify-content: space-around;
+        height: 100%;
+        text-align: right;
+        font-family: Ebrima;
+        list-style-type: none;
+        font-size: 20px;
+
+        li {
+            a {
+                color: #ffffff;
+            }
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+
+
+}

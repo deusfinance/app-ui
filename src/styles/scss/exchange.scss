@@ -116,7 +116,7 @@
 
 
 
-.counter {
+.connect {
     height: 100px;
     position: relative;
     text-align: center;
@@ -132,6 +132,7 @@
         width: 358px;
         transition: height 4s ease-out;
         overflow: hidden;
+
         .claim{
             height: 130px;
             background: linear-gradient(224.74deg, #5EC4D6 0.19%, #F1FC68 100.22%);

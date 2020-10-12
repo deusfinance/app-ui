@@ -266,13 +266,13 @@ footer .social li a:hover {
   width: 100%;
 }
 
-.counter {
+.connect {
   height: 100px;
   position: relative;
   text-align: center;
 }
 
-.counter .swaping {
+.connect .swaping {
   background-color: #ffffff;
   position: absolute;
   border-radius: 7px;
@@ -282,7 +282,7 @@ footer .social li a:hover {
   overflow: hidden;
 }
 
-.counter .swaping .claim {
+.connect .swaping .claim {
   height: 130px;
   background: linear-gradient(224.74deg, #5EC4D6 0.19%, #F1FC68 100.22%);
   color: #ffffff;
@@ -292,12 +292,12 @@ footer .social li a:hover {
   padding-top: 20px;
 }
 
-.counter .swaping .claim .eth-amount {
+.connect .swaping .claim .eth-amount {
   text-shadow: 1px 1px #8c8c8c;
   font-size: 20px;
 }
 
-.counter .swaping .claim .claim-btn {
+.connect .swaping .claim .claim-btn {
   height: 43px;
   line-height: 40px;
   font-size: 20px;
@@ -311,17 +311,17 @@ footer .social li a:hover {
   background: #6c7c7b;
 }
 
-.counter .swaping .claim .claim-btn:hover {
+.connect .swaping .claim .claim-btn:hover {
   opacity: 0.9;
   cursor: pointer;
 }
 
-.counter .ctimer {
+.connect .ctimer {
   margin: auto;
   margin-top: 80px;
 }
 
-.counter .ctimer .description {
+.connect .ctimer .description {
   color: #ffffff;
   font-family: Comfortaa;
   font-size: 24px;

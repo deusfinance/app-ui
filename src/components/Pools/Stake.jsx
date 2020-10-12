@@ -37,10 +37,10 @@ class Stake extends Component {
             : <a className="provide-liquidity" href={token.liqLink} target="_blank" rel="noopener noreferrer">provide Liquidity</a>
     }
 
-    provideMoreButton = (token) => {
+    provideMoreButton = (token, isSingle) => {
         return token.isDeusLink
-            ? <Link className="box-btn" to={token.liqLink}>provide more</Link>
-            : <a className="box-btn" href={token.liqLink} target="_blank" rel="noopener noreferrer">provide more</a>
+            ? <Link className="box-btn" to={token.liqLink}>buy more</Link>
+            : <a className="box-btn" href={token.liqLink} target="_blank" rel="noopener noreferrer">{isSingle ? "buy" : "provide"} more</a>
     }
 
 
@@ -59,7 +59,8 @@ class Stake extends Component {
             <div className={`triangle ${stakedClass}`}>
                 <div className="stake-here" onClick={() => handlePopup(name, true)}>Stake <br /> {stakedText}</div>
                 <div className="title">{name.toUpperCase().replace("_", "-")} </div>
-                <div className="apy"> {amounts.apy}% APY</div>
+                {/* <div className="apy" style={{ opacity: 0 }}>.</div> */}
+                <div className="apy" style={{ opacity: "0" }}> {amounts.apy}% APY</div>
                 {!isStaked && <div className={provideWrapClasses}>
                     {isSingle && <div className="single-asset" >single asset pool</div>}
                     {!isSingle && this.provideLiquidityButton(token)}
@@ -71,7 +72,7 @@ class Stake extends Component {
                             <div className="box-title-wrap">
                                 <div className="box-title percentage">you own {parseFloat(token.amounts.pool).toFixed(2)}% <br /> of the pool</div>
                             </div>
-                            {this.provideMoreButton(token)}
+                            {this.provideMoreButton(token, isSingle)}
                         </div>
                         <div className="box">
                             <div className="box-title-wrap">
@@ -97,7 +98,7 @@ class Stake extends Component {
                         <div className="box">
                             <div className="box-title-wrap" >
                                 <div className="box-title lp-deposited">
-                                    {amounts.lp} Lp tokens deposited</div>
+                                    {amounts.lp} tokens deposited</div>
                             </div>
                             <div className="box-btn" onClick={() => handleWithdraw(name, amounts.lp)}>
                                 withdraw &amp; claim

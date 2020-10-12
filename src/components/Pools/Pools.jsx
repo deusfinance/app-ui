@@ -4,7 +4,7 @@ import Stake from './Stake';
 class Pools extends Component {
 
     orders = {
-        tokens: ["deus_eth", "deus_ucdt", "deus", "yellow-400-shadow", "yellow-300-shadow", "blue-200-shadow"],
+        tokens: ["dea_usdc", "deus_eth", "deus", "ampl_eth", "snx", "uni"],
         shadows: ["blue-200-shadow", "yellow-400-shadow", "blue-200-shadow", "yellow-400-shadow", "yellow-300-shadow", "blue-200-shadow"],
     }
 
@@ -40,26 +40,35 @@ class Pools extends Component {
                             <div className="desc">provide Liquidity to <br /> Uniswap or single assets <br /> and earn DEA</div>
                         </div>
                         <div className="row-2">
-                            <div className="triangle-wrap yellow-400-shadow">
-                                <div className="triangle" />
-                            </div>
-                            {this.stakeProvider([3])}
+                            {this.stakeProvider([2, 3])}
                         </div>
                     </div>
-                    <div className="row-2">
-                        <div className="triangle-wrap  yellow-400-shadow ">
-                            <div className="triangle" />
+                    <div style={{ position: 'relative' }}>
+                        <div className="dea-amount-wrap">
+                            <div className="total-value">
+                                <div className="title" style={{ color: "#ffffff" }}>Total value locked </div>
+                                <div className="amount">{Number("1138583").toLocaleString('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD',
+                                    minimumFractionDigits: 0
+                                })} </div>
+                            </div>
+                            <div className="dea-price">
+                                <div className="title" style={{ color: "#ffffff" }}>DEA price </div>
+                                <div className="amount"> {Number("39.40").toLocaleString('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD',
+                                    minimumFractionDigits: 2
+                                })}</div>
+                            </div>
                         </div>
-                        <div className="triangle-wrap  yellow-300-shadow ">
-                            <div className="triangle" />
-                        </div>
-                        <div className="triangle-wrap blue-200-shadow">
-                            <div className="triangle" />
+                        <div className="row-2">
+                            {this.stakeProvider([4, 5, 6])}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
         );
     }
 }

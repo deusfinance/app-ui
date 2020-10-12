@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Swap from './Swap';
 import { toast, ToastContainer } from 'react-toastify';
 import ConnectButton from '../common/ConnectButton';
-// import '../../styles/scss/exchange.css'
 
 class DesktopSwap extends Component {
     state = {}

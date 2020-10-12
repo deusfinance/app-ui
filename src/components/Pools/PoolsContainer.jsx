@@ -139,8 +139,7 @@ class PoolsContainer extends Component {
     }
 
     componentDidMount() {
-        document.title = 'DEUS pools';
-        // this.isConnected()
+        document.title = 'DEUS staking';
         setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
         this.handleUpdateDEA()

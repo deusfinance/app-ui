@@ -415,9 +415,10 @@ footer .social li a:hover {
 
 .pools-wrapper .dea-amount-wrap {
   position: absolute;
-  top: 90px;
+  top: 80px;
   right: 0;
   left: 0;
+  padding: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -425,6 +426,10 @@ footer .social li a:hover {
   width: 1500px;
   color: #ffffff;
   font-family: "Segoe UI";
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .pools-wrapper .dea-amount-wrap .title {
@@ -433,10 +438,13 @@ footer .social li a:hover {
 }
 
 .pools-wrapper .dea-amount-wrap .dea-price, .pools-wrapper .dea-amount-wrap .total-value {
-  text-align: center;
   font-size: 20px;
+  width: 550px;
+  height: 225px;
+  -webkit-clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+          clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+  opacity: 0.8;
   margin: auto;
-  width: 50%;
 }
 
 .pools-wrapper .connected {

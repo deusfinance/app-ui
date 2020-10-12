@@ -85,7 +85,6 @@ class Stake extends Component {
                                             duration={config.ClaimableDuration}
                                             decimals={decimals}
                                             useEasing={false}
-                                        // onEnd={(token) => this.getNewClaimableDEA(token)}
                                         >
                                             {({ countUpRef }) => (
                                                 <span ref={countUpRef} />

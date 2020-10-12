@@ -132,7 +132,7 @@ nav .right ul a .deus-sw .swap {
 
 nav .right ul li {
   display: inline-block;
-  width: 180px;
+  margin: 0 10px;
   text-align: center;
 }
 

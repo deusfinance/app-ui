@@ -122,7 +122,8 @@ nav {
 
             li {
                 display: inline-block;
-                width: 180px;
+                // width: 180px;
+                margin:  0 10px;
                 text-align: center;
                 .active {
                     border-bottom: 2px solid #808080;

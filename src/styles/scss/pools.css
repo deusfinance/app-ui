@@ -162,6 +162,20 @@ footer .social li a:hover {
           filter: drop-shadow(0px 0px 45px #7acec1);
 }
 
+.dea-price-up {
+  position: absolute;
+  font-family: 'Segoe UI';
+  font-size: 22px;
+  width: 225px;
+  top: 140px;
+  z-index: 3;
+  right: 662px;
+}
+
+.dea-price-up:hover {
+  opacity: 0.8;
+}
+
 .stake-popup {
   z-index: 10;
   color: #000000;
@@ -181,6 +195,12 @@ footer .social li a:hover {
 
 .stake-popup .stake-wrap {
   padding: 0 30px;
+}
+
+.stake-popup .stake-wrap .explain-more {
+  opacity: 0.7;
+  margin-top: 20px;
+  font-size: 16px;
 }
 
 .stake-popup .pop-x {
@@ -267,7 +287,7 @@ footer .social li a:hover {
 
 .stake-popup .pop-btns .approve, .stake-popup .pop-btns .stake {
   background: transparent;
-  font-size: 17px;
+  font-size: 16px;
   border: 1px solid #000000;
   width: 50%;
   margin: 0 5px;
@@ -415,7 +435,7 @@ footer .social li a:hover {
 
 .pools-wrapper .dea-amount-wrap {
   position: absolute;
-  top: 80px;
+  top: 29px;
   right: 0;
   left: 0;
   padding: 10px;
@@ -432,19 +452,55 @@ footer .social li a:hover {
           justify-content: center;
 }
 
-.pools-wrapper .dea-amount-wrap .title {
-  font-size: 22px;
-  margin-bottom: 5px;
-}
-
-.pools-wrapper .dea-amount-wrap .dea-price, .pools-wrapper .dea-amount-wrap .total-value {
-  font-size: 20px;
+.pools-wrapper .dea-amount-wrap .outside-wrap {
+  position: relative;
   width: 550px;
   height: 225px;
   -webkit-clip-path: polygon(0% 0, 50% 100%, 100% 0%);
           clip-path: polygon(0% 0, 50% 100%, 100% 0%);
-  opacity: 0.8;
-  margin: auto;
+  margin: 0 100px;
+  background: linear-gradient(224.74deg, #5EC4D6 0.19%, #F1FC68 100.22%);
+}
+
+.pools-wrapper .dea-amount-wrap .outside-wrap .dea-price, .pools-wrapper .dea-amount-wrap .outside-wrap .total-value {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: absolute;
+  -webkit-clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+  clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+  top: 2px;
+  bottom: 0;
+  left: 5px;
+  right: 0;
+  width: 540px;
+  height: 221px;
+  background: #1a111d;
+  font-size: 22px;
+}
+
+.pools-wrapper .dea-amount-wrap .outside-wrap .dea-price .title:nth-child(1), .pools-wrapper .dea-amount-wrap .outside-wrap .total-value .title:nth-child(1) {
+  padding: 5px;
+  margin-top: 15px;
+}
+
+.pools-wrapper .dea-amount-wrap .outside-wrap .dea-price .title:nth-child(2), .pools-wrapper .dea-amount-wrap .outside-wrap .total-value .title:nth-child(2) {
+  padding: 0px;
+}
+
+.pools-wrapper .dea-amount-wrap .outside-wrap .dea-price .title:nth-child(3), .pools-wrapper .dea-amount-wrap .outside-wrap .total-value .title:nth-child(3) {
+  padding: 20px;
+}
+
+.pools-wrapper .dea-amount-wrap .outside-wrap .total-value .title {
+  margin-top: 60px !important;
 }
 
 .pools-wrapper .connected {

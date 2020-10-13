@@ -143,6 +143,7 @@ class PoolsContainer extends Component {
         setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
         this.handleUpdateDEA()
+        this.getApyAmounts()
         window.addEventListener('resize', this.handleResize)
     }
 
@@ -242,7 +243,7 @@ class PoolsContainer extends Component {
                 stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
                     token.amounts.dea = getStayledNumber(amount)
                     token.rewardRatio = token.amounts.pool * config.FixedRatio / 100
-                    token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
+                    token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
                     this.setState({ stakes })
                 })
             })
@@ -258,13 +259,34 @@ class PoolsContainer extends Component {
         })
     }
 
+
+    getApyAmounts = async () => {
+        try {
+            const { stakes } = this.state
+
+            const resp = await fetch("https://app.deus.finance/static-api.json")
+            const jresp = await resp.json()
+
+            // console.log(jresp.apy);
+            const apys = jresp.apy
+            for (const apyKey in apys) {
+                console.log(apyKey + "\t" + apys[apyKey]);
+                stakes[apyKey].amounts.apy = parseFloat(apys[apyKey]).toFixed(2)
+            }
+            this.setState({ stakes })
+        } catch (error) {
+            console.log("get dollar price had some error", error);
+        }
+    }
+
+
     handleUpdateDEA = () => setInterval(() => {
         const { stakes } = this.state
         for (const tokenName in stakes) {
             const token = stakes[tokenName]
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
                 token.amounts.dea = getStayledNumber(parseFloat(amount))
-                token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
+                token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
                 this.setState({ stakes })
             })
         }

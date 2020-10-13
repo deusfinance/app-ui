@@ -60,7 +60,7 @@ class Stake extends Component {
                 <div className="stake-here" onClick={() => handlePopup(name, true)}>Stake <br /> {stakedText}</div>
                 <div className="title">{name.toUpperCase().replace("_", "-")} </div>
                 {/* <div className="apy" style={{ opacity: 0 }}>.</div> */}
-                <div className="apy" style={{ opacity: "0" }}> {amounts.apy}% APY</div>
+                <div className="apy" > {amounts.apy}% APY</div>
                 {!isStaked && <div className={provideWrapClasses}>
                     {isSingle && <div className="single-asset" >single asset pool</div>}
                     {!isSingle && this.provideLiquidityButton(token)}

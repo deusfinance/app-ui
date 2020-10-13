@@ -15,6 +15,18 @@
     filter: drop-shadow(0px 0px 45px #7acec1);
 }
 
+.dea-price-up{
+    position: absolute;
+    font-family: 'Segoe UI';
+    font-size: 22px;
+    width: 225px;
+    top: 140px;
+    z-index: 3;
+    right: 662px;
+    &:hover{
+        opacity: 0.8;
+    }
+}
 
 .stake-popup{
     z-index: 10;
@@ -33,6 +45,12 @@
 
     .stake-wrap{
     padding: 0 30px;
+
+    .explain-more{
+        opacity: 0.7;
+        margin-top: 20px;
+        font-size: 16px;
+    }
 
     }
     .pop-x{
@@ -108,7 +126,7 @@
         justify-content: center;
         .approve,.stake{
             background: transparent;
-            font-size: 17px;
+            font-size: 16px;
             border: 1px solid #000000;
             width: 50%;
             margin: 0 5px;
@@ -281,44 +299,76 @@
 
     .dea-amount-wrap{
         position: absolute;
-        top: 80px;
+        // z-index: 2;
+        top: 29px;
         right: 0;
         left: 0;
         padding: 10px;
         display: flex;
         margin: auto;
         width: 1500px;
-    color: #ffffff;
-    font-family: "Segoe UI";
-    display: flex;
-    justify-content: center;
-    .title{
-        font-size: 22px;
-margin-bottom: 5px;
-    }
-        .dea-price,.total-value{
-            // display: flex;
-            // align-items: center;
-            // text-align: center;
-        font-size: 20px;
+        color: #ffffff;
+        font-family: "Segoe UI";
+        display: flex;
+        justify-content: center;
+
+    .outside-wrap{
+        position: relative;
         width: 550px;
         height: 225px;
         clip-path: polygon(0% 0, 50% 100%, 100% 0%);
-        // background-color: ;
-        opacity: 0.8;
-        
-        // border: 1px solid #00FFC8 ;
-            margin: auto;
+        margin: 0 100px;
+        background: linear-gradient(224.74deg, #5EC4D6 0.19%, #F1FC68 100.22%);
+        // padding: 5px;
+
+
+        .dea-price,.total-value{
+
+            .title:nth-child(1){
+                padding: 5px;
+                margin-top: 15px;
+            }
+            .title:nth-child(2){
+                padding: 0px;
+            }
+            .title:nth-child(3){
+                padding: 20px;
+
+            }
+
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            position: absolute;
+            -webkit-clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+            clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+            top: 2px;
+            bottom: 0;
+            left: 5px;
+            right: 0;
+            width: 540px;
+            height: 221px;
+            // margin-top: 10px;
+            background: #1a111d;
+            font-size: 22px;
+
+
+            
+        }
+
+        .total-value{
+            .title{
+                // padding: 20px;
+                margin-top: 60px !important;
+            }
         }
     }
 
-
+    }
 
     .connected{
         background: #00FFC8;
     }
-
-
 
     .line-top-img{
         top: -300px;

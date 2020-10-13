@@ -451,6 +451,12 @@ body {
   text-align: center;
 }
 
+.deo-wrap:hover {
+  -webkit-filter: brightness(3);
+          filter: brightness(3);
+  opacity: 0.8;
+}
+
 .deo-wrap img {
   border-radius: 50%;
   padding: 2px;

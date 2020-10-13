@@ -20,9 +20,11 @@ const StakePopup = ({ showPopup, handlePopup, stakes, staking, handleMaxLP, setS
                     </a>
                     <div className="pop-btns">
                         {staking.showApprove && <button className="approve" onClick={() => handleApprove()} disabled={staking.isApprove && staking.amount > 0 ? false : true}>Approve</button>}
-                        <button className="stake" onClick={() => handleStake()} disabled={!staking.isApprove && staking.amount > 0 ? false : true}>Stake</button>
+                        <button className="stake" onClick={() => handleStake()} disabled={!staking.isApprove && staking.amount > 0 ? false : true}>Stake  {!staking.showApprove && "and Claim"}</button>
                     </div>
+                    {!staking.showApprove && <div className="explain-more">When you stake more, we auto claim your DEA for you, so you save gas.</div>}
                 </div>
+
             </div>}
     </>);
 }

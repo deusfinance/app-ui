@@ -337,6 +337,10 @@ line-height: 57px;
 display: flex;
 align-items: center;
 text-align: center;
+&:hover{
+    filter: brightness(3);
+    opacity: 0.8;
+}
     img{
         border-radius: 50%;
         padding: 2px;

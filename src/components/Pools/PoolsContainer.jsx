@@ -266,8 +266,6 @@ class PoolsContainer extends Component {
 
             const resp = await fetch("https://demo.deus.finance/static-api.json")
             const jresp = await resp.json()
-
-            // console.log(jresp.apy);
             const apys = jresp.apy
             for (const apyKey in apys) {
                 console.log(apyKey + "\t" + apys[apyKey]);

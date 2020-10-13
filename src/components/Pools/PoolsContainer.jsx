@@ -28,6 +28,12 @@ class PoolsContainer extends Component {
         wallet: {
             address: null,
         },
+        markets: {
+            dea_price: "",
+            market_cap: "",
+            total_locked: "",
+            fully_duilted: "",
+        },
         stakes: {
             dea_usdc: {
                 name: "dea_usdc",
@@ -143,7 +149,8 @@ class PoolsContainer extends Component {
         setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
         this.handleUpdateDEA()
-        this.getApyAmounts()
+        this.getMarketAmounts()
+        setInterval(() => this.getMarketAmounts(), 40000)
         window.addEventListener('resize', this.handleResize)
     }
 
@@ -260,20 +267,22 @@ class PoolsContainer extends Component {
     }
 
 
-    getApyAmounts = async () => {
+    getMarketAmounts = async () => {
         try {
-            const { stakes } = this.state
-
-            const resp = await fetch("https://demo.deus.finance/static-api.json")
+            const { stakes, markets } = this.state
+            const resp = await fetch("https://app.deus.finance/static-api.json")
             const jresp = await resp.json()
             const apys = jresp.apy
+            const marketsResp = jresp.market
             for (const apyKey in apys) {
-                console.log(apyKey + "\t" + apys[apyKey]);
                 stakes[apyKey].amounts.apy = parseFloat(apys[apyKey]).toFixed(2)
+            }
+            for (const key in marketsResp) {
+                markets[key] = parseInt(marketsResp[key])
             }
             this.setState({ stakes })
         } catch (error) {
-            console.log("get dollar price had some error", error);
+            console.log(" get Market Amounts had some error", error);
         }
     }
 
@@ -387,7 +396,7 @@ class PoolsContainer extends Component {
     }
 
     render() {
-        const { isConnected, stakes, staking, showPopup } = this.state
+        const { isConnected, stakes, staking, showPopup, markets } = this.state
         return (<>
             <ToastContainer />
             <StakePopup
@@ -402,6 +411,7 @@ class PoolsContainer extends Component {
             />
             <StartPool isConnected={isConnected} handleConnectWallet={this.handleConnectWallet} />
             <Pools
+                markets={markets}
                 stakes={stakes}
                 isConnected={isConnected}
                 scrollRef={this.scrollRef}

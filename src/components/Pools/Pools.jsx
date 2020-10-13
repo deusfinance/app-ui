@@ -21,7 +21,7 @@ class Pools extends Component {
 
     render() {
         const { isConnected } = this.props
-        const { scrollRef, showAddress, handleConnectWallet, handleScroller } = this.props
+        const { scrollRef, showAddress, handleConnectWallet, handleScroller, markets } = this.props
         return (isConnected && <div className="main-wrap  " id="main-wrap" ref={scrollRef} onClick={handleScroller}>
             <div className="right-btn">
                 <div className="pools-btn beta-btn ">We are currently in BETA</div>
@@ -44,38 +44,38 @@ class Pools extends Component {
                         </div>
                     </div>
                     <div style={{ position: 'relative' }}>
-                        {false && <>  <a href="https://info.uniswap.org/token/0x80ab141f324c3d6f2b18b030f1c4e95d4d658778" className="dea-price-up" style={{ color: "#ffffff", "cursor": "pointer" }} target="_blank" rel="noopener noreferrer">DEA price : <b> {Number("39.40").toLocaleString('en-US', {
+                        <a href="https://info.uniswap.org/token/0x80ab141f324c3d6f2b18b030f1c4e95d4d658778" className="dea-price-up" style={{ color: "#ffffff", "cursor": "pointer" }} target="_blank" rel="noopener noreferrer">DEA Price : <b> {Number(markets.dea_price).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'USD',
                             minimumFractionDigits: 2
                         })} </b>
                         </a>
-                            <div className="dea-amount-wrap">
-                                <div className="outside-wrap">
-                                    <div className="total-value">
-                                        <div className="title" style={{ color: "#ffffff" }}> TVL : <b> {Number("1138583").toLocaleString('en-US', {
-                                            style: 'currency',
-                                            currency: 'USD',
-                                            minimumFractionDigits: 0
-                                        })} </b></div>
-                                    </div>
+                        <div className="dea-amount-wrap">
+                            <div className="outside-wrap">
+                                <div className="total-value">
+                                    <div className="title" style={{ color: "#ffffff" }}> TVL : <b> {Number(markets.total_locked).toLocaleString('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD',
+                                        minimumFractionDigits: 0
+                                    })} </b></div>
                                 </div>
-                                <div className="outside-wrap">
-                                    <div className="dea-price">
-                                        <div className="title" style={{ color: "#ffffff" }}>DEA Marketcap :  <b>{Number("112233000").toLocaleString('en-US', {
-                                            style: 'currency',
-                                            currency: 'USD',
-                                            minimumFractionDigits: 0
-                                        })} </b></div>
-                                        <div className="title" style={{ color: "#ffffff" }}>fully diluted : <b> {Number("5324525").toLocaleString('en-US', {
-                                            style: 'currency',
-                                            currency: 'USD',
-                                            minimumFractionDigits: 0
-                                        })} </b></div>
+                            </div>
+                            <div className="outside-wrap">
+                                <div className="dea-price">
+                                    <div className="title" style={{ color: "#ffffff" }}>DEA Marketcap :  <b>{Number(markets.market_cap).toLocaleString('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD',
+                                        minimumFractionDigits: 0
+                                    })} </b></div>
+                                    <div className="title" style={{ color: "#ffffff" }}>Fully Diluted : <b> {Number(markets.fully_duilted).toLocaleString('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD',
+                                        minimumFractionDigits: 0
+                                    })} </b></div>
 
-                                    </div>
                                 </div>
-                            </div></>}
+                            </div>
+                        </div>
                         <div className="row-2">
                             {this.stakeProvider([4, 5, 6])}
                         </div>

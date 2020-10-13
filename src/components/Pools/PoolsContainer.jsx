@@ -264,7 +264,7 @@ class PoolsContainer extends Component {
         try {
             const { stakes } = this.state
 
-            const resp = await fetch("https://app.deus.finance/static-api.json")
+            const resp = await fetch("https://demo.deus.finance/static-api.json")
             const jresp = await resp.json()
 
             // console.log(jresp.apy);

@@ -129,7 +129,9 @@ function getChainAndAddress() {
 }
 
 function isConnected() {
-    return window.ethereum.selectedAddress != null;
+    if (window.ethereum) {
+        return window.ethereum.selectedAddress != null;
+    }
 }
 
 function _getWei(number) {

@@ -1,20 +1,12 @@
 @import 'base';
 @import 'fonts';
 
-
 body {
-    // overflow-y: auto;
     background: #f49;
     background: linear-gradient(233deg, #190b1b, #181818);
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
-    // height: 100%;
-    // width: 100%;
 }
-
-
-
-
 
 .home-wrapper {
     display: flex;

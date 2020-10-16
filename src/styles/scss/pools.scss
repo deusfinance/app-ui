@@ -1,6 +1,5 @@
-@import 'base';
-@import 'fonts';
-
+@import "base";
+@import "fonts";
 
 .yellow-400-shadow {
     // filter: drop-shadow(0px 0px 30px #cfef81);
@@ -15,74 +14,73 @@
     filter: drop-shadow(0px 0px 45px #7acec1);
 }
 
-.dea-price-up{
+.dea-price-up {
     position: absolute;
-    font-family: 'Segoe UI';
+    font-family: "Segoe UI";
     font-size: 22px;
     width: 225px;
     top: 140px;
     z-index: 3;
     right: 662px;
-    &:hover{
+    &:hover {
         opacity: 0.8;
     }
 }
 
-.stake-popup{
+.stake-popup {
     z-index: 10;
     color: #000000;
     height: 500px;
     width: 350px;
-    background: linear-gradient(224.74deg, #5EC4D6 0.19%, #F1FC68 100.22%);
+    background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
     box-shadow: 0px 2px 10px 10px #000000;
     text-align: center;
-    font-family: 'Segoe UI';
+    font-family: "Segoe UI";
 
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    .stake-wrap{
-    padding: 0 30px;
+    .stake-wrap {
+        padding: 0 30px;
 
-    .explain-more{
-        opacity: 0.7;
-        margin-top: 20px;
-        font-size: 16px;
+        .explain-more {
+            opacity: 0.7;
+            margin-top: 20px;
+            font-size: 16px;
+        }
     }
-
-    }
-    .pop-x{
+    .pop-x {
         cursor: pointer;
         position: absolute;
         right: 5px;
         top: 5px;
         width: 15px;
-        height:  15px;
+        height: 15px;
         font-size: 12px;
         line-height: 15px;
         text-align: center;
         border: 1px solid #000000;
         border-radius: 50%;
     }
-    .pop-title{
+    .pop-title {
         padding: 30px 0;
-        background: linear-gradient(224.74deg, #5CAEB4 0.19%, #99C586 100.22%);
+        background: linear-gradient(224.74deg, #5caeb4 0.19%, #99c586 100.22%);
         font-weight: bold;
         font-size: 24px;
         line-height: 24px;
         align-items: center;
         text-align: center;
     }
-    .pop-input-wrap{
+    .pop-input-wrap {
         padding-top: 50px;
         background: transparent;
         margin: auto;
 
-        .pop-max{
-            position: absolute;       
-            cursor: pointer;              
+        .pop-max {
+            position: absolute;
+            cursor: pointer;
             top: 9px;
             right: 6px;
             height: 27px;
@@ -90,53 +88,52 @@
             font-size: 17px;
             line-height: 24px;
             border: 1px solid #989898;
-            &:hover{
+            &:hover {
                 opacity: 0.7;
             }
         }
 
-
-        
-        .pop-input-label{
+        .pop-input-label {
             font-size: 15px;
             text-align: left;
         }
-        .pop-input{
+        .pop-input {
             position: relative;
             height: 40px;
             background: transparent;
             border: 1px solid #000000;
             padding: 2px 5px;
-        input{
-            border: 1px solid transparent;
+            input {
+                border: 1px solid transparent;
 
-            outline: none;
-            font-size: 20px;
-            z-index: 10;
-            width: 100%;
-            height: 100%;
-            background: transparent;
+                outline: none;
+                font-size: 20px;
+                z-index: 10;
+                width: 100%;
+                height: 100%;
+                background: transparent;
             }
         }
     }
-    .pop-btns{
+    .pop-btns {
         margin-top: 40px;
         height: 40px;
         display: flex;
         justify-content: center;
-        .approve,.stake{
+        .approve,
+        .stake {
             background: transparent;
             font-size: 16px;
             border: 1px solid #000000;
             width: 50%;
             margin: 0 5px;
             cursor: pointer;
-            &:hover{
+            &:hover {
                 opacity: 0.5;
             }
         }
     }
-    .pop-contract{
+    .pop-contract {
         margin: auto;
         display: block;
         margin-top: 40px;
@@ -149,25 +146,25 @@
         position: relative;
         transition: all 0.3s;
 
-        .arrow-triangle{
+        .arrow-triangle {
             transform: rotate(45deg);
             position: absolute;
-           width: 0;
-           height:  0;
-           border-left: 10px solid transparent;
-           border-right: 10px solid transparent;
-           border-bottom: 10px solid #000000;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #000000;
             top: 0px;
             right: -5px;
             // background: black;
         }
-        &:hover{
+        &:hover {
             box-shadow: 0px 0px 4px 1px #1f1e1e;
         }
     }
 }
 
-.blur-me{
+.blur-me {
     // z-index: 9;
     // position: fixed;
     // background: tr;
@@ -195,8 +192,6 @@
     overflow: hidden;
     max-height: 100%;
 
-
-
     .beta-btn {
         position: absolute;
         top: 100px;
@@ -214,9 +209,8 @@
         line-height: 43px;
     }
 
-
     .pools-unlock {
-        font-family: 'Segoe UI';
+        font-family: "Segoe UI";
         color: #ffffff;
         position: relative;
         padding-top: 150px;
@@ -266,14 +260,10 @@
             color: #ffffff;
             margin-top: 60px;
         }
-
-
     }
 }
 
-
 .pools-wrapper {
-    
     padding-bottom: 100px;
     text-align: center;
     position: relative;
@@ -295,9 +285,7 @@
 
     // }
 
-
-
-    .dea-amount-wrap{
+    .dea-amount-wrap {
         position: absolute;
         // z-index: 2;
         top: 29px;
@@ -312,65 +300,59 @@
         display: flex;
         justify-content: center;
 
-    .outside-wrap{
-        position: relative;
-        width: 550px;
-        height: 225px;
-        clip-path: polygon(0% 0, 50% 100%, 100% 0%);
-        margin: 0 100px;
-        background: linear-gradient(224.74deg, #5EC4D6 0.19%, #F1FC68 100.22%);
-        // padding: 5px;
-
-
-        .dea-price,.total-value{
-
-            .title:nth-child(1){
-                padding: 5px;
-                margin-top: 15px;
-            }
-            .title:nth-child(2){
-                padding: 0px;
-            }
-            .title:nth-child(3){
-                padding: 20px;
-
-            }
-
-            display: flex;
-            justify-content: flex-start;
-            flex-direction: column;
-            position: absolute;
-            -webkit-clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+        .outside-wrap {
+            position: relative;
+            width: 550px;
+            height: 225px;
             clip-path: polygon(0% 0, 50% 100%, 100% 0%);
-            top: 2px;
-            bottom: 0;
-            left: 5px;
-            right: 0;
-            width: 540px;
-            height: 221px;
-            // margin-top: 10px;
-            background: #1a111d;
-            font-size: 22px;
+            margin: 0 100px;
+            background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+            // padding: 5px;
 
+            .dea-price,
+            .total-value {
+                .title:nth-child(1) {
+                    padding: 5px;
+                    margin-top: 15px;
+                }
+                .title:nth-child(2) {
+                    padding: 0px;
+                }
+                .title:nth-child(3) {
+                    padding: 20px;
+                }
 
-            
-        }
+                display: flex;
+                justify-content: flex-start;
+                flex-direction: column;
+                position: absolute;
+                -webkit-clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+                clip-path: polygon(0% 0, 50% 100%, 100% 0%);
+                top: 2px;
+                bottom: 0;
+                left: 5px;
+                right: 0;
+                width: 540px;
+                height: 221px;
+                // margin-top: 10px;
+                background: #1a111d;
+                font-size: 22px;
+            }
 
-        .total-value{
-            .title{
-                // padding: 20px;
-                margin-top: 60px !important;
+            .total-value {
+                .title {
+                    // padding: 20px;
+                    margin-top: 60px !important;
+                }
             }
         }
     }
 
+    .connected {
+        background: #00ffc8;
     }
 
-    .connected{
-        background: #00FFC8;
-    }
-
-    .line-top-img{
+    .line-top-img {
         top: -300px;
     }
 
@@ -401,8 +383,6 @@
         }
 
         .triangle-wrap {
-
-
             .triangle {
                 // box-shadow: 5px 2px 3px rgb(177, 17, 70);
                 background-color: #1a111d;
@@ -411,14 +391,12 @@
                 height: 320px;
                 clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
 
-
-
                 .stake-here {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     cursor: pointer;
-                    background: linear-gradient(225deg, #5EC4D6, #9ad5a2, #F1FC68);
+                    background: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
                     height: 80px;
                     padding-top: 20px;
                     font-family: Comfortaa;
@@ -462,7 +440,6 @@
                     background: #1a111d;
                     text-align: center;
                     box-shadow: inset 0px 2px 4px #ffffff6b;
-
                 }
 
                 .provide-liquidity-wrap {
@@ -475,7 +452,7 @@
                     padding: 2px;
                     // border: solid 1px #808080;
                     // box-shadow: 0px 2px 4px #ffffff;
-                    background: linear-gradient(225deg, #5EC4D6, #9ad5a2, #F1FC68);
+                    background: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
                     transition: 0.3s;
 
                     &:hover {
@@ -493,9 +470,8 @@
                     // border: solid 1px #808080;
                     // box-shadow: 0px 2px 4px #ffffff;
                     opacity: 0.5;
-                    background: linear-gradient(225deg, #5EC4D6, #9ad5a2, #F1FC68);
+                    background: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
                     .single-asset {
-                        
                         display: flex;
                         flex-direction: column;
                         justify-content: center;
@@ -508,11 +484,8 @@
                         background: #1a111d;
                         text-align: center;
                         box-shadow: inset 0px 2px 4px #ffffff6b;
-    
                     }
                 }
-
-            
 
                 overflow: hidden;
 
@@ -525,8 +498,6 @@
                     // position: relative;
                 }
 
-
-
                 .box {
                     margin: 0 3px;
                     z-index: 100;
@@ -536,7 +507,7 @@
 
                     .box-title-wrap {
                         padding: 1px 2px;
-                        background: linear-gradient(225deg, #5EC4D6, #9ad5a2, #F1FC68);
+                        background: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
                         width: 185px;
                         height: 45px;
 
@@ -551,17 +522,14 @@
                             font-size: 13px;
                             background: #353535;
                             padding: 0 30px;
-                            
                         }
 
-
-                        .percentage{
+                        .percentage {
                             clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%, 0 77%);
                         }
-                        .lp-deposited{
+                        .lp-deposited {
                             clip-path: polygon(0 0, 78% 0, 107% 100%, 0 100%, 0 100%);
                         }
-
                     }
 
                     .box-btn {
@@ -569,7 +537,7 @@
                         justify-content: center;
                         flex-direction: column;
                         cursor: pointer;
-                        border: solid 2px #5EC4D6;
+                        border: solid 2px #5ec4d6;
                         color: #ffffff;
                         font-family: "Comfortaa";
                         font-size: 16px;
@@ -579,11 +547,9 @@
 
                         &:hover {
                             box-shadow: 0px 0px 4px 1px #ffffff;
-
                         }
                     }
                 }
-
             }
 
             .staked {
@@ -597,7 +563,6 @@
             }
         }
 
-
         .row-2 {
             display: flex;
             justify-content: center;
@@ -605,44 +570,31 @@
     }
 }
 
-
-#main-wrap::-webkit-scrollbar-track
-{
-	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 10px;
-	background-color: transparent;
+#main-wrap::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: transparent;
 }
 
-#main-wrap::-webkit-scrollbar
-{
+#main-wrap::-webkit-scrollbar {
     width: 8px;
     height: 10px;
-	background-color: transparent;
+    background-color: transparent;
 }
 
-#main-wrap::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #cdd477;
+#main-wrap::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #cdd477;
 }
 
-
-.main-wrap{
+.main-wrap {
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     margin-bottom: 100px;
-  
-    
 
-    
-
-
-
-
-
-    .pools-btn{
+    .pools-btn {
         text-align: center;
         border-radius: 8px;
         // background: #221263;
@@ -653,30 +605,27 @@
         line-height: 43px;
         height: 45px;
         width: 345px;
-        z-index:10;
+        z-index: 10;
     }
-
 
     .unlock-btn {
         margin-top: 100px;
         background: #f1fc68;
         color: #101823;
-   cursor: pointer;
-    position: absolute;
-    top: 25px;
-    left: 50px;
-
+        cursor: pointer;
+        position: absolute;
+        top: 25px;
+        left: 50px;
     }
 
-    .right-btn{
+    .right-btn {
         position: absolute;
         top: 100px;
         right: 50px;
-        
-        
-        .beta-btn{
-        background: #221263;
-        color: #ffffff;
+
+        .beta-btn {
+            background: #221263;
+            color: #ffffff;
         }
         .learn-more-btn {
             display: block;
@@ -684,7 +633,6 @@
             background: transparent;
             color: #ffffff;
             margin-top: 20px;
-           
         }
     }
 }
@@ -692,24 +640,93 @@
 // .scrollable {
 //     scrollbar-color: #d3d3d3 transparent;
 //   }
-  
+
 //   .scrollable-min::-webkit-scrollbar {
 //     scrollbar-color: #d1f07f transparent;
 //   }
 
 //   .scrollable-min::-webkit-scrollbar-track {
-//     background: #d1f07f ; 
+//     background: #d1f07f ;
 //   }
 
-  @media screen and (max-width: 1500px) {
-
-    .main-wrap{
-        .pools-wrapper{
-            .pools{
+@media screen and (max-width: 1500px) {
+    .main-wrap {
+        .pools-wrapper {
+            .pools {
                 margin-top: 250px;
             }
         }
     }
-  }
+}
 
-  
+.migration-pools-wrp {
+    z-index: 20;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 700px;
+    margin: auto;
+    // margin-bottom: 100px;
+    text-align: center;
+    color: #ffffff;
+    border: 8px solid #f1fc68;
+    background-color: #1a111d;
+    font-family: Comfortaa;
+
+    .btn-close {
+        &:hover {
+            opacity: 0.5;
+        }
+        cursor: pointer;
+        margin: 15px;
+        float: right;
+        font-size: 20px;
+        line-height: 20px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid #ffffff;
+    }
+    .title {
+        font-weight: 900;
+        font-size: 38px;
+        margin-top: 100px;
+    }
+    .p1 {
+        padding: 0 80px;
+        line-height: 23px;
+        margin-top: 50px;
+        font-size: 16px;
+    }
+    .p2 {
+        margin-top: 50px;
+        font-size: 16px;
+    }
+
+    .mig-btn-wrp {
+        display: flex;
+        justify-content: center;
+        font-family: "Segoe UI";
+        .mig-btn {
+            &:hover {
+                opacity: 0.8;
+            }
+            color: #ffffff;
+            width: 200px;
+            margin: auto 70px;
+            margin-top: 50px;
+            font-size: 18px;
+            padding: 15px 15px;
+            border: 1px solid #f1fc68;
+        }
+    }
+}
+
+.loading-stake {
+    position: absolute;
+    bottom: 85px;
+    left: 0;
+    right: 0;
+}

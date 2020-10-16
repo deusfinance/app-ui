@@ -11,10 +11,12 @@ import StartPool from './StartPool';
 import Pools from './Pools';
 import StakePopup from './StakePopup';
 import Footer from '../common/Footer';
+import MigrationPopup from './MigrationPopup';
 
 
 class PoolsContainer extends Component {
     state = {
+        isMigPopup: false,
         isConnected: false,
         showPopup: false,
         staking: {
@@ -278,7 +280,7 @@ class PoolsContainer extends Component {
                 stakes[apyKey].amounts.apy = parseFloat(apys[apyKey]).toFixed(2)
             }
             for (const key in marketsResp) {
-                markets[key] = parseInt(marketsResp[key])
+                markets[key] = parseFloat(marketsResp[key])
             }
             this.setState({ stakes })
         } catch (error) {
@@ -306,7 +308,6 @@ class PoolsContainer extends Component {
         stakeService.stake(staking.name, staking.amount, this.handleStakeState)
     }
 
-
     handleApprove = () => {
         const { staking } = this.state
         console.log(staking.amount);
@@ -319,6 +320,10 @@ class PoolsContainer extends Component {
         staking.name = stakedToken
         this.setState({ staking })
         console.log("0 handleClaim clicked")
+    }
+
+    isMigToken = (stakedToken) => {
+        return stakedToken === "ampl_eth" || stakedToken === "uni" || stakedToken === "snx" ? true : false
     }
 
 
@@ -395,9 +400,17 @@ class PoolsContainer extends Component {
         this.setState({ showPopup: bool, staking })
     }
 
+    handleMigPupop = (bool) => {
+        this.setState({ isMigPopup: bool })
+    }
+
     render() {
-        const { isConnected, stakes, staking, showPopup, markets } = this.state
+        const { isConnected, stakes, staking, showPopup, isMigPopup, markets } = this.state
         return (<>
+            <div>
+
+            </div>
+            <MigrationPopup isMigPopup={isMigPopup} handleMigPupop={this.handleMigPupop} />
             <ToastContainer />
             <StakePopup
                 showPopup={showPopup}

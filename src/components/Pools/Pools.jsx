@@ -53,7 +53,7 @@ class Pools extends Component {
                         <div className="dea-amount-wrap">
                             <div className="outside-wrap">
                                 <div className="total-value">
-                                    <div className="title" style={{ color: "#ffffff" }}> TVL : <b> {Number(markets.total_locked).toLocaleString('en-US', {
+                                    <div className="title" > TVL : <b> {Number(parseInt(markets.total_locked)).toLocaleString('en-US', {
                                         style: 'currency',
                                         currency: 'USD',
                                         minimumFractionDigits: 0
@@ -62,12 +62,12 @@ class Pools extends Component {
                             </div>
                             <div className="outside-wrap">
                                 <div className="dea-price">
-                                    <div className="title" style={{ color: "#ffffff" }}>DEA Marketcap :  <b>{Number(markets.market_cap).toLocaleString('en-US', {
+                                    <div className="title" >DEA Marketcap :  <b>{Number(parseInt(markets.market_cap)).toLocaleString('en-US', {
                                         style: 'currency',
                                         currency: 'USD',
                                         minimumFractionDigits: 0
                                     })} </b></div>
-                                    <div className="title" style={{ color: "#ffffff" }}>Fully Diluted : <b> {Number(markets.fully_duilted).toLocaleString('en-US', {
+                                    <div className="title">Fully Diluted : <b> {Number(parseInt(markets.fully_duilted)).toLocaleString('en-US', {
                                         style: 'currency',
                                         currency: 'USD',
                                         minimumFractionDigits: 0

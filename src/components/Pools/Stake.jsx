@@ -92,7 +92,7 @@ class Stake extends Component {
                                             {({ countUpRef }) => (
                                                 <span ref={countUpRef} />
                                             )}
-                                        </CountUp>DEA claimable</div>}</div>
+                                        </CountUp> DEA claimable</div>}</div>
                             </div>
                             <div className="box-btn" onClick={() => handleClaim(name)}>
                                 claim DEA</div>

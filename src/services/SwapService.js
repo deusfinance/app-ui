@@ -6,15 +6,18 @@ if (isConnected()) {
     network = getChainAndAddress().network;
 }
 
-window.ethereum.on('accountsChanged', function (accounts) {
-    // window.location.reload();
-    console.log(1);
-});
+if (window.ethereum) {
+    window.ethereum.on('accountsChanged', function (accounts) {
+        // window.location.reload();
+        console.log(1);
+    });
+    window.ethereum.on('chainChanged', function (chainId) {
+        // window.location.reload();
+        console.log(2);
+    });
+}
 
-window.ethereum.on('chainChanged', function (chainId) {
-    // window.location.reload();
-    console.log(2);
-});
+
 
 function connectWallet(initFunction) {
     return window.ethereum.enable().thne(res => {
@@ -39,9 +42,10 @@ function getChainAndAddress() {
 }
 
 function isConnected() {
-    return window.ethereum.selectedAddress != null;
+    if (window.ethereum) {
+        return window.ethereum.selectedAddress != null;
+    }
 }
-
 
 function _getWei(number) {
     const value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)

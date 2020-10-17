@@ -16,7 +16,7 @@ const Footer = ({ classes, items, footerClass }) => {
             <ul className={classes} style={{ fontFamily: "Comfortaa" }}>
                 {footers.reverse().map((item, index) => (<li key={index}> <a href={item.href} target="_blank" rel="noopener noreferrer" > {item.title} </a></li>))}
             </ul>
-            <a className="deo-wrap" style={{ display: hideme }} href="https://etherscan.io/token/0x80ab141f324c3d6f2b18b030f1c4e95d4d658778" target="_blank" rel="noopener noreferrer"><img src="img/deo.svg" alt="" /> DEA token</a>
+            <a className="deo-wrap" style={{ display: hideme }} href="https://etherscan.io/token/0x80ab141f324c3d6f2b18b030f1c4e95d4d658778" target="_blank" rel="noopener noreferrer"><img src="img/dea.svg" alt="" /> DEA token</a>
         </footer>
     );
 }

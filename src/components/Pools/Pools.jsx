@@ -27,7 +27,18 @@ class Pools extends Component {
                 <div className="pools-btn beta-btn ">We are currently in BETA</div>
                 <a className="pools-btn learn-more-btn" href="https://medium.com/@deusfinance/dea-part-ii-release-of-dea-and-the-staking-reward-program-46b065322936" target="_blank" rel="noopener noreferrer">Learn more about DEA</a>
             </div>
-            <div className="pools-btn unlock-btn connected" onClick={handleConnectWallet}>{showAddress()}</div>
+            <div className="left-btn">
+
+                <div className="pools-btn unlock-btn connected" onClick={handleConnectWallet}>{showAddress()}</div>
+                <div className="voted-message" >
+                    <div className="msg">
+                        As voted on we changed the pools of DEUS / DEA.
+                        visit our news channel for more info
+                </div>
+                    <a className=" telegram-btn" href="https://t.me/deusfinance" target="_blank" rel="noopener noreferrer">to telegram</a>
+                </div>
+                <div className="pool-link">new pool</div>
+            </div>
             <div className="pools-wrapper" id="pools-wrap">
                 <img className="line-top-img" src="../img/line-top.png" alt="line-top" />
                 <div className="pools">

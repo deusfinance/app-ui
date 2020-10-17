@@ -608,14 +608,78 @@
         z-index: 10;
     }
 
+    .left-btn {
+        z-index: 2;
+        position: absolute;
+        top: 100px;
+        left: 50px;
+    }
     .unlock-btn {
-        margin-top: 100px;
         background: #f1fc68;
         color: #101823;
         cursor: pointer;
-        position: absolute;
-        top: 25px;
-        left: 50px;
+    }
+
+    .voted-message {
+        margin-top: 10px;
+        padding: 15px;
+        width: 315px;
+        background-color: #f1fc68;
+        font-family: "Segoe UI";
+        font-size: 18px;
+        line-height: 21px;
+        text-align: center;
+        color: #000000;
+        .msg {
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+        .telegram-btn {
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            color: #ffffff;
+            height: 45px;
+            width: 150px;
+            border-radius: 5px;
+            margin: auto;
+            margin-top: 10px;
+            cursor: pointer;
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+    .pool-link {
+        width: 345px;
+        height: 40px;
+        color: #ffffff;
+        margin-top: 10px;
+        font-size: 21px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding-bottom: 4px;
+        align-items: center;
+        font-family: "Segoe UI";
+        cursor: pointer;
+        background: linear-gradient(
+            135deg,
+            rgba(91, 204, 189, 0.14902) 0%,
+            rgba(97, 192, 191, 0.14902) 33.33%,
+            rgba(85, 188, 200, 0.14902) 74.49%,
+            rgba(105, 207, 184, 0.14902) 100%
+        );
+        border: 1px solid transparent;
+        border-image: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
+        border-image-slice: 1;
+        &:hover {
+            opacity: 0.85;
+        }
     }
 
     .right-btn {

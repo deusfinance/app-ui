@@ -10,10 +10,10 @@ const Navbar = () => {
 
     const navClass = isDesktop() ? "right" : "nav-mobile"
 
-    let Navs = [{ id: "pools", text: <span className="deus-sw" >DEUS <span className="swap">Staking</span></span>, path: "/pools" }, { id: "exchange", text: <span className="deus-sw" >DEUS <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "/home" },]
+    let Navs = [{ id: "pools", text: <span className="deus-sw" > <span className="swap">Staking</span></span>, path: "/pools" }, { id: "exchange", text: <span className="deus-sw" > <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "https://deus.finance", out: true },]
     // let Navs = [{ id: "pools", text: "LP-Pools", path: "/pools" }, { id: "home", text: "Home", path: "/home" },]
     if (!isDesktop()) {
-        Navs = [{ id: "exchange", text: <span className="deus-sw" >DEUS <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "/home" },]
+        Navs = [{ id: "exchange", text: <span className="deus-sw" > <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "https://deus.finance", out: true },]
     }
     //DEUS staking
     return (<nav>
@@ -35,6 +35,8 @@ const Navbar = () => {
                 {
                     Navs.map(nav => {
                         const classes = nav.linkDisabled ? "disabled-link" : ""
+                        if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}> {nav.text} </a></li>
+
                         return <li key={nav.id}><NavLink className={classes} exact={true} to={nav.path}> {nav.text} </NavLink></li>
                     })
                 }

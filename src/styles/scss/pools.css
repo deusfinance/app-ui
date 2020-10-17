@@ -818,14 +818,99 @@ footer .social li a:hover {
   z-index: 10;
 }
 
+.main-wrap .left-btn {
+  z-index: 2;
+  position: absolute;
+  top: 100px;
+  left: 50px;
+}
+
 .main-wrap .unlock-btn {
-  margin-top: 100px;
   background: #f1fc68;
   color: #101823;
   cursor: pointer;
-  position: absolute;
-  top: 25px;
-  left: 50px;
+}
+
+.main-wrap .voted-message {
+  margin-top: 10px;
+  padding: 15px;
+  width: 315px;
+  background-color: #f1fc68;
+  font-family: "Segoe UI";
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  color: #000000;
+}
+
+.main-wrap .voted-message .msg {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+.main-wrap .voted-message .telegram-btn {
+  background-color: #000000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  color: #ffffff;
+  height: 45px;
+  width: 150px;
+  border-radius: 5px;
+  margin: auto;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.main-wrap .voted-message .telegram-btn:hover {
+  opacity: 0.8;
+}
+
+.main-wrap .pool-link {
+  width: 345px;
+  height: 40px;
+  color: #ffffff;
+  margin-top: 10px;
+  font-size: 21px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  padding-bottom: 4px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: "Segoe UI";
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(91, 204, 189, 0.14902) 0%, rgba(97, 192, 191, 0.14902) 33.33%, rgba(85, 188, 200, 0.14902) 74.49%, rgba(105, 207, 184, 0.14902) 100%);
+  border: 1px solid transparent;
+  -o-border-image: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
+     border-image: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
+  border-image-slice: 1;
+}
+
+.main-wrap .pool-link:hover {
+  opacity: 0.85;
 }
 
 .main-wrap .right-btn {

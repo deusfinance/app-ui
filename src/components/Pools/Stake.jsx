@@ -49,7 +49,7 @@ class Stake extends Component {
 
     render() {
         const { token, shadowClass, handlePopup, handleClaim, handleWithdraw } = this.props
-        const { name, amounts, rewardRatio } = token
+        const { name, amounts, rewardRatio, comming_soon } = token
         const isStaked = parseFloat(amounts.lp) > 0 ? true : false
         const isSingle = name.indexOf("_") === -1 ? true : false
         const provideWrapClasses = isSingle ? "single-asset-wrap" : "provide-liquidity-wrap"
@@ -60,11 +60,13 @@ class Stake extends Component {
 
         return (<div className={`triangle-wrap  ${shadowClasses}`}>
             <div className={`triangle ${stakedClass}`}>
-                <div className="stake-here" onClick={() => handlePopup(name, true)}>Stake <br /> {stakedText}</div>
+                {!comming_soon && <div className="stake-here" onClick={() => handlePopup(name, true)}>Stake <br /> {stakedText}</div>}
+                {comming_soon && <div className="stake-here stake-here-disabled" style={{}}>Stake <br /> {stakedText}</div>}
                 <div className="title">{name.toUpperCase().replace("_", "-")} </div>
                 {/* <div className="apy" style={{ opacity: 0 }}>.</div> */}
                 <div className="apy" > {amounts.apy}% APY</div>
-                {!isStaked && <div className={provideWrapClasses}>
+                {comming_soon && <div className="comming-soon"> Coommming soon!</div>}
+                {!comming_soon && !isStaked && <div className={provideWrapClasses}>
                     {isSingle && <div className="single-asset" >single asset pool</div>}
                     {!isSingle && this.provideLiquidityButton(token)}
                 </div>
@@ -80,7 +82,7 @@ class Stake extends Component {
                         <div className="box">
                             <div className="box-title-wrap">
                                 <div className="box-title">
-                                    {token.amounts.dea == "0" ? <div className="loading-stake"><TransverseLoading color="#ffffff" size={'small'} ></TransverseLoading></div> : <div>
+                                    {token.amounts.dea === "0" || token.amounts.dea === 0 ? <div className="loading-stake"><TransverseLoading color="#ffffff" size={'small'} ></TransverseLoading></div> : <div>
                                         <CountUp
                                             start={parseFloat(token.amounts.dea)}
                                             end={parseFloat(token.amounts.newdea)}

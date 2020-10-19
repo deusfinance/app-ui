@@ -3,26 +3,38 @@ import Stake from './Stake';
 
 class Pools extends Component {
 
-    orders = {
-        tokens: ["dea_usdc", "deus_eth", "deus", "ampl_eth", "snx", "uni"],
-        shadows: ["blue-200-shadow", "yellow-400-shadow", "blue-200-shadow", "yellow-400-shadow", "yellow-300-shadow", "blue-200-shadow"],
-    }
+    orders = this.props.orders
+
 
     componentDidMount() {
         setTimeout(() => this.props.handleScroller(), 100);
     }
 
 
+
     stakeProvider = (stakedTokens) => {
         const { tokens, shadows } = this.orders
         const { handleClaim, handleLP, handlePopup, handleWithdraw, stakes } = this.props
-        return stakedTokens.map((stakedTokenIndex, key) => <Stake key={key} shadowClass={shadows[stakedTokenIndex - 1]} token={stakes[tokens[stakedTokenIndex - 1]]} handlePopup={handlePopup} handleClaim={handleClaim} handleLP={handleLP} handleWithdraw={handleWithdraw} />)
+        return stakedTokens.map((stakedTokenIndex, key) => {
+
+            if (stakes[tokens[stakedTokenIndex - 1]]) {
+                return <Stake key={key}
+                    shadowClass={shadows[stakedTokenIndex - 1]}
+                    token={stakes[tokens[stakedTokenIndex - 1]]}
+                    handlePopup={handlePopup}
+                    handleClaim={handleClaim}
+                    handleLP={handleLP}
+                    handleWithdraw={handleWithdraw} />
+            }
+            return <div key={key} className={`triangle-wrap ${shadows[stakedTokenIndex - 1]}`}><div className="triangle staked"></div></div>
+        })
     }
 
     render() {
-        const { isConnected } = this.props
+        const { isConnected, poolsLink } = this.props
         const { scrollRef, showAddress, handleConnectWallet, handleScroller, markets } = this.props
         return (isConnected && <div className="main-wrap  " id="main-wrap" ref={scrollRef} onClick={handleScroller}>
+
             <div className="right-btn">
                 <div className="pools-btn beta-btn ">We are currently in BETA</div>
                 <a className="pools-btn learn-more-btn" href="https://medium.com/@deusfinance/dea-part-ii-release-of-dea-and-the-staking-reward-program-46b065322936" target="_blank" rel="noopener noreferrer">Learn more about DEA</a>
@@ -35,9 +47,9 @@ class Pools extends Component {
                         As voted on we changed the pools of DEUS / DEA.
                         visit our news channel for more info
                 </div>
-                    <a className=" telegram-btn" href="https://t.me/deusfinance" target="_blank" rel="noopener noreferrer">to telegram</a>
+                    <a className=" telegram-btn" href="https://t.me/deusfinance_news" target="_blank" rel="noopener noreferrer">to telegram</a>
                 </div>
-                <div className="pool-link">new pool</div>
+                {poolsLink}
             </div>
             <div className="pools-wrapper" id="pools-wrap">
                 <img className="line-top-img" src="../img/line-top.png" alt="line-top" />

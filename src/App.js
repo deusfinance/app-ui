@@ -12,6 +12,7 @@ import { LoopCircleLoading } from 'react-loadingg';
 
 
 const PoolsContainer = React.lazy(() => import('./components/Pools/PoolsContainer'));
+const NewPoolsContainer = React.lazy(() => import('./components/Pools/NewPoolsContainer'));
 const SecurityMobile = React.lazy(() => import('./components/SecurityMobile'));
 const SwapContainer = React.lazy(() => import('./components/Swap/SwapContainer'));
 const NotFound = React.lazy(() => import('./components/NotFound'));
@@ -24,9 +25,10 @@ function App() {
     <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
       <Switch>
         <Route exact path="/pools" component={isDesktop() ? PoolsContainer : SecurityMobile} />
+        <Route exact path="/staking" component={isDesktop() ? NewPoolsContainer : SecurityMobile} />
         <Route exact path="/swap" component={SwapContainer} />
         <Route path="/not-found" component={NotFound} />
-        <Redirect exact from="/" to="/pools" />
+        <Redirect exact from="/" to="/staking" />
         <Redirect to="not-found" />
       </Switch>
     </Suspense>

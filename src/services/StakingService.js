@@ -73,6 +73,12 @@ let uni = {
     stakedTokenContractABI: uniContractABI,
 }
 
+let deusDea = {
+    stakingAddr: { mainnet: '0xEf753f6Da67B765dED917C2273cE07445e86c8D2' }[network],
+    stakingContractABI: stakingContractABI,
+    stakedTokenAddr: { mainnet: '0x92Adab6d8dc13Dbd9052b291CFC1D07888299D65' }[network],
+    stakedTokenContractABI: uniContractABI,
+}
 
 let stakingPools = {
     deus_eth: deusEth,
@@ -81,6 +87,7 @@ let stakingPools = {
     snx: snx,
     uni: uni,
     deus: deus,
+    deus_dea: deusDea,
 };
 
 if (isConnected()) {
@@ -129,7 +136,7 @@ function getChainAndAddress() {
 }
 
 function isConnected() {
-    return window.ethereum.selectedAddress != null;
+    return window.ethereum && window.ethereum.selectedAddress != null;
 }
 
 function _getWei(number) {
@@ -146,7 +153,7 @@ function approve(stakedToken, amount, listener) {
         if (!('metamaskStakedTokenContract' in pool)) {
             pool.metamaskStakedTokenContract = new metamaskWeb3.eth.Contract(pool.stakedTokenContractABI, pool.stakedTokenAddr);
         }
-        if (stakedToken != 'uni') {
+        if (stakedToken !== 'uni') {
             amount = Math.max(amount, 10 ** 20);
         } else {
             amount = Math.max(amount, 10 ** 10);

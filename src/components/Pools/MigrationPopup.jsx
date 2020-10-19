@@ -1,30 +1,39 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
+
 class MigrationPopup extends Component {
     state = {}
     render() {
         const { isMigPopup, handleMigPupop } = this.props
-        return (<> { isMigPopup && <div div div className="migration-pools-wrp" >
+        return (<> { isMigPopup && <div className="migration-pools-wrp" >
             <div className="btn-close" onClick={() => handleMigPupop(false)}>x</div>
-            <div className="title"> Staking pool maintenance</div>
+            <div className="title">
+                Staking pool maintenance <br />
+                we are migrating to new pools!
+</div>
             <div className="p1">
-                Ok the votes are closed we will start on cutting emission rate in next hours.<br /><br />
-                Following Pools are affected by maintenence: <br />
-                <b> SNX , UNI , AMPL-ETH</b><br />
+                FUNDS ARE SAFU<br />  <br />
+                planned migration time is about 1 hour. <br />
+                 All Pools are affected during that time.<br />
 
-                <br />You will not able to do the following actions on those Pools for 30 minutes
+                You will not be able to do following actions
 
-               <br /> <b> Stake more
-                Claim DEA ,
-                Withdraw & Claim DEA
-                </b><br />
-                <br />Maintenance Time:
-                🧲🧲 2:30 PM UTC until 3:00 PM UTC 🧲🧲
-                <br />
-                <br />  If you try to withdraw during migration you will get a transaction error, dont panic funds are safu.
+                <br /><b>Stake more,claim DEA ,withdraw & claim DEA. </b><br />
+                <br />   there will be a new site that contains the new pools  and a site that contains the old pools.
+                 you are able to withdraw your tokens after migration, any time.
+                <br /> Maintenance Time is planned at <b> 8 PM UTC+0 until 9 PM UTC +0 </b><br />
+                 If you try to withdraw or perfom any action during migration you will get an transaction error, do not panic
+                <br /> Chief over
                     </div>
-            <div className="mig-btn-wrp">
+            {/* <div className="mig-btn-wrp">
                 <a href="https://t.me/deusfinance" className="mig-btn" target="_blank" rel="noopener noreferrer">Telegram</a>
+            </div> */}
+            <div className="btns-wrap">
+
+                <a className="btns" href="https://t.me/deusfinance" target="_blank" rel="noopener noreferrer">discuss this in telegram</a>
+                <Link to="/staking" className="btns">show me the new pools</Link>
             </div>
+
         </div >}
         </>);
     }

@@ -12,11 +12,13 @@ import Pools from './Pools';
 import StakePopup from './StakePopup';
 import Footer from '../common/Footer';
 import MigrationPopup from './MigrationPopup';
+import { Link } from 'react-router-dom';
 
 
 class PoolsContainer extends Component {
     state = {
         isMigPopup: false,
+        isOldPopup: false,
         isConnected: false,
         showPopup: false,
         staking: {
@@ -100,6 +102,7 @@ class PoolsContainer extends Component {
                     currLp: 0,
                     allowances: 0,
                 },
+
                 coin_name: "UNI-V2-AMPL-ETH",
                 stakingLink: "0xa3bE45e9F6c42e06231618cf45be1AB9625A591f",
                 liqLink: "https://app.uniswap.org/#/add/ETH/0xd46ba6d942050d489dbd938a2c909a5d5039a161",
@@ -277,6 +280,7 @@ class PoolsContainer extends Component {
             const apys = jresp.apy
             const marketsResp = jresp.market
             for (const apyKey in apys) {
+                if (!stakes[apyKey]) continue
                 stakes[apyKey].amounts.apy = parseFloat(apys[apyKey]).toFixed(2)
             }
             for (const key in marketsResp) {
@@ -307,6 +311,12 @@ class PoolsContainer extends Component {
         console.log(staking.amount);
         stakeService.stake(staking.name, staking.amount, this.handleStakeState)
     }
+
+
+    lastPopupID = (TokenKey) => {
+        return localStorage.getItem(TokenKey);
+    }
+
 
     handleApprove = () => {
         const { staking } = this.state
@@ -383,9 +393,18 @@ class PoolsContainer extends Component {
         staking.amount = amount
         this.setState({ staking })
     }
+    closeOldPopup = () => {
+        this.setState({ isOldPopup: false })
+    }
+
+
 
     handlePopup = (stakedToken, bool) => {
         console.log(stakedToken);
+        if (this.isMigToken(stakedToken)) {
+            this.setState({ isOldPopup: true })
+            return
+        }
         const { staking } = this.state
         const token = this.state.stakes[stakedToken]
         if (bool) {
@@ -404,11 +423,28 @@ class PoolsContainer extends Component {
         this.setState({ isMigPopup: bool })
     }
 
+    oldPoolsPupup = <div className="old-pools-popup">
+        <div className="popup-wrap">
+            <div className="close-btn" onClick={this.closeOldPopup}>x</div>
+            <div className="title">We migrated to new pools!</div>
+            <div className="btns-wrap">
+                <a className="btns" href="https://t.me/deusfinance" target="_blank" rel="noopener noreferrer">discuss this in telegram</a>
+                <Link to="/staking" className="btns">show me the new pools</Link>
+            </div>
+        </div>
+    </div>
+
     render() {
-        const { isConnected, stakes, staking, showPopup, isMigPopup, markets } = this.state
+        const { isConnected, stakes, staking, showPopup, isMigPopup, isOldPopup, markets } = this.state
+        const orders = {
+            tokens: ["dea_usdc", "deus_eth", "deus", "ampl_eth", "snx", "uni"],
+            shadows: ["blue-200-shadow", "yellow-400-shadow", "blue-200-shadow", "yellow-400-shadow", "yellow-300-shadow", "blue-200-shadow"],
+        }
+        const poolsLink = <Link to="/staking" className="pool-link" > new pools</Link>
+
         return (<>
             <div>
-
+                {isOldPopup ? this.oldPoolsPupup : ""}
             </div>
             <MigrationPopup isMigPopup={isMigPopup} handleMigPupop={this.handleMigPupop} />
             <ToastContainer />
@@ -434,7 +470,9 @@ class PoolsContainer extends Component {
                 handlePopup={this.handlePopup}
                 handleClaim={this.handleClaim}
                 handleLP={this.handleLP}
+                orders={orders}
                 handleWithdraw={this.handleWithdraw}
+                poolsLink={poolsLink}
             />
             <Footer classes="social" />
         </>);

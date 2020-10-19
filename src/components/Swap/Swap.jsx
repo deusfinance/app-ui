@@ -9,7 +9,7 @@ class Swap extends Component {
         var ev = e || window.event;
         var key = ev.keyCode || ev.which;
         key = String.fromCharCode(key);
-        var regex = /[0-9\.]/;
+        var regex = /[0-9\\.]/;
         if (!regex.test(key)) {
             ev.returnValue = false;
             if (ev.preventDefault) ev.preventDefault();
@@ -62,7 +62,7 @@ class Swap extends Component {
                 <p>Price</p>
                 <div className="perDeus">
                     <div className="dollarPerDeus">{perDeus && parseFloat(perDeus).toFixed(4)} ETH per DEUS</div>
-                    <img src="img/perDeus.svg" onClick={switchOrder} style={{ marginRight: "5px", width: "23px", cursor: "pointer" }} />
+                    <img src="img/perDeus.svg" onClick={switchOrder} style={{ marginRight: "5px", width: "23px", cursor: "pointer" }} alt="perDeus" />
                 </div>
             </div>
             <div className="swap-btn" onClick={handleSwap}  >{SwapState ? <CircleToBlockLoading color="#371f43" size={'small'} ></CircleToBlockLoading> : "Swap"}</div>

@@ -580,6 +580,18 @@ footer .social li a:hover {
   color: #000000;
 }
 
+.pools-wrapper .pools .triangle-wrap .triangle .stake-here-disabled {
+  color: #848183;
+  background: linear-gradient(224.74deg, #424937 0.19%, #567763 100.22%, #334443 100.22%);
+  -webkit-box-shadow: 0px 2px 4px #ffffff;
+          box-shadow: 0px 2px 4px #ffffff;
+  cursor: default;
+}
+
+.pools-wrapper .pools .triangle-wrap .triangle .stake-here-disabled:hover {
+  color: #848183;
+}
+
 .pools-wrapper .pools .triangle-wrap .triangle .title {
   padding-top: 30px;
   color: white;
@@ -934,7 +946,7 @@ footer .social li a:hover {
 
 @media screen and (max-width: 1500px) {
   .main-wrap .pools-wrapper .pools {
-    margin-top: 250px;
+    margin-top: 300px;
   }
 }
 
@@ -946,7 +958,7 @@ footer .social li a:hover {
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   width: 700px;
-  height: 700px;
+  height: 500px;
   margin: auto;
   text-align: center;
   color: #ffffff;
@@ -972,21 +984,59 @@ footer .social li a:hover {
 }
 
 .migration-pools-wrp .title {
-  font-weight: 900;
-  font-size: 38px;
-  margin-top: 100px;
+  font-size: 25px;
+  margin-top: 10px;
+  font-family: "Segoe UI";
 }
 
 .migration-pools-wrp .p1 {
   padding: 0 80px;
   line-height: 23px;
-  margin-top: 50px;
+  margin-top: 30px;
   font-size: 16px;
 }
 
 .migration-pools-wrp .p2 {
   margin-top: 50px;
   font-size: 16px;
+}
+
+.migration-pools-wrp .btns-wrap {
+  margin-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Segoe UI";
+}
+
+.migration-pools-wrp .btns-wrap .btns {
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.migration-pools-wrp .btns-wrap .btns:hover {
+  opacity: 0.7;
+}
+
+.migration-pools-wrp .btns-wrap a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.migration-pools-wrp .btns-wrap .btns:nth-child(1) {
+  display: block;
+  margin-right: 20px;
+  border: 2px solid #00ffc8;
+}
+
+.migration-pools-wrp .btns-wrap .btns:nth-child(2) {
+  border: 2px solid #f1fc68;
 }
 
 .migration-pools-wrp .mig-btn-wrp {
@@ -1018,5 +1068,109 @@ footer .social li a:hover {
   bottom: 85px;
   left: 0;
   right: 0;
+}
+
+.old-pools-popup {
+  z-index: 10;
+  background-color: #1a101e;
+  color: #ffffff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  text-align: center;
+  width: 600px;
+  border: 4px solid #f1fc68;
+  font-family: "Segoe UI";
+}
+
+.old-pools-popup .popup-wrap {
+  padding: 40px 0;
+  position: relative;
+}
+
+.old-pools-popup .close-btn {
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  color: #ffffff;
+  padding: 0px;
+  font-size: 18px;
+  line-height: 18px;
+  margin-left: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+}
+
+.old-pools-popup .close-btn:hover {
+  opacity: 0.7;
+}
+
+.old-pools-popup .title {
+  font-size: 28px;
+  text-align: center;
+}
+
+.old-pools-popup .btns-wrap {
+  margin-top: 70px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.old-pools-popup .btns-wrap .btns {
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.old-pools-popup .btns-wrap .btns:hover {
+  opacity: 0.7;
+}
+
+.old-pools-popup .btns-wrap a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.old-pools-popup .btns-wrap .btns:nth-child(1) {
+  display: block;
+  margin-right: 20px;
+  border: 2px solid #00ffc8;
+}
+
+.old-pools-popup .btns-wrap .btns:nth-child(2) {
+  border: 2px solid #f1fc68;
+}
+
+.comming-soon {
+  font-family: "Segoe UI";
+  font-size: 20px;
+  width: 220px;
+  height: 50px;
+  margin: auto;
+  margin-top: 20px;
+  background: linear-gradient(135deg, rgba(91, 204, 189, 0.498039) 0%, rgba(97, 192, 191, 0.498039) 33.33%, rgba(85, 188, 200, 0.498039) 74.49%, rgba(105, 207, 184, 0.498039) 98.39%);
+  color: #ffffff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
 }
 /*# sourceMappingURL=pools.css.map */

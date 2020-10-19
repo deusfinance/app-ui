@@ -44,7 +44,6 @@ function isConnected() {
     return window.ethereum && window.ethereum.selectedAddress != null;
 }
 
-
 function _getWei(number) {
     const value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
     return Web3.utils.toWei(String(value), 'ether')

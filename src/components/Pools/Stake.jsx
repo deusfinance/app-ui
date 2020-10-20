@@ -65,7 +65,7 @@ class Stake extends Component {
                 <div className="title">{name.toUpperCase().replace("_", "-")} </div>
                 {/* <div className="apy" style={{ opacity: 0 }}>.</div> */}
                 <div className="apy" > {amounts.apy}% APY</div>
-                {comming_soon && <div className="comming-soon"> Coommming after conductor!</div>}
+                {comming_soon && <div className="comming-soon"> Cooommmming after conductor!</div>}
                 {!comming_soon && !isStaked && <div className={provideWrapClasses}>
                     {isSingle && <div className="single-asset" >single asset pool</div>}
                     {!isSingle && this.provideLiquidityButton(token)}

@@ -1,6 +1,8 @@
 * {
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .clear-fix {
@@ -33,7 +35,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -49,15 +51,15 @@ a {
 
 .Toastify__toast--success {
   color: #1a111d;
-  background: #00FFC8;
+  background: #00ffc8;
 }
 
 .Toastify__toast--warning {
-  background: #D2386C;
+  background: #d2386c;
 }
 
 .Toastify__toast--info {
-  background: #0072B5;
+  background: #0072b5;
 }
 
 footer {

@@ -239,6 +239,8 @@ class NewPoolsContainer extends Component {
     }
 
 
+
+
     dontCheckThisToken = (token) => {
         return token.comming_soon || !token
     }
@@ -257,9 +259,11 @@ class NewPoolsContainer extends Component {
                 this.setState({ stakes })
 
                 stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                    token.amounts.dea = getStayledNumber(amount)
                     token.rewardRatio = token.amounts.pool * config.FixedRatio / 100
-                    token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
+
+                    token.amounts.dea = parseFloat(amount)
+                    console.log(token.amounts.dea);
+                    // token.amounts.dea = getStayledNumber(parseFloat(amount) - (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
                     this.setState({ stakes })
                 })
             })
@@ -300,13 +304,19 @@ class NewPoolsContainer extends Component {
 
 
     handleUpdateDEA = () => setInterval(() => {
+        console.log("Update all dea");
         const { stakes } = this.state
         for (const tokenName in stakes) {
             const token = stakes[tokenName]
             if (this.dontCheckThisToken(token)) return
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = getStayledNumber(parseFloat(amount))
-                token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
+                // token.amounts.dea = token.amounts.newdea
+                // const dea = getStayledNumber(parseFloat(amount) - (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
+                // token.amounts.dea = dea < token.amounts.newdea ? dea : token.amounts.newdea
+                token.amounts.dea = parseFloat(amount)
+
+
+                // token.amounts.dea = getStayledNumber(parseFloat(amount))
                 this.setState({ stakes })
             })
         }

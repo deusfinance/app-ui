@@ -1,0 +1,332 @@
+@font-face {
+  font-family: "Monument Grotesk";
+  src: url("../../assets/fonts/MonumentGrotesk-Regular.eot");
+  src: url("../../assets/fonts/MonumentGrotesk-Regular.eot?#iefix") format("embedded-opentype"), url("../../assets/fonts/MonumentGrotesk-Regular.woff") format("woff"), url("../../assets/fonts/MonumentGrotesk-Regular.woff2") format("woff2"), url("../../assets/fonts/MonumentGrotesk-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Monument Grotesk";
+  src: url("../../assets/fonts/MonumentGrotesk-Bold.eot");
+  src: url("../../assets/fonts/MonumentGrotesk-Bold.eot?#iefix") format("embedded-opentype"), url("../../assets/fonts/MonumentGrotesk-Bold.woff") format("woff"), url("../../assets/fonts/MonumentGrotesk-Bold.woff2") format("woff2"), url("../../assets/fonts/MonumentGrotesk-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Monument Grotesk";
+  src: url("../../assets/fonts/MonumentGrotesk-Medium.eot");
+  src: url("../../assets/fonts/MonumentGrotesk-Medium.eot?#iefix") format("embedded-opentype"), url("../../assets/fonts/MonumentGrotesk-Medium.woff") format("woff"), url("../../assets/fonts/MonumentGrotesk-Medium.woff2") format("woff2"), url("../../assets/fonts/MonumentGrotesk-Medium.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Monument Grotesk";
+  src: url("../../assets/fonts/MonumentGrotesk-Semi-Mono.eot");
+  src: url("../../assets/fonts/MonumentGrotesk-Semi-Mono.eot?#iefix") format("embedded-opentype"), url("../../assets/fonts/MonumentGrotesk-Semi-Mono.woff") format("woff"), url("../../assets/fonts/MonumentGrotesk-Semi-Mono.woff2") format("woff2"), url("../../assets/fonts/MonumentGrotesk-Semi-Mono.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Lambok;
+  src: url("../../assets/fonts/Lombok.ttf");
+}
+
+@font-face {
+  font-family: Comfortaa;
+  src: url("../../assets/fonts/Comfortaa.ttf");
+}
+
+@font-face {
+  font-family: Segoe UI;
+  src: url("../../assets/fonts/SegoeUI.woff");
+}
+
+@font-face {
+  font-family: Roboto Medium;
+  src: url("../../assets/fonts/Roboto-Medium.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body,
+html,
+#root {
+  height: 100%;
+}
+
+.conductr-wrap {
+  height: calc(100% - 70px);
+}
+
+.conductr-wrap .bg-conductr-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: auto;
+  text-align: center;
+}
+
+.conductr-wrap .bg-conductr-wrap .bg-conductr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+}
+
+.conductr-wrap .bg-conductr-wrap .bg-conductr .bg-right,
+.conductr-wrap .bg-conductr-wrap .bg-conductr .bg-left {
+  width: 50%;
+}
+
+.conductr-wrap .bg-conductr-wrap .bg-conductr .bg-right img,
+.conductr-wrap .bg-conductr-wrap .bg-conductr .bg-left img {
+  width: 100%;
+  display: block;
+}
+
+.conductr-wrap .bg-conductr-wrap .bg-conductr .bg-left img {
+  -webkit-transform: rotateX(180deg) rotateY(180deg);
+          transform: rotateX(180deg) rotateY(180deg);
+}
+
+.conductr-wrap .contr-btns {
+  position: absolute;
+  top: 30px;
+  width: 100%;
+  padding: 0 30px;
+  height: 45px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  z-index: 2;
+}
+
+.conductr-wrap .contr-btns div {
+  height: 100%;
+  width: 345px;
+  border-radius: 8px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 21px;
+  letter-spacing: 1px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.conductr-wrap .contr-btns .connect {
+  color: #000000;
+  background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+}
+
+.conductr-wrap .contr-btns .learn-more-wrap {
+  padding: 1px;
+  background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+  color: #ffffff;
+}
+
+.conductr-wrap .contr-btns .learn-more-wrap .learn-more {
+  background-color: #000000;
+  height: 100%;
+  width: 100%;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.conductr-wrap .contr-btns .learn-more-wrap .learn-more:hover {
+  letter-spacing: 1px;
+  color: #000000;
+  background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+}
+
+.conductr-wrap .container {
+  position: absolute;
+  background-color: transparent;
+  padding: 30px;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.conductr-wrap .container .pilot-wrap {
+  position: relative;
+  margin: auto;
+  width: 550px;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.conductr-wrap .container .pilot-wrap .pilot {
+  height: 590px;
+  background-color: #242424;
+  text-align: center;
+  -webkit-filter: drop-shadow(0px 0px 60px #000000);
+          filter: drop-shadow(0px 0px 60px #000000);
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .title {
+  margin-top: 25px;
+  letter-spacing: 2px;
+  font-family: Monument Grotesk;
+  font-style: normal;
+  font-size: 48px;
+  line-height: 65px;
+  color: #ffffff;
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .title svg {
+  margin-left: 8px;
+  margin-bottom: -10px;
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .title-pilot {
+  margin-top: 10px;
+  font-family: Monument Grotesk;
+  font-style: normal;
+  font-weight: 300;
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 27px;
+  letter-spacing: 2px;
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .btn-wrap {
+  width: 450px;
+  border-radius: 8px;
+  margin: auto;
+  margin-top: 60px;
+  color: #ffffff;
+  font-family: Monument Grotesk;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .btn-wrap .buy {
+  margin-bottom: 36px;
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .btn-wrap .buy,
+.conductr-wrap .container .pilot-wrap .pilot .btn-wrap .mirror {
+  background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+  padding: 1px;
+  height: 87px;
+  border-radius: 8px;
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .btn-wrap .buy .btn-txt,
+.conductr-wrap .container .pilot-wrap .pilot .btn-wrap .mirror .btn-txt {
+  border-radius: 8px;
+  height: 100%;
+  font-size: 20px;
+  background: #000000;
+  font-family: Comfortaa;
+  font-weight: 400;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .btn-wrap .buy .btn-txt:hover,
+.conductr-wrap .container .pilot-wrap .pilot .btn-wrap .mirror .btn-txt:hover {
+  letter-spacing: 1px;
+  color: #000000;
+  background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+}
+
+.conductr-wrap .container .pilot-wrap .pilot .create-text {
+  margin-top: 70px;
+  color: #ffffff;
+  font-family: Monument Grotesk;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  letter-spacing: 3px;
+}
+
+@media screen and (max-width: 1550px) {
+  .conductr-wrap .bg-conductr-wrap {
+    padding-top: 40px;
+  }
+  .conductr-wrap .bg-conductr-wrap .bg-conductr .bg-right,
+  .conductr-wrap .bg-conductr-wrap .bg-conductr .bg-left {
+    width: 46%;
+  }
+  .conductr-wrap .container {
+    text-align: center;
+  }
+  .conductr-wrap .container .pilot-wrap .pilot {
+    height: 500px;
+    width: 520px;
+  }
+  .conductr-wrap .container .pilot-wrap .pilot .btn-wrap {
+    margin-top: 40px;
+    width: 400px;
+  }
+  .conductr-wrap .container .pilot-wrap .pilot .btn-wrap .buy,
+  .conductr-wrap .container .pilot-wrap .pilot .btn-wrap .mirror {
+    height: 70px;
+  }
+  .conductr-wrap .container .pilot-wrap .pilot .btn-wrap .buy .btn-txt,
+  .conductr-wrap .container .pilot-wrap .pilot .btn-wrap .mirror .btn-txt {
+    font-size: 18px;
+  }
+  .conductr-wrap .container .pilot-wrap .pilot .create-text {
+    margin-top: 50px;
+    font-size: 16px;
+  }
+}
+/*# sourceMappingURL=conductr.css.map */

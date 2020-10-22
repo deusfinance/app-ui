@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './conductr.scss'
+// import './conductr.scss'
 
 
 class ConductrContainer extends Component {

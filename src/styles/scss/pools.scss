@@ -397,7 +397,7 @@
                     justify-content: center;
                     cursor: pointer;
                     background: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
-                    height: 80px;
+                    height: 100px;
                     padding-top: 20px;
                     font-family: Comfortaa;
                     font-weight: 900;
@@ -534,10 +534,10 @@
                         }
 
                         .percentage {
-                            clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%, 0 77%);
+                            clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 66%);
                         }
                         .lp-deposited {
-                            clip-path: polygon(0 0, 78% 0, 107% 100%, 0 100%, 0 100%);
+                            clip-path: polygon(0 0, 81% 0, 110% 100%, 0 100%, 0 100%);
                         }
                     }
 
@@ -632,7 +632,7 @@
     .voted-message {
         margin-top: 10px;
         padding: 15px;
-        width: 315px;
+        width: 345px;
         background-color: #f1fc68;
         font-family: "Segoe UI";
         font-size: 18px;
@@ -925,4 +925,17 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
+}
+
+.shadowD {
+    animation: shadowDea 1s;
+}
+
+@keyframes shadowDea {
+    0% {
+        box-shadow: -1px 1px 8px 4px #f3ff5b;
+    }
+    100% {
+        box-shadow: none;
+    }
 }

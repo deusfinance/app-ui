@@ -1,6 +1,8 @@
 * {
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .clear-fix {
@@ -33,7 +35,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -49,15 +51,15 @@ a {
 
 .Toastify__toast--success {
   color: #1a111d;
-  background: #00FFC8;
+  background: #00ffc8;
 }
 
 .Toastify__toast--warning {
-  background: #D2386C;
+  background: #d2386c;
 }
 
 .Toastify__toast--info {
-  background: #0072B5;
+  background: #0072b5;
 }
 
 footer {
@@ -564,7 +566,7 @@ footer .social li a:hover {
           justify-content: center;
   cursor: pointer;
   background: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
-  height: 80px;
+  height: 100px;
   padding-top: 20px;
   font-family: Comfortaa;
   font-weight: 900;
@@ -739,13 +741,13 @@ footer .social li a:hover {
 }
 
 .pools-wrapper .pools .triangle-wrap .triangle .box .box-title-wrap .percentage {
-  -webkit-clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%, 0 77%);
-          clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%, 0 77%);
+  -webkit-clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 66%);
+          clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 66%);
 }
 
 .pools-wrapper .pools .triangle-wrap .triangle .box .box-title-wrap .lp-deposited {
-  -webkit-clip-path: polygon(0 0, 78% 0, 107% 100%, 0 100%, 0 100%);
-          clip-path: polygon(0 0, 78% 0, 107% 100%, 0 100%, 0 100%);
+  -webkit-clip-path: polygon(0 0, 81% 0, 110% 100%, 0 100%, 0 100%);
+          clip-path: polygon(0 0, 81% 0, 110% 100%, 0 100%, 0 100%);
 }
 
 .pools-wrapper .pools .triangle-wrap .triangle .box .box-btn {
@@ -846,7 +848,7 @@ footer .social li a:hover {
 .main-wrap .voted-message {
   margin-top: 10px;
   padding: 15px;
-  width: 315px;
+  width: 345px;
   background-color: #f1fc68;
   font-family: "Segoe UI";
   font-size: 18px;
@@ -1172,5 +1174,32 @@ footer .social li a:hover {
       -ms-flex-pack: center;
           justify-content: center;
   text-align: center;
+}
+
+.shadowD {
+  -webkit-animation: shadowDea 1s;
+          animation: shadowDea 1s;
+}
+
+@-webkit-keyframes shadowDea {
+  0% {
+    -webkit-box-shadow: -1px 1px 8px 4px #f3ff5b;
+            box-shadow: -1px 1px 8px 4px #f3ff5b;
+  }
+  100% {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
+}
+
+@keyframes shadowDea {
+  0% {
+    -webkit-box-shadow: -1px 1px 8px 4px #f3ff5b;
+            box-shadow: -1px 1px 8px 4px #f3ff5b;
+  }
+  100% {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
 }
 /*# sourceMappingURL=pools.css.map */

@@ -16,7 +16,7 @@ const NewPoolsContainer = React.lazy(() => import('./components/Pools/NewPoolsCo
 const SecurityMobile = React.lazy(() => import('./components/SecurityMobile'));
 const SwapContainer = React.lazy(() => import('./components/Swap/SwapContainer'));
 const NotFound = React.lazy(() => import('./components/NotFound'));
-const ConductrContainer = React.lazy(() => import('./components/Conductr/ConductrContainer'));
+// const ConductrContainer = React.lazy(() => import('./components/Conductr/ConductrContainer'));
 
 
 
@@ -29,7 +29,7 @@ function App() {
         <Route exact path="/pools" component={isDesktop() ? PoolsContainer : SecurityMobile} />
         <Route exact path="/staking" component={isDesktop() ? NewPoolsContainer : SecurityMobile} />
         <Route exact path="/swap" component={SwapContainer} />
-        <Route exact path="/conductr" component={ConductrContainer} />
+        {/* <Route exact path="/conductr" component={ConductrContainer} /> */}
         <Route path="/not-found" component={NotFound} />
         <Redirect exact from="/" to="/staking" />
         <Redirect to="not-found" />

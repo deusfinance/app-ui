@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import * as config from '../../config';
-import CountUp from 'react-countup';
+// import * as config from '../../config';
+// import CountUp from 'react-countup';
 import { Link } from 'react-router-dom';
 import { TransverseLoading } from 'react-loadingg';
 
@@ -49,14 +49,14 @@ class Stake extends Component {
 
     render() {
         const { token, shadowClass, handlePopup, handleClaim, handleWithdraw } = this.props
-        const { name, amounts, rewardRatio, comming_soon } = token
+        const { name, amounts, comming_soon } = token
         const isStaked = parseFloat(amounts.lp) > 0 ? true : false
         const isSingle = name.indexOf("_") === -1 ? true : false
         const provideWrapClasses = isSingle ? "single-asset-wrap" : "provide-liquidity-wrap"
         const stakedClass = isStaked ? "staked" : ""
         const shadowClasses = shadowClass ? shadowClass : "blue-200-shadow"
         const stakedText = isStaked ? "more" : "here"
-        const decimals = this.countDecimal(rewardRatio)
+        // const decimals = this.countDecimal(rewardRatio)
 
         return (<div className={`triangle-wrap  ${shadowClasses}`}>
             <div className={`triangle ${stakedClass}`}>
@@ -83,18 +83,22 @@ class Stake extends Component {
                             <div className="box-title-wrap">
                                 <div className="box-title">
                                     {token.amounts.dea === "0" || token.amounts.dea === 0 ? <div className="loading-stake"><TransverseLoading color="#ffffff" size={'small'} ></TransverseLoading></div> : <div>
-                                        <CountUp
+                                        {/* <CountUp
                                             start={parseFloat(token.amounts.dea)}
                                             end={parseFloat(token.amounts.newdea)}
                                             delay={0}
                                             duration={config.ClaimableDuration}
                                             decimals={decimals}
+                                            preserveValue={true}
                                             useEasing={false}
                                         >
                                             {({ countUpRef }) => (
                                                 <span ref={countUpRef} />
                                             )}
-                                        </CountUp> DEA claimable</div>}</div>
+                                        </CountUp> */}
+                                        {(token.amounts.dea).toFixed(this.countDecimal(token.rewardRatio)) + " "}
+                                     DEA claimable</div>}
+                                </div>
                             </div>
                             <div className="box-btn" onClick={() => handleClaim(name)}>
                                 claim DEA</div>

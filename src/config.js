@@ -1,4 +1,4 @@
-export const ClaimableDuration = 3 * 60
-export const UpdateDuration = 15
+export const ClaimableDuration = 20
+export const UpdateDuration = 20
 export const FixedRatio = 0.07936428253968254
 export const contractEndpoint = "https://etherscan.io/address"

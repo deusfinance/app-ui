@@ -908,8 +908,8 @@
 
 .comming-soon {
     font-family: "Segoe UI";
-    font-size: 20px;
-    width: 220px;
+    font-size: 18px;
+    width: 300px;
     height: 50px;
     margin: auto;
     margin-top: 20px;
@@ -925,4 +925,17 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
+}
+
+.shadow-dea {
+    animation: dea 1s forwards;
+}
+
+@keyframes dea {
+    from {
+        box-shadow: -2px 1px 10px 4px #f1fc68;
+    }
+    to {
+        box-shadow: none;
+    }
 }

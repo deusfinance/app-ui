@@ -257,9 +257,9 @@ class NewPoolsContainer extends Component {
                 this.setState({ stakes })
 
                 stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                    token.amounts.dea = getStayledNumber(amount)
+                    token.amounts.dea = parseFloat(amount)
                     token.rewardRatio = token.amounts.pool * config.FixedRatio / 100
-                    token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
+                    // token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
                     this.setState({ stakes })
                 })
             })
@@ -305,8 +305,8 @@ class NewPoolsContainer extends Component {
             const token = stakes[tokenName]
             if (this.dontCheckThisToken(token)) return
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = getStayledNumber(parseFloat(amount))
-                token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
+                token.amounts.dea = parseFloat(amount)
+                // token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
                 this.setState({ stakes })
             })
         }

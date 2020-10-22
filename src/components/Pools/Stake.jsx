@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import * as config from '../../config';
-import CountUp from 'react-countup';
+// import * as config from '../../config';
+// import CountUp from 'react-countup';
 import { Link } from 'react-router-dom';
 import { TransverseLoading } from 'react-loadingg';
 
@@ -83,7 +83,7 @@ class Stake extends Component {
                             <div className="box-title-wrap">
                                 <div className="box-title">
                                     {token.amounts.dea === "0" || token.amounts.dea === 0 ? <div className="loading-stake"><TransverseLoading color="#ffffff" size={'small'} ></TransverseLoading></div> : <div>
-                                        <CountUp
+                                        {/* <CountUp
                                             start={parseFloat(token.amounts.dea)}
                                             end={parseFloat(token.amounts.newdea)}
                                             delay={0}
@@ -94,7 +94,12 @@ class Stake extends Component {
                                             {({ countUpRef }) => (
                                                 <span ref={countUpRef} />
                                             )}
-                                        </CountUp> DEA claimable</div>}</div>
+                                    </CountUp> */}
+                                        {(token.amounts.dea).toFixed(decimals) + " "}
+                                     DEA claimable</div>}
+
+
+                                </div>
                             </div>
                             <div className="box-btn" onClick={() => handleClaim(name)}>
                                 claim DEA</div>

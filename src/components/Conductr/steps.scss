@@ -1,0 +1,113 @@
+@import "./conductr.scss";
+
+.conductr-wrap {
+    height: calc(100% - 70px);
+
+    .container {
+        .build-wrap {
+            background-color: #242424;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            .decription {
+                position: relative;
+
+                width: 25%;
+                // max-width: 25%;
+                height: 100%;
+                background: #1c1c1c;
+                color: #ffffff;
+                font-family: Monument Grotesk;
+                font-weight: 600;
+                text-align: left;
+                padding: 0 40px;
+                .step-number {
+                    font-size: 15px;
+                    line-height: 20px;
+                    margin-top: 40px;
+                    color: rgba(255, 255, 255, 0.5);
+                    text-transform: uppercase;
+                }
+                .step-title {
+                    margin-top: 10px;
+                    font-size: 25px;
+                    text-transform: uppercase;
+                }
+                .step-info {
+                    margin-top: 30px;
+                    pre {
+                        font-family: Monument Grotesk;
+                        font-weight: 600;
+                        white-space: pre-wrap; /* Since CSS 2.1 */
+                        white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+                        white-space: -pre-wrap; /* Opera 4-6 */
+                        white-space: -o-pre-wrap; /* Opera 7 */
+                        word-wrap: break-word; /* Internet Explorer 5.5+ */
+                    }
+                }
+                .bar-wrap {
+                    height: 70px;
+                    position: absolute;
+                    bottom: 10px;
+                    width: calc(100% - 80px);
+
+                    .bar-chart-wrap {
+                        height: 50%;
+                        background: linear-gradient(90.11deg, #69c9ce 1.13%, #d5e061 98.54%);
+                        border-radius: 3px;
+                        padding: 2px;
+                        display: flex;
+                        .bar-chart-black {
+                            height: 100%;
+                            width: 40%;
+                            background-color: #000000;
+                            border-top-right-radius: 3px;
+                            border-bottom-right-radius: 3px;
+                        }
+                        .bar-chart-light {
+                            height: 100%;
+                            width: 60%;
+                            font-family: Monument Grotesk;
+                            font-weight: 600;
+                            font-size: 20px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            color: #ffffff;
+                            background-color: transparent;
+                            border-top-left-radius: 3px;
+                            border-bottom-left-radius: 3px;
+                            padding-left: 4px;
+                        }
+                    }
+                    .bar-text {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+            }
+            .tools {
+                width: 75%;
+                height: 100%;
+                background: #242424;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1550px) {
+    .conductr-wrap {
+        .bg-conductr-wrap {
+            padding-top: 0;
+        }
+        .container {
+            padding: 15px;
+            .build-wrap {
+                .decription {
+                    width: 30%;
+                }
+            }
+        }
+    }
+}

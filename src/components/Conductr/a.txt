@@ -1,0 +1,16 @@
+Use the search bar to find desired assets 
+                                    that you want to mirror.
+
+
+                                    You can select currently two different assets.
+
+
+
+                                    In the v0.1 Pilot we are offering
+                                        - TSLA
+                                        - QQQ
+                                        - inverted TSLA
+                                        - inverted QQQ
+
+
+                                        500 + more will be added in december

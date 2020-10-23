@@ -12,7 +12,7 @@ html,
 }
 
 .conductr-wrap {
-    height: calc(100% - 70px);
+    height: calc(100% - 110px);
 
     .bg-conductr-wrap {
         display: flex;
@@ -30,7 +30,7 @@ html,
 
             .bg-right,
             .bg-left {
-                width: 50%;
+                // width: 50%;
                 img {
                     width: 100%;
                     display: block;
@@ -47,7 +47,7 @@ html,
 
     .contr-btns {
         position: absolute;
-        top: 30px;
+        top: 20px;
         width: 100%;
         padding: 0 30px;
         height: 45px;
@@ -119,7 +119,7 @@ html,
                     // border: 2px solid red;
                     letter-spacing: 2px;
                     font-family: Monument Grotesk;
-                    font-style: normal;
+                    font-weight: 600;
                     // font-weight: 100;
                     font-size: 48px;
                     line-height: 65px;
@@ -132,12 +132,11 @@ html,
                 .title-pilot {
                     margin-top: 10px;
                     font-family: Monument Grotesk;
-                    font-style: normal;
-                    font-weight: 300;
+                    font-weight: 600;
                     color: #ffffff;
                     font-size: 20px;
                     line-height: 27px;
-                    letter-spacing: 2px;
+                    letter-spacing: 0px;
                 }
                 .btn-wrap {
                     width: 450px;
@@ -155,6 +154,8 @@ html,
                     }
                     .buy,
                     .mirror {
+                        display: block;
+                        color: #ffffff;
                         background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
                         padding: 1px;
                         height: 87px;
@@ -165,8 +166,12 @@ html,
                             font-size: 20px;
                             // line-height: 4;
                             background: #000000;
-                            font-family: Comfortaa;
-                            font-weight: 400;
+                            font-family: Monument Grotesk;
+                            font-style: normal;
+
+                            font-weight: 600;
+                            letter-spacing: 0px;
+
                             display: flex;
                             justify-content: center;
                             flex-direction: column;
@@ -177,8 +182,6 @@ html,
                                 color: #000000;
                                 background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
                             }
-                            div {
-                            }
                         }
                     }
                 }
@@ -187,9 +190,9 @@ html,
                     color: #ffffff;
                     font-family: Monument Grotesk;
                     font-style: normal;
-                    font-weight: 300;
+                    font-weight: 600;
                     font-size: 18px;
-                    letter-spacing: 3px;
+                    letter-spacing: 0px;
                 }
             }
         }

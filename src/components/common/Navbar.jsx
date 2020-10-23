@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { isDesktop } from '../../utils/utils'
 import '../../styles/scss/navbar.css';
 
+
 const Navbar = () => {
 
 
@@ -10,7 +11,7 @@ const Navbar = () => {
 
     const navClass = isDesktop() ? "right" : "nav-mobile"
 
-    let Navs = [{ id: "pools", text: <span className="deus-sw" > <span className="swap">Staking</span></span>, path: "/staking" }, { id: "exchange", text: <span className="deus-sw" > <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "https://deus.finance", out: true },]
+    let Navs = [{ id: "conductr", text: <span className="deus-sw" > <span className="swap">Conductr</span></span>, path: "/conductr" }, { id: "pools", text: <span className="deus-sw" > <span className="swap">Staking</span></span>, path: "/staking" }, { id: "exchange", text: <span className="deus-sw" > <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "https://deus.finance", out: true },]
     // let Navs = [{ id: "pools", text: "LP-Pools", path: "/pools" }, { id: "home", text: "Home", path: "/home" },]
     if (!isDesktop()) {
         Navs = [{ id: "exchange", text: <span className="deus-sw" > <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "https://deus.finance", out: true },]
@@ -21,7 +22,7 @@ const Navbar = () => {
             <ul className="left-ul">
                 <li>
                     <div className="logo">
-                        <img className="vertical-center" src="img/favicon/60x60.png" alt="deusfinance" />
+                        <img className="vertical-center" src={`${process.env.PUBLIC_URL}/img/favicon/60x60.png`} alt="deusfinance" />
                     </div>
                 </li>
                 <li><span className="deus" >DEUS <span className="finance">finance</span></span></li>

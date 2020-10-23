@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-// import './conductr.scss'
+import './conductr.scss'
+import { Link } from 'react-router-dom';
 
 
 class ConductrContainer extends Component {
@@ -57,8 +58,8 @@ class ConductrContainer extends Component {
                             </div>
                             <div className="title-pilot">pilot</div>
                             <div className="btn-wrap">
-                                <div className="buy"> <div className="btn-txt"><div>Buy mirrored asset</div></div> </div>
-                                <div className="mirror"><div className="btn-txt" >Mirror an asset</div></div>
+                                <Link to="conductr/buy" className="buy"> <div className="btn-txt">Buy mirrored asset</div></Link>
+                                <Link to="conductr/build" className="mirror"><div className="btn-txt" >Mirror an asset</div></Link>
                             </div>
                             <div className="create-text">Create your own Registrar with a few clicks</div>
                         </div>

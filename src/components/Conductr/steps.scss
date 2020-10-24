@@ -1,7 +1,8 @@
 @import "./conductr.scss";
 
 .conductr-wrap {
-    height: calc(100% - 70px);
+    // height: calc(100% - 70px) !important;
+    min-height: calc(100% - 70px) !important;
 
     .container {
         .build-wrap {
@@ -36,6 +37,7 @@
                 }
                 .step-info {
                     margin-top: 30px;
+                    transition: all 0.5s;
                     pre {
                         font-family: Monument Grotesk;
                         font-weight: 600;
@@ -91,6 +93,165 @@
                 width: 75%;
                 height: 100%;
                 background: #242424;
+                color: #ffffff;
+
+                .note {
+                    padding: 0 65px;
+                    margin-top: 47px;
+                    font-family: Monument Grotesk;
+                    font-weight: 600;
+                    font-size: 18px;
+                    text-align: left;
+                    margin-bottom: 14px;
+                }
+                .symbol-wrap {
+                    height: 65px;
+                    padding: 0 65px;
+                    width: 100%;
+
+                    .symbol {
+                        color: #ffffff;
+
+                        outline: none;
+                        background-color: #1c1c1c;
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        padding: 0 20px;
+                        padding-top: 5px;
+                        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                        border-radius: 10px;
+                        border: none;
+                        font-family: Monument Grotesk;
+                        font-weight: 600;
+                        font-size: 25px;
+                    }
+                }
+                .pilot-wrap-step1 {
+                    width: 100%;
+                    .title {
+                        margin-top: 25px;
+                        // border: 2px solid red;
+                        letter-spacing: 2px;
+                        font-family: Monument Grotesk;
+                        font-weight: 600;
+                        // font-weight: 100;
+                        font-size: 48px;
+                        line-height: 65px;
+                        color: #ffffff;
+                        img {
+                            margin-left: -16px;
+                            margin-bottom: -10px;
+                        }
+                    }
+                    .title-pilot {
+                        margin-top: 0px;
+                        font-family: Monument Grotesk;
+                        font-weight: 600;
+                        color: #ffffff;
+                        font-size: 20px;
+                        line-height: 27px;
+                        letter-spacing: 0px;
+                    }
+                }
+                .search-wrap {
+                    width: 100%;
+                    height: 400px;
+                    min-height: 400px;
+                    padding: 0 65px;
+                    margin-top: 1px;
+                    .search-output {
+                        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                        width: 100%;
+                        height: 100%;
+                        overflow-y: auto;
+
+                        border-radius: 10px;
+                        // background: #0d0d0d;
+                        padding: 0 23px 0 8px;
+                        .search-item {
+                            display: flex;
+                            justify-content: space-between;
+                            font-family: Monument Grotesk;
+                            font-weight: 600;
+                            font-size: 20px;
+                            height: 75px;
+                            // max-height: 75px;
+                            border-bottom: 2px solid #e3e3e3;
+                            padding-left: 10px;
+                            .search-left {
+                                width: 90%;
+                                .search-top {
+                                    display: flex;
+                                    padding: 8px 0 1px 0;
+                                    justify-content: space-between;
+                                    .name {
+                                        span:nth-child(1) {
+                                            color: #ffffff;
+                                            font-size: 25px;
+                                        }
+                                        span:nth-child(2) {
+                                            color: rgba(255, 255, 255, 0.5);
+                                            font-size: 15px;
+                                        }
+                                    }
+                                }
+                                .search-bottom {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    font-size: 15px;
+                                    .p1 {
+                                        color: rgba(255, 255, 255, 0.5);
+                                    }
+                                    .profit-zero {
+                                        color: #ffffff;
+                                    }
+                                    .profit-up {
+                                        color: #33ff47;
+                                    }
+                                    .profit-down {
+                                        color: #ff0000;
+                                    }
+                                }
+                            }
+                            .search-right {
+                                width: 10%;
+                                text-align: center;
+                                display: flex;
+                                justify-content: center;
+                                flex-direction: column;
+                                // border: 1px solid red;
+                                .add-btn-wrap {
+                                    margin: auto;
+                                    height: 35px;
+                                    width: 78px;
+                                    border-radius: 3px;
+                                    padding: 1px;
+                                    background: linear-gradient(90.11deg, #69c9ce 1.13%, #d5e061 98.54%);
+                                    box-shadow: 0px 2px 4px rgba(100, 100, 100, 0.498039);
+                                    .add-btn {
+                                        background: #242424;
+                                        border-radius: 3px;
+                                        line-height: 30px;
+                                        height: 100%;
+                                        color: #ffffff;
+                                        font-family: Monument Grotesk;
+                                        font-size: 18px;
+                                        font-weight: 600;
+                                        transition: all 0.3s;
+                                        cursor: pointer;
+                                        &:hover {
+                                            color: #000000;
+                                            background: transparent;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -110,4 +271,22 @@
             }
         }
     }
+}
+
+.search-output::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.search-output::-webkit-scrollbar {
+    width: 5px;
+    height: 10px;
+    background-color: transparent;
+}
+
+.search-output::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #cdd477;
 }

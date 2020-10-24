@@ -90,8 +90,9 @@ class BuildRegistrar extends Component {
 
     render() {
         const { query, assets, isFocus } = this.state
+        const lowerQuery = query.toLocaleLowerCase()
         const filterdAssets = assets.filter(s => {
-            if (s.real_name.includes(query) || s.name.includes(query)) {
+            if (s.real_name.toLocaleLowerCase().includes(lowerQuery) || s.inc.toLocaleLowerCase().includes(lowerQuery) || s.name.toLocaleLowerCase().includes(lowerQuery)) {
                 return true
             }
             return false
@@ -209,7 +210,27 @@ You can select as many different assets as you wish and change their allocation.
                                     </div>
                                 </div>}
 
+                                <div className="stepper-wrap step1" >
 
+                                    <div className="stepper ">1. build</div>
+
+                                    <div className="spanner">
+                                        <div className="circle left-circle "></div>
+                                        <div className="line"></div>
+                                        <div className="circle right-circle"></div>
+                                    </div>
+
+                                    <div className="stepper ">2. conduct</div>
+
+                                    <div className="spanner">
+                                        <div className="circle left-circle"></div>
+                                        <div className="line"></div>
+                                        <div className="circle right-circle"></div>
+                                    </div>
+
+                                    <div className="stepper ">3. buy</div>
+
+                                </div>
 
                             </div>
                         </div>

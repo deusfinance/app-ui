@@ -134,7 +134,7 @@
                 height: 100%;
                 background: #242424;
                 color: #ffffff;
-
+                position: relative;
                 .note {
                     padding: 0 65px;
                     margin-top: 47px;
@@ -293,6 +293,74 @@
                     }
                 }
             }
+
+            .stepper-wrap {
+                position: absolute;
+                bottom: 0;
+                border-top: 1px solid #555555;
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+                height: 40px;
+                align-items: center;
+
+                .stepper {
+                    font-family: Monument Grotesk;
+                    font-size: 15px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    color: #ffffff;
+                }
+                .spanner {
+                    display: flex;
+                    justify-content: space-between;
+                    .circle {
+                        background-color: #ffffff;
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                    }
+                    .line {
+                        margin-top: 4px;
+                        height: 2px;
+                        width: 250px;
+                        background-color: #ffffff;
+                    }
+                }
+
+                &.step1 {
+                    div:nth-child(n + 2) {
+                        color: #555555;
+                        &.spanner {
+                            * {
+                                background-color: #555555;
+                            }
+                        }
+                    }
+                    div:nth-child(2) {
+                        .left-circle {
+                            background-color: #ffffff;
+                        }
+                    }
+                }
+                &.step2 {
+                    div:nth-child(n + 4) {
+                        color: #555555;
+                        &.spanner {
+                            * {
+                                background-color: #555555;
+                            }
+                        }
+                    }
+                    div:nth-child(4) {
+                        .left-circle {
+                            background-color: #ffffff;
+                        }
+                    }
+                }
+                &.step3 {
+                }
+            }
         }
     }
 }
@@ -307,6 +375,20 @@
             .build-wrap {
                 .decription {
                     width: 30%;
+                }
+                .tools {
+                    .search-wrap {
+                        .search-output {
+                            .search-item {
+                                .search-left {
+                                    width: 88%;
+                                }
+                                .search-right {
+                                    width: 12%;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

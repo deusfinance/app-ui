@@ -96,6 +96,7 @@ class BuildRegistrar extends Component {
             }
             return false
         })
+        const seachClasses = filterdAssets.length < 5 ? "over-flow-y-hidden" : "over-flow-y-auto"
         return (<>
 
             <div className="conductr-wrap">
@@ -177,7 +178,7 @@ You can select as many different assets as you wish and change their allocation.
                                 </div>
 
                                 {isFocus && <div className="search-wrap">
-                                    <div className="search-output">
+                                    <div className={`search-output ${seachClasses}`}>
                                         {
                                             filterdAssets.map(s => {
                                                 let profit = this.computeProfit(s.price, s.new_price)

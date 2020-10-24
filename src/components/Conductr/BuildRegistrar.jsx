@@ -34,6 +34,34 @@ class BuildRegistrar extends Component {
                 price: "120.92",
                 new_price: "145.37",
             },
+            {
+                name: "tsla",
+                real_name: "U.S.: NASDAQ",
+                inc: "TESLA Inc.",
+                price: "448.16",
+                new_price: "468.18",
+            },
+            {
+                name: "tsla inverted ",
+                real_name: "U.S.: NASDAQ",
+                inc: "TESLA Inc.",
+                price: "230.16",
+                new_price: "220.73",
+            },
+            {
+                name: "qqq",
+                real_name: "U.S.: NASDAQ",
+                inc: "TESLA Inc.",
+                price: "100.92",
+                new_price: "100.92",
+            },
+            {
+                name: "qqq inverted",
+                real_name: "U.S.: NASDAQ",
+                inc: "TESLA Inc.",
+                price: "120.92",
+                new_price: "145.37",
+            },
         ]
     }
 
@@ -133,9 +161,9 @@ You can select as many different assets as you wish and change their allocation.
                                     </div>
                                 </div>
 
-                                <div className="note"> Note: for pilot puroses we’re only supporting tsla +/- and qqqq +/-
+                                <div className="note"> {isFocus ? `Note: for pilot puroses we’re only supporting tsla +/- and qqqq +/-` : <span style={{ opacity: 0 }}>empty</span>}
 
-                        </div>
+                                </div>
 
                                 <div className="symbol-wrap">
                                     <input

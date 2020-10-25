@@ -30,8 +30,8 @@ function App() {
         <Route exact path="/pools" component={isDesktop() ? PoolsContainer : SecurityMobile} />
         <Route exact path="/staking" component={isDesktop() ? NewPoolsContainer : SecurityMobile} />
         <Route exact path="/swap" component={SwapContainer} />
-        <Route exact path="/conductr" component={ConductrContainer} />
-        <Route exact path="/conductr/build" component={BuildRegistrar} />
+        <Route path="/conductr/build" component={BuildRegistrar} />
+        <Route path="/conductr" component={ConductrContainer} />
         <Route path="/not-found" component={NotFound} />
         <Redirect exact from="/" to="/staking" />
         <Redirect to="not-found" />

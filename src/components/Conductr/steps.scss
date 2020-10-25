@@ -131,12 +131,12 @@
             }
             .tools {
                 width: 75%;
+                padding: 0 65px;
                 height: 100%;
                 background: #242424;
                 color: #ffffff;
                 position: relative;
                 .note {
-                    padding: 0 65px;
                     margin-top: 47px;
                     font-family: Monument Grotesk;
                     font-weight: 600;
@@ -146,7 +146,6 @@
                 }
                 .symbol-wrap {
                     height: 65px;
-                    padding: 0 65px;
                     width: 100%;
 
                     .symbol {
@@ -196,20 +195,74 @@
                         letter-spacing: 0px;
                     }
                 }
+                .addbox-wrap {
+                    width: 100%;
+                    height: 465px;
+                    min-height: 465px;
+                    .addbox-output {
+                        padding: 0 18px;
+                        text-align: left;
+                        border-radius: 10px;
+                        height: 100%;
+                        width: 100%;
+                        background: #0d0d0d;
+                        font-family: Monument Grotesk;
+                        font-weight: 600;
+                        .name-asset {
+                            font-size: 25px;
+                            color: #ffffff;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            height: 70px;
+                            border-bottom: 1px solid #e3e3e3;
+                        }
+                        .allocation {
+                            height: 400px;
+                            width: 100%;
+                            // margin: 0 15px;
+                            padding: 0 15px;
+                            padding-top: 20px;
+                            height: 340px;
+                            display: flex;
+                            .left-allocation {
+                                width: 60%;
+                                border-right: 1px solid #e3e3e3;
+                                .added-list-wrap {
+                                    width: 90%;
+                                    .top {
+                                        display: flex;
+                                        justify-content: space-between;
+                                    }
+                                }
+                            }
+                            .right-allocation {
+                                width: 40%;
+                                background-color: antiquewhite;
+                            }
+                        }
+                        .btns-wrap {
+                            .add-btn-wrap {
+                                width: 200px;
+                                height: 35px;
+                                .add-btn {
+                                }
+                            }
+                        }
+                    }
+                }
+
                 .search-wrap {
                     width: 100%;
                     height: 400px;
                     min-height: 400px;
-                    padding: 0 65px;
                     margin-top: 1px;
                     .search-output {
                         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
                         width: 100%;
                         height: 100%;
-                        // overflow-y: auto;
                         animation: height-up 0.3s forwards;
                         border-radius: 10px;
-                        // background: #0d0d0d;
                         padding: 0 23px 0 8px;
                         .search-item {
                             display: flex;
@@ -217,15 +270,15 @@
                             font-family: Monument Grotesk;
                             font-weight: 600;
                             font-size: 20px;
-                            height: 75px;
-                            // max-height: 75px;
+                            height: 85px;
                             border-bottom: 2px solid #e3e3e3;
                             padding-left: 10px;
                             .search-left {
                                 width: 90%;
+                                padding-right: 10px;
                                 .search-top {
                                     display: flex;
-                                    padding: 8px 0 1px 0;
+                                    padding: 12px 0 1px 0;
                                     justify-content: space-between;
                                     .name {
                                         span:nth-child(1) {
@@ -241,6 +294,7 @@
                                 .search-bottom {
                                     display: flex;
                                     justify-content: space-between;
+                                    margin-top: 3px;
                                     font-size: 15px;
                                     .p1 {
                                         color: rgba(255, 255, 255, 0.5);
@@ -262,6 +316,7 @@
                                 display: flex;
                                 justify-content: center;
                                 flex-direction: column;
+
                                 // border: 1px solid red;
                                 .add-btn-wrap {
                                     margin: auto;
@@ -303,7 +358,7 @@
                 width: 100%;
                 height: 40px;
                 align-items: center;
-
+                margin-left: -65px;
                 .stepper {
                     font-family: Monument Grotesk;
                     font-size: 15px;
@@ -409,4 +464,31 @@
     border-radius: 10px;
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #cdd477;
+}
+
+.grad-wrap {
+    background: linear-gradient(90.11deg, #69c9ce 1.13%, #d5e061 98.54%);
+    padding: 1px;
+    border-radius: 3px;
+    color: #ffffff;
+    text-align: center;
+    font-family: Monument Grotesk;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    .grad {
+        padding-bottom: 2px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background: #111111;
+        border-radius: 3px;
+        width: 100%;
+        height: 100%;
+        transition: all 0.35s;
+        &:hover {
+            background-color: transparent;
+            color: #000000;
+        }
+    }
 }

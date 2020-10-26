@@ -333,7 +333,7 @@ class PoolsContainer extends Component {
     }
 
     isMigToken = (stakedToken) => {
-        return stakedToken === "ampl_eth" || stakedToken === "uni" || stakedToken === "snx" ? true : false
+        return stakedToken === "ampl_eth" || stakedToken === "deus_eth" || stakedToken === "dea_usdc" || stakedToken === "uni" || stakedToken === "snx" ? true : false
     }
 
 

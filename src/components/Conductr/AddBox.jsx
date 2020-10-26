@@ -50,6 +50,17 @@ class SearchBox extends Component {
                                     <p>assets</p>
                                     <p>allocation</p>
                                 </div>
+                                <div className="allocation-list">
+                                    <div className="allocation-item">
+                                        <div className="name">tsel</div>
+                                        <div className="p-line-wrap">
+                                            <div className="p-line"></div>
+                                        </div>
+                                        <div className="p-number grad-wrap">
+                                            <div className=" grad">100</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="right-allocation"></div>

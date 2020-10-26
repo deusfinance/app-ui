@@ -37,8 +37,8 @@ class Pools extends Component {
     render() {
         const { isConnected, poolsLink, poolVersion } = this.props
         const { scrollRef, showAddress, handleConnectWallet, handleScroller, markets } = this.props
-        const over_flow_hidden = poolVersion === "new" ? "overflow-hidden" : ""
-        return (isConnected && <div className={`main-wrap  ${over_flow_hidden}`} id="main-wrap" ref={scrollRef} onClick={handleScroller}>
+        const over_flow = poolVersion === "new" ? "hidden" : "auto"
+        return (isConnected && <div className={`main-wrap  `} id="main-wrap" style={{ overflowX: over_flow }} ref={scrollRef} onClick={handleScroller}>
 
             <div className="right-btn">
                 <div className="pools-btn beta-btn ">We are currently in BETA</div>

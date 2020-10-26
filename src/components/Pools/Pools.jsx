@@ -12,13 +12,16 @@ class Pools extends Component {
 
 
 
-    stakeProvider = (stakedTokens) => {
+    stakeProvider = (stakedTokens, poolVersion) => {
         const { tokens, shadows } = this.orders
         const { handleClaim, handleLP, handlePopup, handleWithdraw, stakes } = this.props
+        console.log(poolVersion);
+
         return stakedTokens.map((stakedTokenIndex, key) => {
 
             if (stakes[tokens[stakedTokenIndex - 1]]) {
                 return <Stake key={key}
+
                     shadowClass={shadows[stakedTokenIndex - 1]}
                     token={stakes[tokens[stakedTokenIndex - 1]]}
                     handlePopup={handlePopup}
@@ -26,14 +29,16 @@ class Pools extends Component {
                     handleLP={handleLP}
                     handleWithdraw={handleWithdraw} />
             }
-            return <div key={key} className={`triangle-wrap ${shadows[stakedTokenIndex - 1]}`}><div className="triangle staked"></div></div>
+            const hidden = tokens[stakedTokenIndex] != "EMPTY1" ? "hidden" : ""
+            return <div key={key} className={`triangle-wrap  ${shadows[stakedTokenIndex - 1]} ${hidden}`}><div className="triangle staked"></div></div>
         })
     }
 
     render() {
-        const { isConnected, poolsLink } = this.props
+        const { isConnected, poolsLink, poolVersion } = this.props
         const { scrollRef, showAddress, handleConnectWallet, handleScroller, markets } = this.props
-        return (isConnected && <div className="main-wrap  " id="main-wrap" ref={scrollRef} onClick={handleScroller}>
+        const over_flow_hidden = poolVersion === "new" ? "overflow-hidden" : ""
+        return (isConnected && <div className={`main-wrap  ${over_flow_hidden}`} id="main-wrap" ref={scrollRef} onClick={handleScroller}>
 
             <div className="right-btn">
                 <div className="pools-btn beta-btn ">We are currently in BETA</div>
@@ -100,7 +105,7 @@ class Pools extends Component {
                             </div>
                         </div>
                         <div className="row-2">
-                            {this.stakeProvider([4, 5, 6])}
+                            {this.stakeProvider([4, 5, 6], poolVersion)}
                         </div>
                     </div>
                 </div>

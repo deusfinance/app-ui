@@ -19,9 +19,9 @@ if (window.ethereum) {
 }
 
 function connectWallet(initFunction) {
-    return window.ethereum.enable().thne(res => {
+    return window.ethereum.enable().then(res => {
         if (window.ethereum && window.ethereum.selectedAddress) {
-            initFunction();
+            // initFunction();
         }
     });
 }

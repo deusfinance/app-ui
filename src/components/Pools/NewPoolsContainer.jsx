@@ -38,40 +38,6 @@ class NewPoolsContainer extends Component {
             fully_duilted: "",
         },
         stakes: {
-            dea_usdc: {
-                name: "dea_usdc",
-                amounts: {
-                    dea: 0,
-                    newdea: 0,
-                    apy: 0,
-                    lp: 0,
-                    pool: 0,
-                    currLp: 0,
-                    allowances: 0,
-                },
-                coin_name: "UNI-V2-DEA-USDC",
-                stakingLink: "0x2e3394d3CdcbaAF2bb85Fe9aB4c79CeF4d28b216",
-                liqLink: "https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
-                rewardRatio: 0,
-            },
-
-            deus_eth: {
-                name: "deus_eth",
-                amounts: {
-                    dea: 0,
-                    newdea: 0,
-                    apy: 0,
-                    lp: 0,
-                    pool: 0,
-                    currLp: 0,
-                    allowances: 0,
-                },
-                coin_name: "UNI-V2-DEUS/ETH",
-                stakingLink: "0x19945547eC934bBD8C48fA69bC78152C468CCA7a",
-                liqLink: "https://app.uniswap.org/#/add/ETH/0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
-                rewardRatio: 0,
-            },
-
             deus: {
                 name: "deus",
                 amounts: {
@@ -117,10 +83,11 @@ class NewPoolsContainer extends Component {
                     currLp: 0,
                     allowances: 0,
                 },
-                comming_soon: true,
-                coin_name: "",
-                stakingLink: "0x1B043BbB372452d71503E6603Dd33b93271Bfec0",
-                liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
+                // comming_soon: true,
+                coin_name: "DEA",
+                // isDeusLink: true,
+                stakingLink: "0x1D17d697cAAffE53bf3bFdE761c90D61F6ebdc41",
+                liqLink: "https://app.uniswap.org/#/swap?inputCurrency=0x3b62f3820e0b035cc4ad602dece6d796bc325325&outputCurrency=0x80ab141f324c3d6f2b18b030f1c4e95d4d658778",
                 rewardRatio: 0,
             },
             // uni: {
@@ -418,7 +385,7 @@ class NewPoolsContainer extends Component {
     render() {
         const { isConnected, stakes, staking, showPopup, isMigPopup, markets } = this.state
         const orders = {
-            tokens: ["deus_dea", "deus_eth", "dea_usdc", "deus", "EMPTY", "dea"],
+            tokens: ["deus_dea", "deus", "dea", "EMPTY1", "EMPTY", "EMPTY1"],
             // tokens: ["deus_dea", "deus_eth", "dea_usdc", "deus", null, "dea"],
             shadows: ["blue-200-shadow", "yellow-400-shadow", "blue-200-shadow", "yellow-400-shadow", "yellow-300-shadow", "blue-200-shadow"],
         }
@@ -455,7 +422,7 @@ class NewPoolsContainer extends Component {
                 handleWithdraw={this.handleWithdraw}
                 orders={orders}
                 poolsLink={poolsLink}
-
+                poolVersion={"new"}
 
             />
             <Footer classes="social" />

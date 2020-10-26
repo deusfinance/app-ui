@@ -147,6 +147,10 @@ footer .social li a:hover {
   src: url("../../assets/fonts/Roboto-Medium.ttf");
 }
 
+.overflow-hidden {
+  overflow-y: hidden;
+}
+
 .yellow-400-shadow {
   -webkit-filter: drop-shadow(0px 0px 45px #e5f571);
           filter: drop-shadow(0px 0px 45px #e5f571);

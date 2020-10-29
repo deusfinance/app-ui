@@ -4,15 +4,18 @@ nav {
   background: #000;
   border-bottom: 1px solid #808080;
   color: #ffffff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  padding: 0 16px;
 }
 
-nav .left {
+nav .left-nav-wrap {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -24,10 +27,11 @@ nav .left {
   font-family: Comfortaa;
   line-height: 40px;
   list-style-type: none;
-  padding: 15px 0;
+  text-decoration: none;
 }
 
-nav .left .left-ul {
+nav .left-nav-wrap .left-nav {
+  text-decoration: none;
   margin-right: 10px;
   font-size: 20px;
   font-family: Comfortaa;
@@ -40,7 +44,7 @@ nav .left .left-ul {
       justify-content: space-around;
 }
 
-nav .left .left-ul li {
+nav .left-nav-wrap .left-nav li {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -54,14 +58,15 @@ nav .left .left-ul li {
   line-height: 40px;
 }
 
-nav .left .deus {
-  margin-left: 20px;
+nav .left-nav-wrap .deus {
+  margin-left: 15px;
   font-family: Lambok;
-  font-size: 36px;
+  font-size: 31px;
+  font-weight: 600;
 }
 
-nav .left .finance {
-  font-size: 30px;
+nav .left-nav-wrap .finance {
+  font-size: 24px;
   margin-left: 2px;
   font-family: Comfortaa;
   font-weight: 500;
@@ -105,42 +110,233 @@ nav .nav-mobile ul li .active {
   border-bottom: 2px solid #808080;
 }
 
-nav .right ul {
+nav .right-nav ul {
   margin-right: 10px;
   font-size: 20px;
   font-family: Comfortaa;
-  line-height: 40px;
   list-style-type: none;
-  padding: 15px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-weight: 400;
 }
 
-nav .right ul a {
+nav .right-nav ul a {
+  display: block;
   text-decoration: none;
   color: #ffffff;
-  padding: 2px 20px;
+  padding: 5px 20px;
 }
 
-nav .right ul a .deus-sw {
-  font-family: Lambok;
-  font-weight: 600;
+nav .right-nav ul a .nav-item-top {
+  font-size: 20px;
 }
 
-nav .right ul a .deus-sw .swap {
-  font-family: Comfortaa;
-  font-size: 22px;
+nav .right-nav ul a .nav-item-bottom {
+  margin-top: -1px;
+  font-size: 12px;
 }
 
-nav .right ul li {
+nav .right-nav ul a .deus-sw .swap {
+  font-size: 20px;
+}
+
+nav .right-nav ul li {
   display: inline-block;
-  margin: 0 10px;
+  margin-right: 10px;
   text-align: center;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
 }
 
-nav .right ul li .active {
+nav .right-nav ul li .active {
   border-bottom: 2px solid #808080;
+}
+
+nav .right-nav ul li:hover {
+  opacity: 0.7;
 }
 
 .disabled-link {
   pointer-events: none;
+}
+
+.logo {
+  width: 95%;
+  cursor: pointer;
+}
+
+.logo:hover {
+  -webkit-filter: brightness(2);
+          filter: brightness(2);
+}
+
+.dea-logo {
+  height: 60px;
+  margin-left: 50px;
+}
+
+.menu-mobile {
+  display: none;
+}
+
+.menu-mobile-icon {
+  display: none;
+}
+
+#mobile-menu {
+  display: none;
+}
+
+@media screen and (max-width: 1150px) {
+  body {
+    overflow-x: hidden;
+  }
+  nav {
+    overflow: hidden;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  nav .right-nav {
+    display: none;
+  }
+  .open-menu {
+    z-index: 5;
+    width: 70%;
+    background-color: #000000;
+    margin-right: 0;
+  }
+  #mobile-menu {
+    display: block;
+    position: fixed;
+    right: 0;
+    top: 0px;
+    width: 250px;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all;
+    height: 100%;
+  }
+  #mobile-menu #mobile-menu {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+  }
+  #mobile-menu .icon-close svg {
+    width: 35px;
+    margin: 17px;
+    margin-bottom: 18px;
+    fill: #ffffff;
+    text-align: right;
+  }
+  #mobile-menu ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+  }
+  #mobile-menu ul .active {
+    background: #232833;
+  }
+  #mobile-menu ul li {
+    text-align: center;
+    display: block;
+    font-weight: 600;
+    border-bottom: 1px solid #808080;
+    font-family: Comfortaa;
+    font-size: 19px;
+  }
+  #mobile-menu ul li a {
+    margin: auto;
+    display: block;
+    padding: 25px 5px;
+    color: #ffffff;
+    text-decoration: none;
+  }
+  #mobile-menu ul .icon-close {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+  #mobile-menu ul .icon-close .menu-title {
+    color: #cac8c8;
+    padding: 20px;
+    font-family: Comfortaa;
+    font-size: 25px;
+    font-weight: 700;
+  }
+  .close-menu {
+    margin-right: -300px;
+  }
+  .menu-mobile-icon {
+    display: block;
+    width: 35px;
+    height: 35px;
+  }
+  .menu-mobile-icon svg {
+    fill: #ffffff;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  nav {
+    margin: 0;
+  }
+  nav .left-nav-wrap ul .deus {
+    font-family: Lambok;
+    font-weight: 600;
+    font-size: 24px;
+    margin-left: 5px;
+  }
+  nav .right-nav {
+    display: none;
+    margin: 0;
+    width: 100%;
+  }
+  nav .right-nav ul {
+    font-size: 18px;
+    margin: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: row-reverse;
+            flex-direction: row-reverse;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+  }
+  nav .right-nav ul li {
+    margin: 0;
+  }
+  nav .right-nav ul a {
+    padding: 2px 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  nav .dea-logo {
+    margin-left: 13px;
+  }
+  .logo {
+    margin-left: 10px;
+  }
+  .logo img {
+    width: 45px !important;
+  }
 }
 /*# sourceMappingURL=navbar.css.map */

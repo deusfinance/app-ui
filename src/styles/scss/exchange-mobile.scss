@@ -1,15 +1,13 @@
-@import 'base';
-@import 'fonts';
-
-
-
-.hcenter{
+.hcenter {
     text-align: center;
     margin: auto;
 }
 
-.sell-popup-mob{
+* {
+    box-sizing: border-box;
+}
 
+.sell-popup-mob {
     position: absolute;
     margin: auto;
     z-index: 100;
@@ -21,33 +19,32 @@
     top: 0;
     width: 275px;
     height: 320px;
-    border: 4px solid #f1fc68 ;
+    border: 4px solid #f1fc68;
     font-size: 16px;
     text-align: center;
     animation: growUp 0.3s forwards;
-    .ptitle{
+    .ptitle {
         // color: #f30000;
-    font-family: "Segoe UI";
+        font-family: "Segoe UI";
 
         margin-top: 10px;
         font-size: 30px;
         // font-weight: bold;
     }
-    .pdetails{
-    font-size: 20px;
+    .pdetails {
+        font-size: 20px;
         padding: 0 10px;
         margin-top: 10px;
         line-height: 25px;
     }
 
-    .pdetails-steps{
-
-    font-size: 16px;
+    .pdetails-steps {
+        font-size: 16px;
         padding: 0 10px;
         margin-top: 40px;
         line-height: 25px;
     }
-    .btn-wrp{
+    .btn-wrp {
         margin: auto;
         position: absolute;
         bottom: 20px;
@@ -56,14 +53,14 @@
         // margin-top: 40px;
         // display: flex;
         // justify-content: center;
-        *{
+        * {
             cursor: pointer;
             border: 1px solid #f1fc68;
-            &:hover{
+            &:hover {
                 opacity: 0.7;
             }
         }
-        .understood{
+        .understood {
             width: 156px;
             height: 40px;
             margin: auto;
@@ -84,233 +81,210 @@
     }
 }
 
-
-
-
-
 .exm-wrapper {
-margin: auto;
-width: 100%;
-max-width: 400px;
-position: relative;
+    margin: auto;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
 
-.exchange-mobile{
-    padding: 0 40px;
+    .exchange-mobile {
+        padding: 0 40px;
 
-
-    .perDeus{
-        margin-right: 0;
-    }
-
-    .price-wrapper {
-        margin: 10px 25px;
-        p{
-            margin: 0 ;
+        .perDeus {
+            margin-right: 0;
         }
-    }
 
-    .connect-btn {
+        .price-wrapper {
+            margin: 10px 25px;
+            p {
+                margin: 0;
+            }
+        }
 
-        height: 43px;
-        width: 100%;
-        font-family: Roboto Medium;
-        font-weight: 500;
-        font-style: normal;
-        font-size: 20px;
-        border-radius: 7px;
-    }
+        .connect-btn {
+            height: 43px;
+            width: 100%;
+            font-family: Roboto Medium;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 20px;
+            border-radius: 7px;
+        }
 
-
-  .connect.connect-btn{
-      
-      text-align: center;
-      width: 100%;
-      width: unset;
-      margin: auto;
-    }
-
-    .notconnect {
-        cursor: pointer;
-        background: #f1fc68;
-        color: #101823;
-    }
-
-    .connected {
-        background: #00FFC8;
-    }
-
-
-    .swap-wrapper {
-        
-        position: relative;
-        margin: auto;
-        background: #4c2766;
-        width: 100%;
-        height: 300px;
-        border-radius: 20px;
-        box-shadow: 0px 0px 15px 3px #ffffff5c;
-        color: #ffffff;
-        padding-top: 30px;
-
-        .title {
-            font-family: "Segoe UI";
-            font-size: 24px;
-            font-weight: 400;
-            line-height: 32px;
+        .connect.connect-btn {
             text-align: center;
-            margin-bottom: 30px;
-
+            width: 100%;
+            width: unset;
+            margin: auto;
         }
 
-        .tokenbox {
-            overflow: hidden;
-            border-radius: 12px;
-            border: solid 2px #ffffff;
-            margin: auto 20px;
+        .notconnect {
+            cursor: pointer;
+            background: #f1fc68;
+            color: #101823;
+        }
 
-            .balance {
-                font-family: 'Segoe UI';
-                font-size: 11px;
-                padding: 2px 10px;
-                text-align: right;
-                background: #6e5282;
+        .connected {
+            background: #00ffc8;
+        }
+
+        .swap-wrapper {
+            position: relative;
+            margin: auto;
+            background: #4c2766;
+            width: 100%;
+            height: 300px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 15px 3px #ffffff5c;
+            color: #ffffff;
+            padding-top: 30px;
+
+            .title {
+                font-family: "Segoe UI";
+                font-size: 24px;
+                font-weight: 400;
+                line-height: 32px;
+                text-align: center;
+                margin-bottom: 30px;
             }
 
+            .tokenbox {
+                overflow: hidden;
+                border-radius: 12px;
+                border: solid 2px #ffffff;
+                margin: auto 20px;
 
-            .fields {
-                display: flex;
-                justify-content: space-between;
-                height: 40px;
-                input {
-                    width: 45%;
-                    padding: 0px 15px;
-                    color: #ffffff;
-                    background: transparent;
-                    border: none;
+                .balance {
                     font-family: "Segoe UI";
-                    font-size: 20px;
-                    font-weight: 700;
-
-                    &::placeholder {
-                        color: #c3c5cb;
-                        opacity: 0.5;
-                    }
-
-                    &:focus {
-                        outline: none;
-                    }
+                    font-size: 11px;
+                    padding: 2px 10px;
+                    text-align: right;
+                    background: #6e5282;
                 }
 
-                .max-btn {
-                    margin-top: 5px;
-                    width: 46.27px;
-                    height: 26.22px;
-                    color: #101823;
-                    font-family: "Segoe UI";
-                    font-size: 13px;
-                    // font-weight: 600;
-                    line-height: 25px;
-                    text-align: center;
-                    border-radius: 2px;
-                    border: solid 1px #ffffa3;
-                    background: #c6c665;
-                    padding: 0 2px;
-                    cursor: pointer;
-                }
-
-                .selected-coin {
-                    
+                .fields {
                     display: flex;
                     justify-content: space-between;
-                    padding: 3px;
-                    // cursor: pointer;
-
-                    // &:hover {
-                    //     opacity: 0.75;
-                    // }
-
-                    .coin-icon {
-                        margin-right: 0px;
-                        height: 100%;
-                        vertical-align: middle;
-                    }
-
-                    .name-coin {
-                        margin-right: 14px;
+                    height: 40px;
+                    input {
+                        width: 45%;
+                        padding: 0px 15px;
+                        color: #ffffff;
+                        background: transparent;
+                        border: none;
                         font-family: "Segoe UI";
-                        font-size: 25px;
-                        font-weight: 400;
+                        font-size: 20px;
+                        font-weight: 700;
+
+                        &::placeholder {
+                            color: #c3c5cb;
+                            opacity: 0.5;
+                        }
+
+                        &:focus {
+                            outline: none;
+                        }
                     }
-                    .deus-icon {
-                        // font-size: 25px;
+
+                    .max-btn {
+                        margin-top: 5px;
+                        width: 46.27px;
+                        height: 26.22px;
+                        color: #101823;
+                        font-family: "Segoe UI";
+                        font-size: 13px;
+                        // font-weight: 600;
+                        line-height: 25px;
+                        text-align: center;
+                        border-radius: 2px;
+                        border: solid 1px #ffffa3;
+                        background: #c6c665;
+                        padding: 0 2px;
+                        cursor: pointer;
+                    }
+
+                    .selected-coin {
+                        display: flex;
+                        justify-content: space-between;
                         padding: 3px;
-                        height: 30px;
-                    }
-                    .deus-coin {
-                        font-family: "Segoe UI";
-                        font-size: 25px;
-                        font-weight: 400;
+                        // cursor: pointer;
+
+                        // &:hover {
+                        //     opacity: 0.75;
+                        // }
+
+                        .coin-icon {
+                            margin-right: 0px;
+                            height: 100%;
+                            vertical-align: middle;
+                        }
+
+                        .name-coin {
+                            margin-right: 14px;
+                            font-family: "Segoe UI";
+                            font-size: 25px;
+                            font-weight: 400;
+                        }
+                        .deus-icon {
+                            // font-size: 25px;
+                            padding: 3px;
+                            height: 30px;
+                        }
+                        .deus-coin {
+                            font-family: "Segoe UI";
+                            font-size: 25px;
+                            font-weight: 400;
+                        }
                     }
                 }
             }
         }
-    }
 
+        .counter {
+            margin-top: 20px;
+            height: 68px;
+            margin-bottom: 0;
+            .swaping {
+                width: 100%;
+            }
+            .ctimer {
+                margin-top: 15px;
+            }
+        }
 
-    
-
-    .counter{
-        
-        margin-top: 20px;
-        height: 68px;
-        margin-bottom: 0;
-        .swaping{
+        .container {
             width: 100%;
+            margin-bottom: 0;
+            position: relative;
         }
-        .ctimer{
-            margin-top: 15px;
+        .swap-btn {
+            cursor: pointer;
+            position: absolute;
+            bottom: 20px;
+            right: 0;
+            left: 0;
+            margin: auto;
+            background: #f1fc68;
+            width: 60%;
+            height: 40px;
+            color: #101823;
+            font-family: Comfortaa;
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 41px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .swap-btn {
+            &:hover {
+                opacity: 0.75;
+            }
         }
     }
-
-   
-
-
-    .container{
-        width: 100%;
-        margin-bottom: 0;
-        position: relative;
-    }
-    .swap-btn {
-        cursor: pointer;
-        position: absolute;
-        bottom: 20px;
-        right: 0;
-        left: 0;
-        margin: auto;
-        background: #f1fc68;
-        width: 60%;
-        height: 40px;
-        color: #101823;
-        font-family: Comfortaa;
-        font-size: 19px;
-        font-weight: 700;
-        line-height: 41px;
-        border-radius: 8px;
-        text-align: center;
-    }
-    
-    .swap-btn {
-        &:hover {
-            opacity: 0.75;
-        }
-    }   
-
- }
-
 }
 
 .footer-wrp {
-    
     width: 100%;
     margin-top: 0px;
     position: absolute;
@@ -336,4 +310,3 @@ position: relative;
         justify-content: center;
     }
 }
-

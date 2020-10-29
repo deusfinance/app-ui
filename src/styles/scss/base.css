@@ -1,6 +1,31 @@
+@font-face {
+  font-family: Lambok;
+  src: url("../../assets/fonts/Lombok.ttf");
+}
+
+@font-face {
+  font-family: Comfortaa;
+  src: url("../../assets/fonts/Comfortaa.ttf");
+}
+
+@font-face {
+  font-family: Segoe UI;
+  src: url("../../assets/fonts/SegoeUI.woff");
+}
+
+@font-face {
+  font-family: Roboto Medium;
+  src: url("../../assets/fonts/Roboto-Medium.ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
+}
+
+body {
+  background: #f49;
+  background: linear-gradient(233deg, #190b1b, #181818);
 }
 
 .clear-fix {
@@ -33,7 +58,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -49,21 +74,57 @@ a {
 
 .Toastify__toast--success {
   color: #1a111d;
-  background: #00FFC8;
+  background: #00ffc8;
 }
 
 .Toastify__toast--warning {
-  background: #D2386C;
+  background: #d2386c;
 }
 
 .Toastify__toast--info {
-  background: #0072B5;
+  background: #0072b5;
+}
+
+.dea-wrap {
+  text-align: left;
+  float: left;
+  color: #ffffff;
+  font-family: "Segoe UI";
+  padding-left: 40px;
+  font-family: Comfortaa;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 57px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+.dea-wrap:hover {
+  -webkit-filter: brightness(3);
+          filter: brightness(3);
+  opacity: 0.8;
+}
+
+.dea-wrap img {
+  border-radius: 50%;
+  padding: 2px;
+  width: 45px;
+  height: 45px;
+  margin-right: 20px;
 }
 
 footer {
   height: 57px;
-  margin-top: 40px;
+  margin-top: 80px;
   background: linear-gradient(238deg, #231827, #232323);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 footer .social {
@@ -92,38 +153,98 @@ footer .social li a:hover {
   opacity: 0.75 !important;
 }
 
+@media screen and (max-width: 1150px) {
+  footer {
+    height: unset;
+    text-align: center;
+  }
+  footer .contract {
+    height: 50px;
+    margin: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-top: 20px;
+  }
+  footer .contract .dea-wrap {
+    padding-left: 0;
+    width: 50%;
+    margin: auto;
+    display: inline-block;
+  }
+  footer .contract .dea-wrap img {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  footer .social {
+    float: unset;
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+  }
+  footer .social li {
+    padding: 0 3px;
+    display: inline-block;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .wrapper {
     margin: auto;
   }
+}
+
+@media screen and (max-width: 480px) {
   footer {
+    height: unset;
+    text-align: center;
+    position: absolute;
+    margin-top: 40px;
+    bottom: 0;
+    width: 100%;
+  }
+  footer .contract {
     height: 50px;
-    margin-top: 50px;
+    width: 100%;
+    margin: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-top: 10px;
+  }
+  footer .contract .dea-wrap {
+    font-size: 13px;
+    padding-left: 0;
+    width: 100%;
+    margin: auto;
+    display: inline-block;
+  }
+  footer .contract .dea-wrap img {
+    vertical-align: middle;
+    margin-right: 2px;
+    width: 40px;
+    height: 40px;
   }
   footer .social {
+    float: unset;
+    margin: auto;
+    margin-top: 10px;
+    text-align: center;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: distribute;
         justify-content: space-around;
-    height: 100%;
-    text-align: right;
-    font-family: Comfortaa;
-    list-style-type: none;
-    font-size: 16px;
-    line-height: 16px;
   }
   footer .social li {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    font-size: 13px;
+    padding: 0 3px;
   }
 }
 /*# sourceMappingURL=base.css.map */

@@ -4,10 +4,11 @@ nav {
     background: #000;
     border-bottom: 1px solid #808080;
     color: #ffffff;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-
-    .left {
+    padding: 0 16px;
+    .left-nav-wrap {
         display: flex;
         justify-content: left;
         margin-right: 10px;
@@ -15,11 +16,11 @@ nav {
         font-family: Comfortaa;
         line-height: 40px;
         list-style-type: none;
-        padding: 15px 0;
+        // padding: 15px 0;
+        text-decoration: none;
 
-
-        .left-ul {
-
+        .left-nav {
+            text-decoration: none;
             margin-right: 10px;
             font-size: 20px;
             font-family: Comfortaa;
@@ -37,23 +38,20 @@ nav {
             }
         }
 
-
-
-
         .deus {
-            margin-left: 20px;
+            margin-left: 15px;
             font-family: Lambok;
-            font-size: 36px;
+            font-size: 31px;
+            font-weight: 600;
         }
 
         .finance {
-            font-size: 30px;
+            font-size: 24px;
             margin-left: 2px;
             font-family: Comfortaa;
             font-weight: 500;
         }
     }
-
 
     .nav-mobile {
         width: 100%;
@@ -81,7 +79,6 @@ nav {
                     .swap {
                         font-family: Comfortaa;
                         font-size: 22px;
-
                     }
                 }
             }
@@ -94,47 +91,244 @@ nav {
         }
     }
 
-    .right {
+    .right-nav {
         ul {
             margin-right: 10px;
             font-size: 20px;
             font-family: Comfortaa;
-            line-height: 40px;
+            // line-height: 40px;
             list-style-type: none;
-            padding: 15px 0;
+            // padding: 15px 0;
+            display: flex;
+            height: 100%;
+            align-items: center;
+            font-weight: 400;
 
             a {
+                display: block;
                 text-decoration: none;
                 color: #ffffff;
-                padding: 2px 20px;
-
+                padding: 5px 20px;
+                .nav-item-top {
+                    font-size: 20px;
+                }
+                .nav-item-bottom {
+                    margin-top: -1px;
+                    font-size: 12px;
+                    // font-weight: 600;
+                }
                 .deus-sw {
-                    font-family: Lambok;
-                    font-weight: 600;
-
                     .swap {
-                        font-family: Comfortaa;
-                        font-size: 22px;
-
+                        font-size: 20px;
                     }
                 }
             }
 
             li {
                 display: inline-block;
-                // width: 180px;
-                margin:  0 10px;
+                // width: 200px;
+                margin-right: 10px;
                 text-align: center;
+                border-bottom: 2px solid transparent;
+                margin-bottom: -2px;
                 .active {
                     border-bottom: 2px solid #808080;
                 }
+                &:hover {
+                    opacity: 0.7;
+                }
             }
-
-
         }
     }
 }
 
 .disabled-link {
     pointer-events: none;
+}
+
+.logo {
+    width: 95%;
+    cursor: pointer;
+    &:hover {
+        filter: brightness(2);
+    }
+}
+
+.dea-logo {
+    height: 60px;
+    margin-left: 50px;
+}
+.menu-mobile {
+    display: none;
+}
+
+.menu-mobile-icon {
+    display: none;
+}
+#mobile-menu {
+    display: none;
+}
+
+// @media screen and (max-width: 1150px) {
+// 	nav {
+// 		overflow: hidden;
+// 		display: flex;
+// 		align-items: center;
+
+// 		.right-nav {
+// 			display: none;
+// 		}
+// 	}
+// }
+
+@media screen and (max-width: 1150px) {
+    body {
+        overflow-x: hidden;
+    }
+    nav {
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+
+        .right-nav {
+            display: none;
+        }
+    }
+
+    .open-menu {
+        z-index: 5;
+        width: 70%;
+        background-color: #000000;
+        margin-right: 0;
+    }
+
+    #mobile-menu {
+        display: block;
+        position: fixed;
+        right: 0;
+        top: 0px;
+        width: 250px;
+        transition: 0.2s all;
+        li {
+            // margin-bottom: 2px;
+        }
+        #mobile-menu {
+            flex-direction: column-reverse;
+        }
+        height: 100%;
+        // text-align: center;
+        .icon-close {
+            svg {
+                width: 35px;
+                margin: 17px;
+                margin-bottom: 18px;
+                fill: #ffffff;
+                text-align: right;
+            }
+        }
+        ul {
+            display: flex;
+            flex-direction: column-reverse;
+            .active {
+                background: #232833;
+            }
+            li {
+                text-align: center;
+                display: block;
+                font-weight: 600;
+                border-bottom: 1px solid #808080;
+                a {
+                    margin: auto;
+                    display: block;
+                    padding: 25px 5px;
+
+                    color: #ffffff;
+                    text-decoration: none;
+                }
+                font-family: Comfortaa;
+                font-size: 19px;
+            }
+            .icon-close {
+                .menu-title {
+                    color: #cac8c8;
+                    padding: 20px;
+                    font-family: Comfortaa;
+                    font-size: 25px;
+                    font-weight: 700;
+                }
+                display: flex;
+                justify-content: space-between;
+                // margin-left:10px;
+            }
+        }
+    }
+
+    .close-menu {
+        margin-right: -300px;
+    }
+
+    .menu-mobile-icon {
+        // z-index: 10;
+        display: block;
+        width: 35px;
+        height: 35px;
+        // padding: 17px;
+        // line-height: 70px;
+        svg {
+            fill: #ffffff;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    nav {
+        margin: 0;
+
+        .left-nav-wrap {
+            ul {
+                .deus {
+                    font-family: Lambok;
+                    font-weight: 600;
+                    font-size: 24px;
+                    margin-left: 5px;
+                }
+            }
+        }
+        .right-nav {
+            display: none;
+            margin: 0;
+            width: 100%;
+            ul {
+                font-size: 18px;
+                li {
+                    margin: 0;
+                }
+                margin: 0;
+                display: flex;
+                flex-direction: row-reverse;
+                justify-content: space-around;
+                a {
+                    padding: 2px 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    nav {
+        .dea-logo {
+            margin-left: 13px;
+        }
+    }
+    .logo {
+        margin-left: 10px;
+        img {
+            width: 45px !important;
+        }
+    }
+    // .menu-mobile-icon{
+    // 	padding: 25px;
+    // 	width: 20px;
+    // }
 }

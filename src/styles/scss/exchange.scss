@@ -1,34 +1,28 @@
-@import 'base';
-@import 'fonts';
-
-.priceBar-xl{
+.priceBar-xl {
     left: 610px;
     bottom: -15px;
     transform: rotate(-10deg);
 }
 
-.priceBar-lg{
+.priceBar-lg {
     left: 580px;
     bottom: -3px;
     transform: rotate(-20deg);
 }
 
-.priceView-xl{
+.priceView-xl {
     left: 555px;
     bottom: 24px;
     transform: rotate(-10deg);
 }
 
-.priceView-lg{
+.priceView-lg {
     left: 520px;
     bottom: 36px;
     transform: rotate(-20deg);
-
 }
 
-
-
-.sell-popup{
+.sell-popup {
     position: absolute;
     margin: auto;
     z-index: 100;
@@ -40,34 +34,33 @@
     top: 360px;
     width: 400px;
     height: 400px;
-    border: 7px solid #f1fc68 ;
+    border: 7px solid #f1fc68;
     // border-radius: 6px;
     font-size: 20px;
     text-align: center;
     animation: growUp 0.3s forwards;
-    .ptitle{
+    .ptitle {
         // color: #f30000;
-    font-family: "Segoe UI";
+        font-family: "Segoe UI";
 
         margin-top: 20px;
         font-size: 36px;
         // font-weight: bold;
     }
-    .pdetails{
-    font-size: 24px;
+    .pdetails {
+        font-size: 24px;
         padding: 0 10px;
         margin-top: 10px;
         line-height: 25px;
     }
 
-    .pdetails-steps{
-
-    font-size: 21px;
+    .pdetails-steps {
+        font-size: 21px;
         padding: 0 10px;
         margin-top: 40px;
         line-height: 25px;
     }
-    .btn-wrp{
+    .btn-wrp {
         margin: auto;
         position: absolute;
         bottom: 40px;
@@ -76,14 +69,14 @@
         // margin-top: 40px;
         // display: flex;
         // justify-content: center;
-        *{
+        * {
             cursor: pointer;
             border: 1px solid #f1fc68;
-            &:hover{
+            &:hover {
                 opacity: 0.7;
             }
         }
-        .understood{
+        .understood {
             width: 200px;
             height: 65px;
             margin: auto;
@@ -96,8 +89,6 @@
     }
 }
 
-
-
 @keyframes growUp {
     0% {
         transform: scale(0);
@@ -107,20 +98,14 @@
     }
 }
 
-
 .exch-wrapper {
     width: 100%;
 }
-
-
-
-
 
 .connect {
     height: 100px;
     position: relative;
     text-align: center;
-
 
     .swaping {
         background-color: #ffffff;
@@ -133,20 +118,20 @@
         transition: height 4s ease-out;
         overflow: hidden;
 
-        .claim{
+        .claim {
             height: 130px;
-            background: linear-gradient(224.74deg, #5EC4D6 0.19%, #F1FC68 100.22%);
-                color: #ffffff;
-                position: relative;  
-                font-family: 'Segoe UI';
-                font-weight: 600;
+            background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+            color: #ffffff;
+            position: relative;
+            font-family: "Segoe UI";
+            font-weight: 600;
 
-                padding-top: 20px;
-              .eth-amount{
+            padding-top: 20px;
+            .eth-amount {
                 text-shadow: 1px 1px #8c8c8c;
                 font-size: 20px;
-              }
-            .claim-btn{
+            }
+            .claim-btn {
                 height: 43px;
                 line-height: 40px;
                 font-size: 20px;
@@ -158,14 +143,13 @@
                 bottom: 20px;
                 width: 182px;
                 background: #6c7c7b;
-                &:hover{
+                &:hover {
                     opacity: 0.9;
                     cursor: pointer;
                 }
             }
         }
     }
-
 
     .ctimer {
         margin: auto;
@@ -178,14 +162,10 @@
             font-weight: 300;
             line-height: 27px;
         }
-
     }
-
 }
 
-
-.ex-wrapper{
-
+.ex-wrapper {
     .connect {
         margin-top: 14px;
         margin-left: 24px;
@@ -194,13 +174,10 @@
         text-align: center;
         border-radius: 7px;
 
-
         a {
             font-size: 21px;
             color: #101823;
         }
-
-
 
         .notconnect {
             cursor: pointer;
@@ -208,11 +185,10 @@
         }
 
         .connected {
-            background: #00FFC8;
+            background: #00ffc8;
         }
 
         .connect-btn {
-
             height: 43px;
             width: 358px;
             font-family: Roboto Medium;
@@ -221,12 +197,8 @@
             font-size: 21px;
             border-radius: 7px;
         }
-
-
     }
-
 }
-
 
 .container {
     margin: auto;
@@ -242,7 +214,6 @@
         flex-direction: column;
         justify-content: space-between;
     }
-
 
     .wrapper-content {
         flex: 8;
@@ -261,17 +232,15 @@
     padding-bottom: 25px;
 }
 
-
 .wrapper-content {
     padding-bottom: 10px;
     padding-right: 10px;
-    
-    background: linear-gradient(45deg, #5EC4D6, #F1FC68);
+
+    background: linear-gradient(45deg, #5ec4d6, #f1fc68);
     border-top-left-radius: 420px;
     border-bottom-right-radius: 425px;
     position: relative;
 }
-
 
 .content {
     box-shadow: -4px -3px 1px 0px #371f43;
@@ -282,10 +251,9 @@
     border-top-left-radius: 420px;
     border-bottom-right-radius: 420px;
 
-
-    .unit-btn{
+    .unit-btn {
         color: #ffffff;
-        font-family: 'Segoe UI';
+        font-family: "Segoe UI";
         font-size: 15px;
         position: absolute;
         right: 25px;
@@ -293,9 +261,9 @@
         width: 200px;
         padding: 12px;
         border-radius: 17px;
-        border: 2px solid #F1FC68;
+        border: 2px solid #f1fc68;
         cursor: pointer;
-        &:hover{
+        &:hover {
             opacity: 0.8;
         }
     }
@@ -317,7 +285,6 @@
     }
 
     .title-wrapper {
-
         position: absolute;
         top: 100px;
         right: 0;
@@ -333,7 +300,6 @@
             .deus-name {
                 font-family: Lambok;
                 font-size: 55px;
-
             }
         }
 
@@ -348,7 +314,6 @@
                 font-size: 20px;
                 font-family: Lambok;
                 font-weight: 600;
-
             }
         }
     }
@@ -371,7 +336,6 @@
             line-height: 32px;
             text-align: center;
             margin-bottom: 30px;
-
         }
 
         .tokenbox {
@@ -381,13 +345,12 @@
             margin: auto 20px;
 
             .balance {
-                font-family: 'Segoe UI';
+                font-family: "Segoe UI";
                 font-size: 13px;
                 padding: 2px 10px;
                 text-align: right;
                 background: #6e5282;
             }
-
 
             .fields {
                 display: flex;
@@ -457,18 +420,18 @@
     }
 }
 
-.ex-wrapper{
+.ex-wrapper {
     .deus-coin {
-    font-family: "Segoe UI";
-    font-size: 30px;
-    font-weight: 400;
-}
+        font-family: "Segoe UI";
+        font-size: 30px;
+        font-weight: 400;
+    }
 
-.deus-icon {
-    margin-top: 4px;
-    margin-right: 6px;
-    height: 35px;
-}
+    .deus-icon {
+        margin-top: 4px;
+        margin-right: 6px;
+        height: 35px;
+    }
 }
 
 .mask-arrow {
@@ -478,8 +441,6 @@
     margin-left: 45px;
     justify-content: left;
 }
-
-
 
 .price-wrapper {
     display: flex;
@@ -492,7 +453,6 @@
         font-family: "Segoe UI";
         font-size: 13px;
     }
-
 }
 
 .perDeus {
@@ -571,7 +531,6 @@
     li {
         &:hover {
             background: #be5cf0;
-
         }
 
         cursor: pointer;
@@ -597,9 +556,7 @@
     }
 }
 
-
-
-.migration-wrp{
+.migration-wrp {
     width: 900px;
     height: 700px;
     margin: auto;
@@ -609,27 +566,26 @@
     border: 8px solid #f1fc68;
     font-family: Comfortaa;
     // box-shadow: 1px 2px 5px #ffffff;
-    .title{
+    .title {
         font-size: 33px;
         margin-top: 150px;
     }
-    .p1{
+    .p1 {
         line-height: 23px;
         margin-top: 100px;
         font-size: 16px;
     }
-    .p2{
+    .p2 {
         margin-top: 50px;
         font-size: 16px;
     }
 
-    .mig-btn-wrp{
-
+    .mig-btn-wrp {
         display: flex;
         justify-content: center;
         font-family: "Segoe UI";
-        .mig-btn{
-            &:hover{
+        .mig-btn {
+            &:hover {
                 opacity: 0.8;
             }
             color: #ffffff;
@@ -638,22 +594,21 @@
             margin-top: 100px;
             font-size: 18px;
             padding: 15px 15px;
-            border: 1px solid #f1fc68 ;
+            border: 1px solid #f1fc68;
         }
     }
 }
 
-
-.priceView{
+.priceView {
     font-weight: bold;
     font-family: "Segoe UI";
     display: flex;
     justify-content: center;
-    flex-direction: column;   
+    flex-direction: column;
     width: 108px;
     height: 25px;
     position: absolute;
-    background-color: #5EC4D6;
+    background-color: #5ec4d6;
     border: 2px solid #ffffff;
     color: #ffffff;
     border-radius: 3px;

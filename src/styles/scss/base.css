@@ -195,6 +195,12 @@ footer .social li a:hover {
   .wrapper {
     margin: auto;
   }
+  footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 480px) {

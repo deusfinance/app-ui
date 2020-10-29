@@ -369,7 +369,7 @@ class SwapContainer extends Component {
 
     render() {
 
-        return (<div>
+        return (<div style={{ minHeight: "calc(100% - 90px)" }}>
             {isDesktop() && <DesktopSwap
                 mainState={this.state}
                 handleMax={this.handleMax}

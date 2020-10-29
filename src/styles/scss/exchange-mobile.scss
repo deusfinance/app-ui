@@ -1,3 +1,9 @@
+html,
+body,
+#root {
+    height: 100%;
+}
+
 .hcenter {
     text-align: center;
     margin: auto;
@@ -81,6 +87,7 @@
     margin: auto;
     width: 100%;
     max-width: 400px;
+    min-height: 100%;
     position: relative;
 
     .exchange-mobile {
@@ -277,32 +284,5 @@
                 opacity: 0.75;
             }
         }
-    }
-}
-
-.footer-wrp {
-    width: 100%;
-    margin-top: 0px;
-    position: absolute;
-    bottom: 0px;
-}
-
-.msocial {
-    display: flex;
-    justify-content: space-around;
-    height: 100%;
-    text-align: right;
-    font-family: Comfortaa;
-    list-style-type: none;
-    font-size: 18px;
-
-    li {
-        a {
-            color: #ffffff;
-        }
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
     }
 }

@@ -1,3 +1,9 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
 .hcenter {
   text-align: center;
   margin: auto;
@@ -93,6 +99,7 @@
   margin: auto;
   width: 100%;
   max-width: 400px;
+  min-height: 100%;
   position: relative;
 }
 
@@ -312,42 +319,5 @@
 
 .exm-wrapper .exchange-mobile .swap-btn:hover {
   opacity: 0.75;
-}
-
-.footer-wrp {
-  width: 100%;
-  margin-top: 0px;
-  position: absolute;
-  bottom: 0px;
-}
-
-.msocial {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  height: 100%;
-  text-align: right;
-  font-family: Comfortaa;
-  list-style-type: none;
-  font-size: 18px;
-}
-
-.msocial li {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.msocial li a {
-  color: #ffffff;
 }
 /*# sourceMappingURL=exchange-mobile.css.map */

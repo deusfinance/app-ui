@@ -18,7 +18,6 @@ const ConnectButton = (props) => {
                 }
             </div>
             <div className="clear-fix" />
-            <div className="ctimer"></div>
         </div>);
 }
 

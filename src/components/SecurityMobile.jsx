@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import '../styles/scss/security.css'
+import Footer from './common/Footer'
 
 class SecurityMobile extends Component {
     state = {}
@@ -22,12 +23,7 @@ class SecurityMobile extends Component {
             </div>
 
                 <div className="follow">Follow us on our social media for updates.</div>
-                <footer>
-                    <ul className="msocial">
-                        <li><a href="https://twitter.com/deusdao" target="_blank" rel="noopener noreferrer" > Twitter </a></li>
-                        <li><a href="https://t.me/deusfinance" target="_blank" rel="noopener noreferrer" > Telegram </a></li>
-                    </ul>
-                </footer>
+                <Footer />
             </div>
         </div>);
     }

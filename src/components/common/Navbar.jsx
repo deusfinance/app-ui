@@ -60,7 +60,7 @@ const Navbar = () => {
                 {
                     Navs.map(nav => {
                         if (nav.out) return <li key={nav.id}><a href={nav.path}> {nav.text} </a></li>
-                        return <li key={nav.id}><NavLink exact={true} to={nav.path}> {nav.text} </NavLink></li>
+                        return <li key={nav.id}><NavLink onClick={toggleNav} exact={true} to={nav.path}> {nav.text} </NavLink></li>
                     })
                 }
                 <li className="icon-close" onClick={toggleNav}>

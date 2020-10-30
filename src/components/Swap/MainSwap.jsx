@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import './mainSwap.scss';
+import PriceBox from './PriceBox';
 import TokenBox from './TokenBox';
+import SearchBox from './SearchBox';
+import TokenMarket from './TokenMarket';
+import SwapButton from './SwapButton';
+
+import './mainSwap.scss';
 
 class MainSwap extends Component {
     state = {
@@ -60,7 +65,6 @@ class MainSwap extends Component {
         }
         swap[stype].amount = amount
         this.setState({ swap })
-        // this.getAmountFromSwap(stype, amount)
     }
 
 
@@ -82,7 +86,6 @@ class MainSwap extends Component {
 
     handleFilterToken = () => {
         const { searchBoxType, tokens, swap } = this.state
-        // const type = searchBoxType === "from" ? "to" : "from"
         return tokens.filter(t => swap[searchBoxType].name !== t.name)
     }
 
@@ -93,10 +96,10 @@ class MainSwap extends Component {
 
     render() {
 
-        const { tokens, showSearchBox, swap } = this.state
-
+        const { showSearchBox, swap } = this.state
         const from_token = swap.from
         const to_token = swap.to
+
         return (<div className="deus-swap-wrap">
             <div className="title">
                 <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
@@ -133,98 +136,23 @@ class MainSwap extends Component {
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
 
+                            <TokenMarket handleChangeType={this.handleChangeType} />
 
-                            {/*                           
-                              <div className="token-box-wrap to-token">
-                                <div className="token-box">
-                                    <div className="top">
-                                        <p>To</p>
-                                        <div className="balance">
-                                            <span>Balance: </span>
-                                            <span>123</span>
-                                        </div>
-                                    </div>
-                                    <div className="bottom">
-                                        <input type="number" className="input-amount" placeholder="0.0" />
-                                        <div className="token-info" onClick={() => this.handleSearchBox("from")}>
-                                            <img className="token-icon" src={process.env.PUBLIC_URL + "/tokens/deus-logo.svg"} alt="ETH" />
-                                            <span className="token-name">DEUS</span>
-                                            <img className="select-icon" src={process.env.PUBLIC_URL + "/img/select.svg"} alt="select" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-
-                            <div className="token-market">
-                                <div>
-                                    <p>Price</p>
-                                    <p>0.0038 ETH per DEUS <img
-                                        onClick={this.handleChangeType}
-                                        className="switch"
-                                        src={process.env.PUBLIC_URL + "/img/switch-logo.svg"} /></p>
-                                </div>
-                                <div>
-                                    <p>TVL</p>
-                                    <p>6,245.343 ETH</p>
-                                </div>
-                                <div>
-                                    <p>Trading Volume</p>
-                                    <p>945.343 ETH</p>
-                                </div>
-                            </div>
-                            <div className="swap-btn-wrap grad-wrap">
-                                <div className="swap-btn grad">
-                                    swap
-                                </div>
-                            </div>
-                        </div>
-                        <div className="price-box">
-                            <div>
-                                <p>Price Impact</p>
-                                <p>0.05%</p>
-                            </div>
-                            <div>
-                                <p>Vault Fee</p>
-                                <p>0.0015 ETH</p>
-                            </div>
+                            <SwapButton />
                         </div>
 
-                        {showSearchBox && <div className="search-box-wrap">
-                            <div className="search-box">
-                                <div className="label">
-                                    <p>Select or search for a token</p>
-                                    <div onClick={() => this.handleSearchBox(false)}>close</div>
-                                </div>
-                                <input type="text" placeholder="Search name or paste address" spellCheck="false" autoComplete="false" />
-                                <div className="token-items-wrap">
-                                    <p>Token</p>
-                                    <div className="token-items">
-                                        {
-                                            this.handleFilterToken().map((t, i) => {
-                                                return <div key={i} className="token-item" onClick={() => this.handleChangeToken(t.name)}>
-                                                    <div>
-                                                        <img src={process.env.PUBLIC_URL + `/tokens/${t.pic_name}.svg`} alt={t.name} />
-                                                        <p>{t.name}</p>
-                                                    </div>
-                                                    <p >{t.price}</p>
-                                                </div>
-                                            })
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <p className="msg">
-                                <div>There will be 500+ Stocks added until 31.12.2020</div>
-                            </p>
-                        </div>}
+                        <PriceBox />
 
+                        <SearchBox
+                            showSearchBox={showSearchBox}
+                            handleSearchBox={this.handleSearchBox}
+                            handleFilterToken={this.handleFilterToken}
+                            handleChangeToken={this.handleChangeToken}
+                        />
 
                     </div>
-
-
                 </div>
             </div>
-
         </div>);
     }
 }

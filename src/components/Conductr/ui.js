@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 export const pilotLogo = () => (<div className="pilot-wrap-step1">
     <div className="pilot">

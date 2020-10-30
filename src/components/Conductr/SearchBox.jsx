@@ -33,10 +33,10 @@ class SearchBox extends Component {
 
 
         const filterdAssets = assets.filter(s => {
-            if (!added[s.id] &&
-                s.real_name.toLocaleLowerCase().includes(query) ||
-                s.inc.toLocaleLowerCase().includes(query) ||
-                s.name.toLocaleLowerCase().includes(query)) {
+            if (!added[s.id] && ((s.real_name.toLocaleLowerCase().includes(query) ||
+                s.inc.toLocaleLowerCase().includes(query)) ||
+                s.name.toLocaleLowerCase().includes(query)
+            )) {
                 return true
             }
             return false

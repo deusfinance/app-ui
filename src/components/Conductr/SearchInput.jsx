@@ -3,7 +3,7 @@ class SearchInput extends Component {
     state = {}
     render() {
 
-        const { handleSearchInputChange, onBlur, onFocus, isFocus } = this.props
+        const { handleSearchInputChange, onFocus, isFocus } = this.props
 
         return (<>
             <div className="note">

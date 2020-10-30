@@ -68,7 +68,7 @@ class BuildRegistrar extends Component {
 
     handleRemove = (asset) => {
         const { added } = this.state
-        const newAdded = added.filter(add => (add.id != asset.id))
+        const newAdded = added.filter(add => (add.id !== asset.id))
         this.setState({ added: newAdded })
     }
 

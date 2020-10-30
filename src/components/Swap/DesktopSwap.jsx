@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Swap from './Swap';
 import { toast, ToastContainer } from 'react-toastify';
 import ConnectButton from '../common/ConnectButton';
+import 'react-toastify/dist/ReactToastify.css';
 
 class DesktopSwap extends Component {
     state = {}
@@ -104,6 +105,7 @@ class DesktopSwap extends Component {
                         </div>
                     </div>
                 </div>
+
             </div>
         </>
         );

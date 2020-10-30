@@ -1,8 +1,14 @@
+@import "fonts";
+
 //styles
 * {
     margin: 0;
     padding: 0;
-    // box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(233deg, #190b1b, #181818);
 }
 
 .clear-fix {
@@ -55,11 +61,41 @@ a {
     background: #0072b5;
 }
 
+.dea-wrap {
+    text-align: left;
+    float: left;
+    // margin-top: -53px;
+    color: #ffffff;
+    font-family: "Segoe UI";
+    padding-left: 40px;
+    font-family: Comfortaa;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 57px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    &:hover {
+        filter: brightness(3);
+        opacity: 0.8;
+    }
+    img {
+        border-radius: 50%;
+        padding: 2px;
+        // border: 1px solid #ffffff;
+        // background-color: #ffffff;
+        width: 45px;
+        height: 45px;
+        margin-right: 20px;
+    }
+}
+
 footer {
     height: 57px;
-    margin-top: 40px;
+    margin-top: 80px;
     background: linear-gradient(238deg, #231827, #232323);
-
+    box-sizing: border-box;
     .social {
         height: 100%;
         text-align: right;
@@ -88,31 +124,94 @@ footer {
     }
 }
 
+@media screen and (max-width: 1150px) {
+    footer {
+        height: unset;
+        text-align: center;
+        .contract {
+            height: 50px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            .dea-wrap {
+                img {
+                    vertical-align: middle;
+                    margin-right: 5px;
+                }
+                padding-left: 0;
+                width: 50%;
+                margin: auto;
+                display: inline-block;
+            }
+        }
+        .social {
+            float: unset;
+            margin: auto;
+            margin-top: 20px;
+            text-align: center;
+            li {
+                padding: 0 3px;
+                display: inline-block;
+            }
+        }
+    }
+}
+
 @media screen and (max-width: 768px) {
     .wrapper {
         margin: auto;
         // height: 100%;
         // min-width: 100%;
     }
-
     footer {
-        height: 50px;
-        margin-top: 50px;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        width: 100%;
+    }
+}
 
+@media screen and (max-width: 480px) {
+    footer {
+        height: unset;
+        text-align: center;
+        position: absolute;
+        margin-top: 40px;
+        bottom: 0;
+        width: 100%;
+        .contract {
+            height: 50px;
+            width: 100%;
+            margin: auto;
+            display: flex;
+            // flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            .dea-wrap {
+                img {
+                    vertical-align: middle;
+                    margin-right: 2px;
+                    width: 40px;
+                    height: 40px;
+                }
+                font-size: 13px;
+                padding-left: 0;
+                width: 100%;
+                margin: auto;
+                display: inline-block;
+            }
+        }
         .social {
+            float: unset;
+            margin: auto;
+            margin-top: 10px;
+            text-align: center;
             display: flex;
             justify-content: space-around;
-            height: 100%;
-            text-align: right;
-            font-family: Comfortaa;
-            list-style-type: none;
-            font-size: 16px;
-            line-height: 16px;
-
             li {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
+                font-size: 13px;
+                padding: 0 3px;
             }
         }
     }

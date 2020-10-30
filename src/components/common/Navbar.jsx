@@ -1,42 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { isDesktop } from '../../utils/utils'
-import '../../styles/scss/navbar.css';
-
+import '../../styles/scss/navbar.scss';
 
 const Navbar = () => {
 
 
-
-
-    const navClass = isDesktop() ? "right" : "nav-mobile"
-
-    let Navs = [{ id: "conductr", text: <span className="deus-sw" > <span className="swap">Conductr</span></span>, path: "/conductr" },
-    { id: "pools", text: <span className="deus-sw" > <span className="swap">Staking</span></span>, path: "/staking" },
-    { id: "exchange", text: <span className="deus-sw" > <span className="swap">Swap</span></span>, path: "/swap" },
-    { id: "newswap", text: <span className="deus-sw" > <span className="swap">NewSwap</span></span>, path: "/newswap" },
-    { id: "home", text: "Home", path: "https://deus.finance", out: true },]
-    // let Navs = [{ id: "pools", text: "LP-Pools", path: "/pools" }, { id: "home", text: "Home", path: "/home" },]
-    if (!isDesktop()) {
-        Navs = [{ id: "exchange", text: <span className="deus-sw" > <span className="swap">Swap</span></span>, path: "/swap" }, { id: "home", text: "Home", path: "https://deus.finance", out: true },]
+    const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
+    const toggleNav = () => {
+        if (menuMobileClass === "close-menu") {
+            setMenuMobileClass("open-menu")
+            return
+        }
+        setMenuMobileClass("close-menu")
     }
-    //DEUS staking
-    return (<nav>
-        {isDesktop() && <div className="left">
-            <ul className="left-ul">
-                <li>
-                    <div className="logo">
-                        <img className="vertical-center" src={`${process.env.PUBLIC_URL}/img/favicon/60x60.png`} alt="deusfinance" />
-                    </div>
-                </li>
-                <li><span className="deus" >DEUS <span className="finance">finance</span></span></li>
-                {/* <li className="deus " ><div style={{ padding: "10px 2px" }}>DEUS</div></li>
-                <li className="finance">finance</li> */}
-            </ul>
 
+
+    let Navs = [
+        { id: "litepaper", text: "Litepaper", path: "https://deus.finance/litepaper.pdf", out: true },
+        {
+            id: "wiki", text: <><div className="nav-item-top">explain DEUS</div><div className="nav-item-bottom">wiki</div></>, path: "https://deus.finance/wiki.html", out: true
+        },
+        {
+            id: "pools", text: <><div className="nav-item-top">earn DEA</div><div className="nav-item-bottom">staking</div></>, path: "/staking"
+        },
+        {
+            id: "exchange", text: <><div className="nav-item-top">buy DEUS</div><div className="nav-item-bottom">swap</div></>, path: "/newswap"
+        },
+        { id: "home", text: "Home", path: "https://deus.finance", out: true },]
+
+
+    //DEUS staking
+    return (<><nav id="nav">
+        {<div className="left-nav-wrap">
+            <ul className="left-nav">
+                <li><span className="deus">DEUS <span className="finance">finance</span></span></li>
+            </ul>
         </div>}
-        <div className={navClass}>
-            <ul>
+        <div className="menu-mobile-icon" onClick={toggleNav}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+            </svg>
+        </div>
+        <div className="right-nav">
+            <ul id="right-ul">
                 {
                     Navs.map(nav => {
                         const classes = nav.linkDisabled ? "disabled-link" : ""
@@ -47,7 +54,27 @@ const Navbar = () => {
                 }
             </ul>
         </div>
-    </nav >);
+    </nav >
+        <div className={menuMobileClass} id="mobile-menu">
+            <ul id="mobile-menu-ul">
+
+                {
+                    Navs.map(nav => {
+                        if (nav.out) return <li key={nav.id}><a href={nav.path}> {nav.text} </a></li>
+                        return <li key={nav.id}><NavLink onClick={toggleNav} exact={true} to={nav.path}> {nav.text} </NavLink></li>
+                    })
+                }
+                <li className="icon-close" onClick={toggleNav}>
+                    <div className="menu-title">Menu</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                    </svg>
+                </li>
+            </ul>
+        </div>
+    </>);
 }
+
+
 
 export default Navbar;

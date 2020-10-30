@@ -1,5 +1,6 @@
-@import "base";
-@import "fonts";
+.overflow-hidden {
+    overflow-y: hidden;
+}
 
 .yellow-400-shadow {
     // filter: drop-shadow(0px 0px 30px #cfef81);
@@ -12,6 +13,10 @@
 
 .blue-200-shadow {
     filter: drop-shadow(0px 0px 45px #7acec1);
+}
+
+body {
+    background: linear-gradient(233deg, #190b1b, #181818);
 }
 
 .dea-price-up {
@@ -81,7 +86,7 @@
         .pop-max {
             position: absolute;
             cursor: pointer;
-            top: 9px;
+            top: 6px;
             right: 6px;
             height: 27px;
             width: 40px;
@@ -330,11 +335,10 @@
                 clip-path: polygon(0% 0, 50% 100%, 100% 0%);
                 top: 2px;
                 bottom: 0;
-                left: 5px;
+                left: 6px;
                 right: 0;
-                width: 540px;
-                height: 221px;
-                // margin-top: 10px;
+                width: 529px;
+                height: 220px;
                 background: #1a111d;
                 font-size: 22px;
             }
@@ -392,20 +396,23 @@
                 clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
 
                 .stake-here {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
                     cursor: pointer;
                     background: linear-gradient(225deg, #5ec4d6, #9ad5a2, #f1fc68);
                     height: 100px;
-                    padding-top: 20px;
+                    // line-height: 100px;
                     font-family: Comfortaa;
                     font-weight: 900;
                     text-shadow: -2px 2px 3px rgba(0, 0, 0, 0.5);
                     color: white;
                     box-shadow: 0px 2px 4px 2px #ffffff;
                     transition: 0.3s;
-
+                    p {
+                        padding-top: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        height: 100%;
+                    }
                     &:hover {
                         color: #000000;
                     }
@@ -534,10 +541,10 @@
                         }
 
                         .percentage {
-                            clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 66%);
+                            clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 68%);
                         }
                         .lp-deposited {
-                            clip-path: polygon(0 0, 81% 0, 110% 100%, 0 100%, 0 100%);
+                            clip-path: polygon(0 0, 81% 0, 109% 100%, 0 100%, 0 100%);
                         }
                     }
 
@@ -602,7 +609,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     margin-bottom: 100px;
-
+    background-color: linear-gradient(233deg, #190b1b, #181818);
     .pools-btn {
         text-align: center;
         border-radius: 8px;
@@ -858,9 +865,9 @@
         position: absolute;
         color: #ffffff;
         padding: 0px;
-        font-size: 18px;
-        line-height: 18px;
-        margin-left: 4px;
+        font-size: 16px;
+        line-height: 16px;
+        margin-left: 5px;
         width: 22px;
         height: 22px;
         border-radius: 50%;
@@ -909,7 +916,7 @@
 .comming-soon {
     font-family: "Segoe UI";
     font-size: 17px;
-    width: 300px;
+    width: 370px;
     height: 50px;
     margin: auto;
     margin-top: 20px;
@@ -927,15 +934,15 @@
     text-align: center;
 }
 
-.shadowD {
-    animation: shadowDea 1s;
+.shadow-dea {
+    animation: dea 1s forwards;
 }
 
-@keyframes shadowDea {
-    0% {
-        box-shadow: -1px 1px 8px 4px #f3ff5b;
+@keyframes dea {
+    from {
+        box-shadow: -2px 1px 10px 4px #f1fc68;
     }
-    100% {
+    to {
         box-shadow: none;
     }
 }

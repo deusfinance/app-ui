@@ -6,7 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import * as config from '../../config';
 
 import 'react-toastify/dist/ReactToastify.css';
-import '../../styles/scss/pools.css';
 import StartPool from './StartPool';
 import Pools from './Pools';
 import StakePopup from './StakePopup';
@@ -14,9 +13,12 @@ import Footer from '../common/Footer';
 import MigrationPopup from './MigrationPopup';
 import { Link } from 'react-router-dom';
 
+import '../../styles/scss/pools.scss';
 
 class PoolsContainer extends Component {
     state = {
+        subscribeMarket: "",
+        subscribeDea: "",
         isMigPopup: false,
         isOldPopup: false,
         isConnected: false,
@@ -153,13 +155,16 @@ class PoolsContainer extends Component {
         document.title = 'DEUS staking';
         setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
-        this.handleUpdateDEA()
         this.getMarketAmounts()
-        setInterval(() => this.getMarketAmounts(), 40000)
+        this.setState({ subscribeMarket: setInterval(() => this.getMarketAmounts(), 40000) })
+        this.setState({ subscribeDea: setInterval(() => this.handleUpdateDEA(), (config.ClaimableDuration) * 1000) })
         window.addEventListener('resize', this.handleResize)
     }
 
     componentWillUnmount() {
+        const { subscribeMarket, subscribeDea } = this.state
+        clearInterval(subscribeMarket)
+        clearInterval(subscribeDea)
         window.removeEventListener('resize', this.handleResize)
     }
 
@@ -253,9 +258,9 @@ class PoolsContainer extends Component {
                 this.setState({ stakes })
 
                 stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                    token.amounts.dea = getStayledNumber(amount)
+                    token.amounts.dea = parseFloat(amount)
                     token.rewardRatio = token.amounts.pool * config.FixedRatio / 100
-                    token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
+                    // token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
                     this.setState({ stakes })
                 })
             })
@@ -293,22 +298,36 @@ class PoolsContainer extends Component {
     }
 
 
-    handleUpdateDEA = () => setInterval(() => {
+    // handleUpdateDEA2 = () => setInterval(() => {
+    //     const { stakes } = this.state
+    //     for (const tokenName in stakes) {
+    //         const token = stakes[tokenName]
+    //         stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
+    //             token.amounts.dea = parseFloat(amount)
+    //             // token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
+    //             this.setState({ stakes })
+    //         })
+    //     }
+    // }, (config.ClaimableDuration) * 1000)
+
+
+    handleUpdateDEA = () => {
+        console.log("handleUpdateDEA");
         const { stakes } = this.state
         for (const tokenName in stakes) {
             const token = stakes[tokenName]
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                token.amounts.dea = getStayledNumber(parseFloat(amount))
-                token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
+                token.amounts.dea = parseFloat(amount)
+                // token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
                 this.setState({ stakes })
             })
         }
-    }, (config.ClaimableDuration) * 1000)
+    }
 
 
     handleStake = () => {
         const { staking } = this.state
-        console.log(staking.amount);
+
         stakeService.stake(staking.name, staking.amount, this.handleStakeState)
     }
 
@@ -320,7 +339,6 @@ class PoolsContainer extends Component {
 
     handleApprove = () => {
         const { staking } = this.state
-        console.log(staking.amount);
         stakeService.approve(staking.name, staking.amount, this.handleStakeState)
     }
 
@@ -333,7 +351,7 @@ class PoolsContainer extends Component {
     }
 
     isMigToken = (stakedToken) => {
-        return stakedToken === "ampl_eth" || stakedToken === "uni" || stakedToken === "snx" ? true : false
+        return stakedToken === "ampl_eth" || stakedToken === "deus_eth" || stakedToken === "dea_usdc" || stakedToken === "uni" || stakedToken === "snx" ? true : false
     }
 
 
@@ -400,7 +418,6 @@ class PoolsContainer extends Component {
 
 
     handlePopup = (stakedToken, bool) => {
-        console.log(stakedToken);
         if (this.isMigToken(stakedToken)) {
             this.setState({ isOldPopup: true })
             return

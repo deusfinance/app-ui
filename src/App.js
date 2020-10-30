@@ -1,15 +1,10 @@
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from "react-router-dom";
-// import Home from './components/Home';
-// import NotFound from './components/NotFound';
-// import PoolsContainer from './components/Pools/PoolsContainer';
-// import SwapContainer from './components/Swap/SwapContainer';
-// import SecurityMobile from './components/SecurityMobile';
 import Navbar from './components/common/Navbar';
 import { isDesktop } from './utils/utils';
-import './styles/scss/style.css';
 import { LoopCircleLoading } from 'react-loadingg';
 
+import './styles/scss/base.scss';
 
 const PoolsContainer = React.lazy(() => import('./components/Pools/PoolsContainer'));
 const NewPoolsContainer = React.lazy(() => import('./components/Pools/NewPoolsContainer'));

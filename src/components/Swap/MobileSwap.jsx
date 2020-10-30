@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Swap from './Swap';
 
-import '../../styles/scss/exchange-mobile.css'
+import '../../styles/scss/exchange-mobile.scss'
 import ConnectButton from '../common/ConnectButton';
 
 

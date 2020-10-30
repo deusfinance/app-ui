@@ -10,15 +10,24 @@ const Footer = ({ classes, items, footerClass }) => {
         { href: "https://twitter.com/deusdao", title: "Twitter" },
         // { href: "https://discord.com/invite/DxdM7TW", title: "Discord" },
     ]
-    const hideme = isDesktop() ? "flex" : "none"
     return (
-        <footer className={footerClass}>
-            <ul className={classes} style={{ fontFamily: "Comfortaa" }}>
-                {footers.reverse().map((item, index) => (<li key={index}> <a href={item.href} target="_blank" rel="noopener noreferrer" > {item.title} </a></li>))}
+        <footer id="footer">
+
+            <div className="contract">
+                <a className="dea-wrap" href="https://etherscan.io/token/0x80ab141f324c3d6f2b18b030f1c4e95d4d658778" target="_blank" rel="noopener noreferrer">
+                    <img src="img/dea.svg" alt="" /> DEA
+    Contract</a>
+                <a className="dea-wrap" href="https://etherscan.io/token/0x3b62f3820e0b035cc4ad602dece6d796bc325325" target="_blank" rel="noopener noreferrer">
+                    <img src="img/favicon/60x60.png" alt="" />
+                    DEUS
+    Contract</a>
+            </div>
+            <ul className={"social"} >
+                {footers.reverse().map((item, index) => (<li key={index}> <a href={item.href} target="_blank" rel="noopener noreferrer"> {item.title} </a></li>))}
             </ul>
-            <a className="deo-wrap" style={{ display: hideme }} href="https://etherscan.io/token/0x80ab141f324c3d6f2b18b030f1c4e95d4d658778" target="_blank" rel="noopener noreferrer"><img src="img/dea.svg" alt="" /> DEA token</a>
         </footer>
     );
+
 }
 
 export default Footer;

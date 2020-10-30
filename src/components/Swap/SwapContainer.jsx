@@ -2,13 +2,12 @@ import React, { Component } from 'react'
 import * as swapService from '../../services/SwapService'
 import { toast } from 'react-toastify';
 import Footer from '../common/Footer';
-import DesktopSwap from './DesktopSwap';
-
-import 'react-toastify/dist/ReactToastify.css';
-import '../../styles/scss/exchange.css'
-import MobileSwap from './MobileSwap';
-// import '../../styles/scss/exchange-mobile.css'
 import { isDesktop } from '../../utils/utils';
+
+import '../../styles/scss/exchange.scss'
+
+const MobileSwap = React.lazy(() => import('./MobileSwap'));
+const DesktopSwap = React.lazy(() => import('./DesktopSwap'));
 
 
 class SwapContainer extends Component {
@@ -370,34 +369,7 @@ class SwapContainer extends Component {
 
     render() {
 
-
-        let footerClass = ""
-        if (window.innerHeight > 598) {
-            footerClass = "footer-wrp"
-        }
-
-        const footers = [
-            { href: "https://github.com/deusfinance", title: "Github" },
-            { href: "https://t.me/deusfinance", title: "Telegram" },
-        ]
-
-
-        // const { perDeus, isBuy, isEthUnit, ethInUsd } = this.state
-        // const { SwapState, tokens, showPopup, isMetamask } = this.state
-        // const { address, withdrawAmount } = this.state.wallet
-        // const { from, to } = this.state.swap
-        // let priceClasses = "priceBar-xl";
-        // let priceViewClasses = "priceView-xl";
-        // if (window.innerWidth < 1261) {
-        //     priceClasses = "priceBar-lg"
-        //     priceViewClasses = "priceView-lg"
-        // }
-        // const PerDeusETH = parseFloat(perDeus).toFixed(4)
-        // const PerDeusDollar = parseFloat(perDeus * ethInUsd).toFixed(4)
-
-
-
-        return (<div>
+        return (<div style={{ minHeight: "calc(100% - 90px)" }}>
             {isDesktop() && <DesktopSwap
                 mainState={this.state}
                 handleMax={this.handleMax}
@@ -422,8 +394,8 @@ class SwapContainer extends Component {
                 handleClaim={this.handleClaim}
                 handleConnectWallet={this.handleConnectWallet}
             />}
-            {isDesktop() && <Footer classes="social" />}
-            {!isDesktop() && <Footer classes="msocial" items={footers} footerClass={footerClass} />}
+            <Footer />
+
         </div >
         );
     }

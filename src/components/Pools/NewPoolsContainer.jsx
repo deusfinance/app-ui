@@ -6,7 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import * as config from '../../config';
 
 import 'react-toastify/dist/ReactToastify.css';
-import '../../styles/scss/pools.css';
 import StartPool from './StartPool';
 import Pools from './Pools';
 import StakePopup from './StakePopup';
@@ -14,9 +13,12 @@ import Footer from '../common/Footer';
 import MigrationPopup from './MigrationPopup';
 import { Link } from 'react-router-dom';
 
+import '../../styles/scss/pools.scss';
 
 class NewPoolsContainer extends Component {
     state = {
+        subscribeMarket: "",
+        subscribeDea: "",
         isMigPopup: false,
         isConnected: false,
         showPopup: false,
@@ -38,40 +40,6 @@ class NewPoolsContainer extends Component {
             fully_duilted: "",
         },
         stakes: {
-            dea_usdc: {
-                name: "dea_usdc",
-                amounts: {
-                    dea: 0,
-                    newdea: 0,
-                    apy: 0,
-                    lp: 0,
-                    pool: 0,
-                    currLp: 0,
-                    allowances: 0,
-                },
-                coin_name: "UNI-V2-DEA-USDC",
-                stakingLink: "0x2e3394d3CdcbaAF2bb85Fe9aB4c79CeF4d28b216",
-                liqLink: "https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
-                rewardRatio: 0,
-            },
-
-            deus_eth: {
-                name: "deus_eth",
-                amounts: {
-                    dea: 0,
-                    newdea: 0,
-                    apy: 0,
-                    lp: 0,
-                    pool: 0,
-                    currLp: 0,
-                    allowances: 0,
-                },
-                coin_name: "UNI-V2-DEUS/ETH",
-                stakingLink: "0x19945547eC934bBD8C48fA69bC78152C468CCA7a",
-                liqLink: "https://app.uniswap.org/#/add/ETH/0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
-                rewardRatio: 0,
-            },
-
             deus: {
                 name: "deus",
                 amounts: {
@@ -117,28 +85,13 @@ class NewPoolsContainer extends Component {
                     currLp: 0,
                     allowances: 0,
                 },
-                comming_soon: true,
-                coin_name: "",
-                stakingLink: "0x1B043BbB372452d71503E6603Dd33b93271Bfec0",
-                liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
+                // comming_soon: true,
+                coin_name: "DEA",
+                // isDeusLink: true,
+                stakingLink: "0x1D17d697cAAffE53bf3bFdE761c90D61F6ebdc41",
+                liqLink: "https://app.uniswap.org/#/swap?inputCurrency=0x3b62f3820e0b035cc4ad602dece6d796bc325325&outputCurrency=0x80ab141f324c3d6f2b18b030f1c4e95d4d658778",
                 rewardRatio: 0,
             },
-            // uni: {
-            //     name: "uni",
-            //     amounts: {
-            //         dea: 0,
-            //         newdea: 0,
-            //         apy: 0,
-            //         lp: 0,
-            //         pool: 0,
-            //         currLp: 0,
-            //         allowances: 0,
-            //     },
-            //     coin_name: "UNI",
-            //     stakingLink: "0x8cd408279e966b7e7e1f0b9e5ed8191959d11a19",
-            //     liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
-            //     rewardRatio: 0,
-            // },
         },
     }
 
@@ -152,13 +105,17 @@ class NewPoolsContainer extends Component {
         document.title = 'DEUS staking';
         setTimeout(() => this.isConnected(), 1000);
         setTimeout(() => this.handleScroller(), 100);
-        this.handleUpdateDEA()
         this.getMarketAmounts()
-        setInterval(() => this.getMarketAmounts(), 40000)
+        this.setState({ subscribeMarket: setInterval(() => this.getMarketAmounts(), 40000) })
+        this.setState({ subscribeDea: setInterval(() => this.handleUpdateDEA(), (config.ClaimableDuration) * 1000) })
+
         window.addEventListener('resize', this.handleResize)
     }
 
     componentWillUnmount() {
+        const { subscribeMarket, subscribeDea } = this.state
+        clearInterval(subscribeMarket)
+        clearInterval(subscribeDea)
         window.removeEventListener('resize', this.handleResize)
     }
 
@@ -239,8 +196,6 @@ class NewPoolsContainer extends Component {
     }
 
 
-
-
     dontCheckThisToken = (token) => {
         return token.comming_soon || !token
     }
@@ -259,11 +214,9 @@ class NewPoolsContainer extends Component {
                 this.setState({ stakes })
 
                 stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                    token.rewardRatio = token.amounts.pool * config.FixedRatio / 100
-
                     token.amounts.dea = parseFloat(amount)
-                    console.log(token.amounts.dea);
-                    // token.amounts.dea = getStayledNumber(parseFloat(amount) - (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
+                    token.rewardRatio = token.amounts.pool * config.FixedRatio / 100
+                    // token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
                     this.setState({ stakes })
                 })
             })
@@ -303,35 +256,25 @@ class NewPoolsContainer extends Component {
     }
 
 
-    handleUpdateDEA = () => setInterval(() => {
-        console.log("Update all dea");
+    handleUpdateDEA = () => {
+        console.log("handleUpdateDEA");
         const { stakes } = this.state
         for (const tokenName in stakes) {
             const token = stakes[tokenName]
-            if (this.dontCheckThisToken(token)) return
             stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                // token.amounts.dea = token.amounts.newdea
-                // const dea = getStayledNumber(parseFloat(amount) - (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio)
-                // token.amounts.dea = dea < token.amounts.newdea ? dea : token.amounts.newdea
                 token.amounts.dea = parseFloat(amount)
-
-
-                // token.amounts.dea = getStayledNumber(parseFloat(amount))
                 this.setState({ stakes })
             })
         }
-    }, (config.ClaimableDuration) * 1000)
-
+    }
 
     handleStake = () => {
         const { staking } = this.state
-        console.log(staking.amount);
         stakeService.stake(staking.name, staking.amount, this.handleStakeState)
     }
 
     handleApprove = () => {
         const { staking } = this.state
-        console.log(staking.amount);
         stakeService.approve(staking.name, staking.amount, this.handleStakeState)
     }
 
@@ -340,7 +283,6 @@ class NewPoolsContainer extends Component {
         const { staking } = this.state
         staking.name = stakedToken
         this.setState({ staking })
-        console.log("0 handleClaim clicked")
     }
 
     isMigToken = (stakedToken) => {
@@ -406,7 +348,6 @@ class NewPoolsContainer extends Component {
     }
 
     handlePopup = (stakedToken, bool) => {
-        console.log(stakedToken);
         const { staking } = this.state
         const token = this.state.stakes[stakedToken]
         if (bool) {
@@ -428,7 +369,7 @@ class NewPoolsContainer extends Component {
     render() {
         const { isConnected, stakes, staking, showPopup, isMigPopup, markets } = this.state
         const orders = {
-            tokens: ["deus_dea", "deus_eth", "dea_usdc", "deus", "EMPTY", "dea"],
+            tokens: ["deus_dea", "deus", "dea", "EMPTY1", "EMPTY", "EMPTY1"],
             // tokens: ["deus_dea", "deus_eth", "dea_usdc", "deus", null, "dea"],
             shadows: ["blue-200-shadow", "yellow-400-shadow", "blue-200-shadow", "yellow-400-shadow", "yellow-300-shadow", "blue-200-shadow"],
         }
@@ -465,7 +406,7 @@ class NewPoolsContainer extends Component {
                 handleWithdraw={this.handleWithdraw}
                 orders={orders}
                 poolsLink={poolsLink}
-
+                poolVersion={"new"}
 
             />
             <Footer classes="social" />

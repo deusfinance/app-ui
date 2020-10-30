@@ -1,12 +1,14 @@
-@import 'base';
-@import 'fonts';
-
 .exchange-mobile {
     overflow-y: hidden;
     overflow-x: hidden;
 
     color: #ffffff;
     text-align: center;
+
+    footer {
+        position: absolute;
+        bottom: -127px;
+    }
 
     .title {
         margin-top: 40px;
@@ -64,33 +66,4 @@
         font-size: 11px;
         font-family: Comfortaa;
     }
-
-    footer {
-        width: 100%;
-        margin-top: 20px;
-        // position: absolute;
-        // bottom: 0;
-    }
-
-    .msocial {
-        display: flex;
-        justify-content: space-around;
-        height: 100%;
-        text-align: right;
-        font-family: Ebrima;
-        list-style-type: none;
-        font-size: 20px;
-
-        li {
-            a {
-                color: #ffffff;
-            }
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-    }
-
-
 }

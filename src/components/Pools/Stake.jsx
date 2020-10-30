@@ -49,23 +49,22 @@ class Stake extends Component {
 
     render() {
         const { token, shadowClass, handlePopup, handleClaim, handleWithdraw } = this.props
-        const { name, amounts, comming_soon } = token
+        const { name, amounts, rewardRatio, comming_soon } = token
         const isStaked = parseFloat(amounts.lp) > 0 ? true : false
         const isSingle = name.indexOf("_") === -1 ? true : false
         const provideWrapClasses = isSingle ? "single-asset-wrap" : "provide-liquidity-wrap"
         const stakedClass = isStaked ? "staked" : ""
         const shadowClasses = shadowClass ? shadowClass : "blue-200-shadow"
         const stakedText = isStaked ? "more" : "here"
-        // const decimals = this.countDecimal(rewardRatio)
-
+        const decimals = this.countDecimal(rewardRatio)
         return (<div className={`triangle-wrap  ${shadowClasses}`}>
             <div className={`triangle ${stakedClass}`}>
-                {!comming_soon && <div className="stake-here" onClick={() => handlePopup(name, true)}>Stake <br /> {stakedText}</div>}
+                {!comming_soon && <div className="stake-here" onClick={() => handlePopup(name, true)}> <p>Stake <br /> {stakedText}</p> </div>}
                 {comming_soon && <div className="stake-here stake-here-disabled" style={{}}>Stake <br /> {stakedText}</div>}
                 <div className="title">{name.toUpperCase().replace("_", "-")} </div>
                 {/* <div className="apy" style={{ opacity: 0 }}>.</div> */}
                 <div className="apy" > {amounts.apy}% APY</div>
-                {comming_soon && <div className="comming-soon"> Cooommmming after conductor!</div>}
+                {comming_soon && <div className="comming-soon">Will be launched on 26/10/2020 at 8 PM UTC</div>}
                 {!comming_soon && !isStaked && <div className={provideWrapClasses}>
                     {isSingle && <div className="single-asset" >single asset pool</div>}
                     {!isSingle && this.provideLiquidityButton(token)}
@@ -83,21 +82,10 @@ class Stake extends Component {
                             <div className="box-title-wrap">
                                 <div className="box-title">
                                     {token.amounts.dea === "0" || token.amounts.dea === 0 ? <div className="loading-stake"><TransverseLoading color="#ffffff" size={'small'} ></TransverseLoading></div> : <div>
-                                        {/* <CountUp
-                                            start={parseFloat(token.amounts.dea)}
-                                            end={parseFloat(token.amounts.newdea)}
-                                            delay={0}
-                                            duration={config.ClaimableDuration}
-                                            decimals={decimals}
-                                            preserveValue={true}
-                                            useEasing={false}
-                                        >
-                                            {({ countUpRef }) => (
-                                                <span ref={countUpRef} />
-                                            )}
-                                        </CountUp> */}
-                                        {(token.amounts.dea).toFixed(this.countDecimal(token.rewardRatio)) + " "}
+                                        {(token.amounts.dea).toFixed(decimals) + " "}
                                      DEA claimable</div>}
+
+
                                 </div>
                             </div>
                             <div className="box-btn" onClick={() => handleClaim(name)}>

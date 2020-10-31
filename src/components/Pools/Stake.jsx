@@ -84,8 +84,6 @@ class Stake extends Component {
                                     {token.amounts.dea === "0" || token.amounts.dea === 0 ? <div className="loading-stake"><TransverseLoading color="#ffffff" size={'small'} ></TransverseLoading></div> : <div>
                                         {(token.amounts.dea).toFixed(decimals) + " "}
                                      DEA claimable</div>}
-
-
                                 </div>
                             </div>
                             <div className="box-btn" onClick={() => handleClaim(name)}>

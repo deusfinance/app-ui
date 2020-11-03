@@ -61,14 +61,28 @@ class BuildRegistrar extends Component {
             return
         }
         if (added.length < 2) {
-            added = [...added, asset]
+            added = [...added, { ...asset, allocation: 0 }]
         }
+        added = this.restricAllocation(added)
         this.setState({ added })
+    }
+
+    restricAllocation = (added) => {
+        if (added.length === 1) {
+            added[0].allocation = 100
+        }
+        if (added.length === 2) {
+            added[0].allocation = 50
+            added[1].allocation = 50
+        }
+        return added
     }
 
     handleRemove = (asset) => {
         const { added } = this.state
-        const newAdded = added.filter(add => (add.id !== asset.id))
+        let newAdded = added.filter(add => (add.id !== asset.id))
+        if (added.length > 1)
+            newAdded = this.restricAllocation(newAdded)
         this.setState({ added: newAdded })
     }
 

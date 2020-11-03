@@ -5,6 +5,7 @@ import StepViewer from './StepViewer';
 import { pilotLogo } from './ui';
 import { Route, Switch } from 'react-router-dom';
 import TimeLock from './TimeLock';
+import Conduct from './Conduct';
 
 class Tools extends Component {
 
@@ -39,6 +40,17 @@ class Tools extends Component {
                 />
                 <Route exact path="/conductr/build/timelock"
                     render={props => <TimeLock {...props}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        assets={assets}
+                        added={added}
+                        isFocus={isFocus}
+                        handleRemove={handleRemove}
+                    />
+                    }
+                />
+                <Route exact path="/conductr/conduct"
+                    render={props => <Conduct {...props}
                         onFocus={onFocus}
                         onBlur={onBlur}
                         assets={assets}

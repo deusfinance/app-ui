@@ -18,39 +18,39 @@ class SearchBox extends Component {
             { <div className="addbox-wrap">
                 <div className={`addbox-output over-flow-y-auto`}>
                     <div className="name-asset">rTSLA</div>
-
-                    <table className="allocation-table">
-                        <thead>
-                            <tr>
-                                <th>assets</th>
-                                <th></th>
-                                <th>allocation</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                added.map((tk, key) => {
-                                    return <tr key={key}>
-                                        <td>{tk.name}</td>
-                                        <td>
-                                            <div className="p-line-wrap">
-                                                <div className="p-line"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="p-number-wrap grad-wrap">
-                                                <div className="p-number locked">100%</div>
-                                            </div>
-                                        </td>
-                                        <td onClick={() => handleRemove(tk)}>remove</td>
-                                    </tr>
-                                })
-                            }
-                        </tbody>
-                    </table>
-
-
+                    <div className="allocation">
+                        <table className="allocation-table">
+                            <thead>
+                                <tr>
+                                    <th>assets</th>
+                                    <th></th>
+                                    <th>allocation</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    added.map((tk, key) => {
+                                        return <tr key={key}>
+                                            <td>{tk.name}</td>
+                                            <td>
+                                                <div className="p-line-wrap">
+                                                    <div className="p-line"></div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="p-number-wrap grad-wrap">
+                                                    <div className="p-number locked">{tk.allocation}%</div>
+                                                </div>
+                                            </td>
+                                            <td onClick={() => handleRemove(tk)}>remove</td>
+                                        </tr>
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                        <div className="right-allocation"></div>
+                    </div>
 
                     {/*                     <div className="allocation">
                         <div className="left-allocation">
@@ -82,7 +82,9 @@ class SearchBox extends Component {
                             <Link to="/conductr/build" className="add-btn grad">Add more assets</Link>
                         </div>
                     </div>
+
                 </div>
+
             </div>}
 
             <div className="next-btn-wrap grad-wrap">

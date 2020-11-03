@@ -20,6 +20,8 @@ class SearchInput extends Component {
                     placeholder="Enter a symbol or keyword"
                     onChange={(e) => handleSearchInputChange(e.currentTarget.value)}
                     onFocus={onFocus}
+                    spellCheck="false"
+                    autoComplete="off"
                 />
             </div>
         </>);

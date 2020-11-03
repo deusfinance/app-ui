@@ -133,9 +133,33 @@
                 width: 75%;
                 padding: 0 65px;
                 height: 100%;
+                display: flex;
+                flex-direction: column;
                 background: #242424;
                 color: #ffffff;
                 position: relative;
+                .next-btn-wrap {
+                    margin: auto;
+                    left: 0;
+                    right: 0;
+                    width: 200px;
+                    height: 35px;
+                    position: absolute;
+                    bottom: 80px;
+                    .next-btn {
+                        color: #ffffff;
+                        &:hover {
+                            color: #111111;
+                        }
+                    }
+                    .disabledButton {
+                        color: #7777;
+                        width: 100%;
+                        background-color: #111111;
+                        height: 100%;
+                        cursor: default;
+                    }
+                }
                 .note {
                     margin-top: 47px;
                     font-family: Monument Grotesk;
@@ -195,10 +219,65 @@
                         letter-spacing: 0px;
                     }
                 }
+                .timelock {
+                    padding-top: 15px;
+                    width: 100%;
+
+                    // background-color: #777777;
+                    text-align: center;
+                    .title {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        // justify-content: center;
+                        font-size: 15px;
+                        margin: auto;
+                        img {
+                            margin-left: 7px;
+                            vertical-align: middle;
+                        }
+                    }
+                    .plans {
+                        padding: 10px 10px;
+                        padding-top: 40px;
+
+                        .plan-wrap {
+                            display: inline-block;
+                            height: 270px;
+                            background-color: burlywood;
+                            width: 23%;
+                            border-radius: 6px;
+
+                            .plan {
+                                width: 100%;
+                                height: 100%;
+                                border-radius: 6px;
+                                background: #101414;
+                                color: #868686;
+                                padding: 0 10px;
+                                img {
+                                    margin-top: 30px;
+                                }
+                                .amount {
+                                    margin-bottom: 20px;
+                                    font-size: 20px;
+                                }
+                                .desc {
+                                    font-size: 12.5px;
+                                }
+                                .expire-time {
+                                    margin-top: 12px;
+                                    font-size: 12.5px;
+                                }
+                            }
+                        }
+                    }
+                }
                 .addbox-wrap {
                     width: 100%;
                     height: 465px;
                     min-height: 465px;
+                    position: relative;
                     .addbox-output {
                         padding: 0 18px;
                         text-align: left;
@@ -217,42 +296,131 @@
                             height: 70px;
                             border-bottom: 1px solid #e3e3e3;
                         }
+
+                        .allocation-table {
+                            width: 65%;
+                            font-family: Monument Grotesk;
+                            font-weight: 600;
+                            border-collapse: separate;
+                            // border-spacing: 0 1em;
+                            thead {
+                                tr {
+                                    th {
+                                        padding-bottom: 13px;
+                                        text-align: center;
+                                    }
+                                    th:nth-child(1) {
+                                        text-align: center;
+                                        width: 20%;
+                                    }
+                                    th:nth-child(2) {
+                                        // opacity: 0;
+                                    }
+                                    th:nth-child(3) {
+                                        width: 20%;
+                                    }
+                                    th:nth-child(4) {
+                                        width: 13%;
+                                    }
+                                }
+                            }
+                            tbody {
+                                margin-top: 12px;
+                                tr {
+                                    .locked {
+                                        color: #777777;
+                                    }
+                                    td {
+                                        text-align: center;
+                                        margin: auto;
+                                        padding-bottom: 15px;
+                                    }
+                                    td:nth-child(1) {
+                                        text-align: center;
+                                        // padding-right: 30px;
+                                    }
+                                    td:nth-child(3) {
+                                        .p-number-wrap {
+                                            font-size: 20px;
+                                            width: 90px;
+                                            margin: auto;
+                                            .p-number {
+                                                width: 100%;
+                                                height: 100%;
+                                                background: #111111;
+                                                border-radius: 3px;
+                                            }
+                                        }
+                                    }
+                                    td:nth-child(4) {
+                                        cursor: pointer;
+                                        &:hover {
+                                            color: #777777;
+                                        }
+                                    }
+                                    td:nth-child(2) {
+                                        .p-line-wrap {
+                                            margin: auto;
+
+                                            height: 4px;
+                                            background-color: #ffffff;
+                                            width: 85%;
+                                            position: relative;
+                                            box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.5);
+                                            border-radius: 4px;
+                                            overflow: hidden;
+                                            .p-line {
+                                                position: absolute;
+                                                height: 100%;
+                                                width: 50%;
+                                                background: linear-gradient(90.11deg, #69c9ce 1.13%, #d5e061 98.54%);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         .allocation {
-                            height: 400px;
                             width: 100%;
                             // margin: 0 15px;
                             padding: 0 15px;
                             padding-top: 20px;
                             height: 340px;
                             display: flex;
+
                             .left-allocation {
                                 width: 60%;
                                 border-right: 1px solid #e3e3e3;
                                 .added-list-wrap {
-                                    width: 90%;
+                                    width: 80%;
                                     .top {
                                         display: flex;
                                         justify-content: space-between;
                                     }
                                     .allocation-list {
                                         margin-top: 20px;
+
+                                        position: relative;
                                         .allocation-item {
                                             height: 40px;
                                             display: flex;
                                             justify-content: space-between;
-                                            font-family: Monument Grotesk;
                                             align-items: center;
-                                            font-weight: 600;
                                             font-size: 20px;
                                             color: #ffffff;
-
                                             .name {
+                                                font-size: 15px;
+                                                color: #ffffff;
                                             }
                                             .p-line-wrap {
                                                 height: 4px;
                                                 background-color: #ffffff;
-                                                width: 250px;
+                                                width: 70%;
                                                 position: relative;
+                                                box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.5);
+                                                border-radius: 4px;
+                                                overflow: hidden;
                                                 .p-line {
                                                     position: absolute;
                                                     height: 100%;
@@ -264,8 +432,22 @@
                                                     );
                                                 }
                                             }
-                                            .p-number {
-                                                width: 60px;
+                                            .p-number-wrap {
+                                                width: 80px;
+                                                .p-number {
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    background: #242424;
+                                                }
+                                            }
+                                        }
+                                        .remove-btn {
+                                            position: absolute;
+                                            right: -80px;
+                                            top: 7px;
+                                            cursor: pointer;
+                                            &:hover {
+                                                color: #cccccc;
                                             }
                                         }
                                     }
@@ -277,9 +459,17 @@
                             }
                         }
                         .btns-wrap {
+                            position: absolute;
+                            bottom: 20px;
                             .add-btn-wrap {
                                 width: 200px;
                                 height: 35px;
+                                a {
+                                    color: #ffffff;
+                                    &:hover {
+                                        color: #242424;
+                                    }
+                                }
                             }
                         }
                     }
@@ -288,7 +478,7 @@
                 .search-wrap {
                     width: 100%;
                     height: 400px;
-                    min-height: 400px;
+                    max-height: 400px;
                     margin-top: 1px;
                     .search-output {
                         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

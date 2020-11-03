@@ -16,13 +16,13 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-bottom: 60px;
+        padding-bottom: 35px;
         img {
             margin-right: 18px;
             height: 37px;
         }
         .swap-wrap {
-            width: 100px;
+            width: 101px;
             height: 43px;
             padding: 1px;
             border-radius: 18px 0;
@@ -48,28 +48,27 @@ body {
 
     .swap-container-wrap {
         position: relative;
-        width: 950px;
-        height: 580px;
+        max-width: 1072px;
+        width: 100%;
+        height: 685px;
         margin: auto;
-        border: 1px solid #c4c4c4;
+        // border: 1px solid #c4c4c4;
         border-radius: 400px 0px;
-        overflow: hidden;
+        // overflow: hidden;
         font-family: Monument Grotesk;
         font-weight: 600;
+        background-image: url("/img/swapt.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        // background-size: cover;
         .swap-container {
             height: 100%;
             width: 100%;
-            background: linear-gradient(
-                135deg,
-                rgba(91, 204, 189, 0.14902) 0%,
-                rgba(97, 192, 191, 0.14902) 33.33%,
-                rgba(85, 188, 200, 0.14902) 74.49%,
-                rgba(105, 207, 184, 0.14902) 100%
-            );
+            // background: linear-gradient(135deg, #0e1d1c 0%, #0f1d1d 33.33%, #0d1c1e 74.49%, #0e1d1d 100%);
             .show-dollar-wrap {
                 position: absolute;
-                top: 20px;
-                right: 40px;
+                top: 40px;
+                right: 135px;
                 width: 150px;
                 height: 30px;
                 .show-dollar {
@@ -79,7 +78,7 @@ body {
 
             .swap-box-wrap {
                 position: absolute;
-                top: 70px;
+                top: 90px;
                 left: 0;
                 right: 0;
                 margin: auto;
@@ -193,7 +192,7 @@ body {
                         background: #242424;
                     }
                     .token-market-wrap {
-                        margin-top: 10px;
+                        margin-top: 8px;
                         color: rgba(255, 255, 255, 0.75);
                         .token-market {
                             margin: 3px;

@@ -93,6 +93,7 @@ class BuildRegistrar extends Component {
                                 handleRemove={this.handleRemove}
                                 assets={assets}
                                 added={added}
+
                             />
                         </div>
                     </div>

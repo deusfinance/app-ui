@@ -11,7 +11,7 @@ class SearchBox extends Component {
                         <p>Select or search for a token</p>
                         <div onClick={() => handleSearchBox(false)}>close</div>
                     </div>
-                    <input type="text" placeholder="Search name or paste address" spellCheck="false" autoComplete="false" />
+                    <input type="text" placeholder="Search name or paste address" spellCheck="false" autoComplete="off" />
                     <div className="token-items-wrap">
                         <p>Token</p>
                         <div className="token-items">

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchInput from './SearchInput';
 import OutsideClickHandler from 'react-outside-click-handler';
+import { Link } from 'react-router-dom';
 
 class SearchBox extends Component {
     state = {
@@ -24,16 +25,35 @@ class SearchBox extends Component {
         this.setState({ query: query.toLocaleLowerCase() })
     }
 
+    isAdded = (token) => {
+        const { added } = this.props
+        for (let i = 0; i < added.length; i++) {
+            if (added[i].id === token.id) {
+                return true
+            }
+        }
+        return false
+    }
 
     render() {
-        const { onBlur, isFocus, onFocus, assets, added, handleAdd } = this.props
+        const { onBlur, isFocus, onFocus, assets, added, handleAdd, handleRemove } = this.props
 
         const { query } = this.state
 
+        const nextClass = added.length > 0 ? "" : "disabledButton"
 
+        /*         const filterdAssets = assets.filter(s => {
+                    if (!added[s.id] && ((s.real_name.toLocaleLowerCase().includes(query) ||
+                        s.inc.toLocaleLowerCase().includes(query)) ||
+                        s.name.toLocaleLowerCase().includes(query)
+                    )) {
+                        return true
+                    }
+                    return false
+                }) */
 
         const filterdAssets = assets.filter(s => {
-            if (!added[s.id] && ((s.real_name.toLocaleLowerCase().includes(query) ||
+            if (((s.real_name.toLocaleLowerCase().includes(query) ||
                 s.inc.toLocaleLowerCase().includes(query)) ||
                 s.name.toLocaleLowerCase().includes(query)
             )) {
@@ -44,7 +64,7 @@ class SearchBox extends Component {
 
         const seachClasses = filterdAssets.length < 5 ? "over-flow-y-hidden" : "over-flow-y-auto"
 
-        return (<>
+        return (<div className="search-step" style={{ position: "relative", height: "calc(100% - 40px)", }}>
             <OutsideClickHandler
                 onOutsideClick={() => {
                     onBlur()
@@ -72,17 +92,28 @@ class SearchBox extends Component {
                                         </div>
                                     </div>
                                     <div className="search-right">
-                                        <div className="add-btn-wrap" onClick={() => handleAdd(s)}>
-                                            <div className="add-btn">Add</div>
-                                        </div>
+                                        {this.isAdded(s) ?
+                                            <div className="add-btn-wrap" onClick={() => handleRemove(s)}>
+                                                <div className="add-btn">Remove</div>
+                                            </div> :
+                                            <div className="add-btn-wrap" onClick={() => handleAdd(s)}>
+                                                <div className="add-btn">Add</div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             })
                         }
                     </div>
                 </div>}
+                <div className="next-btn-wrap grad-wrap">
+                    {added.length > 0 ? <Link to="/conductr/build/add" className={`next-btn grad ${nextClass}`} >
+                        Next
+                    </Link> : <div className="disabledButton grad">Next</div>}
+                </div>
             </OutsideClickHandler>
-        </>);
+
+        </div>);
     }
 }
 

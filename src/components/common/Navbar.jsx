@@ -27,6 +27,9 @@ const Navbar = () => {
         {
             id: "exchange", text: <><div className="nav-item-top">buy DEUS</div><div className="nav-item-bottom">swap</div></>, path: "/newswap"
         },
+        {
+            id: "conductr", text: <><div className="nav-item-top">Conductr</div><div className="nav-item-bottom">rigristrar</div></>, path: "/conductr"
+        },
         { id: "home", text: "Home", path: "https://deus.finance", out: true },]
 
 

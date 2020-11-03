@@ -4,11 +4,12 @@ import AddBox from './AddBox';
 import StepViewer from './StepViewer';
 import { pilotLogo } from './ui';
 import { Route, Switch } from 'react-router-dom';
+import TimeLock from './TimeLock';
 
 class Tools extends Component {
 
     render() {
-        const { isFocus, assets, added, handleAdd, handleRemove, onFocus, onBlur } = this.props
+        const { isFocus, assets, added, removeToken, handleAdd, handleRemove, onFocus, onBlur } = this.props
 
         return (<div className="tools">
             {pilotLogo()}
@@ -21,6 +22,7 @@ class Tools extends Component {
                         assets={assets}
                         added={added}
                         handleAdd={handleAdd}
+                        handleRemove={handleRemove}
                         isFocus={isFocus} />
                     }
                 />
@@ -29,6 +31,18 @@ class Tools extends Component {
                         onFocus={onFocus}
                         onBlur={onBlur}
                         assets={assets}
+                        added={added}
+                        isFocus={isFocus}
+                        handleRemove={handleRemove}
+                    />
+                    }
+                />
+                <Route exact path="/conductr/build/timelock"
+                    render={props => <TimeLock {...props}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        assets={assets}
+                        added={added}
                         isFocus={isFocus}
                         handleRemove={handleRemove}
                     />

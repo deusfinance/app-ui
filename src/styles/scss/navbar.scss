@@ -108,6 +108,9 @@ nav {
     .right-nav {
         font-family: Monument Grotesk;
         font-weight: 400;
+        .arrow-nav {
+            margin-left: 5px;
+        }
         .sub-nav {
             display: none;
             position: absolute;

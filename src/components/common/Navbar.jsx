@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import { isDesktop } from '../../utils/utils'
 import '../../styles/scss/navbar.scss';
+import { navbarItems } from '../../config';
+import SubNavbar from './SubNavbar';
 
 const Navbar = () => {
 
@@ -32,12 +33,16 @@ const Navbar = () => {
         },
         { id: "home", text: "Home", path: "https://deus.finance", out: true },]
 
+    Navs = navbarItems.reverse()
 
     //DEUS staking
     return (<><nav id="nav">
         {<div className="left-nav-wrap">
             <ul className="left-nav">
                 <li><span className="deus">DEUS <span className="finance">finance</span></span></li>
+                <li className="connect-wrap grad-wrap">
+                    <div className="connect grad">connect wallet</div>
+                </li>
             </ul>
         </div>}
         <div className="menu-mobile-icon" onClick={toggleNav}>
@@ -50,9 +55,12 @@ const Navbar = () => {
                 {
                     Navs.map(nav => {
                         const classes = nav.linkDisabled ? "disabled-link" : ""
-                        if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}> {nav.text} </a></li>
+                        if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}><div className="nav-title">{nav.text}</div></a></li>
 
-                        return <li key={nav.id}><NavLink className={classes} exact={true} to={nav.path}> {nav.text} </NavLink></li>
+                        return <li key={nav.id} className="nav-item"><NavLink className={classes} exact={nav.exact} to={nav.path}>
+                            <div className="nav-title"> {nav.text}</div>
+                            {nav.children && <SubNavbar items={nav.children} />}
+                        </NavLink></li>
                     })
                 }
             </ul>

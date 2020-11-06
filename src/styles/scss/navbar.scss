@@ -8,10 +8,11 @@ nav {
     display: flex;
     justify-content: space-between;
     padding: 0 16px;
+
     .left-nav-wrap {
         display: flex;
         justify-content: left;
-        margin-right: 10px;
+        // margin-right: 10px;
         font-size: 20px;
         font-family: Comfortaa;
         line-height: 40px;
@@ -25,21 +26,33 @@ nav {
             font-size: 20px;
             font-family: Comfortaa;
             list-style-type: none;
-            padding: 23px 0;
             display: flex;
             justify-content: space-around;
+            align-items: center;
 
             li {
                 // line-height: 40px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                line-height: 40px;
+                // display: flex;
+                // flex-direction: column;
+                // justify-content: center;
+                // line-height: 40px;
+            }
+            li:nth-child(1) {
+                margin-top: 8px;
+            }
+            li:nth-child(2) {
+                margin-left: 22px;
+                // font-family: Times New Roman;
+                // font-family: Monument Grotesk;
+                font-size: 21px;
+                height: 43px;
+                width: 200px;
             }
         }
 
         .deus {
-            margin-left: 15px;
+            // margin-left: 15px;
+            margin-top: 8px;
             font-family: Lambok;
             font-size: 31px;
             font-weight: 600;
@@ -92,17 +105,54 @@ nav {
     }
 
     .right-nav {
+        font-family: Monument Grotesk;
+        font-weight: 600;
+        .sub-nav {
+            display: none;
+            position: absolute;
+            // background-color: #f9f9f9;
+            min-width: 250px;
+            right: 0;
+            // top: 52px;
+            padding-top: 0px;
+            //box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+            padding-top: 22px;
+            // background: #313131;
+            border-bottom: none;
+
+            .sub-nav-item {
+                color: #ffffff;
+                text-align: left;
+                text-decoration: none;
+                background: #313131;
+                display: block;
+                .active {
+                    background-color: #8f9a9a;
+                    border-bottom: none;
+                    &:hover {
+                        color: #ffffff;
+                    }
+                }
+                a {
+                    padding: 16px 8px;
+                    &:hover {
+                        color: #8f9a9a;
+                    }
+                }
+            }
+        }
         ul {
             margin-right: 10px;
             font-size: 20px;
-            font-family: Comfortaa;
+            // font-family: Comfortaa;
             // line-height: 40px;
             list-style-type: none;
             // padding: 15px 0;
             display: flex;
             height: 100%;
             align-items: center;
-            font-weight: 400;
+            // font-weight: 400;
 
             a {
                 display: block;
@@ -124,18 +174,24 @@ nav {
                 }
             }
 
-            li {
+            .nav-item {
                 display: inline-block;
                 // width: 200px;
                 margin-right: 10px;
                 text-align: center;
+                position: relative;
                 border-bottom: 2px solid transparent;
                 margin-bottom: -2px;
                 .active {
                     border-bottom: 2px solid #808080;
                 }
                 &:hover {
-                    opacity: 0.7;
+                    .nav-title {
+                        opacity: 0.7;
+                    }
+                    .sub-nav {
+                        display: block;
+                    }
                 }
             }
         }
@@ -235,7 +291,7 @@ nav {
             li {
                 text-align: center;
                 display: block;
-                font-weight: 600;
+                // font-weight: 600;
                 border-bottom: 1px solid #808080;
                 a {
                     margin: auto;

@@ -30,13 +30,13 @@ nav {
             justify-content: space-around;
             align-items: center;
 
-            li {
-                // line-height: 40px;
-                // display: flex;
-                // flex-direction: column;
-                // justify-content: center;
-                // line-height: 40px;
+            .connect-wrap {
+                border-radius: 6px;
+                .connect {
+                    border-radius: 6px;
+                }
             }
+
             li:nth-child(1) {
                 margin-top: 8px;
             }
@@ -47,6 +47,7 @@ nav {
                 font-size: 21px;
                 height: 43px;
                 width: 200px;
+                margin-bottom: 1px;
             }
         }
 
@@ -106,7 +107,7 @@ nav {
 
     .right-nav {
         font-family: Monument Grotesk;
-        font-weight: 600;
+        font-weight: 400;
         .sub-nav {
             display: none;
             position: absolute;
@@ -116,16 +117,21 @@ nav {
             // top: 52px;
             padding-top: 0px;
             //box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 5;
+            z-index: 10;
             padding-top: 22px;
             // background: #313131;
             border-bottom: none;
-
+            background: #0d0d0d;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 0px 0px 5px 5px;
             .sub-nav-item {
+                background: #0d0d0d;
+
                 color: #ffffff;
                 text-align: left;
                 text-decoration: none;
-                background: #313131;
+                font-size: 20px;
+                font-weight: 600;
                 display: block;
                 .active {
                     background-color: #8f9a9a;
@@ -135,7 +141,8 @@ nav {
                     }
                 }
                 a {
-                    padding: 16px 8px;
+                    padding: 16px 0;
+                    padding-left: 24px;
                     &:hover {
                         color: #8f9a9a;
                     }

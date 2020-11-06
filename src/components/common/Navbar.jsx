@@ -40,8 +40,8 @@ const Navbar = () => {
         {<div className="left-nav-wrap">
             <ul className="left-nav">
                 <li><span className="deus">DEUS <span className="finance">finance</span></span></li>
-                <li className="connect-wrap grad-wrap">
-                    <div className="connect grad">connect wallet</div>
+                <li className="grad-wrap connect-wrap">
+                    <div className="grad connect">connect wallet</div>
                 </li>
             </ul>
         </div>}

@@ -779,30 +779,3 @@
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #cdd477;
 }
-
-.grad-wrap {
-    background: linear-gradient(90.11deg, #69c9ce 1.13%, #d5e061 98.54%);
-    padding: 1px;
-    border-radius: 3px;
-    color: #ffffff;
-    text-align: center;
-    font-family: Monument Grotesk;
-    font-weight: 600;
-    font-size: 18px;
-    cursor: pointer;
-    .grad {
-        padding-bottom: 2px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        background: #111111;
-        border-radius: 3px;
-        width: 100%;
-        height: 100%;
-        transition: all 0.35s;
-        &:hover {
-            background-color: transparent;
-            color: #000000;
-        }
-    }
-}

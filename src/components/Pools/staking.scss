@@ -61,6 +61,46 @@
         justify-content: space-between;
         color: #ffffff;
         z-index: 2;
+        .list-tokens-wrap {
+            // position: absolute;
+            // top: 60px;
+            // margin-top: -43px;
+            border-radius: 6px;
+            overflow: hidden;
+            .list-tokens {
+                text-align: left;
+                border-radius: 6px;
+                overflow: hidden;
+            }
+            height: unset;
+            &.grad-wrap {
+                border-radius: 6px;
+                height: unset;
+            }
+            .token-item {
+                display: inline-block;
+                width: 100%;
+                line-height: 43px;
+                padding-left: 0px;
+                padding-right: 0px;
+                // margin: 2px 0;
+
+                margin-bottom: 1px;
+                height: 43px;
+                .token-btn {
+                    padding: 0 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: row;
+                    margin-bottom: 1px;
+                    border-radius: 0;
+                    text-transform: uppercase;
+                    img {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+        }
         .old-new-btn {
             .msg {
                 font-family: Monument Grotesk;
@@ -80,6 +120,7 @@
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
+                text-transform: uppercase;
             }
         }
         .grad-wrap {
@@ -159,7 +200,7 @@
                     }
                     .tvl-txt {
                         padding-top: 10px;
-
+                        filter: drop-shadow(0px 0px 10px #ffffff);
                         font-size: 20px;
                     }
                 }

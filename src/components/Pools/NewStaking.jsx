@@ -3,7 +3,16 @@ import "./staking.scss"
 import Pools from './Pools';
 
 class NewStaking extends Component {
-    state = {}
+    state = {
+        isSelect: false,
+        tokens: [
+            { id: 1, name: "dea" },
+            { id: 2, name: "deus-dea" },
+            { id: 3, name: "deus" },
+            { id: 4, name: "dea-usdc" },
+        ],
+        selectedTokenID: 1,
+    }
 
     constructor(props) {
         super(props);
@@ -14,6 +23,9 @@ class NewStaking extends Component {
     componentDidMount() {
         this.handleScroller()
     }
+    handleOpenSelect = () => {
+        this.setState({ isSelect: true })
+    }
 
     handleScroller = () => {
         const width = (1900 - window.innerWidth) / 2
@@ -23,8 +35,13 @@ class NewStaking extends Component {
         }
     }
 
+    changeSelectToken = (t) => {
+        this.setState({ selectedTokenID: t.id, isSelect: false })
+    }
 
     render() {
+        const { isSelect, tokens, selectedTokenID } = this.state
+        const selectedToken = tokens.find(t => t.id === selectedTokenID)
         return (<div className="staking-wrap" >
             <div className="grad-wrap notif-wrap">
                 <div className=" notif">
@@ -32,14 +49,25 @@ class NewStaking extends Component {
                 </div>
             </div>
             <div className="top-btns">
-                <div className="select-group grad-wrap">
-                    <div className=" token-btn-wrap">
+                <div className="select-group">
+                    {!isSelect && <div className="grad-wrap token-btn-wrap" onClick={this.handleOpenSelect}>
                         <div className=" grad token-btn">
-                            <p>DEA SAND TOKEN</p>
+                            <p>{selectedToken.name} SAND TOKEN</p>
                             <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
                         </div>
-                    </div>
-
+                    </div>}
+                    {isSelect && <div className="grad-wrap list-tokens-wrap ">
+                        <div className="list-tokens">
+                            {tokens.map((t, index) => {
+                                return <div key={index} className="token-item" onClick={() => this.changeSelectToken(t)}>
+                                    <div className=" grad token-btn">
+                                        <p>{t.name + " sand token"}</p>
+                                        {index === 0 && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}
+                                    </div>
+                                </div>
+                            })}
+                        </div>
+                    </div>}
                 </div>
 
                 <div className="old-new-btn">
@@ -55,7 +83,7 @@ class NewStaking extends Component {
                     <div className="row1">
                         <div className="stake-token-wrap">
                             <div className="stake-more"><p>stake more</p></div>
-                            <div className="token-name">sand token dea</div>
+                            <div className="token-name"> sand token {selectedToken.name}</div>
                             <div className="apy">1,250% APY</div>
                             <div className="black-line"></div>
                             <div className="own-pool">you own 0.0000% of the pool</div>
@@ -88,7 +116,7 @@ class NewStaking extends Component {
 
                         <div className="stake-token-wrap">
                             <div className="stake-more"><p>stake more</p></div>
-                            <div className="token-name">sand token dea</div>
+                            <div className="token-name">time tokens</div>
                             <div className="apy">1,250% APY</div>
                             <div className="black-line"></div>
                             <div className="own-pool">you own 0.0000% of the pool</div>
@@ -109,7 +137,7 @@ class NewStaking extends Component {
 
                         <div className="stake-token-wrap">
                             <div className="stake-more"><p>stake more</p></div>
-                            <div className="token-name">sand token dea</div>
+                            <div className="token-name">sand tokens</div>
                             <div className="apy">1,250% APY</div>
                             <div className="black-line"></div>
                             <div className="own-pool">you own 0.0000% of the pool</div>
@@ -131,7 +159,7 @@ class NewStaking extends Component {
                 </div>
             </div>
             <div>SDfsfsf</div>
-        </div >);
+        </div>);
     }
 }
 

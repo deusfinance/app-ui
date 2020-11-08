@@ -27,8 +27,12 @@ export const navbarItems = [
                 text: "STAKING",
                 path: "/staking",
                 exact: true,
-
-
+            },
+            {
+                id: "nstaking",
+                text: "NEW STAKING",
+                path: "/new-staking",
+                exact: true,
             },
             {
                 id: "vaults",

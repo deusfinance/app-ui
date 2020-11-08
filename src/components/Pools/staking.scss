@@ -1,0 +1,314 @@
+// @import "../../styles/scss/nfonts";
+
+.stake-container-wrap::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.stake-container-wrap::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+    background-color: transparent;
+}
+
+.stake-container-wrap::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #cdd477;
+}
+
+.stake-container-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    // -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    padding-bottom: 40px;
+}
+
+.staking-wrap {
+    width: 100%;
+    display: block;
+    position: relative;
+
+    .notif-wrap {
+        margin: 20px;
+        height: 43px;
+
+        font-size: 15px;
+
+        border-radius: 6px;
+        .notif {
+            padding: 0 20px;
+            border-radius: 6px;
+            font-family: Monument Grotesk;
+            font-weight: 600;
+            height: 100%;
+            display: flex;
+            background: linear-gradient(135deg, #0d1e1c 0%, #0d1c1c 33.33%, #0e1c1c 74.49%, #0d1c1d 100%);
+            justify-content: center;
+            flex-direction: column;
+            line-height: 18px;
+        }
+    }
+    .top-btns {
+        position: absolute;
+        top: 60px;
+        padding: 0 20px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        color: #ffffff;
+        z-index: 2;
+        .old-new-btn {
+            .msg {
+                font-family: Monument Grotesk;
+                font-weight: 600;
+                line-height: 15px;
+                margin-top: 10px;
+                font-size: 12.5px;
+                text-align: center;
+            }
+            width: 345px;
+        }
+        .token-btn-wrap {
+            text-align: left;
+            .token-btn {
+                padding: 0 20px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        .grad-wrap {
+            height: 43px;
+            width: 345px;
+            border-radius: 6px;
+            .grad {
+                border-radius: 6px;
+            }
+        }
+    }
+    .stake-container {
+        position: absolute;
+        top: 15px;
+        font-family: Monument Grotesk;
+        font-weight: 600;
+        min-width: 1900px;
+        width: 1900px;
+        max-width: 1900px;
+        text-align: center;
+        position: relative;
+        overflow-x: auto;
+        // height: 100%;
+        height: 840px;
+        margin-top: -15px;
+        background: url("/img/Line.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        padding-top: 60px;
+        color: #ffffff;
+        background-size: cover;
+        text-align: center;
+        .row2 {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            position: relative;
+            .tvl-wrap {
+                position: absolute;
+                cursor: pointer;
+                clip-path: polygon(0 0, 50% 100%, 100% 0);
+                margin-top: 28px;
+                width: 751px;
+                height: 316px;
+                background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
+                .tvl {
+                    color: #ffffff;
+                    margin: auto;
+                    margin-top: 2px;
+                    width: 740px;
+                    height: 98%;
+                    clip-path: polygon(0 0, 50% 100%, 100% 0);
+                    background: linear-gradient(135deg, #0d1e1c 0%, #0d1c1c 33.33%, #0e1c1c 74.49%, #0d1c1d 100%);
+                    transition: all 0.5s;
+                    &:hover {
+                        background: linear-gradient(
+                                224.74deg,
+                                rgba(94, 196, 214, 0.35) 0.19%,
+                                rgba(241, 252, 104, 0.35) 100.22%
+                            ),
+                            rgba(206, 206, 206, 0.5);
+                        color: #000000;
+                    }
+                    .sand-token {
+                        font-size: 20px;
+                        padding-top: 30px;
+                    }
+                    .extra {
+                        padding-top: 20px;
+                        font-size: 15px;
+                    }
+                    .price {
+                        padding-top: 40px;
+
+                        filter: drop-shadow(0px 0px 10px #ffffff);
+                        font-size: 40px;
+                    }
+                    .tvl-txt {
+                        padding-top: 10px;
+
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
+        .stake-token-wrap {
+            // margin-top: 70px;
+            position: relative;
+            display: inline-block;
+            width: 900px;
+            height: 385px;
+            clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+            background: #242424;
+            // background: url("/img/polygon.svg");
+            // background-position: center;
+            // background-repeat: no-repeat;
+            overflow: hidden;
+            text-align: center;
+            .stake-more {
+                margin: auto;
+                width: 272px;
+                color: #ffffff;
+                // display: flex;
+                text-align: center;
+                // align-items: center;
+                display: flex;
+                align-items: center;
+                height: 120px;
+                background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
+                box-shadow: 0px 0px 14px #ffffff;
+                border-radius: 3px;
+                transition: all 0.3s;
+                cursor: pointer;
+                p {
+                    transition: all 0.3s;
+
+                    text-transform: uppercase;
+                    width: 100%;
+                    margin-top: 25px;
+                    font-size: 20px;
+                }
+                &:hover {
+                    box-shadow: 0px 0px 20px #c4eb89;
+
+                    p {
+                        color: #000;
+                    }
+                }
+            }
+            .token-name {
+                text-transform: uppercase;
+                font-size: 25px;
+                margin-top: 25px;
+            }
+            .apy {
+                margin: 8px 0;
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 20px;
+            }
+            .black-line {
+                background: #000;
+                height: 2px;
+            }
+            .own-pool {
+                margin: 20px 0;
+                font-size: 20px;
+                text-shadow: 0px 0px 10px #ffffff;
+            }
+            .deposit-wrap {
+                height: 40px;
+                width: 450px;
+                margin: auto;
+                margin-top: 20px;
+
+                .deposit {
+                    height: 100%;
+                    width: 100%;
+
+                    display: flex;
+                    flex-direction: row;
+                    // font-size: 15px;
+
+                    .deposit-amount {
+                        height: 100%;
+                        flex: 2;
+                        background-color: #111111;
+                        text-align: center;
+                        line-height: 40px;
+                        cursor: default;
+                        span {
+                            // padding-bottom: 8px;
+                            font-size: 15px;
+                        }
+                    }
+                    .provide-more {
+                        line-height: 40px;
+                        transition: all 0.3s;
+                        font-size: 15px;
+                        text-align: center;
+                        border-left: 2px solid #242424;
+                        background-color: #111111;
+                        flex: 1;
+                        &:hover {
+                            color: #000;
+                            background: transparent;
+                        }
+                    }
+                }
+            }
+            .claim-wrap {
+                height: 40px;
+                width: 600px;
+                margin: auto;
+                margin-top: 20px;
+
+                .claim {
+                    height: 100%;
+                    display: flex;
+                    flex-direction: row;
+
+                    div {
+                        line-height: 40px;
+                        flex: 1;
+                        background-color: #111111;
+                        cursor: pointer;
+                    }
+                    .dea-amount {
+                        border: 2px solid #242424;
+                        cursor: default;
+                    }
+
+                    .withdraw {
+                        transition: all 0.3s;
+                        font-size: 15px;
+                        &:hover {
+                            background: transparent;
+                            color: #000;
+                        }
+                    }
+                    .caim-btn {
+                        transition: all 0.3s;
+                        font-size: 15px;
+                        &:hover {
+                            background: transparent;
+                            color: #000;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

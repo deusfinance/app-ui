@@ -14,6 +14,7 @@ const MainSwap = React.lazy(() => import('./components/Swap/MainSwap'));
 const NotFound = React.lazy(() => import('./components/NotFound'));
 const ConductrContainer = React.lazy(() => import('./components/Conductr/ConductrContainer'));
 const BuildRegistrar = React.lazy(() => import('./components/Conductr/BuildRegistrar'));
+const NewStaking = React.lazy(() => import('./components/Pools/NewStaking'));
 
 
 
@@ -25,6 +26,7 @@ function App() {
       <Switch>
         <Route exact path="/pools" component={isDesktop() ? PoolsContainer : SecurityMobile} />
         <Route exact path="/staking" component={isDesktop() ? NewPoolsContainer : SecurityMobile} />
+        <Route exact path="/new-staking" component={isDesktop() ? NewStaking : SecurityMobile} />
         <Route exact path="/swap" component={SwapContainer} />
         <Route exact path="/newswap" component={MainSwap} />
         <Route exact path="/conductr/*" component={BuildRegistrar} />

@@ -15,15 +15,15 @@
 
 @font-face {
     font-family: "Monument Grotesk";
-    src: url("../../assets/fonts/MonumentGrotesk-Medium.ttf");
-    font-weight: 500;
+    src: url("../../assets/fonts/MonumentGrotesk-Semi-Mono2.woff");
+    src: url("../../assets/fonts/MonumentGrotesk-Semi-Mono2.woff2") format("woff2");
+    font-weight: 600;
 }
 
 @font-face {
     font-family: "Monument Grotesk";
-    src: url("../../assets/fonts/MonumentGrotesk-Semi-Mono2.woff");
-    src: url("../../assets/fonts/MonumentGrotesk-Semi-Mono2.woff2") format("woff2");
-    font-weight: 600;
+    src: url("../../assets/fonts/MonumentGrotesk-Medium.ttf");
+    font-weight: 500;
 }
 
 @font-face {

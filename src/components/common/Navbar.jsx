@@ -57,10 +57,11 @@ const Navbar = () => {
                         const classes = nav.linkDisabled ? "disabled-link" : ""
                         if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}><div className="nav-title">{nav.text}</div></a></li>
 
-                        return <li key={nav.id} className="nav-item"><NavLink className={classes} exact={nav.exact} to={nav.path}>
-                            <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}</div>
-                            {nav.children && <SubNavbar items={nav.children} />}
-                        </NavLink></li>
+                        return <li key={nav.id} className="nav-item">
+                            <NavLink className={classes} exact={nav.exact} to={nav.path}>
+                                <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}</div>
+                            </NavLink>
+                            {nav.children && <SubNavbar items={nav.children} />}</li>
                     })
                 }
             </ul>

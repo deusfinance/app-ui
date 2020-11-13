@@ -5,14 +5,18 @@ class TimeLock extends Component {
     state = {
         plans: [
             { id: 1, name: "3 Months", },
-            { id: 2, name: "6 Months", },
+            {
+                id: 2, name: "6 Months", text: `
+                `
+            },
             { id: 3, name: "12 Months" },
             { id: 4, name: "infinit", }
         ],
-        activePlane: null
+        activePlane: 2
     }
 
     handleActive = (plan) => {
+        console.log("disabled");
         this.setState({ activePlane: plan.id })
     }
 
@@ -28,7 +32,7 @@ class TimeLock extends Component {
             { <div className="addbox-wrap">
                 <div className={`addbox-output over-flow-y-auto`}>
                     <div className="name-asset">rTSLA</div>
-                    <div className="timelock">
+                    <div className="tim e lock">
                         <div className="title">
                             <p>CHOOSE TIME LOCK</p>
                             <img src={process.env.PUBLIC_URL + "/img/lock.svg"} />
@@ -40,7 +44,7 @@ class TimeLock extends Component {
                                     return <div key={key}
                                         className={`grad-wrap plan-wrap  ${activeClass}`}
                                         onClick={() => this.handleActive(p)} >
-                                        <div className="plan">
+                                        <div className=" p lan">
 
                                             <svg width={22} height={30} viewBox="0 0 24 30" fill="none" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                 <g filter="url(#filter0_d)">
@@ -61,8 +65,8 @@ class TimeLock extends Component {
 
                                             <div className="amount">{p.name}</div>
                                             <div className="desc">
-                                                After three months your provided ETH is goig to be claimable
-                                                if you burn your minted rTSLAQQQ token.
+
+                                                After three months your provided ETH is going to be claimable if you burn your minted rTSLAQQQ token.
                                             </div>
                                             <div className="expire-time">
                                                 rT SLAQQQ will expire on 01.28.2020 @ 10:49PM GMT
@@ -79,7 +83,7 @@ class TimeLock extends Component {
             <div className="next-btn-wrap grad-wrap">
                 {activePlane ? <Link to="/conductr/conduct" className={`next-btn grad ${nextClass}`} >
                     Next
-                    </Link> : <div className="disabledButton grad">Next</div>}
+        </Link> : <div className="disabledButton grad">Next</div>}
             </div>
 
         </div>);

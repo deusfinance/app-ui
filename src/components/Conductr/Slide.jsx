@@ -31,7 +31,7 @@ You can select as many different assets as you wish and change their allocation.
                                     `}
                 </pre>}
             </div>
-            <div className="bar-wrap">
+            {/* <div className="bar-wrap">
                 <div className="bar-chart-wrap">
                     <div className="bar-chart-light">
                         ${"37,083"}
@@ -42,7 +42,7 @@ You can select as many different assets as you wish and change their allocation.
                     <div className="title">current :</div>
                     <div className="title">hardcap :  ${"150,000"}</div>
                 </div>
-            </div>
+            </div> */}
         </div>);
     }
 }

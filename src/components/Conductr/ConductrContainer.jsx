@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 class ConductrContainer extends Component {
     state = {}
 
-
     componentDidMount() {
         document.title = 'DEUS conductr';
     }
@@ -23,7 +22,7 @@ class ConductrContainer extends Component {
                     </div>
                 </div>
 
-                <div className="contr-btns">
+                {/* <div className="contr-btns">
                     <div className="connect">
                         Connected Wallet
                     </div>
@@ -32,7 +31,7 @@ class ConductrContainer extends Component {
                             Learn more
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="container">
                     <div className="pilot-wrap">
@@ -43,7 +42,7 @@ class ConductrContainer extends Component {
                             </div>
                             <div className="title-pilot">pilot</div>
                             <div className="btn-wrap">
-                                <Link to="/conductr/buy" className="buy"> <div className="btn-txt">Buy mirrored asset</div></Link>
+                                <Link to="/newswap" className="buy"> <div className="btn-txt">Buy mirrored asset</div></Link>
                                 <Link to="/conductr/build" className="mirror"><div className="btn-txt" >Mirror an asset</div></Link>
                             </div>
                             <div className="create-text">Create your own Registrar with a few clicks</div>

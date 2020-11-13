@@ -113,9 +113,9 @@ class MainSwap extends Component {
 
             <div className="swap-container-wrap">
                 <div className="swap-container">
-                    <div className="show-dollar-wrap grad-wrap">
+                    {/* <div className="show-dollar-wrap grad-wrap">
                         <div className="show-dollar grad">SHOW DOLLAR PRICE</div>
-                    </div>
+                    </div> */}
 
                     <div className="swap-box-wrap">
                         <div className="swap-box">

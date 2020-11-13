@@ -15,6 +15,7 @@ const NotFound = React.lazy(() => import('./components/NotFound'));
 const ConductrContainer = React.lazy(() => import('./components/Conductr/ConductrContainer'));
 const BuildRegistrar = React.lazy(() => import('./components/Conductr/BuildRegistrar'));
 const NewStaking = React.lazy(() => import('./components/Pools/NewStaking'));
+const Vault = React.lazy(() => import('./components/Vault/Vault'));
 
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route exact path="/staking" component={isDesktop() ? NewPoolsContainer : SecurityMobile} />
         <Route exact path="/new-staking" component={isDesktop() ? NewStaking : SecurityMobile} />
         <Route exact path="/swap" component={SwapContainer} />
+        <Route exact path="/vaults" component={Vault} />
         <Route exact path="/newswap" component={MainSwap} />
         <Route exact path="/conductr/*" component={BuildRegistrar} />
         <Route path="/conductr" component={ConductrContainer} />

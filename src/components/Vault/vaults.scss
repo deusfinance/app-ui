@@ -1,0 +1,110 @@
+.vaults-wrap {
+    position: relative;
+    color: #ffffff;
+    width: 100%;
+    font-family: Monument Grotesk;
+    font-weight: 600;
+    // height: 100%;
+    //
+    .top-buttons {
+        // position: absolute;
+        padding: 0 20px;
+        margin-top: 20px;
+        width: 100%;
+        height: 43px;
+        display: flex;
+        justify-content: space-between;
+        .grad-wrap {
+            padding: 2px;
+            border-radius: 6px;
+            .grad {
+                border-radius: 6px;
+            }
+        }
+        .explain {
+            padding: 5px 20px;
+        }
+        .beta {
+            padding: 5px 20px;
+        }
+    }
+    .gonbad {
+        // position: relative;
+        text-align: center;
+        margin: auto;
+        width: 50%;
+        height: 600px;
+        margin-top: 20px;
+        background-position: center;
+        background: url("/vaults/vector.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding-top: 200px;
+        .title {
+            margin-top: 30px;
+            font-size: 35px;
+        }
+        .estimaited {
+            margin-top: 40px;
+            font-family: Monument Grotesk;
+            font-style: normal;
+            font-weight: 600;
+            // font-family: Times New Roman;
+            font-size: 20px;
+            text-shadow: 0px 0px 10px #ffffff;
+        }
+        .percent {
+            margin-top: 10px;
+            font-family: Monument Grotesk;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 40px;
+            text-shadow: 0px 0px 10px #ffffff;
+        }
+        .gonab-btns {
+            margin: auto;
+            margin-top: 50px;
+
+            width: 283px;
+            .get-wrap {
+                height: 35px;
+                margin-top: 10px;
+            }
+            .lock-wrap {
+                height: 35px;
+            }
+        }
+    }
+    .doors {
+        margin: auto;
+        width: 100%;
+        // margin: auto;
+        // margin: 0 10%;
+        text-align: center;
+        // background-color: #0d1e1c;
+        // padding: 0 calc(100);
+        display: inline-block;
+        .door {
+            display: inline-block;
+
+            width: 27%;
+            margin: 0 10px;
+            margin-bottom: 10px;
+            height: 600px;
+            // background: burlywood;
+            background-color: #000000;
+        }
+        .open-door {
+            background: url("/vaults/open.svg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top;
+        }
+        .close-door {
+            background: url("/vaults/close.svg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top;
+        }
+    }
+}

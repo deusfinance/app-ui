@@ -25,9 +25,25 @@ class Vault extends Component {
                         <div className="grad">Get UNI-LP tokens</div>
                     </div>
                 </div>
+
+
             </div>
             <div className="doors">
-                <div className=" open-door door"></div>
+                <div className=" open-door door">
+                    <div className="title">
+                        DEUS
+                    </div>
+                    <div className="dec">
+                        Vault still locked.
+                    </div>
+                    <div className="estimated">Estimated yearly growth:</div>
+                    <div className="grad-wrap lock-wrap ">
+                        <div className="grad">Lock your UNI-LP tokens</div>
+                    </div>
+                    <div className="grad-wrap get-wrap">
+                        <div className="grad">Get UNI-LP tokens</div>
+                    </div>
+                </div>
                 <div className="close-door door"></div>
                 <div className="open-door door"></div>
             </div>

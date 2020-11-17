@@ -17,7 +17,7 @@ class TimeLock extends Component {
 
     handleActive = (plan) => {
         console.log("disabled");
-        this.setState({ activePlane: plan.id })
+        // this.setState({ activePlane: plan.id })
     }
 
     render() {
@@ -32,7 +32,7 @@ class TimeLock extends Component {
             { <div className="addbox-wrap">
                 <div className={`addbox-output over-flow-y-auto`}>
                     <div className="name-asset">rTSLA</div>
-                    <div className="tim e lock">
+                    <div className="timelock">
                         <div className="title">
                             <p>CHOOSE TIME LOCK</p>
                             <img src={process.env.PUBLIC_URL + "/img/lock.svg"} />
@@ -44,7 +44,7 @@ class TimeLock extends Component {
                                     return <div key={key}
                                         className={`grad-wrap plan-wrap  ${activeClass}`}
                                         onClick={() => this.handleActive(p)} >
-                                        <div className=" p lan">
+                                        <div className=" plan">
 
                                             <svg width={22} height={30} viewBox="0 0 24 30" fill="none" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                 <g filter="url(#filter0_d)">

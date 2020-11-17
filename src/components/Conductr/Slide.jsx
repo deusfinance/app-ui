@@ -11,7 +11,7 @@ class Slide extends Component {
                 {!isFocus && <pre>{`
 Use the search bar to find desired assets that you want to mirror.
 
-You can select currently two different assets.
+You can select currently four different assets.
 
 
 In the v0.1 Pilot we are offering
@@ -21,7 +21,7 @@ In the v0.1 Pilot we are offering
 - inverted QQQ
 
 
-500 + more will be added in december
+500+ assets and 250,000+ combinations will be available in Q4 2020 - Q1 2021
                                     `}
                 </pre>}
                 {isFocus && <pre>{`

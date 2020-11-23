@@ -15,6 +15,8 @@ const NotFound = React.lazy(() => import('./components/NotFound'));
 const ConductrContainer = React.lazy(() => import('./components/Conductr/ConductrContainer'));
 const BuildRegistrar = React.lazy(() => import('./components/Conductr/BuildRegistrar'));
 const NewStaking = React.lazy(() => import('./components/Pools/NewStaking'));
+const BalancerPool = React.lazy(() => import('./components/Pools/BalancerPool'));
+const TimeToken = React.lazy(() => import('./components/Pools/TimeToken'));
 const Vault = React.lazy(() => import('./components/Vault/Vault'));
 
 
@@ -28,6 +30,8 @@ function App() {
         <Route exact path="/pools" component={isDesktop() ? PoolsContainer : SecurityMobile} />
         <Route exact path="/staking" component={isDesktop() ? NewPoolsContainer : SecurityMobile} />
         <Route exact path="/new-staking" component={isDesktop() ? NewStaking : SecurityMobile} />
+        <Route exact path="/balancer" component={BalancerPool} />
+        <Route exact path="/timetoken" component={TimeToken} />
         <Route exact path="/swap" component={SwapContainer} />
         <Route exact path="/vaults" component={Vault} />
         <Route exact path="/newswap" component={MainSwap} />

@@ -26,10 +26,20 @@
     font-weight: 500;
 }
 
+// @font-face {
+//     font-family: "Monument Grotesk";
+//     src: url("../../assets/fonts/MonumentGrotesk-Regular2.woff");
+//     src: url("../../assets/fonts/MonumentGrotesk-Regular2.woff2") format("woff2");
+//     font-weight: 400;
+// }
+
 @font-face {
     font-family: "Monument Grotesk";
-    src: url("../../assets/fonts/MonumentGrotesk-Regular2.woff");
-    src: url("../../assets/fonts/MonumentGrotesk-Regular2.woff2") format("woff2");
+    src: url("../../assets/fonts/Monument/edumonumentgroteskmono-regular-webfont.woff2") format("woff2"),
+        url("../../assets/fonts/Monument/edumonumentgroteskmono-regular-webfont.woff") format("woff"),
+        url("../../assets/fonts/Monument/edumonumentgroteskmono-regular-webfont.ttf") format("truetype"),
+        url("../../assets/fonts/Monument/edumonumentgroteskmono-regular-webfont.svg#edu_monument_grotesk_monoRg")
+            format("svg");
     font-weight: 400;
 }
 

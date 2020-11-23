@@ -6,10 +6,9 @@ class NewStaking extends Component {
     state = {
         isSelect: false,
         tokens: [
-            { id: 1, name: "dea" },
-            { id: 2, name: "deus-dea" },
-            { id: 3, name: "deus" },
-            { id: 4, name: "dea-usdc" },
+            { id: 1, name: "Sand Token" },
+            { id: 2, name: "Balancer Pool" },
+            { id: 3, name: "Time Token" },
         ],
         selectedTokenID: 1,
     }
@@ -52,7 +51,7 @@ class NewStaking extends Component {
                 <div className="select-group">
                     {!isSelect && <div className="grad-wrap token-btn-wrap" onClick={this.handleOpenSelect}>
                         <div className=" grad token-btn">
-                            <p>{selectedToken.name} SAND TOKEN</p>
+                            <p>{selectedToken.name} </p>
                             <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
                         </div>
                     </div>}
@@ -61,7 +60,7 @@ class NewStaking extends Component {
                             {tokens.map((t, index) => {
                                 return <div key={index} className="token-item" onClick={() => this.changeSelectToken(t)}>
                                     <div className=" grad token-btn">
-                                        <p>{t.name + " sand token"}</p>
+                                        <p>{t.name}</p>
                                         {index === 0 && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}
                                     </div>
                                 </div>
@@ -82,15 +81,15 @@ class NewStaking extends Component {
                 <div className="stake-container" >
                     <div className="row1">
                         <div className="stake-token-wrap">
-                            <div className="stake-more"><p>stake more</p></div>
-                            <div className="token-name"> sand token {selectedToken.name}</div>
+                            <div className="stake-more"><p>stake</p></div>
+                            <div className="token-name"> DEUS-DEA SAND TOKEN</div>
                             <div className="apy">1,250% APY</div>
                             <div className="black-line"></div>
                             <div className="own-pool">you own 0.0000% of the pool</div>
                             <div className="grad-wrap deposit-wrap">
                                 <div className=" deposit">
                                     <div className="deposit-amount">137.7184 <span>tokens deposited</span></div>
-                                    <div className="provide-more">provide more</div>
+                                    <div className="provide-more"><span>provide more</span><img src={process.env.PUBLIC_URL + "/vaults/uni.svg"} alt="uni" /></div>
                                 </div>
                             </div>
                             <div className="grad-wrap claim-wrap">
@@ -106,38 +105,31 @@ class NewStaking extends Component {
 
                         <div className="tvl-wrap">
                             <div className="tvl">
-                                <div className="sand-token">DEUS-DEA Sand Token Price</div>
-                                <div className="extra">If we need some extra info</div>
+                                <div className="sand-token">Staking Pools</div>
                                 <div className="price">$2,925,602</div>
                                 <p className="tvl-txt">TVL</p>
+                                <div className="grad-wrap tvl-btn">
+                                    <div className="grad">How to get Sand Tokens</div>
+                                </div>
                             </div>
                         </div>
 
 
-                        <div className="stake-token-wrap">
-                            <div className="stake-more"><p>stake more</p></div>
-                            <div className="token-name">time tokens</div>
+                        <div className="stake-token-wrap closed">
+                            <div className="stake-more"><p>stake</p></div>
+                            <div className="token-closed-name">DEA-USDC SAND TOKEN</div>
                             <div className="apy">1,250% APY</div>
-                            <div className="black-line"></div>
-                            <div className="own-pool">you own 0.0000% of the pool</div>
-                            <div className="grad-wrap deposit-wrap">
-                                <div className=" deposit">
-                                    <div className="deposit-amount">137.7184 <span>tokens deposited</span></div>
-                                    <div className="provide-more">provide more</div>
-                                </div>
-                            </div>
-                            <div className="grad-wrap claim-wrap">
-                                <div className=" claim">
-                                    <div className="withdraw">claim & withdraw</div>
-                                    <div className="dea-amount">0.000000 DEA </div>
-                                    <div className="caim-btn">claim</div>
+
+                            <div className="grad-wrap provide-more-wrap">
+                                <div className=" grad">
+                                    <div className="provide-more"><span>get DEA-USDC Sand Token </span><img src={process.env.PUBLIC_URL + "/vaults/sand-token.svg"} alt="uni" /></div>
                                 </div>
                             </div>
                         </div>
 
                         <div className="stake-token-wrap">
-                            <div className="stake-more"><p>stake more</p></div>
-                            <div className="token-name">sand tokens</div>
+                            <div className="stake-more"><p>stake</p></div>
+                            <div className="token-name">DEUS SAND TOKEN</div>
                             <div className="apy">1,250% APY</div>
                             <div className="black-line"></div>
                             <div className="own-pool">you own 0.0000% of the pool</div>

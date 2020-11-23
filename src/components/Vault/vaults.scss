@@ -1,3 +1,4 @@
+.lock-swap-2,
 .lock-swap {
     background-position: center;
     background: url("/vaults/sand.svg");
@@ -16,233 +17,25 @@
     color: #ffffff;
     font-family: Monument Grotesk;
     font-weight: 600;
-    .bottom {
-        .swap-btn-wrap {
-            margin: auto;
-            margin-top: 20px;
-            height: 55px;
-            width: 370px;
+
+    .swap-btn-wrap {
+        margin: auto;
+        margin-top: 20px;
+        height: 55px;
+        width: 370px;
+        .swap-btn {
+            font-size: 22px;
             border-radius: 6px;
-            .swap-btn {
-                font-size: 25px;
-                border-radius: 6px;
-                color: #ffffff;
-                display: flex;
-                justify-content: center;
-                flex-direction: column;
-                height: 100%;
-                width: 100%;
-                background-color: #1b1b1b;
-                transition: all 0.2s;
-                &:hover {
-                    background-color: transparent;
-                    color: #242424;
-                }
-            }
-            .disabled {
+        }
+        .disabled {
+            color: #919191;
+            &:hover {
                 color: #919191;
-                &:hover {
-                    color: #919191;
-                    background-color: #1b1b1b;
-                }
-            }
-        }
-        .text {
-            margin: 0 65px;
-            font-size: 14px;
-            line-height: 20px;
-            margin-top: 25px;
-        }
-        .to {
-            margin: 0 65px;
-            margin-top: 50px;
-            background: #1c1c1c;
-            border: 2px solid #000000;
-            box-sizing: border-box;
-            border-radius: 10px;
-            height: 90px;
-            .from-top {
-                color: rgba(255, 255, 255, 0.75);
-                display: flex;
-                justify-content: space-between;
-                padding: 0 10px;
-                padding-top: 10px;
-            }
-            .bottom-from {
-                margin-top: 20px;
-                display: flex;
-                white-space: nowrap;
-                align-items: center;
-                justify-content: space-between;
-                .max-btn {
-                    width: 39px;
-                    height: 25px;
-                    font-size: 12px;
-                    display: flex;
-                    align-items: center;
-                    text-transform: uppercase;
-                    justify-content: center;
-                    background: linear-gradient(
-                        135deg,
-                        rgba(91, 204, 189, 0.14902) 0%,
-                        rgba(97, 192, 191, 0.14902) 33.33%,
-                        rgba(85, 188, 200, 0.14902) 74.49%,
-                        rgba(105, 207, 184, 0.14902) 100%
-                    );
-                    border: 1px solid #ffffff;
-                    border-radius: 6px;
-                    margin-right: 10px;
-                    margin-left: 5px;
-                    cursor: pointer;
-                }
-                input {
-                    color: #ffffff;
-                    width: 0px;
-                    flex: 1 1 auto;
-                    font-size: 30px;
-                    padding-left: 8px;
-                    background: transparent;
-                    border-color: transparent;
-                    outline: none;
-                }
-
-                .token-name {
-                    text-transform: uppercase;
-                    margin-right: 10px;
-                }
+                background-color: #1b1b1b;
             }
         }
     }
-    .top {
-        .time-vaults {
-            text-transform: uppercase;
-            margin-top: 80px;
-            font-size: 25px;
-        }
-        .token {
-            text-transform: uppercase;
-            margin-top: 5px;
-            font-size: 25px;
-        }
-        .contract {
-            display: inline-block;
-            // width: 200px;
-            margin-top: 30px;
-            font-size: 15px;
-            padding: 0 10px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #ffffff;
-        }
-        .from {
-            background: #1c1c1c;
-            border: 2px solid #000000;
-            box-sizing: border-box;
-            border-radius: 10px;
-            height: 90px;
-            margin: 0 65px;
-            margin-top: 20px;
-            .from-top {
-                color: rgba(255, 255, 255, 0.75);
-                display: flex;
-                justify-content: space-between;
-                padding: 0 10px;
-                padding-top: 10px;
-            }
-            .bottom-from {
-                margin-top: 20px;
-                display: flex;
-                white-space: nowrap;
-                align-items: center;
-                justify-content: space-between;
-                .max-btn {
-                    width: 39px;
-                    height: 25px;
-                    font-size: 12px;
-                    display: flex;
-                    align-items: center;
-                    text-transform: uppercase;
-                    justify-content: center;
-                    background: linear-gradient(
-                        135deg,
-                        rgba(91, 204, 189, 0.14902) 0%,
-                        rgba(97, 192, 191, 0.14902) 33.33%,
-                        rgba(85, 188, 200, 0.14902) 74.49%,
-                        rgba(105, 207, 184, 0.14902) 100%
-                    );
-                    border: 1px solid #ffffff;
-                    border-radius: 6px;
-                    margin-right: 10px;
-                    margin-left: 5px;
-                    cursor: pointer;
-                }
-                input {
-                    color: #ffffff;
-                    width: 0px;
-                    flex: 1 1 auto;
-                    font-size: 30px;
-                    padding-left: 8px;
-                    background: transparent;
-                    border-color: transparent;
-                    outline: none;
-                }
 
-                .token-name {
-                    text-transform: uppercase;
-                    margin-right: 10px;
-                }
-            }
-        }
-        svg {
-            // background: #242424;
-            color: #242424;
-
-            path {
-                cursor: pointer;
-                transition: all 0.3s;
-                &:hover {
-                    color: #383838;
-                    & + path {
-                        color: #383838;
-                    }
-                }
-            }
-            path:nth-child(2) {
-                cursor: pointer;
-                transition: all 0.3s;
-                &:hover {
-                    ~ path {
-                        color: #383838;
-                    }
-                }
-            }
-            // path:nth-child(1) {
-            //     transition: all 0.3s;
-            //     &:hover {
-            //         cursor: pointer;
-            //         color: #383838;
-            //     }
-            // }
-        }
-    }
-}
-.lock-swap-2 {
-    background-position: center;
-    background: url("/vaults/sand.svg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    z-index: 10;
-    width: 500px;
-    height: 800px;
-    position: fixed;
-    top: 50%;
-    left: 0;
-    right: 0;
-    margin: auto;
-    transform: translateY(-50%);
-    text-align: center;
-    color: #ffffff;
-    font-family: Monument Grotesk;
-    font-weight: 600;
     .bottom {
         .btns {
             display: flex;
@@ -251,7 +44,7 @@
             .swap-btn-wrap {
                 width: 170px;
                 margin: unset;
-                font-size: 23px;
+                font-size: 21px;
                 margin: 0 10px;
             }
         }
@@ -259,8 +52,8 @@
             // margin: auto;
             // width: 370px;
             border-radius: 6px;
-            margin-top: 10px;
-            height: 50px;
+            margin-top: 20px;
+            height: 46px;
             font-size: 25px;
 
             .swap-btn {
@@ -292,6 +85,7 @@
             line-height: 20px;
             margin-top: 25px;
         }
+
         .to,
         .and {
             margin: 0 65px;
@@ -360,34 +154,62 @@
         .to {
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
+            margin-top: 65px;
+        }
+        .to-2 {
+            border-radius: 10px;
         }
     }
 
     .top {
+        .close-btn {
+            position: absolute;
+            top: 50px;
+            right: 55px;
+            cursor: pointer;
+            font-family: Monument Grotesk;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 15px;
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+
         .time-vaults {
             text-transform: uppercase;
+            margin-top: 50px;
+            font-size: 22px;
+        }
+        .time-vaults-2 {
             margin-top: 60px;
-            font-size: 25px;
+            font-size: 27px;
         }
         .locked-text {
-            font-size: 15px;
-            margin: 0 60px;
-            margin-top: 20px;
+            font-size: 13px;
+            margin: 0 30px;
+            margin-top: 15px;
         }
         .token {
             text-transform: uppercase;
             margin-top: 5px;
             font-size: 25px;
         }
+        .token-2 {
+            text-transform: uppercase;
+            margin-top: 7px;
+            font-size: 27px;
+        }
         .contract {
             display: inline-block;
             // width: 200px;
             margin-top: 20px;
             font-size: 15px;
-            padding: 0 10px;
+            // padding: 0 10px;
             padding-bottom: 5px;
             border-bottom: 2px solid #ffffff;
         }
+
         .from {
             background: #1c1c1c;
             border: 2px solid #000000;
@@ -396,6 +218,7 @@
             height: 90px;
             margin: 0 65px;
             margin-top: 20px;
+
             .from-top {
                 color: rgba(255, 255, 255, 0.75);
                 display: flex;
@@ -446,6 +269,9 @@
                     margin-right: 10px;
                 }
             }
+        }
+        .from-2 {
+            margin-top: 30px;
         }
         svg {
             // background: #242424;
@@ -551,14 +377,28 @@
         .gonab-btns {
             margin: auto;
             margin-top: 50px;
-
             width: 283px;
             .get-wrap {
                 height: 35px;
+                font-size: 14px;
                 margin-top: 10px;
+                position: relative;
+
+                img {
+                    right: 12px;
+                    top: 8px;
+                    position: absolute;
+                }
             }
             .lock-wrap {
+                font-size: 14px;
+                position: relative;
                 height: 35px;
+                img {
+                    right: 10px;
+                    top: 10px;
+                    position: absolute;
+                }
             }
         }
     }
@@ -620,6 +460,12 @@
                 font-size: 14px;
                 width: 280px;
                 height: 35px;
+                position: relative;
+                img {
+                    right: 12px;
+                    top: 8px;
+                    position: absolute;
+                }
             }
             .lock-wrap {
                 margin-top: 50px;

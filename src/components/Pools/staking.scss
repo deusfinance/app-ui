@@ -18,6 +18,252 @@
     background-color: #cdd477;
 }
 
+.time-token-wrap {
+    // min-width: 500px;
+    width: 570px;
+    // max-width: 500px;
+    text-align: center;
+    position: relative;
+    height: 760px;
+    margin-top: -15px;
+    // background: url("/vaults/time-token.svg");
+    // background-repeat: no-repeat;
+    // background-position: top;
+    overflow: hidden;
+    margin: auto;
+    .bg-img {
+        position: absolute;
+        svg {
+            width: 570px;
+            height: 760px;
+            right: 0;
+            left: 0;
+        }
+    }
+    .time-token {
+        z-index: 2;
+        color: #ffffff;
+        font-family: Monument Grotesk;
+        font-weight: 400;
+        font-size: 15px;
+        position: relative;
+        .stake {
+            // margin-top: 20px;
+            text-transform: uppercase;
+            font-size: 24px;
+            height: 45px;
+            width: 448px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            border-radius: 6px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-top: 10px;
+            background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
+            cursor: pointer;
+            transition: all 0.25s;
+            &:hover {
+                color: #000000;
+            }
+        }
+
+        .title {
+            text-transform: uppercase;
+            margin-top: 60px;
+            font-size: 35px;
+        }
+        .apy {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        .single {
+            margin-top: 90px;
+            opacity: 50%;
+            font-size: 12px;
+        }
+        .time-text {
+            z-index: 2;
+            margin-top: 250px;
+
+            text-align: center;
+            white-space: pre-wrap; /* Since CSS 2.1 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+        }
+    }
+}
+
+.balancer-wrap {
+    // max-width: 100%;
+    // overflow-x: auto;
+    // overflow-y: hidden;
+    // // -webkit-backface-visibility: hidden;
+    // transform: translateZ(0);
+    // padding-bottom: 40px;
+    position: absolute;
+    top: 15px;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    min-width: 1900px;
+    width: 1900px;
+    max-width: 1900px;
+    text-align: center;
+    position: relative;
+    // overflow-x: auto;
+    // height: 100%;
+    height: 840px;
+    margin-top: -15px;
+    background: url("/img/Line.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 20px;
+    .balancer {
+        width: 1800px;
+        height: 770px;
+        clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+        background: #242424;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        left: 0;
+        margin: auto;
+        .left-balancer,
+        .right-balancer {
+            text-align: left;
+            position: relative;
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+            background-color: #242424;
+            .container {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                // left: 0;
+                color: #ffffff;
+                .stake-more-wrap {
+                    width: 287px;
+                    height: 250px;
+                    background: linear-gradient(224.74deg, #5ec4d6 0.19%, #92d8af 100.22%, #f1fc68 100.22%);
+                    box-shadow: 0px 0px 14px #ffffff;
+
+                    position: relative;
+                    font-size: 25px;
+                    text-transform: uppercase;
+                    color: #ffffff;
+                    cursor: pointer;
+                    transition: all 0.25s;
+                    .stake-more {
+                        position: absolute;
+                        bottom: 65px;
+                        left: 40px;
+                    }
+                    &:hover {
+                        color: #000000;
+                    }
+                }
+                .content {
+                    margin-left: 25px;
+                    .title {
+                        font-size: 25px;
+                        margin-top: 80px;
+                    }
+                    .apy {
+                        direction: ltr;
+                        margin-top: 10px;
+                        font-size: 20px;
+                    }
+                    .token-name {
+                        margin-top: 70px;
+                        font-size: 25px;
+                    }
+                    .own-pool {
+                        margin-top: 90px;
+                        font-size: 20px;
+
+                        text-shadow: 0px 0px 10px #ffffff;
+                    }
+                    .deposit-wrap {
+                        margin: unset;
+                        margin-top: 50px;
+                    }
+                    .claim-wrap {
+                        margin: unset;
+                        margin-top: 20px;
+                    }
+
+                    .desciption {
+                        direction: ltr;
+                        text-align: right;
+                        font-size: 14px;
+                        line-height: 18px;
+                        margin-top: 15px;
+                        pre {
+                            //animation: scale-up 0.5s forwards;
+                            font-family: Monument Grotesk;
+                            font-weight: 400;
+                            white-space: pre-wrap; /* Since CSS 2.1 */
+                            // white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+                            // white-space: -pre-wrap; /* Opera 4-6 */
+                            // white-space: -o-pre-wrap; /* Opera 7 */
+                            // word-wrap: break-word; /* Internet Explorer 5.5+ */
+                        }
+                        .cant {
+                            color: #686868;
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+        .right-balancer {
+            border-left: 1px solid #000;
+            .container {
+                .stake-more-wrap {
+                    border-bottom-right-radius: 3px;
+                }
+            }
+        }
+        .left-balancer {
+            border-right: 1px solid #000;
+            //#86d3b8
+            text-align: right;
+            direction: rtl;
+            .container {
+                .stake-more-wrap {
+                    border-bottom-left-radius: 3px;
+                    background: linear-gradient(224.74deg, #86d3b8 0.19%, #92d8af 100.22%, #f1fc68 100.22%);
+
+                    .stake-more {
+                        position: absolute;
+                        bottom: 65px;
+                        right: 40px;
+                    }
+                }
+            }
+            .content {
+                margin-right: 25px;
+
+                .provide-wrap {
+                    height: 40px;
+                    width: 250px;
+                    margin-top: 37px;
+                    font-size: 15px;
+                    position: relative;
+                    svg {
+                        width: 25px;
+                        right: 10px;
+                        position: absolute;
+                    }
+                }
+                .lclaim {
+                    width: 250px;
+                }
+            }
+        }
+    }
+}
 .stake-container-wrap {
     max-width: 100%;
     overflow-x: auto;
@@ -43,7 +289,7 @@
             padding: 0 20px;
             border-radius: 6px;
             font-family: Monument Grotesk;
-            font-weight: 600;
+            font-weight: 400;
             height: 100%;
             display: flex;
             background: linear-gradient(135deg, #0d1e1c 0%, #0d1c1c 33.33%, #0e1c1c 74.49%, #0d1c1d 100%);
@@ -104,7 +350,7 @@
         .old-new-btn {
             .msg {
                 font-family: Monument Grotesk;
-                font-weight: 600;
+                font-weight: 400;
                 line-height: 15px;
                 margin-top: 10px;
                 font-size: 12.5px;
@@ -136,7 +382,7 @@
         position: absolute;
         top: 15px;
         font-family: Monument Grotesk;
-        font-weight: 600;
+        font-weight: 400;
         min-width: 1900px;
         width: 1900px;
         max-width: 1900px;
@@ -161,29 +407,29 @@
             .tvl-wrap {
                 position: absolute;
                 cursor: pointer;
-                clip-path: polygon(0 0, 50% 100%, 100% 0);
+                // clip-path: polygon(0 0, 50% 100%, 100% 0);
                 margin-top: 28px;
                 width: 751px;
                 height: 316px;
-                background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
+                // background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
                 .tvl {
                     color: #ffffff;
                     margin: auto;
                     margin-top: 2px;
                     width: 740px;
                     height: 98%;
-                    clip-path: polygon(0 0, 50% 100%, 100% 0);
-                    background: linear-gradient(135deg, #0d1e1c 0%, #0d1c1c 33.33%, #0e1c1c 74.49%, #0d1c1d 100%);
+                    // clip-path: polygon(0 0, 50% 100%, 100% 0);
+                    // background: linear-gradient(135deg, #0d1e1c 0%, #0d1c1c 33.33%, #0e1c1c 74.49%, #0d1c1d 100%);
                     transition: all 0.5s;
-                    &:hover {
-                        background: linear-gradient(
-                                224.74deg,
-                                rgba(94, 196, 214, 0.35) 0.19%,
-                                rgba(241, 252, 104, 0.35) 100.22%
-                            ),
-                            rgba(206, 206, 206, 0.5);
-                        color: #000000;
-                    }
+                    // &:hover {
+                    //     background: linear-gradient(
+                    //             224.74deg,
+                    //             rgba(94, 196, 214, 0.35) 0.19%,
+                    //             rgba(241, 252, 104, 0.35) 100.22%
+                    //         ),
+                    //         rgba(206, 206, 206, 0.5);
+                    //     color: #000000;
+                    // }
                     .sand-token {
                         font-size: 20px;
                         padding-top: 30px;
@@ -193,7 +439,7 @@
                         font-size: 15px;
                     }
                     .price {
-                        padding-top: 40px;
+                        padding-top: 20px;
 
                         filter: drop-shadow(0px 0px 10px #ffffff);
                         font-size: 40px;
@@ -203,6 +449,13 @@
                         filter: drop-shadow(0px 0px 10px #ffffff);
                         font-size: 20px;
                     }
+                }
+                .tvl-btn {
+                    margin: auto;
+                    margin-top: 25px;
+                    width: 230px;
+                    height: 37px;
+                    font-size: 14px;
                 }
             }
         }
@@ -255,6 +508,14 @@
                 font-size: 25px;
                 margin-top: 25px;
             }
+            .token-closed-name {
+                text-transform: uppercase;
+                font-size: 32px;
+                margin: auto;
+                margin-top: 40px;
+                max-width: 200px;
+                line-height: 40px;
+            }
             .apy {
                 margin: 8px 0;
                 color: rgba(255, 255, 255, 0.5);
@@ -269,86 +530,139 @@
                 font-size: 20px;
                 text-shadow: 0px 0px 10px #ffffff;
             }
-            .deposit-wrap {
+            .provide-more-wrap {
+                position: absolute;
+                right: 0;
+                left: 0;
+                width: 400px;
                 height: 40px;
-                width: 450px;
                 margin: auto;
-                margin-top: 20px;
+                bottom: 25px;
 
-                .deposit {
-                    height: 100%;
-                    width: 100%;
-
-                    display: flex;
-                    flex-direction: row;
-                    // font-size: 15px;
-
-                    .deposit-amount {
-                        height: 100%;
-                        flex: 2;
-                        background-color: #111111;
-                        text-align: center;
-                        line-height: 40px;
-                        cursor: default;
-                        span {
-                            // padding-bottom: 8px;
-                            font-size: 15px;
-                        }
-                    }
-                    .provide-more {
-                        line-height: 40px;
-                        transition: all 0.3s;
-                        font-size: 15px;
-                        text-align: center;
-                        border-left: 2px solid #242424;
-                        background-color: #111111;
-                        flex: 1;
-                        &:hover {
-                            color: #000;
-                            background: transparent;
-                        }
-                    }
+                img {
+                    position: absolute;
+                    // display: flex;
+                    right: 15px;
+                    top: 4px;
+                    margin-left: 4px;
+                    vertical-align: middle;
+                    width: 25px;
                 }
             }
-            .claim-wrap {
-                height: 40px;
-                width: 600px;
-                margin: auto;
-                margin-top: 20px;
+        }
+    }
+}
 
-                .claim {
-                    height: 100%;
-                    display: flex;
-                    flex-direction: row;
+.claim-wrap {
+    height: 40px;
+    width: 600px;
+    margin: auto;
+    margin-top: 20px;
 
-                    div {
-                        line-height: 40px;
-                        flex: 1;
-                        background-color: #111111;
-                        cursor: pointer;
-                    }
-                    .dea-amount {
-                        border: 2px solid #242424;
-                        cursor: default;
-                    }
+    .claim {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
 
-                    .withdraw {
-                        transition: all 0.3s;
-                        font-size: 15px;
-                        &:hover {
-                            background: transparent;
-                            color: #000;
-                        }
-                    }
-                    .caim-btn {
-                        transition: all 0.3s;
-                        font-size: 15px;
-                        &:hover {
-                            background: transparent;
-                            color: #000;
-                        }
-                    }
-                }
+        div {
+            // line-height: 38px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            flex: 1;
+            justify-content: center;
+            background-color: #111111;
+            cursor: pointer;
+        }
+        .dea-amount {
+            border: 2px solid #242424;
+            cursor: default;
+            // line-height: 34px;
+        }
+
+        .withdraw {
+            transition: all 0.3s;
+            font-size: 15px;
+            &:hover {
+                background: transparent;
+                color: #000;
+            }
+        }
+        .caim-btn {
+            transition: all 0.3s;
+            font-size: 15px;
+            &:hover {
+                background: transparent;
+                color: #000;
+            }
+        }
+    }
+}
+
+.deposit-wrap {
+    height: 40px;
+    width: 490px;
+    margin: auto;
+    margin-top: 20px;
+
+    .deposit {
+        height: 100%;
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        // font-size: 15px;
+
+        div {
+            display: flex;
+            align-items: center;
+            // justify-content: center;
+        }
+
+        .deposit-amount {
+            height: 100%;
+            flex: 1.7;
+            background-color: #111111;
+            text-align: center;
+            // line-height: 40px;
+            cursor: default;
+            padding-left: 10px;
+            span {
+                // padding-bottom: 8px;
+                margin-left: 5px;
+                font-size: 15px;
+            }
+        }
+        .provide-more {
+            // line-height: 40px;
+            transition: all 0.3s;
+            font-size: 15px;
+            text-align: center;
+            border-left: 2px solid #242424;
+            background-color: #111111;
+            flex: 1;
+            position: relative;
+            padding-left: 15px;
+            svg {
+                width: 25px;
+                right: 10px;
+                position: absolute;
+            }
+            img {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                display: inline-block;
+                width: 14px;
+                top: 10px;
+                position: absolute;
+                margin-left: 5px;
+                // margin-top: 10px;
+                right: 15px;
+            }
+            &:hover {
+                color: #000;
+                background: transparent;
             }
         }
     }

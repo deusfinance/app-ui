@@ -13,8 +13,8 @@ class MainSwap extends Component {
             { name: "DEA", pic_name: "dea", price: 34.05, balance: 0.96 },
             { name: "DEUS", pic_name: "deus", price: 1.47, balance: 700.48 },
             { name: "USDC", pic_name: "usdc", price: 1.05, balance: 436.23 },
-            { name: "rTSLA", pic_name: "registrar", price: 1.05, balance: 0 },
-            { name: "rQQQ", pic_name: "registrar", price: 53.09, balance: 0 },
+            // { name: "rTSLA", pic_name: "registrar", price: 1.05, balance: 0 },
+            // { name: "rQQQ", pic_name: "registrar", price: 53.09, balance: 0 },
             { name: "ETH", pic_name: "eth-logo", price: 350.33, balance: 0.668 },
         ],
         swap: {

@@ -1,0 +1,37 @@
+.popup-wrap {
+    z-index: 5;
+    width: 410px;
+    height: 450px;
+    background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+    border-radius: 8px;
+    color: #000000;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transform: translateY(-50%);
+    .popup {
+        position: relative;
+        .title {
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            height: 44px;
+            background: rgba(0, 0, 0, 0.15);
+            font-size: 20px;
+            .close-btn {
+                right: 10px;
+                top: 14px;
+                position: absolute;
+                font-size: 13px;
+                cursor: pointer;
+                &:hover {
+                    opacity: 0.7;
+                }
+            }
+        }
+    }
+}

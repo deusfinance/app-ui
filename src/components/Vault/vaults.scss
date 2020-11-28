@@ -346,10 +346,10 @@
         text-align: center;
         margin: auto;
         width: 50%;
-        height: 600px;
+        height: 900px;
         margin-top: 20px;
         background-position: center;
-        background: url("/vaults/vector.svg");
+        background: url("/vaults/vector2.svg");
         background-repeat: no-repeat;
         background-size: cover;
         padding-top: 200px;
@@ -377,9 +377,19 @@
         .gonab-btns {
             margin: auto;
             margin-top: 50px;
-            width: 283px;
+            // width: 283px;
+            .zap {
+                margin: auto;
+                margin-top: 10px;
+                width: 350px;
+                justify-content: center;
+                height: 45px;
+            }
             .get-wrap {
+                width: 283px;
                 height: 35px;
+                margin: auto;
+
                 font-size: 14px;
                 margin-top: 10px;
                 position: relative;
@@ -391,7 +401,10 @@
                 }
             }
             .lock-wrap {
+                width: 283px;
                 font-size: 14px;
+                margin: auto;
+
                 position: relative;
                 height: 35px;
                 img {
@@ -402,24 +415,33 @@
             }
         }
     }
-    .doors {
-        margin: auto;
+    .doors-wrap {
         width: 100%;
+        text-align: center;
+        position: absolute;
+        top: 670px;
+    }
+    .doors {
+        // width: 100%;
         // margin: auto;
         // margin: 0 10%;
         text-align: center;
         // background-color: #0d1e1c;
         // padding: 0 calc(100);
+        border-radius: 15px;
+        padding: 0 20px;
+        background-color: #0d1c1d87;
         display: inline-block;
         font-family: Monument Grotesk;
         font-style: normal;
         font-weight: 600;
+        margin: auto;
         .door {
             display: inline-block;
             margin-top: -34px;
-            margin: 0 10px;
+            margin: 0 0px;
             margin-bottom: 10px;
-            width: 500px;
+            width: 490px;
             height: 630px;
             background-color: #000000;
             position: relative;
@@ -473,20 +495,39 @@
             .get-wrap {
                 margin-top: 10px;
             }
+            .zap {
+                height: 45px;
+            }
         }
         .close-door {
-            background: url("/vaults/c.svg");
+            background: url("/vaults/n-close.svg");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: top;
             font-size: 28px;
+            .grad-wrap {
+                margin: 15px auto;
+                font-size: 14px;
+                width: 250px;
+                height: 35px;
+            }
+            .zap {
+                width: 300px;
+            }
             .title {
-                margin-top: 350px;
+                line-height: 35px;
+                margin-top: 230px;
                 text-shadow: 0px 0px 10px #ffffff;
             }
             .desc {
-                margin-top: 20px;
-                text-shadow: 0px 0px 10px #ffffff;
+                font-size: 20px;
+                filter: drop-shadow(0px 0px 10px #ffffff);
+                .percent {
+                    margin-top: 15px;
+                    font-size: 40px;
+                    margin-bottom: 50px;
+                }
+                margin-top: 40px;
             }
         }
     }

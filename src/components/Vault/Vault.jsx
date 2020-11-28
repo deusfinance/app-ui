@@ -201,17 +201,21 @@ class Vault extends Component {
                     </div>
                     <div className="grad-wrap get-wrap">
                             <div className="grad">Get UNI-LP tokens <img src={process.env.PUBLIC_URL + "/vaults/uni.svg"} alt="uni" /></div>
-                    </div>
+                        </div>
+                        <div className="grad-wrap zap">
+                            <div className="grad">ZAP ⚡  (directly into staking)</div>
+                        </div>  
                 </div>
 
 
             </div>
+            <div className="doors-wrap">
             <div className="doors">
-                <div className=" open-door door">
+                <div className=" close-door door">
                     <div className="container">
                         <div className="title">
-                            DEUS
-                    </div>
+                                    UNI-LP-DEA-USDC <br/> Vault
+                        </div>
                         <div className="desc">
                             Vault still locked.
                     </div>
@@ -231,14 +235,17 @@ class Vault extends Component {
                 </div>
                 <div className="close-door door">
                     <div className="container">
-
-                        <div className="title">
-                            DEA-TSLA-QQQ
-                        
-                        </div>
-                        <div className="desc">
-                            Soon to be unlocked
-                        </div>
+                        <div className="title">DEA <br/> Vault</div>
+                        <div className="desc">Estimated yearly growth:<div className="percent">20%</div></div>
+                                <div className="grad-wrap">
+                                    <div className="grad">Lock your Uni-Lp tokens </div>
+                                </div>        
+                                <div className="grad-wrap">
+                                    <div className="grad">Get DEA</div>
+                                </div>        
+                                <div className="grad-wrap zap">
+                                    <div className="grad">ZAP ⚡  (directly into staking)</div>
+                                </div>        
                     </div>
                 </div>
                  <div className="close-door door">
@@ -252,6 +259,7 @@ class Vault extends Component {
                             Soon to be unlocked
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div></div>);

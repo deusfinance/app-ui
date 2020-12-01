@@ -18,6 +18,108 @@
     background-color: #cdd477;
 }
 
+@keyframes growUp {
+    0% {
+        transform: scale(0.85);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.stake-pop-wrap {
+    animation: growUp 0.3s forwards;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    padding: 0 20px;
+    position: relative;
+    height: 100%;
+    .uni-token-name {
+        margin-top: 60px;
+        font-size: 15px;
+        text-align: left;
+    }
+    .amount-wrap {
+        position: relative;
+        border: 2px solid #000000;
+        border-radius: 5px;
+        margin-top: 10px;
+        padding: 20px 0;
+        display: flex;
+        align-items: center;
+        padding-right: 10px;
+        .balance {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            text-align: right;
+            font-size: 12px;
+        }
+        .max-btn {
+            font-family: Monument Grotesk;
+            font-weight: 400;
+            font-size: 15px;
+            width: 45px;
+            height: 24px;
+            color: #ffffff;
+            border-radius: 3px;
+            background-color: #242424;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            &:hover {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        }
+        .amount {
+            flex: 1;
+            padding-left: 10px;
+            font-family: Monument Grotesk;
+            font-weight: 400;
+            outline: none;
+            border: 1px solid transparent;
+            background-color: transparent;
+            font-size: 35px;
+            height: 100%;
+            width: 100%;
+        }
+    }
+    .show-contract {
+        border: 2px solid #000000;
+        border-radius: 5px;
+        margin: auto;
+        text-align: center;
+        font-size: 20px;
+        padding: 17px 0;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+        &:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+    }
+    .btn-wrap {
+        margin: auto;
+        margin-top: 70px;
+        border: 2px solid #000000;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 25px;
+        padding: 14px 0;
+        cursor: pointer;
+        transition: all 0.2s;
+        &:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+    }
+}
+
 .time-token-wrap {
     // min-width: 500px;
     width: 570px;
@@ -51,8 +153,8 @@
             // margin-top: 20px;
             text-transform: uppercase;
             font-size: 24px;
-            height: 45px;
-            width: 448px;
+            height: 55px;
+            width: 450px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -64,14 +166,16 @@
             background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
             cursor: pointer;
             transition: all 0.25s;
+            text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
             &:hover {
                 color: #000000;
+                text-shadow: 0px 5px 5px rgba(255, 255, 255, 1);
             }
         }
 
         .title {
             text-transform: uppercase;
-            margin-top: 60px;
+            margin-top: 45px;
             font-size: 35px;
         }
         .apy {
@@ -98,21 +202,6 @@
             word-wrap: break-word; /* Internet Explorer 5.5+ */
         }
     }
-}
-
-.blured {
-    top: 0;
-    position: absolute;
-    width: 100vw;
-    z-index: 4;
-    height: 100vh;
-    // filter: blur(5px);
-    background: #000000;
-    opacity: 0.5;
-}
-
-.hidden {
-    display: none;
 }
 
 .balancer-wrap {
@@ -188,7 +277,7 @@
                     margin-left: 25px;
                     .title {
                         font-size: 25px;
-                        margin-top: 80px;
+                        margin-top: 60px;
                     }
                     .apy {
                         direction: ltr;
@@ -196,11 +285,23 @@
                         font-size: 20px;
                     }
                     .token-name {
-                        margin-top: 70px;
-                        font-size: 25px;
+                        margin-top: 30px;
+                        pre {
+                            text-align: left;
+                            font-size: 18px;
+
+                            //animation: scale-up 0.5s forwards;
+                            font-family: Monument Grotesk;
+                            font-weight: 400;
+                            white-space: pre-wrap; /* Since CSS 2.1 */
+                            // white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+                            // white-space: -pre-wrap; /* Opera 4-6 */
+                            // white-space: -o-pre-wrap; /* Opera 7 */
+                            // word-wrap: break-word; /* Internet Explorer 5.5+ */
+                        }
                     }
                     .own-pool {
-                        margin-top: 90px;
+                        margin-top: 70px;
                         font-size: 20px;
 
                         text-shadow: 0px 0px 10px #ffffff;
@@ -527,7 +628,7 @@
             .token-name {
                 // text-transform: uppercase;
                 font-size: 22px;
-                margin-top: 10px;
+                margin-top: 15px;
                 // span {
                 //     margin-left: 5px;
                 // }
@@ -586,6 +687,14 @@
                 font-size: 25px;
                 margin-top: 5px;
             }
+            .token-name {
+                // text-transform: uppercase;
+                font-size: 25px;
+                margin: auto;
+                margin-top: 40px;
+                max-width: 300px;
+                line-height: 40px;
+            }
         }
     }
 }
@@ -594,7 +703,7 @@
     height: 40px;
     width: 620px;
     margin: auto;
-    margin-top: 20px;
+    margin-top: 15px;
 
     .claim {
         height: 100%;

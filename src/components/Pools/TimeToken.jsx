@@ -7,6 +7,7 @@ class TimeToken extends Component {
     state = {
         isPopup: false,
         isSelect: false,
+        isStakePopup: false,
         tokens: [
             { id: 1, name: "Sand Token" },
             { id: 2, name: "Balancer Pool" },
@@ -15,15 +16,6 @@ class TimeToken extends Component {
         selectedTokenID: 1,
     }
 
-    constructor(props) {
-        super(props);
-        // create a ref to store the textInput DOM element
-        this.scrollRef = React.createRef();
-    }
-
-    componentDidMount() {
-        this.handleScroller()
-    }
     handleOpenSelect = () => {
         this.setState({ isSelect: true })
     }
@@ -40,15 +32,33 @@ class TimeToken extends Component {
         this.setState({ selectedTokenID: t.id, isSelect: false })
     }
 
-    handlePopup = () => {
+
+    handleStake = () => {
+        const { isStakePopup } = this.state
+        this.setState({ isStakePopup: !isStakePopup })
+    }
+
+    handlePopup = (key) => {
         const { isPopup } = this.state
         this.setState({ isPopup: !isPopup })
     }
 
+    blurBG = () => {
+        const { isPopup, isStakePopup } = this.state
+        let blurPop = "blured"
+        let hidden = "hidden"
+        if (!(isPopup || isStakePopup)) {
+            blurPop = "hidden";
+            hidden = "blured"
+        }
+        document.getElementById("blur-pop").classList.remove(hidden)
+        document.getElementById("blur-pop").classList.add(blurPop)
+    }
+
     render() {
-        const { isPopup, isSelect, tokens, selectedTokenID } = this.state
+        const { isPopup, isSelect, isStakePopup, tokens, selectedTokenID } = this.state
         const selectedToken = tokens.find(t => t.id === selectedTokenID)
-        const popClasses = isPopup ? "blured" : "hidden"
+        this.blurBG()
         const popupMsg = <div className="pop-timelock-wrap">
             <div className="pop-timelock">
                 <pre>
@@ -59,18 +69,25 @@ You lock an equal $ amount of DEUS and DEA  to receive DEUS-DEA Sand Token. You 
 
 And depending on hol long your tokens are locked up you will receive TIME tokens.`}
                 </pre>
-                <Link to="/valuts" className="btn-link"></Link>
+                <Link to="/vaults" className="btn-link">Vaults</Link>
             </div>
         </div>
 
         return (<>
-            {isPopup && <Popup
+            <Popup
                 title="HOW  TO GET TIME TOKEN"
                 close={true}
+                show={isPopup}
                 handlePopup={this.handlePopup}
-                popBody={popupMsg} />}
+                popBody={popupMsg} />
 
-            <div className={popClasses}></div>
+            <Popup
+                title="Title"
+                close={true}
+                show={isStakePopup}
+                handlePopup={this.handleStake}
+            />
+
             <div className="staking-wrap " >
 
                 <div className="grad-wrap notif-wrap">
@@ -188,7 +205,7 @@ And depending on hol long your tokens are locked up you will receive TIME tokens
                         </svg>
                     </div>
                     <div className="time-token" >
-                        <div className="stake">stake</div>
+                        <div className="stake" onClick={this.handleStake}>stake here</div>
                         <div className="title">timetoken</div>
                         <div className="apy">30% apy</div>
                         <div className="grad-wrap get-timetoken" onClick={this.handlePopup}>

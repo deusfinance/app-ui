@@ -92,8 +92,8 @@ class BalancerPool extends Component {
 
                                 <div className="desciption">
                                     <pre>{`
-                                        In order to stake you need to provide liquidity to
-                                        the following Balancer pool:
+                                        In order to stake you need to provide 
+                                        liquidity to the following Balancer pool:
 
 
                                         50% DEA
@@ -140,8 +140,13 @@ class BalancerPool extends Component {
                                 <div className="title">Legacy Balancer</div>
                                 <div className="apy">130% APY</div>
                                 <div className="token-name">
-                                    DEA+swBTC+sETH+sDAi
-                        </div>
+                                    <pre>
+                                        {`25% DEA
+25% sWBTC
+25% sETH
+25% sDAI`}
+                                    </pre>
+                                </div>
                                 <div className="own-pool">you own 0.0000% of the pool</div>
                                 <div className="grad-wrap deposit-wrap">
                                     <div className=" deposit">

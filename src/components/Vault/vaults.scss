@@ -307,9 +307,24 @@
     }
 }
 
-.blured {
-    filter: blur(5px);
-}
+// .blured {
+//     filter: blur(5px);
+// }
+
+// .blured {
+//     top: 0;
+//     position: absolute;
+//     width: 99vw;
+//     z-index: 4;
+//     height: 100%;
+//     // filter: blur(5px);
+//     background: #000000;
+//     opacity: 0.5;
+// }
+
+// .hidden {
+//     display: none;
+// }
 
 .vaults-wrap {
     position: relative;
@@ -399,6 +414,12 @@
                     top: 8px;
                     position: absolute;
                 }
+                &:hover {
+                    .uni-icon,
+                    .swap {
+                        filter: invert(1);
+                    }
+                }
             }
             .lock-wrap {
                 width: 283px;
@@ -430,7 +451,7 @@
         // padding: 0 calc(100);
         border-radius: 15px;
         padding: 0 20px;
-        background-color: #0d1c1d87;
+        // background-color: #0d1c1d;
         display: inline-block;
         font-family: Monument Grotesk;
         font-style: normal;
@@ -440,31 +461,45 @@
             display: inline-block;
             margin-top: -34px;
             margin: 0 0px;
-            margin-bottom: 10px;
+            // margin-bottom: 10px;
             width: 490px;
             height: 630px;
             background-color: #000000;
             position: relative;
             .container {
                 position: absolute;
+                height: 100%;
                 width: 100%;
             }
         }
         .open-door {
-            background: url("/vaults/open-door.svg");
+            background: url("/vaults/n-open.svg");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
-
+            height: 620px;
+            position: relative;
             .title {
                 margin: auto;
-                margin-top: 250px;
-                width: 30%;
-                font-size: 35px;
+                margin-top: 220px;
+                // width: 30%;
+                font-size: 30px;
             }
             .desc {
-                margin-top: 10px;
+                margin-top: 40px;
                 font-size: 15px;
+                line-height: 20px;
+                filter: drop-shadow(0px 0px 10px #ffffff);
+            }
+            .label-lock {
+                width: 280px;
+                margin: auto;
+                // height: 14px;
+                display: flex;
+                justify-content: space-between;
+                font-size: 14px;
+                filter: drop-shadow(0px 0px 10px #ffffff);
+                margin-bottom: 10px;
             }
             .estimated {
                 margin-top: 52px;
@@ -476,11 +511,11 @@
                 margin-top: 20px;
                 font-size: 40px;
             }
-            .lock-wrap,
+            .reedem-wrap,
             .get-wrap {
                 margin: auto;
-                font-size: 14px;
-                width: 280px;
+                font-size: 13px;
+                width: 290px;
                 height: 35px;
                 position: relative;
                 img {
@@ -489,9 +524,84 @@
                     position: absolute;
                 }
             }
-            .lock-wrap {
-                margin-top: 50px;
+            .reedem-wrap {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                cursor: default;
+                .reemable {
+                    flex: 1;
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    flex-direction: column;
+                    background-color: #111111;
+                }
+                .reemable-btn {
+                    padding: 0 5px;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    cursor: pointer;
+                    background-color: #111111;
+                    &.disabled {
+                        cursor: default;
+
+                        color: #4c4c4c;
+                    }
+                    transition: all 0.25s;
+                    &:hover {
+                        &:not(.disabled) {
+                            color: #000000;
+                            background-color: transparent;
+                        }
+                    }
+                }
             }
+            .stake-btn-wrap {
+                margin: auto;
+                width: 290px;
+                height: 35px;
+                font-size: 12px;
+                display: flex;
+                margin-top: 15px;
+
+                div {
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    height: 100%;
+                    transition: all 0.25s;
+                    background-color: #111111;
+                    &.left-btn {
+                        border-right: 2px solid #242424;
+                    }
+                    &.disabled {
+                        cursor: default;
+                        background-color: #111111;
+                    }
+                    &.half {
+                        flex: 1;
+                    }
+                    &.lock-more {
+                        padding: 0 8px;
+                    }
+                    &:hover {
+                        &:not(.disabled) {
+                            color: #000000;
+                            background-color: transparent;
+                        }
+                    }
+                }
+            }
+            .door-btns {
+                position: absolute;
+                bottom: 25px;
+                right: 0;
+                left: 0;
+            }
+
             .get-wrap {
                 margin-top: 10px;
             }
@@ -508,8 +618,31 @@
             .grad-wrap {
                 margin: 15px auto;
                 font-size: 14px;
-                width: 250px;
-                height: 35px;
+                width: 270px;
+                height: 37px;
+                .grad {
+                    position: relative;
+                    img {
+                        position: absolute;
+                        top: 10px;
+                        right: 5px;
+                    }
+                    .swap {
+                        width: 50px;
+                        top: 5px;
+                        right: 6px;
+                    }
+                    .uni-icon {
+                        right: 6px;
+                        top: 8px;
+                    }
+                }
+                &:hover {
+                    .uni-icon,
+                    .swap {
+                        filter: invert(1);
+                    }
+                }
             }
             .zap {
                 width: 300px;

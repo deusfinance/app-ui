@@ -17,23 +17,23 @@ const Navbar = () => {
     }
 
 
-    let Navs = [
-        { id: "litepaper", text: "Litepaper", path: "https://deus.finance/litepaper.pdf", out: true },
-        {
-            id: "wiki", text: <><div className="nav-item-top">explain DEUS</div><div className="nav-item-bottom">wiki</div></>, path: "https://deus.finance/wiki.html", out: true
-        },
-        {
-            id: "pools", text: <><div className="nav-item-top">earn DEA</div><div className="nav-item-bottom">staking</div></>, path: "/staking"
-        },
-        {
-            id: "exchange", text: <><div className="nav-item-top">buy DEUS</div><div className="nav-item-bottom">swap</div></>, path: "/newswap"
-        },
-        {
-            id: "conductr", text: <><div className="nav-item-top">Conductr</div><div className="nav-item-bottom">rigristrar</div></>, path: "/conductr"
-        },
-        { id: "home", text: "Home", path: "https://deus.finance", out: true },]
+    // let Navs = [
+    //     { id: "litepaper", text: "Litepaper", path: "https://deus.finance/litepaper.pdf", out: true },
+    //     {
+    //         id: "wiki", text: <><div className="nav-item-top">explain DEUS</div><div className="nav-item-bottom">wiki</div></>, path: "https://wiki.deus.finance", out: true
+    //     },
+    //     {
+    //         id: "pools", text: <><div className="nav-item-top">earn DEA</div><div className="nav-item-bottom">staking</div></>, path: "/staking"
+    //     },
+    //     {
+    //         id: "exchange", text: <><div className="nav-item-top">buy DEUS</div><div className="nav-item-bottom">swap</div></>, path: "/newswap"
+    //     },
+    //     {
+    //         id: "conductr", text: <><div className="nav-item-top">Conductr</div><div className="nav-item-bottom">rigristrar</div></>, path: "/conductr"
+    //     },
+    //     { id: "home", text: "Home", path: "https://deus.finance", out: true },]
 
-    Navs = navbarItems.reverse()
+    let Navs = navbarItems.reverse()
 
     //DEUS staking
     return (<><nav id="nav">

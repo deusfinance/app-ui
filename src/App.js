@@ -24,6 +24,7 @@ const Vault = React.lazy(() => import('./components/Vault/Vault'));
 function App() {
 
   return (<>
+    <div id="blur-pop"></div>
     <Navbar />
     <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
       <Switch>

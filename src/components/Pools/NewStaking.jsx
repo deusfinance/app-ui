@@ -11,6 +11,7 @@ class NewStaking extends Component {
         isStakePopup: false,
         tokens: {},
         currStake: null,
+        stakeAmount: null,
         tokenTypes: [
             { id: 1, name: "Sand Token" },
             { id: 2, name: "Balancer Pool" },
@@ -83,8 +84,12 @@ class NewStaking extends Component {
         this.setState({ selectedTokenID: t.id, isSelect: false })
     }
 
+    handleMax = (token) => {
+        this.setState({ stakeAmount: token.balance })
+    }
+
     render() {
-        const { isSelect, isStakePopup, tokenTypes, tokens, selectedTokenID, currStake } = this.state
+        const { isSelect, isStakePopup, tokenTypes, tokens, selectedTokenID, currStake, stakeAmount } = this.state
         const currToken = tokens[currStake]
         const selectedToken = tokenTypes.find(t => t.id === selectedTokenID)
         this.blurBG()
@@ -96,8 +101,8 @@ class NewStaking extends Component {
                 <div className="amount-wrap">
                     <div className="balance">Balance: <span>{currToken.balance}</span></div>
 
-                    <input type="number" className="amount" placeholder="0.00" />
-                    <div className="max-btn">MAX</div>
+                    <input type="number" className="amount" value={stakeAmount} placeholder="0.00" />
+                    <div className="max-btn" onClick={() => this.handleMax(currToken)}>MAX</div>
                 </div>
                 <div className="show-contract">Show me the contract</div>
                 <div className="btn-wrap">Approve</div>

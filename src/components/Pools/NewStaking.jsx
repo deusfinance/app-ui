@@ -64,7 +64,7 @@ class NewStaking extends Component {
 
     handleStake = (stakedToken) => {
         const { isStakePopup } = this.state
-        this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken })
+        this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken, stakeAmount: null })
     }
 
 

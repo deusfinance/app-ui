@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Popup from '../common/Popup/Popup';
-import { stakingTokens } from '../../config'
+import { stakingTokens, contractEndpoint } from '../../config'
 
 import "./staking.scss"
 import NStake from './Stake/NStake';
+import TopNotif from './TopNotif';
+import QStake from './Stake/QStake';
 
 class NewStaking extends Component {
     state = {
@@ -18,7 +20,9 @@ class NewStaking extends Component {
             { id: 3, name: "Time Token" },
         ],
         selectedTokenID: 1,
-
+        market: {
+            tvl: 2925602,
+        },
     }
 
     constructor(props) {
@@ -29,6 +33,15 @@ class NewStaking extends Component {
 
     componentDidMount() {
         this.handleScroller()
+    }
+
+
+    dollarPrice = (price, fixed = 0) => {
+        return Number(price).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: fixed
+        })
     }
 
     componentWillMount() {
@@ -89,11 +102,14 @@ class NewStaking extends Component {
     }
 
     render() {
-        const { isSelect, isStakePopup, tokenTypes, tokens, selectedTokenID, currStake, stakeAmount } = this.state
+        const {
+            isSelect, isStakePopup, market,
+            tokenTypes, tokens, selectedTokenID,
+            currStake, stakeAmount } = this.state
         const currToken = tokens[currStake]
         const selectedToken = tokenTypes.find(t => t.id === selectedTokenID)
         this.blurBG()
-        //sUNI-LP-DEA-USDC
+
         let popupMsg = ""
         if (currToken)
             popupMsg = <div className="stake-pop-wrap">
@@ -104,7 +120,7 @@ class NewStaking extends Component {
                     <input type="number" className="amount" value={stakeAmount} placeholder="0.00" />
                     <div className="max-btn" onClick={() => this.handleMax(currToken)}>MAX</div>
                 </div>
-                <div className="show-contract">Show me the contract</div>
+                <a className="show-contract" href={contractEndpoint + "/" + currToken.stakingLink} target="_blank" rel="noopener noreferrer">Show me the contract</a>
                 <div className="btn-wrap">Approve</div>
             </div>
         return (<>
@@ -116,123 +132,33 @@ class NewStaking extends Component {
                 popBody={popupMsg}
             />
             <div className="staking-wrap" >
-                <div className="grad-wrap notif-wrap">
-                    <div className=" notif">
-                        Only swap DEUS/DEA on Uniswap to avoid slippage. Swap DEUS/ETH on DEUS Swap.
-                </div>
-                </div>
-                <div className="top-btns">
-                    <div className="select-group">
-                        {!isSelect && <div className="grad-wrap token-btn-wrap" onClick={this.handleOpenSelect}>
-                            <div className=" grad token-btn">
-                                <p>{selectedToken.name} </p>
-                                <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
-                            </div>
-                        </div>}
-                        {isSelect && <div className="grad-wrap list-tokens-wrap ">
-                            <div className="list-tokens">
-                                {tokenTypes.map((t, index) => {
-                                    return <div key={index} className="token-item" onClick={() => this.changeSelectToken(t)}>
-                                        <div className=" grad token-btn">
-                                            <p>{t.name}</p>
-                                            {index === 0 && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}
-                                        </div>
-                                    </div>
-                                })}
-                            </div>
-                        </div>}
-                    </div>
 
-                    <div className="old-new-btn">
-                        <div className="grad-wrap old-btn-wrap">
-                            <p className="grad old-btn">Visit old Pools</p>
-                        </div>
-                        <p className="msg">*To unstake your old staked tokens <br /> just visit our old pools</p>
-                    </div>
-                </div>
+                <TopNotif selectedToken={selectedToken}
+                    handleOpenSelect={this.handleOpenSelect}
+                    changeSelectToken={this.changeSelectToken}
+                    isSelect={isSelect}
+                    tokenTypes={tokenTypes}
+                />
 
                 <div className="stake-container-wrap" ref={this.scrollRef} onClick={this.handleScroller}>
                     <div className="stake-container" >
                         <div className="row1">
-
-                            {/*                             <div className="stake-token-wrap">
-                                <div className="stake-more" onClick={this.handleStake}><p>stake <br /> more</p></div>
-                                <div className="token-name"> sUNI-LP-DEUS-DEA</div>
-                                <div className="sand-title">SandToken</div>
-                                <div className="apy">1,250% APY</div>
-                                <div className="black-line"></div>
-                                <div className="own-pool">you own 4.64% ($4320.30) of the pool</div>
-                                <div className="grad-wrap deposit-wrap">
-                                    <div className=" deposit">
-                                        <div className="zap-wrap" title="ready soon"> <div className="zap">ZAP⚡ in/out</div></div>
-                                        <div className="deposit-amount">1370.7184 <span> deposited</span></div>
-                                        <div className="provide-more"><span>provide more</span><img src={process.env.PUBLIC_URL + "/vaults/uni.svg"} alt="uni" /></div>
-                                    </div>
-                                </div>
-                                <div className="grad-wrap claim-wrap">
-                                    <div className=" claim">
-                                        <div className="withdraw">claim & withdraw</div>
-                                        <div className="dea-amount">2.00063 DEA ($60.24) </div>
-                                        <div className="caim-btn">claim</div>
-                                    </div>
-                                </div>
-                            </div> */}
                             <NStake token={tokens.uni_lp_deus_dea} handleStake={this.handleStake} />
-
                         </div>
                         <div className="row2">
 
                             <div className="tvl-wrap">
                                 <div className="tvl">
                                     <div className="sand-token">Staking Pools</div>
-                                    <div className="price">$2,925,602</div>
+                                    <div className="price">{this.dollarPrice(market.tvl)}</div>
                                     <p className="tvl-txt">TVL</p>
                                     {/*<div className="grad-wrap tvl-btn">
                                     <div className="grad">How to get Sand Tokens</div>
                                 </div> */}
                                 </div>
                             </div>
-
                             <NStake token={tokens.uni_lp_dea_usdc} handleStake={this.handleStake} />
-                            {/* <div className="stake-token-wrap closed">
-                                <div className="stake-more"><p>stake <br /> here</p></div>
-                                <div className="token-closed-name">sUNI-LP-DEA-USDC </div>
-                                <div className="sand-title">SandToken</div>
-                                <div className="apy">1,250% APY</div>
-
-                                <div className="grad-wrap provide-more-wrap">
-                                    <div className=" grad">
-                                        <div className="provide-more"><span>get DEA-USDC Sand Token </span><img src={process.env.PUBLIC_URL + "/vaults/sand-token.svg"} alt="uni" /></div>
-                                    </div>
-                                </div>
-                            </div> */}
-
                             <NStake token={tokens.deus} handleStake={this.handleStake} />
-
-                            {/* {<div className="stake-token-wrap">
-                                <div className="stake-more"><p>stake <br /> more</p></div>
-                                <div className="token-name"> sDEUS </div>
-                                <div className="sand-title">SandToken</div>
-                                <div className="apy">1,250% APY</div>
-                                <div className="black-line"></div>
-                                <div className="own-pool">you own 4.64% ($4320.30) of the pool</div>
-                                <div className="grad-wrap deposit-wrap">
-                                    <div className=" deposit">
-                                        <div className="zap-wrap" title="ready soon"> <div className="zap">ZAP⚡ in/out</div></div>
-                                        <div className="deposit-amount">1370.7184 <span> deposited</span></div>
-                                        <div className="provide-more"><span>buy more</span><img className="swap-icon" src={process.env.PUBLIC_URL + "/vaults/swap.svg"} alt="swap" /></div>
-                                    </div>
-                                </div>
-                                <div className="grad-wrap claim-wrap">
-                                    <div className=" claim">
-                                        <div className="withdraw">claim & withdraw</div>
-                                        <div className="dea-amount">2.00063 DEA ($60.24) </div>
-                                        <div className="caim-btn">claim</div>
-                                    </div>
-                                </div>
-                            </div>} */}
-
-
                         </div>
                     </div>
                 </div>
@@ -257,7 +183,7 @@ class NewStaking extends Component {
 
 
 
-                    <div className="single-wrap">
+                    {/*                     <div className="single-wrap">
                         <div className="single">
                             <div className="stake-here">
                                 STAKE MORE
@@ -294,7 +220,9 @@ class NewStaking extends Component {
                             </div>
 
                         </div>
-                    </div>
+                    </div> */}
+
+                    <QStake token={tokens.dai} handleStake={this.handleStake} />
 
                     <div className="single-wrap">
                         <div className="single">

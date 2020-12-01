@@ -6,6 +6,10 @@
     background-color: transparent;
 }
 
+body {
+    background: #000000;
+}
+
 .stake-container-wrap::-webkit-scrollbar {
     width: 8px;
     height: 10px;
@@ -51,7 +55,7 @@
         .balance {
             position: absolute;
             top: 5px;
-            right: 5px;
+            right: 10px;
             text-align: right;
             font-size: 12px;
         }
@@ -89,6 +93,8 @@
         }
     }
     .show-contract {
+        display: block;
+        color: #000000;
         border: 2px solid #000000;
         border-radius: 5px;
         margin: auto;

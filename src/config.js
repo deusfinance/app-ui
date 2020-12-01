@@ -108,6 +108,7 @@ export const stakingTokens = [
         inner_link: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         liqLink: "http://google.com",
+        deposited: 1,
     },
     {
         name: "eth",

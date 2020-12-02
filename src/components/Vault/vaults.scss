@@ -16,7 +16,65 @@
     text-align: center;
     color: #ffffff;
     font-family: Monument Grotesk;
-    font-weight: 600;
+    font-weight: 400;
+
+    .from-top {
+        color: rgba(255, 255, 255, 0.75);
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        padding-top: 10px;
+    }
+    .bottom-from {
+        margin-top: 20px;
+        display: flex;
+        white-space: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        .max-btn {
+            width: 39px;
+            height: 25px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            justify-content: center;
+            background: linear-gradient(
+                135deg,
+                rgba(91, 204, 189, 0.14902) 0%,
+                rgba(97, 192, 191, 0.14902) 33.33%,
+                rgba(85, 188, 200, 0.14902) 74.49%,
+                rgba(105, 207, 184, 0.14902) 100%
+            );
+            border: 1px solid #ffffff;
+            border-radius: 6px;
+            margin-right: 10px;
+            margin-left: 5px;
+            opacity: 50%;
+
+            cursor: pointer;
+            &:hover {
+                opacity: 100%;
+            }
+        }
+        input {
+            color: #ffffff;
+            width: 0px;
+            flex: 1 1 auto;
+            font-size: 30px;
+            padding-left: 8px;
+            background: transparent;
+            border-color: transparent;
+            outline: none;
+            font-family: Monument Grotesk;
+            font-weight: 400;
+        }
+
+        .token-name {
+            text-transform: uppercase;
+            margin-right: 10px;
+        }
+    }
 
     .swap-btn-wrap {
         margin: auto;
@@ -42,10 +100,11 @@
             justify-content: center;
             margin-top: 10px;
             .swap-btn-wrap {
-                width: 170px;
+                // width: 170px;
                 margin: unset;
+
                 font-size: 21px;
-                margin: 0 10px;
+                margin: 0 50px;
             }
         }
         .swap-btn-wrap {
@@ -53,10 +112,12 @@
             // width: 370px;
             border-radius: 6px;
             margin-top: 20px;
-            height: 46px;
-            font-size: 25px;
+            height: 45px;
+            font-size: 21px;
 
             .swap-btn {
+                font-size: 20px;
+
                 border-radius: 6px;
                 color: #ffffff;
                 display: flex;
@@ -95,56 +156,6 @@
             box-sizing: border-box;
             border-radius: 10px;
             height: 90px;
-            .from-top {
-                color: rgba(255, 255, 255, 0.75);
-                display: flex;
-                justify-content: space-between;
-                padding: 0 10px;
-                padding-top: 10px;
-            }
-            .bottom-from {
-                margin-top: 20px;
-                display: flex;
-                white-space: nowrap;
-                align-items: center;
-                justify-content: space-between;
-                .max-btn {
-                    width: 39px;
-                    height: 25px;
-                    font-size: 12px;
-                    display: flex;
-                    align-items: center;
-                    text-transform: uppercase;
-                    justify-content: center;
-                    background: linear-gradient(
-                        135deg,
-                        rgba(91, 204, 189, 0.14902) 0%,
-                        rgba(97, 192, 191, 0.14902) 33.33%,
-                        rgba(85, 188, 200, 0.14902) 74.49%,
-                        rgba(105, 207, 184, 0.14902) 100%
-                    );
-                    border: 1px solid #ffffff;
-                    border-radius: 6px;
-                    margin-right: 10px;
-                    margin-left: 5px;
-                    cursor: pointer;
-                }
-                input {
-                    color: #ffffff;
-                    width: 0px;
-                    flex: 1 1 auto;
-                    font-size: 30px;
-                    padding-left: 8px;
-                    background: transparent;
-                    border-color: transparent;
-                    outline: none;
-                }
-
-                .token-name {
-                    text-transform: uppercase;
-                    margin-right: 10px;
-                }
-            }
         }
         .and {
             margin-top: 0;
@@ -154,7 +165,7 @@
         .to {
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
-            margin-top: 65px;
+            margin-top: 50px;
         }
         .to-2 {
             border-radius: 10px;
@@ -169,7 +180,7 @@
             cursor: pointer;
             font-family: Monument Grotesk;
             font-style: normal;
-            font-weight: 600;
+            font-weight: 400;
             font-size: 15px;
             &:hover {
                 opacity: 0.7;
@@ -218,57 +229,6 @@
             height: 90px;
             margin: 0 65px;
             margin-top: 20px;
-
-            .from-top {
-                color: rgba(255, 255, 255, 0.75);
-                display: flex;
-                justify-content: space-between;
-                padding: 0 10px;
-                padding-top: 10px;
-            }
-            .bottom-from {
-                margin-top: 20px;
-                display: flex;
-                white-space: nowrap;
-                align-items: center;
-                justify-content: space-between;
-                .max-btn {
-                    width: 39px;
-                    height: 25px;
-                    font-size: 12px;
-                    display: flex;
-                    align-items: center;
-                    text-transform: uppercase;
-                    justify-content: center;
-                    background: linear-gradient(
-                        135deg,
-                        rgba(91, 204, 189, 0.14902) 0%,
-                        rgba(97, 192, 191, 0.14902) 33.33%,
-                        rgba(85, 188, 200, 0.14902) 74.49%,
-                        rgba(105, 207, 184, 0.14902) 100%
-                    );
-                    border: 1px solid #ffffff;
-                    border-radius: 6px;
-                    margin-right: 10px;
-                    margin-left: 5px;
-                    cursor: pointer;
-                }
-                input {
-                    color: #ffffff;
-                    width: 0px;
-                    flex: 1 1 auto;
-                    font-size: 30px;
-                    padding-left: 8px;
-                    background: transparent;
-                    border-color: transparent;
-                    outline: none;
-                }
-
-                .token-name {
-                    text-transform: uppercase;
-                    margin-right: 10px;
-                }
-            }
         }
         .from-2 {
             margin-top: 30px;
@@ -331,7 +291,7 @@
     color: #ffffff;
     width: 100%;
     font-family: Monument Grotesk;
-    font-weight: 600;
+    font-weight: 400;
     height: 100%;
 
     .top-buttons {
@@ -376,7 +336,7 @@
             margin-top: 40px;
             font-family: Monument Grotesk;
             font-style: normal;
-            font-weight: 600;
+            font-weight: 400;
             // font-family: Times New Roman;
             font-size: 20px;
             text-shadow: 0px 0px 10px #ffffff;
@@ -385,13 +345,13 @@
             margin-top: 10px;
             font-family: Monument Grotesk;
             font-style: normal;
-            font-weight: 600;
+            font-weight: 400;
             font-size: 40px;
             text-shadow: 0px 0px 10px #ffffff;
         }
         .gonab-btns {
             margin: auto;
-            margin-top: 50px;
+            margin-top: 35px;
             // width: 283px;
             .zap {
                 margin: auto;
@@ -455,7 +415,7 @@
         display: inline-block;
         font-family: Monument Grotesk;
         font-style: normal;
-        font-weight: 600;
+        font-weight: 400;
         margin: auto;
         .door {
             display: inline-block;
@@ -481,7 +441,7 @@
             position: relative;
             .title {
                 margin: auto;
-                margin-top: 220px;
+                margin-top: 210px;
                 // width: 30%;
                 font-size: 30px;
             }
@@ -660,7 +620,123 @@
                     font-size: 40px;
                     margin-bottom: 50px;
                 }
-                margin-top: 40px;
+                margin-top: 30px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1600px) {
+    .lock-swap-2 {
+        height: 600px;
+        width: 380px;
+        font-weight: 400;
+        .from-top {
+            padding-top: 5px;
+            font-size: 12px;
+        }
+        .bottom-from {
+            margin-top: 12px;
+            svg {
+                width: 20px;
+            }
+            input {
+                font-size: 25px;
+                // padding-bottom: 5px;
+            }
+            .token-name {
+                font-size: 11px;
+            }
+            .max-btn {
+                width: 30px;
+                font-size: 10px;
+                height: 20px;
+                margin-right: 5px;
+            }
+            .max-btn {
+                width: 30px;
+                font-size: 10px;
+                height: 20px;
+                margin-right: 5px;
+            }
+        }
+        .bottom {
+            margin-top: 50px;
+            .swap-btn-wrap {
+                height: 35px;
+                .swap-btn {
+                    font-size: 18px;
+                }
+            }
+            .to {
+                margin: 0 45px;
+                margin-top: 45px;
+                height: 70px;
+            }
+            .and {
+                margin: 0 45px;
+                height: 70px;
+            }
+        }
+        .top {
+            .close-btn {
+                right: 40px;
+                top: 40px;
+                font-weight: 400;
+                font-size: 12px;
+            }
+            .time-vaults {
+                font-size: 18px;
+                margin-top: 35px;
+            }
+            svg {
+                height: 120px;
+            }
+            .token {
+                font-size: 19px;
+            }
+            .locked-text {
+                font-size: 11px;
+                margin: auto;
+                margin-top: 10px;
+            }
+            .contract {
+                margin-top: 13px;
+                font-size: 13px;
+                cursor: pointer;
+                &:hover {
+                    opacity: 50%;
+                }
+            }
+            .from {
+                margin-top: 10px;
+                height: 70px;
+                margin: 0 40px;
+                margin-top: 8px;
+            }
+        }
+    }
+    .vaults-wrap {
+        .gonbad {
+            width: 60%;
+            .title {
+                margin-top: 0px;
+            }
+        }
+        .doors {
+            .close-door,
+            .open-door {
+                .title {
+                    margin-top: 220px;
+                }
+                .door-btns {
+                    bottom: 40px;
+                }
+            }
+            .open-door {
+                .title {
+                    margin-top: 210px;
+                }
             }
         }
     }

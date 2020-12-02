@@ -44,13 +44,6 @@ export const navbarItems = [
         ]
     },
     {
-        id: "dashboard",
-        text: "DASHBOARD",
-        path: "/dashboard",
-        exact: true,
-
-    },
-    {
         id: "learn",
         text: "LEARN",
         path: "/learn",
@@ -100,7 +93,72 @@ export const stakingTokens = [
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         liqLink: "/swap",
         deposited: 300.87,
+        allowances: 10
 
+    },
+    {
+        name: "dai",
+        coin: "dai",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "http://google.com",
+        deposited: 1,
+    },
+    {
+        name: "eth",
+        coin: "eth",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "http://google.com",
+    },
+
+    {
+        name: "wbtc",
+        coin: "wbtc",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "http://google.com",
+        deposited: 50.053
+    },
+]
+
+
+
+
+export const vaultsTokens = [
+    {
+        name: "uni_lp_deus_dea",
+        coin: "deus dea",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "/swap",
+        deposited: 0,
+        balance: 34.285
+    },
+    {
+        name: "uni_lp_dea_usdc",
+        coin: "dea usdc",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "http://google.com",
+    },
+    {
+        name: "deus",
+        coin: "deus",
+        inner_link: true,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "/swap",
+        deposited: 300.87,
+        allowances: 10
+
+    },
+    {
+        name: "dea",
+        coin: "dea",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "http://google.com",
+        deposited: 1,
     },
     {
         name: "dai",

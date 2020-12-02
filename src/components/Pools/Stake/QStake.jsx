@@ -11,26 +11,6 @@ class QStake extends Component {
         const closedClass = isStaked ? "" : "closed"
         const stakeHere = isStaked ? "more" : "here"
 
-        /*   return (<>
-              <div className={`stake-token-wrap ${closedClass}`}>
-                  <div className="stake-more" onClick={() => handleStake(token.name)}><p>stake <br /> {stakeHere}</p></div>
-                  <div className="token-name"> {"s" + token.title}</div>
-                  <div className="sand-title">SandToken</div>
-                  <div className="apy">{token.apy}% APY</div>
-                  {isStaked && <>
-                      <div className="black-line"></div>
-                      <div className="own-pool">you own {token.pool}% ($4320.30) of the pool</div>
-                      <DepositButton token={token} />
-                      <ClaimButton token={token} />
-                  </>}
-  
-                  {!isStaked && <>
-                      <ProvideButton token={token} />
-                  </>}
-  
-              </div>
-          </>); */
-
         return (<div className={`single-wrap ${closedClass}`}>
             <div className="single">
                 <div className="stake-here" onClick={() => handleStake(token.name)}>
@@ -38,7 +18,7 @@ class QStake extends Component {
                 </div>
 
                 <div className="token-name">{"s" + token.title}</div>
-                <div className="token-title">SandToken</div>
+                {/* <div className="token-title">SandToken</div> */}
 
 
                 {!isStaked && <>
@@ -60,7 +40,7 @@ class QStake extends Component {
                     </div>
                     <div className="btns-wrap">
                         <div className="btns">
-                            <div className="left-single disabled">{token.deposited} sDAI deposited</div>
+                            <div className="left-single disabled">{token.deposited} deposited</div>
                             <div className="right-single">
                                 <span>withdraw and claim</span>
                             </div>

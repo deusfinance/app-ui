@@ -2,11 +2,11 @@ import React from 'react';
 
 const TopNotif = ({ selectedToken, tokenTypes, handleOpenSelect, changeSelectToken, isSelect }) => {
     return (<>
-        <div className="grad-wrap notif-wrap">
+        {/* <div className="grad-wrap notif-wrap">
             <div className=" notif">
                 Only swap DEUS/DEA on Uniswap to avoid slippage. Swap DEUS/ETH on DEUS Swap.
-                    </div>
-        </div>
+            </div>
+        </div> */}
         <div className="top-btns">
             <div className="select-group">
                 {!isSelect && <div className="grad-wrap token-btn-wrap" onClick={handleOpenSelect}>

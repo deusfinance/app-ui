@@ -57,7 +57,7 @@ class NewStaking extends Component {
                 claimable_unit: "DEA",
                 pool: 10.25,
                 balance: token.balance ? token.balance : 0,
-                allowances: 0,
+                allowances: token.allowances ? token.allowances : 0,
             }
         })
         this.setState({ tokens: all_tokens })
@@ -77,7 +77,7 @@ class NewStaking extends Component {
 
     handleStake = (stakedToken) => {
         const { isStakePopup } = this.state
-        this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken, stakeAmount: null })
+        this.setState({ isStakePopup: !isStakePopup, currStake: isStakePopup ? null : stakedToken, stakeAmount: undefined })
     }
 
 
@@ -111,7 +111,8 @@ class NewStaking extends Component {
         this.blurBG()
 
         let popupMsg = ""
-        if (currToken)
+        if (currToken) {
+            const isApproved = currToken.allowances > 0 ? true : false
             popupMsg = <div className="stake-pop-wrap">
                 <div className="uni-token-name">{"s" + currToken.title}</div>
                 <div className="amount-wrap">
@@ -121,8 +122,10 @@ class NewStaking extends Component {
                     <div className="max-btn" onClick={() => this.handleMax(currToken)}>MAX</div>
                 </div>
                 <a className="show-contract" href={contractEndpoint + "/" + currToken.stakingLink} target="_blank" rel="noopener noreferrer">Show me the contract</a>
-                <div className="btn-wrap">Approve</div>
+                {!isApproved && <div className="btn-wrap" onClick={() => console.log("approve")}>Approve</div>}
+                {isApproved && <div className="btn-wrap" onClick={() => console.log("stake")}>Stake</div>}
             </div>
+        }
         return (<>
             <Popup
                 title={"STAKE TOKENS TO EARN " + "DEA"}
@@ -163,105 +166,9 @@ class NewStaking extends Component {
                     </div>
                 </div>
                 <div className="container-single-wrap">
-                    <div className="single-wrap closed">
-                        <div className="stake-here">
-                            STAKE HERE
-                        </div>
-
-                        <div className="token-name">sDEA</div>
-                        <div className="token-title">SandToken</div>
-
-                        <div className="grad-wrap provide-more-wrap">
-                            <div className=" grad">
-                                <div className="provide-more"><span>get DEA Sand Token </span><img src={process.env.PUBLIC_URL + "/vaults/sand-token.svg"} alt="uni" /></div>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-
-
-                    {/*                     <div className="single-wrap">
-                        <div className="single">
-                            <div className="stake-here">
-                                STAKE MORE
-                        </div>
-
-                            <div className="token-name">sDEA</div>
-                            <div className="token-title">SandToken</div>
-                            <div className="own-pool">you own 4.64% ($4320,30) of the pool</div>
-
-                            <div className="btns-wrap">
-                                <div className="btns">
-                                    <div className="left-single disabled">1245.10 sDAI claimable</div>
-                                    <div className="right-single">
-                                        <span>claim</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="btns-wrap">
-                                <div className="btns">
-                                    <div className="left-single disabled">31,241.10 sDAI deposited</div>
-                                    <div className="right-single">
-                                        <span>withdraw and claim</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="btns-wrap">
-                                <div className="btns">
-                                    <div className="left-single disabled zap" ><span>ZAP⚡ in/out</span></div>
-                                    <div className="right-single">
-                                        <span>buy more</span><img className="swap-icon" src={process.env.PUBLIC_URL + "/vaults/swap.svg"} alt="swap" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div> */}
-
+                    <QStake token={tokens.wbtc} handleStake={this.handleStake} />
+                    <QStake token={tokens.eth} handleStake={this.handleStake} />
                     <QStake token={tokens.dai} handleStake={this.handleStake} />
-
-                    <div className="single-wrap">
-                        <div className="single">
-                            <div className="stake-here">
-                                STAKE MORE
-                        </div>
-
-                            <div className="token-name">sDEA</div>
-                            <div className="token-title">SandToken</div>
-                            <div className="own-pool">you own 4.64% ($4320,30) of the pool</div>
-
-                            <div className="btns-wrap">
-                                <div className="btns">
-                                    <div className="left-single disabled">1245.10 sDAI claimable</div>
-                                    <div className="right-single">
-                                        <span>claim</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="btns-wrap">
-                                <div className="btns">
-                                    <div className="left-single disabled">31,241.10 sDAI deposited</div>
-                                    <div className="right-single">
-                                        <span>withdraw and claim</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="btns-wrap">
-                                <div className="btns">
-                                    <div className="left-single disabled zap" ><span>ZAP⚡ in/out</span></div>
-                                    <div className="right-single">
-                                        <span>buy more</span><img className="swap-icon" src={process.env.PUBLIC_URL + "/vaults/swap.svg"} alt="swap" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
                 </div>
             </div>
         </>);

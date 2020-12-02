@@ -399,6 +399,7 @@ body {
     // -webkit-backface-visibility: hidden;
     transform: translateZ(0);
     padding-bottom: 40px;
+    padding-top: 20px;
 }
 
 .staking-wrap {
@@ -427,18 +428,15 @@ body {
         }
     }
     .top-btns {
-        position: absolute;
-        top: 60px;
-        padding: 0 20px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+        // padding: 0 20px;
+        // display: flex;
+        // justify-content: space-between;
         color: #ffffff;
-        z-index: 2;
         .list-tokens-wrap {
-            // position: absolute;
-            // top: 60px;
-            // margin-top: -43px;
+            z-index: 2;
+            position: absolute;
+            top: 20px;
+            left: 20px;
             border-radius: 6px;
             overflow: hidden;
             .list-tokens {
@@ -476,6 +474,10 @@ body {
             }
         }
         .old-new-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
             .msg {
                 font-family: Monument Grotesk;
                 font-weight: 400;
@@ -488,6 +490,11 @@ body {
         }
         .token-btn-wrap {
             text-align: left;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+
             .token-btn {
                 padding: 0 20px;
                 display: flex;
@@ -661,7 +668,7 @@ body {
                 height: 2px;
             }
             .own-pool {
-                margin: 12px 0;
+                margin: 25px 0;
                 font-size: 20px;
                 text-shadow: 0px 0px 10px #ffffff;
             }
@@ -673,6 +680,9 @@ body {
                 height: 40px;
                 margin: auto;
                 bottom: 25px;
+                .provide-more {
+                    color: #ffffff;
+                }
 
                 img {
                     position: absolute;
@@ -710,6 +720,7 @@ body {
     width: 620px;
     margin: auto;
     margin-top: 15px;
+    font-size: 15px;
 
     .claim {
         height: 100%;
@@ -888,14 +899,15 @@ body {
             background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%), #a2dea4;
             border-radius: 6px 6px 0px 0px;
             transition: all 0.3s;
+            text-transform: uppercase;
             cursor: pointer;
             &:hover {
                 color: #000000;
             }
         }
         .token-name {
-            margin-top: 15px;
-            font-size: 25px;
+            margin-top: 30px;
+            font-size: 30px;
         }
         .token-title {
             // margin-top: 2px;
@@ -970,8 +982,8 @@ body {
     .closed {
         position: relative;
         .token-name {
-            margin-top: 50px;
-            font-size: 32px;
+            margin-top: 90px;
+            font-size: 40px;
         }
         .token-title {
             font-size: 32px;
@@ -984,8 +996,10 @@ body {
             width: 400px;
             height: 40px;
             margin: auto;
-            bottom: 25px;
-
+            bottom: 28px;
+            .provide-more {
+                color: #ffffff;
+            }
             img {
                 position: absolute;
                 // display: flex;
@@ -995,6 +1009,13 @@ body {
                 vertical-align: middle;
                 width: 25px;
             }
+        }
+    }
+}
+@media screen and (max-width: 1600px) {
+    .container-single-wrap {
+        .single-wrap {
+            margin: 20px 10px;
         }
     }
 }

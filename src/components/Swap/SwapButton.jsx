@@ -1,11 +1,11 @@
 import React from 'react';
 
-const SwapButton = () => {
+const SwapButton = ({ approved }) => {
     return (<>
         <div className="swap-btn-wrap grad-wrap">
             <div className="swap-btn grad">
-                swap
-             </div>
+                {approved ? "swap" : "approve"}
+            </div>
         </div>
     </>);
 }

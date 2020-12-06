@@ -1,0 +1,193 @@
+.balancer-wrap {
+    // max-width: 100%;
+    // overflow-x: auto;
+    // overflow-y: hidden;
+    // // -webkit-backface-visibility: hidden;
+    // transform: translateZ(0);
+    // padding-bottom: 40px;
+    position: absolute;
+    top: 15px;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    min-width: 1900px;
+    width: 1900px;
+    max-width: 1900px;
+    text-align: center;
+    position: relative;
+    // overflow-x: auto;
+    // height: 100%;
+    height: 840px;
+    // margin-top: -15px;
+    background: url("/img/Line.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 20px;
+    .balancer {
+        width: 1800px;
+        height: 770px;
+        clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+        background: #242424;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        left: 0;
+        margin: auto;
+        .left-balancer,
+        .right-balancer {
+            position: relative;
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+            background-color: #242424;
+            .container {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                // left: 0;
+                color: #ffffff;
+                .stake-more-wrap {
+                    width: 287px;
+                    height: 250px;
+                    background: linear-gradient(224.74deg, #5ec4d6 0.19%, #92d8af 100.22%, #f1fc68 100.22%);
+                    box-shadow: 0px 0px 14px #ffffff;
+
+                    position: relative;
+                    font-size: 25px;
+                    text-transform: uppercase;
+                    color: #ffffff;
+                    cursor: pointer;
+                    transition: all 0.25s;
+                    .stake-more {
+                        position: absolute;
+                        bottom: 65px;
+                        left: 40px;
+                    }
+                    &:hover {
+                        color: #000000;
+                    }
+                }
+                .content {
+                    margin-left: 25px;
+                    .title {
+                        font-size: 25px;
+                        margin-top: 60px;
+                    }
+                    .apy {
+                        direction: ltr;
+                        margin-top: 10px;
+                        font-size: 20px;
+                    }
+                    .token-name {
+                        margin-top: 30px;
+                        pre {
+                            // text-align: left;
+                            font-size: 18px;
+
+                            //animation: scale-up 0.5s forwards;
+                            font-family: Monument Grotesk;
+                            font-weight: 400;
+                            white-space: pre-wrap; /* Since CSS 2.1 */
+                            // white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+                            // white-space: -pre-wrap; /* Opera 4-6 */
+                            // white-space: -o-pre-wrap; /* Opera 7 */
+                            // word-wrap: break-word; /* Internet Explorer 5.5+ */
+                        }
+                    }
+                    .own-pool {
+                        margin-top: 70px;
+                        font-size: 20px;
+
+                        text-shadow: 0px 0px 10px #ffffff;
+                    }
+                    .deposit-wrap {
+                        direction: ltr;
+                        margin: unset;
+                        margin-top: 50px;
+                    }
+                    .claim-wrap {
+                        direction: ltr;
+                        margin: unset;
+                        margin-top: 20px;
+                    }
+
+                    .desciption {
+                        // direction: ltr;
+                        // text-align: right;
+                        font-size: 14px;
+                        line-height: 18px;
+                        margin-top: 15px;
+                        pre {
+                            //animation: scale-up 0.5s forwards;
+                            font-family: Monument Grotesk;
+                            font-weight: 400;
+                            white-space: pre-wrap; /* Since CSS 2.1 */
+                            // white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+                            // white-space: -pre-wrap; /* Opera 4-6 */
+                            // white-space: -o-pre-wrap; /* Opera 7 */
+                            // word-wrap: break-word; /* Internet Explorer 5.5+ */
+                        }
+                        .cant {
+                            color: #686868;
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+        .right-balancer {
+            border-left: 1px solid #000;
+            text-align: left;
+            direction: ltr;
+            // .desciption {
+            //     direction: rtl;
+            // }
+            .container {
+                .stake-more-wrap {
+                    border-bottom-right-radius: 3px;
+                }
+            }
+        }
+        .left-balancer {
+            border-right: 1px solid #000;
+            text-align: right;
+            direction: rtl;
+            .desciption {
+                direction: ltr;
+            }
+            .container {
+                .stake-more-wrap {
+                    border-bottom-left-radius: 3px;
+                    background: linear-gradient(224.74deg, #86d3b8 0.19%, #92d8af 100.22%, #f1fc68 100.22%);
+
+                    .stake-more {
+                        position: absolute;
+                        bottom: 65px;
+                        right: 40px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.content {
+    margin-right: 25px;
+
+    .provide-wrap {
+        height: 40px;
+        width: 250px;
+        margin-top: 37px;
+        font-size: 15px;
+        position: relative;
+        direction: ltr;
+        border-radius: 6px;
+        svg {
+            width: 25px;
+            right: 10px;
+            position: absolute;
+        }
+    }
+    .lclaim {
+        width: 250px;
+    }
+}

@@ -1,4 +1,3 @@
-.lock-swap-2,
 .lock-swap {
     background-position: center;
     background: url("/vaults/sand.svg");
@@ -18,61 +17,84 @@
     font-family: Monument Grotesk;
     font-weight: 400;
 
-    .from-top {
-        color: rgba(255, 255, 255, 0.75);
-        display: flex;
-        justify-content: space-between;
-        padding: 0 10px;
-        padding-top: 10px;
-    }
-    .bottom-from {
-        margin-top: 20px;
-        display: flex;
-        white-space: nowrap;
-        align-items: center;
-        justify-content: space-between;
-        .max-btn {
-            width: 39px;
-            height: 25px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            text-transform: uppercase;
-            justify-content: center;
-            background: linear-gradient(
-                135deg,
-                rgba(91, 204, 189, 0.14902) 0%,
-                rgba(97, 192, 191, 0.14902) 33.33%,
-                rgba(85, 188, 200, 0.14902) 74.49%,
-                rgba(105, 207, 184, 0.14902) 100%
-            );
-            border: 1px solid #ffffff;
-            border-radius: 6px;
-            margin-right: 10px;
-            margin-left: 5px;
-            opacity: 50%;
+    .lock-input {
+        background: #1c1c1c;
+        border: 2px solid #000000;
+        box-sizing: border-box;
+        border-radius: 10px;
+        height: 90px;
+        margin: 0 65px;
+        // margin-top: 30px;
 
-            cursor: pointer;
-            &:hover {
-                opacity: 100%;
+        .input-top {
+            color: rgba(255, 255, 255, 0.75);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            padding-top: 10px;
+        }
+        .input-bottom {
+            margin-top: 20px;
+            display: flex;
+            white-space: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            .max-btn {
+                width: 39px;
+                height: 25px;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                text-transform: uppercase;
+                justify-content: center;
+                background: linear-gradient(
+                    135deg,
+                    rgba(91, 204, 189, 0.14902) 0%,
+                    rgba(97, 192, 191, 0.14902) 33.33%,
+                    rgba(85, 188, 200, 0.14902) 74.49%,
+                    rgba(105, 207, 184, 0.14902) 100%
+                );
+                border: 1px solid #ffffff;
+                border-radius: 6px;
+                margin-right: 10px;
+                margin-left: 5px;
+                opacity: 50%;
+
+                cursor: pointer;
+                &:hover {
+                    opacity: 100%;
+                }
+            }
+            input {
+                color: #ffffff;
+                width: 0px;
+                flex: 1 1 auto;
+                font-size: 30px;
+                padding-left: 8px;
+                background: transparent;
+                border-color: transparent;
+                outline: none;
+                font-family: Monument Grotesk;
+                font-weight: 400;
+            }
+
+            .token-name {
+                text-transform: uppercase;
+                margin-right: 10px;
             }
         }
-        input {
-            color: #ffffff;
-            width: 0px;
-            flex: 1 1 auto;
-            font-size: 30px;
-            padding-left: 8px;
-            background: transparent;
-            border-color: transparent;
-            outline: none;
-            font-family: Monument Grotesk;
-            font-weight: 400;
-        }
+    }
 
-        .token-name {
-            text-transform: uppercase;
-            margin-right: 10px;
+    &.locked {
+        .lock-input:nth-child(1) {
+            border-bottom: 0px solid #000000;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+        .lock-input:nth-child(2) {
+            border-top: 2px solid #000000;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
         }
     }
 
@@ -95,21 +117,18 @@
     }
 
     .bottom {
+        margin-top: 50px;
         .btns {
             display: flex;
             justify-content: center;
             margin-top: 10px;
             .swap-btn-wrap {
-                // width: 170px;
                 margin: unset;
-
                 font-size: 21px;
                 margin: 0 50px;
             }
         }
         .swap-btn-wrap {
-            // margin: auto;
-            // width: 370px;
             border-radius: 6px;
             margin-top: 20px;
             height: 45px;
@@ -117,7 +136,6 @@
 
             .swap-btn {
                 font-size: 20px;
-
                 border-radius: 6px;
                 color: #ffffff;
                 display: flex;
@@ -145,28 +163,9 @@
             font-size: 14px;
             line-height: 20px;
             margin-top: 25px;
+            margin-bottom: 25px;
         }
 
-        .to,
-        .and {
-            margin: 0 65px;
-            margin-top: 30px;
-            background: #1c1c1c;
-            border: 2px solid #000000;
-            box-sizing: border-box;
-            border-radius: 10px;
-            height: 90px;
-        }
-        .and {
-            margin-top: 0;
-            border-top-right-radius: 0;
-            border-top-left-radius: 0;
-        }
-        .to {
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 0;
-            margin-top: 50px;
-        }
         .to-2 {
             border-radius: 10px;
         }
@@ -199,12 +198,13 @@
         .locked-text {
             font-size: 13px;
             margin: 0 30px;
-            margin-top: 15px;
+            margin-top: 30px;
         }
         .token {
             text-transform: uppercase;
-            margin-top: 5px;
+            margin-top: 10px;
             font-size: 25px;
+            display: none;
         }
         .token-2 {
             text-transform: uppercase;
@@ -213,28 +213,22 @@
         }
         .contract {
             display: inline-block;
-            // width: 200px;
-            margin-top: 20px;
+            margin-top: 40px;
             font-size: 15px;
-            // padding: 0 10px;
+            margin-bottom: 20px;
+            color: #ffffff;
             padding-bottom: 5px;
             border-bottom: 2px solid #ffffff;
+            opacity: 70%;
+            &:hover {
+                opacity: 100%;
+            }
+            &.unlocked {
+                margin-top: 85px;
+            }
         }
 
-        .from {
-            background: #1c1c1c;
-            border: 2px solid #000000;
-            box-sizing: border-box;
-            border-radius: 10px;
-            height: 90px;
-            margin: 0 65px;
-            margin-top: 20px;
-        }
-        .from-2 {
-            margin-top: 30px;
-        }
         svg {
-            // background: #242424;
             color: #242424;
 
             path {
@@ -256,35 +250,9 @@
                     }
                 }
             }
-            // path:nth-child(1) {
-            //     transition: all 0.3s;
-            //     &:hover {
-            //         cursor: pointer;
-            //         color: #383838;
-            //     }
-            // }
         }
     }
 }
-
-// .blured {
-//     filter: blur(5px);
-// }
-
-// .blured {
-//     top: 0;
-//     position: absolute;
-//     width: 99vw;
-//     z-index: 4;
-//     height: 100%;
-//     // filter: blur(5px);
-//     background: #000000;
-//     opacity: 0.5;
-// }
-
-// .hidden {
-//     display: none;
-// }
 
 .vaults-wrap {
     position: relative;
@@ -496,6 +464,8 @@
                     justify-content: center;
                     flex-direction: column;
                     background-color: #111111;
+                    border-bottom-left-radius: 6px;
+                    border-top-left-radius: 6px;
                 }
                 .reemable-btn {
                     padding: 0 5px;
@@ -504,6 +474,8 @@
                     justify-content: center;
                     flex-direction: column;
                     cursor: pointer;
+                    border-bottom-right-radius: 6px;
+                    border-top-right-radius: 6px;
                     background-color: #111111;
                     &.disabled {
                         cursor: default;
@@ -527,26 +499,25 @@
                 display: flex;
                 margin-top: 15px;
 
-                div {
+                a:nth-child(1) {
+                    border-bottom-left-radius: 6px;
+                    border-top-left-radius: 6px;
+                }
+
+                a:nth-child(2) {
+                    border-bottom-right-radius: 6px;
+                    border-top-right-radius: 6px;
+                }
+                .half {
+                    display: flex;
+                    flex: 1;
+                    color: #ffffff;
                     display: flex;
                     justify-content: center;
                     flex-direction: column;
                     height: 100%;
                     transition: all 0.25s;
                     background-color: #111111;
-                    &.left-btn {
-                        border-right: 2px solid #242424;
-                    }
-                    &.disabled {
-                        cursor: default;
-                        background-color: #111111;
-                    }
-                    &.half {
-                        flex: 1;
-                    }
-                    &.lock-more {
-                        padding: 0 8px;
-                    }
                     &:hover {
                         &:not(.disabled) {
                             color: #000000;
@@ -554,6 +525,30 @@
                         }
                     }
                 }
+                // div {
+                //     display: flex;
+                //     justify-content: center;
+                //     flex-direction: column;
+                //     height: 100%;
+                //     transition: all 0.25s;
+                //     &.left-btn {
+                //         border-right: 2px solid #242424;
+                //     }
+                //     &.disabled {
+                //         cursor: default;
+                //         background-color: #111111;
+                //     }
+
+                //     &.lock-more {
+                //         padding: 0 8px;
+                //     }
+                //     &:hover {
+                //         &:not(.disabled) {
+                //             color: #000000;
+                //             background-color: transparent;
+                //         }
+                //     }
+                // }
             }
             .door-btns {
                 position: absolute;
@@ -627,55 +622,57 @@
 }
 
 @media screen and (max-width: 1600px) {
-    .lock-swap-2 {
-        height: 600px;
+    .lock-swap {
+        height: 615px;
         width: 380px;
         font-weight: 400;
-        .from-top {
+        .input-top {
             padding-top: 5px;
             font-size: 12px;
         }
-        .bottom-from {
-            margin-top: 12px;
-            svg {
-                width: 20px;
-            }
-            input {
-                font-size: 25px;
-                // padding-bottom: 5px;
-            }
-            .token-name {
-                font-size: 11px;
-            }
-            .max-btn {
-                width: 30px;
-                font-size: 10px;
-                height: 20px;
-                margin-right: 5px;
-            }
-            .max-btn {
-                width: 30px;
-                font-size: 10px;
-                height: 20px;
-                margin-right: 5px;
+        .lock-input {
+            // margin-top: 10px;
+            height: 70px;
+            margin: 0 40px;
+            // margin-top: 8px;
+            .input-bottom {
+                margin-top: 12px;
+                svg {
+                    width: 20px;
+                }
+                input {
+                    font-size: 25px;
+                    // padding-bottom: 5px;
+                }
+                .token-name {
+                    font-size: 11px;
+                }
+                .max-btn {
+                    width: 30px;
+                    font-size: 10px;
+                    height: 20px;
+                    margin-right: 5px;
+                }
+                .max-btn {
+                    width: 30px;
+                    font-size: 10px;
+                    height: 20px;
+                    margin-right: 5px;
+                }
             }
         }
+
         .bottom {
-            margin-top: 50px;
+            margin-top: 40px;
+            .text {
+                font-size: 11px;
+                margin: 15px 50px;
+            }
             .swap-btn-wrap {
                 height: 35px;
                 .swap-btn {
                     font-size: 18px;
                 }
-            }
-            .to {
-                margin: 0 45px;
-                margin-top: 45px;
-                height: 70px;
-            }
-            .and {
-                margin: 0 45px;
-                height: 70px;
             }
         }
         .top {
@@ -687,10 +684,10 @@
             }
             .time-vaults {
                 font-size: 18px;
-                margin-top: 35px;
+                margin-top: 50px;
             }
             svg {
-                height: 120px;
+                height: 130px;
             }
             .token {
                 font-size: 19px;
@@ -704,15 +701,13 @@
                 margin-top: 13px;
                 font-size: 13px;
                 cursor: pointer;
+
                 &:hover {
                     opacity: 50%;
                 }
-            }
-            .from {
-                margin-top: 10px;
-                height: 70px;
-                margin: 0 40px;
-                margin-top: 8px;
+                &.unlocked {
+                    margin-top: 35px;
+                }
             }
         }
     }

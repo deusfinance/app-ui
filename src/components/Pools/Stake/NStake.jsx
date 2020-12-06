@@ -11,14 +11,6 @@ class NStake extends Component {
         const closedClass = isStaked ? "" : "closed"
         const stakeHere = isStaked ? "more" : "here"
 
-        const closed = <div className="stake-token-wrap closed">
-            <div className="stake-more"><p>stake <br /> {stakeHere}</p></div>
-            <div className="token-name">sUNI-LP-DEA-USDC </div>
-            {/* <div className="sand-title">SandToken</div> */}
-            <div className="apy">1,250% APY</div>
-            <ProvideButton token={token} />
-        </div>
-
         return (<>
             <div className={`stake-token-wrap ${closedClass}`}>
                 <div className="stake-more" onClick={() => handleStake(token.name)}><p>stake <br /> {stakeHere}</p></div>

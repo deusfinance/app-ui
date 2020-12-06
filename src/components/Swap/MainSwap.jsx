@@ -6,17 +6,11 @@ import TokenMarket from './TokenMarket';
 import SwapButton from './SwapButton';
 
 import './mainSwap.scss';
+import { swapTokens } from '../../config';
 
 class MainSwap extends Component {
     state = {
-        tokens: [
-            { name: "DEA", pic_name: "dea", price: 34.05, balance: 0.96 },
-            { name: "DEUS", pic_name: "deus", price: 1.47, balance: 700.48 },
-            { name: "USDC", pic_name: "usdc", price: 1.05, balance: 436.23 },
-            // { name: "rTSLA", pic_name: "registrar", price: 1.05, balance: 0 },
-            // { name: "rQQQ", pic_name: "registrar", price: 53.09, balance: 0 },
-            { name: "ETH", pic_name: "eth-logo", price: 350.33, balance: 0.668 },
-        ],
+        tokens: swapTokens,
         swap: {
             from: {
                 name: "", pic_name: "", price: "", balance: "", amount: ""
@@ -27,7 +21,9 @@ class MainSwap extends Component {
         },
         showSearchBox: false,
         searchBoxType: "from",
+        fromPerTo: false
     }
+
 
     handleInitToken = (type, tokenName) => {
         const { tokens, swap } = this.state
@@ -44,7 +40,11 @@ class MainSwap extends Component {
         swap.from = to
         swap.to = from
         this.setState({ swap })
-        console.log("handleChangeType");
+    }
+
+    handleSwichPerPrice = () => {
+        const { fromPerTo } = this.state
+        this.setState({ fromPerTo: !fromPerTo })
     }
 
     handleTokenInputChange = (stype, amount) => {
@@ -67,7 +67,6 @@ class MainSwap extends Component {
         this.setState({ swap })
     }
 
-
     handleSearchBox = (flag, type) => {
         this.setState({ showSearchBox: flag, searchBoxType: type })
     }
@@ -89,6 +88,12 @@ class MainSwap extends Component {
         return tokens.filter(t => swap[searchBoxType].name !== t.name)
     }
 
+    isApproved = () => {
+        const { swap } = this.state
+        console.log(swap.to.allowances > 0);
+        return swap.to.allowances > 0 && swap.from.allowances > 0
+    }
+
     componentDidMount() {
         this.handleInitToken("from", "ETH")
         this.handleInitToken("to", "DEUS")
@@ -96,10 +101,10 @@ class MainSwap extends Component {
 
     render() {
 
-        const { showSearchBox, swap } = this.state
+        const { showSearchBox, swap, fromPerTo } = this.state
         const from_token = swap.from
         const to_token = swap.to
-
+        const approved = this.isApproved()
         return (<div className="deus-swap-wrap">
             <div className="title">
                 <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
@@ -136,12 +141,12 @@ class MainSwap extends Component {
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
 
-                            <TokenMarket handleChangeType={this.handleChangeType} />
+                            <TokenMarket handleSwich={this.handleSwichPerPrice} swap={swap} fromPerTo={fromPerTo} perPrice={0.3003} tvl={6245.343} tradeVol={945.343} />
 
-                            <SwapButton />
+                            <SwapButton handleSwap={this.handleSwap} approved={approved} />
                         </div>
 
-                        <PriceBox />
+                        <PriceBox impact={0.05} vaultsFee={0.0098} />
 
                         <SearchBox
                             showSearchBox={showSearchBox}

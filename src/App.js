@@ -15,7 +15,7 @@ const NotFound = React.lazy(() => import('./components/NotFound'));
 const ConductrContainer = React.lazy(() => import('./components/Conductr/ConductrContainer'));
 const BuildRegistrar = React.lazy(() => import('./components/Conductr/BuildRegistrar'));
 const NewStaking = React.lazy(() => import('./components/Pools/NewStaking'));
-const BalancerPool = React.lazy(() => import('./components/Pools/BalancerPool'));
+const BalancerPool = React.lazy(() => import('./components/Pools/Balancer/BalancerPool'));
 const TimeToken = React.lazy(() => import('./components/Pools/TimeToken'));
 const Vault = React.lazy(() => import('./components/Vault/Vault'));
 

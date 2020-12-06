@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Popup from '../common/Popup/Popup';
-import { stakingTokens, contractEndpoint } from '../../config'
+import { sandTokens, contractEndpoint } from '../../config'
 
 import "./staking.scss"
 import NStake from './Stake/NStake';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
+import StakePopup from '../common/Popup/StakePopup';
 
 class NewStaking extends Component {
     state = {
@@ -14,12 +15,6 @@ class NewStaking extends Component {
         tokens: {},
         currStake: null,
         stakeAmount: null,
-        tokenTypes: [
-            { id: 1, name: "Sand Token" },
-            { id: 2, name: "Balancer Pool" },
-            { id: 3, name: "Time Token" },
-        ],
-        selectedTokenID: 1,
         market: {
             tvl: 2925602,
         },
@@ -46,7 +41,7 @@ class NewStaking extends Component {
 
     componentWillMount() {
         let all_tokens = {}
-        stakingTokens.map(token => {
+        sandTokens.map(token => {
             all_tokens[token.name] = {
                 ...token,
                 title: token.name.toUpperCase().replaceAll("_", "-"),
@@ -81,9 +76,6 @@ class NewStaking extends Component {
     }
 
 
-    handleOpenSelect = () => {
-        this.setState({ isSelect: true })
-    }
 
     handleScroller = () => {
         const width = (1900 - window.innerWidth) / 2
@@ -93,9 +85,6 @@ class NewStaking extends Component {
         }
     }
 
-    changeSelectToken = (t) => {
-        this.setState({ selectedTokenID: t.id, isSelect: false })
-    }
 
     handleMax = (token) => {
         this.setState({ stakeAmount: token.balance })
@@ -103,11 +92,10 @@ class NewStaking extends Component {
 
     render() {
         const {
-            isSelect, isStakePopup, market,
-            tokenTypes, tokens, selectedTokenID,
+            isStakePopup, market, tokens,
             currStake, stakeAmount } = this.state
         const currToken = tokens[currStake]
-        const selectedToken = tokenTypes.find(t => t.id === selectedTokenID)
+
         this.blurBG()
 
         let popupMsg = ""
@@ -126,22 +114,20 @@ class NewStaking extends Component {
                 {isApproved && <div className="btn-wrap" onClick={() => console.log("stake")}>Stake</div>}
             </div>
         }
+
         return (<>
-            <Popup
+
+            {currToken && <StakePopup
                 title={"STAKE TOKENS TO EARN " + "DEA"}
                 close={true}
-                show={isStakePopup}
-                handlePopup={this.handleStake}
-                popBody={popupMsg}
+                isStakePopup={isStakePopup}
+                handleStake={this.handleStake}
+                token={currToken}
             />
+            }
             <div className="staking-wrap" >
 
-                <TopNotif selectedToken={selectedToken}
-                    handleOpenSelect={this.handleOpenSelect}
-                    changeSelectToken={this.changeSelectToken}
-                    isSelect={isSelect}
-                    tokenTypes={tokenTypes}
-                />
+                <TopNotif typeID={0} />
 
                 <div className="stake-container-wrap" ref={this.scrollRef} onClick={this.handleScroller}>
                     <div className="stake-container" >

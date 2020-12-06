@@ -1,42 +1,73 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-const TopNotif = ({ selectedToken, tokenTypes, handleOpenSelect, changeSelectToken, isSelect }) => {
-    return (<>
-        {/* <div className="grad-wrap notif-wrap">
+
+
+
+
+class TopNotif extends Component {
+    state = {
+        tokenTypes: [
+            { id: 1, name: "Sand Token", path: "/new-staking" },
+            { id: 2, name: "Balancer Pool", path: "balancer" },
+            { id: 3, name: "Time Token", path: "/timetoken" },
+        ],
+        show: false
+    }
+
+    handleToggleSelect = () => {
+        const { show } = this.state
+        this.setState({ show: !show })
+    }
+
+    render() {
+
+        const { show, tokenTypes } = this.state
+        const { typeID } = this.props
+        const selectedToken = tokenTypes[typeID]
+
+        return (<>
+            {/* <div className="grad-wrap notif-wrap">
             <div className=" notif">
                 Only swap DEUS/DEA on Uniswap to avoid slippage. Swap DEUS/ETH on DEUS Swap.
             </div>
         </div> */}
-        <div className="top-btns">
-            <div className="select-group">
-                {!isSelect && <div className="grad-wrap token-btn-wrap" onClick={handleOpenSelect}>
-                    <div className=" grad token-btn">
-                        <p>{selectedToken.name} </p>
-                        <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
-                    </div>
-                </div>}
-                {isSelect && <div className="grad-wrap list-tokens-wrap ">
-                    <div className="list-tokens">
-                        {tokenTypes.map((t, index) => {
-                            return <div key={index} className="token-item" onClick={() => changeSelectToken(t)}>
+            <div className="top-btns">
+                <div className="select-group">
+                    {!show && <div className="grad-wrap token-btn-wrap" onClick={this.handleToggleSelect}>
+                        <div className=" grad token-btn">
+                            <p>{selectedToken.name} </p>
+                            <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
+                        </div>
+                    </div>}
+                    {show && <div className="grad-wrap list-tokens-wrap ">
+                        <div className="list-tokens">
+                            <div to={selectedToken.path} className="token-item" onClick={this.handleToggleSelect}>
                                 <div className=" grad token-btn">
-                                    <p>{t.name}</p>
-                                    {index === 0 && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}
+                                    <p>{selectedToken.name}</p>
+                                    <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
                                 </div>
                             </div>
-                        })}
-                    </div>
-                </div>}
-            </div>
-
-            <div className="old-new-btn">
-                <div className="grad-wrap old-btn-wrap">
-                    <p className="grad old-btn">Visit old Pools</p>
+                            {tokenTypes.filter(t => t.id !== selectedToken.id).map((t, index) => {
+                                return <Link to={t.path} key={index} className="token-item" >
+                                    <div className=" grad token-btn">
+                                        <p>{t.name}</p>
+                                    </div>
+                                </Link>
+                            })}
+                        </div>
+                    </div>}
                 </div>
-                <p className="msg">*To unstake your old staked tokens <br /> just visit our old pools</p>
+
+                <div className="old-new-btn">
+                    <div className="grad-wrap old-btn-wrap">
+                        <p className="grad old-btn">Visit old Pools</p>
+                    </div>
+                    <p className="msg">*To unstake your old staked tokens <br /> just visit our old pools</p>
+                </div>
             </div>
-        </div>
-    </>);
+        </>);
+    }
 }
 
 export default TopNotif;

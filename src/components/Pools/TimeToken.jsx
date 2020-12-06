@@ -1,19 +1,29 @@
 import React, { Component } from 'react';
 import Popup from '../common/Popup/Popup';
 import { Link } from 'react-router-dom';
+import { contractEndpoint } from '../../config'
+
 import "./staking.scss"
+import StakePopup from '../common/Popup/StakePopup';
+import TopNotif from './TopNotif';
 
 class TimeToken extends Component {
     state = {
         isPopup: false,
         isSelect: false,
         isStakePopup: false,
-        tokens: [
-            { id: 1, name: "Sand Token" },
-            { id: 2, name: "Balancer Pool" },
-            { id: 3, name: "Time Token" },
+        tokenTypes: [
+            { id: 1, name: "Sand Token", path: "/new-staking" },
+            { id: 2, name: "Balancer Pool", path: "balancer" },
+            { id: 3, name: "Time Token", path: "/timetoken" },
         ],
-        selectedTokenID: 1,
+        selectedTokenID: 3,
+        stakeAmount: undefined,
+        currToken: {
+            title: "TimeToken",
+            balance: 10,
+            stakingLink: "0x"
+        }
     }
 
     handleOpenSelect = () => {
@@ -56,8 +66,8 @@ class TimeToken extends Component {
     }
 
     render() {
-        const { isPopup, isSelect, isStakePopup, tokens, selectedTokenID } = this.state
-        const selectedToken = tokens.find(t => t.id === selectedTokenID)
+        const { isPopup, isSelect, isStakePopup, tokenTypes, selectedTokenID, currToken, stakeAmount } = this.state
+        const selectedToken = tokenTypes.find(t => t.id === selectedTokenID)
         this.blurBG()
         const popupMsg = <div className="pop-timelock-wrap">
             <div className="pop-timelock">
@@ -73,6 +83,7 @@ And depending on hol long your tokens are locked up you will receive TIME tokens
             </div>
         </div>
 
+
         return (<>
             <Popup
                 title="HOW  TO GET TIME TOKEN"
@@ -81,49 +92,19 @@ And depending on hol long your tokens are locked up you will receive TIME tokens
                 handlePopup={this.handlePopup}
                 popBody={popupMsg} />
 
-            <Popup
-                title="Title"
+            {currToken && <StakePopup
+                title={"STAKE TOKENS TO EARN " + "DEA"}
                 close={true}
-                show={isStakePopup}
-                handlePopup={this.handleStake}
+                isStakePopup={isStakePopup}
+                handleStake={this.handleStake}
+                token={currToken}
+                isTimeToken={true}
             />
+            }
 
             <div className="staking-wrap " >
 
-                <div className="grad-wrap notif-wrap">
-                    <div className=" notif">
-                        Only swap DEUS/DEA on Uniswap to avoid slippage. Swap DEUS/ETH on DEUS Swap.
-                </div>
-                </div>
-                <div className="top-btns">
-                    <div className="select-group">
-                        {!isSelect && <div className="grad-wrap token-btn-wrap" onClick={this.handleOpenSelect}>
-                            <div className=" grad token-btn">
-                                <p>{selectedToken.name} </p>
-                                <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
-                            </div>
-                        </div>}
-                        {isSelect && <div className="grad-wrap list-tokens-wrap ">
-                            <div className="list-tokens">
-                                {tokens.map((t, index) => {
-                                    return <div key={index} className="token-item" onClick={() => this.changeSelectToken(t)}>
-                                        <div className=" grad token-btn">
-                                            <p>{t.name}</p>
-                                            {index === 0 && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}
-                                        </div>
-                                    </div>
-                                })}
-                            </div>
-                        </div>}
-                    </div>
-
-                    <div className="old-new-btn">
-                        <div className="grad-wrap old-btn-wrap">
-                            <p className="grad old-btn">Visit old Pools</p>
-                        </div>
-                        <p className="msg">*To unstake your old staked tokens <br /> just visit our old pools</p>
-                    </div>
-                </div>
+                <TopNotif typeID={2} />
 
                 <div className="time-token-wrap" >
                     <div className="bg-img">

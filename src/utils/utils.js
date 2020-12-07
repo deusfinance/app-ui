@@ -11,3 +11,8 @@ export const getStayledNumber = (number, space = 9) => {
     if (indexDot > space - 2) return strNumber.substring(0, indexDot)
     return strNumber.substring(0, indexDot).concat(strNumber.substring(indexDot, space))
 }
+
+
+export const formatAddress = (address) => {
+    return address ? address.substring(0, 6) + "..." + address.substring(address.length - 4, address.length) : 'connect wallet'
+}

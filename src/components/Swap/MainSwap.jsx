@@ -4,9 +4,8 @@ import TokenBox from './TokenBox';
 import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
 import SwapButton from './SwapButton';
-
-import './mainSwap.scss';
 import { swapTokens } from '../../config';
+import './mainSwap.scss';
 
 class MainSwap extends Component {
     state = {
@@ -70,6 +69,8 @@ class MainSwap extends Component {
     handleSearchBox = (flag, type) => {
         this.setState({ showSearchBox: flag, searchBoxType: type })
     }
+
+
 
     handleChangeToken = (tokenName) => {
         const { searchBoxType, swap } = this.state

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import Popup from '../common/Popup/Popup';
-import { sandTokens, contractEndpoint } from '../../config'
+// import Popup from '../common/Popup/Popup';
+import { oldPoolToken, contractEndpoint } from '../../config'
 
 import "./staking.scss"
-import NStake from './Stake/NStake';
+// import NStake from './Stake/NStake';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
 import StakePopup from '../common/Popup/StakePopup';
 
-class NewStaking extends Component {
+class NewOldPools extends Component {
     state = {
         isSelect: false,
         isStakePopup: false,
-        tokens: {},
+        tokens: oldPoolToken,
+        tokensMap: {},
         currStake: null,
         stakeAmount: null,
         market: {
@@ -20,16 +21,10 @@ class NewStaking extends Component {
         },
     }
 
-    constructor(props) {
-        super(props);
-        // create a ref to store the textInput DOM element
-        this.scrollRef = React.createRef();
-    }
-
     componentDidMount() {
-        this.handleScroller()
-    }
+        console.log("did mounted NewOldPools");
 
+    }
 
     dollarPrice = (price, fixed = 0) => {
         return Number(price).toLocaleString('en-US', {
@@ -41,21 +36,20 @@ class NewStaking extends Component {
 
     componentWillMount() {
         let all_tokens = {}
-        sandTokens.map(token => {
+        const { tokens } = this.state
+        tokens.map(token => {
             all_tokens[token.name] = {
                 ...token,
                 title: token.name.toUpperCase().replaceAll("_", "-"),
-                coin: token.coin.toUpperCase(),
-                apy: 20,
-                deposited: token.deposited ? token.deposited : 0,
-                claimable_amount: 10,
+                deposited: 0,
+                claimable_amount: "-",
                 claimable_unit: "DEA",
-                pool: 10.25,
-                balance: token.balance ? token.balance : 0,
-                allowances: token.allowances ? token.allowances : 0,
+                balance: "-",
+                pool: "-",
+                allowances: 0,
             }
         })
-        this.setState({ tokens: all_tokens })
+        this.setState({ tokensMap: all_tokens })
     }
 
     blurBG = () => {
@@ -75,26 +69,16 @@ class NewStaking extends Component {
 
 
 
-    handleScroller = () => {
-        const width = (1900 - window.innerWidth) / 2
-        if (this.scrollRef.current) {
-            console.log(window.innerWidth);
-            this.scrollRef.current.scrollLeft = width
-        }
-    }
-
-
     handleMax = (token) => {
         this.setState({ stakeAmount: token.balance })
     }
 
     render() {
-        const {
-            isStakePopup, market, tokens,
-            currStake, stakeAmount } = this.state
-        const currToken = tokens[currStake]
+        const { isStakePopup, tokensMap, tokens, currStake, stakeAmount } = this.state
 
-        this.blurBG()
+        const currToken = tokensMap[currStake]
+
+        // this.blurBG()
 
         let popupMsg = ""
         if (currToken) {
@@ -114,7 +98,6 @@ class NewStaking extends Component {
         }
 
         return (<>
-
             {currToken && <StakePopup
                 title={"STAKE TOKENS TO EARN " + "DEA"}
                 close={true}
@@ -124,39 +107,20 @@ class NewStaking extends Component {
             />
             }
             <div className="staking-wrap" >
+                <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" />
 
-                <TopNotif typeID={0} />
+                <TopNotif typeID={2} />
 
-                <div className="stake-container-wrap" ref={this.scrollRef} onClick={this.handleScroller}>
-                    <div className="stake-container" >
-                        {/* <div className="row1">
-                            <NStake token={tokens.uni_lp_deus_dea} handleStake={this.handleStake} />
-                        </div> */}
-                        <div className="row2">
+                <div className="stake-container-wrap" ></div>
+                <div className="container-single-wrap" style={{ marginTop: "50px" }}>
+                    {
+                        tokens.map((token, i) => <QStake key={i} token={tokensMap[token.name]} handleStake={this.handleStake} stakable={false} dollarPool={10} />)
+                    }
 
-                            <div className="tvl-wrap">
-                                <div className="tvl">
-                                    <div className="sand-token">Staking Pools</div>
-                                    <div className="price">{this.dollarPrice(market.tvl)}</div>
-                                    <p className="tvl-txt">TVL</p>
-                                    {/*<div className="grad-wrap tvl-btn">
-                                    <div className="grad">How to get Sand Tokens</div>
-                                </div> */}
-                                </div>
-                            </div>
-                            <NStake token={tokens.dea} handleStake={this.handleStake} />
-                            <NStake token={tokens.deus} handleStake={this.handleStake} />
-                        </div>
-                    </div>
-                </div>
-                <div className="container-single-wrap">
-                    <QStake token={tokens.wbtc} handleStake={this.handleStake} />
-                    <QStake token={tokens.eth} handleStake={this.handleStake} />
-                    <QStake token={tokens.dai} handleStake={this.handleStake} />
                 </div>
             </div>
         </>);
     }
 }
 
-export default NewStaking;
+export default NewOldPools;

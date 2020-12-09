@@ -6,22 +6,24 @@ const OpenBox = ({ handleLock, handleUnLock, token }) => {
         <div className="container">
             <div className="title">{token.title} <br />Vaults</div>
             <div className="desc">
-                you currently own <br />4.64% ($4320,30) of this vault
-        </div>
+                you currently own <br />4.64% ($4320,30)
+            </div>
 
             <div className="door-btns">
-                <div className="label-lock">
+                {/* <div className="label-lock">
                     <div className="">locked untill:</div>
                     <div className="">03.06.2021</div>
-                </div>
+                </div> */}
                 <div className="grad-wrap reedem-wrap">
                     <div className="reemable">{token.locked.toFixed(4)} DEA locked</div>
-                    <div className="reemable-btn disabled" onClick={handleUnLock}>reedem</div>
+                    {/* <div className="reemable">{token.locked.toFixed(4)} DEA locked</div> */}
+                    {/* <div className="reemable-btn disabled" onClick={handleUnLock}>reedem</div> */}
                 </div>
-                <div className="grad-wrap stake-btn-wrap">
+
+                {/* <div className="grad-wrap stake-btn-wrap">
                     <Link to={"/new-staking"} className="left-btn half">stake your sand</Link>
                     <Link to="/timetoken" className="half">stake your time</Link>
-                </div>
+                </div> */}
 
                 <div className="grad-wrap stake-btn-wrap" onClick={() => handleLock(token)}>
                     {/* <div className="left-btn half disabled">13743.7184 DEA locked</div> */}

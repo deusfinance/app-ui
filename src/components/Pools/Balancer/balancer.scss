@@ -5,6 +5,7 @@
     // // -webkit-backface-visibility: hidden;
     // transform: translateZ(0);
     // padding-bottom: 40px;
+
     position: absolute;
     top: 15px;
     font-family: Monument Grotesk;
@@ -21,6 +22,7 @@
     background: url("/img/Line.svg");
     background-repeat: no-repeat;
     background-position: center;
+    margin: auto;
     margin-bottom: 20px;
     .balancer {
         width: 1800px;

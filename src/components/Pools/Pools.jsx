@@ -39,7 +39,7 @@ class Pools extends Component {
         const over_flow = poolVersion === "new" ? "hidden" : "auto"
         return (isConnected && <div className={`main-wrap  `} id="main-wrap" style={{ overflowX: over_flow }} ref={scrollRef} onClick={handleScroller}>
 
-            <div className="right-btn">
+            {/*             <div className="right-btn">
                 <div className="pools-btn beta-btn ">We are currently in BETA</div>
                 <a className="pools-btn learn-more-btn" href="https://medium.com/@deusfinance/dea-part-ii-release-of-dea-and-the-staking-reward-program-46b065322936" target="_blank" rel="noopener noreferrer">Learn more about DEA</a>
             </div>
@@ -54,7 +54,8 @@ class Pools extends Component {
                     <a className=" telegram-btn" href="https://t.me/deusfinance_news" target="_blank" rel="noopener noreferrer">to telegram</a>
                 </div>
                 {poolsLink}
-            </div>
+            </div> */}
+
             <div className="pools-wrapper" id="pools-wrap">
                 <img className="line-top-img" src="../img/line-top.png" alt="line-top" />
                 <div className="pools">

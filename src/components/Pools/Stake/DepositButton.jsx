@@ -10,9 +10,9 @@ const DepositButton = ({ token }) => {
     }
     return (<div className="grad-wrap deposit-wrap">
         <div className=" deposit">
-            <div className="zap-wrap" title="ready soon"> <div className="zap">ZAP⚡ in/out</div></div>
+            {/* <div className="zap-wrap" title="ready soon"> <div className="zap">ZAP <span role="img" aria-label="power"> ⚡ </span> in/out</div></div> */}
             <div className="deposit-amount">{token.deposited} <span> deposited</span></div>
-            {provide}
+            {/* {provide} */}
         </div>
     </div>);
 }

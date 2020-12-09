@@ -1,7 +1,7 @@
 import React from 'react';
 const PriceBox = ({ vaultsFee, impact }) => {
     return (<div className="price-box">
-        <div>
+        <div >
             <p>Price Impact</p>
             <p>{impact}%</p>
         </div>

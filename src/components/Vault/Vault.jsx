@@ -61,6 +61,7 @@ class Vault extends Component {
     render() {
         const { unlocked, locked, tokens, currToken } = this.state
         const sandToken = currToken ? sandTokens.find(({ name }) => name === currToken.name) : null
+        if (sandToken) sandToken.title = 's' + sandToken.name.toUpperCase().replaceAll("_", "-")
         console.log(currToken);
         return (<div>
 
@@ -90,14 +91,14 @@ class Vault extends Component {
 
                 <div className={`vaults-wrap`}>
 
-                    <div className="top-buttons">
+                    {/*                     <div className="top-buttons">
                         <div className="grad-wrap explain-wrap">
                             <div className="grad explain">Vaults Explainantion</div>
                         </div>
                         <div className="grad-wrap beta-wrap">
                             <div className="grad beta">DEUS is still in BETA (codes not audited)</div>
                         </div>
-                    </div>
+                    </div> */}
                     <GonbadBox token={tokens.uni_lp_deus_dea} handleLock={this.handleLock} />
                     <div className="doors-wrap">
 

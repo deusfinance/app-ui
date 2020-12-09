@@ -79,7 +79,7 @@
             }
 
             .token-name {
-                text-transform: uppercase;
+                // text-transform: uppercase;
                 margin-right: 10px;
             }
         }
@@ -188,7 +188,7 @@
 
         .time-vaults {
             text-transform: uppercase;
-            margin-top: 50px;
+            margin-top: 70px;
             font-size: 22px;
         }
         .time-vaults-2 {
@@ -213,7 +213,7 @@
         }
         .contract {
             display: inline-block;
-            margin-top: 40px;
+            margin-top: 20px;
             font-size: 15px;
             margin-bottom: 20px;
             color: #ffffff;
@@ -295,9 +295,9 @@
         background: url("/vaults/vector2.svg");
         background-repeat: no-repeat;
         background-size: cover;
-        padding-top: 200px;
+        padding-top: 250px;
         .title {
-            margin-top: 30px;
+            margin-top: 40px;
             font-size: 35px;
         }
         .estimaited {
@@ -415,8 +415,8 @@
             }
             .desc {
                 margin-top: 40px;
-                font-size: 15px;
-                line-height: 20px;
+                font-size: 20px;
+                line-height: 30px;
                 filter: drop-shadow(0px 0px 10px #ffffff);
             }
             .label-lock {
@@ -464,8 +464,9 @@
                     justify-content: center;
                     flex-direction: column;
                     background-color: #111111;
-                    border-bottom-left-radius: 6px;
-                    border-top-left-radius: 6px;
+                    // border-bottom-left-radius: 6px;
+                    // border-top-left-radius: 6px;
+                    border-radius: 6px;
                 }
                 .reemable-btn {
                     padding: 0 5px;
@@ -613,7 +614,7 @@
                 .percent {
                     margin-top: 15px;
                     font-size: 40px;
-                    margin-bottom: 50px;
+                    margin-bottom: 110px;
                 }
                 margin-top: 30px;
             }
@@ -715,12 +716,20 @@
         .gonbad {
             width: 60%;
             .title {
-                margin-top: 0px;
+                // margin-top: 0px;
             }
         }
         .doors {
             .close-door,
             .open-door {
+                width: 455px;
+                height: 590px;
+
+                .desc {
+                    .of-the-vaults {
+                        display: none;
+                    }
+                }
                 .title {
                     margin-top: 220px;
                 }
@@ -729,6 +738,8 @@
                 }
             }
             .open-door {
+                height: 583px;
+
                 .title {
                     margin-top: 210px;
                 }
@@ -736,3 +747,67 @@
         }
     }
 }
+
+@media screen and (max-width: 1430px) {
+    .vaults-wrap {
+        .gonbad {
+            width: 65%;
+            height: 750px;
+            .title {
+                // margin-top: 0px;
+            }
+        }
+        .doors {
+            .close-door,
+            .open-door {
+                width: 360px;
+                height: 450px;
+                font-size: 20px;
+                .reedem-wrap {
+                    height: 30px;
+                }
+                .stake-btn-wrap {
+                    height: 30px;
+                }
+                .grad-wrap {
+                    font-size: 12px;
+                    width: 220px;
+                    height: 30px;
+                }
+                .title {
+                    font-size: 20px;
+                    margin-top: 165px;
+                }
+                .door-btns {
+                    bottom: 15px;
+                }
+                .desc {
+                    margin-top: 20px;
+                    font-size: 15px;
+                    line-height: 20px;
+
+                    .percent {
+                        margin-bottom: 90px;
+                        font-size: 30px;
+                    }
+                }
+            }
+            .open-door {
+                height: 445px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .vaults-wrap {
+        .gonbad {
+            // height: unset;
+            // background-image: none;
+            // padding-top: 100px;
+            width: 90%;
+            // height: 600px;
+        }
+    }
+}
+//1430

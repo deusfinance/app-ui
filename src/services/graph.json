@@ -1,0 +1,100 @@
+{
+    "ETH": {
+        "DEUS": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+        ],
+        "USDC": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36"
+        ],
+        "USDT": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xFb1D709cb959aC0EA14cAD0927EABC7832e65058"
+        ],
+        "DEA": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
+        ]
+    },
+    "DEUS": {
+        "ETH": [
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "USDC": [
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36"
+        ],
+        "USDT": [
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xFb1D709cb959aC0EA14cAD0927EABC7832e65058"
+        ],
+        "DEA": [
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
+        ]
+    },
+    "DEA": {
+        "DEUS": [
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+        ],
+        "ETH": [
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "USDC": [
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36"
+        ],
+        "USDT": [
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0xFb1D709cb959aC0EA14cAD0927EABC7832e65058"
+        ]
+    },
+    "USDC": {
+        "DEUS": [
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+        ],
+        "DEA": [
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
+        ],
+        "ETH": [
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "USDT": [
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0xFb1D709cb959aC0EA14cAD0927EABC7832e65058"
+        ]
+    },
+    "USDT": {
+        "DEUS": [
+            "0xFb1D709cb959aC0EA14cAD0927EABC7832e65058",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+        ],
+        "ETH": [
+            "0xFb1D709cb959aC0EA14cAD0927EABC7832e65058",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "USDC": [
+            "0xFb1D709cb959aC0EA14cAD0927EABC7832e65058",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36"
+        ],
+        "DEA": [
+            "0xFb1D709cb959aC0EA14cAD0927EABC7832e65058",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
+        ]
+    }
+}

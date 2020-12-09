@@ -19,6 +19,7 @@ class UnLockPupop extends Component {
     }
 
     handleToggle = () => {
+        return
         const { locked } = this.state
         this.setState({ locked: !locked, sandAmount: "", tokenAmount: "" })
 
@@ -36,7 +37,7 @@ class UnLockPupop extends Component {
                 <div className="close-btn" onClick={handleClose}>close</div>
                 <div className="time-vaults">Time Vault {locked ? "Locked" : "UnLock"}</div>
                 <div className="token" >{token.title}</div>
-                {locked && <div className="locked-text"> Your tokens will be locked until 01.06.2021 </div>}
+                {locked && <div className="locked-text" style={{ opacity: 0 }}> Your tokens will be locked until 01.06.2021 </div>}
                 <a href={contractEndpoint + "/" + token.stakingLink} className={`contract  ${lockedClasses}`} target="_blank" rel="noopener noreferrer"  >show me the contract</a>
 
                 {locked ? <InputBox
@@ -70,7 +71,8 @@ class UnLockPupop extends Component {
                         token={sandToken}
                         amount={sandAmount}
                         title={"To"}
-                        tokenTitle={"Sand Token"}
+                        disabled={true}
+                        // tokenTitle={"Sand Token2"}
                         svg={<svg style={{ marginRight: "10px" }} width={25} height={26} viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12.3944" cy="12.8944" r="12.3944" fill="#CECECE" fillOpacity="0.5" />
                             <circle cx="12.3944" cy="12.8944" r="12.3944" fill="url(#paint0_linear)" />
@@ -87,6 +89,7 @@ class UnLockPupop extends Component {
                         token={token}
                         amount={tokenAmount}
                         title={"To"}
+                        disabled={true}
                         handleChange={this.handleChange("tokenAmount")}
                     />
                 }
@@ -94,6 +97,7 @@ class UnLockPupop extends Component {
                 {locked && <InputBox
                     token={timeToken}
                     amount={timeAmount}
+                    disabled={true}
                     title={"And"}
                     tokenTitle={"Time Token"}
                     svg={<svg style={{ marginRight: "10px" }} width={25} height={26} viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">

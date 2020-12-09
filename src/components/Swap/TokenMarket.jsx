@@ -3,7 +3,7 @@ import React from 'react';
 
 
 const TokenMarket = ({ handleSwich, swap, perPrice, fromPerTo, tvl, tradeVol }) => {
-    return (<div className="token-market-wrap">
+    return (<div className="token-market-wrap" >
         <div className="token-market">
             <p>Price</p>
             <div className="per-wrap">

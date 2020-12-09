@@ -153,7 +153,7 @@ class PoolsContainer extends Component {
 
     componentDidMount() {
         document.title = 'DEUS staking';
-        setTimeout(() => this.isConnected(), 1000);
+        this.isConnected();
         setTimeout(() => this.handleScroller(), 100);
         this.getMarketAmounts()
         this.setState({ subscribeMarket: setInterval(() => this.getMarketAmounts(), 40000) })
@@ -298,18 +298,6 @@ class PoolsContainer extends Component {
     }
 
 
-    // handleUpdateDEA2 = () => setInterval(() => {
-    //     const { stakes } = this.state
-    //     for (const tokenName in stakes) {
-    //         const token = stakes[tokenName]
-    //         stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-    //             token.amounts.dea = parseFloat(amount)
-    //             // token.amounts.newdea = getStayledNumber(parseFloat(amount) + (config.ClaimableDuration / config.UpdateDuration) * token.rewardRatio * 0.89539)
-    //             this.setState({ stakes })
-    //         })
-    //     }
-    // }, (config.ClaimableDuration) * 1000)
-
 
     handleUpdateDEA = () => {
         console.log("handleUpdateDEA");
@@ -369,14 +357,21 @@ class PoolsContainer extends Component {
     }
 
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.account !== this.props.account) {
+            // console.log("comed here");
+            this.isConnected();
+        }
+    }
+
+
     isConnected = () => {
-        if (window.ethereum) {
-            if (window.ethereum.selectedAddress) {
-                const { wallet } = this.state
-                wallet.address = window.ethereum.selectedAddress
-                this.setState({ wallet, isConnected: true })
-                this.handleScroller()
-            }
+        const { wallet } = this.state
+        const { account, cweb } = this.props
+        console.log("pool ", account);
+        if (account) {
+            wallet.address = account
+            this.setState({ wallet, isConnected: true })
             if (window.ethereum.isMetaMask) {
                 this.setState({ isMetamask: true })
             }
@@ -392,15 +387,17 @@ class PoolsContainer extends Component {
     }
 
 
-    handleConnectWallet = async () => {
-        try {
-            const rep = await stakeService.connectWallet(() => console.log("connected"))
-            console.log(rep ? "connected to metamask" : "");
-            this.isConnected()
-        } catch (error) {
-            console.log("didnt connect to metamask \t" + error);
-        }
-    }
+    // handleConnectWallet = async () => {
+    //     try {
+    //         const rep = await stakeService.connectWallet(() => console.log("connected"))
+    //         console.log(rep ? "connected to metamask" : "");
+    //         this.isConnected()
+    //     } catch (error) {
+    //         console.log("didnt connect to metamask \t" + error);
+    //     }
+    // }
+
+
     showAddress = () => {
         const { address } = this.state.wallet
         return address.substring(0, 6) + "..." + address.substring(address.length - 4, address.length)
@@ -475,7 +472,7 @@ class PoolsContainer extends Component {
                 handleApprove={this.handleApprove}
                 handleStake={this.handleStake}
             />
-            <StartPool isConnected={isConnected} handleConnectWallet={this.handleConnectWallet} />
+            {/* <StartPool isConnected={isConnected} handleConnectWallet={this.handleConnectWallet} /> */}
             <Pools
                 markets={markets}
                 stakes={stakes}

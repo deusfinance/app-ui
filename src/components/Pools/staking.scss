@@ -8,10 +8,6 @@
     background-color: transparent;
 }
 
-body {
-    background: #000000;
-}
-
 .stake-container-wrap::-webkit-scrollbar {
     width: 8px;
     height: 10px;
@@ -213,13 +209,18 @@ body {
     }
 }
 
+.st-bg {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .stake-container-wrap {
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
-    // -webkit-backface-visibility: hidden;
     transform: translateZ(0);
-    padding-bottom: 40px;
+    padding-bottom: 70px;
     padding-top: 20px;
 }
 
@@ -227,6 +228,13 @@ body {
     width: 100%;
     display: block;
     position: relative;
+
+    // background-size: contain;
+    // transform: translatez(0);
+    // -webkit-transform: translatez(0);
+
+    // -webkit-transform: translate3d(0, 0, 1px);
+    // -webkit-backface-visibility: hidden;
 
     .notif-wrap {
         margin: 20px;
@@ -287,7 +295,7 @@ body {
                     flex-direction: row;
                     margin-bottom: 1px;
                     border-radius: 0;
-                    text-transform: uppercase;
+                    // text-transform: uppercase;
                     color: #ffffff;
                     img {
                         transform: rotate(180deg);
@@ -323,7 +331,7 @@ body {
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                text-transform: uppercase;
+                // text-transform: uppercase;
             }
         }
         .grad-wrap {
@@ -347,14 +355,14 @@ body {
         position: relative;
         // overflow-x: auto;
         // height: 100%;
-        height: 840px;
-        margin-top: -15px;
-        background: url("/img/Line.svg");
-        background-repeat: no-repeat;
-        background-position: center;
+        // height: 840px;
+        margin-top: 15px;
+        // background: url("/img/Line.svg");
+        // background-repeat: no-repeat;
+        // background-position: center;
         padding-top: 60px;
         color: #ffffff;
-        background-size: cover;
+        // background-size: cover;
         text-align: center;
         .row2 {
             display: flex;
@@ -423,7 +431,7 @@ body {
             width: 900px;
             height: 385px;
             clip-path: polygon(50% 0, 0% 100%, 100% 100%);
-            background: #242424;
+
             // background: url("/img/polygon.svg");
             // background-position: center;
             // background-repeat: no-repeat;
@@ -533,7 +541,7 @@ body {
                 // text-transform: uppercase;
                 font-size: 25px;
                 margin: auto;
-                margin-top: 40px;
+                margin-top: 60px;
                 max-width: 300px;
                 line-height: 40px;
             }
@@ -718,6 +726,7 @@ body {
     width: 100%;
     // justify-content: center;
     .single-wrap {
+        position: relative;
         margin: 20px 20px;
         display: inline-block;
         vertical-align: middle;
@@ -727,7 +736,8 @@ body {
         height: 350px;
         min-width: 470px;
         width: 27%;
-        background: #242424;
+        background: #0d0d0d;
+        border: 2px solid #1c1c1c;
         .stake-here {
             display: flex;
             justify-content: center;
@@ -743,20 +753,40 @@ body {
                 color: #000000;
             }
         }
+        .stake-here-closed {
+            cursor: default;
+            opacity: 0.5;
+            height: 48px;
+            &:hover {
+                color: #ffffff;
+            }
+        }
         .token-name {
             margin-top: 30px;
             font-size: 30px;
         }
+        .apy {
+            margin-top: 15px;
+            font-size: 20px;
+            text-shadow: 0px 0px 10px #ffffff;
+        }
         .token-title {
-            // margin-top: 2px;
             font-size: 25px;
         }
         .own-pool {
             margin-top: 25px;
-            margin-bottom: 15px;
+            margin-bottom: 70px;
             font-size: 14px;
             text-shadow: 0px 0px 10px #ffffff;
         }
+
+        .bottom-btns {
+            position: absolute;
+            right: 0;
+            left: 0;
+            bottom: 5px;
+        }
+
         .btns-wrap {
             height: 40px;
             background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
@@ -764,7 +794,8 @@ body {
             padding: 1px;
             margin: 16px auto;
             border-radius: 6px;
-            width: 440px;
+            width: 88%;
+
             display: flex;
             .btns {
                 width: 100%;
@@ -820,11 +851,28 @@ body {
     .closed {
         position: relative;
         .token-name {
-            margin-top: 90px;
-            font-size: 40px;
+            margin-top: 0px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 33px;
         }
         .token-title {
             font-size: 32px;
+        }
+        .apy {
+            font-size: 13px;
+            color: #ffffff;
+            text-shadow: 0px 0px 10px #ffffff;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            margin: auto;
+            margin-top: 35px;
         }
 
         .provide-more-wrap {
@@ -851,9 +899,107 @@ body {
                 vertical-align: middle;
                 width: 25px;
             }
+            &:hover {
+                .provide-more {
+                    color: #000000;
+                }
+            }
+        }
+    }
+    .balancer {
+        height: 500px;
+        .token-name {
+            margin-top: 70px;
+            position: relative;
+            // left: 0;
+            // right: 0;
+            // top: 50%;
+            // transform: translateY(-50%);
+            font-size: 33px;
+        }
+        .balancer-text {
+            .desc {
+                padding: 0 10px;
+                text-align: center;
+                font-size: 15px;
+                margin-top: 20px;
+            }
+            .perc {
+                margin-top: 30px;
+                font-size: 16px;
+            }
+        }
+        .apy {
+            position: relative;
+            margin-top: 5px;
+            font-size: 18px;
         }
     }
 }
+
+.staking-wrap .stake-container {
+    .stake-token-wrap {
+        height: 400px;
+        width: 800px;
+        .own-pool {
+            font-size: 17px;
+        }
+        .token-name {
+            font-size: 30px;
+            margin-top: 25px;
+        }
+
+        .deposit-wrap {
+            width: 300px;
+            .deposit .zap-wrap {
+                font-size: 12px;
+            }
+            .deposit-amount {
+                font-size: 15px;
+            }
+            .provide-more {
+                font-size: 15px;
+            }
+        }
+        .claim-wrap {
+            width: 550px;
+            .claim {
+                .withdraw {
+                    font-size: 13px;
+                }
+                .dea-amount {
+                    font-size: 13px;
+                }
+                .caim-btn {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+    .closed {
+        .apy {
+            margin-top: 16px;
+        }
+        .sand-title {
+            font-size: 25px;
+            margin-top: 5px;
+        }
+        .token-name {
+            // text-transform: uppercase;
+            font-size: 40px;
+            margin: auto;
+            margin-top: 60px;
+            margin-bottom: 20px;
+            max-width: 300px;
+            line-height: 40px;
+        }
+    }
+}
+
+// .stake-container .stake-token-wrap .token-name {
+//     margin-top: 60px;
+// }
+
 @media screen and (max-width: 1600px) {
     .container-single-wrap {
         .single-wrap {

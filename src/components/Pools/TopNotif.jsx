@@ -8,9 +8,9 @@ import { Link } from 'react-router-dom';
 class TopNotif extends Component {
     state = {
         tokenTypes: [
-            { id: 1, name: "Sand Token", path: "/new-staking" },
-            { id: 2, name: "Balancer Pool", path: "balancer" },
-            { id: 3, name: "Time Token", path: "/timetoken" },
+            { id: 1, name: "Single staking", path: "/staking" },
+            { id: 2, name: "Liquidity pools", path: "/staking/balancer" },
+            { id: 3, name: "Old pools", path: "/staking/pools" },
         ],
         show: false
     }
@@ -58,13 +58,13 @@ class TopNotif extends Component {
                         </div>
                     </div>}
                 </div>
-
+                {/* 
                 <div className="old-new-btn">
                     <div className="grad-wrap old-btn-wrap">
                         <p className="grad old-btn">Visit old Pools</p>
                     </div>
                     <p className="msg">*To unstake your old staked tokens <br /> just visit our old pools</p>
-                </div>
+                </div> */}
             </div>
         </>);
     }

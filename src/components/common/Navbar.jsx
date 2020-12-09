@@ -1,88 +1,53 @@
 import { useWeb3React } from '@web3-react/core';
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
-import '../../styles/scss/navbar.scss';
 import { navbarItems } from '../../config';
 import SubNavbar from './SubNavbar';
-import { getEtherBalance } from '../../services/SwapService';
-
+// import { getEtherBalance } from '../../services/SwapService';
 import { injected } from '../../connectors';
 import { formatAddress } from '../../utils/utils';
+import { useEagerConnect } from '../../hooks';
+
+import '../../styles/scss/navbar.scss';
 
 
+// export function Balance() {
+//     const { account, library, chainId } = useWeb3React()
 
-export function Balance() {
-    const { account, library, chainId } = useWeb3React()
-
-    const [balance, setBalance] = useState()
-    useEffect(() => {
-        getEtherBalance().then(balance => {
-            setBalance(balance)
-        });
-    }, [account, library, chainId]) // ensures refresh if referential identity of library doesn't change across chainIds
-
-
-    return (
-        <>
-            <span>Balance</span>
-            <span role="img" aria-label="gold">
-                💰
-      </span>
-            <span>{balance === null ? 'Error' : balance ? `Ξ${(balance)}` : ''}</span>
-        </>
-    )
-}
-
-export function useEagerConnect() {
-    const { activate, active } = useWeb3React()
+//     const [balance, setBalance] = useState()
+//     useEffect(() => {
+//         getEtherBalance().then(balance => {
+//             setBalance(balance)
+//         });
+//     }, [account, library, chainId]) // ensures refresh if referential identity of library doesn't change across chainIds
 
 
-    const [tried, setTried] = useState(false)
+//     return (
+//         <>
+//             <span>Balance</span>
+//             <span role="img" aria-label="gold">
+//                 💰
+//       </span>
+//             <span>{balance === null ? 'Error' : balance ? `Ξ${(balance)}` : ''}</span>
+//         </>
+//     )
+// }
 
-    useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).catch(() => {
-                    setTried(true)
-                })
-            } else {
-                setTried(true)
-            }
-        })
-    }, []) // intentionally only running on mount (make sure it's only mounted once :))
-
-    // if the connection worked, wait until we get confirmation of that to flip the flag
-    useEffect(() => {
-        if (!tried && active) {
-            setTried(true)
-        }
-    }, [tried, active])
-
-    return tried
-}
+const Navs = navbarItems.reverse()
 
 
 const Navbar = () => {
 
     const web3React = useWeb3React()
-    // handle logic to recognize the connector currently being activated
-
-    const [activatingConnector, setActivatingConnector] = useState()
-    useEffect(() => {
-        if (activatingConnector && activatingConnector === injected) {
-            setActivatingConnector(undefined)
-        }
-    }, [activatingConnector, injected])
-    const { account } = web3React
-    console.log(account);
-
-    const triedEager = useEagerConnect()
-
-    const handleConnect = async () => {
-        web3React.activate(injected)
-    }
+    const { account, activate } = web3React
 
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
+
+
+    const handleConnect = () => {
+        activate(injected)
+    }
+
     const toggleNav = () => {
         if (menuMobileClass === "close-menu") {
             setMenuMobileClass("open-menu")
@@ -92,7 +57,6 @@ const Navbar = () => {
     }
 
 
-    let Navs = navbarItems.reverse()
 
     //DEUS staking
     return (<><nav id="nav">

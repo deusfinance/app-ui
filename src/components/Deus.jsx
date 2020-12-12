@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { isDesktop } from '../utils/utils';
+import { AllTokens, OldStakes } from '../config';
+import { LoopCircleLoading } from 'react-loadingg';
+
 
 const MainSwap = React.lazy(() => import('./Swap/MainSwap'));
 const SandTokens = React.lazy(() => import('./Pools/SandTokens'));
@@ -10,19 +13,32 @@ const Vault = React.lazy(() => import('./Vault/Vault'));
 const NewOldPools = React.lazy(() => import('./Pools/NewOldPools'));
 const SecurityMobile = React.lazy(() => import('./SecurityMobile'));
 
-
 const Deus = () => {
+
     const Web3React = useWeb3React()
     const { account, chainId } = Web3React
+
+
+    const [allTokens, setAllTokens] = useState(AllTokens)
+    const [oldStakes, setOldStakes] = useState()
+
+
+    useEffect(() => {
+        setAllTokens(AllTokens)
+        setOldStakes(OldStakes)
+    }, [chainId, account])
+
     return (
-        <Switch>
-            <Route exact path="/staking" component={isDesktop() ? SandTokens : SecurityMobile} />
-            <Route exact path="/staking/balancer" component={BalancerPool} />
-            <Route render={() => <NewOldPools account={account} chainId={chainId} />} exact path="/staking/pools" />
-            <Route exact path="/vaults" component={Vault} />
-            <Route render={() => <MainSwap account={account} chainId={chainId} />} exact path="/swap" />
-            <Redirect from="/" to="/swap" />
-        </Switch>
+        <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
+            <Switch>
+                <Route render={() => <SandTokens allTokens={allTokens} />} exact path="/staking" />
+                <Route exact path="/staking/balancer" component={BalancerPool} />
+                <Route render={() => <NewOldPools account={account} chainId={chainId} stakedTokens={oldStakes} setStakedTokens={setOldStakes} />} exact path="/staking/pools" />
+                <Route exact path="/vaults" render={() => <Vault allTokens={allTokens} />} />
+                <Route render={() => <MainSwap account={account} chainId={chainId} setAllTokens={setAllTokens} allTokens={allTokens} />} exact path="/swap" />
+                <Redirect from="/" to="/swap" />
+            </Switch>
+        </Suspense>
     );
 }
 

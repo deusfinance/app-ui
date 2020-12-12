@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SwapButton = ({ approved, token, handleSwap }) => {
-    console.log(token.balance, "\t", token.amount);
+    // console.log(token.balance, "\t", token.amount);
     const amount = typeof (token.amount) === "string" ? parseFloat(token.amount) : token.amount
     return (<>
         {(token.balance < amount) ? <div className="swap-btn-wrap grad-wrap Insufficient ">

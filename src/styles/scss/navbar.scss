@@ -32,8 +32,12 @@ nav {
 
             .connect-wrap {
                 border-radius: 6px;
-                .connect {
-                    border-radius: 6px;
+                .connected {
+                    &:hover {
+                        background: #111111;
+                        color: #ffffff;
+                        cursor: default;
+                    }
                 }
             }
 
@@ -394,4 +398,13 @@ nav {
     // 	padding: 25px;
     // 	width: 20px;
     // }
+}
+
+.rinkeby {
+    font-size: 18px;
+    margin-left: 20px;
+    // border: 1px solid #ffffff;
+    padding: 0px 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px #ffffff;
 }

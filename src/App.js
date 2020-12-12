@@ -7,7 +7,6 @@ import Navbar from './components/common/Navbar';
 import Deus from './components/Deus';
 
 import { LoopCircleLoading } from 'react-loadingg';
-
 import 'react-toastify/dist/ReactToastify.css';
 
 import './styles/scss/base.scss';

@@ -250,6 +250,7 @@ function withdraw(stakedToken, amount, listener) {
 function getNumberOfStakedTokens(stakedToken) {
     if (window.ethereum && window.ethereum.selectedAddress) {
         let stakingContract = stakingPools[stakedToken].infuraStakingContract;
+        console.log("Staked is ", stakedToken);
         return stakingContract.methods.users(window.ethereum.selectedAddress).call()
             .then(user => {
                 return Web3.utils.fromWei(user.depositAmount, 'ether');

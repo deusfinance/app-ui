@@ -17,7 +17,8 @@ if (isConnected()) {
 // }
 
 
-function getChainAndAddress() {
+
+function getChainAndAddress(chainId = window.ethereum.chainId) {
     let networkNames = {
         "0x1": "Mainnet",
         "0x3": "Ropsten",
@@ -26,7 +27,7 @@ function getChainAndAddress() {
     }
 
     return {
-        network: networkNames[window.ethereum.chainId],
+        network: networkNames[chainId],
         addres: window.ethereum.selectedAddress
     };
 }
@@ -83,6 +84,60 @@ const DEUSSwapContractAddr = {
     Mainnet: ''
 }[network];
 
+// 'DEUS': DEUSTokenAddr,
+//     'DEA': DEATokenAddr,
+//         'USDC': USDCTokenAddr,
+//             'USDT': USDTTokenAddr,
+
+const TokensAddress = {
+    AutomaticMarketMaker: {
+        abi: AutomaticMarketMakerABI,
+        chainId: {
+            1: "0xD77700fC3C78d1Cb3aCb1a9eAC891ff59bC7946D",
+            4: "0x6D3459E48C5D106e97FeC08284D56d43b00C2AB4",
+        }
+    },
+    DEUS: {
+        abi: DEUSTokenABI,
+        chainId: {
+            1: '0x3b62f3820e0b035cc4ad602dece6d796bc325325',
+            4: '0xf025db474fcf9ba30844e91a54bc4747d4fc7842',
+        }
+    },
+    DEUSSwapContract: {
+        abi: DEUSSwapContractABI,
+        chainId: {
+            4: '0x55A3A6A1e92c3aC1ADdA7939fF778FdB7E4f8272',
+        }
+    },
+    USDT: {
+        abi: USDTTokenABI,
+        chainId: {
+            4: '0xFb1D709cb959aC0EA14cAD0927EABC7832e65058',
+            1: '0xdac17f958d2ee523a2206206994597c13d831ec7'
+        }
+    },
+    USDC: {
+        abi: USDCTokenAddr,
+        chainId: {
+            4: '0x259F784f5b96B3f761b0f9B1d74F820C393ebd36',
+            1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+        }
+    },
+    DEA: {
+        abi: DEATokenABI,
+        chainId: {
+            4: '0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934',
+            1: '0x80aB141F324C3d6F2b18b030f1C4E95d4d658778'
+        }
+    },
+
+}
+
+
+
+
+
 let INFURA_URL = 'wss://' + network + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
 
 let infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(INFURA_URL));
@@ -108,9 +163,9 @@ let TokenAddr = {
     'USDT': USDTTokenAddr,
 }
 
-function getEtherBalance() {
-    if (window.ethereum && window.ethereum.selectedAddress) {
-        return infuraWeb3.eth.getBalance(window.ethereum.selectedAddress).then(balance => {
+function getEtherBalance(account) {
+    if (account) {
+        return infuraWeb3.eth.getBalance(account).then(balance => {
             return Web3.utils.fromWei(balance, 'ether');
         })
     } else {
@@ -120,15 +175,17 @@ function getEtherBalance() {
     }
 }
 
-function getTokenBalance(token) {
+function getTokenBalance(token, account, chainId) {
+    token = token.toUpperCase()
 
-    if (token === "ETH") {
-        return getEtherBalance()
-    }
-    if (window.ethereum && window.ethereum.selectedAddress) {
+
+    if (account && chainId) {
         console.log(token);
-        const TokenContract = new infuraWeb3.eth.Contract(TokenABI[token], TokenAddr[token])
-        return TokenContract.methods.balanceOf(window.ethereum.selectedAddress).call().then(balance => {
+        if (token === "ETH") {
+            return getEtherBalance(account)
+        }
+        const TokenContract = new infuraWeb3.eth.Contract(TokenABI[token], TokensAddress[token].chainId[chainId])
+        return TokenContract.methods.balanceOf(account).call().then(balance => {
             return Web3.utils.fromWei(balance, 'ether');
         })
     } else {
@@ -139,6 +196,7 @@ function getTokenBalance(token) {
 }
 
 function approve(token, amount, listener) {
+    token = token.toUpperCase()
 
     window.ethereum.enable().then(r => {
         let metamaskWeb3 = new Web3(Web3.givenProvider);
@@ -168,18 +226,21 @@ function approve(token, amount, listener) {
 // }
 
 
-function getAllowances(token) {
+function getAllowances(token, account, chainId) {
+    token = token.toUpperCase()
+    network = getChainAndAddress(chainId).network
+
     console.log("allooo ", token);
-    if (token === "ETH") return 9999
     // if (token === "DEA") return 0
     // if (token === "DEUS") return 0
 
-    if (window.ethereum && window.ethereum.selectedAddress) {
-        const TokenContract = new infuraWeb3.eth.Contract(TokenABI[token], TokenAddr[token])
-        return TokenContract.methods.allowance(window.ethereum.selectedAddress, DEUSSwapContractAddr)
+    if (account && chainId) {
+        if (token === "ETH") return 9999
+        const TokenContract = new infuraWeb3.eth.Contract(TokenABI[token], TokensAddress[token].chainId[chainId])
+        return TokenContract.methods.allowance(account, TokensAddress.DeusSwapContract.chainId[chainId])
             .call().then(amount => {
                 let result = Web3.utils.fromWei(amount, 'ether');
-                console.log(result);
+                // console.log(result);
                 return result;
             });
     } else {
@@ -189,11 +250,13 @@ function getAllowances(token) {
     }
 }
 
-function swapTokens(fromToken, toToken, etherAmount = 0, tokenAmount = 0, listener) {
+function swapTokens(fromToken, toToken, tokenAmount = 0, listener) {
+    fromToken = fromToken.toUpperCase()
+    toToken = toToken.toUpperCase()
 
     if (window.ethereum && window.ethereum.selectedAddress) {
 
-        console.log(fromToken, toToken, etherAmount, tokenAmount);
+        console.log(fromToken, toToken, tokenAmount);
         let metamaskWeb3 = new Web3(Web3.givenProvider);
         const AutomaticMarketMakerContract = new metamaskWeb3.eth.Contract(DEUSSwapContractABI, DEUSSwapContractAddr);
 
@@ -213,7 +276,7 @@ function swapTokens(fromToken, toToken, etherAmount = 0, tokenAmount = 0, listen
                 return AutomaticMarketMakerContract.methods.swapEthForTokens(path, 0)
                     .send({
                         from: window.ethereum.selectedAddress,
-                        value: _getWei(etherAmount)
+                        value: _getWei(tokenAmount)
                     }).on('transactionHash', () => listener("transactionHash"))
                     .on('receipt', () => listener("receipt"))
                     .on('error', () => listener("error"))
@@ -224,7 +287,7 @@ function swapTokens(fromToken, toToken, etherAmount = 0, tokenAmount = 0, listen
                 return AutomaticMarketMakerContract.methods.swapEthForTokens(path, 1)
                     .send({
                         from: window.ethereum.selectedAddress,
-                        value: _getWei(etherAmount)
+                        value: _getWei(tokenAmount)
                     }).on('transactionHash', () => listener("transactionHash"))
                     .on('receipt', () => listener("receipt"))
                     .on('error', () => listener("error"))
@@ -234,7 +297,7 @@ function swapTokens(fromToken, toToken, etherAmount = 0, tokenAmount = 0, listen
             if (path[path.length - 2] == DEUSTokenAddr) {
                 path = path.slice(0, path.length - 1);
                 console.log(path);
-                return AutomaticMarketMakerContract.methods.swapTokensForEth(_getWei(etherAmount), 0, path)
+                return AutomaticMarketMakerContract.methods.swapTokensForEth(_getWei(tokenAmount), 0, path)
                     .send({
                         from: window.ethereum.selectedAddress
                     }).on('transactionHash', () => listener("transactionHash"))
@@ -242,7 +305,7 @@ function swapTokens(fromToken, toToken, etherAmount = 0, tokenAmount = 0, listen
                     .on('error', () => listener("error"))
             } else {
                 // only uniswap
-                return AutomaticMarketMakerContract.methods.swapTokensForEth(_getWei(etherAmount), 1, path)
+                return AutomaticMarketMakerContract.methods.swapTokensForEth(_getWei(tokenAmount), 1, path)
                     .send({
                         from: window.ethereum.selectedAddress
                     }).on('transactionHash', () => listener("transactionHash"))
@@ -252,7 +315,7 @@ function swapTokens(fromToken, toToken, etherAmount = 0, tokenAmount = 0, listen
 
         } else {
             // swap tokens to tokens
-            return AutomaticMarketMakerContract.methods.swapTokensForTokens(_getWei(etherAmount), 2, path, [])
+            return AutomaticMarketMakerContract.methods.swapTokensForTokens(_getWei(tokenAmount), 2, path, [])
                 .send({
                     from: window.ethereum.selectedAddress
                 }).on('transactionHash', () => listener("transactionHash"))
@@ -267,7 +330,9 @@ function swapTokens(fromToken, toToken, etherAmount = 0, tokenAmount = 0, listen
 }
 
 function getAmountsOut(fromToken, toToken, amountIn) {
-    console.log(fromToken, toToken, amountIn);
+    fromToken = fromToken.toUpperCase()
+    toToken = toToken.toUpperCase()
+
     if (window.ethereum && window.ethereum.selectedAddress) {
         var path = paths[fromToken][toToken];
         return uniswapRouter.methods.getAmountsOut(_getWei(amountIn), path).call()
@@ -280,6 +345,9 @@ function getAmountsOut(fromToken, toToken, amountIn) {
 }
 
 function getAmountsIn(fromToken, toToken, amountOut) {
+    fromToken = fromToken.toUpperCase()
+    toToken = toToken.toUpperCase()
+
     if (window.ethereum && window.ethereum.selectedAddress) {
         console.log(fromToken, toToken, amountOut);
         var path = paths[fromToken][toToken];

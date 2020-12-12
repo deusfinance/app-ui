@@ -43,7 +43,7 @@ class TokenBox extends Component {
                     {type === "from" && <div className="max-btn" onClick={() => handleTokenInputChange(type, token.balance)}>MAX</div>}
                     <div className="token-info" onClick={() => handleSearchBox(true, type)}>
                         <img className="token-icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}.svg`} alt="ETH" />
-                        <span className="token-name">{token.name}</span>
+                        <span className="token-name" style={{ textTransform: "uppercase" }}>{token.title}</span>
                         <img className="select-icon" src={process.env.PUBLIC_URL + "/img/select.svg"} alt="select" />
                     </div>
                 </div>

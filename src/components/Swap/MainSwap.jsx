@@ -4,18 +4,17 @@ import TokenBox from './TokenBox';
 import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
 import SwapButton from './SwapButton';
-import { swapTokensList } from '../../config';
-import { approve, swapTokens, getAllowances, getAmountsIn, getAmountsOut, getTokenBalance } from '../../services/SwapServices';
-
-
 import { getStayledNumber, notify } from '../../utils/utils';
 import { ToastContainer } from 'react-toastify';
+import { SwapService } from '../../services/SwapService';
+
 import './mainSwap.scss';
 
 
 class MainSwap extends Component {
     state = {
-        tokens: swapTokensList,
+        tokens: ["eth", "deus", "dea", "usdc"],
+        web3: null,
         tokensMap: {},
         swap: {
             from: {
@@ -29,7 +28,7 @@ class MainSwap extends Component {
         searchBoxType: "from",
         fromPerTo: false,
         typingTimeout: 0,
-
+        typeTransaction: ""
     }
 
 
@@ -40,37 +39,69 @@ class MainSwap extends Component {
         },
         onSuccess: () => {
             console.log("onSuccess")
-            const { swap } = this.state
-            this.handleSingleInit(swap.to)
-            this.handleSingleInit(swap.from)
+            const { swap, typeTransaction } = this.state
+            if (typeTransaction === "approve") {
+                this.getSingleAllowances(swap.from.name, true)
+                this.setState({ typeTransaction: "" })
+            } else {
+                this.getSingleBalance(swap.to.name, true)
+                this.getSingleBalance(swap.from.name, true)
+            }
+
         },
         onError: () => console.log("onError"),
     }
 
-    async componentDidMount() {
-        console.log("chain id is", this.props.chainId);
+    newService = null;
 
-        this.handleTokensToMap()
+    async componentDidMount() {
+        console.log("componentDidMount chain id is", this.props.chainId);
+        const { chainId, account } = this.props
+
+        this.handleInitToken("from", "eth")
+        this.handleInitToken("to", "deus")
+
+        if (!chainId || !account) return
+
+        await this.setState({ web3: new SwapService(account, chainId) })
         await this.handleIinitBalances()
         await this.handleInitAllowances()
-        this.handleInitToken("from", "ETH")
-        this.handleInitToken("to", "DEUS")
+
     }
 
     async componentDidUpdate(prevProps) {
-        if (prevProps.account !== this.props.account) {
-            console.log("chain id is", this.props.chainId);
-            await this.handleIinitBalances()
-            await this.handleInitAllowances()
-            // this.handleInitToken("from", "ETH")
-            // this.handleInitToken("to", "DEUS")
+
+        const { chainId, account } = this.props
+
+        if (prevProps.account !== account || prevProps.chainId !== chainId) {
+
+            console.log("chain id is", chainId);
+
+            if (!chainId || !account) return
+
+            console.log("log did update", account, chainId);
+
+            await this.setState({ web3: new SwapService(account, chainId) })
+            await this.handleIinitBalances(true)
+            await this.handleInitAllowances(true)
+
+            this.handleInitToken("from", "eth")
+            this.handleInitToken("to", "deus")
+            // await this.getSingleBalance(swap.from.name)
+            // await this.getSingleAllowances(swap.to.name)
+            // this.handleInitToken("from", "eth")
+            // this.handleInitToken("to", "deus")
         }
     }
 
-    handleSingleInit = (token) => {
-        this.getSingleBalance(token)
-        this.getSingleAllowances(token)
-    }
+    // updateWeb3 = async () => {
+    //     const { chainId, account } = this.props
+
+    //     const web3 = new SwapService(account, chainId)
+
+    //     await this.setState({ web3 })
+    // }
+
 
 
     handleTokensToMap = () => {
@@ -81,10 +112,11 @@ class MainSwap extends Component {
         this.setState({ tokensMap })
     }
 
-    handleInitToken = (type, tokenName) => {
-        const { swap, tokensMap } = this.state
-        const tk = tokensMap[tokenName]
-        swap[type] = { ...tk, amount: "" }
+    handleInitToken = (type, tokenName, amount = "") => {
+        const { swap } = this.state
+        const { allTokens } = this.props
+        const tk = allTokens[tokenName]
+        swap[type] = { ...tk, amount: amount }
         this.setState({ swap })
     }
 
@@ -144,11 +176,13 @@ class MainSwap extends Component {
     }
 
     handleCalcPairPrice = async (searchBoxType, amount) => {
-        const { swap } = this.state
+        const { swap, web3 } = this.state
+        if (!web3) return
+
         const vstype = searchBoxType === "from" ? "to" : "from"
 
         try {
-            const data = searchBoxType === "from" ? await getAmountsOut(swap.from.name, swap.to.name, amount) : await getAmountsIn(swap.from.name, swap.to.name, amount)
+            const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : await web3.getAmountsIn(swap.from.name, swap.to.name, amount)
             console.log(data);
             swap[vstype].amount = getStayledNumber(data, 9)
             this.setState({ swap })
@@ -159,68 +193,92 @@ class MainSwap extends Component {
         }
     }
 
-    handleSearchBox = (flag, type) => {
+    handleSearchBox = (flag, type = "from") => {
+        // const { swap } = this.state
+        // if (flag) {
+        //     swap.from.amount = ""
+        //     swap.to.amount = ""
+        // }
         this.setState({ showSearchBox: flag, searchBoxType: type })
     }
 
-    handleIinitBalances = async () => {
-        const { tokensMap, tokens, swap } = this.state
+    handleIinitBalances = async (foceUpdate) => {
+        console.log("handleIinitBalances");
+        const { tokens } = this.state
 
         tokens.map(async (t) => {
             try {
-                this.getSingleBalance(t)
+                this.getSingleBalance(t, foceUpdate)
             } catch (error) {
                 console.log(error);
             }
         })
-        this.setState({ tokensMap })
+
     }
 
-    getSingleBalance = async (token) => {
-        const { tokensMap, swap } = this.state
-        try {
-            const balance = await getTokenBalance(token.name)
-            tokensMap[token.name].balance = getStayledNumber(parseFloat(balance))
-            if (token.name === swap.to.name || token.name === swap.from.name) {
-                this.handleInitToken("from", swap.from.name)
-                this.handleInitToken("to", swap.to.name)
+
+    getSingleBalance = async (tokenName, force = false) => {
+        const { swap, web3 } = this.state
+        if (!web3) return
+        const { allTokens, setAllTokens } = this.props
+
+        if (force || !allTokens[tokenName].lastFetchBalance) {
+            try {
+                const balance = await web3.getTokenBalance(tokenName)
+                allTokens[tokenName].balance = getStayledNumber(parseFloat(balance))
+                allTokens[tokenName].lastFetchBalance = true
+                if (tokenName === swap.to.name || tokenName === swap.from.name) {
+                    this.handleInitToken("from", swap.from.name)
+                    this.handleInitToken("to", swap.to.name)
+                }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
+            setAllTokens(allTokens)
+        } else {
+            console.log("fetched balance");
         }
-        this.setState({ tokensMap })
     }
 
 
-    handleInitAllowances = async () => {
-        const { tokensMap, tokens, swap } = this.state
+    handleInitAllowances = async (foceUpdate) => {
+        const { tokens } = this.state
 
         tokens.map(async (t) => {
             try {
-                this.getSingleAllowances(t)
+                this.getSingleAllowances(t, foceUpdate)
             } catch (error) {
                 console.log(error);
             }
         })
-        this.setState({ tokensMap })
     }
 
 
-    getSingleAllowances = async (token) => {
-        const { tokensMap, swap } = this.state
+    getSingleAllowances = async (tokenName, force = false) => {
+        const { swap, web3 } = this.state
 
-        const allowances = await getAllowances(token.name)
-        console.log(allowances);
-        tokensMap[token.name].allowances = parseInt(allowances)
-        if (token.name === swap.to.name || token.name === swap.from.name) {
-            this.handleInitToken("from", swap.from.name)
-            this.handleInitToken("to", swap.to.name)
+        if (!web3) return
+
+        const { allTokens, setAllTokens } = this.props
+
+        if (force || !allTokens[tokenName].lastFechAllowance) {
+            try {
+                const allowances = await web3.getAllowances(tokenName)
+                console.log(allowances);
+                allTokens[tokenName].allowances = parseInt(allowances)
+                allTokens[tokenName].lastFechAllowance = true
+                if (tokenName === swap.from.name || tokenName === swap.to.name) {
+                    this.handleInitToken("from", swap.from.name, swap.from.amount)
+                    this.handleInitToken("to", swap.to.name, swap.to.amount)
+                }
+                setAllTokens(allTokens)
+
+            } catch (error) {
+                console.log(error);
+            }
         }
+
     }
-
-    handleGetBalance = async (tokenName) => await getTokenBalance(tokenName)
-
-
 
 
     handleChangeToken = (tokenName) => {
@@ -245,8 +303,6 @@ class MainSwap extends Component {
     //     return tokens.filter(t => swap[searchBoxType].name !== t.name)
     // }
 
-
-
     isApproved = () => {
         const { swap } = this.state
         // console.log(swap.to.allowances > 0);
@@ -254,23 +310,37 @@ class MainSwap extends Component {
     }
 
     handleSwap = async () => {
-        const { swap } = this.state
+        const { swap, web3 } = this.state
+        if (!web3) return
+
         const { from, to } = swap
         console.log("come");
         try {
             const data = !(swap.from.allowances > 0) ?
-                await approve(from.name, from.amount, notify(this.methods)) :
-                await swapTokens(from.name, to.name, from.amount, to.amount, notify(this.methods))
+                this.handleApprove(swap) :
+                await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
         } catch (error) {
 
         }
     }
 
 
+    handleApprove = async (swap) => {
+        const { web3 } = this.state
+        try {
+            this.setState({ typeTransaction: "approve" })
+            const data = await web3.approve(swap.from.name, swap.from.amount, notify(this.methods))
+            return data
+        } catch (error) {
+            console.log(error);
+        }
+        return 0
+    }
 
     render() {
 
-        const { showSearchBox, swap, fromPerTo } = this.state
+        const { showSearchBox, swap, fromPerTo, searchBoxType, tokens } = this.state
+        const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
         const approved = this.isApproved()
@@ -279,7 +349,6 @@ class MainSwap extends Component {
         return (<div className="deus-swap-wrap">
 
             <ToastContainer style={{ width: "400px" }} />
-
             <div className="title">
                 <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
                 <div className="swap-wrap">
@@ -324,7 +393,10 @@ class MainSwap extends Component {
 
                         <SearchBox
                             showSearchBox={showSearchBox}
+                            choosedToken={swap[searchBoxType].name}
                             handleSearchBox={this.handleSearchBox}
+                            allTokens={allTokens}
+                            tokens={tokens}
                             handleFilterToken={this.state.tokensMap}
                             handleChangeToken={this.handleChangeToken}
                         />

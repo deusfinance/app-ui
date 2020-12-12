@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
+import { getStayledNumber } from '../../utils/utils';
 
-const OpenBox = ({ handleLock, handleUnLock, token }) => {
+const OpenBox = ({ handleLock, handleUnLock, vault, token }) => {
     return (<div className="  door open-door">
         <div className="container">
-            <div className="title">{token.title} <br />Vaults</div>
+            <div className="title">{vault.title} <br />Vaults</div>
             <div className="desc">
-                you currently own <br />4.64% ($4320,30)
+                you currently own <br />  {vault.own ? <div> {getStayledNumber(vault.own, 4)}%</div> : "..."}
             </div>
 
             <div className="door-btns">
@@ -15,7 +16,7 @@ const OpenBox = ({ handleLock, handleUnLock, token }) => {
                     <div className="">03.06.2021</div>
                 </div> */}
                 <div className="grad-wrap reedem-wrap">
-                    <div className="reemable">{token.locked.toFixed(4)} DEA locked</div>
+                    <div className="reemable">{vault.locked}  locked</div>
                     {/* <div className="reemable">{token.locked.toFixed(4)} DEA locked</div> */}
                     {/* <div className="reemable-btn disabled" onClick={handleUnLock}>reedem</div> */}
                 </div>
@@ -25,7 +26,7 @@ const OpenBox = ({ handleLock, handleUnLock, token }) => {
                     <Link to="/timetoken" className="half">stake your time</Link>
                 </div> */}
 
-                <div className="grad-wrap stake-btn-wrap" onClick={() => handleLock(token)}>
+                <div className="grad-wrap stake-btn-wrap" onClick={() => handleLock(vault)}>
                     {/* <div className="left-btn half disabled">13743.7184 DEA locked</div> */}
                     <div className="grad lock-more ">lock more</div>
                 </div>

@@ -321,6 +321,15 @@
             margin: auto;
             margin-top: 35px;
             // width: 283px;
+            .deposit-gonbad {
+                margin-bottom: 8px;
+                .grad {
+                    &:hover {
+                        background-color: #111111;
+                        color: #ffffff;
+                    }
+                }
+            }
             .zap {
                 margin: auto;
                 margin-top: 10px;

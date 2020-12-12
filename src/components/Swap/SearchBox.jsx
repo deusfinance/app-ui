@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class SearchBox extends Component {
     state = {}
     render() {
-        const { showSearchBox, handleSearchBox, handleFilterToken, handleChangeToken } = this.props
+        const { showSearchBox, handleSearchBox, handleFilterToken, choosedToken, allTokens, tokens, handleChangeToken } = this.props
         return (<>
             { showSearchBox && <div className="search-box-wrap">
                 <div className="search-box">
@@ -16,13 +16,14 @@ class SearchBox extends Component {
                         <p>Token</p>
                         <div className="token-items">
                             {
-                                Object.entries(handleFilterToken).map((t, i) => {
-                                    return <div key={i} className="token-item" onClick={() => handleChangeToken(t[1].name)}>
+                                (tokens).map((tokenName, i) => {
+                                    if (tokenName === choosedToken) return
+                                    return <div key={i} className="token-item" onClick={() => handleChangeToken(allTokens[tokenName].name)}>
                                         <div>
-                                            <img src={process.env.PUBLIC_URL + `/tokens/${t[1].pic_name}.svg`} alt={t[1].name} />
-                                            <p>{t[1].name}</p>
+                                            <img src={process.env.PUBLIC_URL + `/tokens/${allTokens[tokenName].pic_name}.svg`} alt={allTokens[tokenName].name} />
+                                            <p style={{ textTransform: "uppercase" }}>{allTokens[tokenName].name}</p>
                                         </div>
-                                        <p >{t[1].balance}</p>
+                                        <p >{allTokens[tokenName].balance}</p>
                                     </div>
                                 })
                             }

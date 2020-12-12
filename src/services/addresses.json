@@ -1,0 +1,73 @@
+{
+    "token": {
+        "timetoken": {},
+        "deus": {
+            "1": "0x3b62f3820e0b035cc4ad602dece6d796bc325325",
+            "4": "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+        },
+        "dea": {
+            "4": "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
+            "1": "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
+        },
+        "usdc": {
+            "4": "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "1": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+        },
+        "usdt": {
+            "4": "0xA0953584886d983333D8Ca9844D0372F0c6F850D",
+            "1": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+        },
+        "eth": {},
+        "wbtc": {},
+        "dai": {},
+        "uni_lp_dea_usdc": {},
+        "uni_lp_deus_dea": {},
+        "sand_uni_lp_dea_usdc": {},
+        "sand_uni_lp_deus_dea": {},
+        "sand_dai": {},
+        "sand_deus": {},
+        "sand_eth": {},
+        "sand_dea": {},
+        "sand_wbtc": {},
+        "bpt_native": {},
+        "bpt_legacy": {}
+    },
+    "staking": {
+        "bpt_native": {},
+        "bpt_legacy": {},
+        "sand_dai": {},
+        "sand_deus": {},
+        "sand_eth": {},
+        "sand_dea": {},
+        "sand_wbtc": {},
+        "deus": {},
+        "dea": {},
+        "deus_dea": {},
+        "deus_eth": {},
+        "ampl_eth": {},
+        "dea_usdc": {},
+        "uni": {},
+        "snx": {},
+        "timetoken": {}
+    },
+    "vaults": {
+        "uni_lp_deus_dea": {},
+        "uni_lp_dea_usdc": {},
+        "deus": {},
+        "dea": {},
+        "dai": {},
+        "eth": {},
+        "wbtc": {}
+    },
+    "uniswap_router": {
+        "1": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+        "4": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
+    },
+    "deus_swap_contract": {
+        "4": "0xF3068222A7a9249eC779cdd147cabe03C9AE6113"
+    },
+    "amm": {
+        "1": "0xD77700fC3C78d1Cb3aCb1a9eAC891ff59bC7946D",
+        "4": "0x6D3459E48C5D106e97FeC08284D56d43b00C2AB4"
+    }
+}

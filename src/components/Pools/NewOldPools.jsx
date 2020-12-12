@@ -1,29 +1,46 @@
 import React, { Component } from 'react';
-// import Popup from '../common/Popup/Popup';
-import { oldPoolToken, contractEndpoint } from '../../config'
-
-import "./staking.scss"
-// import NStake from './Stake/NStake';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
-import StakePopup from '../common/Popup/StakePopup';
+import * as stakeService from '../../services/StakingService'
+import { getStayledNumber } from '../../utils/utils';
+
+import "./staking.scss"
+import { OldStakes } from '../../config';
 
 class NewOldPools extends Component {
     state = {
-        isSelect: false,
-        isStakePopup: false,
-        tokens: oldPoolToken,
-        tokensMap: {},
-        currStake: null,
-        stakeAmount: null,
-        market: {
-            tvl: 2925602,
-        },
+        tokens: ["dea_usdc", "deus_eth", "deus_dea", "deus", "ampl_eth", "snx", "uni"],
+        tokensMap: OldStakes
     }
 
-    componentDidMount() {
-        console.log("did mounted NewOldPools");
+    async componentDidUpdate(prevProps) {
 
+        const { chainId, account } = this.props
+
+        if (prevProps.account !== account || prevProps.chainId !== chainId) {
+            console.log("chain id is", chainId);
+            if (!chainId || !account) return
+            console.log("log did update", account, chainId);
+
+            const { tokens } = this.state
+            tokens.map(async (tokenName) => {
+                await this.getTokenAllAmounts(tokenName)
+            })
+        }
+    }
+
+    async componentDidMount() {
+        const { tokens } = this.state
+        // this.setState({ tokensMap: this.props.stakedTokens })
+
+        const { chainId, account } = this.props
+        if (!chainId || !account) return
+
+        tokens.map(async (tokenName) => {
+            await this.getTokenAllAmounts(tokenName)
+        })
+        // this.props.setStakedTokens(tokensMap)
+        console.log("did mounted NewOldPools");
     }
 
     dollarPrice = (price, fixed = 0) => {
@@ -35,77 +52,81 @@ class NewOldPools extends Component {
     }
 
     componentWillMount() {
-        let all_tokens = {}
-        const { tokens } = this.state
-        tokens.map(token => {
-            all_tokens[token.name] = {
-                ...token,
-                title: token.name.toUpperCase().replaceAll("_", "-"),
-                deposited: 0,
-                claimable_amount: "-",
-                claimable_unit: "DEA",
-                balance: "-",
-                pool: "-",
-                allowances: 0,
-            }
+        // this.initalStakes()
+    }
+
+    // initalStakes = () => {
+    //     let all_tokens = this.props.stakedTokens
+
+    //     if (all_tokens.dea.lastFetch) {
+    //         this.setState({ tokensMap: all_tokens })
+    //         console.log("fetched");
+    //     }
+    //     const { tokens } = this.state
+    //     tokens.map(tokenName => {
+    //         all_tokens[tokenName].title = tokenName.toUpperCase().replaceAll("_", "-")
+    //         all_tokens[tokenName].deposited = 0
+    //         all_tokens[tokenName].claimable_unit = "DEA"
+    //         all_tokens[tokenName].pool = "-";
+    //         all_tokens[tokenName].claimable_amount = "-";
+    //     })
+    //     this.setState({ tokensMap: all_tokens })
+    // }
+
+
+    getTokenAllAmounts = (stakedToken, force = false) => {
+
+        const { tokensMap } = this.state
+
+        const token = tokensMap[stakedToken]
+
+        // if (!force && token.lastFetch) {
+        //     console.log("single fetched");
+        //     return
+        // }
+
+        console.log("initial called for \t" + stakedToken);
+
+        stakeService.getNumberOfStakedTokens(token.name).then((amount) => {
+            token.deposited = getStayledNumber(amount)
+            console.log(token.deposited);
+            // this.setState({ tokensMap })
+
+            stakeService.getTotalStakedToken(token.name).then((amount) => {
+                token.pool = token.deposited === "0" || amount === "0" ? 0 : (token.deposited / amount) * 100
+
+                // this.setState({ tokensMap })
+
+                stakeService.getNumberOfPendingRewardTokens(token.name).then((amount) => {
+                    token.claimable_amount = parseFloat(amount)
+                    // token.lastFetch = true
+                    // this.setState({ tokensMap })
+                    this.setState({ tokensMap })
+
+                })
+            })
+
         })
-        this.setState({ tokensMap: all_tokens })
+
+        // this.setState({ tokensMap })
+        // this.setState({ renderLoop: !renderLoop })
+    }
+    handleClaim = () => {
+        //calim
+        console.log("claim");
     }
 
-    blurBG = () => {
-        const { isPopup, isStakePopup } = this.state
-        const blurPop = "blured"
-        if (!(isPopup || isStakePopup)) {
-            document.getElementById("blur-pop").classList.remove(blurPop)
-        } else {
-            document.getElementById("blur-pop").classList.add(blurPop)
-        }
+    handleWithdraw = () => {
+        //calim
+        console.log("handleWithdraw");
     }
 
-    handleStake = (stakedToken) => {
-        const { isStakePopup } = this.state
-        this.setState({ isStakePopup: !isStakePopup, currStake: isStakePopup ? null : stakedToken, stakeAmount: undefined })
-    }
-
-
-
-    handleMax = (token) => {
-        this.setState({ stakeAmount: token.balance })
-    }
 
     render() {
-        const { isStakePopup, tokensMap, tokens, currStake, stakeAmount } = this.state
-
-        const currToken = tokensMap[currStake]
-
-        // this.blurBG()
-
-        let popupMsg = ""
-        if (currToken) {
-            const isApproved = currToken.allowances > 0 ? true : false
-            popupMsg = <div className="stake-pop-wrap">
-                <div className="uni-token-name">{"s" + currToken.title}</div>
-                <div className="amount-wrap">
-                    <div className="balance">Balance: <span>{currToken.balance}</span></div>
-
-                    <input type="number" className="amount" value={stakeAmount} placeholder="0.00" />
-                    <div className="max-btn" onClick={() => this.handleMax(currToken)}>MAX</div>
-                </div>
-                <a className="show-contract" href={contractEndpoint + "/" + currToken.stakingLink} target="_blank" rel="noopener noreferrer">Show me the contract</a>
-                {!isApproved && <div className="btn-wrap" onClick={() => console.log("approve")}>Approve</div>}
-                {isApproved && <div className="btn-wrap" onClick={() => console.log("stake")}>Stake</div>}
-            </div>
-        }
+        const { tokensMap, tokens } = this.state
 
         return (<>
-            {currToken && <StakePopup
-                title={"STAKE TOKENS TO EARN " + "DEA"}
-                close={true}
-                isStakePopup={isStakePopup}
-                handleStake={this.handleStake}
-                token={currToken}
-            />
-            }
+
             <div className="staking-wrap" >
                 <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" />
 
@@ -114,7 +135,13 @@ class NewOldPools extends Component {
                 <div className="stake-container-wrap" ></div>
                 <div className="container-single-wrap" style={{ marginTop: "50px" }}>
                     {
-                        tokens.map((token, i) => <QStake key={i} token={tokensMap[token.name]} handleStake={this.handleStake} stakable={false} dollarPool={10} />)
+                        tokens.map((token, i) => <QStake
+                            key={i}
+                            handleClaim={this.handleClaim}
+                            handleWithdraw={this.handleWithdraw}
+                            token={tokensMap[token]}
+                            handleStake={this.handleStake}
+                            stakable={false} />)
                     }
 
                 </div>

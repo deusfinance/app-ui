@@ -1,37 +1,13 @@
 import { useWeb3React } from '@web3-react/core';
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { navbarItems } from '../../config';
 import SubNavbar from './SubNavbar';
-// import { getEtherBalance } from '../../services/SwapService';
 import { injected } from '../../connectors';
 import { formatAddress } from '../../utils/utils';
-import { useEagerConnect } from '../../hooks';
 
 import '../../styles/scss/navbar.scss';
 
-
-// export function Balance() {
-//     const { account, library, chainId } = useWeb3React()
-
-//     const [balance, setBalance] = useState()
-//     useEffect(() => {
-//         getEtherBalance().then(balance => {
-//             setBalance(balance)
-//         });
-//     }, [account, library, chainId]) // ensures refresh if referential identity of library doesn't change across chainIds
-
-
-//     return (
-//         <>
-//             <span>Balance</span>
-//             <span role="img" aria-label="gold">
-//                 💰
-//       </span>
-//             <span>{balance === null ? 'Error' : balance ? `Ξ${(balance)}` : ''}</span>
-//         </>
-//     )
-// }
 
 const Navs = navbarItems.reverse()
 
@@ -39,7 +15,7 @@ const Navs = navbarItems.reverse()
 const Navbar = () => {
 
     const web3React = useWeb3React()
-    const { account, activate } = web3React
+    const { account, activate, chainId } = web3React
 
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
 
@@ -57,15 +33,16 @@ const Navbar = () => {
     }
 
 
-
+    const connectCalass = account ? "connected" : "connect"
     //DEUS staking
     return (<><nav id="nav">
         {<div className="left-nav-wrap">
             <ul className="left-nav">
                 <li><span className="deus">DEUS <span className="finance">finance</span></span></li>
                 <li className="grad-wrap connect-wrap" onClick={handleConnect}>
-                    <div className="grad connect">{formatAddress(account)}</div>
+                    <div className={`grad ${connectCalass}`}>{formatAddress(account)}</div>
                 </li>
+                {chainId === 4 && <li className="rinkeby">Rinkeby 😎</li>}
             </ul>
         </div>}
         <div className="menu-mobile-icon" onClick={toggleNav}>

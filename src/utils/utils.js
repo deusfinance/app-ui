@@ -11,6 +11,7 @@ export const isDesktop = () => {
 
 export const getStayledNumber = (number, space = 9) => {
     const strNumber = number.toString()
+    if (strNumber.length < space) return strNumber
     const indexDot = strNumber.indexOf(".")
     if (indexDot === -1) return strNumber
     if (indexDot > space - 2) return strNumber.substring(0, indexDot)

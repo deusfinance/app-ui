@@ -19,17 +19,14 @@ class UnLockPupop extends Component {
     }
 
     handleToggle = () => {
-        return
         const { locked } = this.state
         this.setState({ locked: !locked, sandAmount: "", tokenAmount: "" })
-
     }
 
     render() {
-        const { handleClose, token, sandToken, timeToken, approved } = this.props
+        const { handleClose, token, sandToken, timeToken, approved, handleApprove, handleSwap, vault } = this.props
         const { tokenAmount, timeAmount, sandAmount, locked } = this.state
         const lockedClasses = !locked ? "unlocked" : "locked"
-
         const swapClasses = tokenAmount !== "" && tokenAmount !== "0" ? "" : "disabled"
 
         return (<div className={`lock-swap ${lockedClasses}`} >
@@ -38,7 +35,7 @@ class UnLockPupop extends Component {
                 <div className="time-vaults">Time Vault {locked ? "Locked" : "UnLock"}</div>
                 <div className="token" >{token.title}</div>
                 {locked && <div className="locked-text" style={{ opacity: 0 }}> Your tokens will be locked until 01.06.2021 </div>}
-                <a href={contractEndpoint + "/" + token.stakingLink} className={`contract  ${lockedClasses}`} target="_blank" rel="noopener noreferrer"  >show me the contract</a>
+                <a href={contractEndpoint + "/" + vault.stakingLink} className={`contract  ${lockedClasses}`} target="_blank" rel="noopener noreferrer"  >show me the contract</a>
 
                 {locked ? <InputBox
                     token={token}
@@ -123,7 +120,7 @@ class UnLockPupop extends Component {
 
                 <div className="btns">
                     <div className=" grad-wrap swap-btn-wrap ">
-                        {approved || !locked ? <div className={`swap-btn  ${swapClasses}`}>Swap & {locked ? "Locked" : "UnLock"}</div> : <div className={`swap-btn  ${swapClasses}`}>APPROVE</div>}
+                        {approved || !locked ? <div className={`swap-btn  ${swapClasses}`} onClick={() => handleSwap(tokenAmount)}>Swap & {locked ? "Locked" : "UnLock"}</div> : <div className={`swap-btn  ${swapClasses}`} onClick={() => handleApprove(tokenAmount)}>APPROVE</div>}
                     </div>
                 </div>
             </div>

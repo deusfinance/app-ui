@@ -161,7 +161,7 @@ class MainSwap extends Component {
             typingTimeout: setTimeout(() => {
                 this.handleCalcPairPrice(stype, amount)
                 this.setState({ swap })
-            }, 750)
+            }, 500)
         })
 
         this.setState({ swap })
@@ -384,7 +384,13 @@ class MainSwap extends Component {
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
 
-                            <TokenMarket handleSwich={this.handleSwichPerPrice} swap={swap} fromPerTo={fromPerTo} perPrice={0.3003} tvl={6245.343} tradeVol={945.343} />
+                            <TokenMarket
+                                handleSwich={this.handleSwichPerPrice}
+                                swap={swap}
+                                fromPerTo={fromPerTo}
+                                perPrice={0.3003}
+                                tvl={6245.343}
+                                tradeVol={945.343} />
 
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} />
                         </div>

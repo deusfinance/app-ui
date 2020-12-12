@@ -3,10 +3,27 @@
 @import "./Balancer/balancer.scss";
 
 .can-stake {
-    box-shadow: 0px 0px 20px #ffffff;
+    box-shadow: 0px 0px 13px #fffcc9;
     // animation: shadowNice 2.5s infinite;
 }
-
+.loading-qstake {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+.loading-qstake-top {
+    position: absolute;
+    // left: 0;
+    margin-left: 20px;
+    // right: 0;
+    margin-top: 35px;
+    // margin-top: 40px;
+    // margin-left: 20px;
+    .dqbMYY {
+        width: 30px;
+        height: 30px;
+    }
+}
 @keyframes shadowNice {
     0% {
         box-shadow: 0px 0px 0px #ffffff;

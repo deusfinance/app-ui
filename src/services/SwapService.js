@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import paths from './graph'
-import abis from './abis.json'
+import abis from './abis'
 import addrs from './addresses.json'
 
 export class SwapService {
@@ -57,8 +57,9 @@ export class SwapService {
         return TokenContract.methods.balanceOf(account).call().then(balance => {
             return Web3.utils.fromWei(balance, 'ether');
         })
-
     }
+
+
 
 
     approve(token, amount, listener) {

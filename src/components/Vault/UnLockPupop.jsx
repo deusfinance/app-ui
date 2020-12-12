@@ -7,15 +7,39 @@ class UnLockPupop extends Component {
         tokenAmount: "",
         sandAmount: "",
         timeAmount: "",
-        locked: ""
+        locked: "",
+        approve: "",
+        typingTimeout: null
     }
 
     componentDidMount() {
         this.setState({ locked: this.props.locked })
     }
 
-    handleChange = (typeAmount) => (amount) => {
+    handleTyping = () => {
+        if (this.state.typingTimeout) {
+            clearTimeout(this.state.typingTimeout);
+        }
+    }
+
+    handleChange = (typeAmount) => async (amount) => {
+        this.handleTyping()
+        const { getSandAndTime } = this.props
         this.setState({ [typeAmount]: amount.toString() })
+
+        this.setState({
+            typingTimeout: setTimeout(async () => {
+                try {
+                    const data = await getSandAndTime(amount);
+                    this.setState({
+                        sandAmount: data[0], timeAmount: data[1]
+                    })
+                } catch (error) {
+
+                }
+
+            }, 750)
+        })
     }
 
     handleToggle = () => {
@@ -27,7 +51,8 @@ class UnLockPupop extends Component {
         const { handleClose, token, sandToken, timeToken, approved, handleApprove, handleSwap, vault } = this.props
         const { tokenAmount, timeAmount, sandAmount, locked } = this.state
         const lockedClasses = !locked ? "unlocked" : "locked"
-        const swapClasses = tokenAmount !== "" && tokenAmount !== "0" ? "" : "disabled"
+        const isActive = tokenAmount !== "" && tokenAmount !== "0"
+        const swapClasses = isActive ? "" : "disabled"
 
         return (<div className={`lock-swap ${lockedClasses}`} >
             <div className="top">
@@ -120,7 +145,9 @@ class UnLockPupop extends Component {
 
                 <div className="btns">
                     <div className=" grad-wrap swap-btn-wrap ">
-                        {approved || !locked ? <div className={`swap-btn  ${swapClasses}`} onClick={() => handleSwap(tokenAmount)}>Swap & {locked ? "Locked" : "UnLock"}</div> : <div className={`swap-btn  ${swapClasses}`} onClick={() => handleApprove(tokenAmount)}>APPROVE</div>}
+                        {approved || !locked ?
+                            <div className={`swap-btn  ${swapClasses}`} onClick={() => handleSwap(tokenAmount)}>Swap & {locked ? "Locked" : "UnLock"}</div> :
+                            <div className={`swap-btn  ${swapClasses}`} onClick={() => handleApprove(tokenAmount)}>APPROVE</div>}
                     </div>
                 </div>
             </div>

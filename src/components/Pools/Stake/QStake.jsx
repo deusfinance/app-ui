@@ -3,15 +3,16 @@ import { getStayledNumber } from '../../../utils/utils';
 import ProvideButton from './ProvideButton';
 import { useWeb3React } from '@web3-react/core';
 import { useState } from 'react';
+import { WaveLoading, RotateCircleLoading } from 'react-loadingg';
 
-const QStake = ({ token, stakable, handleStakePopup, dollarPool, isSand, handleClaim, handleWithdraw }) => {
+const QStake = ({ token, depositedAmount, stakable, handleStakePopup, dollarPool, isSand, handleClaim, handleWithdraw }) => {
     const Web3React = useWeb3React()
     const { account, chainId } = Web3React
-    const isStaked = parseFloat(token.deposited) > 0 ? true : false
-    const [deposited, setDeposited] = useState(token.deposited)
+    const isStaked = token ? parseFloat(token.deposited) > 0 ? true : false : false
+    const [deposited, setDeposited] = useState(token ? token.deposited : depositedAmount)
     const closedClass = isStaked ? "" : "closed "
     const stakeHere = isStaked ? "more" : "here"
-    const balanceClass = token.balancer ? "balancer " : ""
+    const balanceClass = token ? token.balancer ? "balancer " : "" : ""
     const canStakeClass = stakable && token.balance > 1 ? "can-stake" : ""
     let stakeClasses = "single-wrap " + closedClass + balanceClass
 
@@ -25,8 +26,10 @@ const QStake = ({ token, stakable, handleStakePopup, dollarPool, isSand, handleC
                 STAKE {stakeHere}
             </div>}
             {!stakable && <div className="stake-here stake-here-closed"> STAKE {stakeHere}</div>}
+            {!(token && token.deposited) && <div className="loading-qstake-top"><RotateCircleLoading color="#a0a0a0" size={'small'} ></RotateCircleLoading></div>}
+            <div className="token-name">{token.title}
 
-            <div className="token-name">{token.title}</div>
+            </div>
             {/* <div className="token-title">SandToken</div> */}
             {token.apy && <div className="apy">{parseFloat(token.apy.toString()).toFixed(2)}% APY</div>}
 
@@ -47,13 +50,13 @@ const QStake = ({ token, stakable, handleStakePopup, dollarPool, isSand, handleC
 
 
             {isStaked && <>
-                <div className="own-pool">you own {parseFloat(token.pool.toString()).toFixed(2)}% {dollarPool ? "($" + dollarPool + ") " : ""}of the pool</div>
+                {token.pool && <div className="own-pool">you own {parseFloat(token.pool.toString()).toFixed(2)}% {dollarPool ? "($" + dollarPool + ") " : ""}of the pool</div>}
 
                 <div className="bottom-btns">
                     <div className="btns-wrap">
                         <div className="btns">
 
-                            <div className="left-single disabled">{getStayledNumber(token.claimable_amount)} {token.claimable_unit} claimable</div>
+                            <div className="left-single disabled">{token.claimable_amount ? getStayledNumber(token.claimable_amount) : <div className="loading-qstake"></div>} {token.claimable_unit} claimable</div>
                             <div className="right-single" onClick={handleClaim}>
                                 <span>claim</span>
                             </div>

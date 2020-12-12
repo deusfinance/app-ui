@@ -1,26 +1,82 @@
 import React, { Component } from 'react';
-// import Popup from '../common/Popup/Popup';
-import { AllStakings, contractEndpoint, sandTokens, timeToken } from '../../config'
-
-import "./staking.scss"
-// import NStake from './Stake/NStake';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
-import StakePopup from '../common/Popup/StakePopup';
-import { useState } from 'react';
-import { getStayledNumber } from '../../utils/utils';
+// import * as stakeService from '../../services/StakingService'
+import { getStayledNumber, notify } from '../../utils/utils';
 
-/* 
-class SandTokens extends Component {
+import "./staking.scss"
+import { OldStakes } from '../../config';
+import { StakeService } from '../../services/StakeService';
+import StakePopup from '../common/Popup/StakePopup';
+
+class SandToken extends Component {
     state = {
-        isSelect: false,
-        isStakePopup: false,
-        tokens: sandTokens,
+        tokens: ["sand_dea", "sand_deus", "sand_dai", "sand_eth", "sand_wbtc", "timetoken"],
         tokensMap: {},
-        currStake: null,
-        stakeAmount: null,
+        isStakePopup: false
     }
 
+
+
+    methods = {
+        onStart: () => {
+            console.log("onStart")
+        },
+        onSuccess: () => {
+            console.log("onSuccess")
+            const { currToken, typeTransaction } = this.state
+            if (typeTransaction === "approve") {
+                this.handleInitAllowances(currToken.name, currToken.name)
+                this.setState({ typeTransaction: "" })
+            } else {
+                this.getSingleBalance(currToken.name, true)
+                this.getSingleBalance("sand_" + currToken.name, true)
+                this.getSingleBalance("timetoken", true)
+                this.getLockedAmount("timetoken", true)
+            }
+        },
+        onError: () => console.log("onError"),
+    }
+
+    async componentDidUpdate(prevProps) {
+
+
+
+        const { chainId, account } = this.props
+        const { tokens } = this.state
+        if (prevProps.account !== account || prevProps.chainId !== chainId) {
+
+            console.log("chain id is", chainId);
+
+            if (!chainId || !account) return
+
+            console.log("log did update", account, chainId);
+
+            await this.setState({ web3: new StakeService(account, chainId) })
+            tokens.map(async (tokenName) => {
+                await this.getTokenAllAmounts(tokenName)
+            })
+
+        }
+    }
+
+
+    async componentDidMount() {
+        const { tokens } = this.state
+        // this.setState({ tokensMap: this.props.stakedTokens })
+
+        const { chainId, account } = this.props
+        if (!chainId || !account) return
+
+
+        await this.setState({ web3: new StakeService(account, chainId) })
+
+        tokens.map(async (tokenName) => {
+            await this.getTokenAllAmounts(tokenName)
+        })
+        // this.props.setStakedTokens(tokensMap)
+        console.log("did mounted sand token");
+    }
 
     dollarPrice = (price, fixed = 0) => {
         return Number(price).toLocaleString('en-US', {
@@ -30,80 +86,107 @@ class SandTokens extends Component {
         })
     }
 
-    initialAllAmounts = (sandTokenName) => {
-
+    componentWillMount() {
+        this.setState({ tokensMap: this.props.allTokens })
+        // this.initalStakes()
     }
 
+
+
+
+    getTokenAllAmounts = (stakedToken, force = false) => {
+
+        const { tokensMap, web3 } = this.state
+
+        const token = tokensMap[stakedToken]
+
+        console.log("initial called for \t" + stakedToken);
+
+        web3.getNumberOfStakedTokens(token.name).then((amount) => {
+            token.deposited = getStayledNumber(amount)
+            console.log(token.deposited);
+            // this.setState({ tokensMap })
+
+            web3.getTotalStakedToken(token.name).then((amount) => {
+                token.pool = token.deposited === "0" || amount === "0" ? 0 : (token.deposited / amount) * 100
+
+                // this.setState({ tokensMap })
+
+                web3.getNumberOfPendingRewardTokens(token.name).then((amount) => {
+                    token.claimable_amount = parseFloat(amount)
+                    // token.lastFetch = true
+                    // this.setState({ tokensMap })
+                    this.setState({ tokensMap })
+
+                })
+            })
+
+        })
+    }
     handleClaim = () => {
-        //calim
         console.log("claim");
     }
 
+    handleStake = (stakedToken) => {
+        const { isStakePopup } = this.state
+        this.setState({ isStakePopup: !isStakePopup, currStake: isStakePopup ? null : stakedToken, stakeAmount: undefined })
+    }
+
+
     handleWithdraw = () => {
-        //calim
         console.log("handleWithdraw");
     }
 
 
+
     blurBG = () => {
-        const { isPopup, isStakePopup } = this.state
+        const { isStakePopup } = this.state
+
         const blurPop = "blured"
-        if (!(isPopup || isStakePopup)) {
+        if (!(isStakePopup)) {
             document.getElementById("blur-pop").classList.remove(blurPop)
         } else {
             document.getElementById("blur-pop").classList.add(blurPop)
         }
     }
 
+    handleApprove = (from) => async (amount) => {
+        console.log(from.name + "\t" + amount + "\t handleApprove ");
+        const { allTokens, web3 } = this.state
+        try {
+            const data = await web3.approve(from.name, from.name, amount, notify(this.methods))
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     handlePopup = (stakedToken) => {
+        console.log(stakedToken, " called");
         const { isStakePopup } = this.state
-        this.setState({ isStakePopup: !isStakePopup, currStake: isStakePopup ? null : stakedToken, stakeAmount: undefined })
+        this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken })
     }
-
-    handleMax = (token) => {
-        this.setState({ stakeAmount: token.balance })
-    }
-
-    handleStake = (sandTokenName) => (amount) => {
-        console.log(sandTokenName, amount, " staked");
-    }
-
-    handleApprove = (sandTokenName) => (amount) => {
-        console.log(sandTokenName, amount, " Approve");
-    }
-
 
     render() {
-        const { isStakePopup, tokens, currStake, stakeAmount } = this.state
-        const currToken = currStake !== "timetoken" ? tokens[currStake] : timeToken
-        this.blurBG()
+        const { tokensMap, tokens } = this.state
+        const { isStakePopup, approve, currStake, stakeAmount } = this.state
+        const currToken = tokensMap[currStake]
+        console.log(currStake);
 
-        // let popupMsg = ""
-        // if (currToken) {
-        //     const isApproved = currToken.allowances > 0 ? true : false
-        //     popupMsg = <div className="stake-pop-wrap">
-        //         <div className="uni-token-name">{currToken.name !== "timetoken" ? "s" : "" + currToken.title}</div>
-        //         <div className="amount-wrap">
-        //             <div className="balance">Balance: <span>{currToken.balance}</span></div>
-        //             <input type="number" className="amount" value={stakeAmount} placeholder="0.00" />
-        //             <div className="max-btn" onClick={() => this.handleMax(currToken)}>MAX</div>
-        //         </div>
-        //         <a className="show-contract" href={contractEndpoint + "/" + currToken.stakingLink} target="_blank" rel="noopener noreferrer">Show me the contract</a>
-        //         {!isApproved && <div className="btn-wrap" onClick={this.handleApprove(currToken.name)}>Approve</div>}
-        //         {isApproved && <div className="btn-wrap" onClick={this.handleStake(currToken.name)}>Stake</div>}
-        //     </div>
-        // }
+        this.blurBG()
 
         return (<>
 
-            {currToken && <StakePopup
+            { currStake && <StakePopup
                 title={"STAKE TOKENS TO EARN " + "DEA"}
                 close={true}
                 isStakePopup={isStakePopup}
-                handleApprove={this.handleApprove(currToken.name)}
-                handleStake={this.handleStake(currToken.name)}
+                handleApprove={this.handleApprove(currStake.name)}
+                handleStake={this.handleStake(currStake.name)}
                 handlePopup={this.handlePopup}
                 token={currToken}
+                isApproved={approve}
             />}
 
             <div className="staking-wrap" >
@@ -114,138 +197,22 @@ class SandTokens extends Component {
                 <div className="stake-container-wrap" ></div>
                 <div className="container-single-wrap" style={{ marginTop: "50px" }}>
                     {
-                        Object.values(tokens).map((token, i) => <QStake key={i}
-                            token={token}
-                            handleStake={this.handlePopup}
-                            handleClaim={this.handleClaim}
-                            handleWithdraw={this.handleWithdraw}
-                            isSand={true}
-                            stakable={true}
-                            dollarPool={10}
-                        />)
+                        tokens.map((token, i) => {
+                            return <QStake
+                                key={i}
+                                handleClaim={this.handleClaim}
+                                handleWithdraw={this.handleWithdraw}
+                                handleStakePopup={this.handlePopup}
+                                token={tokensMap[token]}
+                                handleStake={this.handleStake}
+                                stakable={true} />
+                        })
                     }
 
-                    <QStake token={timeToken} handleStake={this.handlePopup} isSand={false} stakable={true} />
                 </div>
             </div>
-
-        </>
-        );
+        </>);
     }
 }
 
-export default SandTokens;
- */
-
-
-
-const SandTokens = (props) => {
-
-    const [stakePopup, setPopup] = useState(false)
-    const sandsList = ["sand_dea", "sand_deus", "sand_dai", "sand_eth", "sand_wbtc", "timetoken"]
-    const sandStaking = AllStakings.sand
-    const [stokens, setSTokens] = useState(props.allTokens)
-    const [tokens, setTokens] = useState(sandTokens)
-    const [currStake, setCurrStake] = useState(null)
-    const [stakeAmount, setStakeAmount] = useState(null)
-
-    const handleClaim = () => {
-        console.log("claim");
-    }
-
-    const handleWithdraw = () => {
-        console.log("handleWithdraw");
-    }
-
-
-    const blurBG = () => {
-        const blurPop = "blured"
-        if (!(stakePopup)) {
-            document.getElementById("blur-pop").classList.remove(blurPop)
-        } else {
-            document.getElementById("blur-pop").classList.add(blurPop)
-        }
-    }
-
-
-    const handlePopup = (stakedToken) => {
-        console.log(stakedToken, " called");
-        setPopup(!stakePopup)
-        setCurrStake(stakePopup ? null : stokens[stakedToken])
-        setStakeAmount(undefined)
-    }
-
-
-
-    const handleStake = (sandTokenName) => (amount) => {
-        console.log(sandTokenName, amount, " staked");
-        setTimeout(() => {
-            currStake.allowances = 9999
-            currStake.deposited = getStayledNumber(parseFloat(amount) + parseFloat(currStake.deposited))
-            handlePopup(sandTokenName)
-            console.log("updated");
-        }, 1000)
-    }
-
-    const handleApprove = (sandTokenName) => (amount) => {
-        console.log(sandTokenName, amount, " Approve");
-
-        currStake.allowances = 9999
-        setCurrStake(currStake)
-        setTokens(tokens)
-
-        // setTimeout(() => {
-        //     const currToken = tokens[sandTokenName]
-        //     currToken.allowances = 9999
-        //     console.log(currToken);
-        //     setTokens(tokens)
-        //     console.log("updated");
-        // }, 1000)
-    }
-
-    // const currToken = currStake.name !== "timetoken" ? tokens[currStake] : timeToken
-    blurBG()
-
-
-
-
-    return (<>
-        { currStake && <StakePopup
-            title={"STAKE TOKENS TO EARN " + "DEA"}
-            close={true}
-            isStakePopup={stakePopup}
-            handleApprove={handleApprove(currStake.name)}
-            handleStake={handleStake(currStake.name)}
-            handlePopup={handlePopup}
-            token={currStake}
-        />
-        }
-
-        <div className="staking-wrap" >
-            <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" />
-
-            <TopNotif typeID={0} />
-
-            <div className="stake-container-wrap" ></div>
-            <div className="container-single-wrap" style={{ marginTop: "50px" }}>
-                {
-                    sandsList.map((name, i) => {
-                        return <QStake key={i}
-                            token={stokens[name]}
-                            handleStakePopup={handlePopup}
-                            handleClaim={handleClaim}
-                            handleWithdraw={handleWithdraw}
-                            isSand={true}
-                            stakable={true}
-                            dollarPool={10}
-                        />
-                    })
-                }
-            </div>
-        </div>
-
-    </>
-    );
-}
-
-export default SandTokens;
+export default SandToken;

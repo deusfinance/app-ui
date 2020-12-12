@@ -2,6 +2,7 @@ import React from 'react';
 import * as config from '../../config';
 
 const StakePopup = ({ showPopup, handlePopup, stakes, staking, handleMaxLP, setStakingAmount, handleApprove, handleStake }) => {
+    console.log(staking);
     return (<>
         {showPopup &&
             <div className="stake-popup ">

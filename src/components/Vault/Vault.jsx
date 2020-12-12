@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
 import CloseBox from './CloseBox';
-import LockPopup from './LockPupop';
 import OpenBox from './OpenBox';
-import { vaultsTokens2, vaultsTokens, sandTokens, timeToken, AllStakings } from '../../config'
+import { AllStakings } from '../../config'
+import GonbadBox from './GonbadBox';
+import GonbadOpen from './GonbadOpen';
+import UnLockPupop from './UnLockPupop';
+import { VaultsService } from '../../services/vaultsService';
+import { getStayledNumber, notify } from '../../utils/utils';
+import { ToastContainer } from 'react-toastify';
 
 import './vaults.scss'
-import GonbadBox from './GonbadBox';
-import UnLockPupop from './UnLockPupop';
-import GonbadOpen from './GonbadOpen';
 
 class Vault extends Component {
     state = {
         unlocked: false,
         locked: false,
         typeTransaction: "",
-        tokens: {},
+        allTokens: {},
         vaultsList: ["uni_lp_dea_usdc", "uni_lp_dea_usdc", "dea", "deus", "wbtc", "dai", "eth"],
         vaults: AllStakings.vaults,
+        approved: false,
+        web3: null
     }
 
 
@@ -29,49 +33,142 @@ class Vault extends Component {
             console.log("onSuccess")
             const { currToken, typeTransaction } = this.state
             if (typeTransaction === "approve") {
-                this.getSingleAllowances(currToken, true)
+                this.handleInitAllowances(currToken.name, currToken.name)
                 this.setState({ typeTransaction: "" })
             } else {
-                this.getSingleBalance(currToken, true)
-                this.getSingleBalance(currToken, true)
+                this.handleClose()
+                this.getSingleBalance(currToken.name, true)
+                this.getSingleBalance("sand_" + currToken.name, true)
+                this.getSingleBalance("timetoken", true)
+                // this.getLockedAmount("timetoken", true)
             }
         },
         onError: () => console.log("onError"),
     }
 
-    componentDidMount() {
-        window.scrollTo(0, 0)
+    async componentDidMount() {
+        const { chainId, account } = this.props
+        if (!chainId || !account) return
+
+        await this.setState({ web3: new VaultsService(account, chainId) })
+        await this.handleIinitToken()
+        //VaultsService
         //initial sandToken
         //initial valults token
         //initial time token
         // this.setState({  })
     }
 
-    componentWillMount() {
-        let all_tokens = {}
-        vaultsTokens.map(token => {
-            all_tokens[token.name] = {
-                ...token,
-                title: token.name.toUpperCase().replaceAll("_", "-"),
-                coin: token.coin.toUpperCase(),
-                apy: 20,
-                deposited: token.deposited ? token.deposited : 0,
-                claimable_amount: 10,
-                claimable_unit: "DEA",
-                pool: 10.25,
-                balance: token.balance ? token.balance : 0,
-                allowances: token.allowances ? token.allowances : 0,
-            }
-        })
-        this.setState({ tokens: all_tokens, allTokens: this.props.allTokens })
+    getSandAndTime = (contranctName) => async (amount) => {
+        const { web3 } = this.state
+
+        try {
+            console.log("amount is" + amount);
+            const data = await web3.getSandAndTimeAmount(contranctName, amount)
+            return data
+        } catch (error) {
+            return [0, 0]
+        }
     }
 
+    setLockedAmount = async (vaultName, amount) => {
+        const { web3 } = this.state
+
+        try {
+            const data = await web3.lock(vaultName, amount, notify(this.methods))
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    getLockedAmount = async (vaultName) => {
+        const { allTokens, web3 } = this.state
+
+        try {
+            const data = await web3.getLockedAmount(vaultName)
+            allTokens[vaultName].locked = data
+            this.setState({ allTokens })
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+
+
+    async componentDidUpdate(prevProps) {
+
+        const { chainId, account } = this.props
+
+        if (prevProps.account !== account || prevProps.chainId !== chainId) {
+
+            console.log("chain id is", chainId);
+
+            if (!chainId || !account) return
+
+            console.log("log did update", account, chainId);
+
+            await this.setState({ web3: new VaultsService(account, chainId) })
+            await this.handleIinitToken()
+        }
+    }
+
+
+    componentWillMount() {
+        this.setState({ allTokens: this.props.allTokens })
+    }
+
+
+
+    handleIinitToken = async () => {
+        const { allTokens, web3 } = this.state
+        const tempVautls = ["deus", "dea", "eth", "dai"]
+        tempVautls.map((tokenName) => {
+            this.getSingleBalance(tokenName)
+            this.getSingleBalance("sand_" + tokenName)
+            // this.getLockedAmount(tokenName)
+        })
+        this.getSingleBalance("timetoken")
+    }
+
+    getSingleBalance = async (tokenName) => {
+        const { allTokens, vaults, web3 } = this.state
+        try {
+            const data = await web3.getTokenBalance(tokenName)
+            allTokens[tokenName].balance = getStayledNumber(data)
+            if (tokenName.substring(0, 5) === "sand_") {
+                vaults[tokenName.substring(5)].locked = getStayledNumber(data, 7)
+            }
+            this.setState({ allTokens, vaults })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    handleInitAllowances = async (tokenName, contractName) => {
+        const { allTokens, vaults, web3, currVault } = this.state
+
+        try {
+            const data = await web3.getAllowances(tokenName, contractName)
+            console.log(tokenName, "\t allowances");
+            allTokens[tokenName].allowances = data
+            vaults[tokenName].allowances = data
+            console.log("appr ", data > 0);
+            this.setState({ approved: data > 0 })
+            this.setState({ allTokens, vaults })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
     handleLock = (vault) => {
-        const { allTokens } = this.state
+        const { allTokens, vaults } = this.state
 
         document.getElementById("blur-pop").classList.add("blured")
 
-        console.log(vault.name);
+        console.log(vault.name, "handleLock");
 
         this.setState({
             unlocked: false,
@@ -81,13 +178,14 @@ class Vault extends Component {
             currVault: vault,
         })
 
-        this.handleInitialTokens()
+        if (!vaults[vault.name].allowances || vaults[vault.name].allowances <= 0) {
+            this.handleInitAllowances(vault.name, vault.name)
+        } else {
+            this.setState({ approved: true })
+        }
+
     }
 
-    getSingleAllowances = (token) => {
-        const currToken = token
-
-    }
 
     handleUnLock = () => {
         document.getElementById("blur-pop").classList.add("blured")
@@ -96,29 +194,26 @@ class Vault extends Component {
 
     handleClose = () => {
         document.getElementById("blur-pop").classList.remove("blured")
-        this.setState({ unlocked: false, locked: false })
+        this.setState({ unlocked: false, locked: false, currVault: null, approved: false })
     }
 
     handleSwap = (from) => (amount) => {
+        if (amount === "" || amount === "0") return
         console.log(from.name + "\t" + amount + "\t handleSwap ");
-        const { allTokens, vaults } = this.state
-        const prevBalance = allTokens[from.name].balance ? allTokens[from.name].balance : 0
-        allTokens[from.name].balance = prevBalance - amount
-        allTokens["sand_" + from.name].balance = amount / 2
-        allTokens["timetoken"].balance = amount / 1.5
-        vaults[from.name].locked = amount
-        this.setState({ allTokens, vaults })
-        this.handleClose()
+        this.setLockedAmount(from.name, amount)
     }
 
-    handleApprove = (from) => (amount) => {
+    handleApprove = (from) => async (amount) => {
+        if (amount === "" || amount === "0") return
         console.log(from.name + "\t" + amount + "\t handleApprove ");
-        // const { currToken } = this.state
-        // currToken.allowances = 5
-        // this.setState({ currToken })
-        const { allTokens } = this.state
-        allTokens.dea.allowances = 10
-        this.setState({ allTokens })
+
+        const { web3 } = this.state
+        try {
+            this.setState({ typeTransaction: "approve" })
+            const data = await web3.approve(from.name, from.name, amount, notify(this.methods))
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
@@ -136,14 +231,11 @@ class Vault extends Component {
     render() {
         const { unlocked, locked, tokens, currToken, currVault, currSand, vaults, vaultsList, allTokens } = this.state
 
-        // const sandToken = currToken ? sandTokens["s_" + currToken.name] : null
-
-        // if (sandToken) sandToken.title = sandToken.name.toUpperCase().replaceAll("_", "-")
 
         const timetoken = allTokens.timetoken
 
         return (<div>
-
+            <ToastContainer style={{ width: "400px" }} />
             <div style={{ position: "relative" }}>
 
                 {/* {unlocked && <UnLockPupop
@@ -157,7 +249,7 @@ class Vault extends Component {
                 />} */}
 
 
-                {locked && <UnLockPupop
+                {locked && currVault && <UnLockPupop
                     token={currToken}
                     sandToken={currSand}
                     timeToken={timetoken}
@@ -167,13 +259,15 @@ class Vault extends Component {
                     handleApprove={this.handleApprove(currToken)}
                     handleSwap={this.handleSwap(currToken)}
                     handleToggle={this.handleUnLock}
+                    getSandAndTime={this.getSandAndTime(currToken.name)}
                     locked={locked}
-                    approved={currToken.allowances > 0}
+                    // approved={currVault.allowances > 0}
+                    approved={this.state.approved}
                 />}
 
                 <div className={`vaults-wrap`}>
-                    {vaults.uni_lp_deus_dea.locked > 0 ? <GonbadOpen token={tokens.uni_lp_deus_dea} handleLock={this.handleLock} />
-                        : <GonbadBox token={tokens.uni_lp_deus_dea} handleLock={this.handleLock} />}
+                    {vaults.uni_lp_deus_dea.locked > 0 ? <GonbadOpen token={allTokens.uni_lp_deus_dea} handleLock={this.handleLock} />
+                        : <GonbadBox token={allTokens.uni_lp_deus_dea} handleLock={this.handleLock} />}
                     <div className="doors-wrap">
 
                         <div className="doors">

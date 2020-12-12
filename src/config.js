@@ -361,7 +361,7 @@ export const AllTokens = {
     },
     "uni_lp_deus_dea": {
         name: "uni_lp_deus_dea",
-        title: "DAI",
+        title: "UNI-LP-DEUS-DEA",
         type: TokenType.Liquidity,
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
@@ -398,6 +398,7 @@ export const AllTokens = {
         innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/vaults",
+        apy: 250
     },
     "sand_eth": {
         name: "sand_eth",
@@ -414,6 +415,8 @@ export const AllTokens = {
         innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/vaults",
+        apy: 490
+
     },
     "sand_wbtc": {
         name: "sand_wbtc",

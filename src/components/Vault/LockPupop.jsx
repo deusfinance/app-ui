@@ -83,7 +83,7 @@ class LockPopup extends Component {
 
                 <div className="btns">
                     <div className=" grad-wrap swap-btn-wrap ">
-                        {approved ? <div className={`swap-btn  ${swapClasses}`}>Swap & Lock</div> : <div className={`swap-btn  ${swapClasses}`}>APPROVE</div>}
+                        {approved ? <div className={`swap-btn  ${swapClasses}`}>Lock</div> : <div className={`swap-btn  ${swapClasses}`}>APPROVE</div>}
                     </div>
                 </div>
             </div>

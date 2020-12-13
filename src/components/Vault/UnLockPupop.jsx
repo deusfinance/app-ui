@@ -122,7 +122,7 @@ class UnLockPupop extends Component {
                     amount={timeAmount}
                     disabled={true}
                     title={"And"}
-                    tokenTitle={"Time Token"}
+                    tokenTitle={"Time"}
                     svg={<svg style={{ marginRight: "10px" }} width={25} height={26} viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12.3944" cy="12.8944" r="12.3944" fill="#CECECE" fillOpacity="0.5" />
                         <circle cx="12.3944" cy="12.8944" r="12.3944" fill="url(#paint1_linear)" />
@@ -147,7 +147,7 @@ class UnLockPupop extends Component {
                 <div className="btns">
                     <div className=" grad-wrap swap-btn-wrap ">
                         {approved || !locked ?
-                            <div className={`swap-btn  ${swapClasses}`} onClick={() => handleSwap(tokenAmount)}>Swap & {locked ? "Locked" : "UnLock"}</div> :
+                            <div className={`swap-btn  ${swapClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "Locked" : "UnLock"}</div> :
                             <div className={`swap-btn  ${swapClasses}`} onClick={() => handleApprove(tokenAmount)}>APPROVE</div>}
                     </div>
                 </div>

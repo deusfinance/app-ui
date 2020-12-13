@@ -10,12 +10,23 @@ import { AllStakings, OldStakes } from '../../config';
 
 class NewOldPools extends Component {
     state = {
-        tokens: ["dea_usdc", "deus"],
-        // tokensMap: this.props.allTokens,
+        tokens: ["dea_usdc", "deus_dea", "deus", "deus_eth", "ampl_eth", "snx", "uni"],
+        tokensMap: this.props.allTokens,
         stakings: OldStakes,
         isStakePopup: false,
         approved: false,
     }
+
+    // export const oldPoolToken = [
+    //     { name: "dea_usdc" },
+    //     { name: "deus_eth" },
+    //     { name: "dea_deus" },
+    //     { name: "deus" },
+    //     { name: "dea" },
+    //     { name: "ampl_eth" },
+    //     { name: "snx" },
+    //     { name: "uni" },
+    // ]
 
 
 

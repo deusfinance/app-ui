@@ -388,14 +388,14 @@ class MainSwap extends Component {
                                 handleSwich={this.handleSwichPerPrice}
                                 swap={swap}
                                 fromPerTo={fromPerTo}
-                                perPrice={0.3003}
-                                tvl={6245.343}
-                                tradeVol={945.343} />
+                                perPrice={""}
+                                tvl={""}
+                                tradeVol={""} />
 
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} />
                         </div>
 
-                        <PriceBox impact={0.05} vaultsFee={0.0098} />
+                        <PriceBox impact={""} vaultsFee={""} />
 
                         <SearchBox
                             showSearchBox={showSearchBox}

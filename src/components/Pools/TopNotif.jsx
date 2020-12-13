@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 class TopNotif extends Component {
     state = {
         tokenTypes: [
-            { id: 1, name: "Single staking", path: "/staking" },
+            { id: 1, name: "Single staking", path: "/staking/sand" },
             { id: 2, name: "Liquidity pools", path: "/staking/balancer" },
             { id: 3, name: "Old pools", path: "/staking/pools" },
         ],

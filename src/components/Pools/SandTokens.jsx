@@ -7,6 +7,7 @@ import "./staking.scss"
 import { StakeService } from '../../services/StakeService';
 import StakePopup from '../common/Popup/StakePopup';
 import { AllStakings } from '../../config';
+import { ToastContainer } from 'react-toastify';
 
 class SandToken extends Component {
     state = {
@@ -15,6 +16,7 @@ class SandToken extends Component {
         stakings: AllStakings.sand,
         isStakePopup: false,
         approved: false,
+        typeTransaction: ""
     }
 
 
@@ -28,10 +30,12 @@ class SandToken extends Component {
             const { currToken, typeTransaction } = this.state
             if (typeTransaction === "approve") {
                 this.handleInitAllowances(currToken.name, currToken.name)
-                this.setState({ typeTransaction: "" })
+                this.setState({ typeTransaction: "", approved: true })
             } else {
                 this.getSingleBalance(currToken.name, true)
-                this.getSingleBalance("timetoken", true)
+                this.setState({ isStakePopup: false })
+
+                // this.getSingleBalance("timetoken", true)
             }
         },
         onError: () => console.log("onError"),
@@ -52,7 +56,40 @@ class SandToken extends Component {
             tokens.map(async (tokenName) => {
                 await this.getStakingAllAmounts(tokenName)
             })
+            tokens.map(async (tokenName) => {
+                await this.getSingleBalance(tokenName)
+            })
 
+        }
+    }
+
+
+    getSingleBalance = async (tokenName) => {
+        const { tokensMap, web3 } = this.state
+        try {
+
+            const data = await web3.getTokenBalance(tokenName)
+            console.log(data);
+            tokensMap[tokenName].balance = getStayledNumber(data)
+            this.setState({ tokensMap })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    handleInitAllowances = async (tokenName, contractName) => {
+        const { tokensMap, stakings, web3 } = this.state
+
+        try {
+            const data = await web3.getAllowances(tokenName, contractName)
+            console.log(tokenName, "\t allowances");
+            tokensMap[tokenName].allowances = data
+            stakings[tokenName].allowances = data
+            console.log("appr ", data > 0);
+            this.setState({ approved: data > 0, tokensMap, stakings })
+
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -67,8 +104,14 @@ class SandToken extends Component {
         await this.setState({ web3: new StakeService(account, chainId) })
 
         tokens.map(async (tokenName) => {
+            await this.getSingleBalance(tokenName)
+        })
+
+
+        tokens.map(async (tokenName) => {
             await this.getStakingAllAmounts(tokenName)
         })
+
         // this.props.setStakedTokens(tokensMap)
         console.log("did mounted sand token");
     }
@@ -96,8 +139,6 @@ class SandToken extends Component {
                 stakings[stakedToken].pool = stakings[stakedToken].deposited === "0" || amount === "0" ?
                     0 : (stakings[stakedToken].deposited / amount) * 100
 
-                // this.setState({ tokensMap })
-
                 web3.getNumberOfPendingRewardTokens(stakedToken).then((amount) => {
                     stakings[stakedToken].claimable_amount = parseFloat(amount)
                     this.setState({ stakings })
@@ -119,12 +160,18 @@ class SandToken extends Component {
     }
 
     handleStake = (stakedToken) => async (amount) => {
-        const { isStakePopup } = this.state
+        // console.log(stakedToken);
+        const { isStakePopup, web3 } = this.state
         this.setState({
             currStake: isStakePopup ? null : stakedToken,
-            isStakePopup: !isStakePopup,
             stakeAmount: undefined
         })
+        try {
+            const data = await web3.stake(stakedToken.name, amount, notify(this.methods))
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
@@ -144,6 +191,7 @@ class SandToken extends Component {
         const { web3 } = this.state
         try {
             const data = await web3.approve(token.name, amount, notify(this.methods))
+            this.setState({ typeTransaction: "approve" })
 
         } catch (error) {
             console.log(error)
@@ -154,7 +202,13 @@ class SandToken extends Component {
     handlePopup = (stakedToken) => {
         const { isStakePopup } = this.state
         console.log(stakedToken, " called");
-        this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken })
+        try {
+            const data = this.handleInitAllowances(stakedToken, stakedToken)
+            this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken })
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     render() {
@@ -167,6 +221,7 @@ class SandToken extends Component {
         this.blurBG()
 
         return (<>
+            <ToastContainer style={{ width: "400px" }} />
 
             { currStake && currToken && <StakePopup
                 title={"STAKE TOKENS TO EARN " + "DEA"}

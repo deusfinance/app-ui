@@ -158,7 +158,7 @@ export class StakeService {
 
     getTotalStakedToken(stakedToken) {
         if (!this.checkWallet()) return 0;
-
+        console.log("staked ", stakedToken);
         const stakedTokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr(stakedToken));
 
         return stakedTokenContract.methods.balanceOf(this.getStakeAddr(stakedToken)).call()

@@ -3,8 +3,12 @@ import { getStayledNumber } from '../../../utils/utils';
 import ProvideButton from './ProvideButton';
 import { useState } from 'react';
 import { WaveLoading, RotateCircleLoading } from 'react-loadingg';
+import { useWeb3React } from '@web3-react/core';
 
 const QStake = ({ staking, depositedAmount, stakable, handleStakePopup, dollarPool, isSand, handleClaim, handleWithdraw }) => {
+
+    const Web3React = useWeb3React()
+    const { chainId } = Web3React
 
     const isStaked = staking ? parseFloat(staking.deposited) > 0 ? true : false : false
     const [deposited, setDeposited] = useState(staking ? staking.deposited : depositedAmount)

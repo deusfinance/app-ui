@@ -5,18 +5,13 @@ import Popup from './Popup';
 class StakePopup extends Component {
     state = {
         stakeAmount: '',
-        isApproved: false
+        isApproved: this.props.isApproved
+
     }
 
     handleChange = (amount) => {
         this.setState({ stakeAmount: amount })
     }
-
-    componentWillMount() {
-        this.setState({ isApproved: this.props.isApproved })
-    }
-
-
 
     render() {
         const { isStakePopup, handlePopup, token, isApproved, staking, close, title, handleStake, handleApprove } = this.props

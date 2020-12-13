@@ -134,6 +134,7 @@ export const OldStakes = {
         stakingLink: "0x19945547eC934bBD8C48fA69bC78152C468CCA7a",
         liqLink: "https://app.uniswap.org/#/add/ETH/0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
         rewardRatio: 0,
+
     },
     deus: {
         name: "deus",
@@ -348,6 +349,54 @@ export const AllTokens = {
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
     },
+    "uni": {
+        name: "uni",
+        title: "UNI",
+        type: TokenType.Main,
+        innerLink: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        provideLink: "/swap",
+    },
+    "snx": {
+        name: "snx",
+        title: "SNX",
+        type: TokenType.Main,
+        innerLink: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        provideLink: "/swap",
+    },
+    "ampl_eth": {
+        name: "ampl_eth",
+        title: "AMPL-ETH",
+        type: TokenType.Main,
+        innerLink: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        provideLink: "/swap",
+    },
+    "dea_deus": {
+        name: "dea_deus",
+        title: "DEA-DEUS",
+        type: TokenType.Main,
+        innerLink: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        provideLink: "/swap",
+    },
+    "dea_usdc": {
+        name: "dea_usdc",
+        title: "DEA-USDC",
+        type: TokenType.Main,
+        innerLink: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        provideLink: "/swap",
+    },
+    "deus_eth": {
+        name: "deus_eth",
+        title: "DEUS-ETH",
+        type: TokenType.Main,
+        innerLink: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        provideLink: "/swap",
+    },
     "uni_lp_dea_usdc": {
         name: "uni_lp_dea_usdc",
         title: "UNI-LP-DEUS-DEA",
@@ -461,20 +510,22 @@ export const vaultsStaking = {
     deus: {
         name: "deus",
         title: "DEUS",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        stakingLink: "0x09cb978bb7e6fb5583fc9107f92214451f6296a5",
         estimation: 250
 
     },
     dea: {
         name: "dea",
         title: "DEA",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        stakingLink: "0x6ba4ead0115f3c9239d596fe4bb7c242a39f62f0",
+        estimation: 250
 
     },
     dai: {
         name: "dai",
         title: "DAI",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        stakingLink: "0xb9846a53d478b2bf54c4b6531708376ba192fbf8",
+        estimation: 250
 
     },
     eth: {

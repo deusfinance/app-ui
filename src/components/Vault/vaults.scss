@@ -1,6 +1,7 @@
 .lock-swap {
     background-position: center;
-    background: url("/vaults/sand.svg");
+    // background: url("/vaults/sand.svg");
+    background: url("/tokens/sands.svg");
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 10;
@@ -40,6 +41,7 @@
             align-items: center;
             justify-content: space-between;
             .max-btn {
+                opacity: 1 !important;
                 width: 39px;
                 height: 25px;
                 font-size: 12px;
@@ -219,7 +221,7 @@
             color: #ffffff;
             padding-bottom: 5px;
             border-bottom: 2px solid #ffffff;
-            opacity: 70%;
+            opacity: 70% !important;
             &:hover {
                 opacity: 100%;
             }
@@ -292,7 +294,7 @@
         height: 900px;
         margin-top: 20px;
         background-position: center;
-        background: url("/vaults/vector2.svg");
+        background: url("/tokens/vector2.svg");
         background-repeat: no-repeat;
         background-size: cover;
         padding-top: 250px;
@@ -410,7 +412,8 @@
             }
         }
         .open-door {
-            background: url("/vaults/n-open.svg");
+            // background: url("/vaults/n-open.svg");
+            background: url("/tokens/n-open.svg");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -575,7 +578,7 @@
             }
         }
         .close-door {
-            background: url("/vaults/n-close.svg");
+            background: url("/tokens/n-close.svg");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: top;

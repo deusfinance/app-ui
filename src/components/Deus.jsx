@@ -32,7 +32,7 @@ const Deus = () => {
         <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
             <Switch>
                 <Route render={() => <SandTokens allTokens={allTokens} account={account} chainId={chainId} />} exact path="/staking" />
-                <Route exact path="/staking/balancer" component={BalancerPool} />
+                <Route render={() => <BalancerPool allTokens={allTokens} account={account} chainId={chainId} />} exact path="/staking/balancer" />
                 <Route render={() => <NewOldPools account={account} chainId={chainId} stakedTokens={oldStakes} setStakedTokens={setOldStakes} />} exact path="/staking/pools" />
                 <Route exact path="/vaults" render={() => <Vault account={account} chainId={chainId} allTokens={allTokens} />} />
                 <Route render={() => <MainSwap account={account} chainId={chainId} setAllTokens={setAllTokens} allTokens={allTokens} />} exact path="/swap" />

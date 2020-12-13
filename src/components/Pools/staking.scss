@@ -941,8 +941,23 @@
             }
         }
     }
+    .only-main {
+        // opacity: 80%;
+        .img-only-main {
+            z-index: 4;
+            top: -40px;
+            position: absolute;
+            width: 85%;
+            margin: auto;
+            left: 0;
+            right: 0;
+        }
+    }
     .balancer {
         height: 500px;
+        .img-only-main {
+            top: 20px;
+        }
         .token-name {
             margin-top: 70px;
             position: relative;

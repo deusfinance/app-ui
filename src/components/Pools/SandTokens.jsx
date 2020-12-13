@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
-// import * as stakeService from '../../services/StakingService'
 import { getStayledNumber, notify } from '../../utils/utils';
 
 import "./staking.scss"
-import { OldStakes } from '../../config';
 import { StakeService } from '../../services/StakeService';
 import StakePopup from '../common/Popup/StakePopup';
+import { AllStakings } from '../../config';
 
 class SandToken extends Component {
     state = {
         tokens: ["sand_dea", "sand_deus", "sand_dai", "sand_eth", "sand_wbtc", "timetoken"],
-        tokensMap: {},
-        isStakePopup: false
+        tokensMap: this.props.allTokens,
+        stakings: AllStakings.sand,
+        isStakePopup: false,
+        approved: false,
     }
 
 
@@ -30,18 +31,13 @@ class SandToken extends Component {
                 this.setState({ typeTransaction: "" })
             } else {
                 this.getSingleBalance(currToken.name, true)
-                this.getSingleBalance("sand_" + currToken.name, true)
                 this.getSingleBalance("timetoken", true)
-                this.getLockedAmount("timetoken", true)
             }
         },
         onError: () => console.log("onError"),
     }
 
     async componentDidUpdate(prevProps) {
-
-
-
         const { chainId, account } = this.props
         const { tokens } = this.state
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
@@ -54,7 +50,7 @@ class SandToken extends Component {
 
             await this.setState({ web3: new StakeService(account, chainId) })
             tokens.map(async (tokenName) => {
-                await this.getTokenAllAmounts(tokenName)
+                await this.getStakingAllAmounts(tokenName)
             })
 
         }
@@ -63,7 +59,6 @@ class SandToken extends Component {
 
     async componentDidMount() {
         const { tokens } = this.state
-        // this.setState({ tokensMap: this.props.stakedTokens })
 
         const { chainId, account } = this.props
         if (!chainId || !account) return
@@ -72,7 +67,7 @@ class SandToken extends Component {
         await this.setState({ web3: new StakeService(account, chainId) })
 
         tokens.map(async (tokenName) => {
-            await this.getTokenAllAmounts(tokenName)
+            await this.getStakingAllAmounts(tokenName)
         })
         // this.props.setStakedTokens(tokensMap)
         console.log("did mounted sand token");
@@ -86,50 +81,36 @@ class SandToken extends Component {
         })
     }
 
-    componentWillMount() {
-        this.setState({ tokensMap: this.props.allTokens })
-        // this.initalStakes()
-    }
 
+    getStakingAllAmounts = (stakedToken, force = false) => {
 
-
-
-    getTokenAllAmounts = (stakedToken, force = false) => {
-
-        const { tokensMap, web3 } = this.state
-
-        const token = tokensMap[stakedToken]
+        const { web3, stakings } = this.state
 
         console.log("initial called for \t" + stakedToken);
 
-        web3.getNumberOfStakedTokens(token.name).then((amount) => {
-            token.deposited = getStayledNumber(amount)
-            console.log(token.deposited);
-            // this.setState({ tokensMap })
+        web3.getNumberOfStakedTokens(stakedToken).then((amount) => {
+            console.log(amount, "is");
+            stakings[stakedToken].deposited = getStayledNumber(amount)
 
-            web3.getTotalStakedToken(token.name).then((amount) => {
-                token.pool = token.deposited === "0" || amount === "0" ? 0 : (token.deposited / amount) * 100
+            web3.getTotalStakedToken(stakedToken).then((amount) => {
+                stakings[stakedToken].pool = stakings[stakedToken].deposited === "0" || amount === "0" ?
+                    0 : (stakings[stakedToken].deposited / amount) * 100
 
                 // this.setState({ tokensMap })
 
-                web3.getNumberOfPendingRewardTokens(token.name).then((amount) => {
-                    token.claimable_amount = parseFloat(amount)
-                    // token.lastFetch = true
-                    // this.setState({ tokensMap })
-                    this.setState({ tokensMap })
+                web3.getNumberOfPendingRewardTokens(stakedToken).then((amount) => {
+                    stakings[stakedToken].claimable_amount = parseFloat(amount)
+                    this.setState({ stakings })
 
                 })
             })
 
         })
     }
+
+
     handleClaim = () => {
         console.log("claim");
-    }
-
-    handleStake = (stakedToken) => {
-        const { isStakePopup } = this.state
-        this.setState({ isStakePopup: !isStakePopup, currStake: isStakePopup ? null : stakedToken, stakeAmount: undefined })
     }
 
 
@@ -137,6 +118,14 @@ class SandToken extends Component {
         console.log("handleWithdraw");
     }
 
+    handleStake = (stakedToken) => async (amount) => {
+        const { isStakePopup } = this.state
+        this.setState({
+            currStake: isStakePopup ? null : stakedToken,
+            isStakePopup: !isStakePopup,
+            stakeAmount: undefined
+        })
+    }
 
 
     blurBG = () => {
@@ -150,11 +139,11 @@ class SandToken extends Component {
         }
     }
 
-    handleApprove = (from) => async (amount) => {
-        console.log(from.name + "\t" + amount + "\t handleApprove ");
-        const { allTokens, web3 } = this.state
+    handleApprove = (token) => async (amount) => {
+        console.log(token.name + "\t" + amount + "\t handleApprove ");
+        const { web3 } = this.state
         try {
-            const data = await web3.approve(from.name, from.name, amount, notify(this.methods))
+            const data = await web3.approve(token.name, amount, notify(this.methods))
 
         } catch (error) {
             console.log(error)
@@ -163,30 +152,32 @@ class SandToken extends Component {
 
 
     handlePopup = (stakedToken) => {
-        console.log(stakedToken, " called");
         const { isStakePopup } = this.state
+        console.log(stakedToken, " called");
         this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken })
     }
 
     render() {
-        const { tokensMap, tokens } = this.state
-        const { isStakePopup, approve, currStake, stakeAmount } = this.state
+        const { tokensMap, tokens, stakings } = this.state
+        const { isStakePopup, approved, currStake, stakeAmount } = this.state
         const currToken = tokensMap[currStake]
-        console.log(currStake);
+        const currStaking = stakings[currStake]
+
 
         this.blurBG()
 
         return (<>
 
-            { currStake && <StakePopup
+            { currStake && currToken && <StakePopup
                 title={"STAKE TOKENS TO EARN " + "DEA"}
                 close={true}
                 isStakePopup={isStakePopup}
-                handleApprove={this.handleApprove(currStake.name)}
-                handleStake={this.handleStake(currStake.name)}
+                handleApprove={this.handleApprove(currToken)}
+                handleStake={this.handleStake(currToken)}
                 handlePopup={this.handlePopup}
                 token={currToken}
-                isApproved={approve}
+                staking={currStaking}
+                isApproved={approved}
             />}
 
             <div className="staking-wrap" >
@@ -197,15 +188,15 @@ class SandToken extends Component {
                 <div className="stake-container-wrap" ></div>
                 <div className="container-single-wrap" style={{ marginTop: "50px" }}>
                     {
-                        tokens.map((token, i) => {
+                        tokens.slice(0, tokens.length).map((token, i) => {
                             return <QStake
                                 key={i}
                                 handleClaim={this.handleClaim}
                                 handleWithdraw={this.handleWithdraw}
                                 handleStakePopup={this.handlePopup}
-                                token={tokensMap[token]}
+                                staking={stakings[token]}
                                 handleStake={this.handleStake}
-                                stakable={true} />
+                                stakable={stakings[token].onlyMain ? false : true} />
                         })
                     }
 

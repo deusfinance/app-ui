@@ -13,7 +13,10 @@ class SearchBox extends Component {
                     </div>
                     {/* <input type="text" placeholder="Search name or paste address" spellCheck="false" autoComplete="off" /> */}
                     <div className="token-items-wrap">
-                        <p>Token</p>
+                        <div className="titles">
+                            <p>Token</p>
+                            <p>Balance</p>
+                        </div>
                         <div className="token-items">
                             {
                                 (tokens).map((tokenName, i) => {

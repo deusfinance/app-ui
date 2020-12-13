@@ -17,7 +17,7 @@ class Vault extends Component {
         locked: false,
         typeTransaction: "",
         allTokens: {},
-        vaultsList: ["uni_lp_dea_usdc", "uni_lp_dea_usdc", "dea", "deus", "wbtc", "dai", "eth"],
+        vaultsList: ["uni_lp_dea_usdc", "dea", "deus", "dai"],
         vaults: AllStakings.vaults,
         approved: false,
         web3: null

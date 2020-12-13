@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ProvideButton = ({ token, isSand }) => {
+const ProvideButton = ({ staking, isSand }) => {
     return (<div className="grad-wrap provide-more-wrap">
-        {token.innerLink ?
-            <Link to={token.provideLink} className=" grad ">
+        {staking.innerLink ?
+            <Link to={staking.provideLink} className=" grad ">
                 <div className="provide-more">
-                    <span>get {token.title} </span>
+                    <span>get {staking.title} </span>
                     <img src={process.env.PUBLIC_URL + "/vaults/sand-token.svg"} alt="uni" />
                 </div>
             </Link>
-            : <a className=" grad provide-more " href={token.liqLink} target="_blank" rel="noopener noreferrer">provide Liquidity</a>}
+            : <a className=" grad provide-more " href={staking.liqLink} target="_blank" rel="noopener noreferrer">provide Liquidity</a>}
     </div>);
 }
 

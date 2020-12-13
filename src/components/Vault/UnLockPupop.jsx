@@ -16,6 +16,7 @@ class UnLockPupop extends Component {
         this.setState({ locked: this.props.locked })
     }
 
+
     handleTyping = () => {
         if (this.state.typingTimeout) {
             clearTimeout(this.state.typingTimeout);

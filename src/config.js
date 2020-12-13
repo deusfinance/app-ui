@@ -69,15 +69,12 @@ export const navbarItems = [
     },
 ]
 
-export const swapTokensList = [
-    { name: "DEA", pic_name: "dea", balance: "-", allowances: 0 },
-    { name: "DEUS", pic_name: "deus", balance: "-", allowances: 0 },
-    // { name: "USDC", pic_name: "usdc", price: 1.05, balance: 436.23, allowances: 0 },
-    { name: "ETH", pic_name: "eth-logo", balance: "-", allowances: 10 },
-]
-
-
-
+// export const swapTokensList = [
+//     { name: "DEA", pic_name: "dea", balance: "-", allowances: 0 },
+//     { name: "DEUS", pic_name: "deus", balance: "-", allowances: 0 },
+//     // { name: "USDC", pic_name: "usdc", price: 1.05, balance: 436.23, allowances: 0 },
+//     { name: "ETH", pic_name: "eth-logo", balance: "-", allowances: 10 },
+// ]
 
 
 export const TokenType = {
@@ -305,7 +302,7 @@ export const AllTokens = {
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
         pic_name: "deus",
-        allowances: 999
+
     },
     "dea": {
         name: "dea",
@@ -315,14 +312,13 @@ export const AllTokens = {
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
         pic_name: "dea",
-        balance: 200
     },
     "usdc": {
         name: "usdc",
         title: "USDC",
         type: TokenType.Main,
-        innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        innerLink: false,
         provideLink: "/swap",
         pic_name: "usdc"
     },
@@ -333,7 +329,8 @@ export const AllTokens = {
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
-        pic_name: "eth-logo"
+        pic_name: "eth-logo",
+        allowances: 999
     },
     "wbtc": {
         name: "wbtc",
@@ -371,8 +368,8 @@ export const AllTokens = {
         name: "uni_lp_dea_usdc",
         title: "sUNI-LP-DEUS-DEA",
         type: TokenType.Sand,
-        innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        innerLink: true,
         provideLink: "/vaults",
     },
     "sand_uni_lp_deus_dea": {
@@ -447,7 +444,187 @@ export const AllTokens = {
     },
 }
 
+export const vaultsStaking = {
+    uni_lp_deus_dea: {
+        name: "uni_lp_deus_dea",
+        title: "UNI-LP-DEUS-DEA",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
 
+    },
+    uni_lp_dea_usdc: {
+        name: "uni_lp_dea_usdc",
+        title: "UNI-LP-DEA-USDC",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        // locked: 25,
+        // own: 25
+    },
+    deus: {
+        name: "deus",
+        title: "DEUS",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        estimation: 250
+
+    },
+    dea: {
+        name: "dea",
+        title: "DEA",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+
+    },
+    dai: {
+        name: "dai",
+        title: "DAI",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+
+    },
+    eth: {
+        name: "eth",
+        title: "ETH",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+
+    },
+
+    wbtc: {
+        name: "wbtc",
+        title: "WBTC",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    },
+}
+
+export const AllStakings = {
+    vaults: vaultsStaking,
+    sand: {
+        "sand_uni_lp_deus_dea": {
+            name: "s_uni_lp_deus_dea",
+            title: "s_uni_lp_deus_dea",
+            innerLink: true,
+            provideLink: "/vaults",
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        },
+        "sand_uni_lp_dea_usdc": {
+            name: "s_uni_lp_dea_usdc",
+            title: "s_uni_lp_dea_usdc",
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            innerLink: true,
+            provideLink: "/vaults",
+        },
+        "sand_dai": {
+            name: "sand_dai",
+            title: "sDAI",
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            innerLink: true,
+            provideLink: "/vaults",
+        },
+        "sand_deus": {
+            name: "sand_deus",
+            title: "sDEUS",
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            innerLink: true,
+            provideLink: "/vaults",
+        },
+        "sand_eth": {
+            name: "sand_eth",
+            title: "sETH",
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            innerLink: true,
+            provideLink: "/vaults",
+            onlyMain: true,
+        },
+        "sand_dea": {
+            name: "sand_dea",
+            title: "sDEA",
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            innerLink: true,
+            provideLink: "/vaults",
+
+        },
+        "sand_wbtc": {
+            name: "sand_wbtc",
+            title: "sWBTC",
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            innerLink: true,
+            provideLink: "/vaults",
+            onlyMain: true,
+        },
+        "timetoken": {
+            name: "timetoken",
+            title: "TimeToken",
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            innerLink: true,
+            provideLink: "/vaults",
+            onlyMain: true,
+
+        },
+    },
+    balancer: {
+        bpt_native: {
+            name: "bpt_native",
+            title: "Native Balancer",
+            inner_link: false,
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            liqLink: "https://balancer.com",
+            balancer: true,
+            claimable_amount: 0,
+            apy: 126,
+            own_pool: 30,
+            onlyMain: true,
+            info: "50% DEA\n30% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n25% sUNI-LP-DEA-USDC",
+        },
+        bpt_legacy: {
+            name: "bpt_legacy",
+            title: "Legacy Balancer",
+            inner_link: false,
+            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+            liqLink: "https://balancer.com",
+            own_pool: 0,
+            balancer: true,
+            info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
+            apy: 178,
+            claimable_amount: 0,
+            deposited: 0,
+            onlyMain: true
+        }
+    },
+    old: {}
+}
+
+
+
+export const balancerTokens = [
+    {
+        name: "native",
+        title: "Native Balancer",
+        coin: "BPT Native",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "https://balancer.com",
+        own_pool: 30,
+        balance: 3.009,
+        apy: "120",
+        balancer: true,
+        info: "50% DEA\n30% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n25% sUNI-LP-DEA-USDC",
+        deposited: 10.64,
+        claimable: 1.09832
+    }, {
+        name: "legacy",
+        title: "Legacy Balancer",
+        inner_link: false,
+        coin: "BPT Legacy",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "https://balancer.com",
+        own_pool: 0,
+        balancer: true,
+        balance: 1.9999,
+        info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
+        apy: 178,
+        deposited: 0,
+        claimable: 0
+    }
+]
+
+
+
+/*
 export const sandTokens = {
 
     "s_dai": {
@@ -499,41 +676,10 @@ export const sandTokens = {
         provideLink: "/vaults",
     },
 }
+ */
 
 
-export const balancerTokens = [
-    {
-        name: "native",
-        title: "Native Balancer",
-        coin: "BPT Native",
-        inner_link: false,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "https://balancer.com",
-        own_pool: 30,
-        balance: 3.009,
-        apy: "120",
-        balancer: true,
-        info: "50% DEA\n30% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n25% sUNI-LP-DEA-USDC",
-        deposited: 10.64,
-        claimable: 1.09832
-    }, {
-        name: "legacy",
-        title: "Legacy Balancer",
-        inner_link: false,
-        coin: "BPT Legacy",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "https://balancer.com",
-        own_pool: 0,
-        balancer: true,
-        balance: 1.9999,
-        info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
-        apy: 178,
-        deposited: 0,
-        claimable: 0
-    }
-]
-
-export const vaultsTokens = [
+/* export const vaultsTokens = [
     {
         name: "uni_lp_deus_dea",
         coin: "deus dea",
@@ -599,156 +745,4 @@ export const vaultsTokens = [
         balance: 0,
     },
 ]
-
-
-export const vaultsTokens2 = {
-    uni_lp_deus_dea: {
-        name: "uni_lp_deus_dea",
-        title: "UNI-LP-DEUS-DEA",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-
-    },
-    uni_lp_dea_usdc: {
-        name: "uni_lp_dea_usdc",
-        title: "UNI-LP-DEA-USDC",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        // locked: 25,
-        // own: 25
-    },
-    deus: {
-        name: "deus",
-        title: "DEUS",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        estimation: 250
-
-    },
-    dea: {
-        name: "dea",
-        title: "DEA",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-
-    },
-    dai: {
-        name: "dai",
-        title: "DAI",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-
-    },
-    eth: {
-        name: "eth",
-        title: "ETH",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-
-    },
-
-    wbtc: {
-        name: "wbtc",
-        title: "WBTC",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-    },
-}
-
-export const AllStakings = {
-    vaults: vaultsTokens2,
-    sand: {
-        "sand_uni_lp_deus_dea": {
-            name: "s_uni_lp_deus_dea",
-            title: "s_uni_lp_deus_dea",
-            innerLink: true,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "/vaults",
-            claimabel_amount: 0,
-            deposited: 0
-        },
-        "sand_uni_lp_dea_usdc": {
-            name: "s_uni_lp_dea_usdc",
-            title: "s_uni_lp_dea_usdc",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            claimabel_amount: 0,
-            deposited: 0
-        },
-        "sand_dai": {
-            name: "s_dai",
-            title: "sDAI",
-            innerLink: true,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "/vaults",
-            claimabel_amount: 0,
-            deposited: 0
-        },
-        "sand_deus": {
-            name: "s_deus",
-            title: "sDEUS",
-            innerLink: true,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "/vaults",
-            claimabel_amount: 0,
-            deposited: 0
-        },
-        "sand_eth": {
-            name: "s_eth",
-            title: "sETH",
-            innerLink: true,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "/vaults",
-            claimabel_amount: 0,
-            deposited: 0
-        },
-        "sand_dea": {
-            name: "s_dea",
-            title: "sDEA",
-            innerLink: true,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "/vaults",
-            claimabel_amount: 0,
-            deposited: 0
-        },
-        "sand_wbtc": {
-            name: "s_wbtc",
-            title: "sWBTC",
-            innerLink: true,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "/vaults",
-            claimabel_amount: 0,
-            deposited: 0
-        },
-        "timetoken": {
-            name: "timetoken",
-            title: "TimeToken",
-            innerLink: true,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "/vaults",
-            claimabel_amount: 0,
-            deposited: 0
-        },
-    },
-    balancer: {
-        native: {
-            name: "native",
-            title: "Native Balancer",
-            inner_link: false,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "https://balancer.com",
-            balancer: true,
-            claimable_amount: 0,
-            apy: 126,
-            own_pool: 30,
-            info: "50% DEA\n30% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n25% sUNI-LP-DEA-USDC",
-        },
-        legacy: {
-            name: "legacy",
-            title: "Legacy Balancer",
-            inner_link: false,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "https://balancer.com",
-            own_pool: 0,
-            balancer: true,
-            info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
-            apy: 178,
-            claimable_amount: 0,
-            deposited: 0,
-            claimable: 0
-        }
-    }
-}
-
+ */

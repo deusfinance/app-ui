@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ethersproject/providers": "^5.0.17",
+    "@metamask/onboarding": "^1.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -25,7 +26,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "resolutions": { "eslint-loader": "2.1.2" },
+  "resolutions": {
+    "eslint-loader": "2.1.2"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },

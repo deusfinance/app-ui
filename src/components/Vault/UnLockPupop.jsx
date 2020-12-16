@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { contractEndpoint } from '../../config';
+import { getStayledNumber } from '../../utils/utils';
 import InputBox from './Input';
 
 class UnLockPupop extends Component {
@@ -33,7 +34,7 @@ class UnLockPupop extends Component {
                 try {
                     const data = await getSandAndTime(amount);
                     this.setState({
-                        sandAmount: data[0], timeAmount: data[1]
+                        sandAmount: getStayledNumber(data[0]), timeAmount: getStayledNumber(data[1])
                     })
                 } catch (error) {
 
@@ -50,11 +51,11 @@ class UnLockPupop extends Component {
 
     render() {
         const { handleClose, token, sandToken, timeToken, approved, handleApprove, handleSwap, vault } = this.props
-        const { tokenAmount, timeAmount, sandAmount, locked ,oldApprove} = this.state
-        
+        const { tokenAmount, timeAmount, sandAmount, locked, oldApprove } = this.state
+
         const lockedClasses = !locked ? "unlocked" : "locked"
         const isActive = tokenAmount !== "" && tokenAmount !== "0"
-        const swapLeftClasses = !approved &&isActive ? "" : "disabled"
+        const swapLeftClasses = !approved && isActive ? "" : "disabled"
         const swapRightClasses = approved && isActive ? "" : "disabled"
         const approvedClasses = approved ? "approved" : ""
 
@@ -150,21 +151,21 @@ class UnLockPupop extends Component {
 
                 {!oldApprove && <div className={`btns ${approvedClasses}`}>
                     <div className=" grad-wrap swap-btn-wrap ">
-                            <div className={`swap-btn  ${swapLeftClasses}`} onClick={() => handleApprove(tokenAmount)}>APPROVE</div>
+                        <div className={`swap-btn  ${swapLeftClasses}`} onClick={() => handleApprove(tokenAmount)}>APPROVE</div>
                     </div>
 
                     <div className=" grad-wrap swap-btn-wrap  ">
-                            <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "Lock & Mint" : "UnLock"}</div> 
+                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "Lock & Mint" : "UnLock"}</div>
                     </div>
                 </div>}
 
-              {oldApprove && <div className="btns">
-                    <div className=" grad-wrap swap-btn-wrap " style={{margin:"auto"}} >
+                {oldApprove && <div className="btns">
+                    <div className=" grad-wrap swap-btn-wrap " style={{ margin: "auto" }} >
                         <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "Lock & Mint" : "UnLock"}</div>
-                </div>
+                    </div>
                 </div>
                 }
-                
+
             </div>
         </div>);
     }

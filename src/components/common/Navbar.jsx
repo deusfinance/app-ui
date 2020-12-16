@@ -1,9 +1,10 @@
+import MetaMaskOnboarding from '@metamask/onboarding';
 import { useWeb3React } from '@web3-react/core';
+import { injected } from '../../connectors';
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
-import { navbarItems } from '../../config';
+import { dappLink, navbarItems } from '../../config';
 import SubNavbar from './SubNavbar';
-import { injected } from '../../connectors';
 import { formatAddress, getStayledNumber, notify } from '../../utils/utils';
 
 import '../../styles/scss/navbar.scss';
@@ -17,16 +18,30 @@ const Navbar = () => {
 
     const web3React = useWeb3React()
     const { account, activate, chainId } = web3React
-
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
+
     const claimButton = claimAmount > 0 ? <li className="grad-wrap claimable-btn" onClick={() => web3.withdrawPayment(notify())}>
         <div className={`grad `}>
             <div> {getStayledNumber(claimAmount)} ETH</div>
             <div>claim</div>
         </div>
     </li> : null
+
+
+    const [isMetamask, setIsMetamask] = useState(null)
+
+    useEffect(() => {
+        if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+            setIsMetamask(true)
+        } else {
+            // console.log("MetaMask didnt  Installed");
+            setIsMetamask(false)
+        }
+    }, [account]);
+
+
     useEffect(() => {
         const getClaimable = async (swapServie) => {
             try {
@@ -36,15 +51,22 @@ const Navbar = () => {
                 return 0
             }
         }
+
         if (account && chainId) {
             const swapServie = new SwapService(account, chainId)
             setWeb3(swapServie)
             setClaim(getClaimable(swapServie))
+
         }
     }, [account, chainId])
 
-    const handleConnect = () => {
-        activate(injected)
+    const handleConnect = async () => {
+        try {
+            const data = await activate(injected)
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const toggleNav = () => {
@@ -62,9 +84,13 @@ const Navbar = () => {
         {<div className="left-nav-wrap">
             <ul className="left-nav">
                 <li><span className="deus">DEUS <span className="finance">finance</span></span></li>
-                <li className="grad-wrap connect-wrap" onClick={handleConnect}>
+                {isMetamask && <li className="grad-wrap connect-wrap" onClick={handleConnect}>
                     <div className={`grad ${connectCalass}`}>{formatAddress(account)}</div>
-                </li>
+                </li>}
+
+                {!isMetamask && <li className="grad-wrap connect-wrap install">
+                    <a href={dappLink} className={`grad`}>Install Metamask</a>
+                </li>}
                 {claimButton}
                 {chainId === 4 && <li className="rinkeby">Rinkeby 😎</li>}
             </ul>

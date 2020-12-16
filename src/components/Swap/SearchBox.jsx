@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { getStayledNumber } from '../../utils/utils';
 
 class SearchBox extends Component {
     state = {}
@@ -26,7 +27,7 @@ class SearchBox extends Component {
                                             <img src={process.env.PUBLIC_URL + `/tokens/${allTokens[tokenName].pic_name}.svg`} alt={allTokens[tokenName].name} />
                                             <p style={{ textTransform: "uppercase" }}>{allTokens[tokenName].name}</p>
                                         </div>
-                                        <p >{allTokens[tokenName].balance}</p>
+                                        <p >{getStayledNumber(allTokens[tokenName].balance)}</p>
                                     </div>
                                 })
                             }

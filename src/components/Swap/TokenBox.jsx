@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { getStayledNumber } from '../../utils/utils';
 
 
 class TokenBox extends Component {
@@ -31,7 +32,7 @@ class TokenBox extends Component {
                     <p>{type.charAt(0).toUpperCase() + type.slice(1)}</p>
                     <div className="balance">
                         <span>Balance: </span>
-                        <span>{token.balance}</span>
+                        <span>{getStayledNumber(token.balance)}</span>
                     </div>
                 </div>
                 <div className="bottom">

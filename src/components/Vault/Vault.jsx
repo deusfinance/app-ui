@@ -6,7 +6,7 @@ import GonbadBox from './GonbadBox';
 import GonbadOpen from './GonbadOpen';
 import UnLockPupop from './UnLockPupop';
 import { VaultsService } from '../../services/vaultsService';
-import { getStayledNumber, notify } from '../../utils/utils';
+import { notify } from '../../utils/utils';
 import { ToastContainer } from 'react-toastify';
 
 import './vaults.scss'
@@ -125,7 +125,7 @@ class Vault extends Component {
         const tempVautls = ["deus", "dea", "eth", "dai"]
         tempVautls.map((tokenName) => {
             this.getSingleBalance(tokenName)
-            this.handleInitAllowances(tokenName,tokenName)
+            this.handleInitAllowances(tokenName, tokenName)
             this.getSingleBalance("sand_" + tokenName)
             // this.getLockedAmount(tokenName)
         })
@@ -136,9 +136,9 @@ class Vault extends Component {
         const { allTokens, vaults, web3 } = this.state
         try {
             const data = await web3.getTokenBalance(tokenName)
-            allTokens[tokenName].balance = getStayledNumber(data)
+            allTokens[tokenName].balance = parseFloat(data)
             if (tokenName.substring(0, 5) === "sand_") {
-                vaults[tokenName.substring(5)].locked = getStayledNumber(data, 7)
+                vaults[tokenName.substring(5)].locked = parseFloat(data)
             }
             this.setState({ allTokens, vaults })
         } catch (error) {

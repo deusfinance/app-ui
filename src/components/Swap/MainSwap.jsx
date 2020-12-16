@@ -28,6 +28,7 @@ class MainSwap extends Component {
         showSearchBox: false,
         searchBoxType: "from",
         fromPerTo: false,
+        claimable_amount: null,
         typingTimeout: 0,
         typeTransaction: ""
     }
@@ -66,6 +67,7 @@ class MainSwap extends Component {
 
         await this.setState({ web3: new SwapService(account, chainId) })
         await this.handleIinitBalances()
+        await this.getClaimable()
         await this.handleInitAllowances()
 
     }
@@ -84,10 +86,23 @@ class MainSwap extends Component {
 
             await this.setState({ web3: new SwapService(account, chainId) })
             await this.handleIinitBalances(true)
+            await this.getClaimable()
             await this.handleInitAllowances(true)
 
             this.handleInitToken("from", "eth")
             this.handleInitToken("to", "deus")
+        }
+    }
+
+    getClaimable = async () => {
+        const { web3 } = this.state
+        if (!web3) return
+        try {
+            const amount = await web3.getWithdrawableAmount()
+            this.setState({ claimable_amount: amount })
+            return amount
+        } catch (error) {
+            return 0
         }
     }
 
@@ -207,7 +222,7 @@ class MainSwap extends Component {
         if (force || !allTokens[tokenName].lastFetchBalance) {
             try {
                 const balance = await web3.getTokenBalance(tokenName)
-                allTokens[tokenName].balance = getStayledNumber(parseFloat(balance))
+                allTokens[tokenName].balance = parseFloat(balance)
                 allTokens[tokenName].lastFetchBalance = true
                 if (tokenName === swap.to.name || tokenName === swap.from.name) {
                     this.handleInitToken("from", swap.from.name)
@@ -321,17 +336,18 @@ class MainSwap extends Component {
 
     render() {
 
-        const { showSearchBox, swap, fromPerTo, searchBoxType, tokens } = this.state
+        const { showSearchBox, swap, fromPerTo, searchBoxType, tokens, web3, claimable_amount } = this.state
         const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
         const approved = this.isApproved()
+        const isMobile = window.innerWidth < 670
 
 
         return (<div className="deus-swap-wrap">
 
-            <ToastContainer style={{ width: "400px" }} />
-           <Title/>
+            {!isMobile && <ToastContainer style={{ width: "400px" }} />}
+            <Title web3={web3} claimable_amount={claimable_amount} />
 
 
             <div className="swap-container-wrap">
@@ -367,7 +383,7 @@ class MainSwap extends Component {
                                 tvl={""}
                                 tradeVol={""} />
 
-                            <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} />
+                            <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
 
                         <PriceBox impact={""} vaultsFee={""} />

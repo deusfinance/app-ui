@@ -16,7 +16,7 @@ const OpenBox = ({ handleLock, handleUnLock, vault, token }) => {
                     <div className="">03.06.2021</div>
                 </div> */}
                 <div className="grad-wrap reedem-wrap">
-                    <div className="reemable">{vault.locked}  locked</div>
+                    <div className="reemable">{getStayledNumber(vault.locked)}  locked</div>
                     {/* <div className="reemable">{token.locked.toFixed(4)} DEA locked</div> */}
                     {/* <div className="reemable-btn disabled" onClick={handleUnLock}>reedem</div> */}
                 </div>

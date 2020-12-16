@@ -1,5 +1,6 @@
 
 export const contractEndpoint = "https://rinkeby.etherscan.io/address"
+export const dappLink = "https://metamask.app.link/dapp/demo.deus.finance/"
 export const navbarItems = [
     {
         id: "app",

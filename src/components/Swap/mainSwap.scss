@@ -4,6 +4,21 @@
     padding-top: 60px;
     color: #ffffff;
 
+    .claimable-btn {
+        width: 95%;
+        height: 40px;
+
+        margin: auto;
+        margin-bottom: 20px;
+        .grad {
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+        }
+    }
+
     .title {
         display: flex;
         justify-content: center;
@@ -404,6 +419,10 @@
             }
         }
     }
+}
+
+.dapp-link {
+    display: block;
 }
 
 @media screen and (max-width: 960px) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { getStayledNumber } from '../../utils/utils';
 
 
 const InputBox = ({ token, amount, title, max, tokenTitle, svg, handleChange, disabled }) => {
@@ -7,7 +8,7 @@ const InputBox = ({ token, amount, title, max, tokenTitle, svg, handleChange, di
         <div className="input-top">
             <p>{title}</p>
             <p>
-                Balance: <span>{token.balance ? token.balance : 0}</span>
+                Balance: <span>{getStayledNumber(token.balance ? token.balance : 0)}</span>
             </p>
         </div>
         <div className="input-bottom">

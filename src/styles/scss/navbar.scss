@@ -50,6 +50,16 @@ nav {
                     }
                 }
             }
+            .install {
+                .grad {
+                    font-size: 19px;
+                    display: block;
+                    color: #ffffff;
+                    &:hover {
+                        color: #111111;
+                    }
+                }
+            }
 
             li:nth-child(1) {
                 margin-top: 8px;
@@ -267,8 +277,6 @@ nav {
     box-shadow: 0px 0px 10px #ffffff;
 }
 
-
-
 @media screen and (max-width: 1150px) {
     body {
         overflow-x: hidden;
@@ -308,7 +316,7 @@ nav {
         .icon-close {
             svg {
                 width: 35px;
-                margin: 17px;
+                margin: 16px;
                 margin-bottom: 18px;
                 fill: #ffffff;
                 text-align: right;
@@ -369,18 +377,24 @@ nav {
 }
 
 @media screen and (max-width: 600px) {
-
     nav {
         .rinkeby {
-    display:none;
-}
+            display: none;
+        }
 
         .claimable-btn {
             display: none;
         }
         .connect-wrap {
             display: none;
+            a {
+                color: #ffffff;
+            }
+            .grad {
+                color: #ffffff;
+            }
         }
+
         margin: 0;
 
         .left-nav-wrap {
@@ -431,5 +445,3 @@ nav {
     // 	width: 20px;
     // }
 }
-
-

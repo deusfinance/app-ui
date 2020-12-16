@@ -48,6 +48,8 @@ class Vault extends Component {
 
     async componentDidMount() {
         const { chainId, account } = this.props
+        document.addEventListener("keydown", this.escFunction, false);
+
         if (!chainId || !account) return
 
         await this.setState({ web3: new VaultsService(account, chainId) })
@@ -57,6 +59,12 @@ class Vault extends Component {
         //initial valults token
         //initial time token
         // this.setState({  })
+    }
+
+    escFunction = (event) => {
+        if (event.keyCode === 27) {
+            this.handleClose()
+        }
     }
 
     getSandAndTime = (contranctName) => async (amount) => {

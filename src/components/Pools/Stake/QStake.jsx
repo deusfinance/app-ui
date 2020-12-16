@@ -1,34 +1,31 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { getStayledNumber } from '../../../utils/utils';
 import ProvideButton from './ProvideButton';
-import { useState } from 'react';
 import { WaveLoading, RotateCircleLoading } from 'react-loadingg';
-import { useWeb3React } from '@web3-react/core';
 
-const QStake = ({ staking, depositedAmount, stakable, handleStakePopup, dollarPool, isSand, handleClaim, handleWithdraw }) => {
+const QStake = ({ staking, deposited, handleStakePopup, dollarPool, isSand, handleClaim, handleWithdraw }) => {
 
-    const Web3React = useWeb3React()
-    const { chainId } = Web3React
-
-    const isStaked = staking ? parseFloat(staking.deposited) > 0 ? true : false : false
-    const [deposited, setDeposited] = useState(staking ? staking.deposited : depositedAmount)
+    const { claimable_unit, claimable_amount } = staking
+    const isStaked = staking ? parseFloat(deposited) > 0 ? true : false : false
     const closedClass = isStaked ? "" : "closed "
     const stakeHere = isStaked ? "more" : "here"
     const balanceClass = staking ? staking.balancer ? "balancer " : "" : ""
-    const canStakeClass = stakable && staking.balance > 1 ? "can-stake" : ""
+    const canStakeClass = !staking.isClose && staking.balance > 1 ? "can-stake" : ""
     let stakeClasses = "single-wrap " + closedClass + balanceClass
     const onlyMainClasses = staking && staking.onlyMain ? "only-main" : ""
+    const claimAmount = claimable_amount ? getStayledNumber(claimable_amount) + " " + (claimable_unit ? claimable_unit : "DEA") + " claimable" : null
 
-    useEffect(() => {
-        console.log("rerender me");
-    }, [deposited])
+    // useEffect(() => {
+
+    //     console.log("rerendered ", staking.name);
+    // }, [deposited])
 
     return (staking && <div className={`${onlyMainClasses} ${stakeClasses}   ${canStakeClass}`}>
         {staking && staking.onlyMain && <img className="img-only-main" src={process.env.PUBLIC_URL + "/img/only-main.svg"} alt="" />}
         <div className="single">
-            {stakable && <div className="stake-here" onClick={() => handleStakePopup(staking.name)}>STAKE {stakeHere}</div>}
-            {!stakable && <div className="stake-here stake-here-closed"> STAKE {stakeHere}</div>}
-            {!(staking && staking.deposited) && <div className="loading-qstake-top"><RotateCircleLoading color="#a0a0a0" size={'small'} ></RotateCircleLoading></div>}
+            {!staking.isClose && <div className="stake-here" onClick={() => handleStakePopup(staking.name)}>STAKE {stakeHere}</div>}
+            {staking.isClose && <div className="stake-here stake-here-closed"> STAKE {stakeHere}</div>}
+            {!deposited && deposited !== 0 && <div className="loading-qstake-top"><RotateCircleLoading color="#a0a0a0" size={'small'} ></RotateCircleLoading></div>}
 
             {staking && <div className="token-name">{staking.title}</div>
             }
@@ -40,7 +37,7 @@ const QStake = ({ staking, depositedAmount, stakable, handleStakePopup, dollarPo
                 </div>
             </div>}
 
-            {stakable && !isStaked && <><ProvideButton staking={staking} isSand={isSand} /></>}
+            {!staking.isClose && !isStaked && <><ProvideButton staking={staking} isSand={isSand} /></>}
 
             {isStaked && <>
                 {staking.pool && <div className="own-pool">you own {parseFloat(staking.pool.toString()).toFixed(2)}% {dollarPool ? "($" + dollarPool + ") " : ""}of the pool</div>}
@@ -49,16 +46,17 @@ const QStake = ({ staking, depositedAmount, stakable, handleStakePopup, dollarPo
                     <div className="btns-wrap">
                         <div className="btns">
 
-                            <div className="left-single disabled">{staking.claimable_amount ? getStayledNumber(staking.claimable_amount) : <div className="loading-qstake"></div>} {staking.claimable_unit} claimable</div>
-                            <div className="right-single" onClick={handleClaim}>
+                            <div className="left-single disabled" style={{ position: "relative" }}>{claimAmount ? claimAmount :
+                                <div className="loading-qstake"><WaveLoading color="#a0a0a0" size={'small'} ></WaveLoading></div>} </div>
+                            <div className="right-single" onClick={() => handleClaim(0)}>
                                 <span>claim</span>
                             </div>
                         </div>
                     </div>
                     <div className="btns-wrap">
                         <div className="btns">
-                            <div className="left-single disabled">{getStayledNumber(staking.deposited)} deposited</div>
-                            <div className="right-single" onClick={handleWithdraw}>
+                            <div className="left-single disabled">{getStayledNumber(deposited)} deposited</div>
+                            <div className="right-single" onClick={() => handleWithdraw(deposited)}>
                                 <span>withdraw and claim</span>
                             </div>
                         </div>

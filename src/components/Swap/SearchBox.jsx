@@ -19,7 +19,7 @@ class SearchBox extends Component {
                         </div>
                         <div className="token-items">
                             {
-                                (tokens).map((tokenName, i) => {
+                                (tokens.sort((a, b) => allTokens[a].balance ? allTokens[a].balance > allTokens[b].balance : false)).map((tokenName, i) => {
                                     if (tokenName === choosedToken) return
                                     return <div key={i} className="token-item" onClick={() => handleChangeToken(allTokens[tokenName].name)}>
                                         <div>

@@ -6,7 +6,7 @@ const Popup = ({ title, close, show, popBody, handlePopup }) => {
         {show && <div className="popup-wrap">
             <div className="popup">
                 <div className="title">{title}
-                    {close && <div className="close-btn" onClick={handlePopup}>close</div>}
+                    {close && <div className="close-btn" onClick={() => handlePopup()}>close</div>}
                 </div>
                 {popBody}
             </div>

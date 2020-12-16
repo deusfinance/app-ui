@@ -1,0 +1,85 @@
+
+.time-token-wrap {
+    // min-width: 500px;
+    width: 570px;
+    // max-width: 500px;
+    text-align: center;
+    // position: relative;
+    height: 780px;
+    padding-top: 70px;
+    // background: url("/vaults/time-token.svg");
+    // background-repeat: no-repeat;
+    // background-position: top;
+    overflow: hidden;
+    margin: auto;
+    .bg-img {
+        position: absolute;
+        svg {
+            width: 570px;
+            height: 760px;
+            right: 0;
+            left: 0;
+        }
+    }
+    .time-token {
+        z-index: 2;
+        color: #ffffff;
+        font-family: Monument Grotesk;
+        font-weight: 400;
+        font-size: 15px;
+        position: relative;
+        .stake {
+            // margin-top: 20px;
+            text-transform: uppercase;
+            font-size: 24px;
+            height: 55px;
+            width: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            border-radius: 6px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-top: 10px;
+            background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
+            cursor: pointer;
+            transition: all 0.25s;
+            text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
+            &:hover {
+                color: #000000;
+                text-shadow: 0px 5px 5px rgba(255, 255, 255, 1);
+            }
+        }
+
+        .title {
+            text-transform: uppercase;
+            margin-top: 45px;
+            font-size: 35px;
+        }
+        .apy {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        .get-timetoken {
+            height: 40px;
+            width: 200px;
+            margin: auto;
+            // border-radius: 3px;
+            margin-top: 30px;
+        }
+        .single {
+            margin-top: 20px;
+            opacity: 50%;
+            font-size: 12px;
+        }
+        .time-text {
+            z-index: 2;
+            margin-top: 250px;
+
+            text-align: center;
+            white-space: pre-wrap; /* Since CSS 2.1 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CloseBox from './CloseBox';
 import OpenBox from './OpenBox';
-import { AllStakings } from '../../config'
+import { vaultsStaking } from '../../config'
 import GonbadBox from './GonbadBox';
 import GonbadOpen from './GonbadOpen';
 import UnLockPupop from './UnLockPupop';
@@ -18,7 +18,7 @@ class Vault extends Component {
         typeTransaction: "",
         allTokens: {},
         vaultsList: ["uni_lp_dea_usdc", "dea", "deus", "dai"],
-        vaults: AllStakings.vaults,
+        vaults: vaultsStaking,
         approved: false,
         web3: null
     }
@@ -125,6 +125,7 @@ class Vault extends Component {
         const tempVautls = ["deus", "dea", "eth", "dai"]
         tempVautls.map((tokenName) => {
             this.getSingleBalance(tokenName)
+            this.handleInitAllowances(tokenName,tokenName)
             this.getSingleBalance("sand_" + tokenName)
             // this.getLockedAmount(tokenName)
         })
@@ -178,7 +179,7 @@ class Vault extends Component {
             currVault: vault,
         })
 
-        if (!vaults[vault.name].allowances || vaults[vault.name].allowances <= 0) {
+        if (!vaults[vault.name].allowances || parseInt(vaults[vault.name].allowances) <= 0) {
             this.handleInitAllowances(vault.name, vault.name)
         } else {
             this.setState({ approved: true })

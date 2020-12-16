@@ -86,7 +86,7 @@ export class StakeService {
         return metamaskStakedTokenContract.methods.deposit(this._getWei(amount))
             .send({ from: this.account })
             .on('transactionHash', () => listener("transactionHash"))
-            .on('receipt', () => listener("receipt"))
+            .once('receipt', () => listener("receipt"))
             .on('error', () => listener("error"));
     }
 
@@ -103,6 +103,7 @@ export class StakeService {
     }
 
 
+
     approve(stakedToken, amount, listener) {
         if (!this.checkWallet()) return 0;
         const metamaskWeb3 = new Web3(Web3.givenProvider);
@@ -115,12 +116,14 @@ export class StakeService {
         return metamaskStakedTokenContract.methods.approve(this.getStakeAddr(stakedToken), this._getWei(amount)) // amount = 1e30
             .send({ from: this.account })
             .on('transactionHash', () => listener("transactionHash"))
-            .on('receipt', () => listener("receipt"))
+            .once('receipt', () => listener("receipt"))
             .on('error', () => listener("error"));
     }
 
     withdraw(stakedToken, amount, listener) {
         if (!this.checkWallet()) return 0;
+        console.log(stakedToken, amount);
+
         const metamaskWeb3 = new Web3(Web3.givenProvider);
 
         const metamaskStakingContract = new metamaskWeb3.eth.Contract(abis["staking"], this.getStakeAddr(stakedToken));
@@ -128,7 +131,7 @@ export class StakeService {
         return metamaskStakingContract.methods.withdraw(this._getWei(amount))
             .send({ from: this.account })
             .on('transactionHash', () => listener("transactionHash"))
-            .on('receipt', () => listener("receipt"))
+            .once('receipt', () => listener("receipt"))
             .on('error', () => listener("error"));
     }
 

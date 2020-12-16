@@ -71,9 +71,9 @@ export class SwapService {
 
         return AutomaticMarketMakerContract.methods.approve(this.getAddr("deus_swap_contract"), this._getWei(amount))
             .send({ from: this.account })
-            .on('transactionHash', () => listener("transactionHash"))
-            .on('receipt', () => listener("receipt"))
-            .on('error', () => listener("error"));
+            .once('transactionHash', () => listener("transactionHash"))
+            .once('receipt', () => listener("receipt"))
+            .once('error', () => listener("error"));
     }
 
     getAllowances(token) {
@@ -118,9 +118,9 @@ export class SwapService {
                     .send({
                         from: this.account,
                         value: this._getWei(tokenAmount)
-                    }).on('transactionHash', () => listener("transactionHash"))
-                    .on('receipt', () => listener("receipt"))
-                    .on('error', () => listener("error"))
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
             } else {
                 // only uniswap
                 // console.log(path);
@@ -141,17 +141,17 @@ export class SwapService {
                 return AutomaticMarketMakerContract.methods.swapTokensForEth(this._getWei(tokenAmount), 0, path)
                     .send({
                         from: this.account
-                    }).on('transactionHash', () => listener("transactionHash"))
-                    .on('receipt', () => listener("receipt"))
-                    .on('error', () => listener("error"))
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
             } else {
                 // only uniswap
                 return AutomaticMarketMakerContract.methods.swapTokensForEth(this._getWei(tokenAmount), 1, path)
                     .send({
                         from: this.account
-                    }).on('transactionHash', () => listener("transactionHash"))
-                    .on('receipt', () => listener("receipt"))
-                    .on('error', () => listener("error"))
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
             }
 
         } else {
@@ -167,9 +167,9 @@ export class SwapService {
                         return AutomaticMarketMakerContract.methods.swapTokensForTokens(this._getWei(tokenAmount), 1, path1, path2)
                             .send({
                                 from: this.account
-                            }).on('transactionHash', () => listener("transactionHash"))
-                            .on('receipt', () => listener("receipt"))
-                            .on('error', () => listener("error"))
+                            }).once('transactionHash', () => listener("transactionHash"))
+                            .once('receipt', () => listener("receipt"))
+                            .once('error', () => listener("error"))
                     }
                 }
                 if (indexOfDeus > 0) {
@@ -180,20 +180,38 @@ export class SwapService {
                         return AutomaticMarketMakerContract.methods.swapTokensForTokens(this._getWei(tokenAmount), 0, path1, path2)
                             .send({
                                 from: this.account
-                            }).on('transactionHash', () => listener("transactionHash"))
-                            .on('receipt', () => listener("receipt"))
-                            .on('error', () => listener("error"))
+                            }).once('transactionHash', () => listener("transactionHash"))
+                            .once('receipt', () => listener("receipt"))
+                            .once('error', () => listener("error"))
                     }
                 }
             }
             return AutomaticMarketMakerContract.methods.swapTokensForTokens(this._getWei(tokenAmount), 2, path, [])
                 .send({
                     from: this.account
-                }).on('transactionHash', () => listener("transactionHash"))
-                .on('receipt', () => listener("receipt"))
-                .on('error', () => listener("error"))
+                }).once('transactionHash', () => listener("transactionHash"))
+                .once('receipt', () => listener("receipt"))
+                .once('error', () => listener("error"))
         }
 
+    }
+
+    getWithdrawableAmount() {
+        if (!this.checkWallet()) return 0
+        return this.AutomaticMarketMakerContract.methods.payments(this.account).call().then(amount => {
+            console.log("getWithdrawableAmount", amount);
+            return Web3.utils.fromWei(amount, 'ether');
+        })
+    }
+
+    withdrawPayment(listener) {
+        let metamaskWeb3 = new Web3(Web3.givenProvider);
+        const AutomaticMarketMakerContract = new metamaskWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
+        return AutomaticMarketMakerContract.methods.withdrawPayments(this.account)
+            .send({ from: this.account })
+            .once('transactionHash', () => listener("transactionHash"))
+            .once('receipt', () => listener("receipt"))
+            .once('error', () => listener("error"))
     }
 
     getAmountsOut(fromToken, toToken, amountIn) {

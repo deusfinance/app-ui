@@ -1,13 +1,5 @@
 @import "../../styles/scss/nfonts";
 
-body {
-    background: #000000;
-}
-
-* {
-    box-sizing: border-box;
-}
-
 .deus-swap-wrap {
     padding-top: 60px;
     color: #ffffff;
@@ -86,7 +78,7 @@ body {
                 height: 410px;
                 .swap-box {
                     // width: 100%;
-                    height: 350px;
+                    height: 360px;
                     background: #0d0d0d;
                     border: 1px solid #000000;
                     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -283,7 +275,7 @@ body {
                     background: #242424;
                     border-radius: 10px;
                     padding: 15px 10px;
-
+                    min-height: 420px;
                     .search-box {
                         animation: scale-up 0.5s forwards;
                         .label {
@@ -408,6 +400,48 @@ body {
                     div {
                         margin: auto;
                     }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .deus-swap-wrap {
+        padding-top: 30px;
+        .swap-container-wrap {
+            background-image: none;
+            height: unset;
+            .swap-container .swap-box-wrap {
+                top: 0;
+                .swap-box {
+                    background-color: #292929;
+                }
+                .price-box {
+                    background-color: #292929;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 670px) {
+    .deus-swap-wrap {
+        .title {
+            display: none;
+        }
+        .swap-container-wrap {
+            .swap-container .swap-box-wrap {
+                width: 100%;
+                padding: 0 10px;
+                .search-box-wrap {
+                    width: 95%;
+                    padding: 10px 10px;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                }
+                .swap-box .token-box-wrap .token-box .bottom .token-info .token-name {
+                    font-size: 20px;
                 }
             }
         }

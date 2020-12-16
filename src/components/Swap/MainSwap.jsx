@@ -3,6 +3,7 @@ import PriceBox from './PriceBox';
 import TokenBox from './TokenBox';
 import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
+import Title from './Title';
 import SwapButton from './SwapButton';
 import { getStayledNumber, notify } from '../../utils/utils';
 import { ToastContainer } from 'react-toastify';
@@ -87,21 +88,8 @@ class MainSwap extends Component {
 
             this.handleInitToken("from", "eth")
             this.handleInitToken("to", "deus")
-            // await this.getSingleBalance(swap.from.name)
-            // await this.getSingleAllowances(swap.to.name)
-            // this.handleInitToken("from", "eth")
-            // this.handleInitToken("to", "deus")
         }
     }
-
-    // updateWeb3 = async () => {
-    //     const { chainId, account } = this.props
-
-    //     const web3 = new SwapService(account, chainId)
-
-    //     await this.setState({ web3 })
-    // }
-
 
 
     handleTokensToMap = () => {
@@ -165,7 +153,6 @@ class MainSwap extends Component {
         })
 
         this.setState({ swap })
-        // this.handleCalcPairPrice(stype, amount)
     }
 
 
@@ -194,11 +181,6 @@ class MainSwap extends Component {
     }
 
     handleSearchBox = (flag, type = "from") => {
-        // const { swap } = this.state
-        // if (flag) {
-        //     swap.from.amount = ""
-        //     swap.to.amount = ""
-        // }
         this.setState({ showSearchBox: flag, searchBoxType: type })
     }
 
@@ -349,14 +331,7 @@ class MainSwap extends Component {
         return (<div className="deus-swap-wrap">
 
             <ToastContainer style={{ width: "400px" }} />
-            <div className="title">
-                <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
-                <div className="swap-wrap">
-                    <div className="swap">
-                        Swap
-                </div>
-                </div>
-            </div>
+           <Title/>
 
 
             <div className="swap-container-wrap">

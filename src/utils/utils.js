@@ -10,6 +10,7 @@ export const isDesktop = () => {
 
 
 export const getStayledNumber = (number, space = 9) => {
+    if (!number) return ""
     const strNumber = number.toString()
     if (strNumber.length < space) return strNumber
     const indexDot = strNumber.indexOf(".")
@@ -23,7 +24,13 @@ export const formatAddress = (address) => {
     return address ? address.substring(0, 6) + "..." + address.substring(address.length - 4, address.length) : 'connect wallet'
 }
 
-
+export function dollarPrice(price, fixed = 0) {
+    return Number(price).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: fixed
+    })
+}
 
 export function getLibrary(provider) {
     const library = new Web3Provider(provider, 'any')
@@ -31,7 +38,17 @@ export function getLibrary(provider) {
     return library
 }
 
-export const notify = (methods) => (state) => {
+const method = {
+    onStart: () => {
+        console.log("onStart")
+    },
+    onSuccess: () => {
+        console.log("onSuccess")
+    },
+    onError: () => console.log("onError"),
+}
+
+export const notify = (methods = method) => (state) => {
 
     switch (state) {
         case "waiting": {

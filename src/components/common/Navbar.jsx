@@ -1,12 +1,13 @@
 import { useWeb3React } from '@web3-react/core';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import { navbarItems } from '../../config';
 import SubNavbar from './SubNavbar';
 import { injected } from '../../connectors';
-import { formatAddress } from '../../utils/utils';
+import { formatAddress, getStayledNumber, notify } from '../../utils/utils';
 
 import '../../styles/scss/navbar.scss';
+import { SwapService } from '../../services/SwapService';
 
 
 const Navs = navbarItems.reverse()
@@ -18,7 +19,29 @@ const Navbar = () => {
     const { account, activate, chainId } = web3React
 
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
-
+    const [claimAmount, setClaim] = useState(0)
+    const [web3, setWeb3] = useState(null)
+    const claimButton = claimAmount > 0 ? <li className="grad-wrap claimable-btn" onClick={() => web3.withdrawPayment(notify())}>
+        <div className={`grad `}>
+            <div> {getStayledNumber(claimAmount)} ETH</div>
+            <div>claim</div>
+        </div>
+    </li> : null
+    useEffect(() => {
+        const getClaimable = async (swapServie) => {
+            try {
+                const amount = await swapServie.getWithdrawableAmount()
+                return amount
+            } catch (error) {
+                return 0
+            }
+        }
+        if (account && chainId) {
+            const swapServie = new SwapService(account, chainId)
+            setWeb3(swapServie)
+            setClaim(getClaimable(swapServie))
+        }
+    }, [account, chainId])
 
     const handleConnect = () => {
         activate(injected)
@@ -42,6 +65,7 @@ const Navbar = () => {
                 <li className="grad-wrap connect-wrap" onClick={handleConnect}>
                     <div className={`grad ${connectCalass}`}>{formatAddress(account)}</div>
                 </li>
+                {claimButton}
                 {chainId === 4 && <li className="rinkeby">Rinkeby 😎</li>}
             </ul>
         </div>}
@@ -61,7 +85,7 @@ const Navbar = () => {
                             <NavLink className={classes} exact={nav.exact} to={nav.path}>
                                 <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}</div>
                             </NavLink>
-                            {nav.children && <SubNavbar items={nav.children} />}</li>
+                            {nav.children && <SubNavbar key={nav.id} items={nav.children} />}</li>
                     })
                 }
             </ul>
@@ -72,8 +96,9 @@ const Navbar = () => {
 
                 {
                     Navs.map(nav => {
+                        if (nav.children) return <SubNavbar key={nav.id} items={nav.children} />
                         if (nav.out) return <li key={nav.id}><a href={nav.path}> {nav.text} </a></li>
-                        return <li key={nav.id}><NavLink onClick={toggleNav} exact={true} to={nav.path}> {nav.text} </NavLink></li>
+                        return <li key={nav.id}><NavLink onClick={toggleNav} exact={nav.exact} to={nav.path}> {nav.text} </NavLink></li>
                     })
                 }
                 <li className="icon-close" onClick={toggleNav}>

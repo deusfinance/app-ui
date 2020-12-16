@@ -1,7 +1,5 @@
-export const ClaimableDuration = 20
-export const UpdateDuration = 20
-export const FixedRatio = 0.07936428253968254
-export const contractEndpoint = "https://etherscan.io/address"
+
+export const contractEndpoint = "https://rinkeby.etherscan.io/address"
 export const navbarItems = [
     {
         id: "app",
@@ -69,13 +67,6 @@ export const navbarItems = [
     },
 ]
 
-// export const swapTokensList = [
-//     { name: "DEA", pic_name: "dea", balance: "-", allowances: 0 },
-//     { name: "DEUS", pic_name: "deus", balance: "-", allowances: 0 },
-//     // { name: "USDC", pic_name: "usdc", price: 1.05, balance: 436.23, allowances: 0 },
-//     { name: "ETH", pic_name: "eth-logo", balance: "-", allowances: 10 },
-// ]
-
 
 export const TokenType = {
     Time: "time",
@@ -84,212 +75,11 @@ export const TokenType = {
     Main: "main",
 }
 
-export const oldPoolToken = [
-    { name: "dea_usdc" },
-    { name: "deus_eth" },
-    { name: "dea_deus" },
-    { name: "deus" },
-    { name: "dea" },
-    { name: "ampl_eth" },
-    { name: "snx" },
-    { name: "uni" },
-]
-
-export const OldStakes = {
-    dea_usdc: {
-        name: "dea_usdc",
-        title: "DEA-USDC",
-        amounts: {
-            dea: 0,
-            apy: 0,
-            lp: 0,
-            pool: 0,
-        },
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-        coin_name: "UNI-V2-DEA-USDC",
-        stakingLink: "0x2e3394d3CdcbaAF2bb85Fe9aB4c79CeF4d28b216",
-        liqLink: "https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
-        rewardRatio: 0,
-    },
-    deus_eth: {
-        name: "deus_eth",
-        title: "DEUS-ETH",
-        amounts: {
-            dea: 0,
-            newdea: 0,
-            apy: 0,
-            lp: 0,
-            pool: 0,
-            currLp: 0,
-            allowances: 0,
-        },
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-        coin_name: "UNI-V2-DEUS/ETH",
-        stakingLink: "0x19945547eC934bBD8C48fA69bC78152C468CCA7a",
-        liqLink: "https://app.uniswap.org/#/add/ETH/0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
-        rewardRatio: 0,
-
-    },
-    deus: {
-        name: "deus",
-        title: "DEUS",
-        amounts: {
-            dea: 0,
-            newdea: 0,
-            apy: 0,
-            lp: 0,
-            pool: 0,
-            currLp: 0,
-            allowances: 0,
-        },
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-        isDeusLink: true,
-        coin_name: "DEUS",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "/swap",
-        rewardRatio: 0,
-    },
-    dea: {
-        name: "dea",
-        name: "DEA",
-        amounts: {
-            dea: 0,
-            newdea: 0,
-            apy: 0,
-            lp: 0,
-            pool: 0,
-            currLp: 0,
-            allowances: 0,
-        },
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-        isDeusLink: true,
-        coin_name: "DEUS",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "/swap",
-        rewardRatio: 0,
-    },
-    deus_dea: {
-        name: "deus_dea",
-        title: "DEUS-DEA",
-        amounts: {
-            dea: 0,
-            newdea: 0,
-            apy: 0,
-            lp: 0,
-            pool: 0,
-            currLp: 0,
-            allowances: 0,
-        },
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-        isDeusLink: true,
-        coin_name: "DEUS",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "/swap",
-        rewardRatio: 0,
-    },
-    ampl_eth: {
-        name: "ampl_eth",
-        title: "AMPL-ETH",
-        amounts: {
-            dea: 0,
-            newdea: 0,
-            apy: 0,
-            lp: 0,
-            pool: 0,
-            currLp: 0,
-            allowances: 0,
-        },
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-
-        coin_name: "UNI-V2-AMPL-ETH",
-        stakingLink: "0xa3bE45e9F6c42e06231618cf45be1AB9625A591f",
-        liqLink: "https://app.uniswap.org/#/add/ETH/0xd46ba6d942050d489dbd938a2c909a5d5039a161",
-        rewardRatio: 0,
-    },
-    snx: {
-        name: "snx",
-        title: "SNX",
-        amounts: {
-            dea: 0,
-            newdea: 0,
-            apy: 0,
-            lp: 0,
-            pool: 0,
-            currLp: 0,
-            allowances: 0,
-        },
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-        coin_name: "SNX",
-        stakingLink: "0x1B043BbB372452d71503E6603Dd33b93271Bfec0",
-        liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
-        rewardRatio: 0,
-    },
-    uni: {
-        name: "uni",
-        title: "UNI",
-        amounts: {
-            dea: 0,
-            newdea: 0,
-            apy: 0,
-            lp: 0,
-            pool: 0,
-            currLp: 0,
-            allowances: 0,
-        },
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-        deposited: 0,
-        claimable_unit: "DEA",
-        claimable_amount: "-",
-        pool: "-",
-        coin_name: "UNI",
-        stakingLink: "0x8cd408279e966b7e7e1f0b9e5ed8191959d11a19",
-        liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
-        rewardRatio: 0,
-    },
-}
-
-
-
-export const timeToken = {
-    name: "timetoken",
-    title: "TimeToken",
-    innerLink: true,
-    stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-    liqLink: "/vaults",
-    apy: "597.19",
-    allowances: 10,
-}
-
-
 
 export const AllTokens = {
     "timetoken": {
         name: "timetoken",
-        title: "TimeToken",
+        title: "Time",
         type: TokenType.Time,
         innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
@@ -543,105 +333,198 @@ export const vaultsStaking = {
 }
 
 export const AllStakings = {
-    vaults: vaultsStaking,
-    sand: {
-        "sand_uni_lp_deus_dea": {
-            name: "s_uni_lp_deus_dea",
-            title: "s_uni_lp_deus_dea",
-            innerLink: true,
-            provideLink: "/vaults",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        },
-        "sand_uni_lp_dea_usdc": {
-            name: "s_uni_lp_dea_usdc",
-            title: "s_uni_lp_dea_usdc",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            innerLink: true,
-            provideLink: "/vaults",
-        },
-        "sand_dai": {
-            name: "sand_dai",
-            title: "sDAI",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            innerLink: true,
-            provideLink: "/vaults",
-        },
-        "sand_deus": {
-            name: "sand_deus",
-            title: "sDEUS",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            innerLink: true,
-            provideLink: "/vaults",
-        },
-        "sand_eth": {
-            name: "sand_eth",
-            title: "sETH",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            innerLink: true,
-            provideLink: "/vaults",
-            onlyMain: true,
-        },
-        "sand_dea": {
-            name: "sand_dea",
-            title: "sDEA",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            innerLink: true,
-            provideLink: "/vaults",
 
-        },
-        "sand_wbtc": {
-            name: "sand_wbtc",
-            title: "sWBTC",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            innerLink: true,
-            provideLink: "/vaults",
-            onlyMain: true,
-        },
-        "timetoken": {
-            name: "timetoken",
-            title: "TimeToken",
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            innerLink: true,
-            provideLink: "/vaults",
-            onlyMain: true,
+    "sand_uni_lp_deus_dea": {
+        name: "s_uni_lp_deus_dea",
+        title: "s_uni_lp_deus_dea",
+        innerLink: true,
+        provideLink: "/vaults",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        isClose: true,
 
-        },
     },
-    balancer: {
-        bpt_native: {
-            name: "bpt_native",
-            title: "Native Balancer",
-            inner_link: false,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "https://balancer.com",
-            balancer: true,
-            claimable_amount: 0,
-            apy: 126,
-            own_pool: 30,
-            onlyMain: true,
-            info: "50% DEA\n30% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n25% sUNI-LP-DEA-USDC",
-        },
-        bpt_legacy: {
-            name: "bpt_legacy",
-            title: "Legacy Balancer",
-            inner_link: false,
-            stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-            liqLink: "https://balancer.com",
-            own_pool: 0,
-            balancer: true,
-            info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
-            apy: 178,
-            claimable_amount: 0,
-            deposited: 0,
-            onlyMain: true
-        }
+    "sand_uni_lp_dea_usdc": {
+        name: "s_uni_lp_dea_usdc",
+        title: "s_uni_lp_dea_usdc",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        isClose: true,
+
+        innerLink: true,
+        provideLink: "/vaults",
     },
-    old: {}
+    "sand_dai": {
+        name: "sand_dai",
+        title: "sDAI",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        innerLink: true,
+        provideLink: "/vaults",
+    },
+    "sand_deus": {
+        name: "sand_deus",
+        title: "sDEUS",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        innerLink: true,
+        provideLink: "/vaults",
+    },
+    "sand_eth": {
+        name: "sand_eth",
+        title: "sETH",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        isClose: true,
+
+        innerLink: true,
+        provideLink: "/vaults",
+        onlyMain: true,
+    },
+    "sand_dea": {
+        name: "sand_dea",
+        title: "sDEA",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        innerLink: true,
+        provideLink: "/vaults",
+
+    },
+    "sand_wbtc": {
+        name: "sand_wbtc",
+        title: "sWBTC",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        isClose: true,
+
+        innerLink: true,
+        provideLink: "/vaults",
+        onlyMain: true,
+    },
+    "timetoken": {
+        name: "timetoken",
+        title: "TimeToken",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        isClose: true,
+
+        innerLink: true,
+        provideLink: "/vaults",
+        onlyMain: true,
+
+    },
+    bpt_native: {
+        name: "bpt_native",
+        title: "Native Balancer",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "https://balancer.com",
+        balancer: true,
+        claimable_amount: 0,
+        apy: 126,
+        own_pool: 30,
+        onlyMain: true,
+        info: "50% DEA\n30% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n25% sUNI-LP-DEA-USDC",
+    },
+    bpt_legacy: {
+        name: "bpt_legacy",
+        title: "Legacy Balancer",
+        inner_link: false,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "https://balancer.com",
+        own_pool: 0,
+        balancer: true,
+        info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
+        apy: 178,
+        claimable_amount: 0,
+        deposited: 0,
+        onlyMain: true
+    },
+    dea_usdc: {
+        name: "dea_usdc",
+        title: "DEA-USDC",
+        claimable_unit: "DEA",
+        coin_name: "UNI-V2-DEA-USDC",
+        stakingLink: "0x2e3394d3CdcbaAF2bb85Fe9aB4c79CeF4d28b216",
+        liqLink: "https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+        isClose: true,
+    },
+    deus_eth: {
+        name: "deus_eth",
+        title: "DEUS-ETH",
+        claimable_unit: "DEA",
+        coin_name: "UNI-V2-DEUS/ETH",
+        stakingLink: "0x19945547eC934bBD8C48fA69bC78152C468CCA7a",
+        liqLink: "https://app.uniswap.org/#/add/ETH/0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+        isClose: true,
+
+    },
+    deus: {
+        name: "deus",
+        title: "DEUS",
+        claimable_unit: "DEA",
+        isDeusLink: true,
+        coin_name: "DEUS",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "/swap",
+        isClose: true,
+    },
+    dea: {
+        name: "dea",
+        name: "DEA",
+        claimable_unit: "DEA",
+        isDeusLink: true,
+        coin_name: "DEUS",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "/swap",
+        isClose: true,
+    },
+    deus_dea: {
+        name: "deus_dea",
+        title: "DEUS-DEA",
+        claimable_unit: "DEA",
+        isDeusLink: true,
+        coin_name: "DEUS",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "/swap",
+        isClose: true,
+    },
+    ampl_eth: {
+        name: "ampl_eth",
+        title: "AMPL-ETH",
+        claimable_unit: "DEA",
+        coin_name: "UNI-V2-AMPL-ETH",
+        stakingLink: "0xa3bE45e9F6c42e06231618cf45be1AB9625A591f",
+        liqLink: "https://app.uniswap.org/#/add/ETH/0xd46ba6d942050d489dbd938a2c909a5d5039a161",
+        isClose: true,
+    },
+    snx: {
+        name: "snx",
+        title: "SNX",
+        claimable_unit: "DEA",
+        coin_name: "SNX",
+        stakingLink: "0x1B043BbB372452d71503E6603Dd33b93271Bfec0",
+        liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
+        isClose: true,
+    },
+    uni: {
+        name: "uni",
+        title: "UNI",
+        claimable_unit: "DEA",
+        claimable_unit: "DEA",
+        coin_name: "UNI",
+        stakingLink: "0x8cd408279e966b7e7e1f0b9e5ed8191959d11a19",
+        liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+        isClose: true,
+    },
 }
 
 
+/*
+export const timeToken = {
+    name: "timetoken",
+    title: "TimeToken",
+    innerLink: true,
+    stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    liqLink: "/vaults",
+    apy: "597.19",
+    allowances: 10,
+} */
 
-export const balancerTokens = [
+
+/* export const balancerTokens = [
     {
         name: "native",
         title: "Native Balancer",
@@ -672,6 +555,89 @@ export const balancerTokens = [
         claimable: 0
     }
 ]
+ */
+
+
+/* export const OldStakes = {
+    dea_usdc: {
+        name: "dea_usdc",
+        title: "DEA-USDC",
+        claimable_unit: "DEA",
+        coin_name: "UNI-V2-DEA-USDC",
+        stakingLink: "0x2e3394d3CdcbaAF2bb85Fe9aB4c79CeF4d28b216",
+        liqLink: "https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+        isClose: true,
+    },
+    deus_eth: {
+        name: "deus_eth",
+        title: "DEUS-ETH",
+        claimable_unit: "DEA",
+        coin_name: "UNI-V2-DEUS/ETH",
+        stakingLink: "0x19945547eC934bBD8C48fA69bC78152C468CCA7a",
+        liqLink: "https://app.uniswap.org/#/add/ETH/0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+        isClose: true,
+
+    },
+    deus: {
+        name: "deus",
+        title: "DEUS",
+        claimable_unit: "DEA",
+        isDeusLink: true,
+        coin_name: "DEUS",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "/swap",
+        isClose: true,
+    },
+    dea: {
+        name: "dea",
+        name: "DEA",
+        claimable_unit: "DEA",
+        isDeusLink: true,
+        coin_name: "DEUS",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "/swap",
+        isClose: true,
+    },
+    deus_dea: {
+        name: "deus_dea",
+        title: "DEUS-DEA",
+        claimable_unit: "DEA",
+        isDeusLink: true,
+        coin_name: "DEUS",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        liqLink: "/swap",
+        isClose: true,
+    },
+    ampl_eth: {
+        name: "ampl_eth",
+        title: "AMPL-ETH",
+        claimable_unit: "DEA",
+        coin_name: "UNI-V2-AMPL-ETH",
+        stakingLink: "0xa3bE45e9F6c42e06231618cf45be1AB9625A591f",
+        liqLink: "https://app.uniswap.org/#/add/ETH/0xd46ba6d942050d489dbd938a2c909a5d5039a161",
+        isClose: true,
+    },
+    snx: {
+        name: "snx",
+        title: "SNX",
+        claimable_unit: "DEA",
+        coin_name: "SNX",
+        stakingLink: "0x1B043BbB372452d71503E6603Dd33b93271Bfec0",
+        liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
+        isClose: true,
+    },
+    uni: {
+        name: "uni",
+        title: "UNI",
+        claimable_unit: "DEA",
+        claimable_unit: "DEA",
+        coin_name: "UNI",
+        stakingLink: "0x8cd408279e966b7e7e1f0b9e5ed8191959d11a19",
+        liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+        isClose: true,
+    },
+}
+ */
 
 
 

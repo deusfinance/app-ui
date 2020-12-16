@@ -1,7 +1,5 @@
 // @import "../../styles/scss/nfonts";
 
-@import "./Balancer/balancer.scss";
-
 .can-stake {
     box-shadow: 0px 0px 13px #fffcc9;
     // animation: shadowNice 2.5s infinite;
@@ -9,7 +7,8 @@
 .loading-qstake {
     position: absolute;
     top: 20px;
-    left: 20px;
+    left: 0;
+    right: 0;
 }
 .loading-qstake-top {
     position: absolute;
@@ -141,13 +140,27 @@
             color: #000000;
         }
     }
+    .action-btn{
+        display:flex;
+        justify-content:space-between;
+        margin-top: 40px;
+        .btn-wrap{
+      width:45%;
+        font-size: 20px;
+        margin:0;
+        }
+    }
     .btn-wrap {
-        margin: auto;
-        margin-top: 70px;
+  
+
+                width:100%;
+        margin:auto;
+        margin-top:50px;
+    font-size: 23px;
+
         border: 2px solid #000000;
-        border-radius: 5px;
+        border-radius: 10px;
         text-align: center;
-        font-size: 25px;
         padding: 14px 0;
         cursor: pointer;
         transition: all 0.2s;
@@ -156,92 +169,68 @@
             color: #000000;
         }
     }
-}
+    .btn-wrap:nth-child(2){
+        opacity:0.4;
+        cursor:default;
+        &:hover{
+            background-color: transparent;
 
-.time-token-wrap {
-    // min-width: 500px;
-    width: 570px;
-    // max-width: 500px;
-    text-align: center;
-    // position: relative;
-    height: 780px;
-    padding-top: 70px;
-    // background: url("/vaults/time-token.svg");
-    // background-repeat: no-repeat;
-    // background-position: top;
-    overflow: hidden;
-    margin: auto;
-    .bg-img {
-        position: absolute;
-        svg {
-            width: 570px;
-            height: 760px;
-            right: 0;
-            left: 0;
         }
     }
-    .time-token {
-        z-index: 2;
-        color: #ffffff;
-        font-family: Monument Grotesk;
-        font-weight: 400;
-        font-size: 15px;
-        position: relative;
-        .stake {
-            // margin-top: 20px;
-            text-transform: uppercase;
-            font-size: 24px;
-            height: 55px;
-            width: 450px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: auto;
-            border-radius: 6px;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            margin-top: 10px;
-            background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%);
-            cursor: pointer;
-            transition: all 0.25s;
-            text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
-            &:hover {
-                color: #000000;
-                text-shadow: 0px 5px 5px rgba(255, 255, 255, 1);
+    .indicator{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        margin-top:15px;
+        .cyc{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            width:20px;
+            height:20px;
+            color:#000000;
+            background-color:#ffffff;
+            border-radius:50%;
+            font-family: Monument Grotesk;
+            font-weight: 400;
+        }
+        .c-right{
+            // opacity:0.4;
+        }
+        .c-line{
+            // background:linear-gradient(90deg, #FFFFFF 3.18%,rgb(187 ,231, 145) 101.59%);
+        }
+        .c-line{
+            height:5px;
+            width:50%;
+            background-color:#ffffff;
+        }
+    }
+    .approved{
+        .btn-wrap:nth-child(1){
+            background-color:#000000;
+            color:#ffffff;
+            cursor:default;
+        }
+        .btn-wrap:nth-child(2){
+              opacity:1;
+         cursor: pointer;
+        &:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        }
+            .c-left{
+                background-color:#000000;
+                color:#ffffff;
             }
-        }
-
-        .title {
-            text-transform: uppercase;
-            margin-top: 45px;
-            font-size: 35px;
-        }
-        .apy {
-            margin-top: 10px;
-            font-size: 20px;
-        }
-        .get-timetoken {
-            height: 40px;
-            width: 200px;
-            margin: auto;
-            // border-radius: 3px;
-            margin-top: 30px;
-        }
-        .single {
-            margin-top: 20px;
-            opacity: 50%;
-            font-size: 12px;
-        }
-        .time-text {
-            z-index: 2;
-            margin-top: 250px;
-
-            text-align: center;
-            white-space: pre-wrap; /* Since CSS 2.1 */
-            word-wrap: break-word; /* Internet Explorer 5.5+ */
-        }
+            .c-line{
+            background:linear-gradient(90deg, #000000 -66.82%, #ffffff 101.59%);
+            }
     }
+
 }
+
 
 .st-bg {
     position: fixed;
@@ -370,8 +359,9 @@
         }
         .grad-wrap {
             height: 43px;
-            width: 345px;
+            max-width: 345px;
             border-radius: 6px;
+            width:85%;
             .grad {
                 border-radius: 6px;
             }
@@ -768,8 +758,8 @@
         font-weight: 400;
         color: #ffffff;
         height: 350px;
-        min-width: 470px;
-        width: 27%;
+        max-width: 450px;
+        width: 100%;
         background: #0d0d0d;
         border: 2px solid #1c1c1c;
         border-radius: 7px;
@@ -914,7 +904,10 @@
             position: absolute;
             right: 0;
             left: 0;
-            width: 400px;
+        
+            width:90%;
+            max-width: 400px;
+
             height: 40px;
             margin: auto;
             bottom: 28px;
@@ -945,7 +938,7 @@
         // opacity: 80%;
         .img-only-main {
             z-index: 4;
-            top: -40px;
+            top: 0px;
             position: absolute;
             width: 80%;
             margin: auto;
@@ -1054,6 +1047,15 @@
     .container-single-wrap {
         .single-wrap {
             margin: 20px 10px;
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .container-single-wrap {
+        .single-wrap {
+            margin: 20px auto;
+            width:95%;
         }
     }
 }

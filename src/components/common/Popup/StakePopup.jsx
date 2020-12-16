@@ -5,31 +5,40 @@ import Popup from './Popup';
 class StakePopup extends Component {
     state = {
         stakeAmount: '',
-        isApproved: this.props.isApproved
-
+        oldApprove: this.props.isApproved,
     }
+
 
     handleChange = (amount) => {
         this.setState({ stakeAmount: amount })
     }
 
     render() {
-        const { isStakePopup, handlePopup, token, isApproved, staking, close, title, handleStake, handleApprove } = this.props
-        const { stakeAmount } = this.state
-
-
-
+        const { isStakePopup, handlePopup, staking,token, isApproved, close, title, handleStake, handleApprove, contractAddr } = this.props
+        const { stakeAmount,oldApprove } = this.state
+        // const stakedApprove = staking.allowances && staking.allowances!=="0"
+        const recentlyApproved =  isApproved
+        const recentlyApprovedClasses = recentlyApproved?"approved":""
         const popupMsg = token && <div className="stake-pop-wrap">
-            <div className="uni-token-name">{token.title}</div>
+            <div className="uni-token-name">{token.coin?token.coin:token.title}</div>
             <div className="amount-wrap">
-                <div className="balance">Balance: <span>{token.balance ? token.balance : 0}</span></div>
+                <div className="balance">Balance: <span>{token?.balance}</span></div>
 
                 <input type="number" className="amount" value={stakeAmount} onChange={(e) => this.handleChange(e.currentTarget.value)} placeholder="0.00" />
                 <div className="max-btn" onClick={() => this.handleChange(token.balance)}>MAX</div>
             </div>
-            <a className="show-contract" href={contractEndpoint + "/" + staking.stakingLink} target="_blank" rel="noopener noreferrer">Show me the contract</a>
-            {!isApproved && <div className="btn-wrap" onClick={() => handleApprove(stakeAmount)}>Approve</div>}
-            {isApproved && <div className="btn-wrap" onClick={() => handleStake(stakeAmount)}>Stake</div>}
+            <a className="show-contract" href={contractEndpoint + "/" + contractAddr} target="_blank" rel="noopener noreferrer">Show me the contract</a>
+            {!oldApprove &&<><div className={`action-btn ${recentlyApprovedClasses}`}>
+                <div className="btn-wrap" onClick={() => handleApprove(stakeAmount)}>{isApproved?"APPROVED":"APPROVE"}</div>
+                <div className="btn-wrap" onClick={() => handleStake(stakeAmount)}>STAKE</div>
+            </div>
+            <div className={`indicator ${recentlyApprovedClasses}`}>
+                <div className="cyc c-left">1</div>
+                <div className="c-line"></div>
+                <div className="cyc c-right">2</div>
+            </div></>}
+            {oldApprove && <div className="btn-wrap" onClick={() => handleStake(stakeAmount)}>STAKE</div>}
+
         </div>
         return (<Popup
             title={title}

@@ -2,45 +2,50 @@ import React, { Component } from 'react';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
 import { getStayledNumber, notify } from '../../utils/utils';
-
+import addrs from '../../services/addresses.json'
 import "./staking.scss"
 import { StakeService } from '../../services/StakeService';
 import StakePopup from '../common/Popup/StakePopup';
-import { AllStakings } from '../../config';
+
 import { withRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 class StakingManager extends Component {
     state = {
         pools: this.props.pools,
         tokensMap: this.props.allTokens,
-        stakings: this.props.stakings,
+        stakingsMap: this.props.allStakings,
         isStakePopup: false,
         approved: false,
     }
 
+    async componentDidMount() {
+        const { chainId, account } = this.props
+        this.setState({ subscrible: setInterval(this.cliamWatcher, 15000) })
+        document.addEventListener("keydown", this.escFunction, false);
+        if (!chainId || !account) return
+
+        const { pools } = this.state
+
+        await this.setState({ web3: new StakeService(account, chainId) })
 
 
-    methods = {
-        onStart: () => {
-            console.log("onStart")
-        },
-        onSuccess: () => {
-            console.log("onSuccess")
-            const { currToken, typeTransaction } = this.state
-            if (typeTransaction === "approve") {
-                this.handleInitAllowances(currToken.name, currToken.name)
-                this.setState({ typeTransaction: "" })
-            } else {
-                this.getSingleBalance(currToken.name, true)
-                this.getSingleBalance("timetoken", true)
-            }
-        },
-        onError: () => console.log("onError"),
+        pools.map(async (tokenName) => {
+            await this.handleInitAllowances(tokenName)
+            await this.getSingleBalance(tokenName)
+            this.getStakingAllAmounts(tokenName)
+        })
+
+        console.log("did mounted sand token");
+    }
+
+    componentWillUnmount() {
+        const { subscrible } = this.state
+        this.setState({ subscrible: clearTimeout(subscrible) })
     }
 
     async componentDidUpdate(prevProps) {
         const { chainId, account, navId } = this.props
-        const { pools } = this.state
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
 
             console.log("chain id is", chainId);
@@ -49,69 +54,160 @@ class StakingManager extends Component {
 
             console.log("log did update", account, chainId);
 
+            const { pools } = this.state
+
             await this.setState({ web3: new StakeService(account, chainId) })
+
             pools.map(async (tokenName) => {
-                await this.getStakingAllAmounts(tokenName)
+                await this.handleInitAllowances(tokenName)
+                await this.getSingleBalance(tokenName)
+                await  this.getStakingAllAmounts(tokenName)
+
             })
 
         }
+
         if (prevProps.navId !== navId) {
+            console.log("nav changed");
+
+            const currentPools = [
+                ["sand_dea", "sand_deus", "sand_dai", "sand_eth", "sand_wbtc", "timetoken"],
+                ["bpt_native", "bpt_legacy"],
+                ["dea_usdc", "deus_dea", "deus", "deus_eth", "ampl_eth", "snx", "uni"],
+            ]
+
             this.setState({
-                pools: this.props.pools,
-                tokensMap: this.props.allTokens,
-                stakings: this.props.stakings,
+                pools: currentPools[navId],
                 isStakePopup: false,
                 approved: false,
             })
-            this.props.pools.map(async (tokenName) => {
-                await this.getStakingAllAmounts(tokenName)
+
+            currentPools[navId].map(async (stakeName) => {
+                await this.handleInitAllowances(stakeName)
+                await this.getSingleBalance(stakeName)
+                await this.getStakingAllAmounts(stakeName)
             })
         }
     }
+    //update all claim amount if user had any deposited tokens
 
+    cliamWatcher = () => {
+        const { pools, stakingsMap, web3 } = this.state
 
-    async componentDidMount() {
-        const { pools } = this.state
+        console.log("cliamWatcher***************");
 
-        const { chainId, account } = this.props
-        if (!chainId || !account) return
+        if (!web3) return
 
-
-        await this.setState({ web3: new StakeService(account, chainId) })
-
-        pools.map(async (tokenName) => {
-            await this.getStakingAllAmounts(tokenName)
+        pools.map(async (poolName, i) => {
+            const { deposited } = stakingsMap[poolName]
+            if (!deposited || deposited === "0") return
+            console.log(poolName);
+            stakingsMap[poolName].claimable_amount = null
+            this.setState({ stakingsMap })
+            try {
+                const data = await web3?.getNumberOfPendingRewardTokens(poolName)
+                console.log(poolName, " recived amount");
+                stakingsMap[poolName].claimable_amount = getStayledNumber(data)
+                this.setState({ stakingsMap })
+            } catch (error) {
+                console.log(poolName, " error amount");
+            }
         })
-        // this.props.setStakedTokens(tokensMap)
-        console.log("did mounted sand token");
+        // this.setState({ stakingsMap })
     }
 
-    dollarPrice = (price, fixed = 0) => {
-        return Number(price).toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: fixed
-        })
+  escFunction = (event)=>{
+    if(event.keyCode === 27) {
+     this.setState({isStakePopup:false,approved:false})
+    }
+  }
+  
+    methods = {
+        onStart: () => {
+            console.log("onStart")
+        },
+        onSuccess: () => {
+            const { currStake, typeTransaction } = this.state
+            console.log("onSuccess ", currStake)
+
+            if (typeTransaction === "approved") {
+                console.log("it was approve");
+                this.setState({ typeTransaction: "" })
+                this.handleInitAllowances(currStake, currStake)
+                return
+            } else {
+                this.getSingleBalance(currStake, true)
+                this.getStakingAllAmounts(currStake)
+            }
+            this.setState({ typeTransaction: "", isStakePopup: false })
+        },
+        onError: () => {
+            console.log("onError")
+            this.setState({ typeTransaction: "" })
+        },
     }
 
+    getSingleBalance = async (tokenName) => {
+
+        const { tokensMap, web3 } = this.state
+        try {
+
+            const data = await web3.getTokenBalance(tokenName)
+            console.log("getSingleBalance ", data);
+            tokensMap[tokenName].balance = getStayledNumber(data)
+            this.setState({ tokensMap })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    handleInitAllowances = async (contractName) => {
+        const { tokensMap, currStake, stakingsMap, web3 } = this.state
+
+        try {
+            const data = await web3.getAllowances(contractName, contractName)
+            console.log(contractName, "\t allowances");
+            stakingsMap[contractName].allowances = data
+            if (currStake && stakingsMap[currStake].allowances > 0) {
+                this.setState({ approved: true })
+            }
+            this.setState({ tokensMap, stakingsMap })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     getStakingAllAmounts = (stakedToken, force = false) => {
 
-        const { web3, stakings } = this.state
+        const { web3, stakingsMap } = this.state
 
         console.log("initial called for \t" + stakedToken);
 
-        web3.getNumberOfStakedTokens(stakedToken).then((amount) => {
-            console.log(amount, "is");
-            stakings[stakedToken].deposited = getStayledNumber(amount)
+        //off stake so we put stakaing
+        if (stakingsMap[stakedToken].onlyMain) {
+            stakingsMap[stakedToken].deposited = 0
+            stakingsMap[stakedToken].claimable_amount = 0
+            this.setState({ stakingsMap })
+            console.log("isClosed", stakedToken);
+            return
+        }
 
+        if(!web3) return
+
+        web3.getNumberOfStakedTokens(stakedToken).then((amount) => {
+            stakingsMap[stakedToken].deposited = amount
+            if (amount === "0") {
+                this.setState({ stakingsMap })
+                return
+            }
             web3.getTotalStakedToken(stakedToken).then((amount) => {
-                stakings[stakedToken].pool = stakings[stakedToken].deposited === "0" || amount === "0" ?
-                    0 : (stakings[stakedToken].deposited / amount) * 100
+                stakingsMap[stakedToken].pool = stakingsMap[stakedToken].deposited === "0" || amount === "0" ?
+                    0 : (stakingsMap[stakedToken].deposited / amount) * 100
 
                 web3.getNumberOfPendingRewardTokens(stakedToken).then((amount) => {
-                    stakings[stakedToken].claimable_amount = parseFloat(amount)
-                    this.setState({ stakings })
+                    stakingsMap[stakedToken].claimable_amount = parseFloat(amount)
+                    this.setState({ stakingsMap })
 
                 })
             })
@@ -120,23 +216,26 @@ class StakingManager extends Component {
     }
 
 
-    handleClaim = () => {
-        console.log("claim");
+    handleClaim = (stakedToken) => () => {
+        console.log("handleClaim");
+
+        this.handleWithdraw(stakedToken)(0)
     }
 
 
-    handleWithdraw = () => {
-        console.log("handleWithdraw");
+    handleWithdraw = (stakedToken) => async (amount) => {
+        const { web3 } = this.state
+        this.setState({ currStake: stakedToken })
+
+        try {
+            console.log("handleWithdraw");
+            const data = await web3.withdraw(stakedToken, amount, notify(this.methods))
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    handleStake = (stakedToken) => async (amount) => {
-        const { isStakePopup } = this.state
-        this.setState({
-            currStake: isStakePopup ? null : stakedToken,
-            isStakePopup: !isStakePopup,
-            stakeAmount: undefined
-        })
-    }
+
 
 
     blurBG = () => {
@@ -150,9 +249,12 @@ class StakingManager extends Component {
         }
     }
 
+
     handleApprove = (token) => async (amount) => {
+        const { web3,approved } = this.state
         console.log(token.name + "\t" + amount + "\t handleApprove ");
-        const { web3 } = this.state
+        if(approved) return
+        this.setState({ typeTransaction: "approved" })
         try {
             const data = await web3.approve(token.name, amount, notify(this.methods))
 
@@ -161,23 +263,44 @@ class StakingManager extends Component {
         }
     }
 
+    handleStake = (stakedToken) => async (amount) => {
+        console.log("handleStake ", stakedToken, " ", amount);
+
+        const { isStakePopup, approved,web3 } = this.state
+        if(!approved) return
+
+        try {
+            const data = await web3.stake(stakedToken.name, amount, notify(this.methods))
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        this.setState({
+            currStake: stakedToken,
+            isStakePopup: !isStakePopup,
+            stakeAmount: undefined
+        })
+    }
+
 
     handlePopup = (stakedToken) => {
-        const { isStakePopup } = this.state
+        const { isStakePopup, stakingsMap } = this.state
         console.log(stakedToken, " called");
-        this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken })
+        const approved = stakingsMap[stakedToken] && stakingsMap[stakedToken].allowances > 0
+        this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken, approved })
     }
 
     render() {
-        const { tokensMap, pools, stakings } = this.state
-        const { isStakePopup, approved, currStake, stakeAmount } = this.state
+        const { tokensMap, pools, stakingsMap, isStakePopup, approved, currStake } = this.state
         const currToken = tokensMap[currStake]
-        const currStaking = stakings[currStake]
+        const currStaking = stakingsMap[currStake]
 
 
         this.blurBG()
 
         return (<>
+            <ToastContainer style={{ width: "400px" }} />
 
             { currStake && currToken && <StakePopup
                 title={"STAKE TOKENS TO EARN " + "DEA"}
@@ -188,6 +311,7 @@ class StakingManager extends Component {
                 handlePopup={this.handlePopup}
                 token={currToken}
                 staking={currStaking}
+                contractAddr={addrs["staking"][currStake][this.props.chainId]}
                 isApproved={approved}
             />}
 
@@ -200,14 +324,17 @@ class StakingManager extends Component {
                 <div className="container-single-wrap" style={{ marginTop: "50px" }}>
                     {
                         pools.slice(0, pools.length).map((token, i) => {
+                            // console.log(token);
                             return <QStake
                                 key={i}
-                                handleClaim={this.handleClaim}
-                                handleWithdraw={this.handleWithdraw}
+                                handleClaim={this.handleClaim(token)}
+                                handleWithdraw={this.handleWithdraw(token)}
                                 handleStakePopup={this.handlePopup}
-                                staking={stakings[token]}
+                                staking={stakingsMap[token]}
                                 handleStake={this.handleStake}
-                                stakable={stakings[token].onlyMain || stakings[token].off ? false : true} />
+                                deposited={stakingsMap[token].deposited}
+                                stakable={stakingsMap[token].onlyMain || stakingsMap[token].off ? false : true}
+                            />
                         })
                     }
 

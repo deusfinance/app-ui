@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Web3ReactProvider } from '@web3-react/core'
 import { getLibrary } from './utils/utils';
 
-import * as serviceWorker from './serviceWorker';
+// import * as serviceWorker from './serviceWorker';
 
 
 ReactDOM.render(
@@ -17,4 +17,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-serviceWorker.unregister();
+// serviceWorker.unregister();

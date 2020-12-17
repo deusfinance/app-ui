@@ -140,23 +140,21 @@
             color: #000000;
         }
     }
-    .action-btn{
-        display:flex;
-        justify-content:space-between;
+    .action-btn {
+        display: flex;
+        justify-content: space-between;
         margin-top: 40px;
-        .btn-wrap{
-      width:45%;
-        font-size: 20px;
-        margin:0;
+        .btn-wrap {
+            width: 45%;
+            font-size: 20px;
+            margin: 0;
         }
     }
     .btn-wrap {
-  
-
-                width:100%;
-        margin:auto;
-        margin-top:50px;
-    font-size: 23px;
+        width: 100%;
+        margin: auto;
+        margin-top: 50px;
+        font-size: 23px;
 
         border: 2px solid #000000;
         border-radius: 10px;
@@ -169,73 +167,71 @@
             color: #000000;
         }
     }
-    .btn-wrap:nth-child(2){
-        opacity:0.4;
-        cursor:default;
-        &:hover{
+    .btn-wrap:nth-child(2) {
+        opacity: 0.4;
+        cursor: default;
+        &:hover {
             background-color: transparent;
-
         }
     }
-    .indicator{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        margin-top:15px;
-        .cyc{
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            width:20px;
-            height:20px;
-            color:#000000;
-            background-color:#ffffff;
-            border-radius:50%;
+    .indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+        .cyc {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            color: #000000;
+            background-color: #ffffff;
+            border-radius: 50%;
             font-family: Monument Grotesk;
             font-weight: 400;
         }
-        .c-right{
+        .c-right {
             // opacity:0.4;
         }
-        .c-line{
+        .c-line {
             // background:linear-gradient(90deg, #FFFFFF 3.18%,rgb(187 ,231, 145) 101.59%);
         }
-        .c-line{
-            height:5px;
-            width:50%;
-            background-color:#ffffff;
-        }
-    }
-    .approved{
-        .btn-wrap:nth-child(1){
-            background-color:#000000;
-            color:#ffffff;
-            cursor:default;
-        }
-        .btn-wrap:nth-child(2){
-              opacity:1;
-         cursor: pointer;
-        &:hover {
+        .c-line {
+            height: 5px;
+            width: 50%;
             background-color: #ffffff;
-            color: #000000;
         }
-        }
-            .c-left{
-                background-color:#000000;
-                color:#ffffff;
-            }
-            .c-line{
-            background:linear-gradient(90deg, #000000 -66.82%, #ffffff 101.59%);
-            }
     }
-
+    .approved {
+        .btn-wrap:nth-child(1) {
+            background-color: #000000;
+            color: #ffffff;
+            cursor: default;
+        }
+        .btn-wrap:nth-child(2) {
+            opacity: 1;
+            cursor: pointer;
+            &:hover {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        }
+        .c-left {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        .c-line {
+            background: linear-gradient(90deg, #000000 -66.82%, #ffffff 101.59%);
+        }
+    }
 }
-
 
 .st-bg {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
+    z-index: -1;
 }
 
 .stake-container-wrap {
@@ -361,7 +357,7 @@
             height: 43px;
             max-width: 345px;
             border-radius: 6px;
-            width:85%;
+            width: 85%;
             .grad {
                 border-radius: 6px;
             }
@@ -904,8 +900,8 @@
             position: absolute;
             right: 0;
             left: 0;
-        
-            width:90%;
+
+            width: 90%;
             max-width: 400px;
 
             height: 40px;
@@ -1055,7 +1051,7 @@
     .container-single-wrap {
         .single-wrap {
             margin: 20px auto;
-            width:95%;
+            width: 95%;
         }
     }
 }

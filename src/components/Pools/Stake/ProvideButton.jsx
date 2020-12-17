@@ -7,7 +7,7 @@ const ProvideButton = ({ staking, isSand }) => {
             <Link to={staking.provideLink} className=" grad ">
                 <div className="provide-more">
                     <span>get {staking.title} </span>
-                    <img src={process.env.PUBLIC_URL + "/vaults/sand-token.svg"} alt="uni" />
+                    <img src={process.env.PUBLIC_URL + "/img/staking/sand-token.svg"} alt="vaults" />
                 </div>
             </Link>
             : <a className=" grad provide-more " href={staking.liqLink} target="_blank" rel="noopener noreferrer">provide Liquidity</a>}

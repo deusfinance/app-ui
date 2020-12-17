@@ -30,7 +30,9 @@ class MainSwap extends Component {
         fromPerTo: false,
         claimable_amount: null,
         typingTimeout: 0,
-        typeTransaction: ""
+        typeTransaction: "",
+        toAmount: "",
+        fromAmount: ""
     }
 
 
@@ -120,19 +122,20 @@ class MainSwap extends Component {
         const { allTokens } = this.props
         const tk = allTokens[tokenName]
         swap[type] = { ...tk, amount: amount }
-        this.setState({ swap })
+        this.setState({ swap, toAmount: "", fromAmount: "" })
     }
 
     getToken = (tokenName) => this.state.tokens.find(t => t.name === tokenName)
 
     handleChangeType = () => {
-        const { swap } = this.state
+        const { swap, fromPerTo } = this.state
         const { from, to } = swap
         from.amount = ""
         to.amount = ""
         swap.from = to
         swap.to = from
-        this.setState({ swap })
+        this.setState({ swap, toAmount: "", fromAmount: "" })
+        this.handleSwichPerPrice()
     }
 
     handleSwichPerPrice = () => {
@@ -148,7 +151,7 @@ class MainSwap extends Component {
         if (amount === "") {
             swap.from.amount = ""
             swap.to.amount = ""
-            this.setState({ swap })
+            this.setState({ swap, toAmount: "", fromAmount: "" })
             return
         }
         if (amount === "00") {
@@ -163,6 +166,7 @@ class MainSwap extends Component {
         this.setState({
             typingTimeout: setTimeout(() => {
                 this.handleCalcPairPrice(stype, amount)
+
                 this.setState({ swap })
             }, 500)
         })
@@ -183,11 +187,22 @@ class MainSwap extends Component {
 
         const vstype = searchBoxType === "from" ? "to" : "from"
 
+        if (parseFloat(swap[searchBoxType].amount) === 0) {
+            swap[vstype].amount = "0"
+            this.setState({ swap })
+            return
+        }
+
+
         try {
             const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : await web3.getAmountsIn(swap.from.name, swap.to.name, amount)
             console.log(data);
             swap[vstype].amount = getStayledNumber(data, 9)
-            this.setState({ swap })
+            this.setState({
+                swap,
+                fromAmount: swap.from.amount,
+                toAmount: swap.to.amount
+            })
         } catch (error) {
             console.log(error);
             // swap[vstype].amount = "1"
@@ -285,6 +300,9 @@ class MainSwap extends Component {
         if (swap[vstype].name === tokenName) {
             const tmp = swap[searchBoxType].name
             this.handleInitToken(vstype, tmp)
+        } else {
+            const tmp = swap[vstype].name
+            this.handleInitToken(vstype, tmp)
         }
         this.handleInitToken(searchBoxType, tokenName)
         this.handleSearchBox(false)
@@ -334,9 +352,12 @@ class MainSwap extends Component {
         return 0
     }
 
+
+
+
     render() {
 
-        const { showSearchBox, swap, fromPerTo, searchBoxType, tokens, web3, claimable_amount } = this.state
+        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
         const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
@@ -378,6 +399,8 @@ class MainSwap extends Component {
                             <TokenMarket
                                 handleSwich={this.handleSwichPerPrice}
                                 swap={swap}
+                                toAmount={toAmount}
+                                fromAmount={fromAmount}
                                 fromPerTo={fromPerTo}
                                 perPrice={""}
                                 tvl={""}

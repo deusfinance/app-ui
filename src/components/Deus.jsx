@@ -1,7 +1,6 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { isDesktop } from '../utils/utils';
 import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
 

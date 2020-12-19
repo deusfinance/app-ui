@@ -1,4 +1,5 @@
 
+
 export const contractEndpoint = "https://rinkeby.etherscan.io/address"
 export const dappLink = "https://metamask.app.link/dapp/demo.deus.finance/"
 export const navbarItems = [
@@ -73,6 +74,7 @@ export const TokenType = {
     Time: "time",
     Sand: "sand",
     Liquidity: "liquidity",
+    Wrapped: "wrapped",
     Main: "main",
 }
 
@@ -416,8 +418,9 @@ export const AllStakings = {
         claimable_amount: 0,
         apy: 126,
         own_pool: 30,
+        isClose: true,
         onlyMain: true,
-        info: "50% DEA\n30% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n25% sUNI-LP-DEA-USDC",
+        info: "50% DEA\n25% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n10% sUNI-LP-DEA-USDC",
     },
     bpt_legacy: {
         name: "bpt_legacy",
@@ -430,6 +433,7 @@ export const AllStakings = {
         info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
         apy: 178,
         claimable_amount: 0,
+        isClose: true,
         deposited: 0,
         onlyMain: true
     },
@@ -511,6 +515,9 @@ export const AllStakings = {
         isClose: true,
     },
 }
+
+
+
 
 
 /*

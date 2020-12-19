@@ -85,7 +85,7 @@ class UnLockPupop extends Component {
                     />
                 }
 
-                <svg width={368} height={170} viewBox="0 20 368 170" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <svg width={368} height={163} viewBox="0 20 368 170" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M367.699 14.5C367.699 6.5 363.643 5.20656 355.774 5.20656C315.106 5.20656 208.017 10.0107 193.963 10.0107C182.419 10.0107 155.315 7.86695 142.317 7.86695C132.466 12.27 4.7628 -8.52678 2.04796 4.15947C1.34174 7.45882 1.22251 9.59643 1.22251 9.59643C1.10328 11.5482 -0.562823 13.2806 0.198431 15C7.53582 31.4619 138.483 79.8254 150.663 95.2534L158.523 105.221C170.098 119.859 176.472 139.353 176.472 160.09C176.472 165.574 179.976 170 184.296 170C188.616 170 192.119 165.574 192.119 160.09C192.119 139.365 198.494 119.871 210.059 105.221L217.929 95.2418C219.864 92.8021 239.199 72.5 239.199 72.5C297.199 31 372.199 27 367.699 14.5Z" fill="currentColor" />
                     <path d="M184.667 65.4063L187.831 61.4808C188.416 60.7523 189.462 61.238 189.462 62.2497V62.2578C189.462 62.5492 189.365 62.8325 189.187 63.0429L184.398 68.6682C184.027 69.1052 183.428 69.1052 183.064 68.6682L178.275 63.0348C178.096 62.8244 178 62.5411 178 62.2497C178 61.2461 179.046 60.7523 179.631 61.4889L182.788 65.4063L182.761 53.117C182.761 52.5018 183.187 52 183.71 52H183.745C184.268 52 184.687 52.5018 184.687 53.117L184.667 65.4063Z" fill="white" />
                 </svg>
@@ -149,7 +149,7 @@ class UnLockPupop extends Component {
 
 
 
-                {!oldApprove && <div className={`btns ${approvedClasses}`}>
+                {!oldApprove && <> <div className={`btns ${approvedClasses}`}>
                     <div className=" grad-wrap swap-btn-wrap ">
                         <div className={`swap-btn  ${swapLeftClasses}`} onClick={() => handleApprove(tokenAmount)}>APPROVE</div>
                     </div>
@@ -157,7 +157,14 @@ class UnLockPupop extends Component {
                     <div className=" grad-wrap swap-btn-wrap  ">
                         <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "Lock & Mint" : "UnLock"}</div>
                     </div>
-                </div>}
+                </div>
+                    <div className={`stepper ${approvedClasses}`}>
+                        <div className="cyc">1</div>
+                        <div className="line"></div>
+                        <div className="cyc">2</div>
+                    </div>
+
+                </>}
 
                 {oldApprove && <div className="btns">
                     <div className=" grad-wrap swap-btn-wrap " style={{ margin: "auto" }} >

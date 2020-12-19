@@ -23,7 +23,7 @@
         border: 2px solid #000000;
         box-sizing: border-box;
         border-radius: 10px;
-        height: 90px;
+        height: 80px;
         margin: 0 65px;
         // margin-top: 30px;
 
@@ -35,7 +35,7 @@
             padding-top: 10px;
         }
         .input-bottom {
-            margin-top: 20px;
+            margin-top: 12px;
             display: flex;
             white-space: nowrap;
             align-items: center;
@@ -60,11 +60,11 @@
                 border-radius: 6px;
                 margin-right: 10px;
                 margin-left: 5px;
-                opacity: 50%;
+                opacity: 0.5;
 
                 cursor: pointer;
                 &:hover {
-                    opacity: 100%;
+                    opacity: 1;
                 }
             }
             input {
@@ -119,7 +119,7 @@
     }
 
     .bottom {
-        margin-top: 50px;
+        margin-top: 58px;
         .btns {
             display: flex;
             justify-content: space-between;
@@ -137,12 +137,20 @@
                 opacity: 1;
             }
             .swap-btn-wrap:nth-child(1) {
-                opacity: 0.4;
+                cursor: default;
+                // opacity: 0.4;
+                .swap-btn {
+                    color: #111111;
+                    background-color: transparent;
+                }
+            }
+            .cyc:nth-child(1) {
             }
         }
 
         .swap-btn-wrap:nth-child(2) {
             opacity: 0.4;
+            // cursor: default;
         }
         .swap-btn-wrap {
             border-radius: 6px;
@@ -168,6 +176,7 @@
             }
             .disabled {
                 color: #919191;
+                // cursor: default;
                 &:hover {
                     color: #919191;
                     background-color: #1b1b1b;
@@ -235,9 +244,9 @@
             color: #ffffff;
             padding-bottom: 5px;
             border-bottom: 2px solid #ffffff;
-            opacity: 70% !important;
+            opacity: 0.7;
             &:hover {
-                opacity: 100%;
+                opacity: 1;
             }
             &.unlocked {
                 margin-top: 85px;
@@ -266,6 +275,41 @@
             //         }
             //     }
             // }
+        }
+    }
+    .stepper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        .cyc {
+            background-color: #ffffff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            color: #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cyc:nth-child(1) {
+            background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%), #111111;
+        }
+
+        .line {
+            background-color: #4c4c4c;
+            width: 190px;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(137, 212, 182, 1) 0%, rgba(255, 255, 255, 1) 100%);
+        }
+    }
+
+    .stepper.approved {
+        .cyc {
+            background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%), #111111;
+        }
+        .line {
+            background: linear-gradient(90deg, rgba(137, 212, 182, 1) 0%, rgba(241, 252, 104, 1) 100%);
         }
     }
 }
@@ -660,16 +704,16 @@
         }
         .lock-input {
             // margin-top: 10px;
-            height: 70px;
+            height: 60px;
             margin: 0 40px;
             // margin-top: 8px;
             .input-bottom {
-                margin-top: 12px;
+                margin-top: 6px;
                 svg {
                     width: 20px;
                 }
                 input {
-                    font-size: 25px;
+                    font-size: 22px;
                     // padding-bottom: 5px;
                 }
                 .token-name {
@@ -691,7 +735,7 @@
         }
 
         .bottom {
-            margin-top: 40px;
+            margin-top: 35px;
             .btns {
                 padding: 0px 40px;
             }
@@ -702,7 +746,7 @@
             .swap-btn-wrap {
                 height: 35px;
                 .swap-btn {
-                    font-size: 18px;
+                    font-size: 16px;
                 }
             }
         }
@@ -731,10 +775,11 @@
             .contract {
                 margin-top: 13px;
                 font-size: 13px;
+                padding-bottom: 15px;
                 cursor: pointer;
-
+                opacity: 0.7;
                 &:hover {
-                    opacity: 50%;
+                    opacity: 1;
                 }
                 &.unlocked {
                     margin-top: 35px;
@@ -883,7 +928,7 @@
     }
 
     .lock-swap .lock-input {
-        height: 65px;
+        height: 55px;
         margin: 0 40px;
     }
     .lock-swap .lock-input .input-top {
@@ -892,7 +937,7 @@
     }
 
     .lock-swap .lock-input .input-bottom {
-        margin-top: 12px;
+        margin-top: 5px;
     }
     .lock-swap .top svg {
         height: 105px;
@@ -900,7 +945,17 @@
         max-width: 320px;
     }
     .lock-swap .bottom {
-        margin-top: 28px;
+        margin-top: 25px;
+    }
+    .lock-swap .stepper {
+        margin-top: 5px;
+        .line {
+            width: 115px;
+        }
+        .cyc {
+            width: 17px;
+            height: 17px;
+        }
     }
     .lock-swap .bottom .btns {
         padding: 0px 40px;

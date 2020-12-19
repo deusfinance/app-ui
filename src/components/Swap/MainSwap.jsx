@@ -396,6 +396,7 @@ class MainSwap extends Component {
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
 
+
                             <TokenMarket
                                 handleSwich={this.handleSwichPerPrice}
                                 swap={swap}

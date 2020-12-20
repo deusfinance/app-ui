@@ -215,5 +215,8 @@
     "amm": {
         "1": "0xD77700fC3C78d1Cb3aCb1a9eAC891ff59bC7946D",
         "4": "0x6D3459E48C5D106e97FeC08284D56d43b00C2AB4"
+    },
+    "stocks_contract": {
+        "4": "0xE7d50574C1aCa5b25710990E12919ff9d4c66589"
     }
 }

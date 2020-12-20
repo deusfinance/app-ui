@@ -66,10 +66,10 @@ export class SwapService {
         if (!this.checkWallet()) return 0
 
         let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const AutomaticMarketMakerContract = new metamaskWeb3.eth.Contract(abis["token"], this.getTokenAddr(token));
+        const TokenContract = new metamaskWeb3.eth.Contract(abis["token"], this.getTokenAddr(token));
         amount = Math.max(amount, 10 ** 20);
 
-        return AutomaticMarketMakerContract.methods.approve(this.getAddr("deus_swap_contract"), this._getWei(amount))
+        return TokenContract.methods.approve(this.getAddr("deus_swap_contract"), this._getWei(amount))
             .send({ from: this.account })
             .once('transactionHash', () => listener("transactionHash"))
             .once('receipt', () => listener("receipt"))
@@ -239,5 +239,58 @@ export class SwapService {
             )
     }
 
+    approveStocks(amount, listener) {
+        if (!this.checkWallet()) return 0
+
+        let metamaskWeb3 = new Web3(Web3.givenProvider);
+        const TokenContract = new metamaskWeb3.eth.Contract(abis["token"], this.getTokenAddr("dai"));
+        amount = Math.max(amount, 10 ** 20);
+
+        return TokenContract.methods.approve(this.getAddr("stocks_contract"), this._getWei(amount))
+            .send({ from: this.account })
+            .once('transactionHash', () => listener("transactionHash"))
+            .once('receipt', () => listener("receipt"))
+            .once('error', () => listener("error"));
+    }
+
+    getAllowancesStocks() {
+        if (!this.checkWallet()) return 0
+
+        const account = this.account;
+        console.log(this.getTokenAddr("dai"));
+        const TokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr("dai"))
+        return TokenContract.methods.allowance(account, this.getAddr("stocks_contract"))
+            .call().then(amount => {
+                let result = Web3.utils.fromWei(amount, 'ether');
+                // console.log(result);
+                return result;
+            });
+    }
+
+    buyStock(stockAddr, amount, blockNo, v, r, s, price, fee, listener) {
+        if (!this.checkWallet()) return 0
+
+        let metamaskWeb3 = new Web3(Web3.givenProvider);
+        const StocksContract = new metamaskWeb3.eth.Contract(abis["stocks_contract"], this.getAddr("stocks_contract"));
+        return StocksContract.methods.buyStock(stockAddr, amount, blockNo, v, r, s, price, fee)
+            .send({ from: this.account })
+            .once('transactionHash', () => listener("transactionHash"))
+            .once('receipt', () => listener("receipt"))
+            .once('error', () => listener("error"))
+
+    }
+
+    sellStock(stockAddr, amount, blockNo, v, r, s, price, fee, listener) {
+        if (!this.checkWallet()) return 0
+
+        let metamaskWeb3 = new Web3(Web3.givenProvider);
+        const StocksContract = new metamaskWeb3.eth.Contract(abis["stocks_contract"], this.getAddr("stocks_contract"));
+        return StocksContract.methods.sellStock(stockAddr, amount, blockNo, v, r, s, price, fee)
+            .send({ from: this.account })
+            .once('transactionHash', () => listener("transactionHash"))
+            .once('receipt', () => listener("receipt"))
+            .once('error', () => listener("error"))
+
+    }
 }
 

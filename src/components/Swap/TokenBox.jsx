@@ -43,9 +43,9 @@ class TokenBox extends Component {
                         autoComplete="off" autoCorrect="off" placeholder="0.0" spellCheck="false" />
                     {type === "from" && <div className="max-btn" onClick={() => handleTokenInputChange(type, token.balance)}>MAX</div>}
                     <div className="token-info" onClick={() => handleSearchBox(true, type)}>
-                        <img className="token-icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}.svg`} alt="ETH" />
+                        <img className="token-icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}`} alt={token.title} />
                         <span className="token-name" style={{ textTransform: "uppercase" }}>{token.title}</span>
-                        {token.isFutures && <img className="futures" src={process.env.PUBLIC_URL + "/img/futures.svg"} />}
+                        {token.isFutures && <img className="futures" src={process.env.PUBLIC_URL + "/img/futures.svg"} alt="futures" />}
                         <img className="select-icon" src={process.env.PUBLIC_URL + "/img/select.svg"} alt="select" />
                     </div>
                 </div>

@@ -28,19 +28,14 @@ export const navbarItems = [
                 path: "/staking",
                 exact: false,
             },
-            // {
-            //     id: "nstaking",
-            //     text: "NEW STAKING",
-            //     path: "/new-staking",
-            //     exact: true,
-            // },
-            {
-                id: "vaults",
-                text: "VAULTS",
-                path: "/vaults",
-                exact: true,
 
-            },
+            // {
+            //     id: "vaults",
+            //     text: "VAULTS",
+            //     path: "/vaults",
+            //     exact: true,
+
+            // },
         ]
     },
     {
@@ -94,7 +89,7 @@ export const AllTokens = {
         type: TokenType.Wrapped,
         innerLink: true,
         provideLink: "/swap",
-        pic_name: "coinbase",
+        pic_name: "coinbase.svg",
         isFutures: true
     },
     "deus": {
@@ -104,7 +99,7 @@ export const AllTokens = {
         innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
-        pic_name: "deus",
+        pic_name: "deus.svg",
 
     },
     "dea": {
@@ -114,7 +109,7 @@ export const AllTokens = {
         innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
-        pic_name: "dea",
+        pic_name: "dea.svg",
     },
     "usdc": {
         name: "usdc",
@@ -123,7 +118,7 @@ export const AllTokens = {
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         innerLink: false,
         provideLink: "/swap",
-        pic_name: "usdc"
+        pic_name: "usdc.svg"
     },
     "eth": {
         name: "eth",
@@ -132,7 +127,7 @@ export const AllTokens = {
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
-        pic_name: "eth-logo",
+        pic_name: "eth-logo.svg",
         allowances: 999
     },
     "wbtc": {
@@ -150,6 +145,8 @@ export const AllTokens = {
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
+        pic_name: "dai.png",
+
     },
     "uni": {
         name: "uni",

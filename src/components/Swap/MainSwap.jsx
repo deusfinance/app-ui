@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
+import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
 import PriceBox from './PriceBox';
 import TokenBox from './TokenBox';
 import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
 import Title from './Title';
 import SwapButton from './SwapButton';
-import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
-import { ToastContainer } from 'react-toastify';
 import { SwapService } from '../../services/SwapService';
 
 import './mainSwap.scss';
@@ -14,7 +14,7 @@ import './mainSwap.scss';
 
 class MainSwap extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "usdc", "coinbase"],
+        tokens: ["eth", "deus", "dea", "usdc", "dai", "coinbase"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -128,7 +128,7 @@ class MainSwap extends Component {
     getToken = (tokenName) => this.state.tokens.find(t => t.name === tokenName)
 
     handleChangeType = () => {
-        const { swap, fromPerTo } = this.state
+        const { swap } = this.state
         const { from, to } = swap
         from.amount = ""
         to.amount = ""
@@ -314,11 +314,6 @@ class MainSwap extends Component {
         return tokens.filter(t => swap[searchBoxType].name !== t.name)
     }
 
-    // handleFilterToken = () => {
-    //     const { searchBoxType, tokens, swap } = this.state
-    //     return tokens.filter(t => swap[searchBoxType].name !== t.name)
-    // }
-
     isApproved = () => {
         const { swap } = this.state
         // console.log(swap.to.allowances > 0);
@@ -330,9 +325,8 @@ class MainSwap extends Component {
         if (!web3) return
 
         const { from, to } = swap
-        console.log("come");
         try {
-            const data = !(swap.from.allowances > 0) ?
+            !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :
                 await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
         } catch (error) {
@@ -374,9 +368,6 @@ class MainSwap extends Component {
 
             <div className="swap-container-wrap">
                 <div className="swap-container">
-                    {/* <div className="show-dollar-wrap grad-wrap">
-                        <div className="show-dollar grad">SHOW DOLLAR PRICE</div>
-                    </div> */}
 
                     <div className="swap-box-wrap">
                         <div className="swap-box">
@@ -411,7 +402,8 @@ class MainSwap extends Component {
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
 
-                        <PriceBox impact={""} vaultsFee={""} />
+
+
 
                         <SearchBox
                             showSearchBox={showSearchBox}
@@ -423,6 +415,7 @@ class MainSwap extends Component {
                             handleChangeToken={this.handleChangeToken}
                         />
 
+                        <PriceBox impact={""} vaultsFee={""} />
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ import './mainSwap.scss';
 
 class CoinBase extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "usdc", "coinbase"],
+        tokens: ["eth", "deus", "dea", "usdc", "dai", "coinbase"],
         web3: null,
         tokensMap: {},
         swap: {

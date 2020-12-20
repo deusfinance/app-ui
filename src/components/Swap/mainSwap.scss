@@ -55,19 +55,21 @@
 
     .swap-container-wrap {
         position: relative;
-        max-width: 1072px;
+        // max-width: 1072px;
         width: 100%;
-        height: 685px;
+        // height: 685px;
+
         margin: auto;
         // border: 1px solid #c4c4c4;
         border-radius: 400px 0px;
         // overflow: hidden;
         font-family: Monument Grotesk;
         font-weight: 400;
-        background-image: url("/img/swapt.svg");
-        background-repeat: no-repeat;
-        background-position: center;
-        // background-size: cover;
+        // background-image: url("/img/swapt.svg");
+        // background-image: url("/img/BondingCurve.svg");
+        // background-repeat: no-repeat;
+        // background-position: center;
+        // background-size: contain;
         .swap-container {
             height: 100%;
             width: 100%;
@@ -85,12 +87,13 @@
 
             .swap-box-wrap {
                 position: absolute;
-                top: 90px;
+                top: 50px;
                 left: 0;
                 right: 0;
                 margin: auto;
                 width: 480px;
                 height: 410px;
+                filter: drop-shadow(0px 0px 20px rgba(255, 255, 255, 0.25));
                 .swap-box {
                     // width: 100%;
                     height: 360px;
@@ -188,7 +191,7 @@
                                     }
                                     .futures {
                                         margin: auto 5px;
-                                        width: 80px;
+                                        width: 50px;
                                     }
 
                                     .select-icon {
@@ -462,7 +465,7 @@
     font-family: Monument Grotesk;
     font-weight: 400;
     text-shadow: 0px 0px 10px #ffffff;
-    margin-top: 10px;
+    margin-top: 20px;
     font-size: 20px;
 }
 

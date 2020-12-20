@@ -61,7 +61,7 @@ class StakingManager extends Component {
             pools.map(async (tokenName) => {
                 await this.handleInitAllowances(tokenName)
                 await this.getSingleBalance(tokenName)
-                await  this.getStakingAllAmounts(tokenName)
+                await this.getStakingAllAmounts(tokenName)
 
             })
 
@@ -116,12 +116,12 @@ class StakingManager extends Component {
         // this.setState({ stakingsMap })
     }
 
-  escFunction = (event)=>{
-    if(event.keyCode === 27) {
-     this.setState({isStakePopup:false,approved:false})
+    escFunction = (event) => {
+        if (event.keyCode === 27) {
+            this.setState({ isStakePopup: false, approved: false })
+        }
     }
-  }
-  
+
     methods = {
         onStart: () => {
             console.log("onStart")
@@ -193,7 +193,7 @@ class StakingManager extends Component {
             return
         }
 
-        if(!web3) return
+        if (!web3) return
 
         web3.getNumberOfStakedTokens(stakedToken).then((amount) => {
             stakingsMap[stakedToken].deposited = amount
@@ -251,9 +251,9 @@ class StakingManager extends Component {
 
 
     handleApprove = (token) => async (amount) => {
-        const { web3,approved } = this.state
+        const { web3, approved } = this.state
         console.log(token.name + "\t" + amount + "\t handleApprove ");
-        if(approved) return
+        if (approved) return
         this.setState({ typeTransaction: "approved" })
         try {
             const data = await web3.approve(token.name, amount, notify(this.methods))
@@ -266,8 +266,8 @@ class StakingManager extends Component {
     handleStake = (stakedToken) => async (amount) => {
         console.log("handleStake ", stakedToken, " ", amount);
 
-        const { isStakePopup, approved,web3 } = this.state
-        if(!approved) return
+        const { isStakePopup, approved, web3 } = this.state
+        if (!approved) return
 
         try {
             const data = await web3.stake(stakedToken.name, amount, notify(this.methods))
@@ -318,7 +318,7 @@ class StakingManager extends Component {
             <div className="staking-wrap" >
                 <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" />
 
-                <TopNotif typeID={this.props.navId} />
+                {/* <TopNotif typeID={this.props.navId} /> */}
 
                 <div className="stake-container-wrap" ></div>
                 <div className="container-single-wrap" style={{ marginTop: "50px" }}>

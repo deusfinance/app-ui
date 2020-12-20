@@ -12,7 +12,7 @@ import { SwapService } from '../../services/SwapService';
 import './mainSwap.scss';
 
 
-class MainSwap extends Component {
+class CoinBase extends Component {
     state = {
         tokens: ["eth", "deus", "dea", "usdc", "coinbase"],
         web3: null,
@@ -92,7 +92,7 @@ class MainSwap extends Component {
             await this.handleInitAllowances(true)
 
             this.handleInitToken("from", "eth")
-            this.handleInitToken("to", "deus")
+            this.handleInitToken("to", "coinbase")
         }
     }
 
@@ -369,7 +369,7 @@ class MainSwap extends Component {
         return (<div className="deus-swap-wrap">
 
             {!isMobile && <ToastContainer style={{ width: "400px" }} />}
-            <Title web3={web3} claimable_amount={claimable_amount} />
+            <Title web3={web3} claimable_amount={claimable_amount} isCoinbase={true} />
 
 
             <div className="swap-container-wrap">
@@ -423,6 +423,7 @@ class MainSwap extends Component {
                             handleChangeToken={this.handleChangeToken}
                         />
 
+                        <p className="ipo"> trade the IPO before anyone else</p>
                     </div>
                 </div>
             </div>
@@ -431,4 +432,4 @@ class MainSwap extends Component {
 }
 
 
-export default MainSwap;
+export default CoinBase;

@@ -215,6 +215,7 @@ class Vault extends Component {
 
     handleSwap = (from) => (amount) => {
         if (amount === "" || amount === "0" || this.state.approved !== true) return
+
         console.log(from.name + "\t" + amount + "\t handleSwap ");
         this.setLockedAmount(from.name, amount)
     }

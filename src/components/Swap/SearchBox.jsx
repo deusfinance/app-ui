@@ -22,12 +22,14 @@ class SearchBox extends Component {
                             {
                                 (tokens.sort((a, b) => allTokens[a].balance ? allTokens[a].balance > allTokens[b].balance : false)).map((tokenName, i) => {
                                     if (tokenName === choosedToken) return
-                                    return <div key={i} className="token-item" onClick={() => handleChangeToken(allTokens[tokenName].name)}>
+                                    const token = allTokens[tokenName]
+                                    return <div key={i} className="token-item" onClick={() => handleChangeToken(token.name)}>
                                         <div>
-                                            <img src={process.env.PUBLIC_URL + `/tokens/${allTokens[tokenName].pic_name}.svg`} alt={allTokens[tokenName].name} />
-                                            <p style={{ textTransform: "uppercase" }}>{allTokens[tokenName].name}</p>
+                                            <img src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}.svg`} alt={token.name} />
+                                            <p style={{ textTransform: "uppercase" }}>{token.name}</p>
+                                            {token.isFutures && <img className="futures" src={process.env.PUBLIC_URL + "/img/futures.svg"} />}
                                         </div>
-                                        <p >{getStayledNumber(allTokens[tokenName].balance)}</p>
+                                        <p >{getStayledNumber(token.balance)}</p>
                                     </div>
                                 })
                             }

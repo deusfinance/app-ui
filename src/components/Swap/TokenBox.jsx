@@ -45,6 +45,7 @@ class TokenBox extends Component {
                     <div className="token-info" onClick={() => handleSearchBox(true, type)}>
                         <img className="token-icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}.svg`} alt="ETH" />
                         <span className="token-name" style={{ textTransform: "uppercase" }}>{token.title}</span>
+                        {token.isFutures && <img className="futures" src={process.env.PUBLIC_URL + "/img/futures.svg"} />}
                         <img className="select-icon" src={process.env.PUBLIC_URL + "/img/select.svg"} alt="select" />
                     </div>
                 </div>

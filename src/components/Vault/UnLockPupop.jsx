@@ -34,7 +34,7 @@ class UnLockPupop extends Component {
                 try {
                     const data = await getSandAndTime(amount);
                     this.setState({
-                        sandAmount: getStayledNumber(data[0]), timeAmount: getStayledNumber(data[1])
+                        sandAmount: data[0], timeAmount: data[1]
                     })
                 } catch (error) {
 

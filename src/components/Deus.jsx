@@ -5,6 +5,7 @@ import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
 
 
+const CoinBase = React.lazy(() => import('./Swap/CoinBase'));
 const MainSwap = React.lazy(() => import('./Swap/MainSwap'));
 const Vault = React.lazy(() => import('./Vault/Vault'));
 const StakingManager = React.lazy(() => import('./Pools/Stakings'));
@@ -38,6 +39,7 @@ const Deus = () => {
                 <Route exact path="/staking/sand" render={() => <StakingManager pools={["sand_dea", "sand_deus", "sand_dai", "sand_eth", "sand_wbtc", "timetoken"]} navId={0} {...props} />} />
                 <Route exact path="/vaults" render={() => <Vault account={account} chainId={chainId} allTokens={allTokens} />} />
                 <Route exact path="/swap" render={() => <MainSwap account={account} chainId={chainId} setAllTokens={setAllTokens} allTokens={allTokens} />} />
+                <Route exact path="/coinbase" render={() => <CoinBase account={account} chainId={chainId} setAllTokens={setAllTokens} allTokens={allTokens} />} />
                 <Redirect from="/staking" to="/staking/sand" />
                 <Redirect from="/" to="/swap" />
             </Switch>

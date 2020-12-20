@@ -1,11 +1,10 @@
 import React from 'react';
 import { getStayledNumber, notify } from '../../utils/utils';
 
-const Title = ({ claimable_amount, web3 }) => {
+const Title = ({ claimable_amount, web3, isCoinbase }) => {
     const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && claimable_amount !== 0
     const isMobile = window.innerWidth < 670
 
-    console.log(claimable_amount);
     return (<>
         {isClaimBtn && isMobile && <div className="grad-wrap claimable-btn" onClick={() => web3.withdrawPayment(notify())}>
             <div className={`grad `}>
@@ -21,7 +20,12 @@ const Title = ({ claimable_amount, web3 }) => {
                     Swap
                             </div>
             </div>
+
         </div>
+        {isCoinbase && <div className="coinbase-wrap">
+            <div className="top">coinbase</div>
+            <img src={process.env.PUBLIC_URL + "/img/futures.svg"} alt="CoinBase" />
+        </div>}
     </>);
 }
 

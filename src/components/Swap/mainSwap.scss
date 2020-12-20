@@ -89,7 +89,7 @@
                 left: 0;
                 right: 0;
                 margin: auto;
-                width: 380px;
+                width: 480px;
                 height: 410px;
                 .swap-box {
                     // width: 100%;
@@ -183,8 +183,12 @@
                                     }
                                     .token-name {
                                         margin-left: 10px;
-                                        font-size: 25px;
+                                        font-size: 22px;
                                         font-weight: 400;
+                                    }
+                                    .futures {
+                                        margin: auto 5px;
+                                        width: 80px;
                                     }
 
                                     .select-icon {
@@ -291,6 +295,7 @@
                     border-radius: 10px;
                     padding: 15px 10px;
                     min-height: 420px;
+
                     .search-box {
                         animation: scale-up 0.5s forwards;
                         .label {
@@ -353,7 +358,10 @@
                                     padding: 5px 0;
                                     padding-right: 10px;
                                     cursor: pointer;
-
+                                    .futures {
+                                        margin-left: 10px;
+                                        width: 70px;
+                                    }
                                     div {
                                         display: flex;
                                         align-items: center;
@@ -363,6 +371,7 @@
                                             margin-left: 4px;
                                             width: 25px;
                                             height: 25px;
+                                            border-radius: 50%;
                                         }
                                         p {
                                             height: 25px;
@@ -425,6 +434,38 @@
     display: block;
 }
 
+.coinbase-wrap {
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    position: relative;
+    text-align: center;
+    margin: auto;
+    margin-top: -25px;
+    margin-bottom: 50px;
+    .top {
+        color: #0667d0;
+        font-size: 45px;
+        font-weight: bold;
+    }
+    img {
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 150px;
+        top: 27px;
+        margin: auto;
+    }
+}
+.ipo {
+    text-align: center;
+    margin: auto;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    text-shadow: 0px 0px 10px #ffffff;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
 @media screen and (max-width: 960px) {
     .deus-swap-wrap {
         padding-top: 30px;
@@ -459,8 +500,17 @@
                     right: 0;
                     margin: auto;
                 }
-                .swap-box .token-box-wrap .token-box .bottom .token-info .token-name {
-                    font-size: 20px;
+                .swap-box .token-box-wrap .token-box .bottom .token-info {
+                    .futures {
+                        width: 50px;
+                    }
+                    .token-name {
+                        font-size: 17px;
+                    }
+                    .token-icon {
+                        margin-left: 8px;
+                        margin-right: -5px;
+                    }
                 }
             }
         }

@@ -468,6 +468,30 @@
                 position: absolute;
                 height: 100%;
                 width: 100%;
+                .btns {
+                    position: absolute;
+                    bottom: 20px;
+                    left: 0;
+                    right: 0;
+                }
+                .all-info {
+                    font-size: 15px;
+                    margin-top: 1px;
+                    // top: 0;
+                    .wrap-info {
+                        filter: drop-shadow(0px 0px 10px #ffffff);
+
+                        .titles {
+                            margin-top: 35px;
+                            margin-bottom: 10px;
+                        }
+                        .description {
+                            line-height: 18px;
+                            margin: auto;
+                            width: 50%;
+                        }
+                    }
+                }
             }
         }
         .open-door {
@@ -490,6 +514,7 @@
                 line-height: 30px;
                 filter: drop-shadow(0px 0px 10px #ffffff);
             }
+
             .label-lock {
                 width: 280px;
                 margin: auto;
@@ -566,7 +591,7 @@
             .stake-btn-wrap {
                 margin: auto;
                 width: 290px;
-                height: 35px;
+                height: 37px;
                 font-size: 12px;
                 display: flex;
                 margin-top: 15px;
@@ -624,7 +649,7 @@
             }
             .door-btns {
                 position: absolute;
-                bottom: 25px;
+                bottom: 35px;
                 right: 0;
                 left: 0;
             }
@@ -679,6 +704,7 @@
                 margin-top: 230px;
                 text-shadow: 0px 0px 10px #ffffff;
             }
+
             .desc {
                 font-size: 20px;
                 filter: drop-shadow(0px 0px 10px #ffffff);
@@ -687,7 +713,7 @@
                     font-size: 40px;
                     margin-bottom: 110px;
                 }
-                margin-top: 30px;
+                // margin-top: 30px;
             }
         }
     }
@@ -854,7 +880,7 @@
                     margin-top: 165px;
                 }
                 .door-btns {
-                    bottom: 15px;
+                    bottom: 35px;
                 }
                 .desc {
                     margin-top: 20px;
@@ -869,6 +895,15 @@
             }
             .open-door {
                 height: 445px;
+            }
+        }
+    }
+    .vaults-wrap .doors .door .container .all-info {
+        font-size: 12px;
+        margin-top: 1px;
+        .wrap-info {
+            .titles {
+                margin-top: 20px;
             }
         }
     }
@@ -1010,6 +1045,16 @@
                     font-size: 20px;
                     margin-top: 120px;
                 }
+            }
+        }
+    }
+
+    .vaults-wrap .doors .door .container .all-info {
+        font-size: 11px;
+        margin-top: 1px;
+        .wrap-info {
+            .titles {
+                margin-top: 15px;
             }
         }
     }

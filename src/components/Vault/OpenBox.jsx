@@ -9,7 +9,17 @@ const OpenBox = ({ handleLock, handleUnLock, vault, token }) => {
             {/* <div className="desc">
                 you currently own <br />  {vault.own ? <div> {getStayledNumber(vault.own, 4)}%</div> : "..."}
             </div> */}
+            <div className="all-info">
+                <div className="wrap-info">
+                    <div className="titles">Total:</div>
+                    <div className="description">415 sealed {vault.title} minted</div>
+                </div>
 
+                <div className="wrap-info">
+                    <div className="titles">You own: </div>
+                    <div className="description">213 sealed {vault.title} 17.27% ($138,450) of this vault</div>
+                </div>
+            </div>
             <div className="door-btns">
                 {/* <div className="label-lock">
                     <div className="">locked untill:</div>

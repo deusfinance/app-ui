@@ -5,7 +5,7 @@ import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
 import Title from './Title';
 import SwapButton from './SwapButton';
-import { getStayledNumber, notify } from '../../utils/utils';
+import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
 import { ToastContainer } from 'react-toastify';
 import { SwapService } from '../../services/SwapService';
 
@@ -236,7 +236,8 @@ class MainSwap extends Component {
 
         if (force || !allTokens[tokenName].lastFetchBalance) {
             try {
-                const balance = await web3.getTokenBalance(tokenName)
+                const data = await web3.getTokenBalance(tokenName)
+                const balance = formatBalance(data)
                 allTokens[tokenName].balance = parseFloat(balance)
                 allTokens[tokenName].lastFetchBalance = true
                 if (tokenName === swap.to.name || tokenName === swap.from.name) {

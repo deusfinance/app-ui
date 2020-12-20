@@ -21,6 +21,38 @@ export const getStayledNumber = (number, space = 9) => {
 }
 
 
+
+export const formatBalance = (number) => {
+    if (!number) return "0"
+    const strNumber = number.toString()
+    if (parseFloat(strNumber) < 0.0000000001) return 0
+    return strNumber
+}
+
+
+export const setBackground = (type) => {
+    const elm = document.getElementById("blur-pop")
+    switch (type) {
+        case "dark":
+            elm.classList.add("blured")
+            break;
+
+        case "light":
+            elm.classList.remove("blured")
+            break;
+
+        default:
+            if (elm.classList.contains("blured")) {
+                elm.classList.remove("blured")
+            } else {
+                elm.classList.add("blured")
+            }
+            break;
+    }
+    return
+}
+
+
 export const formatAddress = (address) => {
     return address ? address.substring(0, 6) + "..." + address.substring(address.length - 4, address.length) : 'connect wallet'
 }
@@ -94,3 +126,4 @@ export const notify = (methods = method) => (state) => {
         }
     }
 };
+

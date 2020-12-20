@@ -376,6 +376,13 @@ nav {
     }
 }
 
+@media screen and (max-width: 670px) {
+    nav {
+        .rinkeby {
+            display: none;
+        }
+    }
+}
 @media screen and (max-width: 600px) {
     nav {
         .rinkeby {

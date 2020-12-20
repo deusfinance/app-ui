@@ -55,6 +55,7 @@ class UnLockPupop extends Component {
 
         const lockedClasses = !locked ? "unlocked" : "locked"
         const isActive = tokenAmount !== "" && tokenAmount !== "0"
+        console.log(isActive);
         const swapLeftClasses = !approved && isActive ? "" : "disabled"
         const swapRightClasses = approved && isActive ? "" : "disabled"
         const approvedClasses = approved ? "approved" : ""
@@ -167,7 +168,7 @@ class UnLockPupop extends Component {
                 </>}
 
                 {oldApprove && <div className="btns">
-                    <div className=" grad-wrap swap-btn-wrap " style={{ margin: "auto" }} >
+                    <div className=" grad-wrap swap-btn-wrap " style={{ margin: "auto", marginTop: "15px" }} >
                         <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "Lock & Mint" : "UnLock"}</div>
                     </div>
                 </div>

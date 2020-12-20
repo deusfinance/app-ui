@@ -6,10 +6,11 @@ import GonbadBox from './GonbadBox';
 import GonbadOpen from './GonbadOpen';
 import UnLockPupop from './UnLockPupop';
 import { VaultsService } from '../../services/vaultsService';
-import { notify } from '../../utils/utils';
+import { notify, formatBalance, setBackground } from '../../utils/utils';
 import { ToastContainer } from 'react-toastify';
 
 import './vaults.scss'
+import Alert from './Alert/Alert';
 
 class Vault extends Component {
     state = {
@@ -20,7 +21,9 @@ class Vault extends Component {
         vaultsList: ["uni_lp_dea_usdc", "dea", "deus", "dai"],
         vaults: vaultsStaking,
         approved: false,
-        web3: null
+        web3: null,
+        showLockAlert: false,
+        savedVault: null
     }
 
 
@@ -46,19 +49,20 @@ class Vault extends Component {
         onError: () => console.log("onError"),
     }
 
+
+
+
+
     async componentDidMount() {
         const { chainId, account } = this.props
         document.addEventListener("keydown", this.escFunction, false);
 
+        this.setState({ lockAllow: this.handleIsAllowLock() })
         if (!chainId || !account) return
 
         await this.setState({ web3: new VaultsService(account, chainId) })
         await this.handleIinitToken()
-        //VaultsService
-        //initial sandToken
-        //initial valults token
-        //initial time token
-        // this.setState({  })
+
     }
 
     escFunction = (event) => {
@@ -83,7 +87,7 @@ class Vault extends Component {
         const { web3 } = this.state
 
         try {
-            const data = await web3.lock(vaultName, amount, notify(this.methods))
+            await web3.lock(vaultName, amount, notify(this.methods))
         } catch (error) {
             console.log(error);
         }
@@ -129,7 +133,6 @@ class Vault extends Component {
 
 
     handleIinitToken = async () => {
-        const { allTokens, web3 } = this.state
         const tempVautls = ["deus", "dea", "eth", "dai"]
         tempVautls.map((tokenName) => {
             this.getSingleBalance(tokenName)
@@ -144,9 +147,10 @@ class Vault extends Component {
         const { allTokens, vaults, web3 } = this.state
         try {
             const data = await web3.getTokenBalance(tokenName)
-            allTokens[tokenName].balance = parseFloat(data)
+            const balance = formatBalance(data)
+            allTokens[tokenName].balance = parseFloat(balance)
             if (tokenName.substring(0, 5) === "sand_") {
-                vaults[tokenName.substring(5)].locked = parseFloat(data)
+                vaults[tokenName.substring(5)].locked = parseFloat(balance)
             }
             this.setState({ allTokens, vaults })
         } catch (error) {
@@ -162,7 +166,6 @@ class Vault extends Component {
             console.log(tokenName, "\t allowances");
             allTokens[tokenName].allowances = data
             vaults[tokenName].allowances = data
-            console.log("appr ", data > 0);
             this.setState({ approved: data > 0 })
             this.setState({ allTokens, vaults })
 
@@ -172,12 +175,16 @@ class Vault extends Component {
     }
 
 
+
     handleLock = (vault) => {
+        if (!this.handleIsAllowLock()) {
+            this.setState({ showLockAlert: true, savedVault: vault })
+            setBackground("dark")
+            return
+        }
         const { allTokens, vaults } = this.state
 
-        document.getElementById("blur-pop").classList.add("blured")
-
-        console.log(vault.name, "handleLock");
+        setBackground("dark")
 
         this.setState({
             unlocked: false,
@@ -202,8 +209,8 @@ class Vault extends Component {
     }
 
     handleClose = () => {
-        document.getElementById("blur-pop").classList.remove("blured")
-        this.setState({ unlocked: false, locked: false, currVault: null, approved: false })
+        setBackground("light")
+        this.setState({ unlocked: false, locked: false, currVault: null, approved: false, showLockAlert: false })
     }
 
     handleSwap = (from) => (amount) => {
@@ -236,9 +243,18 @@ class Vault extends Component {
         this.setState({ tokens })
     }
 
+    handleOkAllow = () => {
+        localStorage.setItem("lockPermission", Date())
+        this.handleClose()
+        this.handleLock(this.state.savedVault)
+    }
+
+    handleIsAllowLock = () => {
+        return localStorage.getItem("lockPermission") !== null
+    }
 
     render() {
-        const { unlocked, locked, tokens, currToken, currVault, currSand, vaults, vaultsList, allTokens } = this.state
+        const { locked, showLockAlert, currToken, currVault, currSand, vaults, vaultsList, allTokens } = this.state
 
 
         const timetoken = allTokens.timetoken
@@ -256,7 +272,7 @@ class Vault extends Component {
                     handleToggle={this.handleLock}
                     locked={unlocked}
                 />} */}
-
+                <Alert show={showLockAlert} handleGotIt={this.handleOkAllow} handleClose={this.handleClose} />
 
                 {locked && currVault && <UnLockPupop
                     token={currToken}

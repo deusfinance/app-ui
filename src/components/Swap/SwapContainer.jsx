@@ -49,7 +49,7 @@ class SwapContainer extends Component {
     componentDidMount() {
         document.title = 'DEUS swap';
         setTimeout(() => this.initialAmounts(), 500);
-        const isEthUnit = localStorage.getItem("isEthUnit");
+        const isEthUnit = localStorage.getItem("isEthUnit")
         this.setState({isEthUnit: isEthUnit !== "false"})
     }
 

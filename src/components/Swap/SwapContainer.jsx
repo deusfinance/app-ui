@@ -49,6 +49,8 @@ class SwapContainer extends Component {
     componentDidMount() {
         document.title = 'DEUS swap';
         setTimeout(() => this.initialAmounts(), 500);
+        const isEthUnit = localStorage.getItem("isEthUnit");
+        this.setState({isEthUnit: isEthUnit !== "false"})
     }
 
 
@@ -357,7 +359,9 @@ class SwapContainer extends Component {
 
     handleUnit = () => {
         const { isEthUnit } = this.state
-        this.setState({ isEthUnit: !isEthUnit })
+        const updatedIsEthUnit = !isEthUnit
+        this.setState({ isEthUnit: updatedIsEthUnit })
+        localStorage.setItem("isEthUnit", String(updatedIsEthUnit))
     }
 
 

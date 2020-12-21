@@ -6,13 +6,10 @@ import { NavLink } from 'react-router-dom';
 import { dappLink, navbarItems } from '../../config';
 import SubNavbar from './SubNavbar';
 import { formatAddress, getStayledNumber, notify } from '../../utils/utils';
-
-import '../../styles/scss/navbar.scss';
 import { SwapService } from '../../services/SwapService';
-
+import '../../styles/scss/navbar.scss';
 
 const Navs = navbarItems.reverse()
-
 
 const Navbar = () => {
 
@@ -21,16 +18,35 @@ const Navbar = () => {
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
+    const [isMetamask, setIsMetamask] = useState(null)
 
-    const claimButton = claimAmount > 0 ? <li className="grad-wrap claimable-btn" onClick={() => web3.withdrawPayment(notify())}>
+    const methods = {
+        onStart: () => {
+            console.log("onStart")
+        },
+        onSuccess: () => {
+            console.log("onSuccess")
+            setClaim(0)
+        },
+        onError: () => console.log("onError"),
+    }
+
+    const handleClaim = async()=>{
+      try {
+            await web3.withdrawPayment(notify(methods))
+      } catch (error) {
+          console.log("claim eth error");
+      }
+    }
+
+
+    const claimButton = claimAmount > 0 ? <li className="grad-wrap claimable-btn" onClick={handleClaim}>
         <div className={`grad `}>
             <div> {getStayledNumber(claimAmount)} ETH</div>
             <div>claim</div>
         </div>
     </li> : null
 
-
-    const [isMetamask, setIsMetamask] = useState(null)
 
     useEffect(() => {
         if (MetaMaskOnboarding.isMetaMaskInstalled()) {

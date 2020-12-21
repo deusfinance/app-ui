@@ -10,13 +10,14 @@ nav {
     padding: 0 16px;
 
     .claimable-btn {
-        font-size: 15px;
+        font-size: 18px;
         margin-left: 20px;
         width: 260px;
         .grad {
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: space-between;
+            padding: 0 10px;
         }
     }
     .left-nav-wrap {

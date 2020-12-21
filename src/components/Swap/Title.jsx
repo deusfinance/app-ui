@@ -5,8 +5,16 @@ const Title = ({ claimable_amount, web3, isCoinbase }) => {
     const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && claimable_amount !== 0
     const isMobile = window.innerWidth < 670
 
+    const handleClaim = async()=>{
+      try {
+            await web3.withdrawPayment(notify())
+      } catch (error) {
+          
+      }
+    }
+
     return (<>
-        {isClaimBtn && isMobile && <div className="grad-wrap claimable-btn" onClick={() => web3.withdrawPayment(notify())}>
+        {isClaimBtn && isMobile && <div className="grad-wrap claimable-btn" onClick={handleClaim}>
             <div className={`grad `}>
                 <div> {getStayledNumber(claimable_amount)} ETH</div>
                 <div>claim</div>

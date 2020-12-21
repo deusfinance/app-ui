@@ -233,13 +233,18 @@ class MainSwap extends Component {
 
 
     getSingleBalance = async (tokenName, force = false) => {
+
         const { swap, web3 } = this.state
         if (!web3) return
         const { allTokens, setAllTokens } = this.props
 
         if (force || !allTokens[tokenName].lastFetchBalance) {
+
             try {
                 const data = await web3.getTokenBalance(tokenName)
+
+                console.log("getSingleBalance ", tokenName, data);
+
                 const balance = formatBalance(data)
                 allTokens[tokenName].balance = balance
                 allTokens[tokenName].lastFetchBalance = true
@@ -329,6 +334,8 @@ class MainSwap extends Component {
 
         const { from, to } = swap
         try {
+            this.setState({ typeTransaction: "swap" })
+
             !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :
                 await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
@@ -391,7 +398,6 @@ class MainSwap extends Component {
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
 
-
                             <TokenMarket
                                 handleSwich={this.handleSwichPerPrice}
                                 swap={swap}
@@ -404,9 +410,6 @@ class MainSwap extends Component {
 
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
-
-
-
 
                         <SearchBox
                             showSearchBox={showSearchBox}

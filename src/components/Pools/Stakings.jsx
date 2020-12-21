@@ -24,7 +24,13 @@ class StakingManager extends Component {
         document.body.style.backgroundImage = 'none'
 
         const { chainId, account } = this.props
-        this.setState({ subscrible: setInterval(this.cliamWatcher, 15000) })
+        this.getApyForAllStakings()
+
+
+        this.setState({ subscrible: setInterval(()=>{
+            this.cliamWatcher()
+            this.getApyForAllStakings()
+            }, 15000) })
         document.addEventListener("keydown", this.escFunction, false);
         if (!chainId || !account) return
 
@@ -92,12 +98,32 @@ class StakingManager extends Component {
             })
         }
     }
-    //update all claim amount if user had any deposited tokens
 
+
+
+getApyForAllStakings = async()=>{
+        const {stakingsMap } = this.state
+   try {
+            const resp = await fetch("https://app.deus.finance/static-api.json")
+            const jresp = await resp.json()
+            const apys = jresp.apy
+            for (const apyKey in apys) {
+                if (!stakingsMap[apyKey]) continue
+                stakingsMap[apyKey].apy = parseFloat(apys[apyKey]).toFixed(2)
+            }
+              } catch (error) {
+            console.log(" get Market Amounts had some error", error);
+        }
+            this.setState({stakingsMap})
+}
+
+
+
+    //update all claim amount if user had any deposited tokens
     cliamWatcher = () => {
         const { pools, stakingsMap, web3 } = this.state
 
-        console.log("cliamWatcher***************");
+        console.log("cliamWatcher");
 
         if (!web3) return
 
@@ -256,7 +282,7 @@ class StakingManager extends Component {
     handleApprove = (token) => async (amount) => {
         const { web3, approved } = this.state
         console.log(token.name + "\t" + amount + "\t handleApprove ");
-        if (approved) return
+        if (approved || !web3) return
         this.setState({ typeTransaction: "approved" })
         try {
             const data = await web3.approve(token.name, amount, notify(this.methods))

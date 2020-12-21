@@ -11,6 +11,7 @@ export const isDesktop = () => {
 
 export const getStayledNumber = (number, space = 9) => {
     if (!number) return "0"
+    if(number<0) return ""
     const strNumber = number.toString()
     if (parseFloat(strNumber) < 0.0000000001) return 0
     if (strNumber.length < space) return strNumber

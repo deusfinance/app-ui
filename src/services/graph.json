@@ -2,7 +2,7 @@
     "eth": {
         "deus": [
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842"
         ],
         "usdc": [
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
@@ -14,47 +14,65 @@
         ],
         "dea": [
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
         ],
         "dai": [
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735"
+        ],
+        "coinbase": [
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0x577D296678535e4903D59A4C929B718e1D575e0A"
         ]
     },
     "deus": {
         "eth": [
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab"
         ],
         "usdc": [
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
             "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36"
         ],
         "usdt": [
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
             "0xA0953584886d983333D8Ca9844D0372F0c6F850D"
         ],
         "dea": [
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
         ],
         "dai": [
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735"
+        ],
+        "coinbase": [
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0x577D296678535e4903D59A4C929B718e1D575e0A"
         ]
     },
     "dea": {
         "deus": [
             "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842"
         ],
         "eth": [
             "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab"
         ],
         "usdc": [
@@ -70,13 +88,23 @@
             "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
             "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735"
+        ],
+        "coinbase": [
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0x577D296678535e4903D59A4C929B718e1D575e0A"
         ]
     },
     "usdc": {
         "deus": [
             "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842"
         ],
         "dea": [
             "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
@@ -93,13 +121,23 @@
         "dai": [
             "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735"
+        ],
+        "coinbase": [
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0x577D296678535e4903D59A4C929B718e1D575e0A"
         ]
     },
     "usdt": {
         "deus": [
             "0xA0953584886d983333D8Ca9844D0372F0c6F850D",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842"
         ],
         "eth": [
             "0xA0953584886d983333D8Ca9844D0372F0c6F850D",
@@ -117,13 +155,24 @@
         "dai": [
             "0xA0953584886d983333D8Ca9844D0372F0c6F850D",
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735"
+        ],
+        "coinbase": [
+            "0xA0953584886d983333D8Ca9844D0372F0c6F850D",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0xA0953584886d983333D8Ca9844D0372F0c6F850D",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0x577D296678535e4903D59A4C929B718e1D575e0A"
         ]
     },
     "dai": {
         "deus": [
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842"
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842"
         ],
         "eth": [
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
@@ -131,19 +180,103 @@
         ],
         "usdc": [
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
-            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
             "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36"
         ],
         "dea": [
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
-            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-            "0xf025db474fcf9ba30844e91a54bc4747d4fc7842",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
             "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
         ],
         "usdt": [
             "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
+            "0xA0953584886d983333D8Ca9844D0372F0c6F850D"
+        ],
+        "coinbase": [
+            "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0x577D296678535e4903D59A4C929B718e1D575e0A"
+        ]
+    },
+    "coinbase": {
+        "deus": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842"
+        ],
+        "eth": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab"
+        ],
+        "usdc": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36"
+        ],
+        "dea": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
+        ],
+        "usdt": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
             "0xA0953584886d983333D8Ca9844D0372F0c6F850D"
+        ],
+        "dai": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735"
+        ],
+        "wbtc": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0x577D296678535e4903D59A4C929B718e1D575e0A"
+        ]
+    },
+    "wbtc": {
+        "deus": [
+            "0x577D296678535e4903D59A4C929B718e1D575e0A",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842"
+        ],
+        "eth": [
+            "0x577D296678535e4903D59A4C929B718e1D575e0A",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab"
+        ],
+        "usdc": [
+            "0x577D296678535e4903D59A4C929B718e1D575e0A",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36"
+        ],
+        "dea": [
+            "0x577D296678535e4903D59A4C929B718e1D575e0A",
+            "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36",
+            "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
+        ],
+        "usdt": [
+            "0x577D296678535e4903D59A4C929B718e1D575e0A",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xA0953584886d983333D8Ca9844D0372F0c6F850D"
+        ],
+        "dai": [
+            "0x577D296678535e4903D59A4C929B718e1D575e0A",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735"
+        ],
+        "coinbase": [
+            "0x577D296678535e4903D59A4C929B718e1D575e0A",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
         ]
     }
 }

@@ -1,7 +1,7 @@
 
 
-export const contractEndpoint = "https://rinkeby.etherscan.io/address"
-export const dappLink = "https://metamask.app.link/dapp/demo.deus.finance/"
+export const contractEndpoint = "https://etherscan.io/address"
+export const dappLink = "https://metamask.app.link/dapp/deus.finance/"
 export const navbarItems = [
     {
         id: "app",
@@ -124,15 +124,24 @@ export const AllTokens = {
         title: "USDC",
         type: TokenType.Main,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        innerLink: false,
+        innerLink: true,
         provideLink: "/swap",
         pic_name: "usdc.svg"
+    },
+    "usdt": {
+        name: "usdt",
+        title: "USDT",
+        type: TokenType.Main,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        innerLink: true,
+        provideLink: "/swap",
+        pic_name: "usdt.png"
     },
     "eth": {
         name: "eth",
         title: "ETH",
         type: TokenType.Main,
-        innerLink: false,
+        innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
         pic_name: "eth-logo.svg",
@@ -142,15 +151,17 @@ export const AllTokens = {
         name: "wbtc",
         title: "WBTC",
         type: TokenType.Main,
-        innerLink: false,
+        innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
+        pic_name: "wbtc.png"
+
     },
     "dai": {
         name: "dai",
         title: "DAI",
         type: TokenType.Main,
-        innerLink: false,
+        innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
         pic_name: "dai.png",
@@ -180,18 +191,20 @@ export const AllTokens = {
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
     },
-    "dea_deus": {
-        name: "dea_deus",
-        title: "DEA-DEUS",
-        type: TokenType.Main,
+    "deus_dea": {
+        name: "deus_dea",
+        title: "DEUS-DEA",
+        type: TokenType.Liquidity,
+        coin: "UNI-V2-DEUS/DEA",
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/swap",
+        provideLink: "https://app.uniswap.org/#/add/0x3b62F3820e0B035cc4aD602dECe6d796BC325325/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
     },
     "dea_usdc": {
         name: "dea_usdc",
         title: "DEA-USDC",
-        type: TokenType.Main,
+        type: TokenType.Liquidity,
+        coin: "UNI-V2-DEA-USDC",
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
@@ -458,7 +471,6 @@ export const AllStakings = {
         coin_name: "UNI-V2-DEA-USDC",
         stakingLink: "0x2e3394d3CdcbaAF2bb85Fe9aB4c79CeF4d28b216",
         liqLink: "https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
-        isClose: true,
     },
     deus_eth: {
         name: "deus_eth",
@@ -478,7 +490,6 @@ export const AllStakings = {
         coin_name: "DEUS",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         liqLink: "/swap",
-        isClose: true,
     },
     dea: {
         name: "dea",
@@ -488,17 +499,15 @@ export const AllStakings = {
         coin_name: "DEUS",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         liqLink: "/swap",
-        isClose: true,
     },
     deus_dea: {
         name: "deus_dea",
         title: "DEUS-DEA",
         claimable_unit: "DEA",
         isDeusLink: true,
-        coin_name: "DEUS",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "/swap",
-        isClose: true,
+        liqLink: "https://app.uniswap.org/#/add/0x3b62F3820e0B035cc4aD602dECe6d796BC325325/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+
     },
     ampl_eth: {
         name: "ampl_eth",

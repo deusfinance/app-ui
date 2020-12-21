@@ -14,7 +14,7 @@ import './mainSwap.scss';
 
 class MainSwap extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "usdc", "dai", "coinbase"],
+        tokens: ["eth", "deus", "dea", "wbtc", "usdc", "usdt", "dai", "coinbase"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -248,7 +248,7 @@ class MainSwap extends Component {
                     this.handleInitToken("to", swap.to.name)
                 }
             } catch (error) {
-                console.log(error);
+                console.log("getSingleBalance ", tokenName, error);
             }
             setAllTokens(allTokens)
         } else {
@@ -290,7 +290,7 @@ class MainSwap extends Component {
                 setAllTokens(allTokens)
 
             } catch (error) {
-                console.log(error);
+                console.log(tokenName, error);
             }
         }
 

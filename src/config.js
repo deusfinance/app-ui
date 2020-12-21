@@ -16,6 +16,14 @@ export const navbarItems = [
                 exact: true,
 
             },
+            {
+                id: "coinbase",
+                text: "CoinBase",
+                path: "/coinbase",
+                exact: true,
+
+            },
+
             // {
             //     id: "conductr",
             //     text: "CONDUCTR",
@@ -474,7 +482,7 @@ export const AllStakings = {
     },
     dea: {
         name: "dea",
-        name: "DEA",
+        title: "DEA",
         claimable_unit: "DEA",
         isDeusLink: true,
         coin_name: "DEUS",

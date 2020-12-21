@@ -20,6 +20,9 @@ class StakingManager extends Component {
     }
 
     async componentDidMount() {
+        document.body.style.backgroundColor = '#000000'
+        document.body.style.backgroundImage = 'none'
+
         const { chainId, account } = this.props
         this.setState({ subscrible: setInterval(this.cliamWatcher, 15000) })
         document.addEventListener("keydown", this.escFunction, false);
@@ -73,7 +76,7 @@ class StakingManager extends Component {
             const currentPools = [
                 ["sand_dea", "sand_deus", "sand_dai", "sand_eth", "sand_wbtc", "timetoken"],
                 ["bpt_native", "bpt_legacy"],
-                ["dea_usdc", "deus_dea", "deus", "deus_eth", "ampl_eth", "snx", "uni"],
+                ["deus_dea", "deus", "dea", "dea_usdc", "deus_eth", "ampl_eth", "snx", "uni"],
             ]
 
             this.setState({

@@ -34,7 +34,7 @@ const Deus = () => {
     return (
         <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
             <Switch>
-                <Route exact path="/staking" render={() => <StakingManager pools={["dea_usdc", "deus_dea", "deus", "deus_eth", "ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
+                <Route exact path="/staking" render={() => <StakingManager pools={["deus_dea", "deus", "dea", "dea_usdc", "deus_eth", "ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
                 <Route exact path="/vaults" render={() => <Vault account={account} chainId={chainId} allTokens={allTokens} />} />
                 <Route exact path="/swap" render={() => <MainSwap account={account} chainId={chainId} setAllTokens={setAllTokens} allTokens={allTokens} />} />
                 <Route exact path="/coinbase" render={() => <CoinBase account={account} chainId={chainId} setAllTokens={setAllTokens} allTokens={allTokens} />} />

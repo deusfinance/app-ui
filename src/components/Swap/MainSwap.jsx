@@ -60,6 +60,9 @@ class MainSwap extends Component {
 
     async componentDidMount() {
         console.log("componentDidMount chain id is", this.props.chainId);
+        document.body.style.backgroundColor = '#2c2f36'
+        document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
+
         const { chainId, account } = this.props
 
         this.handleInitToken("from", "eth")
@@ -238,7 +241,7 @@ class MainSwap extends Component {
             try {
                 const data = await web3.getTokenBalance(tokenName)
                 const balance = formatBalance(data)
-                allTokens[tokenName].balance = parseFloat(balance)
+                allTokens[tokenName].balance = balance
                 allTokens[tokenName].lastFetchBalance = true
                 if (tokenName === swap.to.name || tokenName === swap.from.name) {
                     this.handleInitToken("from", swap.from.name)

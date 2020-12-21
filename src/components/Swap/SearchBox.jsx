@@ -3,8 +3,16 @@ import { getStayledNumber } from '../../utils/utils';
 
 class SearchBox extends Component {
     state = {}
+
+    sortFunction = (a, b) => {
+        return
+    }
+
+
     render() {
         const { showSearchBox, handleSearchBox, handleFilterToken, choosedToken, allTokens, tokens, handleChangeToken } = this.props
+        const sortedList = tokens.sort((a, b) => allTokens[b]?.balance - allTokens[a]?.balance)
+
         return (<>
             { showSearchBox && <div className="search-box-wrap">
                 <div className="search-box">
@@ -20,7 +28,7 @@ class SearchBox extends Component {
                         </div>
                         <div className="token-items">
                             {
-                                (tokens.sort((a, b) => allTokens[a].balance ? allTokens[a].balance > allTokens[b].balance : false)).map((tokenName, i) => {
+                                sortedList.map((tokenName, i) => {
                                     if (tokenName === choosedToken) return
                                     const token = allTokens[tokenName]
                                     return <div key={i} className="token-item" onClick={() => handleChangeToken(token.name)}>

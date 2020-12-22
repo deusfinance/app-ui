@@ -7,7 +7,6 @@ import { LoopCircleLoading } from 'react-loadingg';
 
 const CoinBase = React.lazy(() => import('./Swap/CoinBase'));
 const MainSwap = React.lazy(() => import('./Swap/MainSwap'));
-const Vault = React.lazy(() => import('./Vault/Vault'));
 const StakingManager = React.lazy(() => import('./Pools/Stakings'));
 
 
@@ -34,11 +33,12 @@ const Deus = () => {
     return (
         <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
             <Switch>
-                <Route exact path="/staking" render={() => <StakingManager pools={["deus_dea", "deus", "dea", "dea_usdc", "deus_eth", "ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
-                <Route exact path="/vaults" render={() => <Vault account={account} chainId={chainId} allTokens={allTokens} />} />
+                <Route exact path="/staking/liquidity" render={() => <StakingManager pools={["deus_dea", "dea_usdc"]} navId={1} {...props} />} />
+                <Route exact path="/staking/single" render={() => <StakingManager pools={["deus", "dea"]} navId={0} {...props} />} />
+                <Route exact path="/staking/old" render={() => <StakingManager pools={["deus_eth", "ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
                 <Route exact path="/swap" render={() => <MainSwap account={account} chainId={chainId} setAllTokens={setAllTokens} allTokens={allTokens} />} />
                 <Route exact path="/coinbase" render={() => <CoinBase account={account} chainId={chainId} setAllTokens={setAllTokens} allTokens={allTokens} />} />
-                {/* <Redirect from="/staking" to="/staking/sand" /> */}
+                <Redirect from="/staking" to="/staking/liquidity" />
                 <Redirect from="/" to="/swap" />
             </Switch>
         </Suspense>

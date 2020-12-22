@@ -217,253 +217,253 @@ export const AllTokens = {
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
     },
-    "uni_lp_dea_usdc": {
-        name: "uni_lp_dea_usdc",
-        title: "UNI-LP-DEUS-DEA",
-        type: TokenType.Liquidity,
-        innerLink: false,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/swap",
-    },
-    "uni_lp_deus_dea": {
-        name: "uni_lp_deus_dea",
-        title: "UNI-LP-DEUS-DEA",
-        type: TokenType.Liquidity,
-        innerLink: false,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/swap",
-    },
-    "sand_uni_lp_dea_usdc": {
-        name: "uni_lp_dea_usdc",
-        title: "sUNI-LP-DEUS-DEA",
-        type: TokenType.Sand,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        innerLink: true,
-        provideLink: "/vaults",
-    },
-    "sand_uni_lp_deus_dea": {
-        name: "uni_lp_deus_dea",
-        title: "sUNI_LP_DEUS-DEA",
-        type: TokenType.Sand,
-        innerLink: true,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/vaults",
-    },
-    "sand_dai": {
-        name: "sand_dai",
-        title: "sDAI",
-        type: TokenType.Sand,
-        innerLink: true,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/vaults",
-    },
-    "sand_deus": {
-        name: "sand_deus",
-        title: "sDEUS",
-        type: TokenType.Sand,
-        innerLink: true,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/vaults",
-        apy: 250
-    },
-    "sand_eth": {
-        name: "sand_eth",
-        title: "sETH",
-        type: TokenType.Sand,
-        innerLink: true,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/vaults",
-    },
-    "sand_dea": {
-        name: "sand_dea",
-        title: "sDEA",
-        type: TokenType.Sand,
-        innerLink: true,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/vaults",
-        apy: 490
+    // "uni_lp_dea_usdc": {
+    //     name: "uni_lp_dea_usdc",
+    //     title: "UNI-LP-DEUS-DEA",
+    //     type: TokenType.Liquidity,
+    //     innerLink: false,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     provideLink: "/swap",
+    // },
+    // "uni_lp_deus_dea": {
+    //     name: "uni_lp_deus_dea",
+    //     title: "UNI-LP-DEUS-DEA",
+    //     type: TokenType.Liquidity,
+    //     innerLink: false,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     provideLink: "/swap",
+    // },
+    // "sand_uni_lp_dea_usdc": {
+    //     name: "uni_lp_dea_usdc",
+    //     title: "sUNI-LP-DEUS-DEA",
+    //     type: TokenType.Sand,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     innerLink: true,
+    //     provideLink: "/vaults",
+    // },
+    // "sand_uni_lp_deus_dea": {
+    //     name: "uni_lp_deus_dea",
+    //     title: "sUNI_LP_DEUS-DEA",
+    //     type: TokenType.Sand,
+    //     innerLink: true,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     provideLink: "/vaults",
+    // },
+    // "sand_dai": {
+    //     name: "sand_dai",
+    //     title: "sDAI",
+    //     type: TokenType.Sand,
+    //     innerLink: true,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     provideLink: "/vaults",
+    // },
+    // "sand_deus": {
+    //     name: "sand_deus",
+    //     title: "sDEUS",
+    //     type: TokenType.Sand,
+    //     innerLink: true,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     provideLink: "/vaults",
+    //     apy: 250
+    // },
+    // "sand_eth": {
+    //     name: "sand_eth",
+    //     title: "sETH",
+    //     type: TokenType.Sand,
+    //     innerLink: true,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     provideLink: "/vaults",
+    // },
+    // "sand_dea": {
+    //     name: "sand_dea",
+    //     title: "sDEA",
+    //     type: TokenType.Sand,
+    //     innerLink: true,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     provideLink: "/vaults",
+    //     apy: 490
 
-    },
-    "sand_wbtc": {
-        name: "sand_wbtc",
-        title: "sWBTC",
-        type: TokenType.Sand,
-        innerLink: true,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/vaults",
-    },
-    "bpt_native": {
-        name: "bpt_native",
-        title: "Native Balancer",
-        coin: "BPT",
-        type: TokenType.Liquidity,
-        inner_link: false,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "https://balancer.com",
+    // },
+    // "sand_wbtc": {
+    //     name: "sand_wbtc",
+    //     title: "sWBTC",
+    //     type: TokenType.Sand,
+    //     innerLink: true,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     provideLink: "/vaults",
+    // },
+    // "bpt_native": {
+    //     name: "bpt_native",
+    //     title: "Native Balancer",
+    //     coin: "BPT",
+    //     type: TokenType.Liquidity,
+    //     inner_link: false,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     liqLink: "https://balancer.com",
 
-    },
-    "bpt_legacy": {
-        name: "bpt_legacy",
-        title: "Legacy Balancer",
-        coin: "BPT",
-        type: TokenType.Liquidity,
-        inner_link: false,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "https://balancer.com",
-    },
+    // },
+    // "bpt_legacy": {
+    //     name: "bpt_legacy",
+    //     title: "Legacy Balancer",
+    //     coin: "BPT",
+    //     type: TokenType.Liquidity,
+    //     inner_link: false,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     liqLink: "https://balancer.com",
+    // },
 }
 
-export const vaultsStaking = {
-    uni_lp_deus_dea: {
-        name: "uni_lp_deus_dea",
-        title: "UNI-LP-DEUS-DEA",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+// export const vaultsStaking = {
+//     uni_lp_deus_dea: {
+//         name: "uni_lp_deus_dea",
+//         title: "UNI-LP-DEUS-DEA",
+//         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
 
-    },
-    uni_lp_dea_usdc: {
-        name: "uni_lp_dea_usdc",
-        title: "UNI-LP-DEA-USDC",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        // locked: 25,
-        // own: 25
-    },
-    deus: {
-        name: "deus",
-        title: "DEUS",
-        stakingLink: "0x09cb978bb7e6fb5583fc9107f92214451f6296a5",
-        estimation: 250
+//     },
+//     uni_lp_dea_usdc: {
+//         name: "uni_lp_dea_usdc",
+//         title: "UNI-LP-DEA-USDC",
+//         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+//         // locked: 25,
+//         // own: 25
+//     },
+//     deus: {
+//         name: "deus",
+//         title: "DEUS",
+//         stakingLink: "0x09cb978bb7e6fb5583fc9107f92214451f6296a5",
+//         estimation: 250
 
-    },
-    dea: {
-        name: "dea",
-        title: "DEA",
-        stakingLink: "0x6ba4ead0115f3c9239d596fe4bb7c242a39f62f0",
-        estimation: 250
+//     },
+//     dea: {
+//         name: "dea",
+//         title: "DEA",
+//         stakingLink: "0x6ba4ead0115f3c9239d596fe4bb7c242a39f62f0",
+//         estimation: 250
 
-    },
-    dai: {
-        name: "dai",
-        title: "DAI",
-        stakingLink: "0xb9846a53d478b2bf54c4b6531708376ba192fbf8",
-        estimation: 250
+//     },
+//     dai: {
+//         name: "dai",
+//         title: "DAI",
+//         stakingLink: "0xb9846a53d478b2bf54c4b6531708376ba192fbf8",
+//         estimation: 250
 
-    },
-    eth: {
-        name: "eth",
-        title: "ETH",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+//     },
+//     eth: {
+//         name: "eth",
+//         title: "ETH",
+//         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
 
-    },
+//     },
 
-    wbtc: {
-        name: "wbtc",
-        title: "WBTC",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-    },
-}
+//     wbtc: {
+//         name: "wbtc",
+//         title: "WBTC",
+//         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+//     },
+// }
 
 export const AllStakings = {
 
-    "sand_uni_lp_deus_dea": {
-        name: "s_uni_lp_deus_dea",
-        title: "s_uni_lp_deus_dea",
-        innerLink: true,
-        provideLink: "/vaults",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        isClose: true,
+    // "sand_uni_lp_deus_dea": {
+    //     name: "s_uni_lp_deus_dea",
+    //     title: "s_uni_lp_deus_dea",
+    //     innerLink: true,
+    //     provideLink: "/vaults",
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     isClose: true,
 
-    },
-    "sand_uni_lp_dea_usdc": {
-        name: "s_uni_lp_dea_usdc",
-        title: "s_uni_lp_dea_usdc",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        isClose: true,
+    // },
+    // "sand_uni_lp_dea_usdc": {
+    //     name: "s_uni_lp_dea_usdc",
+    //     title: "s_uni_lp_dea_usdc",
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     isClose: true,
 
-        innerLink: true,
-        provideLink: "/vaults",
-    },
-    "sand_dai": {
-        name: "sand_dai",
-        title: "sDAI",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        innerLink: true,
-        provideLink: "/vaults",
-    },
-    "sand_deus": {
-        name: "sand_deus",
-        title: "sDEUS",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        innerLink: true,
-        provideLink: "/vaults",
-    },
-    "sand_eth": {
-        name: "sand_eth",
-        title: "sETH",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        isClose: true,
+    //     innerLink: true,
+    //     provideLink: "/vaults",
+    // },
+    // "sand_dai": {
+    //     name: "sand_dai",
+    //     title: "sDAI",
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     innerLink: true,
+    //     provideLink: "/vaults",
+    // },
+    // "sand_deus": {
+    //     name: "sand_deus",
+    //     title: "sDEUS",
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     innerLink: true,
+    //     provideLink: "/vaults",
+    // },
+    // "sand_eth": {
+    //     name: "sand_eth",
+    //     title: "sETH",
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     isClose: true,
 
-        innerLink: true,
-        provideLink: "/vaults",
-        onlyMain: true,
-    },
-    "sand_dea": {
-        name: "sand_dea",
-        title: "sDEA",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        innerLink: true,
-        provideLink: "/vaults",
+    //     innerLink: true,
+    //     provideLink: "/vaults",
+    //     onlyMain: true,
+    // },
+    // "sand_dea": {
+    //     name: "sand_dea",
+    //     title: "sDEA",
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     innerLink: true,
+    //     provideLink: "/vaults",
 
-    },
-    "sand_wbtc": {
-        name: "sand_wbtc",
-        title: "sWBTC",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        isClose: true,
+    // },
+    // "sand_wbtc": {
+    //     name: "sand_wbtc",
+    //     title: "sWBTC",
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     isClose: true,
 
-        innerLink: true,
-        provideLink: "/vaults",
-        onlyMain: true,
-    },
-    "timetoken": {
-        name: "timetoken",
-        title: "TimeToken",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        isClose: true,
+    //     innerLink: true,
+    //     provideLink: "/vaults",
+    //     onlyMain: true,
+    // },
+    // "timetoken": {
+    //     name: "timetoken",
+    //     title: "TimeToken",
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     isClose: true,
 
-        innerLink: true,
-        provideLink: "/vaults",
-        onlyMain: true,
+    //     innerLink: true,
+    //     provideLink: "/vaults",
+    //     onlyMain: true,
 
-    },
-    bpt_native: {
-        name: "bpt_native",
-        title: "Native Balancer",
-        inner_link: false,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "https://balancer.com",
-        balancer: true,
-        claimable_amount: 0,
-        apy: 126,
-        own_pool: 30,
-        isClose: true,
-        onlyMain: true,
-        info: "50% DEA\n25% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n10% sUNI-LP-DEA-USDC",
-    },
-    bpt_legacy: {
-        name: "bpt_legacy",
-        title: "Legacy Balancer",
-        inner_link: false,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "https://balancer.com",
-        own_pool: 0,
-        balancer: true,
-        info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
-        apy: 178,
-        claimable_amount: 0,
-        isClose: true,
-        deposited: 0,
-        onlyMain: true
-    },
+    // },
+    // bpt_native: {
+    //     name: "bpt_native",
+    //     title: "Native Balancer",
+    //     inner_link: false,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     liqLink: "https://balancer.com",
+    //     balancer: true,
+    //     claimable_amount: 0,
+    //     apy: 126,
+    //     own_pool: 30,
+    //     isClose: true,
+    //     onlyMain: true,
+    //     info: "50% DEA\n25% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n10% sUNI-LP-DEA-USDC",
+    // },
+    // bpt_legacy: {
+    //     name: "bpt_legacy",
+    //     title: "Legacy Balancer",
+    //     inner_link: false,
+    //     stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    //     liqLink: "https://balancer.com",
+    //     own_pool: 0,
+    //     balancer: true,
+    //     info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
+    //     apy: 178,
+    //     claimable_amount: 0,
+    //     isClose: true,
+    //     deposited: 0,
+    //     onlyMain: true
+    // },
     dea_usdc: {
         name: "dea_usdc",
         title: "DEA-USDC",

@@ -27,10 +27,12 @@ class StakingManager extends Component {
         this.getApyForAllStakings()
 
 
-        this.setState({ subscrible: setInterval(()=>{
-            this.cliamWatcher()
-            this.getApyForAllStakings()
-            }, 15000) })
+        this.setState({
+            subscrible: setInterval(() => {
+                this.cliamWatcher()
+                this.getApyForAllStakings()
+            }, 15000)
+        })
         document.addEventListener("keydown", this.escFunction, false);
         if (!chainId || !account) return
 
@@ -80,9 +82,9 @@ class StakingManager extends Component {
             console.log("nav changed");
 
             const currentPools = [
-                ["sand_dea", "sand_deus", "sand_dai", "sand_eth", "sand_wbtc", "timetoken"],
-                ["bpt_native", "bpt_legacy"],
-                ["deus_dea", "deus", "dea", "dea_usdc", "deus_eth", "ampl_eth", "snx", "uni"],
+                ["deus", "dea"],
+                ["deus_dea", "dea_usdc"],
+                ["deus_eth", "ampl_eth", "snx", "uni"],
             ]
 
             this.setState({
@@ -101,9 +103,9 @@ class StakingManager extends Component {
 
 
 
-getApyForAllStakings = async()=>{
-        const {stakingsMap } = this.state
-   try {
+    getApyForAllStakings = async () => {
+        const { stakingsMap } = this.state
+        try {
             const resp = await fetch("https://app.deus.finance/static-api.json")
             const jresp = await resp.json()
             const apys = jresp.apy
@@ -111,11 +113,11 @@ getApyForAllStakings = async()=>{
                 if (!stakingsMap[apyKey]) continue
                 stakingsMap[apyKey].apy = parseFloat(apys[apyKey]).toFixed(2)
             }
-              } catch (error) {
+        } catch (error) {
             console.log(" get Market Amounts had some error", error);
         }
-            this.setState({stakingsMap})
-}
+        this.setState({ stakingsMap })
+    }
 
 
 
@@ -347,7 +349,7 @@ getApyForAllStakings = async()=>{
             <div className="staking-wrap" >
                 <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" />
 
-                {/* <TopNotif typeID={this.props.navId} /> */}
+                <TopNotif typeID={this.props.navId} />
 
                 <div className="stake-container-wrap" ></div>
                 <div className="container-single-wrap" style={{ marginTop: "50px" }}>

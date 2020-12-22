@@ -42,21 +42,12 @@ export class SwapService {
     }
 
     _getWei(number, token = "eth") {
-        const max = this.TokensMaxDigit[token] ? this.TokensMaxDigit[token] : 18
-        const value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
-        // if(max!==18){
-        //       return  new Web3.utils.BN(value).mul(new Web3.utils.BN(10 **(max)))
-        // }
-
-        // if (max !== 18) {
-        //     console.log(number, token, "_getWei");
-        //     const value = typeof number === "string" ? parseFloat(number).toFixed(max) : number.toFixed(max)
-        //     var BN = Web3.utils.BN
-        //     let asn = new BN(number.toString()).mul(new BN(10 ** max))
-        //     console.log("answer", asn.toString());
-        //     return asn
-        // }
-        return Web3.utils.toWei(String(value), 'ether')
+        let max = this.TokensMaxDigit[token] ? this.TokensMaxDigit[token] : 18
+        let value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
+        let ans = Web3.utils.toWei(String(value), 'ether');
+        console.log(ans, typeof ans)
+        ans = ans.substr(0, ans.length - (18 - max));
+        return ans.toString()
     }
 
     getEtherBalance() {

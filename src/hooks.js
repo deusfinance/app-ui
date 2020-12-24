@@ -1,8 +1,7 @@
 
 import { useWeb3React } from '@web3-react/core';
 
-import { useState, useEffect, useMemo } from 'react'
-// import { getAllowances, getTokenBalance } from './services/SwapServices';
+import { useState, useEffect } from 'react'
 
 export function useEagerConnect(injected) {
     const { activate, active } = useWeb3React()
@@ -31,11 +30,7 @@ export function useEagerConnect(injected) {
     return tried
 }
 
-function getTokenInfo(token) {
-    //balance
-    //allowences
 
-}
 
 // async function getBlance(tokenName) {
 //     try {

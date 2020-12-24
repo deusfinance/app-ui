@@ -12,7 +12,6 @@ const TokenMarket = ({ handleSwich, swap, toAmount, fromAmount, fromPerTo, tvl, 
 
     useEffect(() => {
         const calcPerPerice = () => {
-            console.log("calc calllled");
             if (toAmount === "" || fromAmount === "" || toAmount === "0" || fromAmount === "0") return ""
             if (fromPerTo) {
                 return getStayledNumber(parseFloat(fromAmount) / parseFloat(toAmount))
@@ -37,11 +36,11 @@ const TokenMarket = ({ handleSwich, swap, toAmount, fromAmount, fromPerTo, tvl, 
                 </div>
             </div>
         </div>
-        <div className="token-market">
+        <div className="token-market" style={{ opacity: 0 }}>
             <p>TVL</p>
             <p>{tvl} ETH</p>
         </div>
-        <div className="token-market">
+        <div className="token-market" style={{ opacity: 0 }}>
             <p>Trading Volume</p>
             <p>{tradeVol} ETH</p>
         </div>

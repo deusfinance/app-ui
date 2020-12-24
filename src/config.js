@@ -18,7 +18,7 @@ export const navbarItems = [
             },
             {
                 id: "coinbase",
-                text: "CoinBase",
+                text: "COINBASE",
                 path: "/coinbase",
                 exact: true,
 
@@ -216,6 +216,15 @@ export const AllTokens = {
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
+    },
+    "coinbase_usdc": {
+        name: "coinbase_usdc",
+        title: "UNI-LP-coinbase-USDC",
+        type: TokenType.Liquidity,
+        innerLink: false,
+        stakingLink: "0x68Bcf35cC47e6c281BD44c6e8B3Ff65327fcdeD3",
+        provideLink: "https://app.uniswap.org/#/add/0x4185cf99745b2a20727b37ee798193dd4a56cdfa/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+
     },
     // "uni_lp_dea_usdc": {
     //     name: "uni_lp_dea_usdc",
@@ -472,6 +481,14 @@ export const AllStakings = {
         stakingLink: "0x2e3394d3CdcbaAF2bb85Fe9aB4c79CeF4d28b216",
         liqLink: "https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
     },
+    coinbase_usdc: {
+        name: "coinbase_usdc",
+        title: "COINBASE-USDC",
+        claimable_unit: "DEA",
+        coin_name: "UNI-LP-coinbase-USDC",
+        stakingLink: "0x68Bcf35cC47e6c281BD44c6e8B3Ff65327fcdeD3",
+        liqLink: "https://app.uniswap.org/#/add/0x4185cf99745b2a20727b37ee798193dd4a56cdfa/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    },
     deus_eth: {
         name: "deus_eth",
         title: "DEUS-ETH",
@@ -529,7 +546,6 @@ export const AllStakings = {
     uni: {
         name: "uni",
         title: "UNI",
-        claimable_unit: "DEA",
         claimable_unit: "DEA",
         coin_name: "UNI",
         stakingLink: "0x8cd408279e966b7e7e1f0b9e5ed8191959d11a19",

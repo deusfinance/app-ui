@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
+import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
 import PriceBox from './PriceBox';
 import TokenBox from './TokenBox';
 import SearchBox from './SearchBox';
@@ -14,7 +14,7 @@ import './mainSwap.scss';
 
 class MainSwap extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "wbtc", "usdc", "usdt", "dai", "coinbase"],
+        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc", "coinbase"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -38,11 +38,9 @@ class MainSwap extends Component {
 
     methods = {
         onStart: () => {
-            console.log("onStart")
 
         },
         onSuccess: () => {
-            console.log("onSuccess")
             const { swap, typeTransaction } = this.state
             if (typeTransaction === "approve") {
                 this.getSingleAllowances(swap.from.name, true)
@@ -59,7 +57,6 @@ class MainSwap extends Component {
     newService = null;
 
     async componentDidMount() {
-        console.log("componentDidMount chain id is", this.props.chainId);
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
 
@@ -82,12 +79,7 @@ class MainSwap extends Component {
         const { chainId, account } = this.props
 
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
-
-            console.log("chain id is", chainId);
-
             if (!chainId || !account) return
-
-            console.log("log did update", account, chainId);
 
             await this.setState({ web3: new SwapService(account, chainId) })
             await this.handleIinitBalances(true)
@@ -104,6 +96,7 @@ class MainSwap extends Component {
         if (!web3) return
         try {
             const amount = await web3.getWithdrawableAmount()
+            console.log(Number.parseFloat(amount));
             this.setState({ claimable_amount: amount })
             return amount
         } catch (error) {
@@ -199,7 +192,6 @@ class MainSwap extends Component {
 
         try {
             const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : await web3.getAmountsIn(swap.from.name, swap.to.name, amount)
-            console.log(data);
             swap[vstype].amount = getStayledNumber(data, 9)
             this.setState({
                 swap,
@@ -208,7 +200,6 @@ class MainSwap extends Component {
             })
         } catch (error) {
             console.log(error);
-            // swap[vstype].amount = "1"
             this.setState({ swap })
         }
     }
@@ -218,7 +209,6 @@ class MainSwap extends Component {
     }
 
     handleIinitBalances = async (foceUpdate) => {
-        console.log("handleIinitBalances");
         const { tokens } = this.state
 
         tokens.map(async (t) => {
@@ -242,9 +232,6 @@ class MainSwap extends Component {
 
             try {
                 const data = await web3.getTokenBalance(tokenName)
-
-                console.log("getSingleBalance ", tokenName, data);
-
                 const balance = formatBalance(data)
                 allTokens[tokenName].balance = balance
                 allTokens[tokenName].lastFetchBalance = true
@@ -257,7 +244,7 @@ class MainSwap extends Component {
             }
             setAllTokens(allTokens)
         } else {
-            console.log("fetched balance");
+            // console.log("fetched balance");
         }
     }
 
@@ -285,7 +272,6 @@ class MainSwap extends Component {
         if (force || !allTokens[tokenName].lastFechAllowance) {
             try {
                 const allowances = await web3.getAllowances(tokenName)
-                console.log(allowances);
                 allTokens[tokenName].allowances = parseInt(allowances)
                 allTokens[tokenName].lastFechAllowance = true
                 if (tokenName === swap.from.name || tokenName === swap.to.name) {
@@ -322,9 +308,9 @@ class MainSwap extends Component {
         return tokens.filter(t => swap[searchBoxType].name !== t.name)
     }
 
+
     isApproved = () => {
         const { swap } = this.state
-        // console.log(swap.to.allowances > 0);
         return swap.from.allowances > 0
     }
 
@@ -332,7 +318,12 @@ class MainSwap extends Component {
         const { swap, web3 } = this.state
         if (!web3) return
 
+        if (checkLimit(swap)) {
+            return
+        }
+
         const { from, to } = swap
+
         try {
             this.setState({ typeTransaction: "swap" })
 
@@ -347,6 +338,11 @@ class MainSwap extends Component {
 
     handleApprove = async (swap) => {
         const { web3 } = this.state
+
+        if (checkLimit(swap)) {
+            return
+        }
+
         try {
             this.setState({ typeTransaction: "approve" })
             const data = await web3.approve(swap.from.name, swap.from.amount, notify(this.methods))
@@ -372,7 +368,7 @@ class MainSwap extends Component {
 
         return (<div className="deus-swap-wrap">
 
-            {!isMobile && <ToastContainer style={{ width: "400px" }} />}
+            {!isMobile && <ToastContainer style={{ width: "450px" }} />}
             <Title web3={web3} claimable_amount={claimable_amount} />
 
 
@@ -383,6 +379,7 @@ class MainSwap extends Component {
                         <div className="swap-box">
 
                             <TokenBox type="from" token={from_token}
+                                estimated=""
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
@@ -394,6 +391,7 @@ class MainSwap extends Component {
                                 className="arrow" />
 
                             <TokenBox type="to" token={to_token}
+                                estimated=" (estimated)"
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />

@@ -1,8 +1,8 @@
 .popup-wrap {
     z-index: 5;
-    
+
     max-width: 410px;
-    width:95%;
+    width: 95%;
     height: 450px;
     background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
     border-radius: 8px;
@@ -31,8 +31,9 @@
                 position: absolute;
                 font-size: 13px;
                 cursor: pointer;
+                opacity: 0.5;
                 &:hover {
-                    opacity: 0.7;
+                    opacity: 1;
                 }
             }
         }
@@ -40,7 +41,7 @@
 }
 
 @media screen and (max-width: 960px) {
-   .popup-wrap .popup .title {
-       font-size:15px;
-   }
+    .popup-wrap .popup .title {
+        font-size: 15px;
+    }
 }

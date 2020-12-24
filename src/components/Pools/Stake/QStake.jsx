@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { getStayledNumber } from '../../../utils/utils';
 import ProvideButton from './ProvideButton';
 import { WaveLoading, RotateCircleLoading } from 'react-loadingg';
@@ -15,10 +15,6 @@ const QStake = ({ staking, deposited, handleStakePopup, dollarPool, isSand, hand
     const onlyMainClasses = staking && staking.onlyMain ? "only-main" : ""
     const claimAmount = claimable_amount ? getStayledNumber(claimable_amount) + " " + (claimable_unit ? claimable_unit : "DEA") + " claimable" : null
 
-    // useEffect(() => {
-
-    //     console.log("rerendered ", staking.name);
-    // }, [deposited])
 
     return (staking && <div className={`${onlyMainClasses} ${stakeClasses}   ${canStakeClass}`}>
         {staking && staking.onlyMain && <img className="img-only-main" src={process.env.PUBLIC_URL + "/img/only-main.svg"} alt="" />}

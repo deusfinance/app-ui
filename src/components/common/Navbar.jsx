@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import { dappLink, navbarItems } from '../../config';
 import SubNavbar from './SubNavbar';
-import { formatAddress, getStayledNumber, notify } from '../../utils/utils';
+import { formatAddress, getStayledNumber, notify, formatBalance } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
 import '../../styles/scss/navbar.scss';
 
@@ -31,16 +31,16 @@ const Navbar = () => {
         onError: () => console.log("onError"),
     }
 
-    const handleClaim = async()=>{
-      try {
+    const handleClaim = async () => {
+        try {
             await web3.withdrawPayment(notify(methods))
-      } catch (error) {
-          console.log("claim eth error");
-      }
+        } catch (error) {
+            console.log("claim eth error");
+        }
     }
 
 
-    const claimButton = claimAmount > 0 ? <li className="grad-wrap claimable-btn" onClick={handleClaim}>
+    const claimButton = parseFloat(claimAmount) > 0.000001 ? <li className="grad-wrap claimable-btn" onClick={handleClaim}>
         <div className={`grad `}>
             <div> {getStayledNumber(claimAmount)} ETH</div>
             <div>claim</div>
@@ -62,6 +62,8 @@ const Navbar = () => {
         const getClaimable = async (swapServie) => {
             try {
                 const amount = await swapServie.getWithdrawableAmount()
+                console.log("calim is" + amount);
+                setClaim(amount)
                 return amount
             } catch (error) {
                 return 0
@@ -71,7 +73,7 @@ const Navbar = () => {
         if (account && chainId) {
             const swapServie = new SwapService(account, chainId)
             setWeb3(swapServie)
-            setClaim(getClaimable(swapServie))
+            getClaimable(swapServie)
 
         }
     }, [account, chainId])
@@ -108,7 +110,7 @@ const Navbar = () => {
                     <a href={dappLink} className={`grad`}>Install Metamask</a>
                 </li>}
                 {claimButton}
-                {chainId === 4 && <li className="rinkeby">Rinkeby 😎</li>}
+                {chainId === 4 && <li className="rinkeby">Rinkeby <span role="img" >😎</span> </li>}
             </ul>
         </div>}
         <div className="menu-mobile-icon" onClick={toggleNav}>

@@ -1,5 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { toast } from 'react-toastify';
+import React from 'react';
 
 
 export const isDesktop = () => {
@@ -11,7 +12,7 @@ export const isDesktop = () => {
 
 export const getStayledNumber = (number, space = 9) => {
     if (!number) return "0"
-    if(number<0) return ""
+    if (number < 0) return ""
     const strNumber = number.toString()
     if (parseFloat(strNumber) < 0.0000000001) return 0
     if (strNumber.length < space) return strNumber
@@ -23,11 +24,20 @@ export const getStayledNumber = (number, space = 9) => {
 
 
 
-export const formatBalance = (number) => {
-    console.log(number);
+export const formatBalance = (number, decimal = 9) => {
     if (!number) return "0"
     if (number < 0.0000000001) return 0
-    return number
+    if (number < 0.000001) {
+        console.log("number");
+        return number.toString()
+
+    }
+
+    let strNumber = number.toString()
+    const indexDot = strNumber.indexOf(".")
+    let totalDecimals = strNumber.length - indexDot
+    if (indexDot === -1 || (totalDecimals) <= decimal) return strNumber
+    return strNumber.substring(0, indexDot).concat(strNumber.substring(indexDot, indexDot + decimal))
 }
 
 
@@ -53,20 +63,6 @@ export const setBackground = (type) => {
     return
 }
 
-function convertExponentialToDecimal(exponentialNumber) {
-    // sanity check - is it exponential number
-    const str = exponentialNumber.toString();
-    if (str.indexOf('e') !== -1) {
-        const exponent = parseInt(str.split('-')[1], 10);
-        // Unfortunately I can not return 1e-8 as 0.00000001, because even if I call parseFloat() on it,
-        // it will still return the exponential representation
-        // So I have to use .toFixed()
-        const result = exponentialNumber.toFixed(exponent);
-        return result;
-    } else {
-        return exponentialNumber;
-    }
-}
 
 export const formatAddress = (address) => {
     return address ? address.substring(0, 6) + "..." + address.substring(address.length - 4, address.length) : 'connect wallet'
@@ -142,3 +138,24 @@ export const notify = (methods = method) => (state) => {
     }
 };
 
+export const checkLimit = (swap) => {
+
+    const { to } = swap
+
+    if (to.name === "coinbase") {
+
+        toast.info(<div> Coinbase static sale is closed! <br />Bonding curve will start soon.<br /> <br />
+                Until then you can buy them on  <a style={{ color: "gold" }} href="https://app.uniswap.org/#/swap?inputCurrency=0x4185cf99745b2a20727b37ee798193dd4a56cdfa&outputCurrency=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" target="_blank" rel="noopener noreferrer">Uniswap</a>
+        </div>, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+        return true
+    }
+    return false
+}

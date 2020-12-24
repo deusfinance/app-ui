@@ -29,7 +29,7 @@ function App() {
   }, [activatingConnector, connector, chainId])
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
-  const triedEager = useEagerConnect(injected)
+  useEagerConnect(injected)
 
   return (<>
 

@@ -191,12 +191,6 @@
             font-family: Monument Grotesk;
             font-weight: 400;
         }
-        .c-right {
-            // opacity:0.4;
-        }
-        .c-line {
-            // background:linear-gradient(90deg, #FFFFFF 3.18%,rgb(187 ,231, 145) 101.59%);
-        }
         .c-line {
             height: 5px;
             width: 50%;
@@ -240,7 +234,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     transform: translateZ(0);
-    padding-bottom: 70px;
+    padding-bottom: 150px;
     padding-top: 20px;
 }
 
@@ -746,6 +740,11 @@
 .container-single-wrap {
     text-align: center;
     width: 100%;
+    background-image: url("/img/staking-bg.svg");
+    // background-repeat: no-repeat;
+    // background-position: center;
+    // background-size: cover;
+
     // justify-content: center;
     .single-wrap {
         position: relative;

@@ -12,13 +12,7 @@ export class StakeService {
         }
         this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
-        this.AutomaticMarketMakerContract = new this.infuraWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
-        this.DeusSwapContract = new this.infuraWeb3.eth.Contract(abis["deus_swap_contract"], this.getAddr("deus_swap_contract"));
-        this.uniswapRouter = new this.infuraWeb3.eth.Contract(abis["uniswap_router"], this.getAddr("uniswap_router"));
     }
-
-    checkWallet = () => this.account && this.chainId
-
 
     networkNames = {
         1: "Mainnet",
@@ -26,6 +20,8 @@ export class StakeService {
         4: "Rinkeby",
         42: "Kovan",
     }
+
+    checkWallet = () => this.account && this.chainId
 
     getNetworkName = () => this.networkNames[this.chainId.toString()]
 
@@ -37,8 +33,7 @@ export class StakeService {
 
 
     _getWei(number) {
-        const value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
-        return Web3.utils.toWei(String(value), 'ether')
+        return Web3.utils.toWei(String(number), 'ether')
     }
 
     getEtherBalance() {
@@ -57,7 +52,6 @@ export class StakeService {
         if (tokenName === "eth") {
             return this.getEtherBalance(account)
         }
-        console.log(tokenName, this.getTokenAddr(tokenName), this.chainId, this.account);
         const TokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr(tokenName))
         return TokenContract.methods.balanceOf(account).call().then(balance => {
             return Web3.utils.fromWei(balance, 'ether');
@@ -125,7 +119,6 @@ export class StakeService {
         console.log(stakedToken, amount);
 
         const metamaskWeb3 = new Web3(Web3.givenProvider);
-
         const metamaskStakingContract = new metamaskWeb3.eth.Contract(abis["staking"], this.getStakeAddr(stakedToken));
 
         return metamaskStakingContract.methods.withdraw(this._getWei(amount))
@@ -145,7 +138,6 @@ export class StakeService {
             .then(user => {
                 return Web3.utils.fromWei(user.depositAmount, 'ether');
             });
-
     }
 
     getNumberOfPendingRewardTokens(stakedToken) {
@@ -161,7 +153,6 @@ export class StakeService {
 
     getTotalStakedToken(stakedToken) {
         if (!this.checkWallet()) return 0;
-        console.log("staked ", stakedToken);
         const stakedTokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr(stakedToken));
 
         return stakedTokenContract.methods.balanceOf(this.getStakeAddr(stakedToken)).call()

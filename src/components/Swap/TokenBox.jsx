@@ -24,12 +24,11 @@ class TokenBox extends Component {
 
 
     render() {
-        const { type, handleSearchBox, handleTokenInputChange, token } = this.props
-
+        const { type, estimated, handleSearchBox, handleTokenInputChange, token } = this.props
         return (<div className="token-box-wrap">
             <div className="token-box">
                 <div className="top">
-                    <p>{type.charAt(0).toUpperCase() + type.slice(1)}</p>
+                    <p>{type.charAt(0).toUpperCase() + type.slice(1) + estimated}</p>
                     <div className="balance">
                         <span>Balance: </span>
                         <span>{getStayledNumber(token.balance)}</span>

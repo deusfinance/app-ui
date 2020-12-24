@@ -37,7 +37,7 @@ class TopNotif extends Component {
                     {!show && <div className="grad-wrap token-btn-wrap" onClick={this.handleToggleSelect}>
                         <div className=" grad token-btn">
                             <p>{selectedToken.name} </p>
-                            <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
+                            <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} alt="arrow" />
                         </div>
                     </div>}
                     {show && <div className="grad-wrap list-tokens-wrap ">
@@ -45,7 +45,7 @@ class TopNotif extends Component {
                             <div to={selectedToken.path} className="token-item" onClick={this.handleToggleSelect}>
                                 <div className=" grad token-btn">
                                     <p>{selectedToken.name}</p>
-                                    <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
+                                    <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} alt="arrow" />
                                 </div>
                             </div>
                             {tokenTypes.filter(t => t.id !== selectedToken.id).map((t, index) => {

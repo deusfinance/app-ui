@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
 import { getStayledNumber, notify } from '../../utils/utils';
-import addrs from '../../services/addresses.json'
-import "./staking.scss"
 import { StakeService } from '../../services/StakeService';
 import StakePopup from '../common/Popup/StakePopup';
-
 import { withRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+
+import addrs from '../../services/addresses.json'
+import "./staking.scss"
 
 class StakingManager extends Component {
     state = {
@@ -47,7 +47,6 @@ class StakingManager extends Component {
             this.getStakingAllAmounts(tokenName)
         })
 
-        console.log("did mounted sand token");
     }
 
     componentWillUnmount() {
@@ -59,11 +58,7 @@ class StakingManager extends Component {
         const { chainId, account, navId } = this.props
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
 
-            console.log("chain id is", chainId);
-
             if (!chainId || !account) return
-
-            console.log("log did update", account, chainId);
 
             const { pools } = this.state
 
@@ -79,11 +74,10 @@ class StakingManager extends Component {
         }
 
         if (prevProps.navId !== navId) {
-            console.log("nav changed");
 
             const currentPools = [
                 ["deus", "dea"],
-                ["deus_dea", "dea_usdc"],
+                ["coinbase_usdc", "deus_dea", "dea_usdc"],
                 ["deus_eth", "ampl_eth", "snx", "uni"],
             ]
 
@@ -125,26 +119,21 @@ class StakingManager extends Component {
     cliamWatcher = () => {
         const { pools, stakingsMap, web3 } = this.state
 
-        console.log("cliamWatcher");
-
         if (!web3) return
 
         pools.map(async (poolName, i) => {
             const { deposited } = stakingsMap[poolName]
             if (!deposited || deposited === "0") return
-            console.log(poolName);
             stakingsMap[poolName].claimable_amount = null
             this.setState({ stakingsMap })
             try {
                 const data = await web3?.getNumberOfPendingRewardTokens(poolName)
-                console.log(poolName, " recived amount");
                 stakingsMap[poolName].claimable_amount = getStayledNumber(data)
                 this.setState({ stakingsMap })
             } catch (error) {
                 console.log(poolName, " error amount");
             }
         })
-        // this.setState({ stakingsMap })
     }
 
     escFunction = (event) => {
@@ -155,14 +144,11 @@ class StakingManager extends Component {
 
     methods = {
         onStart: () => {
-            console.log("onStart")
         },
         onSuccess: () => {
             const { currStake, typeTransaction } = this.state
-            console.log("onSuccess ", currStake)
 
             if (typeTransaction === "approved") {
-                console.log("it was approve");
                 this.setState({ typeTransaction: "" })
                 this.handleInitAllowances(currStake, currStake)
                 return
@@ -184,7 +170,6 @@ class StakingManager extends Component {
         try {
 
             const data = await web3.getTokenBalance(tokenName)
-            console.log("getSingleBalance ", data);
             tokensMap[tokenName].balance = getStayledNumber(data)
             this.setState({ tokensMap })
         } catch (error) {
@@ -197,7 +182,6 @@ class StakingManager extends Component {
 
         try {
             const data = await web3.getAllowances(contractName, contractName)
-            console.log(contractName, "\t allowances");
             stakingsMap[contractName].allowances = data
             if (currStake && stakingsMap[currStake].allowances > 0) {
                 this.setState({ approved: true })
@@ -213,20 +197,19 @@ class StakingManager extends Component {
 
         const { web3, stakingsMap } = this.state
 
-        console.log("initial called for \t" + stakedToken);
 
         //off stake so we put stakaing
         if (stakingsMap[stakedToken].onlyMain) {
             stakingsMap[stakedToken].deposited = 0
             stakingsMap[stakedToken].claimable_amount = 0
             this.setState({ stakingsMap })
-            console.log("isClosed", stakedToken);
             return
         }
 
         if (!web3) return
 
         web3.getNumberOfStakedTokens(stakedToken).then((amount) => {
+            console.log("getNumberOfStakedTokens ", amount);
             stakingsMap[stakedToken].deposited = amount
             if (amount === "0") {
                 this.setState({ stakingsMap })
@@ -248,19 +231,18 @@ class StakingManager extends Component {
 
 
     handleClaim = (stakedToken) => () => {
-        console.log("handleClaim");
 
         this.handleWithdraw(stakedToken)(0)
     }
 
 
     handleWithdraw = (stakedToken) => async (amount) => {
+        console.log("withdraw with ", amount);
         const { web3 } = this.state
         this.setState({ currStake: stakedToken })
 
         try {
-            console.log("handleWithdraw");
-            const data = await web3.withdraw(stakedToken, amount, notify(this.methods))
+            await web3.withdraw(stakedToken, amount, notify(this.methods))
         } catch (error) {
             console.log(error);
         }
@@ -282,12 +264,12 @@ class StakingManager extends Component {
 
 
     handleApprove = (token) => async (amount) => {
+        console.log("here");
         const { web3, approved } = this.state
-        console.log(token.name + "\t" + amount + "\t handleApprove ");
         if (approved || !web3) return
         this.setState({ typeTransaction: "approved" })
         try {
-            const data = await web3.approve(token.name, amount, notify(this.methods))
+            await web3.approve(token.name, amount, notify(this.methods))
 
         } catch (error) {
             console.log(error)
@@ -295,13 +277,12 @@ class StakingManager extends Component {
     }
 
     handleStake = (stakedToken) => async (amount) => {
-        console.log("handleStake ", stakedToken, " ", amount);
 
         const { isStakePopup, approved, web3 } = this.state
         if (!approved) return
 
         try {
-            const data = await web3.stake(stakedToken.name, amount, notify(this.methods))
+            await web3.stake(stakedToken.name, amount, notify(this.methods))
 
         } catch (error) {
             console.log(error)
@@ -334,7 +315,7 @@ class StakingManager extends Component {
             <ToastContainer style={{ width: "400px" }} />
 
             { currStake && currToken && <StakePopup
-                title={"STAKE TOKENS TO EARN " + "DEA"}
+                title={"STAKE TOKENS TO EARN DEA"}
                 close={true}
                 isStakePopup={isStakePopup}
                 handleApprove={this.handleApprove(currToken)}
@@ -347,15 +328,14 @@ class StakingManager extends Component {
             />}
 
             <div className="staking-wrap" >
-                <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" />
+                {/* <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" /> */}
 
                 <TopNotif typeID={this.props.navId} />
 
                 <div className="stake-container-wrap" ></div>
-                <div className="container-single-wrap" style={{ marginTop: "50px" }}>
+                <div className="container-single-wrap">
                     {
                         pools.slice(0, pools.length).map((token, i) => {
-                            // console.log(token);
                             return <QStake
                                 key={i}
                                 handleClaim={this.handleClaim(token)}
@@ -368,6 +348,7 @@ class StakingManager extends Component {
                             />
                         })
                     }
+
 
                 </div>
             </div>

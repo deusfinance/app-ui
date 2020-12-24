@@ -10,14 +10,14 @@ class SearchBox extends Component {
 
 
     render() {
-        const { showSearchBox, handleSearchBox, handleFilterToken, choosedToken, allTokens, tokens, handleChangeToken } = this.props
+        const { showSearchBox, handleSearchBox, choosedToken, allTokens, tokens, handleChangeToken } = this.props
         const sortedList = tokens.sort((a, b) => allTokens[b]?.balance - allTokens[a]?.balance)
 
         return (<>
             { showSearchBox && <div className="search-box-wrap">
                 <div className="search-box">
                     <div className="label">
-                        <p>Select a token</p>
+                        <p> </p>
                         <div onClick={() => handleSearchBox(false)}>close</div>
                     </div>
                     {/* <input type="text" placeholder="Search name or paste address" spellCheck="false" autoComplete="off" /> */}
@@ -35,7 +35,7 @@ class SearchBox extends Component {
                                         <div>
                                             <img src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}`} alt={token.name} />
                                             <p style={{ textTransform: "uppercase" }}>{token.name}</p>
-                                            {token.isFutures && <img className="futures" src={process.env.PUBLIC_URL + "/img/futures.svg"} />}
+                                            {token.isFutures && <img className="futures" src={process.env.PUBLIC_URL + "/img/futures.svg"} alt="futures" />}
                                         </div>
                                         <p >{getStayledNumber(token.balance)}</p>
                                     </div>

@@ -14,13 +14,12 @@ class StakePopup extends Component {
     }
 
     render() {
-        const { isStakePopup, handlePopup, staking,token, isApproved, close, title, handleStake, handleApprove, contractAddr } = this.props
-        const { stakeAmount,oldApprove } = this.state
-        // const stakedApprove = staking.allowances && staking.allowances!=="0"
-        const recentlyApproved =  isApproved
-        const recentlyApprovedClasses = recentlyApproved?"approved":""
+        const { isStakePopup, handlePopup, token, isApproved, close, title, handleStake, handleApprove, contractAddr } = this.props
+        const { stakeAmount, oldApprove } = this.state
+        const recentlyApproved = isApproved
+        const recentlyApprovedClasses = recentlyApproved ? "approved" : ""
         const popupMsg = token && <div className="stake-pop-wrap">
-            <div className="uni-token-name">{token.coin?token.coin:token.title}</div>
+            <div className="uni-token-name">{token.coin ? token.coin : token.title}</div>
             <div className="amount-wrap">
                 <div className="balance">Balance: <span>{token?.balance}</span></div>
 
@@ -28,15 +27,15 @@ class StakePopup extends Component {
                 <div className="max-btn" onClick={() => this.handleChange(token.balance)}>MAX</div>
             </div>
             <a className="show-contract" href={contractEndpoint + "/" + contractAddr} target="_blank" rel="noopener noreferrer">Show me the contract</a>
-            {!oldApprove &&<><div className={`action-btn ${recentlyApprovedClasses}`}>
-                <div className="btn-wrap" onClick={() => handleApprove(stakeAmount)}>{isApproved?"APPROVED":"APPROVE"}</div>
+            {!oldApprove && <><div className={`action-btn ${recentlyApprovedClasses}`}>
+                <div className="btn-wrap" onClick={() => handleApprove(stakeAmount)}>{isApproved ? "APPROVED" : "APPROVE"}</div>
                 <div className="btn-wrap" onClick={() => handleStake(stakeAmount)}>STAKE</div>
             </div>
-            <div className={`indicator ${recentlyApprovedClasses}`}>
-                <div className="cyc c-left">1</div>
-                <div className="c-line"></div>
-                <div className="cyc c-right">2</div>
-            </div></>}
+                <div className={`indicator ${recentlyApprovedClasses}`}>
+                    <div className="cyc c-left">1</div>
+                    <div className="c-line"></div>
+                    <div className="cyc c-right">2</div>
+                </div></>}
             {oldApprove && <div className="btn-wrap" onClick={() => handleStake(stakeAmount)}>STAKE</div>}
 
         </div>

@@ -2,7 +2,6 @@ import MetaMaskOnboarding from '@metamask/onboarding';
 import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { injected } from '../../connectors';
-import { configure } from '@testing-library/react';
 import { dappLink } from '../../config';
 
 const SwapButton = ({ approved, token, handleSwap, isMobile }) => {

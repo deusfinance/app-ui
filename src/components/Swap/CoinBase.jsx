@@ -5,16 +5,16 @@ import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
 import Title from './Title';
 import SwapButton from './SwapButton';
-import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
 import { ToastContainer } from 'react-toastify';
 import { SwapService } from '../../services/SwapService';
+import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
 
 import './mainSwap.scss';
 
 
 class CoinBase extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "wbtc", "usdc", "usdt", "dai", "coinbase"],
+        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc", "coinbase"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -38,11 +38,9 @@ class CoinBase extends Component {
 
     methods = {
         onStart: () => {
-            console.log("onStart")
 
         },
         onSuccess: () => {
-            console.log("onSuccess")
             const { swap, typeTransaction } = this.state
             if (typeTransaction === "approve") {
                 this.getSingleAllowances(swap.from.name, true)
@@ -59,7 +57,6 @@ class CoinBase extends Component {
     newService = null;
 
     async componentDidMount() {
-        console.log("componentDidMount chain id is", this.props.chainId);
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
         const { chainId, account } = this.props
@@ -82,11 +79,9 @@ class CoinBase extends Component {
 
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
 
-            console.log("chain id is", chainId);
 
             if (!chainId || !account) return
 
-            console.log("log did update", account, chainId);
 
             await this.setState({ web3: new SwapService(account, chainId) })
             await this.handleIinitBalances(true)
@@ -113,9 +108,9 @@ class CoinBase extends Component {
 
     handleTokensToMap = () => {
         const { tokens, tokensMap } = this.state
-        tokens.map(t => {
-            tokensMap[t.name] = t
-        })
+        for (let i = 0; i < tokens.length; i++) {
+            tokensMap[tokens[i].name] = tokens[i]
+        }
         this.setState({ tokensMap })
     }
 
@@ -130,7 +125,7 @@ class CoinBase extends Component {
     getToken = (tokenName) => this.state.tokens.find(t => t.name === tokenName)
 
     handleChangeType = () => {
-        const { swap, fromPerTo } = this.state
+        const { swap } = this.state
         const { from, to } = swap
         from.amount = ""
         to.amount = ""
@@ -198,7 +193,6 @@ class CoinBase extends Component {
 
         try {
             const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : await web3.getAmountsIn(swap.from.name, swap.to.name, amount)
-            console.log(data);
             swap[vstype].amount = getStayledNumber(data, 9)
             this.setState({
                 swap,
@@ -207,7 +201,6 @@ class CoinBase extends Component {
             })
         } catch (error) {
             console.log(error);
-            // swap[vstype].amount = "1"
             this.setState({ swap })
         }
     }
@@ -217,7 +210,6 @@ class CoinBase extends Component {
     }
 
     handleIinitBalances = async (foceUpdate) => {
-        console.log("handleIinitBalances");
         const { tokens } = this.state
 
         tokens.map(async (t) => {
@@ -251,7 +243,7 @@ class CoinBase extends Component {
             }
             setAllTokens(allTokens)
         } else {
-            console.log("fetched balance");
+            // console.log("fetched balance");
         }
     }
 
@@ -279,7 +271,6 @@ class CoinBase extends Component {
         if (force || !allTokens[tokenName].lastFechAllowance) {
             try {
                 const allowances = await web3.getAllowances(tokenName)
-                console.log(allowances);
                 allTokens[tokenName].allowances = parseInt(allowances)
                 allTokens[tokenName].lastFechAllowance = true
                 if (tokenName === swap.from.name || tokenName === swap.to.name) {
@@ -316,14 +307,8 @@ class CoinBase extends Component {
         return tokens.filter(t => swap[searchBoxType].name !== t.name)
     }
 
-    // handleFilterToken = () => {
-    //     const { searchBoxType, tokens, swap } = this.state
-    //     return tokens.filter(t => swap[searchBoxType].name !== t.name)
-    // }
-
     isApproved = () => {
         const { swap } = this.state
-        // console.log(swap.to.allowances > 0);
         return swap.from.allowances > 0
     }
 
@@ -331,10 +316,13 @@ class CoinBase extends Component {
         const { swap, web3 } = this.state
         if (!web3) return
 
+        if (checkLimit(swap)) {
+            return
+        }
+
         const { from, to } = swap
-        console.log("come");
         try {
-            const data = !(swap.from.allowances > 0) ?
+            !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :
                 await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
         } catch (error) {
@@ -345,6 +333,11 @@ class CoinBase extends Component {
 
     handleApprove = async (swap) => {
         const { web3 } = this.state
+
+        if (checkLimit(swap)) {
+            return
+        }
+
         try {
             this.setState({ typeTransaction: "approve" })
             const data = await web3.approve(swap.from.name, swap.from.amount, notify(this.methods))
@@ -370,20 +363,18 @@ class CoinBase extends Component {
 
         return (<div className="deus-swap-wrap">
 
-            {!isMobile && <ToastContainer style={{ width: "400px" }} />}
+            {!isMobile && <ToastContainer style={{ width: "450px" }} />}
             <Title web3={web3} claimable_amount={claimable_amount} isCoinbase={true} />
 
 
             <div className="swap-container-wrap">
                 <div className="swap-container">
-                    {/* <div className="show-dollar-wrap grad-wrap">
-                        <div className="show-dollar grad">SHOW DOLLAR PRICE</div>
-                    </div> */}
-
                     <div className="swap-box-wrap">
                         <div className="swap-box">
 
                             <TokenBox type="from" token={from_token}
+                                estimated=" "
+
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
@@ -395,6 +386,8 @@ class CoinBase extends Component {
                                 className="arrow" />
 
                             <TokenBox type="to" token={to_token}
+                                estimated=" (estimated)"
+
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />

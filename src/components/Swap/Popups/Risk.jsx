@@ -3,7 +3,7 @@ import Popup from './Popup/Popup';
 
 const Risk = ({ handleRiskPopup }) => {
     return (<Popup
-        title={<div > "RISK OF FUTURES TRADING <span role="img" >📈</span><span role="img" >📉</span>"</div>}
+        title={<div > "RISK OF FUTURES TRADING <span role="img" aria-label="chart increasing">📈</span><span role="img" aria-label="chart decreasing" >📉</span>"</div>}
         close={true}
         show={true}
         handlePopup={handleRiskPopup}

@@ -22,7 +22,7 @@ const TokenMarket = ({ handleSwich, swap, toAmount, fromAmount, fromPerTo, tvl, 
             setPerTo(fromPerTo)
         }
         setPerPrice(calcPerPerice())
-    }, [toAmount, fromAmount, fromPerTo])
+    }, [toAmount, fromAmount, fromPerTo, perTo])
 
 
     return (<div className="token-market-wrap" >

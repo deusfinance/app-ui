@@ -1,6 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { toast } from 'react-toastify';
-import React from 'react';
 
 
 export const isDesktop = () => {

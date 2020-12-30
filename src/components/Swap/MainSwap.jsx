@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
-import PriceBox from './PriceBox';
 import TokenBox from './TokenBox';
 import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
 import Title from './Title';
 import SwapButton from './SwapButton';
 import { SwapService } from '../../services/SwapService';
-
-import './mainSwap.scss';
-import Slippage from './Slippage';
+// import PriceBox from './PriceBox';
+// import Slippage from './Slippage';
 import Routes from './Routes';
+import './mainSwap.scss';
 
 
 class MainSwap extends Component {
@@ -113,9 +112,9 @@ class MainSwap extends Component {
 
     handleTokensToMap = () => {
         const { tokens, tokensMap } = this.state
-        tokens.map(t => {
-            tokensMap[t.name] = t
-        })
+        for (let i = 0; i < tokens.length; i++) {
+            tokensMap[tokens[i].name] = tokens[i]
+        }
         this.setState({ tokensMap })
     }
 

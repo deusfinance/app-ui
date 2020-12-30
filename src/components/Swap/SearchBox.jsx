@@ -4,11 +4,6 @@ import { getStayledNumber } from '../../utils/utils';
 class SearchBox extends Component {
     state = {}
 
-    sortFunction = (a, b) => {
-        return
-    }
-
-
     render() {
         const { showSearchBox, handleSearchBox, choosedToken, allTokens, tokens, handleChangeToken } = this.props
         const sortedList = tokens.sort((a, b) => allTokens[b]?.balance - allTokens[a]?.balance)
@@ -29,7 +24,7 @@ class SearchBox extends Component {
                         <div className="token-items">
                             {
                                 sortedList.map((tokenName, i) => {
-                                    if (tokenName === choosedToken) return
+                                    if (tokenName === choosedToken) return <></>
                                     const token = allTokens[tokenName]
                                     return <div key={i} className="token-item" onClick={() => handleChangeToken(token.name)}>
                                         <div>

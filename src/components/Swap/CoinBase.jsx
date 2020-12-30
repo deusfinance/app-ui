@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PriceBox from './PriceBox';
 import TokenBox from './TokenBox';
 import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
@@ -8,7 +7,6 @@ import SwapButton from './SwapButton';
 import { ToastContainer } from 'react-toastify';
 import { SwapService } from '../../services/SwapService';
 import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
-import Slippage from './Slippage';
 import Routes from './Routes';
 import Risk from './Popups/Risk';
 import './mainSwap.scss';
@@ -372,7 +370,7 @@ class CoinBase extends Component {
 
     render() {
 
-        const { showSearchBox, showRiskPupop, slippageAmount, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
+        const { showSearchBox, showRiskPupop, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
         const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to

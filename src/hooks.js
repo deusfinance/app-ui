@@ -18,7 +18,7 @@ export function useEagerConnect(injected) {
                 setTried(true)
             }
         })
-    }, []) // intentionally only running on mount (make sure it's only mounted once :))
+    }) // intentionally only running on mount (make sure it's only mounted once :))
 
     // if the connection worked, wait until we get confirmation of that to flip the flag
     useEffect(() => {
@@ -29,42 +29,3 @@ export function useEagerConnect(injected) {
 
     return tried
 }
-
-
-
-// async function getBlance(tokenName) {
-//     try {
-//         const balance = await getTokenBalance(tokenName)
-//         return balance
-//     } catch (error) {
-//         return 0
-//     }
-// }
-
-// async function getAllowance(tokenName) {
-//     try {
-//         const allowances = await getAllowances(tokenName)
-//         return allowances
-//     } catch (error) {
-//         return 0
-//     }
-// }
-
-// export function useGetToken(token) {
-//     const context = useWeb3React()
-//     const { account, chainId } = context
-//     const [newToken, setNewToken] = useState(token)
-//     const { name } = token
-
-//     setNewToken = useMemo(() => {
-//         try {
-//             setNewToken.balance = getBlance(name)
-//             if (setNewToken.allowances <= 0) setNewToken.allowances = getAllowance(name)
-//             setNewToken(token)
-//         } catch (err) {
-//             console.log(err);
-//         }
-//     }, name, account, chainId, token.lastFetch)
-
-//     return setNewToken
-// }

@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react'
 
 const Slippage = ({ slippage, setSlippage }) => {
     const amounts = [0.1, 0.2, 1]
-
-    // const [slippage, setSlippage] = useState(amounts[0])
     const [isCusEnable, setCusEnable] = useState(false)
     const [cusAmount, setCusAmount] = useState("")
 
@@ -19,7 +17,7 @@ const Slippage = ({ slippage, setSlippage }) => {
                 setSlippage(amounts[0])
             }
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cusAmount])
 
     return (<div className="slippage">

@@ -359,7 +359,7 @@ export class SwapService {
                     );
             }
             path = path.slice(1)
-            if (path[1] == this.getTokenAddr("weth")) {
+            if (path[1] === this.getTokenAddr("weth")) {
                 return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
                     .then(tokenAmount => {
                         return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(tokenAmount[0]).call()
@@ -394,7 +394,7 @@ export class SwapService {
             }
             path = path.slice(0, path.length - 1)
 
-            if (path[path.length - 2] == this.getTokenAddr("weth")) {
+            if (path[path.length - 2] === this.getTokenAddr("weth")) {
                 if (path.length > 2) {
                     path = path.slice(0, path.length - 1)
                     return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
@@ -428,13 +428,13 @@ export class SwapService {
         } else {
             const isDeus = (element) => element === this.getTokenAddr("deus");
             var indexOfDeus = path.findIndex(isDeus);
-            if (indexOfDeus == -1) {
+            if (indexOfDeus === -1) {
                 return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
                     .then(amountsOut => {
                         return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
                     })
             } else {
-                if (indexOfDeus == path.length - 1) {
+                if (indexOfDeus === path.length - 1) {
                     if (path[path.length - 2] === this.getTokenAddr("weth")) {
                         path = path.slice(0, path.length - 1);
                         return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
@@ -451,8 +451,8 @@ export class SwapService {
                             })
 
                     }
-                } else if (indexOfDeus == 0) {
-                    if (path[1] == this.getTokenAddr("weth")) {
+                } else if (indexOfDeus === 0) {
+                    if (path[1] === this.getTokenAddr("weth")) {
                         path = path.slice(1);
                         return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
                             .then(tokenAmount => {
@@ -468,7 +468,7 @@ export class SwapService {
                             })
                     }
                 } else {
-                    if (path[indexOfDeus - 1] == this.getTokenAddr("weth")) {
+                    if (path[indexOfDeus - 1] === this.getTokenAddr("weth")) {
                         var path1 = path.slice(0, indexOfDeus)
                         var path2 = path.slice(indexOfDeus)
                         if (path1.length > 1) {
@@ -501,9 +501,9 @@ export class SwapService {
 
                         }
 
-                    } else if (path[indexOfDeus + 1] == this.getTokenAddr("weth")) {
-                        var path1 = path.slice(0, indexOfDeus + 1)
-                        var path2 = path.slice(indexOfDeus + 1)
+                    } else if (path[indexOfDeus + 1] === this.getTokenAddr("weth")) {
+                        let path1 = path.slice(0, indexOfDeus + 1)
+                        let path2 = path.slice(indexOfDeus + 1)
                         if (path1.length > 1) {
                             return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path1).call()
                                 .then(amountsOut2 => {

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import { dappLink, navbarItems } from '../../config';
 import SubNavbar from './SubNavbar';
-import { formatAddress, getStayledNumber, notify, formatBalance } from '../../utils/utils';
+import { formatAddress, getStayledNumber, notify } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
 import './navbar.scss';
 
@@ -78,7 +78,7 @@ const Navbar = () => {
 
     const handleConnect = async () => {
         try {
-            const data = await activate(injected)
+            await activate(injected)
         } catch (error) {
             console.log(error);
         }
@@ -107,7 +107,7 @@ const Navbar = () => {
                     <a href={dappLink} className={`grad`}>Install Metamask</a>
                 </li>}
                 {claimButton}
-                {chainId === 4 && <li className="rinkeby">Rinkeby <span role="img" >😎</span> </li>}
+                {chainId === 4 && <li className="rinkeby">Rinkeby <span role="img" aria-label="glass" >😎</span> </li>}
             </ul>
         </div>}
         <div className="menu-mobile-icon" onClick={toggleNav}>
@@ -124,7 +124,7 @@ const Navbar = () => {
 
                         return <li key={nav.id} className="nav-item">
                             <NavLink className={classes} exact={nav.exact} to={nav.path}>
-                                <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />}</div>
+                                <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} alt="arrow" />}</div>
                             </NavLink>
                             {nav.children && <SubNavbar key={nav.id} items={nav.children} />}</li>
                     })

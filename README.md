@@ -1,5 +1,12 @@
 # app-ui
 
-It's the DEUS finance front-end for the vaults app on https://app.deus.finance.
+It's front-end app that will be run on https://app.deus.finance.
 
+### Install packages
+`npm install`
 
+### Run dev server
+`npm run start`
+
+### Build 
+`npm run build`

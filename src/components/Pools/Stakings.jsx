@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
-import { getStayledNumber, notify } from '../../utils/utils';
+import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
 import { StakeService } from '../../services/StakeService';
 import StakePopup from '../common/Popup/StakePopup';
 import { withRouter } from 'react-router-dom';
@@ -77,8 +77,8 @@ class StakingManager extends Component {
 
             const currentPools = [
                 ["deus", "dea"],
-                ["coinbase_usdc", "deus_dea", "dea_usdc"],
-                ["deus_eth", "ampl_eth", "snx", "uni"],
+                ["coinbase_usdc", "deus_dea", "dea_usdc", "deus_eth"],
+                ["ampl_eth", "snx", "uni"],
             ]
 
             this.setState({
@@ -95,8 +95,6 @@ class StakingManager extends Component {
         }
     }
 
-
-
     getApyForAllStakings = async () => {
         const { stakingsMap } = this.state
         try {
@@ -112,8 +110,6 @@ class StakingManager extends Component {
         }
         this.setState({ stakingsMap })
     }
-
-
 
     //update all claim amount if user had any deposited tokens
     cliamWatcher = () => {
@@ -170,7 +166,7 @@ class StakingManager extends Component {
         try {
 
             const data = await web3.getTokenBalance(tokenName)
-            tokensMap[tokenName].balance = getStayledNumber(data)
+            tokensMap[tokenName].balance = formatBalance(data)
             this.setState({ tokensMap })
         } catch (error) {
             console.log(error);
@@ -209,7 +205,6 @@ class StakingManager extends Component {
         if (!web3) return
 
         web3.getNumberOfStakedTokens(stakedToken).then((amount) => {
-            console.log("getNumberOfStakedTokens ", amount);
             stakingsMap[stakedToken].deposited = amount
             if (amount === "0") {
                 this.setState({ stakingsMap })
@@ -305,6 +300,7 @@ class StakingManager extends Component {
 
     render() {
         const { tokensMap, pools, stakingsMap, isStakePopup, approved, currStake } = this.state
+        const { chainId } = this.props
         const currToken = tokensMap[currStake]
         const currStaking = stakingsMap[currStake]
 
@@ -323,7 +319,7 @@ class StakingManager extends Component {
                 handlePopup={this.handlePopup}
                 token={currToken}
                 staking={currStaking}
-                contractAddr={addrs["staking"][currStake][this.props.chainId]}
+                contractAddr={addrs["staking"][currStake][chainId ? chainId : 1]}
                 isApproved={approved}
             />}
 

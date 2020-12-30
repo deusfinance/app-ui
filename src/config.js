@@ -81,6 +81,29 @@ export const TokenType = {
     Main: "main",
 }
 
+export const AddressChainMap = {
+    1: {
+        "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": "eth",
+        "0x3b62F3820e0B035cc4aD602dECe6d796BC325325": "deus",
+        "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778": "dea",
+        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": "usdc",
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7": "usdt",
+        "0x6B175474E89094C44Da98b954EedeAC495271d0F": "dai",
+        "0x4185cf99745B2a20727B37EE798193DD4a56cDfa": "coinbase",
+        "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": "wbtc",
+    },
+    4: {
+        "0xc778417E063141139Fce010982780140Aa0cD5Ab": "eth",
+        "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842": "deus",
+        "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934": "dea",
+        "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36": "usdc",
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7": "usdt",
+        "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735": "dai",
+        "0xFD104902617231e053049044E3e51C1D37fE12D3": "coinbase",
+        "0x577D296678535e4903D59A4C929B718e1D575e0A": "wbtc",
+    },
+}
+
 
 export const AllTokens = {
     "timetoken": {
@@ -211,11 +234,11 @@ export const AllTokens = {
     },
     "deus_eth": {
         name: "deus_eth",
-        title: "DEUS-ETH",
-        type: TokenType.Main,
+        title: "UNI-V2-DEUS/ETH",
+        type: TokenType.Liquidity,
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        provideLink: "/swap",
+        provideLink: "https://app.uniswap.org/#/add/0x3b62f3820e0b035cc4ad602dece6d796bc325325/ETH",
     },
     "coinbase_usdc": {
         name: "coinbase_usdc",
@@ -495,8 +518,7 @@ export const AllStakings = {
         claimable_unit: "DEA",
         coin_name: "UNI-V2-DEUS/ETH",
         stakingLink: "0x19945547eC934bBD8C48fA69bC78152C468CCA7a",
-        liqLink: "https://app.uniswap.org/#/add/ETH/0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
-        isClose: true,
+        liqLink: "https://app.uniswap.org/#/add/0x3b62f3820e0b035cc4ad602dece6d796bc325325/ETH",
 
     },
     deus: {

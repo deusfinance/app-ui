@@ -1,0 +1,59 @@
+.routes {
+    // height: 80px;
+    width: 100%;
+    padding: 0 16px;
+    background: #0d0d0d;
+    border: 2px solid #1c1c1c;
+    margin-top: -1px;
+    // box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    p {
+        position: absolute;
+        left: 18px;
+    }
+    .routes-tokens {
+        text-align: center;
+        width: 100%;
+        display: inline-block;
+        padding: 10px 50px;
+        margin: 0 auto;
+        .route-token {
+            padding: 5px 0;
+            display: inline-flex;
+            vertical-align: middle;
+            align-items: center;
+        }
+        .token-wrap {
+            display: inline-flex;
+            align-items: center;
+            .icon {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                margin-right: 4px;
+            }
+            .symbol {
+                font-size: 14px;
+            }
+        }
+    }
+    .swap-place {
+        margin-left: 12px;
+        display: inline-flex;
+        align-items: center;
+        img:nth-child(2) {
+            margin: 0 15px 0 5px;
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .routes {
+        background-color: #292929;
+    }
+}

@@ -309,9 +309,6 @@ nav {
         top: 0px;
         width: 250px;
         transition: 0.2s all;
-        li {
-            // margin-bottom: 2px;
-        }
         #mobile-menu {
             flex-direction: column-reverse;
         }
@@ -364,10 +361,12 @@ nav {
     }
 
     .close-menu {
+        z-index: 5;
         margin-right: -300px;
     }
 
     .menu-mobile-icon {
+        cursor: pointer;
         // z-index: 10;
         display: block;
         width: 35px;

@@ -1,0 +1,282 @@
+{
+    "eth": {
+        "deus": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325"
+        ],
+        "usdc": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ],
+        "usdt": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ],
+        "dea": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
+        ],
+        "dai": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        ],
+        "coinbase": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        ]
+    },
+    "deus": {
+        "eth": [
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "usdc": [
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ],
+        "usdt": [
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ],
+        "dea": [
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
+        ],
+        "dai": [
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        ],
+        "coinbase": [
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        ]
+    },
+    "dea": {
+        "deus": [
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325"
+        ],
+        "eth": [
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "usdc": [
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ],
+        "usdt": [
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ],
+        "dai": [
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        ],
+        "coinbase": [
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        ]
+    },
+    "usdc": {
+        "deus": [
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325"
+        ],
+        "dea": [
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
+        ],
+        "eth": [
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "usdt": [
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ],
+        "dai": [
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        ],
+        "coinbase": [
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        ]
+    },
+    "usdt": {
+        "deus": [
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325"
+        ],
+        "eth": [
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "usdc": [
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ],
+        "dea": [
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
+        ],
+        "dai": [
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        ],
+        "coinbase": [
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        ]
+    },
+    "dai": {
+        "deus": [
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325"
+        ],
+        "eth": [
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "usdc": [
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ],
+        "dea": [
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
+        ],
+        "usdt": [
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ],
+        "coinbase": [
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ],
+        "wbtc": [
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        ]
+    },
+    "coinbase": {
+        "deus": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325"
+        ],
+        "eth": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "usdc": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ],
+        "dea": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
+        ],
+        "usdt": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ],
+        "dai": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        ],
+        "wbtc": [
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        ]
+    },
+    "wbtc": {
+        "deus": [
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325"
+        ],
+        "eth": [
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        ],
+        "usdc": [
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        ],
+        "dea": [
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
+        ],
+        "usdt": [
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        ],
+        "dai": [
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        ],
+        "coinbase": [
+            "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
+        ]
+    }
+}

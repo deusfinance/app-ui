@@ -10,11 +10,13 @@ import SwapButton from './SwapButton';
 import { SwapService } from '../../services/SwapService';
 
 import './mainSwap.scss';
+import Slippage from './Slippage';
+import Routes from './Routes';
 
 
 class MainSwap extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc", "coinbase"],
+        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -31,8 +33,10 @@ class MainSwap extends Component {
         claimable_amount: null,
         typingTimeout: 0,
         typeTransaction: "",
+        slippageAmount: 0.1,
         toAmount: "",
         fromAmount: ""
+
     }
 
 
@@ -59,7 +63,6 @@ class MainSwap extends Component {
     async componentDidMount() {
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
-
         const { chainId, account } = this.props
 
         this.handleInitToken("from", "eth")
@@ -96,7 +99,6 @@ class MainSwap extends Component {
         if (!web3) return
         try {
             const amount = await web3.getWithdrawableAmount()
-            console.log(Number.parseFloat(amount));
             this.setState({ claimable_amount: amount })
             return amount
         } catch (error) {
@@ -104,6 +106,10 @@ class MainSwap extends Component {
         }
     }
 
+
+    handleSlippage = (amount) => {
+        this.setState({ slippageAmount: amount })
+    }
 
     handleTokensToMap = () => {
         const { tokens, tokensMap } = this.state
@@ -364,6 +370,7 @@ class MainSwap extends Component {
         const to_token = swap.to
         const approved = this.isApproved()
         const isMobile = window.innerWidth < 670
+        const { chainId } = this.props
 
 
         return (<div className="deus-swap-wrap">
@@ -419,7 +426,9 @@ class MainSwap extends Component {
                             handleChangeToken={this.handleChangeToken}
                         />
 
-                        <PriceBox impact={""} vaultsFee={""} />
+                        {/* <PriceBox impact={""} vaultsFee={""} /> */}
+
+                        {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
                     </div>
                 </div>
             </div>

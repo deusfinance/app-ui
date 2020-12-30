@@ -1,0 +1,75 @@
+.swap-popup-wrap {
+    z-index: 5;
+    max-width: 1350px;
+    width: 95%;
+    overflow-y: auto;
+    max-height: 630px;
+    height: 80%;
+    background: linear-gradient(224.74deg, #5ec4d6 0.19%, #f1fc68 100.22%);
+    border-radius: 8px;
+    color: #000000;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transform: translateY(-50%);
+    .popup {
+        position: relative;
+        .title {
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
+            background: rgba(0, 0, 0, 0.15);
+            font-size: 20px;
+            .close-btn {
+                right: 10px;
+                top: 14px;
+                position: absolute;
+                font-size: 13px;
+                cursor: pointer;
+                opacity: 0.5;
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+.swap-popup-wrap::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.swap-popup-wrap::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+    background-color: transparent;
+}
+
+.swap-popup-wrap::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #f8f8f8;
+}
+
+@media screen and (max-width: 960px) {
+    .swap-popup-wrap .popup .title {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .swap-popup-wrap .popup .title {
+        text-align: left;
+        justify-content: left;
+        margin: auto;
+        font-size: 13px;
+    }
+}

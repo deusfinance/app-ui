@@ -7,7 +7,7 @@ import { dappLink, navbarItems } from '../../config';
 import SubNavbar from './SubNavbar';
 import { formatAddress, getStayledNumber, notify, formatBalance } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
-import '../../styles/scss/navbar.scss';
+import './navbar.scss';
 
 const Navs = navbarItems.reverse()
 
@@ -52,7 +52,6 @@ const Navbar = () => {
         if (MetaMaskOnboarding.isMetaMaskInstalled()) {
             setIsMetamask(true)
         } else {
-            // console.log("MetaMask didnt  Installed");
             setIsMetamask(false)
         }
     }, [account]);
@@ -62,7 +61,6 @@ const Navbar = () => {
         const getClaimable = async (swapServie) => {
             try {
                 const amount = await swapServie.getWithdrawableAmount()
-                console.log("calim is" + amount);
                 setClaim(amount)
                 return amount
             } catch (error) {
@@ -81,7 +79,6 @@ const Navbar = () => {
     const handleConnect = async () => {
         try {
             const data = await activate(injected)
-            console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -140,14 +137,14 @@ const Navbar = () => {
 
                 {
                     Navs.map(nav => {
-                        if (nav.children) return <SubNavbar key={nav.id} items={nav.children} />
+                        if (nav.children) return <SubNavbar handleClick={toggleNav} key={nav.id} items={nav.children} />
                         if (nav.out) return <li key={nav.id}><a href={nav.path}> {nav.text} </a></li>
                         return <li key={nav.id}><NavLink onClick={toggleNav} exact={nav.exact} to={nav.path}> {nav.text} </NavLink></li>
                     })
                 }
                 <li className="icon-close" onClick={toggleNav}>
                     <div className="menu-title">Menu</div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: "pointer" }} viewBox="0 0 20 20">
                         <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
                     </svg>
                 </li>

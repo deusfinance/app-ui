@@ -227,11 +227,11 @@
     },
     "deus_swap_contract": {
         "1": "0x1162FA0e82cA0d6962d1C12AE4D99EF5733036a5",
-        "4": "0x7FA2344641c133668e84fbe21fCD8CBC4F7AECd7"
+        "4": "0xd32969c96e51B77b87C1dEbdD381c0E743814B3F"
     },
     "sps": {
-        "1": "0x3bc688cc13a65babce7d519054667f9954f19ad2",
-        "4": "0x268B7e333242CBc716127BC70997F0737806f216"
+        "1": "0x9b9d41172854c753f066f1089781435f16aeb631",
+        "4": "0xc2f6C57bD82C3d356f4aA05018E9d434a6ba2cA7"
     },
     "amm": {
         "1": "0xD77700fC3C78d1Cb3aCb1a9eAC891ff59bC7946D",

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
+import { notify, formatBalance } from '../../utils/utils';
 
 const Title = ({ claimable_amount, web3, isCoinbase }) => {
     const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && formatBalance(claimable_amount) !== 0
@@ -21,7 +21,7 @@ const Title = ({ claimable_amount, web3, isCoinbase }) => {
             </div>
         </div>
         }
-        <div className="title">
+        <div className="swap-title">
             <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
             <div className="swap-wrap">
                 <div className="swap">

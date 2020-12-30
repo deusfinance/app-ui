@@ -1,0 +1,99 @@
+.risk-popup {
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    margin-top: 20px;
+    padding: 0 50px;
+    color: #000000;
+    animation: scale-up 0.5s forwards;
+
+    h5:nth-child(1) {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    p:nth-child(3) {
+        margin: 20px auto;
+    }
+    h5:nth-child(4) {
+        font-size: 17px;
+        margin-bottom: 10px;
+    }
+    .risk-btns {
+        text-align: center;
+        margin-top: 30px;
+        .btn {
+            cursor: pointer;
+            font-size: 18px;
+            margin: auto 10px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 2px solid #000000;
+            display: inline-block;
+            color: #000000;
+
+            transition: all 0.3s;
+            &:hover {
+                background: #ffffff;
+            }
+        }
+    }
+    .consider {
+        margin: 20px auto;
+        font-size: 15px;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .risk-popup {
+        h5:nth-child(1) {
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+        p:nth-child(3) {
+            font-size: 13px;
+
+            margin: 15px auto;
+        }
+        p:nth-child(2) {
+            font-size: 13px;
+            margin: 15px auto;
+        }
+        p:nth-child(5) {
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .risk-popup {
+        padding: 0 20px;
+        h5:nth-child(1) {
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+        p:nth-child(3) {
+            font-size: 13px;
+
+            margin: 15px auto;
+        }
+        p:nth-child(2) {
+            font-size: 13px;
+            margin: 15px auto;
+        }
+        p:nth-child(5) {
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        .risk-btns {
+            text-align: center;
+            margin-top: 15px;
+            .btn {
+                font-size: 12px;
+                margin: auto 10px;
+                padding: 13px 8px;
+                border-radius: 5px;
+            }
+        }
+    }
+}

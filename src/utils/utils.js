@@ -26,16 +26,12 @@ export const getStayledNumber = (number, space = 9) => {
 
 export const formatBalance = (number, decimal = 9) => {
     if (!number) return "0"
-    if (number < 0.0000000001) return 0
-    if (number < 0.000001) {
-        console.log("number");
-        return number.toString()
-
-    }
+    if (number < 0.00000001) return 0
 
     let strNumber = number.toString()
     const indexDot = strNumber.indexOf(".")
     let totalDecimals = strNumber.length - indexDot
+
     if (indexDot === -1 || (totalDecimals) <= decimal) return strNumber
     return strNumber.substring(0, indexDot).concat(strNumber.substring(indexDot, indexDot + decimal))
 }
@@ -138,24 +134,31 @@ export const notify = (methods = method) => (state) => {
     }
 };
 
-export const checkLimit = (swap) => {
+export const checkLimit = (swap, payload) => {
 
-    const { to } = swap
+    const { to, from } = swap
 
-    if (to.name === "coinbase") {
+    if (to.name === "coinbase" || from.name === "coinbase") {
 
-        toast.info(<div> Coinbase static sale is closed! <br />Bonding curve will start soon.<br /> <br />
-                Until then you can buy them on  <a style={{ color: "gold" }} href="https://app.uniswap.org/#/swap?inputCurrency=0x4185cf99745b2a20727b37ee798193dd4a56cdfa&outputCurrency=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" target="_blank" rel="noopener noreferrer">Uniswap</a>
-        </div>, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
-        return true
+        /*         toast.info(<div> Coinbase static sale is closed! <br />Bonding curve will start soon.<br /> <br />
+                        Until then you can buy them on  <a style={{ color: "gold" }} href="https://app.uniswap.org/#/swap?inputCurrency=0x4185cf99745b2a20727b37ee798193dd4a56cdfa&outputCurrency=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" target="_blank" rel="noopener noreferrer">Uniswap</a>
+                </div>, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: false,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                return true */
+        const isOk = localStorage.getItem("isRiskOk")
+        if (!isOk) {
+            payload.popup(true)
+            return true
+        }
     }
     return false
 }
+
+

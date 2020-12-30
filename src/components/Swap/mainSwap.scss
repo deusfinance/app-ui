@@ -1,8 +1,9 @@
 @import "../../styles/scss/nfonts";
+@import "./styles/slippage.scss";
+@import "./styles/routes.scss";
+@import "./styles/riskPopup.scss";
 
 .deus-swap-wrap {
-    // background: linear-gradient(to right, #000000 0%, #242424 100%);
-
     padding-top: 60px;
     color: #ffffff;
 
@@ -21,7 +22,7 @@
         }
     }
 
-    .title {
+    .swap-title {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -38,7 +39,7 @@
             font-family: Monument Grotesk;
             font-weight: 400;
             font-size: 30px;
-            background: linear-gradient(90.11deg, #69c9ce 1.13%, #d5e061 98.54%);
+            background: linear-gradient(224.74deg, #c4eb89 0.19%, #5ec4d6 100.22%);
             text-align: center;
             .swap {
                 display: flex;
@@ -46,7 +47,7 @@
                 width: 100%;
                 border-radius: 18px 0;
                 text-align: center;
-                background: #000000;
+                color: #000000;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -75,22 +76,24 @@
         // background-position: center;
         // background-size: contain;
         .swap-container {
-            height: 100%;
+            // height: 100%;
             width: 100%;
+            // background: radial-gradient(49.81% 49.81% at 50% 49.81%, #272727 0%, #000000 100%);
+
             // background: linear-gradient(135deg, #0e1d1c 0%, #0f1d1d 33.33%, #0d1c1e 74.49%, #0e1d1d 100%);
-            .show-dollar-wrap {
-                position: absolute;
-                top: 40px;
-                right: 135px;
-                width: 150px;
-                height: 30px;
-                .show-dollar {
-                    font-size: 13px;
-                }
-            }
+            // .show-dollar-wrap {
+            //     position: absolute;
+            //     top: 40px;
+            //     right: 135px;
+            //     width: 150px;
+            //     height: 30px;
+            //     .show-dollar {
+            //         font-size: 13px;
+            //     }
+            // }
 
             .swap-box-wrap {
-                position: absolute;
+                // position: absolute;
                 top: 50px;
                 left: 0;
                 right: 0;
@@ -276,7 +279,8 @@
                     width: 100%;
                     padding: 0 16px;
                     background: #0d0d0d;
-                    border: 1px solid #000000;
+                    border: 2px solid #1c1c1c;
+
                     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
                     border-radius: 10px;
                     display: flex;
@@ -470,6 +474,7 @@
     font-weight: 400;
     text-shadow: 0px 0px 10px #ffffff;
     margin: 20px auto;
+    padding-bottom: 40px;
     font-size: 20px;
 }
 
@@ -493,7 +498,7 @@
 }
 @media screen and (max-width: 670px) {
     .deus-swap-wrap {
-        .title {
+        .swap-title {
             display: none;
         }
         .swap-container-wrap {
@@ -506,6 +511,7 @@
                     left: 0;
                     right: 0;
                     margin: auto;
+                    background: #404040;
                 }
                 .swap-box .token-box-wrap .token-box .bottom .token-info {
                     .futures {

@@ -7,8 +7,10 @@ import Title from './Title';
 import SwapButton from './SwapButton';
 import { ToastContainer } from 'react-toastify';
 import { SwapService } from '../../services/SwapService';
-import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
-
+import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
+import Slippage from './Slippage';
+import Routes from './Routes';
+import Risk from './Popups/Risk';
 import './mainSwap.scss';
 
 
@@ -28,11 +30,13 @@ class CoinBase extends Component {
         showSearchBox: false,
         searchBoxType: "from",
         fromPerTo: false,
+        showRiskPupop: false,
         claimable_amount: null,
         typingTimeout: 0,
         typeTransaction: "",
         toAmount: "",
-        fromAmount: ""
+        fromAmount: "",
+        slippageAmount: 0.1
     }
 
 
@@ -60,9 +64,16 @@ class CoinBase extends Component {
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
         const { chainId, account } = this.props
-
+        const { swap } = this.state
         this.handleInitToken("from", "eth")
         this.handleInitToken("to", "coinbase")
+
+        const payload = {
+            popup: this.handleRiskPopup
+        }
+        if (checkLimit(swap, payload)) {
+            return
+        }
 
         if (!chainId || !account) return
 
@@ -172,6 +183,11 @@ class CoinBase extends Component {
     }
 
 
+    handleSlippage = (amount) => {
+        this.setState({ slippageAmount: amount })
+    }
+
+
     handleTyping = () => {
         if (this.state.typingTimeout) {
             clearTimeout(this.state.typingTimeout);
@@ -248,6 +264,7 @@ class CoinBase extends Component {
     }
 
 
+
     handleInitAllowances = async (foceUpdate) => {
         const { tokens } = this.state
 
@@ -316,9 +333,6 @@ class CoinBase extends Component {
         const { swap, web3 } = this.state
         if (!web3) return
 
-        if (checkLimit(swap)) {
-            return
-        }
 
         const { from, to } = swap
         try {
@@ -334,10 +348,6 @@ class CoinBase extends Component {
     handleApprove = async (swap) => {
         const { web3 } = this.state
 
-        if (checkLimit(swap)) {
-            return
-        }
-
         try {
             this.setState({ typeTransaction: "approve" })
             const data = await web3.approve(swap.from.name, swap.from.amount, notify(this.methods))
@@ -348,21 +358,30 @@ class CoinBase extends Component {
         return 0
     }
 
+    handleRiskPopup = (flag) => {
+        if (flag) {
+            setBackground("dark")
+        } else {
+            setBackground("light")
+        }
+        this.setState({ showRiskPupop: flag })
+    }
+
 
 
 
     render() {
 
-        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
+        const { showSearchBox, showRiskPupop, slippageAmount, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
         const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
         const approved = this.isApproved()
         const isMobile = window.innerWidth < 670
-
+        const { chainId } = this.props
 
         return (<div className="deus-swap-wrap">
-
+            {showRiskPupop && < Risk handleRiskPopup={this.handleRiskPopup} />}
             {!isMobile && <ToastContainer style={{ width: "450px" }} />}
             <Title web3={web3} claimable_amount={claimable_amount} isCoinbase={true} />
 
@@ -406,7 +425,7 @@ class CoinBase extends Component {
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
 
-                        <PriceBox impact={""} vaultsFee={""} />
+                        {/* <PriceBox impact={""} vaultsFee={""} /> */}
 
                         <SearchBox
                             showSearchBox={showSearchBox}
@@ -417,6 +436,18 @@ class CoinBase extends Component {
                             handleFilterToken={this.state.tokensMap}
                             handleChangeToken={this.handleChangeToken}
                         />
+                        {from_token.name &&
+                            to_token &&
+                            <Routes from={from_token} to={to_token} chainId={chainId}
+                            />}
+
+
+                        {/*    {(from_token.name === "coinbase" ||
+                            to_token.name === "coinbase") &&
+                            <Slippage
+                                slippage={slippageAmount}
+                                setSlippage={this.handleSlippage}
+                            />} */}
 
                         <p className="ipo"> trade the IPO before anyone else</p>
                     </div>

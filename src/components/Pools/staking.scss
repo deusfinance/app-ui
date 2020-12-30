@@ -105,6 +105,8 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.15s;
+            position: absolute;
+            right: 5px;
             &:hover {
                 background-color: #ffffff;
                 color: #000000;
@@ -313,6 +315,7 @@
                     // text-transform: uppercase;
                     color: #ffffff;
                     img {
+                        width: 15px;
                         transform: rotate(180deg);
                     }
                 }
@@ -758,29 +761,82 @@
         max-width: 450px;
         width: 100%;
         background: #0d0d0d;
-        border: 2px solid #1c1c1c;
         border-radius: 7px;
+        box-shadow: 0px 0px 13px 1px #c4eb89;
+        .stakes-btns {
+            display: flex;
+            justify-content: space-between;
+            color: #fffefe;
+            .stake-here-wrap {
+                width: 49.8%;
+                border-radius: 0;
+                height: 100%;
+                background: #111111;
+                font-size: 18px;
+                height: 48px;
+                background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%), #a2dea4;
+                padding: 2px;
+                .stake-here {
+                    border-radius: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #111111;
+                    font-size: 14px;
+                    &:hover {
+                        color: #111111;
+                        background: transparent;
+                    }
+                }
+            }
+            .stake-here-wrap:nth-child(2) {
+                background: linear-gradient(136deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%), #a2dea4;
+            }
+            .stake-here-wrap:nth-child(1) {
+                border-top-left-radius: 6px;
+
+                .stake-here {
+                    border-top-left-radius: 6px;
+                }
+            }
+            .stake-here-wrap:nth-child(2) {
+                border-top-right-radius: 6px;
+                .stake-here {
+                    border-top-right-radius: 6px;
+                }
+            }
+        }
+
         .stake-here {
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
-            height: 48px;
-            background: linear-gradient(224.74deg, #5ec4d6 0.19%, #c4eb89 100.22%, #f1fc68 100.22%), #a2dea4;
-            border-radius: 6px 6px 0px 0px;
             transition: all 0.3s;
             text-transform: uppercase;
             cursor: pointer;
             &:hover {
                 color: #000000;
+                a {
+                    color: #000000;
+                }
+            }
+            a {
+                width: 100%;
+                height: 100%;
+                text-shadow: 0px 0px 10px #ffffff;
+                color: #ffffff;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
             }
         }
         .stake-here-closed {
             cursor: default;
-            opacity: 0.5;
+            background: #111111;
+            color: #585858;
+            // opacity: 0.5;
             height: 48px;
             &:hover {
-                color: #ffffff;
+                color: #585858;
             }
         }
         .token-name {
@@ -1054,5 +1110,14 @@
             margin: 20px auto;
             width: 95%;
         }
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .container-single-wrap .single-wrap .stakes-btns .stake-here-wrap .stake-here {
+        font-size: 12px;
+    }
+    .container-single-wrap .single-wrap .btns-wrap {
+        font-size: 11px;
     }
 }

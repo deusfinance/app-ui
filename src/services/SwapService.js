@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import paths from './graph'
+import paths from './graphbk.json'
 import abis from './abis'
 import addrs from './addresses.json'
 
@@ -52,7 +52,12 @@ export class SwapService {
 
     _fromWei(value, token) {
         let max = this.TokensMaxDigit[token] ? this.TokensMaxDigit[token] : 18
-        let ans = value.toString()
+        let ans;
+        if (typeof value != "string") {
+            ans = value.toString()
+        } else {
+            ans = value;
+        }
         while (ans.length < max) {
             ans = "0" + ans;
         }
@@ -324,27 +329,27 @@ export class SwapService {
                 })
         }
 
-        if (path.length == 3) {
-            if (this.getTokenAddr(fromToken) === this.getTokenAddr("dea") && this.getTokenAddr(toToken) === this.getTokenAddr("eth")) {
-                return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path.slice(0, path.length - 1)).call()
-                    .then(amountsOut => {
-                        return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountsOut[amountsOut.length - 1]).call()
-                            .then(etherAmount => {
-                                return this._fromWei(etherAmount, toToken);
-                            })
-                    })
-            } else if (this.getTokenAddr(fromToken) === this.getTokenAddr("eth") && this.getTokenAddr(toToken) === this.getTokenAddr("dea")) {
-                return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
-                    .then(tokenAmount => {
-                        return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path.slice(1)).call()
-                            .then(amountsOut => {
-                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                            })
-                    })
-            }
-        }
-
-
+        // if (path.length == 3) {
+        //     if (this.getTokenAddr(fromToken) === this.getTokenAddr("dea") && this.getTokenAddr(toToken) === this.getTokenAddr("eth")) {
+        //         console.log('here')
+        //         return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path.slice(0, path.length-1)).call()
+        //             .then(amountsOut => {
+        //                 return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountsOut[amountsOut.length-1]).call()
+        //                     .then(etherAmount => {
+        //                         return this._fromWei(etherAmount, toToken);
+        //                     })
+        //             })
+        //     } else if (this.getTokenAddr(fromToken) === this.getTokenAddr("eth") && this.getTokenAddr(toToken) === this.getTokenAddr("dea")) {
+        //         console.log('here2')
+        //         return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
+        //                 .then(tokenAmount => {
+        //                     return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path.slice(1)).call()
+        //                         .then(amountsOut => {
+        //                             return this._fromWei(amountsOut[amountsOut.length-1], toToken);
+        //                         })
+        //                 })
+        //     }
+        // }
         if (path[0] === this.getTokenAddr("coinbase")) {
             if (path.length < 3) {
                 return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
@@ -354,14 +359,32 @@ export class SwapService {
                     );
             }
             path = path.slice(1)
-            return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
-                .then(etherAmount => {
-                    return this.uniswapRouter.methods.getAmountsOut(etherAmount[0], path).call()
-                        .then(amountsOut => {
-                            return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                        })
-                }
-                )
+            if (path[1] == this.getTokenAddr("weth")) {
+                return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
+                    .then(tokenAmount => {
+                        return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(tokenAmount[0]).call()
+                            .then(etherAmount => {
+                                path = path.slice(1)
+                                if (path.length < 2) {
+                                    return this._fromWei(etherAmount, toToken)
+                                } else {
+                                    return this.uniswapRouter.methods.getAmountsOut(etherAmount, path).call()
+                                        .then(amountsOut => {
+                                            return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                                        })
+                                }
+                            })
+                    })
+
+            } else {
+                return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
+                    .then(etherAmount => {
+                        return this.uniswapRouter.methods.getAmountsOut(etherAmount[0], path).call()
+                            .then(amountsOut => {
+                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                            })
+                    })
+            }
         } else if (path[path.length - 1] === this.getTokenAddr("coinbase")) {
             if (path.length < 3) {
                 return this.StaticSalePrice.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
@@ -370,20 +393,154 @@ export class SwapService {
                     });
             }
             path = path.slice(0, path.length - 1)
-            return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                .then(amountsOut => {
-                    return this.StaticSalePrice.methods.calculatePurchaseReturn(amountsOut[amountsOut.length - 1]).call()
+
+            if (path[path.length - 2] == this.getTokenAddr("weth")) {
+                if (path.length > 2) {
+                    path = path.slice(0, path.length - 1)
+                    return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
+                        .then(amountsOut => {
+                            return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountsOut[amountsOut.length - 1]).call()
+                                .then(tokenAmount => {
+                                    return this.StaticSalePrice.methods.calculatePurchaseReturn(tokenAmount).call()
+                                        .then(amountOut => {
+                                            return this._fromWei(amountOut[0], toToken);
+                                        })
+                                })
+                        })
+                } else {
+                    return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
                         .then(tokenAmount => {
-                            return this._fromWei(tokenAmount[0], toToken);
-                        });
+                            return this.StaticSalePrice.methods.calculatePurchaseReturn(tokenAmount).call()
+                                .then(amountOut => {
+                                    return this._fromWei(amountOut[0], toToken);
+                                })
+                        })
                 }
-                )
+            } else {
+                return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
+                    .then(amountsOut => {
+                        return this.StaticSalePrice.methods.calculatePurchaseReturn(amountsOut[amountsOut.length - 1]).call()
+                            .then(tokenAmount => {
+                                return this._fromWei(tokenAmount[0], toToken);
+                            });
+                    })
+            }
         } else {
-            return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                .then(amountsOut => {
-                    return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+            const isDeus = (element) => element === this.getTokenAddr("deus");
+            var indexOfDeus = path.findIndex(isDeus);
+            if (indexOfDeus == -1) {
+                return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
+                    .then(amountsOut => {
+                        return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                    })
+            } else {
+                if (indexOfDeus == path.length - 1) {
+                    if (path[path.length - 2] === this.getTokenAddr("weth")) {
+                        path = path.slice(0, path.length - 1);
+                        return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
+                            .then(amountsOut => {
+                                return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountsOut[amountsOut.length - 1]).call()
+                                    .then(tokenAmount => {
+                                        return this._fromWei(tokenAmount, toToken);
+                                    })
+                            })
+                    } else {
+                        return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
+                            .then(amountsOut => {
+                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                            })
+
+                    }
+                } else if (indexOfDeus == 0) {
+                    if (path[1] == this.getTokenAddr("weth")) {
+                        path = path.slice(1);
+                        return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
+                            .then(tokenAmount => {
+                                return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path).call()
+                                    .then(amountsOut => {
+                                        return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                                    })
+                            })
+                    } else {
+                        return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
+                            .then(amountsOut => {
+                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                            })
+                    }
+                } else {
+                    if (path[indexOfDeus - 1] == this.getTokenAddr("weth")) {
+                        var path1 = path.slice(0, indexOfDeus)
+                        var path2 = path.slice(indexOfDeus)
+                        if (path1.length > 1) {
+                            return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path1).call()
+                                .then(amountsOut2 => {
+                                    return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountsOut2[amountsOut2.length - 1]).call()
+                                        .then(tokenAmount => {
+                                            if (path2.length > 1) {
+                                                return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
+                                                    .then(amountsOut => {
+                                                        return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                                                    })
+                                            } else {
+                                                return this._fromWei(tokenAmount, toToken);
+                                            }
+                                        })
+                                })
+                        } else {
+                            return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
+                                .then(tokenAmount => {
+                                    if (path2.length > 1) {
+                                        return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
+                                            .then(amountsOut => {
+                                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                                            })
+                                    } else {
+                                        return this._fromWei(tokenAmount, toToken);
+                                    }
+                                })
+
+                        }
+
+                    } else if (path[indexOfDeus + 1] == this.getTokenAddr("weth")) {
+                        var path1 = path.slice(0, indexOfDeus + 1)
+                        var path2 = path.slice(indexOfDeus + 1)
+                        if (path1.length > 1) {
+                            return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path1).call()
+                                .then(amountsOut2 => {
+                                    return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountsOut2[amountsOut2.length - 1]).call()
+                                        .then(tokenAmount => {
+                                            if (path2.length > 1) {
+                                                return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
+                                                    .then(amountsOut => {
+                                                        return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                                                    })
+                                            } else {
+                                                return this._fromWei(tokenAmount, toToken);
+                                            }
+                                        })
+                                })
+                        } else {
+                            return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
+                                .then(tokenAmount => {
+                                    if (path2.length > 1) {
+                                        return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
+                                            .then(amountsOut => {
+                                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                                            })
+                                    } else {
+                                        return this._fromWei(tokenAmount, toToken);
+                                    }
+                                })
+
+                        }
+                    } else {
+                        return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
+                            .then(amountsOut => {
+                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                            })
+                    }
                 }
-                )
+            }
         }
     }
 

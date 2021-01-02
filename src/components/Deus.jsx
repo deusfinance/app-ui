@@ -8,6 +8,8 @@ import { LoopCircleLoading } from 'react-loadingg';
 const CoinBase = React.lazy(() => import('./Swap/CoinBase'));
 const MainSwap = React.lazy(() => import('./Swap/MainSwap'));
 const StakingManager = React.lazy(() => import('./Pools/Stakings'));
+const Vault = React.lazy(() => import('./Vault/Vault'));
+
 
 
 
@@ -39,6 +41,8 @@ const Deus = () => {
                 <Route exact path="/staking/old" render={() => <StakingManager pools={["ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
                 <Route exact path="/swap" render={() => <MainSwap {...props} />} />
                 <Route exact path="/coinbase" render={() => <CoinBase {...props} />} />
+                <Route exact path="/vaults" render={() => <Vault {...props} />} />
+
                 <Redirect from="/staking" to="/staking/liquidity" />
                 <Redirect from="/coinbase-staking" to="/staking/liquidity" />
                 <Redirect from="/" to="/swap" />

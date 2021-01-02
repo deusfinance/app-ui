@@ -20,7 +20,7 @@ const Risk = ({ handleRiskPopup }) => {
 
 
             <h5>
-                GENERAL RISKS OF TRADING  FURUTUES/IOUS:
+                GENERAL RISKS OF TRADING  FUTURES/IOUS:
             </h5>
 
             <p>

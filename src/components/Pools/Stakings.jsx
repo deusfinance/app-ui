@@ -33,7 +33,9 @@ class StakingManager extends Component {
                 this.getApyForAllStakings()
             }, 15000)
         })
+
         document.addEventListener("keydown", this.escFunction, false);
+
         if (!chainId || !account) return
 
         const { pools } = this.state
@@ -76,10 +78,11 @@ class StakingManager extends Component {
         if (prevProps.navId !== navId) {
 
             const currentPools = [
-                ["deus", "dea"],
-                ["coinbase_usdc", "deus_dea", "dea_usdc", "deus_eth"],
-                ["ampl_eth", "snx", "uni"],
+                ["sand_dea", "sand_deus", "timetoken"],
+                ["bpt_native"],
+                ["coinbase_usdc", "deus_dea", "dea_usdc", "deus_eth", "deus", "dea", "ampl_eth", "snx", "uni"],
             ]
+
 
             this.setState({
                 pools: currentPools[navId],
@@ -92,11 +95,13 @@ class StakingManager extends Component {
                 await this.getSingleBalance(stakeName)
                 await this.getStakingAllAmounts(stakeName)
             })
+            this.getApyForAllStakings()
         }
     }
 
     getApyForAllStakings = async () => {
         const { stakingsMap } = this.state
+
         try {
             const resp = await fetch("https://app.deus.finance/static-api.json")
             const jresp = await resp.json()
@@ -124,7 +129,8 @@ class StakingManager extends Component {
             this.setState({ stakingsMap })
             try {
                 const data = await web3?.getNumberOfPendingRewardTokens(poolName)
-                stakingsMap[poolName].claimable_amount = getStayledNumber(data)
+                let claim = stakingsMap[poolName].isClose ? data : parseFloat(data) * 100 / 3
+                stakingsMap[poolName].claimable_amount = getStayledNumber(claim)
                 this.setState({ stakingsMap })
             } catch (error) {
                 console.log(poolName, " error amount");
@@ -215,7 +221,8 @@ class StakingManager extends Component {
                     0 : (stakingsMap[stakedToken].deposited / amount) * 100
 
                 web3.getNumberOfPendingRewardTokens(stakedToken).then((amount) => {
-                    stakingsMap[stakedToken].claimable_amount = parseFloat(amount)
+                    let claim = stakingsMap[stakedToken].isClose ? amount : parseFloat(amount) * 100 / 3
+                    stakingsMap[stakedToken].claimable_amount = getStayledNumber(claim)
                     this.setState({ stakingsMap })
 
                 })
@@ -226,7 +233,6 @@ class StakingManager extends Component {
 
 
     handleClaim = (stakedToken) => () => {
-
         this.handleWithdraw(stakedToken)(0)
     }
 
@@ -331,7 +337,7 @@ class StakingManager extends Component {
                 <div className="stake-container-wrap" ></div>
                 <div className="container-single-wrap">
                     {
-                        pools.slice(0, pools.length).map((token, i) => {
+                        pools.map((token, i) => {
                             return <QStake
                                 key={i}
                                 handleClaim={this.handleClaim(token)}

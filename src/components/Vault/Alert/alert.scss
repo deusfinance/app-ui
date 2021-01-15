@@ -77,7 +77,14 @@
                 background-color: #ffffff;
                 transition: all 0.3s;
                 border-radius: 6px;
-
+                a {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                    height: 100%;
+                    width: 100%;
+                }
                 cursor: pointer;
                 &:hover {
                     transition: all 0.3s;
@@ -101,7 +108,7 @@
             margin-top: -30px;
         }
         .inner-body-wrap {
-            padding: 10px;
+            padding: 10px 40px;
         }
         // .actions {
         //     .alert-btn-wrap {

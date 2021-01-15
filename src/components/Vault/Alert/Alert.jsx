@@ -23,7 +23,7 @@ const Alert = ({ show, handleGotIt, handleClose }) => {
 
                     <div className="actions">
                         <div className="alert-btn-wrap">
-                            <div className="alert-btn">more infos</div>
+                            <div className="alert-btn"> <a href="https://lafayettetabor.medium.com/" target="_blank" rel="noopener noreferrer">more infos</a></div>
                         </div>
                         <div className="alert-btn-wrap" onClick={handleGotIt}>
                             <div className="alert-btn">Got it</div>

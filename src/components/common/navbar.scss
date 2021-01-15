@@ -392,15 +392,27 @@ nav {
             display: none;
         }
 
+        .left-nav-wrap {
+            .finance {
+                font-size: 15px;
+                margin-left: -2px;
+            }
+            .left-nav li:nth-child(2) {
+                width: 120px;
+                margin-left: 15px;
+            }
+        }
+
         .claimable-btn {
             display: none;
         }
         .connect-wrap {
-            display: none;
+            // display: none;
             a {
                 color: #ffffff;
             }
             .grad {
+                font-size: 10px;
                 color: #ffffff;
             }
         }
@@ -412,8 +424,8 @@ nav {
                 .deus {
                     font-family: Lambok;
                     font-weight: 400;
-                    font-size: 24px;
-                    margin-left: 5px;
+                    font-size: 22px;
+                    margin-left: 0;
                 }
             }
         }

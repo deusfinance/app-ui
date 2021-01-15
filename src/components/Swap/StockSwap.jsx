@@ -11,10 +11,11 @@ import { SwapService } from '../../services/SwapService';
 // import Slippage from './Slippage';
 import Routes from './Routes';
 // import Volume from './Volume/Volume';
+import WrappedTokenButton from './WrappedTokenButton';
 import './mainSwap.scss';
 
 
-class MainSwap extends Component {
+class StockSwap extends Component {
     state = {
         tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc"],
         web3: null,
@@ -415,6 +416,9 @@ class MainSwap extends Component {
                                 tvl={""}
                                 tradeVol={""} />
 
+                            <WrappedTokenButton isWrap={true} isLong={true} />
+
+
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
 
@@ -439,4 +443,4 @@ class MainSwap extends Component {
 }
 
 
-export default MainSwap;
+export default StockSwap;

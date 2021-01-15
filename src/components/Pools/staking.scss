@@ -244,19 +244,10 @@
     width: 100%;
     display: block;
     position: relative;
-    // background-image: radial-gradient(50% 50% at 50% 50%, #000000 0%, #000000 100%);
-
-    // background-size: contain;
-    // transform: translatez(0);
-    // -webkit-transform: translatez(0);
-
-    // -webkit-transform: translate3d(0, 0, 1px);
-    // -webkit-backface-visibility: hidden;
 
     .notif-wrap {
         margin: 20px;
         height: 43px;
-
         font-size: 15px;
 
         border-radius: 6px;
@@ -836,7 +827,8 @@
             // opacity: 0.5;
             height: 48px;
             &:hover {
-                color: #585858;
+                color: #585858 !important;
+                background: #111111 !important;
             }
         }
         .token-name {

@@ -1,6 +1,19 @@
+.loading-vaults {
+    margin-bottom: 50px;
+}
+.grad-wrap {
+    .grad {
+        color: #ffffff;
+    }
+    &:hover {
+        .grad {
+            color: #000000;
+        }
+    }
+}
+
 .lock-swap {
     background-position: center;
-    // background: url("/vaults/sand.svg");
     background: url("/tokens/sands.svg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -71,7 +84,7 @@
                 color: #ffffff;
                 width: 0px;
                 flex: 1 1 auto;
-                font-size: 30px;
+                font-size: 23px;
                 padding-left: 8px;
                 background: transparent;
                 border-color: transparent;
@@ -131,6 +144,9 @@
                 width: 45%;
                 // margin: 0 50px;
             }
+            .cyc:nth-child(1) {
+                opacity: 0.5;
+            }
         }
         .approved {
             .swap-btn-wrap:nth-child(2) {
@@ -155,7 +171,7 @@
         .swap-btn-wrap {
             border-radius: 6px;
             margin-top: 20px;
-            height: 45px;
+            height: 40px;
             font-size: 21px;
 
             .swap-btn {
@@ -321,7 +337,6 @@
     font-family: Monument Grotesk;
     font-weight: 400;
     height: 100%;
-
     .top-buttons {
         // position: absolute;
         padding: 0 20px;
@@ -333,7 +348,10 @@
         .grad-wrap {
             padding: 2px;
             border-radius: 6px;
+
             .grad {
+                color: #ffffff;
+
                 border-radius: 6px;
             }
         }
@@ -385,6 +403,8 @@
             .deposit-gonbad {
                 margin-bottom: 8px;
                 .grad {
+                    color: #ffffff;
+
                     &:hover {
                         background-color: #111111;
                         color: #ffffff;
@@ -438,6 +458,7 @@
         width: 100%;
         text-align: center;
         position: absolute;
+        padding-bottom: 50px;
         top: 500px;
     }
     .doors {
@@ -482,8 +503,8 @@
                         filter: drop-shadow(0px 0px 10px #ffffff);
 
                         .titles {
-                            margin-top: 35px;
-                            margin-bottom: 10px;
+                            margin-top: 25px;
+                            margin-bottom: 7px;
                         }
                         .description {
                             line-height: 18px;
@@ -672,8 +693,10 @@
                 font-size: 14px;
                 width: 270px;
                 height: 37px;
+
                 .grad {
                     position: relative;
+
                     img {
                         position: absolute;
                         top: 10px;
@@ -739,7 +762,7 @@
                     width: 20px;
                 }
                 input {
-                    font-size: 22px;
+                    font-size: 20px;
                     // padding-bottom: 5px;
                 }
                 .token-name {
@@ -770,9 +793,9 @@
                 margin: 15px 50px;
             }
             .swap-btn-wrap {
-                height: 35px;
+                height: 33px;
                 .swap-btn {
-                    font-size: 16px;
+                    font-size: 15px;
                 }
             }
         }
@@ -816,9 +839,6 @@
     .vaults-wrap {
         .gonbad {
             width: 60%;
-            .title {
-                // margin-top: 0px;
-            }
         }
         .doors {
             .close-door,
@@ -835,7 +855,7 @@
                     margin-top: 220px;
                 }
                 .door-btns {
-                    bottom: 40px;
+                    // bottom: 40px;
                 }
             }
             .open-door {
@@ -850,6 +870,9 @@
 }
 
 @media screen and (max-width: 1430px) {
+    .vaults-wrap .doors .door .container .btns {
+        bottom: 0;
+    }
     .vaults-wrap {
         .gonbad {
             width: 43%;
@@ -877,10 +900,10 @@
                 }
                 .title {
                     font-size: 20px;
-                    margin-top: 165px;
+                    margin-top: 150px;
                 }
                 .door-btns {
-                    bottom: 35px;
+                    bottom: 15px;
                 }
                 .desc {
                     margin-top: 20px;
@@ -903,7 +926,7 @@
         margin-top: 1px;
         .wrap-info {
             .titles {
-                margin-top: 20px;
+                margin-top: 18px;
             }
         }
     }
@@ -920,23 +943,11 @@
     }
 }
 
-@media screen and (max-width: 960px) {
-    .vaults-wrap {
-        .gonbad {
-        }
-    }
-}
-
 @media screen and (max-width: 670px) {
     .vaults-wrap {
-        .gonbad {
-        }
         .doors {
             width: 100%;
             padding: 0 30px;
-            .close-door,
-            .open-door {
-            }
         }
     }
 
@@ -1009,14 +1020,12 @@
 
 @media screen and (max-width: 480px) {
     .vaults-wrap {
-        .gonbad {
-        }
         .doors-wrap {
             top: 25px;
         }
         .doors {
             width: 100%;
-            padding: 0 0px;
+            padding: 0px;
             .close-door,
             .open-door {
                 width: 320px;
@@ -1026,6 +1035,7 @@
                     height: 30px;
                 }
                 .grad-wrap {
+                    margin: auto;
                     font-size: 12px;
                     width: 170px;
                     height: 30px;
@@ -1033,8 +1043,11 @@
             }
             .open-door {
                 .title {
-                    font-size: 20px;
-                    margin-top: 130px;
+                    font-size: 16px;
+                    margin-top: 140px;
+                }
+                .door-btns {
+                    bottom: 10px;
                 }
             }
             .close-door {
@@ -1042,8 +1055,8 @@
                     font-size: 13px;
                 }
                 .title {
-                    font-size: 20px;
-                    margin-top: 120px;
+                    font-size: 16px;
+                    margin-top: 135px;
                 }
             }
         }
@@ -1054,7 +1067,7 @@
         margin-top: 1px;
         .wrap-info {
             .titles {
-                margin-top: 15px;
+                margin-top: 13px;
             }
         }
     }

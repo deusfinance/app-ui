@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-
-
-
-
 class TopNotif extends Component {
     state = {
         tokenTypes: [
-            { id: 1, name: "Single staking", path: "/staking/single" },
-            { id: 2, name: "Liquidity pools", path: "/staking/liquidity" },
-            { id: 3, name: "Old pools", path: "/staking/old" },
+            { id: 0, name: "Single", path: "/staking/single" },
+            { id: 1, name: "Liquidity", path: "/staking/liquidity" },
+            { id: 2, name: "Old", path: "/staking/old" },
         ],
         show: false
     }
@@ -18,6 +14,12 @@ class TopNotif extends Component {
     handleToggleSelect = () => {
         const { show } = this.state
         this.setState({ show: !show })
+    }
+
+
+    componentDidUpdate(prevProps) {
+        if (this.props.typeID !== prevProps.typeID)
+            console.log(this.props.typeID);
     }
 
     render() {

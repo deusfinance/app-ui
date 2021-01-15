@@ -44,8 +44,8 @@ export class SwapService {
 
     _getWei(number, token = "eth") {
         let max = this.TokensMaxDigit[token] ? this.TokensMaxDigit[token] : 18
-        let value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
-        let ans = Web3.utils.toWei(String(value), 'ether');
+        // let value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
+        let ans = Web3.utils.toWei(String(number), 'ether');
         ans = ans.substr(0, ans.length - (18 - max));
         return ans.toString()
     }
@@ -89,9 +89,6 @@ export class SwapService {
             return this._fromWei(balance, tokenName);
         })
     }
-
-
-
 
     approve(token, amount, listener) {
         if (!this.checkWallet()) return 0

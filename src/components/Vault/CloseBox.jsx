@@ -1,5 +1,8 @@
 import React from 'react';
+import { RotateCircleLoading } from 'react-loadingg';
+import { AllStakings } from '../../config';
 import { Link } from 'react-router-dom';
+
 
 const CloseBox = ({ token, vault, handleLock }) => {
     return (<div className="close-door door">
@@ -7,10 +10,10 @@ const CloseBox = ({ token, vault, handleLock }) => {
             <div className="title">{vault.title} <br /> Vault</div>
             {/* <div className="desc" style={{ opacity: "0" }}>estimated yearly growth<div className="percent">{vault.estimation ? vault.estimation + "%" : "..."} </div></div> */}
             <div className="all-info">
-                <div className="wrap-info">
+                {vault && vault.total && vault.total !== 0 ? <div className="wrap-info">
                     <div className="titles">Total:</div>
-                    <div className="description">415 sealed {vault.title} minted</div>
-                </div>
+                    <div className="description">{vault.total} {token.title} minted</div>
+                </div> : ""}
             </div>
             {/* <div className="grad-wrap get-wrap" >
                 <Link to="/newswap" className="grad" style={{ color: "#ffffff" }}>get {token.title} token
@@ -18,11 +21,18 @@ const CloseBox = ({ token, vault, handleLock }) => {
                 </Link>
             </div> */}
             <div className="btns">
-                <div className="grad-wrap" onClick={() => handleLock(vault)}>
-                    <div className="grad" >lock here
+                {vault.allowances ? <>
+                    <div className="grad-wrap" onClick={() => handleLock(vault)}>
+                        <div className="grad" >lock here
                 {/* <img src={process.env.PUBLIC_URL + "/vaults/lock-icon.svg"} alt="lock" /> */}
+                        </div>
+                    </div >
+                    <div className="grad-wrap get-wrap">
+                        {AllStakings[vault.name].innerLink ?
+                            <Link to={"/swap"} className="grad" >get {vault.title}</Link> :
+                            <a href={AllStakings[vault.name].liqLink} className="grad" target="_blank" rel="noopener noreferrer">provide {vault.title}</a>}
                     </div>
-                </div >
+                </> : <div className="loading-vaults"><RotateCircleLoading color="#a0a0a0" size={'small'} ></RotateCircleLoading></div>}
             </div>
 
             {/* <div className="grad-wrap zap">

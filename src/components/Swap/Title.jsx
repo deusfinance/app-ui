@@ -1,7 +1,7 @@
 import React from 'react';
 import { notify, formatBalance } from '../../utils/utils';
 
-const Title = ({ claimable_amount, web3, isCoinbase }) => {
+const Title = ({ claimable_amount, web3, isCoinbase, isBakkt }) => {
     const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && formatBalance(claimable_amount) !== 0
     const isMobile = window.innerWidth < 670
 
@@ -33,6 +33,10 @@ const Title = ({ claimable_amount, web3, isCoinbase }) => {
         {isCoinbase && <div className="coinbase-wrap">
             <div className="top">coinbase</div>
             <img src={process.env.PUBLIC_URL + "/img/futures.svg"} alt="CoinBase" />
+        </div>}
+
+        {isBakkt && <div className="bakkt-wrap" style={{ textAlign: "center", marginBottom: "20px" }}>
+            <img src={process.env.PUBLIC_URL + "/img/bakkt.svg"} alt="bakkt" />
         </div>}
     </>);
 }

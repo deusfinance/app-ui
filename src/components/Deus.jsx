@@ -4,13 +4,13 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
 
-
 const CoinBase = React.lazy(() => import('./Swap/CoinBase'));
+const Bakkt = React.lazy(() => import('./Swap/Bakkt'));
 const MainSwap = React.lazy(() => import('./Swap/MainSwap'));
+const StockSwap = React.lazy(() => import('./Swap/StockSwap'));
 const StakingManager = React.lazy(() => import('./Pools/Stakings'));
 const Vault = React.lazy(() => import('./Vault/Vault'));
-
-
+const Dashboard = React.lazy(() => import('./Dashboard/Dashboard'));
 
 
 const Deus = () => {
@@ -36,15 +36,20 @@ const Deus = () => {
     return (
         <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
             <Switch>
-                <Route exact path="/staking/liquidity" render={() => <StakingManager pools={["coinbase_usdc", "deus_dea", "dea_usdc", "deus_eth"]} navId={1} {...props} />} />
-                <Route exact path="/staking/single" render={() => <StakingManager pools={["deus", "dea"]} navId={0} {...props} />} />
-                <Route exact path="/staking/old" render={() => <StakingManager pools={["ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
-                <Route exact path="/swap" render={() => <MainSwap {...props} />} />
-                <Route exact path="/coinbase" render={() => <CoinBase {...props} />} />
-                <Route exact path="/vaults" render={() => <Vault {...props} />} />
+                <Route exact path="/staking/single" render={() => <StakingManager pools={["sand_dea", "sand_deus", "timetoken"]} navId={0} {...props} />} />
+                {/* <Route exact path="/staking/single" render={() => <StakingManager pools={["sand_dea", "sand_deus", "sand_dai", "sand_eth", "sand_wbtc", "timetoken"]} navId={0} {...props} />} /> */}
+                <Route exact path="/staking/liquidity" render={() => <StakingManager pools={["bpt_native"]} navId={1} {...props} />} />
+                <Route exact path="/staking/old" render={() => <StakingManager pools={["coinbase_usdc", "deus_dea", "dea_usdc", "deus_eth", "deus", "dea", "ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
 
-                <Redirect from="/staking" to="/staking/liquidity" />
-                <Redirect from="/coinbase-staking" to="/staking/liquidity" />
+                <Route exact path="/swap" render={() => <MainSwap {...props} />} />
+                <Route exact path="/stock-swap" render={() => <StockSwap {...props} />} />
+                <Route exact path="/coinbase" render={() => <CoinBase {...props} />} />
+                <Route exact path="/Bakkt" render={() => <Bakkt {...props} />} />
+                <Route exact path="/vaults" render={() => <Vault {...props} />} />
+                <Route exact path="/dashboard" render={() => <Dashboard {...props} />} />
+
+                <Redirect from="/staking" to="/staking/single" />
+                <Redirect from="/coinbase-staking" to="/staking/old" />
                 <Redirect from="/" to="/swap" />
             </Switch>
         </Suspense>

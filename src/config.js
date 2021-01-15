@@ -1,4 +1,5 @@
 
+import assets from './constituents.json'
 
 export const contractEndpoint = "https://etherscan.io/address"
 export const dappLink = "https://metamask.app.link/dapp/deus.finance/"
@@ -23,6 +24,13 @@ export const navbarItems = [
                 exact: true,
 
             },
+            {
+                id: "bakkt",
+                text: "BAKKT",
+                path: "/bakkt",
+                exact: true,
+
+            },
 
             // {
             //     id: "conductr",
@@ -37,15 +45,15 @@ export const navbarItems = [
                 exact: false,
             },
 
-            // {
-            //     id: "vaults",
-            //     text: "VAULTS",
-            //     path: "/vaults",
-            //     exact: true,
-
-            // },
+            {
+                id: "vaults",
+                text: "VAULTS",
+                path: "/vaults",
+                exact: true,
+            },
         ]
     },
+
     {
         id: "learn",
         text: "LEARN",
@@ -91,16 +99,18 @@ export const AddressChainMap = {
         "0x6B175474E89094C44Da98b954EedeAC495271d0F": "dai",
         "0x4185cf99745B2a20727B37EE798193DD4a56cDfa": "coinbase",
         "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": "wbtc",
+        "0x11Aa73194769882521e4576D245ffacd4E98aCB4": "bakkt",
     },
     4: {
         "0xc778417E063141139Fce010982780140Aa0cD5Ab": "eth",
-        "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842": "deus",
+        "0x1424740D7Ba7f711cB194B8620E9cA417Ac54628": "deus",
         "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934": "dea",
         "0x259F784f5b96B3f761b0f9B1d74F820C393ebd36": "usdc",
         "0xdAC17F958D2ee523a2206206994597C13D831ec7": "usdt",
         "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735": "dai",
         "0xFD104902617231e053049044E3e51C1D37fE12D3": "coinbase",
         "0x577D296678535e4903D59A4C929B718e1D575e0A": "wbtc",
+        "0xE18cf55EC4e40cb3E4dD57c9150ceb9682c25329": "bakkt",
     },
 }
 
@@ -122,6 +132,15 @@ export const AllTokens = {
         provideLink: "/swap",
         pic_name: "coinbase.svg",
         isFutures: true
+    },
+    "bakkt": {
+        name: "bakkt",
+        title: "Bakkt",
+        type: TokenType.Wrapped,
+        innerLink: true,
+        provideLink: "/swap",
+        pic_name: "bakkt.svg",
+        isBakkt: true
     },
     "deus": {
         name: "deus",
@@ -216,7 +235,7 @@ export const AllTokens = {
     },
     "deus_dea": {
         name: "deus_dea",
-        title: "DEUS-DEA",
+        title: "UNI-LP-DEUS-DEA",
         type: TokenType.Liquidity,
         coin: "UNI-V2-DEUS/DEA",
         innerLink: false,
@@ -225,7 +244,7 @@ export const AllTokens = {
     },
     "dea_usdc": {
         name: "dea_usdc",
-        title: "DEA-USDC",
+        title: "UNI-LP-DEA-USDC",
         type: TokenType.Liquidity,
         coin: "UNI-V2-DEA-USDC",
         innerLink: false,
@@ -234,7 +253,7 @@ export const AllTokens = {
     },
     "deus_eth": {
         name: "deus_eth",
-        title: "UNI-V2-DEUS/ETH",
+        title: "UNI-LP-DEUS-ETH",
         type: TokenType.Liquidity,
         innerLink: false,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
@@ -265,17 +284,25 @@ export const AllTokens = {
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         provideLink: "/swap",
     },
-    "sand_uni_lp_dea_usdc": {
-        name: "uni_lp_dea_usdc",
-        title: "sUNI-LP-DEUS-DEA",
+    "sand_dea_usdc": {
+        name: "sand_dea_usdc",
+        title: "sUNI-LP-DEA-USDC",
         type: TokenType.Sand,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         innerLink: true,
         provideLink: "/vaults",
     },
-    "sand_uni_lp_deus_dea": {
-        name: "uni_lp_deus_dea",
-        title: "sUNI_LP_DEUS-DEA",
+    "sand_deus_dea": {
+        name: "sand_deus_dea",
+        title: "sUNI-LP-DEUS-DEA",
+        type: TokenType.Sand,
+        innerLink: true,
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+        provideLink: "/vaults",
+    },
+    "sand_deus_eth": {
+        name: "sand_deus_eth",
+        title: "sUNI-LP-DEUS-ETH",
         type: TokenType.Sand,
         innerLink: true,
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
@@ -346,51 +373,44 @@ export const AllTokens = {
 }
 
 export const vaultsStaking = {
-    uni_lp_deus_dea: {
-        name: "uni_lp_deus_dea",
+    deus_dea: {
+        name: "deus_dea",
         title: "UNI-LP-DEUS-DEA",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-
     },
-    uni_lp_dea_usdc: {
-        name: "uni_lp_dea_usdc",
+    deus_eth: {
+        name: "deus_eth",
+        title: "UNI-LP-DEUS-ETH",
+        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
+    },
+    dea_usdc: {
+        name: "dea_usdc",
         title: "UNI-LP-DEA-USDC",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        // locked: 25,
-        // own: 25
     },
     deus: {
         name: "deus",
         title: "DEUS",
         stakingLink: "0x09cb978bb7e6fb5583fc9107f92214451f6296a5",
-        estimation: 250
-
     },
     dea: {
         name: "dea",
         title: "DEA",
         stakingLink: "0x6ba4ead0115f3c9239d596fe4bb7c242a39f62f0",
-        estimation: 250
-
     },
     dai: {
         name: "dai",
         title: "DAI",
-        stakingLink: "0xb9846a53d478b2bf54c4b6531708376ba192fbf8",
-        estimation: 250
 
     },
     eth: {
         name: "eth",
         title: "ETH",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-
     },
-
     wbtc: {
         name: "wbtc",
         title: "WBTC",
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
     },
 }
 
@@ -432,11 +452,8 @@ export const AllStakings = {
         name: "sand_eth",
         title: "sETH",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        isClose: true,
-
         innerLink: true,
         provideLink: "/vaults",
-        onlyMain: true,
     },
     "sand_dea": {
         name: "sand_dea",
@@ -450,36 +467,26 @@ export const AllStakings = {
         name: "sand_wbtc",
         title: "sWBTC",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        isClose: true,
 
         innerLink: true,
         provideLink: "/vaults",
-        onlyMain: true,
     },
     "timetoken": {
         name: "timetoken",
         title: "TimeToken",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        isClose: true,
-
+        // isClose: true,
         innerLink: true,
         provideLink: "/vaults",
-        onlyMain: true,
-
     },
     bpt_native: {
         name: "bpt_native",
         title: "Native Balancer",
         inner_link: false,
-        stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        liqLink: "https://balancer.com",
+        liqLink: "https://pools.balancer.exchange/#/pool/0x1dc2948b6db34e38291090b825518c1e8346938b/",
         balancer: true,
-        claimable_amount: 0,
-        apy: 126,
-        own_pool: 30,
-        isClose: true,
-        onlyMain: true,
-        info: "50% DEA\n25% sUNI-LP-DEUS-DEA\n7.5% sDEUS\n7.5% sDEA\n10% sUNI-LP-DEA-USDC",
+        info: "DEA (not sealed)    38.78%\n\nsUNI DEUS-DEA       38.78%\nsDEA                7.14% \nsDEUS               7.14% \nsUNI DEA-USDC       4.08% \n sUNI DEUS-ETH       4.08%  ",
+
     },
     bpt_legacy: {
         name: "bpt_legacy",
@@ -490,11 +497,8 @@ export const AllStakings = {
         own_pool: 0,
         balancer: true,
         info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
-        apy: 178,
         claimable_amount: 0,
-        isClose: true,
         deposited: 0,
-        onlyMain: true
     },
     dea_usdc: {
         name: "dea_usdc",
@@ -503,6 +507,8 @@ export const AllStakings = {
         coin_name: "UNI-V2-DEA-USDC",
         stakingLink: "0x2e3394d3CdcbaAF2bb85Fe9aB4c79CeF4d28b216",
         liqLink: "https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+        isClose: true,
+
     },
     coinbase_usdc: {
         name: "coinbase_usdc",
@@ -511,6 +517,8 @@ export const AllStakings = {
         coin_name: "UNI-LP-coinbase-USDC",
         stakingLink: "0x68Bcf35cC47e6c281BD44c6e8B3Ff65327fcdeD3",
         liqLink: "https://app.uniswap.org/#/add/0x4185cf99745b2a20727b37ee798193dd4a56cdfa/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        isClose: true,
+
     },
     deus_eth: {
         name: "deus_eth",
@@ -519,6 +527,7 @@ export const AllStakings = {
         coin_name: "UNI-V2-DEUS/ETH",
         stakingLink: "0x19945547eC934bBD8C48fA69bC78152C468CCA7a",
         liqLink: "https://app.uniswap.org/#/add/0x3b62f3820e0b035cc4ad602dece6d796bc325325/ETH",
+        isClose: true,
 
     },
     deus: {
@@ -529,6 +538,8 @@ export const AllStakings = {
         innerLink: true,
         coin_name: "DEUS",
         provideLink: "/swap",
+        isClose: true,
+
     },
     dea: {
         name: "dea",
@@ -538,6 +549,8 @@ export const AllStakings = {
         innerLink: true,
         coin_name: "DEA",
         provideLink: "/swap",
+        isClose: true,
+
     },
     deus_dea: {
         name: "deus_dea",
@@ -545,6 +558,7 @@ export const AllStakings = {
         claimable_unit: "DEA",
         isDeusLink: true,
         liqLink: "https://app.uniswap.org/#/add/0x3b62F3820e0B035cc4aD602dECe6d796BC325325/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+        isClose: true,
 
     },
     ampl_eth: {
@@ -574,4 +588,28 @@ export const AllStakings = {
         liqLink: "https://app.uniswap.org/#/swap?outputCurrency=0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
         isClose: true,
     },
+}
+
+
+export const isThereLogos = ["A", "AAL", "AAP", "AAPL", "ABBV", "ABMD", "ACN", "ADBE", "ADI", "ADM", "ADP", "ADSK", "AEE", "AEP", "AFL", "AIG", "AIV", "AIZ", "AJG", "ALK", "ALL", "AMAT", "AMD", "AME", "AMP", "AMT", "AMZN", "ANET", "ANSS", "ANTM", "AON", "AOS", "APA", "APD", "APH", "APTV", "ATO", "ATVI", "AVB", "AVGO", "AVY", "AWK", "AXP", "AZO", "BA", "BAC", "BAX", "BBY", "BDX", "BEN", "BIIB", "BIO", "BK", "BKNG", "BMY", "BR", "BSX", "BWA", "BXP", "C", "CB", "CBOE", "CBRE", "CCI", "CCL", "CDNS", "CE", "CERN", "CF", "CFG", "CHRW", "CHTR", "CI", "CINF", "CL", "CLX", "CMCSA", "CME", "CMG", "CMI", "CMS", "CNC", "CNP", "COF", "COG", "COO", "COP", "CPRT", "CSCO", "CSX", "CTAS", "CTL", "CTLT", "CTSH", "CTVA", "CTXS", "CVX", "D", "DE", "DFS", "DG", "DGX", "DISCA", "DISH", "DLR", "DLTR", "DOV", "DPZ", "DRE", "DRI", "DTE", "DUK", "DVA", "DVN", "DXC", "DXCM", "EA", "EBAY", "ED", "EFX", "EIX", "EMN", "EOG", "EQIX", "EQR", "ES", "ESS", "ETN", "ETR", "ETSY", "EVRG", "EW", "EXC", "EXPD", "EXPE", "F", "FANG", "FAST", "FB", "FCX", "FDX", "FE", "FFIV", "FIS", "FISV", "FITB", "FLT", "FMC", "FOXA", "FRC", "FTI", "FTNT", "FTV", "GE", "GILD", "GIS", "GL", "GLW", "GM", "GOOGL", "GPC", "GPN", "GRMN", "GWW", "HBAN", "HBI", "HCA", "HD", "HIG", "HLT", "HOLX", "HPE", "HRL", "HSIC", "HST", "HUM", "IBM", "IDXX", "IEX", "ILMN", "INCY", "INFO", "INTC", "INTU", "IP", "IPG", "IPGP", "IQV", "IRM", "ISRG", "IT", "ITW", "IVZ", "JBHT", "JKHY", "JNJ", "JNPR", "JPM", "K", "KEY", "KIM", "KLAC", "KMB", "KMI", "KO", "KR", "L", "LB", "LDOS", "LEG", "LEN", "LH", "LHX", "LIN", "LLY", "LMT", "LNC", "LNT", "LOW", "LRCX", "LVS", "LYB", "LYV", "MAA", "MAR", "MCHP", "MCK", "MCO", "MDLZ", "MDT", "MET", "MGM", "MHK", "MKC", "MKTX", "MLM", "MMM", "MNST", "MOS", "MPC", "MRK", "MRO", "MS", "MSCI", "MSI", "MTB", "MU", "MXIM", "MYL", "NEM", "NFLX", "NI", "NLOK", "NLSN", "NOC", "NOV", "NOW", "NRG", "NSC", "NTAP", "NVR", "NWL", "NWSA", "OKE", "OMC", "ORCL", "ORLY", "OXY", "PAYC", "PAYX", "PBCT", "PFE", "PFG", "PGR", "PH", "PHM", "PKG", "PKI", "PLD", "PM", "PNC", "PNW", "POOL", "PPG", "PPL", "PRGO", "PRU", "PSA", "PVH", "PWR", "PXD", "PYPL", "QCOM", "QRVO", "RE", "REG", "REGN", "RF", "RHI", "RJF", "RL", "RMD", "ROK", "ROL", "ROP", "ROST", "RSG", "RTX", "SBUX", "SCHW", "SEE", "SHW", "SIVB", "SLB", "SLG", "SNA", "SNPS", "SO", "SPG", "SPGI", "SRE", "STT", "STX", "STZ", "SYK", "SYY", "T", "TAP", "TDG", "TDY", "TEL", "TER", "TFC", "TGT", "TIF", "TJX", "TMO", "TMUS", "TROW", "TRV", "TSCO", "TSN", "TTWO", "TWTR", "TXN", "TXT", "TYL", "UAA", "UAL", "UDR", "UHS", "ULTA", "UNH", "UNP", "UPS", "URI", "USB", "V", "VAR", "VFC", "VLO", "VMC", "VNO", "VRSK", "VRTX", "VTR", "VZ", "WAB", "WBA", "WEC", "WELL", "WFC", "WM", "WRB", "WRK", "WST", "WU", "WY", "XEL", "XLNX", "XOM", "XRAY", "ZBH", "ZBRA", "ZION", "ZTS"]
+
+export function getAllTokens() {
+
+    let temp = AllTokens
+    assets.constituents.map((asset, i) => {
+        let logo = null
+        if (isThereLogos.includes(asset)) {
+            logo = "/img/ticker/" + asset + ".png"
+        }
+        temp["wrap_" + asset.toLocaleLowerCase()] = {
+            name: "wrap_" + asset.toLocaleLowerCase(),
+            title: "w" + asset,
+            type: TokenType.Wrapped,
+            innerLink: true,
+            logo: logo,
+            isDeployed: false,
+            provideLink: "/swap",
+        }
+    })
+    return temp
 }

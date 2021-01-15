@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { contractEndpoint } from '../../config';
-import { getStayledNumber } from '../../utils/utils';
+
+import addrs from '../../services/addresses.json'
 import InputBox from './Input';
 
 class UnLockPupop extends Component {
@@ -17,7 +18,6 @@ class UnLockPupop extends Component {
         this.setState({ locked: this.props.locked })
     }
 
-
     handleTyping = () => {
         if (this.state.typingTimeout) {
             clearTimeout(this.state.typingTimeout);
@@ -27,7 +27,7 @@ class UnLockPupop extends Component {
     handleChange = (typeAmount) => async (amount) => {
         this.handleTyping()
         const { getSandAndTime } = this.props
-        this.setState({ [typeAmount]: amount.toString() })
+        this.setState({ [typeAmount]: amount ? amount.toString() : "" })
 
         this.setState({
             typingTimeout: setTimeout(async () => {
@@ -55,7 +55,6 @@ class UnLockPupop extends Component {
 
         const lockedClasses = !locked ? "unlocked" : "locked"
         const isActive = tokenAmount !== "" && tokenAmount !== "0"
-        console.log(isActive);
         const swapLeftClasses = !approved && isActive ? "" : "disabled"
         const swapRightClasses = approved && isActive ? "" : "disabled"
         const approvedClasses = approved ? "approved" : ""
@@ -67,7 +66,7 @@ class UnLockPupop extends Component {
                 <div className="time-vaults">Time Vault {locked ? "Locked" : "UnLock"}</div>
                 <div className="token" >{token.title}</div>
                 {locked && <div className="locked-text" style={{ opacity: 0 }}> Your tokens will be locked until 01.06.2021 </div>}
-                <a href={contractEndpoint + "/" + vault.stakingLink} className={`contract  ${lockedClasses}`} target="_blank" rel="noopener noreferrer"  >show me the contract</a>
+                <a href={contractEndpoint + "/" + addrs["vaults"][vault.name]["1"]} className={`contract  ${lockedClasses}`} target="_blank" rel="noopener noreferrer"  >show me the contract</a>
 
                 {locked ? <InputBox
                     token={token}
@@ -156,7 +155,7 @@ class UnLockPupop extends Component {
                     </div>
 
                     <div className=" grad-wrap swap-btn-wrap  ">
-                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "Lock & Mint" : "UnLock"}</div>
+                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "LOCK & MINT" : "UnLock"}</div>
                     </div>
                 </div>
                     <div className={`stepper ${approvedClasses}`}>
@@ -169,7 +168,7 @@ class UnLockPupop extends Component {
 
                 {oldApprove && <div className="btns">
                     <div className=" grad-wrap swap-btn-wrap " style={{ margin: "auto", marginTop: "15px" }} >
-                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "Lock & Mint" : "UnLock"}</div>
+                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "LOCK & MINT" : "UnLock"}</div>
                     </div>
                 </div>
                 }

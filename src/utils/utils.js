@@ -1,6 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { toast } from 'react-toastify';
-
+import React from 'react';
 
 export const isDesktop = () => {
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -9,8 +9,8 @@ export const isDesktop = () => {
 
 
 
-export const getStayledNumber = (number, space = 9) => {
-    if (!number) return "0"
+export const getStayledNumber = (number, space = 9, flag = true) => {
+    if (!number && flag) return "0"
     if (number < 0) return ""
     const strNumber = number.toString()
     if (parseFloat(strNumber) < 0.0000000001) return 0
@@ -33,6 +33,26 @@ export const formatBalance = (number, decimal = 9) => {
 
     if (indexDot === -1 || (totalDecimals) <= decimal) return strNumber
     return strNumber.substring(0, indexDot).concat(strNumber.substring(indexDot, indexDot + decimal))
+}
+
+export const newFormatAmount = (number, decimal = 9) => {
+    if (!number) return "0"
+    if (parseFloat(number) === 0) return 0
+
+    if (parseFloat(number) >= 1) {
+        number = formatBalance(number, decimal)
+    }
+    for (let i = number.length; i > 0; i--) {
+        if (number[i - 1] === "0") {
+            number = number.slice(0, i)
+        } else if (number[i - 1] === ".") {
+            return number.slice(0, i - 1)
+        } else {
+            return number
+        }
+
+    }
+    return number
 }
 
 
@@ -157,6 +177,21 @@ export const checkLimit = (swap, payload) => {
             return true
         }
     }
+    /*     if (to.name === "bakkt") {
+    
+            toast.warn(<div>  Bakkt static sale is closed! <br />Bonding curve will start soon.<br />
+            </div>, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: false,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return true
+        } */
+
     return false
 }
 

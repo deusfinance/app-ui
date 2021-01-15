@@ -1,24 +1,25 @@
+import React from 'react';
+import { getStayledNumber, newFormatAmount } from '../../utils/utils';
+import { AllStakings } from '../../config'
 import { Link } from 'react-router-dom';
-import React, { Component } from 'react';
-import { getStayledNumber } from '../../utils/utils';
 
 const OpenBox = ({ handleLock, handleUnLock, vault, token }) => {
     return (<div className="  door open-door">
         <div className="container">
-            <div className="title">{vault.title} <br />Vaults</div>
+            <div className="title">{vault.title} <br />Vault</div>
             {/* <div className="desc">
                 you currently own <br />  {vault.own ? <div> {getStayledNumber(vault.own, 4)}%</div> : "..."}
             </div> */}
             <div className="all-info">
-                <div className="wrap-info">
+                {vault?.total && <div className="wrap-info">
                     <div className="titles">Total:</div>
-                    <div className="description">415 sealed {vault.title} minted</div>
-                </div>
+                    <div className="description">{vault?.total} {token.title} minted</div>
+                </div>}
 
-                <div className="wrap-info">
+                {token?.balance && vault?.total && <div className="wrap-info">
                     <div className="titles">You own: </div>
-                    <div className="description">213 sealed {vault.title} 17.27% ($138,450) of this vault</div>
-                </div>
+                    <div className="description">{newFormatAmount(token.balance, 6)} {token.title} <br /> {getStayledNumber(token.balance / vault?.total * 100, 5)}%</div>
+                </div>}
             </div>
             <div className="door-btns">
                 {/* <div className="label-lock">
@@ -32,17 +33,18 @@ const OpenBox = ({ handleLock, handleUnLock, vault, token }) => {
                 </div> */}
 
                 {/* <div className="grad-wrap stake-btn-wrap">
-                    <Link to={"/new-staking"} className="left-btn half">stake your sand</Link>
-                    <Link to="/timetoken" className="half">stake your time</Link>
+                    <Link to={"/new-staking"} className="left-btn half">get  {vault.name}</Link>
+                    <div to="/timetoken" className="half" onClick={() => handleLock(vault)}>lock more</div>
                 </div> */}
 
                 <div className="grad-wrap stake-btn-wrap" onClick={() => handleLock(vault)}>
-                    {/* <div className="left-btn half disabled">13743.7184 DEA locked</div> */}
                     <div className="grad lock-more ">lock more</div>
                 </div>
-                {/* <div className="grad-wrap get-wrap">
-                                        <div className="grad">Get UNI-LP tokens <img src={process.env.PUBLIC_URL + "/vaults/uni.svg"} alt="uni" /></div>
-                                    </div> */}
+                <div className="grad-wrap get-wrap">
+                    {AllStakings[vault.name].innerLink ?
+                        <Link to={"/swap"} className="grad" >get {vault.title}</Link> :
+                        <a href={AllStakings[vault.name].liqLink} className="grad" target="_blank" rel="noopener noreferrer">provide {vault.title}</a>}
+                </div>
             </div>
         </div>
     </div>);

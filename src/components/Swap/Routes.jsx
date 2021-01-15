@@ -10,9 +10,13 @@ const Routes = ({ from, to, chainId }) => {
     const deusPath = {
         "deus": {
             "eth": true,
+            "bakkt": true,
             "coinbase": true
         },
         "coinbase": {
+            "deus": true,
+        },
+        "bakkt": {
             "deus": true,
         },
         "eth": {

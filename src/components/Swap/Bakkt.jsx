@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
-import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
 import TokenBox from './TokenBox';
 import SearchBox from './SearchBox';
 import TokenMarket from './TokenMarket';
 import Title from './Title';
 import SwapButton from './SwapButton';
-import { SwapService } from '../../services/SwapService';
-// import PriceBox from './PriceBox';
-// import Slippage from './Slippage';
+import { ToastContainer } from 'react-toastify';
+import { BakktService } from '../../services/BakktService';
+import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
 import Routes from './Routes';
-// import Volume from './Volume/Volume';
+import Risk from './Popups/Risk';
+
 import './mainSwap.scss';
 
 
-class MainSwap extends Component {
+class Bakkt extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc"],
+        tokens: ["deus", "bakkt"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -30,13 +29,13 @@ class MainSwap extends Component {
         showSearchBox: false,
         searchBoxType: "from",
         fromPerTo: true,
+        showRiskPupop: false,
         claimable_amount: null,
         typingTimeout: 0,
         typeTransaction: "",
-        slippageAmount: 0.1,
         toAmount: "",
-        fromAmount: ""
-
+        fromAmount: "",
+        slippageAmount: 0.1
     }
 
 
@@ -64,13 +63,15 @@ class MainSwap extends Component {
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
         const { chainId, account } = this.props
+        const { swap } = this.state
+        this.handleInitToken("from", "deus")
+        this.handleInitToken("to", "bakkt")
 
-        this.handleInitToken("from", "eth")
-        this.handleInitToken("to", "deus")
+
 
         if (!chainId || !account) return
 
-        await this.setState({ web3: new SwapService(account, chainId) })
+        await this.setState({ web3: new BakktService(account, chainId) })
         await this.handleIinitBalances()
         await this.getClaimable()
         await this.handleInitAllowances()
@@ -82,15 +83,18 @@ class MainSwap extends Component {
         const { chainId, account } = this.props
 
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
+
+
             if (!chainId || !account) return
 
-            await this.setState({ web3: new SwapService(account, chainId) })
+
+            await this.setState({ web3: new BakktService(account, chainId) })
             await this.handleIinitBalances(true)
             await this.getClaimable()
             await this.handleInitAllowances(true)
 
-            this.handleInitToken("from", "eth")
-            this.handleInitToken("to", "deus")
+            this.handleInitToken("from", "deus")
+            this.handleInitToken("to", "bakkt")
         }
     }
 
@@ -106,10 +110,6 @@ class MainSwap extends Component {
         }
     }
 
-
-    handleSlippage = (amount) => {
-        this.setState({ slippageAmount: amount })
-    }
 
     handleTokensToMap = () => {
         const { tokens, tokensMap } = this.state
@@ -177,6 +177,11 @@ class MainSwap extends Component {
     }
 
 
+    handleSlippage = (amount) => {
+        this.setState({ slippageAmount: amount })
+    }
+
+
     handleTyping = () => {
         if (this.state.typingTimeout) {
             clearTimeout(this.state.typingTimeout);
@@ -229,30 +234,29 @@ class MainSwap extends Component {
 
 
     getSingleBalance = async (tokenName, force = false) => {
-
         const { swap, web3 } = this.state
         if (!web3) return
         const { allTokens, setAllTokens } = this.props
 
         if (force || !allTokens[tokenName].lastFetchBalance) {
-
             try {
                 const data = await web3.getTokenBalance(tokenName)
                 const balance = formatBalance(data)
-                allTokens[tokenName].balance = balance
+                allTokens[tokenName].balance = parseFloat(balance)
                 allTokens[tokenName].lastFetchBalance = true
                 if (tokenName === swap.to.name || tokenName === swap.from.name) {
                     this.handleInitToken("from", swap.from.name)
                     this.handleInitToken("to", swap.to.name)
                 }
             } catch (error) {
-                console.log("getSingleBalance ", tokenName, error);
+                console.log(error);
             }
             setAllTokens(allTokens)
         } else {
             // console.log("fetched balance");
         }
     }
+
 
 
     handleInitAllowances = async (foceUpdate) => {
@@ -276,10 +280,10 @@ class MainSwap extends Component {
         const { allTokens, setAllTokens } = this.props
 
         if (tokenName === "deus" || force || !allTokens[tokenName].lastFechAllowance) {
-
             try {
                 const allowances = await web3.getAllowances(tokenName)
                 allTokens[tokenName].allowances = parseInt(allowances)
+                console.log(tokenName, allowances);
                 allTokens[tokenName].lastFechAllowance = true
                 if (tokenName === swap.from.name || tokenName === swap.to.name) {
                     this.handleInitToken("from", swap.from.name, swap.from.amount)
@@ -288,7 +292,7 @@ class MainSwap extends Component {
                 setAllTokens(allTokens)
 
             } catch (error) {
-                console.log(tokenName, error);
+                console.log(error);
             }
         }
 
@@ -315,7 +319,6 @@ class MainSwap extends Component {
         return tokens.filter(t => swap[searchBoxType].name !== t.name)
     }
 
-
     isApproved = () => {
         const { swap } = this.state
         return swap.from.allowances > 0
@@ -325,20 +328,20 @@ class MainSwap extends Component {
         const { swap, web3 } = this.state
         if (!web3) return
 
-        if (checkLimit(swap)) {
+        const payload = {
+            popup: this.handleRiskPopup
+        }
+        if (checkLimit(swap, payload)) {
             return
         }
-
         const { from, to } = swap
-
         try {
-            this.setState({ typeTransaction: "swap" })
-
             !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :
                 await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
         } catch (error) {
 
+            console.log(error);
         }
     }
 
@@ -346,7 +349,10 @@ class MainSwap extends Component {
     handleApprove = async (swap) => {
         const { web3 } = this.state
 
-        if (checkLimit(swap)) {
+        const payload = {
+            popup: this.handleRiskPopup
+        }
+        if (checkLimit(swap, payload)) {
             return
         }
 
@@ -360,12 +366,18 @@ class MainSwap extends Component {
         return 0
     }
 
-
-
+    handleRiskPopup = (flag) => {
+        if (flag) {
+            setBackground("dark")
+        } else {
+            setBackground("light")
+        }
+        this.setState({ showRiskPupop: flag })
+    }
 
     render() {
 
-        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
+        const { showSearchBox, showRiskPupop, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
         const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
@@ -373,23 +385,21 @@ class MainSwap extends Component {
         const isMobile = window.innerWidth < 670
         const { chainId } = this.props
 
-
         return (<div className="deus-swap-wrap">
-
+            {showRiskPupop && < Risk handleRiskPopup={this.handleRiskPopup} />}
             {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-            <Title web3={web3} claimable_amount={claimable_amount} />
+            <Title web3={web3} claimable_amount={claimable_amount} isBakkt={true} />
 
-            {/* <Volume /> */}
 
             <div className="swap-container-wrap">
                 <div className="swap-container">
-
                     <div className="swap-box-wrap">
                         <div className="swap-box">
 
                             <TokenBox type="from" token={from_token}
-                                estimated=""
-                                handleSearchBox={this.handleSearchBox}
+                                estimated=" "
+                                isIPO={true}
+                                handleSearchBox={() => console.log("disabled")}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
 
@@ -401,9 +411,11 @@ class MainSwap extends Component {
 
                             <TokenBox type="to" token={to_token}
                                 estimated=" (estimated)"
-                                handleSearchBox={this.handleSearchBox}
+                                handleSearchBox={() => console.log("disabled")}
                                 handleTokenInputChange={this.handleTokenInputChange}
+                                isIPO={true}
                             />
+
 
                             <TokenMarket
                                 handleSwich={this.handleSwichPerPrice}
@@ -418,6 +430,8 @@ class MainSwap extends Component {
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
 
+                        {/* <PriceBox impact={""} vaultsFee={""} /> */}
+
                         <SearchBox
                             showSearchBox={showSearchBox}
                             choosedToken={swap[searchBoxType].name}
@@ -427,10 +441,20 @@ class MainSwap extends Component {
                             handleFilterToken={this.state.tokensMap}
                             handleChangeToken={this.handleChangeToken}
                         />
+                        {from_token.name &&
+                            to_token &&
+                            <Routes from={from_token} to={to_token} chainId={chainId}
+                            />}
 
-                        {/* <PriceBox impact={""} vaultsFee={""} /> */}
 
-                        {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
+                        {/*    {(from_token.name === "Bakkt" ||
+                            to_token.name === "Bakkt") &&
+                            <Slippage
+                                slippage={slippageAmount}
+                                setSlippage={this.handleSlippage}
+                            />} */}
+
+                        <p className="ipo">  </p>
                     </div>
                 </div>
             </div>
@@ -439,4 +463,4 @@ class MainSwap extends Component {
 }
 
 
-export default MainSwap;
+export default Bakkt;

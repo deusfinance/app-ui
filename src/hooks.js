@@ -1,7 +1,6 @@
-
+import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core';
 
-import { useState, useEffect } from 'react'
 
 export function useEagerConnect(injected) {
     const { activate, active } = useWeb3React()
@@ -18,7 +17,7 @@ export function useEagerConnect(injected) {
                 setTried(true)
             }
         })
-    }) // intentionally only running on mount (make sure it's only mounted once :))
+    }, []) // intentionally only running on mount (make sure it's only mounted once :))
 
     // if the connection worked, wait until we get confirmation of that to flip the flag
     useEffect(() => {

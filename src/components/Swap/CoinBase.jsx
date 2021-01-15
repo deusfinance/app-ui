@@ -283,7 +283,8 @@ class CoinBase extends Component {
 
         const { allTokens, setAllTokens } = this.props
 
-        if (force || !allTokens[tokenName].lastFechAllowance) {
+        if (tokenName === "deus" || force || !allTokens[tokenName].lastFechAllowance) {
+
             try {
                 const allowances = await web3.getAllowances(tokenName)
                 allTokens[tokenName].allowances = parseInt(allowances)

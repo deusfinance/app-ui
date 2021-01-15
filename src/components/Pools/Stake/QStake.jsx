@@ -32,7 +32,14 @@ const QStake = ({ staking, deposited, handleStakePopup, dollarPool, handleClaim,
                             : <a className=" grad stake-here" href={staking.liqLink} target="_blank" rel="noopener noreferrer">provide {isStaked ? "more" : "Liquidity"}</a>}
                     </div>
                 </div>
-                <div className="grad-wrap stake-here-wrap" > <div className="stake-here" onClick={() => handleStakePopup(staking.name)}>STAKE {stakeHere}</div></div></div>}
+                <div className="grad-wrap stake-here-wrap" >
+
+                    {!deposited && deposited !== 0
+                        ? <div className="stake-here stake-here-closed" >STAKE {stakeHere}</div>
+                        : <div className="stake-here" onClick={() => handleStakePopup(staking.name)}>STAKE {stakeHere}</div>}
+
+
+                </div></div>}
             {staking.isClose && <div className="grad-wrap stake-here-wrap" ><div className="stake-here stake-here-closed"> STAKE {stakeHere}</div></div>}
             {!deposited && deposited !== 0 && <div className="loading-qstake-top"><RotateCircleLoading color="#a0a0a0" size={'small'} ></RotateCircleLoading></div>}
 

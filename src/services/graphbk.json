@@ -59,6 +59,10 @@
             "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
             "0x4185cf99745B2a20727B37EE798193DD4a56cDfa"
         ],
+        "bakkt": [
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0x11Aa73194769882521e4576D245ffacd4E98aCB4"
+        ],
         "wbtc": [
             "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
             "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
@@ -77,6 +81,8 @@
         ],
         "usdc": [
             "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
             "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
         ],
         "usdt": [
@@ -108,6 +114,8 @@
         ],
         "dea": [
             "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
             "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778"
         ],
         "eth": [
@@ -201,6 +209,12 @@
             "0x6B175474E89094C44Da98b954EedeAC495271d0F",
             "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
             "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        ]
+    },
+    "bakkt": {
+        "deus": [
+            "0x11Aa73194769882521e4576D245ffacd4E98aCB4",
+            "0x3b62F3820e0B035cc4aD602dECe6d796BC325325"
         ]
     },
     "coinbase": {

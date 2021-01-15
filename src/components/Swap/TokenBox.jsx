@@ -24,7 +24,7 @@ class TokenBox extends Component {
 
 
     render() {
-        const { type, estimated, handleSearchBox, handleTokenInputChange, token } = this.props
+        const { type, estimated, handleSearchBox, handleTokenInputChange, token, isIPO } = this.props
         return (<div className="token-box-wrap">
             <div className="token-box">
                 <div className="top">
@@ -41,11 +41,12 @@ class TokenBox extends Component {
                         onChange={(e) => handleTokenInputChange(type, e.currentTarget.value)}
                         autoComplete="off" autoCorrect="off" placeholder="0.0" spellCheck="false" />
                     {type === "from" && <div className="max-btn" onClick={() => handleTokenInputChange(type, token.balance)}>MAX</div>}
-                    <div className="token-info" onClick={() => handleSearchBox(true, type)}>
+                    <div className={`token-info ${isIPO ? "token-ipo" : ""}`} onClick={() => handleSearchBox(true, type)} >
                         <img className="token-icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}`} alt={token.title} />
                         <span className="token-name" style={{ textTransform: "uppercase" }}>{token.title}</span>
                         {token.isFutures && <img className="futures" src={process.env.PUBLIC_URL + "/img/futures.svg"} alt="futures" />}
-                        <img className="select-icon" src={process.env.PUBLIC_URL + "/img/select.svg"} alt="select" />
+                        {token.isBakkt && <img className="futures" src={process.env.PUBLIC_URL + "/img/SPAC.png"} alt="spac" />}
+                        {!isIPO && <img className="select-icon" src={process.env.PUBLIC_URL + "/img/select.svg"} alt="select" />}
                     </div>
                 </div>
             </div>

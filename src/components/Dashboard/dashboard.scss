@@ -1,0 +1,100 @@
+.dashboard {
+    margin: auto;
+    text-align: center;
+    padding-top: 60px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.card {
+    display: inline-block;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    max-width: 500px;
+    width: 90%;
+    border-radius: 6px;
+    color: #ffffff;
+}
+
+.balance {
+    border: 2px solid #1c1c1c;
+    text-align: center;
+    padding: 20px 0;
+    margin: auto 10px;
+    .title {
+        font-size: 15px;
+        margin-bottom: 40px;
+    }
+    .token {
+        .amount {
+            font-size: 40px;
+            filter: drop-shadow(0px 0px 10px #ffffff);
+        }
+        .name {
+            font-family: Lambok;
+            font-weight: bold;
+        }
+        .dollar {
+            filter: drop-shadow(0px 0px 10px #ffffff);
+
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        margin-bottom: 40px;
+    }
+    .btns {
+        .btn {
+            display: inline-block;
+            width: 50%;
+            padding: 0 20px;
+            .grad-wrap {
+                height: 35px;
+            }
+        }
+    }
+}
+
+.supply {
+    margin: 10px;
+    padding-top: 20px;
+    background: linear-gradient(
+        135deg,
+        rgba(91, 204, 189, 0.14902) 0%,
+        rgba(97, 192, 191, 0.14902) 33.33%,
+        rgba(85, 188, 200, 0.14902) 74.49%,
+        rgba(105, 207, 184, 0.14902) 100%
+    );
+    border: 1px solid #a2dea4;
+    .title {
+        font-size: 15px;
+        margin-bottom: 40px;
+    }
+    .token {
+        .amount {
+            font-size: 40px;
+            filter: drop-shadow(0px 0px 10px #ffffff);
+        }
+        .name {
+            font-family: Lambok;
+            font-weight: bold;
+        }
+        .dollar {
+            filter: drop-shadow(0px 0px 10px #ffffff);
+
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        margin-bottom: 40px;
+    }
+    .tvl-wrap {
+        padding: 10px;
+        // padding-top: 10px
+
+        text-align: left;
+        // margin: 20px 0px;
+        border-top: 1px solid #ffffff;
+        div {
+            margin: 5px 0;
+        }
+    }
+}

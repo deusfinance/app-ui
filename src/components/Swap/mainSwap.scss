@@ -94,16 +94,17 @@
             // }
 
             .swap-box-wrap {
-                position: absolute;
+                // position: absolute;
+                top: 50px;
                 left: 0;
                 right: 0;
                 margin: auto;
-                margin-top: 30px;
-                width: 500px;
+                width: 480px;
+                height: 410px;
                 filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.25));
                 .swap-box {
                     // width: 100%;
-                    // height: 360px;
+                    height: 360px;
                     background: #0d0d0d;
                     border: 1px solid #000000;
                     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -261,7 +262,7 @@
                         }
                     }
                     .swap-btn-wrap {
-                        margin-top: 5px;
+                        // margin-top: 10px;
                         // text-transform: uppercase;
                         height: 55px;
                         border-radius: 10px;
@@ -308,11 +309,11 @@
                     top: 0;
                     z-index: 2;
                     width: 100%;
-                    // height: 100%;
+                    height: 100%;
                     background: #242424;
                     border-radius: 10px;
                     padding: 15px 10px;
-                    // min-height: 420px;
+                    min-height: 420px;
 
                     .search-box {
                         animation: scale-up 0.5s forwards;
@@ -367,8 +368,6 @@
                                 border-top: 2px solid rgba(255, 255, 255, 0.15);
                                 // border-bottom: 1px solid rgba(255, 255, 255, 0.15);
                                 // min-height: 235px;
-                                height: 500px;
-
                                 overflow-y: auto;
                                 padding: 12px 0;
 
@@ -582,31 +581,3 @@
         transform: scale(1);
     }
 }
-
-// //differrent grad
-// .grad-wrap {
-//     background: linear-gradient(90.11deg, #69c9ce 1.13%, #d5e061 98.54%);
-//     padding: 1px;
-//     border-radius: 6px;
-//     color: #ffffff;
-//     text-align: center;
-//     font-family: Monument Grotesk;
-//     font-weight: 400;
-//     font-size: 18px;
-//     cursor: pointer;
-//     .grad {
-//         // padding-bottom: 2px;
-//         display: flex;
-//         justify-content: center;
-//         flex-direction: column;
-//         background: #111111;
-//         border-radius: 6px;
-//         width: 100%;
-//         height: 100%;
-//         transition: all 0.35s;
-//         &:hover {
-//             background-color: transparent;
-//             color: #000000;
-//         }
-//     }
-// }

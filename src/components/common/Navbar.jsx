@@ -3,7 +3,8 @@ import { useWeb3React } from '@web3-react/core';
 import { injected } from '../../connectors';
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
-import { dappLink, navbarItems } from '../../config';
+import { dappLink } from '../../config';
+import navbarItems from "../../utils/navs"
 import SubNavbar from './SubNavbar';
 import { formatAddress, getStayledNumber, notify } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';

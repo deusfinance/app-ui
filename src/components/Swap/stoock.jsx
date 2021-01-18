@@ -1,23 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
+import TokenBox from './TokenBox';
 import TokenMarket from './TokenMarket';
 import Title from './Title';
-import SwapStockButton from './SwapStockButton';
+import SwapButton from './SwapButton';
 import { SwapService } from '../../services/SwapService';
-// import Routes from './Routes';
+import Routes from './Routes';
 import WrappedTokenButton from './WrappedTokenButton';
-import SearchAssets from './SearchAssets';
-import StockBox from './StockBox';
-import _ from "lodash"
-import { TokenType } from '../../config';
+
+// import PriceBox from './PriceBox';
+// import Slippage from './Slippage';
+// import Volume from './Volume/Volume';
+import { useAllStocks } from '../../utils/stocks';
+
 import './mainSwap.scss';
 
+import { useWeb3React } from '@web3-react/core';
+const SearchBox = React.lazy(() => import('./SearchBox'));
 
 
-class StockSwap extends Component {
+class StockSwap2 extends Component {
     state = {
-        tokens: ["dai"],
+        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -63,9 +68,9 @@ class StockSwap extends Component {
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
         const { chainId, account } = this.props
-        this.handleInitToken("from", this.props.deployed[0])
-        this.handleInitTokenByName("to", "AAPL")
-
+        console.log(useAllStocks());
+        this.handleInitToken("from", "eth")
+        this.handleInitToken("to", "deus")
 
         if (!chainId || !account) return
 
@@ -87,8 +92,8 @@ class StockSwap extends Component {
             await this.getClaimable()
             await this.handleInitAllowances(true)
 
-            this.handleInitToken("from", this.props.deployed[0])
-            this.handleInitTokenByName("to", "AAPL")
+            this.handleInitToken("from", "eth")
+            this.handleInitToken("to", "deus")
         }
     }
 
@@ -117,21 +122,11 @@ class StockSwap extends Component {
         this.setState({ tokensMap })
     }
 
-    handleInitToken = (type, token, amount = "") => {
+    handleInitToken = (type, tokenName, amount = "") => {
         const { swap } = this.state
-        swap[type] = { ...token, amount: amount }
-        this.setState({ swap, toAmount: "", fromAmount: "" })
-    }
-
-    handleInitTokenByName = (type, tokenName, amount = "") => {
-        const { swap } = this.state
-        let token = {}
-        if (type === "from") {
-            token = _.find(this.props.deployed, { symbol: tokenName })
-        } else {
-            token = _.find(this.props.allStocks, { symbol: tokenName })
-        }
-        swap[type] = { ...token, amount: amount }
+        const { allTokens } = this.props
+        const tk = allTokens[tokenName]
+        swap[type] = { ...tk, amount: amount }
         this.setState({ swap, toAmount: "", fromAmount: "" })
     }
 
@@ -184,6 +179,7 @@ class StockSwap extends Component {
         this.setState({ swap })
     }
 
+
     handleTyping = () => {
         if (this.state.typingTimeout) {
             clearTimeout(this.state.typingTimeout);
@@ -202,6 +198,7 @@ class StockSwap extends Component {
             return
         }
 
+
         try {
             const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : await web3.getAmountsIn(swap.from.name, swap.to.name, amount)
             swap[vstype].amount = getStayledNumber(data, 9)
@@ -217,7 +214,6 @@ class StockSwap extends Component {
     }
 
     handleSearchBox = (flag, type = "from") => {
-
         this.setState({ showSearchBox: flag, searchBoxType: type })
     }
 
@@ -233,6 +229,7 @@ class StockSwap extends Component {
         })
 
     }
+
 
     getSingleBalance = async (tokenName, force = false) => {
 
@@ -299,24 +296,19 @@ class StockSwap extends Component {
 
     }
 
-    handleChangeToken = (token) => {
+
+    handleChangeToken = (tokenName) => {
         const { searchBoxType, swap } = this.state
         const vstype = searchBoxType === "from" ? "to" : "from"
 
-        if (searchBoxType === "from") {
-            this.handleInitToken(searchBoxType, token)
-            if (token.symbol !== "DAI") {
-                this.handleInitToken(vstype, this.props.deployed[0])
-            } else {
-                this.handleInitToken(vstype, this.props.allStocks[0])
-            }
+        if (swap[vstype].name === tokenName) {
+            const tmp = swap[searchBoxType].name
+            this.handleInitToken(vstype, tmp)
         } else {
-            this.handleInitToken(searchBoxType, token)
-            if (token.symbol !== "DAI") {
-                this.handleInitToken(vstype, this.props.deployed[0])
-            }
+            const tmp = swap[vstype].name
+            this.handleInitToken(vstype, tmp)
         }
-
+        this.handleInitToken(searchBoxType, tokenName)
         this.handleSearchBox(false)
     }
 
@@ -371,11 +363,13 @@ class StockSwap extends Component {
 
     render() {
         const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
-
+        const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
         const approved = this.isApproved()
         const isMobile = window.innerWidth < 670
+        const { chainId } = this.props
+
 
         return (<div className="deus-swap-wrap">
 
@@ -383,15 +377,11 @@ class StockSwap extends Component {
             <Title web3={web3} claimable_amount={claimable_amount} />
 
             {/* <Volume /> */}
-            <SearchAssets
-                searchBoxType={searchBoxType}
-                isStock={true}
+            <SearchBox
                 showSearchBox={showSearchBox}
                 choosedToken={swap[searchBoxType].name}
                 handleSearchBox={this.handleSearchBox}
-                allTokens={this.props.allStocks}
-                fromTokens={this.props.deployed}
-                toTokens={this.props.allStocks}
+                allTokens={allTokens}
                 tokens={tokens}
                 handleFilterToken={this.state.tokensMap}
                 handleChangeToken={this.handleChangeToken}
@@ -402,7 +392,7 @@ class StockSwap extends Component {
                     <div className="swap-box-wrap">
                         <div className="swap-box">
 
-                            <StockBox type="from" token={from_token}
+                            <TokenBox type="from" token={from_token}
                                 estimated=""
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
@@ -414,7 +404,7 @@ class StockSwap extends Component {
                                 alt="arrow"
                                 className="arrow" />
 
-                            <StockBox type="to" token={to_token}
+                            <TokenBox type="to" token={to_token}
                                 estimated=" (estimated)"
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
@@ -430,15 +420,16 @@ class StockSwap extends Component {
                                 tvl={""}
                                 tradeVol={""} />
 
-                            {to_token.isDeployed && to_token.type === TokenType.Wrapped && <WrappedTokenButton isWrap={true} isLong={null} />}
+                            <WrappedTokenButton isWrap={true} isLong={true} />
 
-                            <SwapStockButton handleSwap={this.handleSwap} from_token={from_token} to_token={to_token} approved={approved} web3={web3} isMobile={isMobile} />
-
+                            <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
+
+
 
                         {/* <PriceBox impact={""} vaultsFee={""} /> */}
 
-                        {/* {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />} */}
+                        {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
                     </div>
                 </div>
             </div>
@@ -447,4 +438,4 @@ class StockSwap extends Component {
 }
 
 
-export default StockSwap;
+export default StockSwap2;

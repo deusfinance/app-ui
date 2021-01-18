@@ -48,7 +48,7 @@ const Routes = ({ from, to, chainId }) => {
                     </div>}
 
                     <div className="token-wrap">
-                        <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}`} alt="eth" />
+                        <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name ? token.pic_name : token.logo}`} alt="eth" />
                         <div className="symbol">{token.title}</div>
                     </div>
                 </div>

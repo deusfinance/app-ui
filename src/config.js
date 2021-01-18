@@ -1,85 +1,7 @@
 
-import assets from './constituents.json'
 
 export const contractEndpoint = "https://etherscan.io/address"
 export const dappLink = "https://metamask.app.link/dapp/deus.finance/"
-export const navbarItems = [
-    {
-        id: "app",
-        text: "APP",
-        path: "/",
-        exact: true,
-        children: [
-            {
-                id: "swap",
-                text: "SWAP",
-                path: "/swap",
-                exact: true,
-
-            },
-            {
-                id: "coinbase",
-                text: "COINBASE",
-                path: "/coinbase",
-                exact: true,
-
-            },
-            {
-                id: "bakkt",
-                text: "BAKKT",
-                path: "/bakkt",
-                exact: true,
-
-            },
-
-            // {
-            //     id: "conductr",
-            //     text: "CONDUCTR",
-            //     path: "/conductr",
-            //     exact: false,
-            // },
-            {
-                id: "staking",
-                text: "STAKING",
-                path: "/staking",
-                exact: false,
-            },
-
-            {
-                id: "vaults",
-                text: "VAULTS",
-                path: "/vaults",
-                exact: true,
-            },
-        ]
-    },
-
-    {
-        id: "learn",
-        text: "LEARN",
-        path: "/learn",
-        exact: true,
-        children: [
-            {
-                id: "wiki",
-                text: "DEUS wiki",
-                path: "https://wiki.deus.finance",
-                out: true,
-                exact: true,
-
-            },
-            {
-                id: "litepaper",
-                text: "LITEPAPER",
-                path: "https://deus.finance/litepaper.pdf",
-                out: true,
-                exact: true,
-
-            },
-        ]
-    },
-]
-
 
 export const TokenType = {
     Time: "time",
@@ -113,6 +35,8 @@ export const AddressChainMap = {
         "0xE18cf55EC4e40cb3E4dD57c9150ceb9682c25329": "bakkt",
     },
 }
+
+
 
 
 export const AllTokens = {
@@ -591,25 +515,3 @@ export const AllStakings = {
 }
 
 
-export const isThereLogos = ["A", "AAL", "AAP", "AAPL", "ABBV", "ABMD", "ACN", "ADBE", "ADI", "ADM", "ADP", "ADSK", "AEE", "AEP", "AFL", "AIG", "AIV", "AIZ", "AJG", "ALK", "ALL", "AMAT", "AMD", "AME", "AMP", "AMT", "AMZN", "ANET", "ANSS", "ANTM", "AON", "AOS", "APA", "APD", "APH", "APTV", "ATO", "ATVI", "AVB", "AVGO", "AVY", "AWK", "AXP", "AZO", "BA", "BAC", "BAX", "BBY", "BDX", "BEN", "BIIB", "BIO", "BK", "BKNG", "BMY", "BR", "BSX", "BWA", "BXP", "C", "CB", "CBOE", "CBRE", "CCI", "CCL", "CDNS", "CE", "CERN", "CF", "CFG", "CHRW", "CHTR", "CI", "CINF", "CL", "CLX", "CMCSA", "CME", "CMG", "CMI", "CMS", "CNC", "CNP", "COF", "COG", "COO", "COP", "CPRT", "CSCO", "CSX", "CTAS", "CTL", "CTLT", "CTSH", "CTVA", "CTXS", "CVX", "D", "DE", "DFS", "DG", "DGX", "DISCA", "DISH", "DLR", "DLTR", "DOV", "DPZ", "DRE", "DRI", "DTE", "DUK", "DVA", "DVN", "DXC", "DXCM", "EA", "EBAY", "ED", "EFX", "EIX", "EMN", "EOG", "EQIX", "EQR", "ES", "ESS", "ETN", "ETR", "ETSY", "EVRG", "EW", "EXC", "EXPD", "EXPE", "F", "FANG", "FAST", "FB", "FCX", "FDX", "FE", "FFIV", "FIS", "FISV", "FITB", "FLT", "FMC", "FOXA", "FRC", "FTI", "FTNT", "FTV", "GE", "GILD", "GIS", "GL", "GLW", "GM", "GOOGL", "GPC", "GPN", "GRMN", "GWW", "HBAN", "HBI", "HCA", "HD", "HIG", "HLT", "HOLX", "HPE", "HRL", "HSIC", "HST", "HUM", "IBM", "IDXX", "IEX", "ILMN", "INCY", "INFO", "INTC", "INTU", "IP", "IPG", "IPGP", "IQV", "IRM", "ISRG", "IT", "ITW", "IVZ", "JBHT", "JKHY", "JNJ", "JNPR", "JPM", "K", "KEY", "KIM", "KLAC", "KMB", "KMI", "KO", "KR", "L", "LB", "LDOS", "LEG", "LEN", "LH", "LHX", "LIN", "LLY", "LMT", "LNC", "LNT", "LOW", "LRCX", "LVS", "LYB", "LYV", "MAA", "MAR", "MCHP", "MCK", "MCO", "MDLZ", "MDT", "MET", "MGM", "MHK", "MKC", "MKTX", "MLM", "MMM", "MNST", "MOS", "MPC", "MRK", "MRO", "MS", "MSCI", "MSI", "MTB", "MU", "MXIM", "MYL", "NEM", "NFLX", "NI", "NLOK", "NLSN", "NOC", "NOV", "NOW", "NRG", "NSC", "NTAP", "NVR", "NWL", "NWSA", "OKE", "OMC", "ORCL", "ORLY", "OXY", "PAYC", "PAYX", "PBCT", "PFE", "PFG", "PGR", "PH", "PHM", "PKG", "PKI", "PLD", "PM", "PNC", "PNW", "POOL", "PPG", "PPL", "PRGO", "PRU", "PSA", "PVH", "PWR", "PXD", "PYPL", "QCOM", "QRVO", "RE", "REG", "REGN", "RF", "RHI", "RJF", "RL", "RMD", "ROK", "ROL", "ROP", "ROST", "RSG", "RTX", "SBUX", "SCHW", "SEE", "SHW", "SIVB", "SLB", "SLG", "SNA", "SNPS", "SO", "SPG", "SPGI", "SRE", "STT", "STX", "STZ", "SYK", "SYY", "T", "TAP", "TDG", "TDY", "TEL", "TER", "TFC", "TGT", "TIF", "TJX", "TMO", "TMUS", "TROW", "TRV", "TSCO", "TSN", "TTWO", "TWTR", "TXN", "TXT", "TYL", "UAA", "UAL", "UDR", "UHS", "ULTA", "UNH", "UNP", "UPS", "URI", "USB", "V", "VAR", "VFC", "VLO", "VMC", "VNO", "VRSK", "VRTX", "VTR", "VZ", "WAB", "WBA", "WEC", "WELL", "WFC", "WM", "WRB", "WRK", "WST", "WU", "WY", "XEL", "XLNX", "XOM", "XRAY", "ZBH", "ZBRA", "ZION", "ZTS"]
-
-export function getAllTokens() {
-
-    let temp = AllTokens
-    assets.constituents.map((asset, i) => {
-        let logo = null
-        if (isThereLogos.includes(asset)) {
-            logo = "/img/ticker/" + asset + ".png"
-        }
-        temp["wrap_" + asset.toLocaleLowerCase()] = {
-            name: "wrap_" + asset.toLocaleLowerCase(),
-            title: "w" + asset,
-            type: TokenType.Wrapped,
-            innerLink: true,
-            logo: logo,
-            isDeployed: false,
-            provideLink: "/swap",
-        }
-    })
-    return temp
-}

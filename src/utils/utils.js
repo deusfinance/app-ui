@@ -106,7 +106,7 @@ const method = {
     onError: () => console.log("onError"),
 }
 
-export const notify = (methods = method) => (state) => {
+export const notify = (methods = method, payload = null) => (state) => {
 
     switch (state) {
         case "waiting": {
@@ -119,14 +119,14 @@ export const notify = (methods = method) => (state) => {
             toast.info("Transaction broadcasted.", {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
-            methods.onStart()
+            methods.onStart(payload)
             break
         }
         case "receipt": {
             toast.success("Transaction Successful.", {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
-            methods.onSuccess()
+            methods.onSuccess(payload)
             break
         }
         case "connectWallet": {
@@ -139,14 +139,14 @@ export const notify = (methods = method) => (state) => {
             toast.warn("Transaction Failed.", {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
-            methods.onError()
+            methods.onError(payload)
             break
         }
         default: {
             toast.info("Unhandled Event.", {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
-            methods.onError()
+            methods.onError(payload)
             break;
         }
     }

@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
+import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
 import TokenMarket from './TokenMarket';
 import Title from './Title';
 import SwapStockButton from './SwapStockButton';
-import { SwapService } from '../../services/SwapService';
-// import Routes from './Routes';
 import WrappedTokenButton from './WrappedTokenButton';
 import SearchAssets from './SearchAssets';
 import StockBox from './StockBox';
 import _ from "lodash"
+import { toast } from 'react-toastify';
 import { TokenType } from '../../config';
+import { StockService } from '../../services/StockService';
+
 import './mainSwap.scss';
-
-
 
 class StockSwap extends Component {
     state = {
-        tokens: ["dai"],
+        tokens: [{
+            symbol: "DAI",
+            name: "DAI",
+            title: "DAI",
+            "conducted": true,
+            chainId: 4,
+            address: "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
+            logo: "/tokens/dai.png"
+        }],
         web3: null,
         tokensMap: {},
         swap: {
@@ -29,15 +36,21 @@ class StockSwap extends Component {
             }
         },
         showSearchBox: false,
+        priceStocks: null,
+        conductedCount: 0,
         searchBoxType: "from",
+        conducted: {},
         fromPerTo: true,
         claimable_amount: null,
         typingTimeout: 0,
         typeTransaction: "",
         slippageAmount: 0.1,
+        isLong: true,
+        buySell: {},
         toAmount: "",
         fromAmount: ""
     }
+
 
     methods = {
         onStart: () => {
@@ -45,12 +58,14 @@ class StockSwap extends Component {
         },
         onSuccess: () => {
             const { swap, typeTransaction } = this.state
-            if (typeTransaction === "approve") {
-                this.getSingleAllowances(swap.from.name, true)
-                this.setState({ typeTransaction: "" })
-            } else {
-                this.getSingleBalance(swap.to.name, true)
-                this.getSingleBalance(swap.from.name, true)
+            console.log(typeTransaction);
+            if (typeTransaction.action === "approve") {
+                this.handleIinitBalancesB(swap.from.name, true)
+            }
+            if (typeTransaction.action === "sell" || typeTransaction.action === "buy") {
+                console.log("perfect its sell here");
+                this.getTokenWrapBalance(typeTransaction.swap.from)
+                this.getTokenWrapBalance(typeTransaction.swap.to)
             }
 
         },
@@ -63,16 +78,27 @@ class StockSwap extends Component {
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
         const { chainId, account } = this.props
-        this.handleInitToken("from", this.props.deployed[0])
-        this.handleInitTokenByName("to", "AAPL")
+        // if (!nAllStocks) {
 
+        // }
+
+        this.getPrices()
+        this.getConducted()
+        this.handleInitTokenByName("to", "TSLA")
+        this.handleInitToken("from", this.state.tokens[0])
+
+        this.setState({
+            subscrible: setInterval(() => {
+                this.getPrices()
+                this.getConducted()
+            }, 30000)
+        })
 
         if (!chainId || !account) return
 
-        await this.setState({ web3: new SwapService(account, chainId) })
+        await this.setState({ web3: new StockService(account, chainId) })
         await this.handleIinitBalances()
-        await this.getClaimable()
-        await this.handleInitAllowances()
+        await this.handleIinitBalancesB()
     }
 
     async componentDidUpdate(prevProps) {
@@ -82,14 +108,89 @@ class StockSwap extends Component {
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
             if (!chainId || !account) return
 
-            await this.setState({ web3: new SwapService(account, chainId) })
+            await this.setState({ web3: new StockService(account, chainId) })
             await this.handleIinitBalances(true)
-            await this.getClaimable()
-            await this.handleInitAllowances(true)
+            await this.handleIinitBalancesB()
 
-            this.handleInitToken("from", this.props.deployed[0])
-            this.handleInitTokenByName("to", "AAPL")
+            await this.getClaimable()
+            // await this.handleInitAllowances(true)
+
+            this.handleInitToken("from", this.state.tokens[0])
+            this.handleInitTokenByName("to", "TSLA")
         }
+    }
+
+    handleLong = (bool) => {
+        this.setState({ isLong: bool })
+    }
+
+    getConducted = async () => {
+        try {
+            const resp = await fetch("https://test.deus.finance/oracle-files/conducted.json")
+            const respj = await resp.json()
+            this.setState({ conducted: respj })
+        } catch (error) {
+            console.log(" get Market Amounts had some error", error);
+        }
+        this.addConductedToToken()
+    }
+
+
+
+    getTokenWrapBalance = async (token) => {
+        const { nAllStocks } = this.props
+        const { swap } = this.state
+        const currToken = nAllStocks[token.id]
+        if (token.type === TokenType.Wrapped) {
+            currToken.long.balance = await this.getSingleBalance(currToken.long.address)
+            currToken.short.balance = await this.getSingleBalance(currToken.short.address)
+            this.props.setnAllStocks(nAllStocks)
+            if (swap.to.symbol === token.id) this.handleInitTokenByName("to", token.id)
+            if (swap.from.symbol === token.id) this.handleInitTokenByName("from", token.id)
+        } else {
+            this.handleIinitBalances()
+        }
+    }
+
+
+    getBuySell = async () => {
+        try {
+            const resp = await fetch("https://test.deus.finance/oracle-files/buyOrSell.json")
+            const respj = await resp.json()
+            return respj
+        } catch (error) {
+            console.log(" get Market Amounts had some error", error);
+        }
+    }
+
+    getPrices = async () => {
+        try {
+            const resp = await fetch("https://test.deus.finance/oracle-files/price.json")
+            const respj = await resp.json()
+            this.setState({ priceStocks: respj })
+        } catch (error) {
+            console.log(" get Market Amounts had some error", error);
+        }
+    }
+
+    addConductedToToken = () => {
+        const { conducted, swap, conductedCount } = this.state
+        const { nAllStocks } = this.props
+        if (conductedCount === conducted.count) {
+            return
+        }
+        conducted.tokens.map(async (token) => {
+            console.log(token);
+            nAllStocks[token.id].conducted = true
+            nAllStocks[token.id].long = { address: token.long }
+            nAllStocks[token.id].long.balance = await this.getSingleBalance(token.long)
+            nAllStocks[token.id].short = { address: token.short }
+            nAllStocks[token.id].short.balance = await this.getSingleBalance(token.short)
+            if (swap.to.symbol === token.id) this.handleInitTokenByName("to", token.id)
+            if (swap.from.symbol === token.id) this.handleInitTokenByName("from", token.id)
+        })
+        this.setState({ conductedCount: conducted.count })
+        this.props.setnAllStocks(nAllStocks)
     }
 
     getClaimable = async () => {
@@ -103,7 +204,6 @@ class StockSwap extends Component {
             return 0
         }
     }
-
 
     handleSlippage = (amount) => {
         this.setState({ slippageAmount: amount })
@@ -127,9 +227,9 @@ class StockSwap extends Component {
         const { swap } = this.state
         let token = {}
         if (type === "from") {
-            token = _.find(this.props.deployed, { symbol: tokenName })
+            token = _.find(this.props.nAllStocks, { symbol: tokenName })
         } else {
-            token = _.find(this.props.allStocks, { symbol: tokenName })
+            token = _.find(this.props.nAllStocks, { symbol: tokenName })
         }
         swap[type] = { ...token, amount: amount }
         this.setState({ swap, toAmount: "", fromAmount: "" })
@@ -140,6 +240,12 @@ class StockSwap extends Component {
     handleChangeType = () => {
         const { swap } = this.state
         const { from, to } = swap
+        if (!to.conducted) {
+            toast.warning("After conducting the asset you can long/short it.", {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+            return
+        }
         from.amount = ""
         to.amount = ""
         swap.from = to
@@ -203,7 +309,9 @@ class StockSwap extends Component {
         }
 
         try {
-            const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : await web3.getAmountsIn(swap.from.name, swap.to.name, amount)
+            const data = searchBoxType === "from" ?
+                this.handleGetAmountsOut(swap.from, swap.to, amount) :
+                this.handleGetAmountsIn(swap.from, swap.to, amount)
             swap[vstype].amount = getStayledNumber(data, 9)
             this.setState({
                 swap,
@@ -216,54 +324,101 @@ class StockSwap extends Component {
         }
     }
 
+
+    handleGetAmountsOut = (from, to, amount) => {
+        const { priceStocks, isLong } = this.state
+        if (to.type === TokenType.Wrapped) {
+            const p = isLong ? priceStocks[to.id].Long : priceStocks[to.id].Short
+            const sum = (parseFloat(amount) / p.price)
+            return sum * (1 - p.fee)
+        } else {
+            const p = isLong ? priceStocks[from.id].Long : priceStocks[from.id].Short
+            const sum = (parseFloat(amount) * p.price)
+            return sum * (1 - p.fee)
+        }
+    }
+
+    handleGetAmountsIn = (from, to, amount) => {
+        const { priceStocks, isLong } = this.state
+        if (from.type === TokenType.Wrapped) {
+            console.log("come");
+            const p = isLong ? priceStocks[from.id].Long : priceStocks[from.id].Short
+            const sum = (parseFloat(amount) / p.price)
+            return sum * (1 + p.fee)
+        } else {
+            const p = isLong ? priceStocks[to.id].Long : priceStocks[to.id].Short
+            const sum = (parseFloat(amount) * p.price)
+            return sum * (1 + p.fee)
+        }
+    }
+
+
+
+
     handleSearchBox = (flag, type = "from") => {
 
         this.setState({ showSearchBox: flag, searchBoxType: type })
     }
 
     handleIinitBalances = async (foceUpdate) => {
-        const { tokens } = this.state
+        const { tokens, swap } = this.state
+        for (let i = 0; i < tokens.length; i++) {
+            tokens[i].balance = await this.getSingleBalance(tokens[i].address, foceUpdate)
+            console.log(tokens[0].balance);
+            if (swap.to.symbol === tokens[i].symbol)
+                this.handleInitToken("to", this.state.tokens[i])
+            if (swap.from.symbol === tokens[i].symbol)
+                this.handleInitToken("from", this.state.tokens[i])
+        }
 
-        tokens.map(async (t) => {
-            try {
-                this.getSingleBalance(t, foceUpdate)
-            } catch (error) {
-                console.log(error);
-            }
-        })
-
+        this.setState({ tokens })
     }
 
-    getSingleBalance = async (tokenName, force = false) => {
+    handleIinitBalancesB = async (foceUpdate) => {
+        const { tokens, swap } = this.state
+        for (let i = 0; i < tokens.length; i++) {
+            tokens[i].allowances = await this.getSingleBalanceB(tokens[i].address, foceUpdate)
+            if (swap.to.symbol === tokens[i].symbol)
+                this.handleInitToken("to", this.state.tokens[i])
+            if (swap.from.symbol === tokens[i].symbol)
+                this.handleInitToken("from", this.state.tokens[i])
+        }
 
-        const { swap, web3 } = this.state
+        this.setState({ tokens })
+    }
+
+    getSingleBalanceB = async (address, force = false) => {
+
+        const { web3 } = this.state
         if (!web3) return
-        const { allTokens, setAllTokens } = this.props
+        try {
+            return await web3.getAllowances(address)
+        } catch (error) {
+            console.log("getSingleBalanceB ", address, error);
+            return 0
+        }
+    }
 
-        if (force || !allTokens[tokenName].lastFetchBalance) {
+    getSingleBalance = async (address, force = false) => {
 
-            try {
-                const data = await web3.getTokenBalance(tokenName)
-                const balance = formatBalance(data)
-                allTokens[tokenName].balance = balance
-                allTokens[tokenName].lastFetchBalance = true
-                if (tokenName === swap.to.name || tokenName === swap.from.name) {
-                    this.handleInitToken("from", swap.from.name)
-                    this.handleInitToken("to", swap.to.name)
-                }
-            } catch (error) {
-                console.log("getSingleBalance ", tokenName, error);
-            }
-            setAllTokens(allTokens)
-        } else {
-            // console.log("fetched balance");
+        const { web3 } = this.state
+        if (!web3) return
+
+        // console.log(address);
+        try {
+            console.log(address);
+            const data = await web3.getTokenBalance(address)
+            const balance = formatBalance(data)
+            return balance
+        } catch (error) {
+            console.log("getSingleBalance ", address, error);
+            return 0
         }
     }
 
     handleInitAllowances = async (foceUpdate) => {
-        const { tokens } = this.state
 
-        tokens.map(async (t) => {
+        this.state.tokens.map(async (t) => {
             try {
                 this.getSingleAllowances(t, foceUpdate)
             } catch (error) {
@@ -273,50 +428,99 @@ class StockSwap extends Component {
     }
 
 
-    getSingleAllowances = async (tokenName, force = false) => {
+    getSingleAllowances = async (token, force = false) => {
         const { swap, web3 } = this.state
 
         if (!web3) return
 
-        const { allTokens, setAllTokens } = this.props
+        const { tokens } = this.state
 
-        if (tokenName === "deus" || force || !allTokens[tokenName].lastFechAllowance) {
+        if (force || !token.lastFechAllowance) {
 
             try {
-                const allowances = await web3.getAllowances(tokenName)
-                allTokens[tokenName].allowances = parseInt(allowances)
-                allTokens[tokenName].lastFechAllowance = true
-                if (tokenName === swap.from.name || tokenName === swap.to.name) {
-                    this.handleInitToken("from", swap.from.name, swap.from.amount)
-                    this.handleInitToken("to", swap.to.name, swap.to.amount)
+                const allowances = await web3.getAllowances(token.address)
+                token.allowances = allowances
+                token.lastFechAllowance = true
+                if (token.symbol === swap.from.symbol) {
+                    this.handleInitToken("from", token, swap.from.amount)
                 }
-                setAllTokens(allTokens)
+                // setAllTokens(allTokens)
 
             } catch (error) {
-                console.log(tokenName, error);
+                console.log(token, error);
             }
         }
 
     }
 
-    handleChangeToken = (token) => {
-        const { searchBoxType, swap } = this.state
-        const vstype = searchBoxType === "from" ? "to" : "from"
+    handleBuy = async (token, amount) => {
+        console.log("buy called react");
+        const { web3, isLong } = this.state
+        if (!web3) return
+        const tokenAddress = isLong ? token.long.address : token.short.address
+        const makerBuySell = await this.getBuySell()
+        console.log(makerBuySell[tokenAddress], amount);
+        try {
+            this.setState({ typeTransaction: { action: "buy", swap: this.state.swap, isLong: isLong } })
+            const data = await web3.buy(tokenAddress, amount, makerBuySell[tokenAddress], notify(this.methods))
+            //address, amount, blockNo, v, r, s, price, fee
+            console.log(data);
+        } catch (error) {
 
-        if (searchBoxType === "from") {
-            this.handleInitToken(searchBoxType, token)
-            if (token.symbol !== "DAI") {
-                this.handleInitToken(vstype, this.props.deployed[0])
-            } else {
-                this.handleInitToken(vstype, this.props.allStocks[0])
-            }
-        } else {
-            this.handleInitToken(searchBoxType, token)
-            if (token.symbol !== "DAI") {
-                this.handleInitToken(vstype, this.props.deployed[0])
-            }
         }
 
+    }
+
+    handleSell = async (token, amount) => {
+        const { web3, isLong } = this.state
+        if (!web3) return
+        const makerBuySell = await this.getBuySell()
+        const tokenAddress = isLong ? token.long.address : token.short.address
+        try {
+            this.setState({ typeTransaction: { action: "sell", swap: this.state.swap, isLong: isLong } })
+            await web3.sell(tokenAddress, amount, makerBuySell[tokenAddress], notify(this.methods))
+
+            // ans = ans.substr(0, ans.length - max) + "." + ans.substr(ans.length - max);
+            // if (ans[0] === ".") {
+            //     ans = "0" + ans;
+            // }
+            // console.log(data);
+            // // console.log(data.events);
+            // const amm = data.events["Sell"]["returnValues"].amount
+            // console.log(amm);
+            // amm = amm.substr(0, amm.length - 18) + "." + amm.substr(amm.length - 18);
+            // console.log(amm);
+        } catch (error) {
+
+        }
+    }
+
+    handleConduct = async (token) => {
+        const { web3 } = this.state
+
+        if (!web3) return
+
+        try {
+            const data = await web3.conduct(token, notify(this.methods))
+            console.log(data);
+            // token.allowances = allowances
+            // setAllTokens(allTokens)
+
+        } catch (error) {
+            console.log(token, error);
+        }
+    }
+
+    handleChangeToken = (token) => {
+        const { searchBoxType } = this.state
+        const vstype = searchBoxType === "from" ? "to" : "from"
+
+        this.handleInitToken(searchBoxType, token)
+
+        if (token.symbol !== "DAI") {
+            this.handleInitToken(vstype, this.state.tokens[0])
+        }
+        this.setState({ isLong: true })
         this.handleSearchBox(false)
     }
 
@@ -335,33 +539,31 @@ class StockSwap extends Component {
         const { swap, web3 } = this.state
         if (!web3) return
 
-        if (checkLimit(swap)) {
-            return
-        }
-
         const { from, to } = swap
-
         try {
             this.setState({ typeTransaction: "swap" })
+            if (from.type !== TokenType.Wrapped && !parseInt(swap.from.allowances) > 0) {
+                this.handleApprove(swap)
+            } else {
 
-            !(swap.from.allowances > 0) ?
-                this.handleApprove(swap) :
-                await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
+                if (from.type === TokenType.Wrapped) {
+                    await this.handleSell(from, from.amount)
+                } else {
+                    await this.handleBuy(to, to.amount)
+                }
+            }
         } catch (error) {
 
         }
     }
 
+
     handleApprove = async (swap) => {
         const { web3 } = this.state
 
-        if (checkLimit(swap)) {
-            return
-        }
-
         try {
-            this.setState({ typeTransaction: "approve" })
-            const data = await web3.approve(swap.from.name, swap.from.amount, notify(this.methods))
+            this.setState({ typeTransaction: { action: "approve" } })
+            const data = await web3.approve(swap.from.address, swap.from.amount, notify(this.methods))
             return data
         } catch (error) {
             console.log(error);
@@ -370,7 +572,7 @@ class StockSwap extends Component {
     }
 
     render() {
-        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
+        const { showSearchBox, isLong, swap, fromPerTo, toAmount, fromAmount, searchBoxType, web3, claimable_amount } = this.state
 
         const from_token = swap.from
         const to_token = swap.to
@@ -380,19 +582,14 @@ class StockSwap extends Component {
         return (<div className="deus-swap-wrap">
 
             {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-            <Title web3={web3} claimable_amount={claimable_amount} />
+            <Title web3={web3} isStock={true} claimable_amount={claimable_amount} />
 
-            {/* <Volume /> */}
             <SearchAssets
                 searchBoxType={searchBoxType}
-                isStock={true}
+                nAllStocks={this.props.nAllStocks}
                 showSearchBox={showSearchBox}
                 choosedToken={swap[searchBoxType].name}
                 handleSearchBox={this.handleSearchBox}
-                allTokens={this.props.allStocks}
-                fromTokens={this.props.deployed}
-                toTokens={this.props.allStocks}
-                tokens={tokens}
                 handleFilterToken={this.state.tokensMap}
                 handleChangeToken={this.handleChangeToken}
             />
@@ -404,6 +601,7 @@ class StockSwap extends Component {
 
                             <StockBox type="from" token={from_token}
                                 estimated=""
+                                isLong={isLong}
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
@@ -416,9 +614,17 @@ class StockSwap extends Component {
 
                             <StockBox type="to" token={to_token}
                                 estimated=" (estimated)"
+                                isLong={isLong}
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
+                            <div style={{ margin: "16px 0" }}></div>
+
+
+                            {to_token.conducted && to_token.type === TokenType.Wrapped && <WrappedTokenButton token={to_token} isWrap={true} isLong={isLong} handleLong={this.handleLong} />}
+                            {from_token.conducted && from_token.type === TokenType.Wrapped && <WrappedTokenButton token={from_token} isWrap={true} isLong={isLong} handleLong={this.handleLong} />}
+
+                            <div style={{ margin: "16px 0" }}></div>
 
                             <TokenMarket
                                 handleSwich={this.handleSwichPerPrice}
@@ -426,19 +632,36 @@ class StockSwap extends Component {
                                 toAmount={toAmount}
                                 fromAmount={fromAmount}
                                 fromPerTo={fromPerTo}
+                                isLong={isLong}
                                 perPrice={""}
                                 tvl={""}
-                                tradeVol={""} />
+                                tradeVol={""}
+                            />
 
-                            {to_token.isDeployed && to_token.type === TokenType.Wrapped && <WrappedTokenButton isWrap={true} isLong={null} />}
+                            <div style={{ margin: "16px 0" }}></div>
+                            <SwapStockButton handleConduct={this.handleConduct}
+                                handleSwap={this.handleSwap}
+                                from_token={from_token}
+                                to_token={to_token}
+                                approved={approved}
+                                web3={web3}
+                                isStock={true}
+                                isMobile={isMobile} />
+                            <div style={{ margin: "2px 0" }}></div>
 
-                            <SwapStockButton handleSwap={this.handleSwap} from_token={from_token} to_token={to_token} approved={approved} web3={web3} isMobile={isMobile} />
-
+                            <div style={{ margin: "4px 0" }}></div>
                         </div>
 
                         {/* <PriceBox impact={""} vaultsFee={""} /> */}
 
                         {/* {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />} */}
+
+                        <p className="ipo" style={{ fontSize: "15px" }}>
+                            conduct   -{`>`} long/short  -{`>`} synchronize <br /><br />
+                            Synchronize your crypto portfolio with your favorite Stock or ETF <br />
+                            <br />
+                            *Only if your desired asset was not “conducted” (deployed as an ERC-20 Token) yet.
+                        </p>
                     </div>
                 </div>
             </div>

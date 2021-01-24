@@ -13,19 +13,25 @@ export default [
 
             },
             {
-                id: "coinbase",
-                text: "COINBASE",
-                path: "/coinbase",
+                id: "synthetics",
+                text: "SYNTHETICS",
+                path: "/synthetics",
                 exact: true,
-
             },
-            {
-                id: "bakkt",
-                text: "BAKKT",
-                path: "/bakkt",
-                exact: true,
+            // {
+            //     id: "coinbase",
+            //     text: "COINBASE",
+            //     path: "/coinbase",
+            //     exact: true,
 
-            },
+            // },
+            // {
+            //     id: "bakkt",
+            //     text: "BAKKT",
+            //     path: "/bakkt",
+            //     exact: true,
+
+            // },
             {
                 id: "staking",
                 text: "STAKING",

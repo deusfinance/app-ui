@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-const WrappedTokenButton = ({ isLong, isWrap, longAmount, shortAmount }) => {
+const WrappedTokenButton = ({ isLong, isWrap, token, handleLong, longAmount, shortAmount }) => {
 
-    const [checked, setCheck] = useState(isLong !== null ? isLong ? 1 : 2 : null)
+    const changePosition = (bool) => {
+        if (token?.conducted) {
+            handleLong(bool)
+        }
+    }
 
     // useEffect(() => {
-
     // }, [isLong, longAmount, shortAmount])
 
 
 
     return (<>
         {isWrap && <div className="wrap-btns">
-            <div className="grad-wrap wrap-btn" onClick={() => setCheck(1)}>
-                <div className={`grad ${checked === 1 && "checked"}`}>
+            <div className="grad-wrap wrap-btn stock-swap-btn" onClick={() => changePosition(true)}>
+                <div className={`grad  ${isLong === true && "checked"}`}>
                     LONG
                     {/* <div className="amount-available">
                         [3892 available]
@@ -21,8 +24,8 @@ const WrappedTokenButton = ({ isLong, isWrap, longAmount, shortAmount }) => {
                 </div>
 
             </div>
-            <div className="grad-wrap wrap-btn" onClick={() => setCheck(2)}>
-                <div className={`grad ${checked === 2 && "checked"}`}>
+            <div className="grad-wrap wrap-btn stock-swap-btn" onClick={() => changePosition(false)}>
+                <div className={`grad ${isLong === false && "checked"}`}>
                     SHORT
                  {/* <div className="amount-available">
                         [3892 available]

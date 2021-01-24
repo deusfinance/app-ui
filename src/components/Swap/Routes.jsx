@@ -6,7 +6,7 @@ import pathsMain from './../../services/graphbk.json'
 
 const Routes = ({ from, to, chainId }) => {
     const path = chainId && chainId === 4 ? pathsRink[from.name][to.name] : pathsMain[from.name][to.name]
-    const AddressMap = AddressChainMap[chainId ? chainId : 1]
+    const AddressMap = AddressChainMap[chainId ? chainId : 4]
     const deusPath = {
         "deus": {
             "eth": true,
@@ -32,8 +32,8 @@ const Routes = ({ from, to, chainId }) => {
                 if (i === 0) {
                     return <div key={i} className="route-token">
                         <div className="token-wrap">
-                            <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}`} alt="eth" />
-                            <div className="symbol">{token.title}</div>
+                            <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token?.pic_name}`} alt="eth" />
+                            <div className="symbol">{token?.title}</div>
                         </div>
                     </div>
                 }
@@ -48,8 +48,8 @@ const Routes = ({ from, to, chainId }) => {
                     </div>}
 
                     <div className="token-wrap">
-                        <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name ? token.pic_name : token.logo}`} alt="eth" />
-                        <div className="symbol">{token.title}</div>
+                        <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token?.pic_name ? token?.pic_name : token?.logo}`} alt="eth" />
+                        <div className="symbol">{token?.title}</div>
                     </div>
                 </div>
             })}

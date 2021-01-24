@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "node_modules": true,
+    "src/setupTests.js": true,
+    "src/serviceWorker.js": true,
+    ".gitignore": true,
+    "LICENSE": true,
+    "README.md": true,
+    "package-lock.json": true,
+    "package.json": true
+  }
+}

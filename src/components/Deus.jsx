@@ -1,9 +1,9 @@
 import React, { Suspense, useState, useEffect, useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { AllTokens, AllStakings, TokenType } from '../config';
+import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
-import { deployedStocks, useAllStocks } from '../utils/stocks';
+// import { deployedStocks, newStocksTokens, useAllStocks } from '../utils/stocks';
 import _ from "lodash"
 
 const CoinBase = React.lazy(() => import('./Swap/CoinBase'));
@@ -19,26 +19,30 @@ const Deus = () => {
     const version = 1
     const [allTokens, setAllTokens] = useState(AllTokens)
     const [allStakings, setAllStakings] = useState(AllStakings)
-    const [allStocks, setStocks] = useState(useAllStocks())
-
+    // const [allStocks, setStocks] = useState(useAllStocks())
+    const [nAllStocks, setnAllStocks] = useState(null)
     const deployed = useMemo(() => {
         let arr = []
-        arr.push({ symbol: "DAI", name: "DAI", isDeployed: true, chainId: 4, address: "0xc00a00000000000000", logo: "/tokens/dai.png" })
-        const deploydStocks = allStocks.filter(stock => stock.isDeployed && stock.type === TokenType.Wrapped)
-        deploydStocks.map(stock => {
-            arr.push({ symbol: "LONG-" + stock.symbol, type: stock.type, chainId: stock.chainId, logo: stock.logo, isDeployed: true, ...stock.long })
-            arr.push({ symbol: "SHORT-" + stock.symbol, type: stock.type, chainId: stock.chainId, logo: stock.logo, isDeployed: true, ...stock.short })
-        })
+        arr.push({ symbol: "DAI", name: "DAI", title: "DAI", "conducted": true, chainId: 4, address: "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735", logo: "/tokens/dai.png" })
         return arr
     }, [version, chainId, account])
 
-    const index = _.findIndex(allStocks, { symbol: "AAPL" });
-    const item = allStocks[index]
-    console.log(item);
+    // const index = _.findIndex(allStocks, { symbol: "AAPL" });
+    // console.log(item);
     // const [deployed, setDeployed] = useState(deployedStocks())
 
     document.title = "DEUS app"
     useEffect(() => {
+        async function getStocks() {
+            try {
+                const resp = await fetch("https://test.deus.finance/oracle-files/registrar.json")
+                const respj = await resp.json()
+                setnAllStocks(respj)
+            } catch (error) {
+                console.log(" get Market Amounts had some error", error);
+            }
+        }
+        getStocks()
         setAllTokens(AllTokens)
         setAllStakings(AllStakings)
     }, [chainId, account])
@@ -58,7 +62,7 @@ const Deus = () => {
                 <Route exact path="/staking/liquidity" render={() => <StakingManager pools={["bpt_native"]} navId={1} {...props} />} />
                 <Route exact path="/staking/old" render={() => <StakingManager pools={["coinbase_usdc", "deus_dea", "dea_usdc", "deus_eth", "deus", "dea", "ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
                 <Route exact path="/swap" render={() => <MainSwap {...props} />} />
-                <Route exact path="/stock-swap" render={() => <StockSwap {...props} allStocks={allStocks} deployed={deployed} />} />
+                <Route exact path="/synchronizer" render={() => <StockSwap {...props} deployed={deployed} nAllStocks={nAllStocks} setnAllStocks={setnAllStocks} />} />
                 <Route exact path="/coinbase" render={() => <CoinBase {...props} />} />
                 <Route exact path="/Bakkt" render={() => <Bakkt {...props} />} />
                 <Route exact path="/vaults" render={() => <Vault {...props} />} />
@@ -66,7 +70,7 @@ const Deus = () => {
 
                 <Redirect from="/staking" to="/staking/single" />
                 <Redirect from="/coinbase-staking" to="/staking/old" />
-                <Redirect from="/" to="/swap" />
+                <Redirect from="/" to="/synchronizer" />
             </Switch>
         </Suspense>
     );

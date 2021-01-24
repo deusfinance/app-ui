@@ -3,8 +3,6 @@ import { useWeb3React } from '@web3-react/core';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
-// import { deployedStocks, newStocksTokens, useAllStocks } from '../utils/stocks';
-import _ from "lodash"
 
 const CoinBase = React.lazy(() => import('./Swap/CoinBase'));
 const Bakkt = React.lazy(() => import('./Swap/Bakkt'));
@@ -27,9 +25,6 @@ const Deus = () => {
         return arr
     }, [version, chainId, account])
 
-    // const index = _.findIndex(allStocks, { symbol: "AAPL" });
-    // console.log(item);
-    // const [deployed, setDeployed] = useState(deployedStocks())
 
     document.title = "DEUS app"
     useEffect(() => {

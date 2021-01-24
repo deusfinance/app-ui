@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default [
     {
         id: "app",
@@ -14,7 +16,7 @@ export default [
             },
             {
                 id: "synthetics",
-                text: "SYNTHETICS",
+                text: <span>SYNTHETICS <span style={{ fontSize: "12px" }}>(Rinkeby)</span> </span>,
                 path: "/synthetics",
                 exact: true,
             },

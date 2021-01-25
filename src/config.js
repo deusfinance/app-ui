@@ -1,6 +1,6 @@
 
 import assets from './constituents.json'
-
+import React from 'react';
 export const contractEndpoint = "https://etherscan.io/address"
 export const dappLink = "https://metamask.app.link/dapp/deus.finance/"
 export const navbarItems = [
@@ -14,6 +14,14 @@ export const navbarItems = [
                 id: "swap",
                 text: "SWAP",
                 path: "/swap",
+                exact: true,
+
+            },
+            {
+                id: "synchronizer",
+                text: <span style={{ fontSize: "18px" }} >SYNCHRONIZER <span style={{ fontSize: "13px" }}>(Rinkeby)</span></span>,
+                path: "https://test.deus.finance/synchronizer",
+                out: true,
                 exact: true,
 
             },

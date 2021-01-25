@@ -32,8 +32,8 @@ const Routes = ({ from, to, chainId }) => {
                 if (i === 0) {
                     return <div key={i} className="route-token">
                         <div className="token-wrap">
-                            <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}`} alt="eth" />
-                            <div className="symbol">{token.title}</div>
+                            <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token?.pic_name}`} alt="eth" />
+                            <div className="symbol">{token?.title}</div>
                         </div>
                     </div>
                 }
@@ -48,8 +48,8 @@ const Routes = ({ from, to, chainId }) => {
                     </div>}
 
                     <div className="token-wrap">
-                        <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token.pic_name}`} alt="eth" />
-                        <div className="symbol">{token.title}</div>
+                        <img className="icon" src={process.env.PUBLIC_URL + `/tokens/${token ? token?.pic_name : "deus.svg"}`} alt="eth" />
+                        <div className="symbol">{token?.title}</div>
                     </div>
                 </div>
             })}

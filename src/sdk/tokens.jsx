@@ -1,5 +1,4 @@
-import { ChainId, TEN } from "./constant"
-import JSBI from 'jsbi'
+import { formatUnits } from '@ethersproject/units';
 
 export class Token {
     constructor(chainId, address, decimals, symbol, name, logo) {
@@ -21,13 +20,9 @@ export class Token {
 
 export class TokenAmount extends Token {
     constructor(token, amount) {
-        this.chainId = token.chainId
-        this.address = token.address
-        this.decimals = token.decimals
-        this.symbol = token.symbol
-        this.name = token.name
-        this.logo = token.logo
-        this.amount = String(JSBI.multiply(JSBI.BigInt(amount), JSBI.exponentiate(TEN, JSBI.BigInt(currency.decimals))))
+        super(token.chainId, token.address, token.decimals, token.symbol, token.name, token.logo)
+        this.amount = formatUnits(amount, token.decimals)
+        // this.amount = String(JSBI.multiply(JSBI.BigInt(amount), JSBI.exponentiate(TEN, JSBI.BigInt(token.decimals))))
     }
 
     equals(withToken) {
@@ -40,19 +35,19 @@ export class TokenAmount extends Token {
 
 
 
-export const WETH = {
-    [ChainId.MAINNET]: new Token(
-        ChainId.MAINNET,
-        '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-        18,
-        'WETH',
-        'Wrapped Ether'
-    ),
-    [ChainId.RINKEBY]: new Token(
-        ChainId.RINKEBY,
-        '0xc778417E063141139Fce010982780140Aa0cD5Ab',
-        18,
-        'WETH',
-        'Wrapped Ether'
-    ),
-}
+// export const WETH = {
+//     [ChainId.MAINNET]: new Token(
+//         ChainId.MAINNET,
+//         '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+//         18,
+//         'WETH',
+//         'Wrapped Ether'
+//     ),
+//     [ChainId.RINKEBY]: new Token(
+//         ChainId.RINKEBY,
+//         '0xc778417E063141139Fce010982780140Aa0cD5Ab',
+//         18,
+//         'WETH',
+//         'Wrapped Ether'
+//     ),
+// }

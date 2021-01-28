@@ -28,7 +28,7 @@ const SearchAssets = (props) => {
 
     const fromTokens = useMemo(() => {
         const tokens = nAllStocks && arrToken.filter(t => t.conducted)
-        console.log(tokens);
+        // console.log(tokens);
         return tokens
     }, [nAllStocks])
 

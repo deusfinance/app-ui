@@ -1,4 +1,8 @@
 // function getBlockNumber(library: Web3Provider): () => Promise<number> {
+import { useKeepSWRDataLiveAsBlocksArrive } from '../hooks/useful';
+import { tokenABI } from '../utils/abis';
+import { Contract } from '@ethersproject/contracts';
+import { formatEther, formatUnits } from '@ethersproject/units'
 //   return async (): Promise<number> => {
 //     return library.getBlockNumber()
 //   }
@@ -87,7 +91,7 @@ export const TokenBalance = ({ symbol, address, decimals }) => {
     useEffect(() => {
         // listen for changes on an Ethereum address
         console.log(`listening for Transfer...`)
-        const contract = new Contract(address, ERC20ABI, library.getSigner())
+        const contract = new Contract(address, tokenABI, library.getSigner())
         const fromMe = contract.filters.Transfer(account, null)
         library.on(fromMe, (from, to, amount, event) => {
             console.log('Transfer|sent', { from, to, amount, event })
@@ -116,16 +120,44 @@ export const TokenBalance = ({ symbol, address, decimals }) => {
     )
 }
 
-const fetcher = (library, abi) => (...args) => {
-    const [arg1, arg2, ...params] = args
-    // it's a contract
-    if (isAddress(arg1)) {
-        const address = arg1
-        const method = arg2
-        const contract = new Contract(address, abi, library.getSigner())
-        return contract[method](...params)
-    }
-    // it's a eth call
-    const method = arg1
-    return library[method](arg2, ...params)
+// const fetcher = (library, abi) => (...args) => {
+//     const [arg1, arg2, ...params] = args
+//     // it's a contract
+//     if (isAddress(arg1)) {
+//         const address = arg1
+//         const method = arg2
+//         const contract = new Contract(address, abi, library.getSigner())
+//         return contract[method](...params)
+//     }
+//     // it's a eth call
+//     const method = arg1
+//     return library[method](arg2, ...params)
+// }
+
+
+
+
+async function getETHBalance(library, chainId, address) {
+    const ETH = new Token(chainId, ADDRESS_ZERO, 18)
+    return library
+        .getBalance(address)
+        .then((balance) => new TokenAmount(ETH, balance.toString()))
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useETHBalance(address, suspense = false) {
+    const { chainId, library } = useWeb3React()
+    const shouldFetch = typeof chainId === 'number' && typeof address === 'string' && !!library
+
+    const result = useSWR(shouldFetch ? [chainId, address, DataType.ETHBalance] : null, getETHBalance(library), {
+        suspense,
+    })
+    useKeepSWRDataLiveAsBlocksArrive(result.mutate)
+    return result
+}
+
+
+function getTokenBalance(contract, token) {
+    return async (address) =>
+        contract.balanceOf(address).then((balance) => new TokenAmount(token, balance.toString()))
 }

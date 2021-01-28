@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
+import Test from './Test/Test';
 
 const CoinBase = React.lazy(() => import('./Swap/CoinBase'));
 const Bakkt = React.lazy(() => import('./Swap/Bakkt'));
@@ -62,6 +63,8 @@ const Deus = () => {
                 <Route exact path="/Bakkt" render={() => <Bakkt {...props} />} />
                 <Route exact path="/vaults" render={() => <Vault {...props} />} />
                 <Route exact path="/dashboard" render={() => <Dashboard {...props} />} />
+
+                <Route exact path="/test" render={() => <Test />} />
 
                 <Redirect from="/staking" to="/staking/single" />
                 <Redirect from="/coinbase-staking" to="/staking/old" />

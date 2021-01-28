@@ -1,11 +1,11 @@
 import JSBI from 'jsbi'
 
 export const CHAIN_ID = {
-    MAINNET = 1,
-    ROPSTEN = 3,
-    RINKEBY = 4,
-    GÖRLI = 5,
-    KOVAN = 42
+    MAINNET: 1,
+    ROPSTEN: 3,
+    RINKEBY: 4,
+    GÖRLI: 5,
+    KOVAN: 42
 }
 
 
@@ -23,11 +23,11 @@ export const EtherscanType = {
     Transaction: 3,
 }
 
-export const EtherscanTypeData = {
-    [EtherscanType.Account]: [number, string],
-    [EtherscanType.TokenBalance]: [Token, string],
-    [EtherscanType.Transaction]: [number, string]
-}
+// export const EtherscanTypeData = {
+//     [EtherscanType.Account]: [number, string],
+//     [EtherscanType.TokenBalance]: [Token, string],
+//     [EtherscanType.Transaction]: [number, string]
+// }
 
 export function formatEtherscanLink(type, chainId, address) {
     switch (type) {
@@ -35,7 +35,7 @@ export function formatEtherscanLink(type, chainId, address) {
             return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/address/${address}`
         }
         case EtherscanType.Transaction: {
-            return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/tx/${hash}`
+            return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/tx/${address}`
         }
     }
 }
@@ -54,6 +54,6 @@ export const TEN = JSBI.BigInt(10)
 
 
 export const SolidityType = {
-    uint8 = 'uint8',
-    uint256 = 'uint256'
+    uint8: 'uint8',
+    uint256: 'uint256'
 }

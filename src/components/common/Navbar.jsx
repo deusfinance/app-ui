@@ -3,7 +3,8 @@ import { useWeb3React } from '@web3-react/core';
 import { injected } from '../../connectors';
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
-import { dappLink, navbarItems } from '../../config';
+import { dappLink } from '../../config';
+import navbarItems from "../../utils/navs"
 import SubNavbar from './SubNavbar';
 import { formatAddress, getStayledNumber, notify } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
@@ -95,43 +96,76 @@ const Navbar = () => {
 
     const connectCalass = account ? "connected" : "connect"
     //DEUS staking
-    return (<><nav id="nav">
-        {<div className="left-nav-wrap">
-            <ul className="left-nav">
-                <li><span className="deus">DEUS <span className="finance">finance</span></span></li>
-                {isMetamask && <li className="grad-wrap connect-wrap" onClick={handleConnect}>
-                    <div className={`grad ${connectCalass}`}>{formatAddress(account)}</div>
-                </li>}
 
-                {!isMetamask && <li className="grad-wrap connect-wrap install">
-                    <a href={dappLink} className={`grad`}>Install Metamask</a>
-                </li>}
-                {claimButton}
-                {chainId === 4 && <li className="rinkeby">Rinkeby <span role="img" aria-label="glass" >😎</span> </li>}
-            </ul>
-        </div>}
-        <div className="menu-mobile-icon" onClick={toggleNav}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+    return (<>
+        <nav id="nav">
+            <div className="left-nav-wrap">
+                <ul className="left-nav">
+                    <li>
+                        <a className="logo-wrap" href="https://deus.finance/">
+                            <img src="img/logo.svg" alt="logo" />
+                            <div className="finance">finance</div>
+                        </a>
+                    </li>
+                    {isMetamask && <li className="grad-wrap connect-wrap" onClick={handleConnect}>
+                        <div className={`grad ${connectCalass}`} style={{ cursor: connectCalass === "connect" ? "pointer" : "default" }}>{formatAddress(account)}</div>
+                    </li>}
+                    {!isMetamask && <li className="grad-wrap connect-wrap ">
+                        <a href={dappLink} className={`grad`} style={{ color: "#ffffff" }}>Install Metamask</a>
+                    </li>}
+                    {claimButton}
+                    {chainId === 4 && <li className="rinkeby">Rinkeby <span role="img" aria-label="glass" >😎</span> </li>}
+                </ul>
+            </div>
+
+            <div className="menu-mobile-icon" onClick={toggleNav}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-            </svg>
-        </div>
-        <div className="right-nav">
-            <ul id="right-ul">
-                {
-                    Navs.map(nav => {
-                        const classes = nav.linkDisabled ? "disabled-link" : ""
-                        if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}><div className="nav-title">{nav.text}</div></a></li>
+            </svg></div>
+            <div className="right-nav">
+                <ul id="right-ul">
 
-                        return <li key={nav.id} className="nav-item">
-                            <NavLink className={classes} exact={nav.exact} to={nav.path}>
-                                <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} alt="arrow" />}</div>
-                            </NavLink>
-                            {nav.children && <SubNavbar key={nav.id} items={nav.children} />}</li>
-                    })
-                }
-            </ul>
-        </div>
-    </nav >
+
+                    {
+                        Navs.map(nav => {
+                            const classes = nav.linkDisabled ? "disabled-link" : ""
+                            if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}><div className="nav-title">{nav.text}</div></a></li>
+
+                            return <li key={nav.id} className="nav-item">
+                                <NavLink className={classes} exact={nav.exact} to={nav.path}>
+                                    <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} alt="arrow" />}</div>
+                                </NavLink>
+                                {nav.children && <SubNavbar key={nav.id} items={nav.children} />}</li>
+                        })
+                    }
+
+
+                    {/* <li className="nav-item">
+                        <a className href="https://app.deus.finance/learn">
+                            <div className="nav-title"> LEARN <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
+                            </div>
+                        </a>
+                        <ul className="sub-nav">
+                            <li className="sub-nav-item"><a href="https://wiki.deus.finance/"> DEUS wiki </a></li>
+                            <li className="sub-nav-item"><a href="https://deus.finance/litepaper.pdf"> LITEPAPER </a></li>
+                        </ul>
+                    </li>
+                    <li className="nav-item"><a className href="https://app.deus.finance/">
+                        <div className="nav-title"> APP <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
+                        </div>
+                    </a>
+                        <ul className="sub-nav">
+                            <li className="sub-nav-item"><a href="https://app.deus.finance/swap"> SWAP </a></li>
+                            <li className="sub-nav-item"><a href="https://app.deus.finance/coinbase"> COINBASE </a></li>
+                            <li className="sub-nav-item"><a href="https://app.deus.finance/bakkt"> BAKKT </a></li>
+                            <li className="sub-nav-item"><a href="https://app.deus.finance/staking"> STAKING </a></li>
+                            <li className="sub-nav-item"><a href="https://app.deus.finance/vaults"> VAULTS </a></li>
+                        </ul>
+                    </li> */}
+
+                </ul>
+            </div>
+        </nav>
+
         <div className={menuMobileClass} id="mobile-menu">
             <ul id="mobile-menu-ul">
 
@@ -149,8 +183,10 @@ const Navbar = () => {
                     </svg>
                 </li>
             </ul>
+
         </div>
-    </>);
+    </>)
+
 }
 
 

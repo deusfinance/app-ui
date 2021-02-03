@@ -1,7 +1,7 @@
 import React from 'react';
 import { notify, formatBalance } from '../../utils/utils';
 
-const Title = ({ claimable_amount, web3, isCoinbase, isBakkt }) => {
+const Title = ({ claimable_amount, web3, isStock, isCoinbase, isBakkt }) => {
     const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && formatBalance(claimable_amount) !== 0
     const isMobile = window.innerWidth < 670
 
@@ -22,12 +22,21 @@ const Title = ({ claimable_amount, web3, isCoinbase, isBakkt }) => {
         </div>
         }
         <div className="swap-title">
-            <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
-            <div className="swap-wrap">
-                <div className="swap">
-                    Swap
+            {!isStock && <> <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
+                <div className="swap-wrap">
+                    <div className="swap">
+                        Swap
+                    </div>
                 </div>
-            </div>
+            </>}
+
+            {isStock && <> <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
+                <div className="sync-wrap" >
+                    <div className="sync" style={{ textTransform: "uppercase" }}>
+                        synchronizer
+                    </div>
+                </div>
+            </>}
 
         </div>
         {isCoinbase && <div className="coinbase-wrap">

@@ -63,7 +63,6 @@ class Bakkt extends Component {
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
         const { chainId, account } = this.props
-        const { swap } = this.state
         this.handleInitToken("from", "deus")
         this.handleInitToken("to", "bakkt")
 

@@ -20,6 +20,35 @@ body {
     // background: linear-gradient(125deg, #000000 0%, #242424 100%);
 }
 
+.loader-wrap {
+    top: 0;
+    position: fixed;
+    width: 100vw;
+    z-index: 5;
+    height: 100vh;
+    // filter: blur(5px);
+    // background: #00000088;
+    .loader {
+        margin: auto;
+        position: fixed;
+        border-radius: 50%;
+        top: calc(50% - 80px);
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        animation: myOrbit 2s linear infinite;
+    }
+}
+
+@keyframes myOrbit {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .blured {
     top: 0;
     position: fixed;

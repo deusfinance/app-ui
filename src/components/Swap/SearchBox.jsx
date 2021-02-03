@@ -39,9 +39,7 @@ class SearchBox extends Component {
                         </div>
                     </div>
                 </div>
-                {/* <div className="msg">
-                    <p>There will be 500+ Stocks added until 31.12.2020</p>
-                </div> */}
+
             </div>}
         </>);
     }

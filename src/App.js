@@ -5,6 +5,7 @@ import { injected } from './connectors';
 import { useEagerConnect } from './hooks';
 import Navbar from './components/common/Navbar';
 import Deus from './components/Deus';
+import Sync from './pages/Sync';
 
 import { LoopCircleLoading } from 'react-loadingg';
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,6 +39,7 @@ function App() {
     <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
       <Switch>
         <Route exact path="/not-found" component={NotFound} />
+        <Route exact path="/synchronizer" component={Sync} />
         <Redirect exact from="/" to="/swap" />
         <Route path="/" component={Deus} />
         <Redirect to="not-found" />

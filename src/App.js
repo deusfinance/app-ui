@@ -39,7 +39,7 @@ function App() {
     <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
       <Switch>
         <Route exact path="/not-found" component={NotFound} />
-        <Route exact path="/sync" component={Sync} />
+        <Route exact path="/synchronizer" component={Sync} />
         <Redirect exact from="/" to="/swap" />
         <Route path="/" component={Deus} />
         <Redirect to="not-found" />

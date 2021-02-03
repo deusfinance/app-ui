@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import paths from './graph.json'
+import paths from './graphbk.json'
 import abis from './abis'
 import addrs from './addresses.json'
 

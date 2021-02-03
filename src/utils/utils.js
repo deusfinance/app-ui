@@ -1,4 +1,4 @@
-import { InfuraProvider, Web3Provider } from '@ethersproject/providers';
+import { Web3Provider } from '@ethersproject/providers';
 import { toast } from 'react-toastify';
 
 export const isDesktop = () => {
@@ -94,8 +94,8 @@ export function dollarPrice(price, fixed = 0) {
 }
 
 export function getLibrary(provider) {
-    const currProvider = provider ? provider : InfuraProvider.getWebSocketProvider("homestead", "cf6ea736e00b4ee4bc43dfdb68f51093")
-    const library = new Web3Provider(currProvider, 'any')
+    // const currProvider = provider ? provider : InfuraProvider.getWebSocketProvider("homestead", "cf6ea736e00b4ee4bc43dfdb68f51093")
+    const library = new Web3Provider(provider, 'any')
     library.pollingInterval = 15000
     return library
 }

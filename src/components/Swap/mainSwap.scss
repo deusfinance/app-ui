@@ -3,6 +3,7 @@
 @import "./styles/routes.scss";
 @import "./styles/riskPopup.scss";
 @import "./styles/volume.scss";
+@import "./styles/personalCap.scss";
 
 .sync-wrap {
     font-family: Monument Grotesk;
@@ -11,9 +12,34 @@
     margin-left: -10px;
 }
 
+.lGDtb {
+    position: relative !important;
+    // width: 25px;
+    // height: 100px;
+    transform: scale(0.8);
+}
+.conducted-desc {
+    font-family: Monument Grotesk;
+    font-weight: 300;
+    margin-top: 30px;
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.conducted-text {
+    opacity: 0.75;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12.5px;
+    font-family: Monument Grotesk;
+    font-weight: 300;
+    padding: 10px;
+}
+
 .search-box-wrap {
     position: absolute;
-    top: 50%;
+    // top: 50%;
     left: 0;
     right: 0;
     transform: translateY(-50%);
@@ -106,24 +132,26 @@
                     align-items: center;
                     .wrap-stock-conduct {
                         background-size: contain;
-                        background-image: url("/img/conduct.svg");
+                        background-image: url("/img/conduct-new.svg");
                         background-position: center;
                         background-repeat: no-repeat;
                         padding: 5px;
                         margin-right: 15px;
-                        box-shadow: 0px 0px 3px 3px #7afb6b;
+                        // background-color: #ffffff;
+                        // background: linear-gradient(90deg, #ea2c62 -0.01%, #0779e4 100.03%);
+                        box-shadow: 0px 0px 3px 3px #0e77e1;
                         border-radius: 50%;
                     }
                     .wrap-stock-none-conduct {
                         background-size: contain;
-                        background-image: url("/img/n-conduct.svg");
+                        // background-image: url("/img/n-conduct-new.svg");
                         background-position: center;
                         background-repeat: no-repeat;
-                        padding: 5px;
+                        background-color: #ffffff;
+                        // padding: 5px;
                         margin-right: 15px;
-                        padding: 5px;
-                        margin-right: 15px;
-                        box-shadow: 0px 0px 3px 3px #ecf0eb;
+                        border: 4px #999999 solid;
+                        // box-shadow: 0px 0px 3px 3px #ecf0eb;
                         border-radius: 50%;
                     }
                     .futures {
@@ -137,9 +165,12 @@
                             display: block;
                             margin-right: 15px;
                             margin-left: 4px;
-                            width: 25px;
-                            height: 25px;
+                            // width: 25px;
+                            // height: 25px;
                             border-radius: 50%;
+                            width: 35px;
+                            height: 35px;
+                            // padding: 5px;
                         }
                         p {
                             height: 25px;
@@ -173,7 +204,7 @@
             .token-items::-webkit-scrollbar-thumb {
                 border-radius: 10px;
                 box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-                background-color: #cdd477;
+                background-color: #c4c4c4;
             }
         }
     }
@@ -202,7 +233,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-bottom: 35px;
+        // padding-bottom: 35px;
+        padding-bottom: 10px;
         img {
             margin-right: 18px;
             height: 37px;
@@ -256,7 +288,7 @@
                 margin: auto;
                 margin-top: 30px;
                 width: 500px;
-                filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.25));
+                // filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.25));
                 .swap-box {
                     // width: 100%;
                     // height: 360px;
@@ -264,8 +296,7 @@
                     border: 1px solid #000000;
                     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
                     border-radius: 10px;
-                    padding: 10px;
-                    padding-top: 16px;
+                    padding: 16px 14px;
                     .arrow {
                         padding: 12px 0px 10px 0px;
                         display: block;
@@ -277,7 +308,7 @@
                     }
 
                     .token-box-wrap {
-                        height: 80px;
+                        height: 90px;
                         background: #1c1c1c;
                         border: 2px solid #000000;
                         border-radius: 10px;
@@ -393,20 +424,25 @@
                             }
                             .switch-wrap {
                                 margin-left: 5px;
-                                width: 20px;
-                                height: 20px;
+                                // width: 20px;
+                                // height: 20px;
                                 background-color: #2c2f36;
                                 color: rgb(195, 197, 203);
-                                display: inline-block;
+                                // display: inline-block;
+                                width: 17px;
+                                height: 17px;
+                                display: flex;
                                 border-radius: 50%;
                                 cursor: pointer;
                                 .switch {
-                                    vertical-align: middle;
+                                    // vertical-align: middle;
                                     margin: auto;
                                     // padding: 2px;
-                                    margin-top: 5px;
+                                    // margin-top: 5px;
                                     width: 11px;
-                                    height: 11px;
+                                    // height: 11px;
+                                    // width: 11px;
+                                    height: 9px;
                                     display: flex;
                                     cursor: pointer;
                                 }
@@ -562,6 +598,7 @@
 @media screen and (max-width: 1260px) {
     .search-box-wrap {
         width: 60vw;
+        top: 350px;
     }
 
     .deus-swap-wrap {
@@ -576,6 +613,10 @@
 @media screen and (max-width: 960px) {
     .search-box-wrap {
         width: 70vw;
+        top: 300px;
+        left: 0;
+        right: 0;
+        margin: auto;
     }
 
     .deus-swap-wrap {
@@ -598,6 +639,16 @@
 @media screen and (max-width: 670px) {
     .search-box-wrap {
         width: 95vw;
+        top: 200px;
+    }
+
+    .deus-swap-wrap .swap-container-wrap .swap-container .swap-box-wrap .swap-box .swap-btn-wrap {
+        height: 50px;
+        .swap-btn {
+            font-size: 18px;
+
+            border-radius: 6px;
+        }
     }
 
     .search-box-wrap .search-box .token-items-wrap .token-items .token-item div {

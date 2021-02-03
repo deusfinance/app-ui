@@ -21,6 +21,8 @@ const StockBox = (props) => {
         return token.type === TokenType.Wrapped ? isLong ? token.long?.balance : token.short?.balance : token.balance
     }
 
+
+
     return (<div className="token-box-wrap">
         <div className="token-box">
             <div className="top">
@@ -39,7 +41,7 @@ const StockBox = (props) => {
                     autoComplete="off" autoCorrect="off" placeholder="0.0" spellCheck="false" />
                 {type === "from" && <div className="max-btn" onClick={() => handleTokenInputChange(type, getBalance())}>MAX</div>}
                 <div className={`token-info ${isIPO ? "token-ipo" : ""}`} onClick={() => handleSearchBox(true, type)} >
-                    <img className="token-icon" src={process.env.PUBLIC_URL + `${token?.logo}`} alt={token?.symbol} />
+                    <img className="token-icon" src={process.env.PUBLIC_URL + `${token?.logo}`} alt={token ? token?.symbol : "logo"} />
                     <span className="token-name" >{token.type === TokenType.Wrapped ? token.conducted ? isLong ? token?.long_symbol : token?.short_symbol : token.symbol : token?.symbol}</span>
                     <img className="select-icon" src={process.env.PUBLIC_URL + "/img/select.svg"} alt="select" />
                 </div>

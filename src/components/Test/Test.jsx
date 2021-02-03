@@ -52,6 +52,7 @@ const ABIs = [
 //         </>
 //     )
 // }
+
 const deaToken = new Token(1, "0x80ab141f324c3d6f2b18b030f1c4e95d4d658778", 18, "DEA", "DEA Finance", "dea.svg");
 const deusToken = new Token(1, "0x3b62f3820e0b035cc4ad602dece6d796bc325325", 18, "DEUS", "DEUS Finance", "dea.svg");
 const sdeusToken = new Token(4, "0xf025db474fcf9ba30844e91a54bc4747d4fc7842", 18, "sDEUS", "sDEUS Finance", "dea.svg");

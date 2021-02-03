@@ -26,7 +26,7 @@ const Title = ({ claimable_amount, web3, isStock, isCoinbase, isBakkt }) => {
                 <div className="swap-wrap">
                     <div className="swap">
                         Swap
-                </div>
+                    </div>
                 </div>
             </>}
 
@@ -34,7 +34,7 @@ const Title = ({ claimable_amount, web3, isStock, isCoinbase, isBakkt }) => {
                 <div className="sync-wrap" >
                     <div className="sync" style={{ textTransform: "uppercase" }}>
                         synchronizer
-                </div>
+                    </div>
                 </div>
             </>}
 

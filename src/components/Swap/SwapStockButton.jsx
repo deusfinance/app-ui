@@ -1,57 +1,119 @@
 import MetaMaskOnboarding from '@metamask/onboarding';
 import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import { dappLink, TokenType } from '../../config';
+import { WaveLoading } from 'react-loadingg';
 import { injected } from '../../connectors';
-import { dappLink } from '../../config';
 
-const SwapStockButton = ({ isStock, from_token, to_token, handleConduct, handleSwap, isMobile }) => {
+const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleConduct, handleSwap, isLong, isMobile, prices }) => {
     const web3React = useWeb3React()
     const { account, activate } = web3React
     const { conducted } = to_token
-    const handleConnect = async () => {
-        try {
-            const data = await activate(injected)
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
     const [isMetamask, setIsMetamask] = useState(null)
 
     useEffect(() => {
         if (MetaMaskOnboarding.isMetaMaskInstalled()) {
             setIsMetamask(true)
         } else {
-            // console.log("MetaMask didnt  Installed");
             setIsMetamask(false)
         }
     }, [account]);
 
-    const amount = typeof (from_token.amount) === "string" ? parseFloat(from_token.amount) : from_token.amount
-    return (<>
-        {
-            to_token && !isMetamask && <a href={dappLink} target="_blank" rel="noopener noreferrer" className="swap-btn-wrap grad-wrap dapp-link">
+
+    const getBalance = () => {
+        return from_token.type !== TokenType.Main ? isLong ? from_token.long?.balance : from_token.short?.balance : from_token.balance
+    }
+
+    let isClosed = false
+    if (prices && from_token.address !== "0x0" && to_token.address !== "0x0") {
+        if (from_token.type !== TokenType.Main) {
+            isClosed = prices[from_token.symbol]["Long"]?.is_close
+        } else if (to_token.type !== TokenType.Main && to_token.symbol !== "") {
+            isClosed = prices[to_token.symbol]["Long"]?.is_close
+        }
+    }
+
+    const handleConnect = async () => {
+        try {
+            await activate(injected)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    let amount = typeof (from_token.amount) === "string" ? parseFloat(from_token.amount) : from_token.amount
+
+    if (loading) {
+        return (<>
+            <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={handleSwap}>
+                <div className="swap-btn grad" style={{ background: "none" }} >
+                    <WaveLoading color="#ffffff"></WaveLoading>
+                </div>
+            </div>
+        </>)
+    }
+
+    if (!isMetamask) {
+        return (<>
+            <a href={dappLink} target="_blank" rel="noopener noreferrer" className="swap-btn-wrap grad-wrap dapp-link">
                 <div className="swap-btn grad">{"Install Metamask"}</div>
             </a>
+        </>)
+    }
+
+    if (!account) {
+        return (<>
+            <a href={"#"} className="swap-btn-wrap grad-wrap dapp-link" onClick={handleConnect}>
+                <div className="swap-btn grad">{"CONNECT WALLET"}</div>
+            </a>
+        </>)
+    }
+
+    if (!conducted && to_token.type !== TokenType.Main) {
+        // return (<div className="grad-wrap swap-btn-wrap stock-swap-btn " onClick={() => handleConduct(to_token)}>
+        //     <div className="swap-btn grad" style={{ background: "none" }}>
+        //         SELECT AN ASSET
+        //         </div>
+        // </div>
+        // )
+
+        return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
+            <div className="swap-btn grad Insufficient" style={{ color: "#8d8d8d", background: "transparent" }}>
+                SELECT AN ASSET
+            </div>
+        </div>)
+    }
+
+    if (to_token.conducted || from_token.conducted || Number(remindCap) <= 0 || isClosed) {
+
+        let errTxt = null
+
+        if (isNaN(amount) || Number(amount) === 0) {
+            errTxt = "ENTER AN AMOUNT"
+        } else if (getBalance() < amount) {
+            errTxt = "INSUFFICIENT BALANCE"
+        } else if (Number(remindCap) <= 0 && from_token.symbol === "DAI") {
+            errTxt = "YOU NEED TIME TOKENS"
+        } else if (Number(remindCap) < Number(from_token.amount) && from_token.symbol === "DAI") {
+            errTxt = "YOU NEED MORE TIME TOKENS"
+        } else if (isClosed) {
+            errTxt = "MARKET IS CLOSED"
         }
-        {!conducted && <div className="grad-wrap swap-btn-wrap stock-swap-btn " onClick={() => handleConduct(to_token)}>
-            <div className="swap-btn grad">
-                CONDUCT
-            </div>
-
-        </div>}
-        {conducted && (!isMobile || (isMobile && account)) && <>{(from_token.balance < amount) ? <div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn ">
-            <div className="swap-btn grad Insufficient">
-                Insufficient Balance
-            </div>
-        </div> :
-            <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={handleSwap}>
-                <div className="swap-btn grad">
-                    {from_token.allowances !== "0" ? isStock ? "SYNC" : "SWAP" : "APPROVE"}
+        if (errTxt)
+            return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }}>
+                <div className="swap-btn grad Insufficient" style={{ color: "#8d8d8d", background: "transparent" }}>
+                    {errTxt}
                 </div>
-            </div>}
-        </>}
+            </div>)
 
+    }
+
+    return (<>
+        <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={handleSwap}>
+            <div className="swap-btn grad" style={{ background: "none" }} >
+                {from_token.allowances !== "0" ? `SYNC ${from_token.type === TokenType.Main ? "(BUY)" : "(SELL)"} ` : "APPROVE"}
+            </div>
+        </div>
     </>);
 }
 

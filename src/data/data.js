@@ -3,6 +3,8 @@ import { useKeepSWRDataLiveAsBlocksArrive } from '../hooks/useful';
 import { tokenABI } from '../utils/abis';
 import { Contract } from '@ethersproject/contracts';
 import { formatEther, formatUnits } from '@ethersproject/units'
+import { useContract } from '../hooks/useContract';
+
 //   return async (): Promise<number> => {
 //     return library.getBlockNumber()
 //   }
@@ -26,7 +28,8 @@ export function useTokenBalance(
     suspense = false
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) {
-    const contract = useContract(token?.address, IERC20.abi)
+
+    const contract = useContract(token?.address, tokenABI)
 
     const result = useSWR(
         typeof address === 'string' && token && contract

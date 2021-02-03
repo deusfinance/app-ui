@@ -5,14 +5,14 @@ import { TokenType } from '../../config';
 
 const SearchAssets = (props) => {
     const [typingTimeout, setTypeout] = useState(0)
-    const [currTokens, setCurrToken] = useState(null)
+    const [currTokens, setCurrToken] = useState([])
     const [sortedList, setSortedList] = useState([])
     const { nAllStocks } = props
 
     const [query, setQuery] = useState("")
     const height = useState("500px")
 
-    const { searchBoxType, showSearchBox, handleSearchBox, choosedToken, handleChangeToken, version } = props
+    const { searchBoxType, showSearchBox, handleSearchBox, choosedToken, handleChangeToken } = props
     // let sortedList = tokens.sort((a, b) => allTokens[b]?.balance - allTokens[a]?.balance)
 
     const arrToken = useMemo(() => {
@@ -26,11 +26,6 @@ const SearchAssets = (props) => {
     }, [nAllStocks])
 
 
-    const fromTokens = useMemo(() => {
-        const tokens = nAllStocks && arrToken.filter(t => t.conducted)
-        // console.log(tokens);
-        return tokens
-    }, [nAllStocks])
 
     useEffect(() => {
         // setSortedList(arrToken)
@@ -44,7 +39,7 @@ const SearchAssets = (props) => {
             setCurrToken(arrToken && arrToken.filter(t => t.conducted))
             setQuery("")
         }
-    }, [searchBoxType, nAllStocks])
+    }, [searchBoxType, showSearchBox, nAllStocks])
 
     const handleTyping = (query) => {
         setQuery(query)
@@ -65,7 +60,7 @@ const SearchAssets = (props) => {
 
 
     return (<>
-        { showSearchBox && <div className="search-box-wrap">
+        { showSearchBox && <div className="search-box-wrap" style={{ top: "50%" }}>
             <div className="search-box">
                 <div className="label">
                     <p> </p>
@@ -74,7 +69,7 @@ const SearchAssets = (props) => {
                 <input type="text" placeholder="Search symbol and name" spellCheck="false" autoComplete="off" value={query} onChange={(e) => handleTyping(e.currentTarget.value)} />
                 <div className="token-items-wrap">
                     <div className="titles">
-                        <p>Token</p>
+                        <p>Asset Name</p>
                         <p>Balance</p>
                     </div>
                     <div className="token-items" style={{ height: height }}  >
@@ -88,7 +83,7 @@ const SearchAssets = (props) => {
                                         <p>{token?.symbol}</p>
                                         <p style={{ marginLeft: "10px", fontSize: "11px", opacity: "0.5" }}>{token.name}</p>
                                     </div>
-                                    {token.type === TokenType.Wrapped ? token.conducted ? <p>{getStayledNumber(token.short.balance)}S / {getStayledNumber(token.long.balance)}L</p> : <p>0</p> :
+                                    {token.type !== TokenType.Main ? token.conducted ? <p>{getStayledNumber(token.short?.balance)}S / {getStayledNumber(token.long?.balance)}L</p> : <p>not conducted</p> :
                                         <p> {getStayledNumber(token?.balance)}</p>}
                                 </div>
                             })

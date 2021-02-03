@@ -15,7 +15,7 @@ export function useTokenBalance(
         typeof address === 'string' && token && contract
             ? [address, token.chainId, token.address, 1]
             : null,
-        getTokenBalance(contract, token),
+        getTokenBalance2(contract, token),
         { suspense }
     )
     // useKeepSWRDataLiveAsBlocksArrive(result.mutate)
@@ -30,6 +30,25 @@ function getTokenBalance(contract, token) {
             return new TokenAmount(token, balance.toString())
         })
 }
+
+function getTokenBalance2(contract, token) {
+    return async (address) =>
+        contract.balanceOf(address).then((balance) => {
+            console.log(balance.toString());
+            const tokenAmount = new TokenAmount(token, balance.toString())
+            return tokenAmount.amount
+        })
+}
+
+// export function getTokenSingleBalance(token, address) {
+//     const contract = useContract(token?.address, tokenABI)
+//     return async (address) =>
+//         contract.balanceOf(address).then((balance) => {
+//             console.log(balance.toString());
+//             return formatUnits(amount, token.decimals)
+//         })
+// }
+
 
 // const getTokenBalance = useCallback((contract, token) => {
 //     return async (address) =>

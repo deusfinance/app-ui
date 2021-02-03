@@ -7,7 +7,7 @@ const TokenMarket = ({ handleSwich, isLong, swap, toAmount, fromAmount, fromPerT
     const [perPrice, setPerPrice] = useState("")
     const [perTo, setPerTo] = useState(fromPerTo)
     const { from, to } = swap
-    const getTokenName = (token) => token.type === TokenType.Wrapped ? isLong ? "d" + token.symbol + "-L" : "d" + token.symbol + "-S" : token.title
+    const getTokenName = (token) => token.type !== TokenType.Main ? isLong ? "d" + token.symbol + "-L" : "d" + token.symbol + "-S" : (token.title || token.name)
 
     useEffect(() => {
         const calcPerPerice = () => {
@@ -29,8 +29,8 @@ const TokenMarket = ({ handleSwich, isLong, swap, toAmount, fromAmount, fromPerT
             <p>Price</p>
             <div className="per-wrap">
                 {perTo ? <div>{perPrice} {getTokenName(from)} per {getTokenName(to)}</div> : <div>{perPrice} {getTokenName(to)} per {getTokenName(from)}</div>}
-                <div className="switch-wrap">
-                    <svg onClick={handleSwich} className="switch" xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                <div className="switch-wrap" onClick={handleSwich}>
+                    <svg className="switch" xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />
                     </svg>
                 </div>
             </div>

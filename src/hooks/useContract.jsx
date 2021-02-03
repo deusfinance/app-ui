@@ -1,6 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
 import { useWeb3React } from '@web3-react/core'
-
 import { useMemo } from 'react'
 
 export function useContract(address, ABI, withSigner = false) {

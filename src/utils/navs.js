@@ -16,24 +16,24 @@ export default [
             },
             {
                 id: "synthetics",
-                text: <span>SYNTHETICS <span style={{ fontSize: "12px" }}>(Rinkeby)</span> </span>,
-                path: "/synthetics",
+                text: <span>SYNTHETICS</span>,
+                path: "/synchronizer",
                 exact: true,
             },
-            // {
-            //     id: "coinbase",
-            //     text: "COINBASE",
-            //     path: "/coinbase",
-            //     exact: true,
+            {
+                id: "coinbase",
+                text: "COINBASE",
+                path: "/coinbase",
+                exact: true,
 
-            // },
-            // {
-            //     id: "bakkt",
-            //     text: "BAKKT",
-            //     path: "/bakkt",
-            //     exact: true,
+            },
+            {
+                id: "bakkt",
+                text: "BAKKT",
+                path: "/bakkt",
+                exact: true,
 
-            // },
+            },
             {
                 id: "staking",
                 text: "STAKING",

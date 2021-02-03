@@ -123,8 +123,6 @@ const Navbar = () => {
             </svg></div>
             <div className="right-nav">
                 <ul id="right-ul">
-
-
                     {
                         Navs.map(nav => {
                             const classes = nav.linkDisabled ? "disabled-link" : ""
@@ -137,31 +135,6 @@ const Navbar = () => {
                                 {nav.children && <SubNavbar key={nav.id} items={nav.children} />}</li>
                         })
                     }
-
-
-                    {/* <li className="nav-item">
-                        <a className href="https://app.deus.finance/learn">
-                            <div className="nav-title"> LEARN <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
-                            </div>
-                        </a>
-                        <ul className="sub-nav">
-                            <li className="sub-nav-item"><a href="https://wiki.deus.finance/"> DEUS wiki </a></li>
-                            <li className="sub-nav-item"><a href="https://deus.finance/litepaper.pdf"> LITEPAPER </a></li>
-                        </ul>
-                    </li>
-                    <li className="nav-item"><a className href="https://app.deus.finance/">
-                        <div className="nav-title"> APP <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} />
-                        </div>
-                    </a>
-                        <ul className="sub-nav">
-                            <li className="sub-nav-item"><a href="https://app.deus.finance/swap"> SWAP </a></li>
-                            <li className="sub-nav-item"><a href="https://app.deus.finance/coinbase"> COINBASE </a></li>
-                            <li className="sub-nav-item"><a href="https://app.deus.finance/bakkt"> BAKKT </a></li>
-                            <li className="sub-nav-item"><a href="https://app.deus.finance/staking"> STAKING </a></li>
-                            <li className="sub-nav-item"><a href="https://app.deus.finance/vaults"> VAULTS </a></li>
-                        </ul>
-                    </li> */}
-
                 </ul>
             </div>
         </nav>

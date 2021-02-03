@@ -53,15 +53,6 @@ const Routes = ({ from, to, chainId }) => {
                     </div>
                 </div>
             })}
-            {/* <div className="token-wrap">
-                <img className="icon" src={process.env.PUBLIC_URL + "/tokens/dea.svg"} alt="eth" />
-                <div className="symbol">DEA</div>
-            </div>
-            <div className="swap-place">
-                <img src={process.env.PUBLIC_URL + "img/swap/uni.svg"} alt="uni" />
-                <img src={process.env.PUBLIC_URL + "img/swap/right-arrow.svg"} alt="uni" />
-            </div> */}
-
         </div>
     </div >);
 }

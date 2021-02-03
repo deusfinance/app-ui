@@ -10,10 +10,6 @@ export class StockService {
         if (!chainId) {
             this.chainId = 1
         }
-        // this.marketMaker = "0xBa13DaE5D0dB9B6683b4ad6b6dbee5251D18eAcb";
-        // this.timeTokenAddress = '0x886f8586e1fbdc805e36fa3c871ae9e573db7a7f';
-        // this.timeStakingAddress = '0x853894636546a573D11Ad7bCcC6a26236De926cb';
-
         this.marketMaker = "0x15e343d8Cebb2d9b17Feb7271bB26e127aa2E537";
         this.timeTokenAddress = '0x23459b0026Ed1cAE0b6da5E9364aCec07469Ffcd';
         this.timeStakingAddress = '0x982C54303622347fB3724Ee757cCF6ACc553A5f8';

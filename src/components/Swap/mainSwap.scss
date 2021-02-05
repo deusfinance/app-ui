@@ -10,6 +10,16 @@
     font-size: 30px;
     margin-left: -10px;
 }
+.copy-icon {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    vertical-align: middle;
+    &:hover {
+        opacity: 0.5;
+    }
+}
 
 .lGDtb {
     position: relative !important;
@@ -24,6 +34,26 @@
     font-size: 15px;
     text-align: center;
     margin-bottom: 15px;
+}
+
+.short-price-info {
+    display: flex;
+    align-items: center;
+    .icon-info {
+        color: #ffffff;
+        font-family: Monument Grotesk;
+        font-weight: 400;
+        padding-top: 1px;
+        display: inline-block;
+        text-align: center;
+        width: 15px;
+        height: 15px;
+        color: #ffffff;
+        vertical-align: middle;
+        margin-right: 5px;
+        border-radius: 50%;
+        background: linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%);
+    }
 }
 
 .conducted-text {

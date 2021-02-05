@@ -426,6 +426,9 @@ class Bakkt extends Component {
                                 tvl={""}
                                 tradeVol={""} />
 
+                            <div style={{ margin: "8px 0" }}></div>
+
+
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
 

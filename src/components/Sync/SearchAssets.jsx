@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { getStayledNumber } from '../../utils/utils';
 import { TokenType } from '../../config';
-
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const SearchAssets = (props) => {
     const [typingTimeout, setTypeout] = useState(0)
@@ -35,6 +35,8 @@ const SearchAssets = (props) => {
             setQuery("")
         }
     }, [searchBoxType, showSearchBox, nAllStocks])
+
+
 
     const handleTyping = (query) => {
         setQuery(query)
@@ -76,7 +78,19 @@ const SearchAssets = (props) => {
                                         <p>{token?.symbol}</p>
                                         <p style={{ marginLeft: "10px", fontSize: "11px", opacity: "0.5" }}>{token.name}</p>
                                     </div>
-                                    {token.type !== TokenType.Main ? token.conducted ? <p>{getStayledNumber(token.short?.balance)}S / {getStayledNumber(token.long?.balance)}L</p> : <p>not conducted</p> :
+                                    {token.type !== TokenType.Main ? token.conducted ? <p>{getStayledNumber(token.short?.balance)}S
+                                        <CopyToClipboard text={token.short?.address}
+                                            onCopy={() => console.log("copied")}>
+                                            <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
+
+                                        </CopyToClipboard>
+                                         / {getStayledNumber(token.long?.balance)}L
+                                    <CopyToClipboard text={token.long?.address}
+                                            onCopy={() => console.log("copied")}>
+                                            <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
+
+                                        </CopyToClipboard>
+                                    </p> : <p>not conducted</p> :
                                         <p> {getStayledNumber(token?.balance)}</p>}
                                 </div>
                             })

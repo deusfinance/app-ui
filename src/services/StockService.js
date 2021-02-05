@@ -2,34 +2,41 @@ import Web3 from 'web3'
 import addrs from './addresses.json'
 import { stocksABI, stakingABI, tokenABI } from '../utils/abis';
 import JSBI from 'jsbi';
+
 export class StockService {
 
     constructor(account, chainId = 1) {
         this.account = account;
         this.chainId = chainId;
-        this.marketMaker = "0x15e343d8Cebb2d9b17Feb7271bB26e127aa2E537";
-        this.timeTokenAddress = '0x23459b0026Ed1cAE0b6da5E9364aCec07469Ffcd';
-        this.timeStakingAddress = '0x982C54303622347fB3724Ee757cCF6ACc553A5f8';
-
+        if (chainId === 1) {
+            this.marketMaker = "0x15e343d8Cebb2d9b17Feb7271bB26e127aa2E537";
+        } else {
+            this.marketMaker = "0xBa13DaE5D0dB9B6683b4ad6b6dbee5251D18eAcb";
+            // this.makeProvider()
+        }
+        this.timeTokenAddress = this.getTokenAddr("timetoken")
+        this.timeStakingAddress = this.getStakingAddr("timetoken")
     }
 
     makeProvider = () => {
+        console.log(this.chainId);
+
         if (this.INFURA_URL) return
         this.INFURA_URL = 'wss://' + this.getNetworkName().toLowerCase() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
     }
 
-    setWallet(account, chainId) {
-        this.account = account
-        if (!chainId) return
+    // setWallet(account, chainId) {
+    //     this.account = account
+    //     if (!chainId) return
 
-        const currChain = chainId ? chainId : 4
-        if (this.chainId !== currChain) {
-            // this.INFURA_URL = 'wss://' + this.getNetworkName().toLowerCase() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
-            // this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
-            // this.chainId = chainId;
-        }
-    }
+    //     const currChain = chainId ? chainId : 4
+    //     if (this.chainId !== currChain) {
+    //         // this.INFURA_URL = 'wss://' + this.getNetworkName().toLowerCase() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+    //         // this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
+    //         // this.chainId = chainId;
+    //     }
+    // }
 
     TokensMaxDigit = {
         wbtc: 8,
@@ -64,6 +71,7 @@ export class StockService {
     getAddr = (tokenName) => addrs[tokenName][this.chainId.toString()]
 
     getTokenAddr = (tokenName) => addrs["token"][tokenName][this.chainId.toString()]
+    getStakingAddr = (tokenName) => addrs["staking"][tokenName][this.chainId.toString()]
 
     // conduct = (token, listener) => {
 
@@ -85,7 +93,7 @@ export class StockService {
 
         if (!account) return
 
-        if (tokenAddress !== "0x6B175474E89094C44Da98b954EedeAC495271d0F") {
+        if (tokenAddress !== this.getTokenAddr("dai")) {
             return 1000000000000000
         }
 
@@ -113,8 +121,11 @@ export class StockService {
     getTokenBalance = (tokenAddress, account) => {
         this.makeProvider()
         if (!account) return
+        console.log(tokenAddress, "called");
+
         const TokenContract = new this.infuraWeb3.eth.Contract(tokenABI, tokenAddress)
         return TokenContract.methods.balanceOf(account).call().then(balance => {
+            console.log(balance, "received");
             return Web3.utils.fromWei(balance, 'ether');
         })
     }
@@ -166,6 +177,7 @@ export class StockService {
                     const balace = Number(Web3.utils.fromWei(balance, 'ether'));
                     const stakedAmount2 = Number(Web3.utils.fromWei(stakedAmount[0], 'ether'));
                     const result = ((balace + stakedAmount2) * Number(Web3.utils.fromWei(ratio, 'ether')))
+                    console.log(balance);
                     return result;
                 })
             })

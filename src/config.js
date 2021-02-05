@@ -49,7 +49,7 @@ export const AllTokens = {
     "coinbase": {
         name: "coinbase",
         title: "Coinbase",
-        type: TokenType.Wrapped,
+        type: TokenType.Main,
         innerLink: true,
         provideLink: "/swap",
         pic_name: "coinbase.svg",
@@ -58,7 +58,7 @@ export const AllTokens = {
     "bakkt": {
         name: "bakkt",
         title: "Bakkt",
-        type: TokenType.Wrapped,
+        type: TokenType.Main,
         innerLink: true,
         provideLink: "/swap",
         pic_name: "bakkt.svg",

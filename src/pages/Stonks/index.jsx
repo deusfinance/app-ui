@@ -12,15 +12,18 @@ import _ from "lodash"
 import { toast } from 'react-toastify';
 import { TokenType } from '../../config';
 import { StockService } from '../../services/StockService';
-import { handleCalcPairPrice, deaToken, daiToken, fetcher, emptyToken } from '../../services/stock';
+import { handleCalcPairPrice, deaToken, daiToken, fetcher, emptyToken, daiTokenRinbkeby } from '../../services/stock';
 import './../../components/Swap/mainSwap.scss';
 import { useWeb3React } from '@web3-react/core';
 import PersonalCap from '../../components/Sync/PersonalCap';
 
+import './styles/style.scss'
 
-const Sync = () => {
+const Stonks = () => {
 
-    const [tokens,] = useState([{ ...daiToken, type: TokenType.Main }, deaToken])
+    const { account, chainId } = useWeb3React()
+
+    const [tokens, setTokens] = useState([{ ...daiTokenRinbkeby, type: TokenType.Main }, deaToken])
 
     const [swap, setSwap] = useState(
         {
@@ -41,7 +44,6 @@ const Sync = () => {
     const [conducted, setConducted] = useState(null)
     const [prices, setPrice] = useState(null)
     const [fromPerTo, setFromPerTo] = useState(true)
-    const claimable_amount = 0
     const [searchBoxType, setSearchBoxType] = useState("from")
     const to_token = swap.to
     const from_token = swap.from
@@ -53,21 +55,27 @@ const Sync = () => {
     const [totalCap, setTotalCap] = useState(0);
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
-    const { account, chainId } = useWeb3React()
     const [web3Class, setWeb3Class] = useState(new StockService(account, chainId))
-
+    const [apiEndpoint, setApiEndpoint] = useState("https://sync.deus.finance/oracle-files")
+    // const [apiEndpoint, setApiEndpoint] = useState("https://oracle1.deus.finance")
     let transactionType = {}
     useEffect(() => {
         if (account && chainId) {
             setWeb3Class(new StockService(account, chainId))
         }
         initialCap()
+        if (chainId && chainId !== 4) {
+            setTokens([{ ...daiToken, type: TokenType.Main }])
+            // setApiEndpoint("https://sync.deus.finance/oracle-files")
+            setApiEndpoint("https://oracle1.deus.finance")
+        }
     }, [account, chainId])
 
-    const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/conducted.json"), [])
-    const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/price.json"), [])
-    const getBuySell = useCallback(() => fetcher("https://oracle1.deus.finance/buyOrSell.json"), [])
-    const getStocks = useCallback(() => fetcher("https://oracle1.deus.finance/registrar.json"), [])
+
+    const getConducted = useCallback(() => fetcher(apiEndpoint + "/conducted.json"), [apiEndpoint])
+    const getPrices = useCallback(() => fetcher(apiEndpoint + "/price.json"), [])
+    const getBuySell = useCallback(() => fetcher(apiEndpoint + "/buyOrSell.json"), [apiEndpoint])
+    const getStocks = useCallback(() => fetcher(apiEndpoint + "/registrar.json"), [apiEndpoint])
 
     useEffect(() => {
         handleInitToken("from", { ...daiToken })
@@ -92,6 +100,7 @@ const Sync = () => {
     }, [web3Class])
 
     useEffect(() => { //adding chain and type wrap
+        console.log(web3Class.timeStakingAddress);
         if (conducted && stocks) {
             conducted.tokens.map(async (token) => {
                 stocks[token.id].decimals = 18
@@ -111,7 +120,7 @@ const Sync = () => {
             // handleInitTokenByName("to", "TSLA")
 
         }
-    }, [conducted, stocks, account])
+    }, [stocks, account])
 
 
     useEffect(() => {
@@ -125,6 +134,7 @@ const Sync = () => {
                 setTotalCap(total)
                 web3Class.getUsedCap(account).then(used => {
                     setRemindCap(total - used)
+                    console.log("used", used);
                     setLoadingCAP(false)
                 })
             })
@@ -144,7 +154,7 @@ const Sync = () => {
                 })
             })
         })
-    }, [getStocks, getConducted, getPrices]);
+    }, [getStocks, getConducted, getPrices, apiEndpoint]);
 
     useEffect(() => {
         getData();
@@ -308,21 +318,44 @@ const Sync = () => {
             console.log("handleSync", error);
         }
     }
-    // let isClosed = false
 
-    // isClosed = prices && swap.from && swap.to && (prices[swap.from?.symbol]?.long?.is_close || prices[swap.to?.symbol]?.long?.is_close)
-    // console.log(prices && swap.from?.symbol);
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
             <img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />
         </div>)
     }
 
+    const assetsTitle = [
+        { symbol: "AMC", name: " AMC Entertainment Holdings Inc" },
+        { symbol: "GME", name: " Gamestop Inc" },
+        { symbol: "NOK", name: "Nokia Oyj" },
+        { symbol: "BB", name: "BlackBerry Limited" },
+        { symbol: "APPL", name: "Alphabet Inc" },
+        { symbol: "TSLA", name: " Tesla Inc" },
+        { symbol: "SLV", name: "iShares Silver Trust" },
+        { symbol: "PLTR", name: "Palantir Technologies Inc" },
+        { symbol: "SNDL", name: "Sundial Growers Inc" },
+        { symbol: "SPCE", name: "Virgin Galactic Holdings Inc" },
+    ]
 
     return (<div className="deus-swap-wrap">
 
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-        <Title isStock={true} claimable_amount={claimable_amount} />
+
+        <div className="sync-title-wrap">
+            <img src={process.env.PUBLIC_URL + "/img/sync-title.svg"} alt="SWAGGY" />
+            <div className="sync-wrap" >
+                <div className="sync" style={{ textTransform: "uppercase" }}>
+                    SWAGGY STOCKS INDEX
+                </div>
+                <div className="description">
+                    <span className="gray">Breakdown: </span><br />
+                    {assetsTitle.map((asset, i) => {
+                        return <span key={i}> 10% {asset.symbol}, <span className="gray">{asset.name}.</span></span>
+                    })}
+                </div>
+            </div>
+        </div>
 
         <SearchAssets
             searchBoxType={searchBoxType}
@@ -413,4 +446,4 @@ const Sync = () => {
     </div >);
 }
 
-export default Sync;
+export default Stonks;

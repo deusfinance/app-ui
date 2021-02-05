@@ -1,16 +1,16 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { PortisConnector } from '@web3-react/portis-connector'
+// import { PortisConnector } from '@web3-react/portis-connector'
 import { FrameConnector } from '@web3-react/frame-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { FortmaticConnector } from '@web3-react/fortmatic-connector'
 
-const networkNames = {
-    1: "Mainnet",
-    3: "Ropsten",
-    4: "Rinkeby",
-    42: "Kovan",
-}
+// const networkNames = {
+//     1: "Mainnet",
+//     3: "Ropsten",
+//     4: "Rinkeby",
+//     42: "Kovan",
+// }
 
 
 
@@ -47,7 +47,6 @@ export const walletlink = new WalletLinkConnector({
 
 export const fortmatic = new FortmaticConnector({ apiKey: "pk_live_643EBE31BE0118DA", chainId: 1 })
 
-export const portis = new PortisConnector({ dAppId: "5d62e539-885a-4ae8-b642-7547da7dff3c", networks: [1] })
 
 export const frame = new FrameConnector({ supportedChainIds: [1] })
 
@@ -81,6 +80,6 @@ export const connectorsByName = {
     // [ConnectorNames.Authereum]: authereum,
     [ConnectorNames.Fortmatic]: fortmatic,
     // [ConnectorNames.Magic]: magic,
-    [ConnectorNames.Portis]: portis,
+    // [ConnectorNames.Portis]: portis,
     // [ConnectorNames.Torus]: torus
 }

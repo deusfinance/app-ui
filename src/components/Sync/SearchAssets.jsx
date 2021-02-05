@@ -13,7 +13,6 @@ const SearchAssets = (props) => {
     const height = useState("500px")
 
     const { searchBoxType, showSearchBox, handleSearchBox, choosedToken, handleChangeToken } = props
-    // let sortedList = tokens.sort((a, b) => allTokens[b]?.balance - allTokens[a]?.balance)
 
     const arrToken = useMemo(() => {
         const tokens = nAllStocks && Object.entries(nAllStocks).map(obj => {
@@ -25,11 +24,7 @@ const SearchAssets = (props) => {
         return tokens
     }, [nAllStocks])
 
-
-
     useEffect(() => {
-        // setSortedList(arrToken)
-        // setCurrToken(arrToken)
         if (searchBoxType === "to") {
             setSortedList(arrToken)
             setCurrToken(arrToken)
@@ -47,7 +42,6 @@ const SearchAssets = (props) => {
             clearTimeout(typingTimeout);
         }
         setTypeout(setTimeout(() => handleFilterToken(query), 1000))
-
     }
 
     const handleFilterToken = (query) => {
@@ -57,7 +51,6 @@ const SearchAssets = (props) => {
         })
         setCurrToken(newTokens)
     }
-
 
     return (<>
         { showSearchBox && <div className="search-box-wrap" style={{ top: "50%" }}>

@@ -5,7 +5,7 @@ import addrs from './addresses.json'
 
 export class SwapService {
 
-    constructor(account, chainId) {
+    constructor(account, chainId = 1) {
         this.account = account;
         this.chainId = chainId;
         this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
@@ -14,6 +14,12 @@ export class SwapService {
         this.StaticSalePrice = new this.infuraWeb3.eth.Contract(abis["sps"], this.getAddr("sps"));
         this.DeusSwapContract = new this.infuraWeb3.eth.Contract(abis["deus_swap_contract"], this.getAddr("deus_swap_contract"));
         this.uniswapRouter = new this.infuraWeb3.eth.Contract(abis["uniswap_router"], this.getAddr("uniswap_router"));
+    }
+
+    makeProvider = () => {
+        if (this.INFURA_URL) return
+        this.INFURA_URL = 'wss://' + this.getNetworkName().toLowerCase() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+        this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
     }
 
     checkWallet = () => this.account && this.chainId
@@ -293,7 +299,7 @@ export class SwapService {
     }
 
     getWithdrawableAmount() {
-        if (!this.checkWallet()) return 0
+        if (!this.checkWallet()) return
         return this.AutomaticMarketMakerContract.methods.payments(this.account).call().then(amount => {
             return this._fromWei(amount, 'ether');
         })
@@ -310,7 +316,6 @@ export class SwapService {
     }
 
     getAmountsOut(fromToken, toToken, amountIn) {
-        if (!this.checkWallet()) return 0
 
         var path = paths[fromToken][toToken];
 
@@ -551,58 +556,6 @@ export class SwapService {
         //         return this._fromWei(amountsIn[amountsIn.length - 2], toToken);
         //     }
         //     )
-    }
-
-    approveStocks(amount, listener) {
-        if (!this.checkWallet()) return 0
-
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const TokenContract = new metamaskWeb3.eth.Contract(abis["token"], this.getTokenAddr("dai"));
-        amount = Math.max(amount, 10 ** 20);
-
-        return TokenContract.methods.approve(this.getAddr("stocks_contract"), this._getWei(amount, "ether"))
-            .send({ from: this.account })
-            .once('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .once('error', () => listener("error"));
-    }
-
-    getAllowancesStocks() {
-        if (!this.checkWallet()) return 0
-
-        const account = this.account;
-        const TokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr("dai"))
-        return TokenContract.methods.allowance(account, this.getAddr("stocks_contract"))
-            .call().then(amount => {
-                let result = this._fromWei(amount, 'dai');
-                return result;
-            });
-    }
-
-    buyStock(stockAddr, amount, blockNo, v, r, s, price, fee, listener) {
-        if (!this.checkWallet()) return 0
-
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const StocksContract = new metamaskWeb3.eth.Contract(abis["stocks_contract"], this.getAddr("stocks_contract"));
-        return StocksContract.methods.buyStock(stockAddr, amount, blockNo, v, r, s, price, fee)
-            .send({ from: this.account })
-            .once('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .once('error', () => listener("error"))
-
-    }
-
-    sellStock(stockAddr, amount, blockNo, v, r, s, price, fee, listener) {
-        if (!this.checkWallet()) return 0
-
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const StocksContract = new metamaskWeb3.eth.Contract(abis["stocks_contract"], this.getAddr("stocks_contract"));
-        return StocksContract.methods.sellStock(stockAddr, amount, blockNo, v, r, s, price, fee)
-            .send({ from: this.account })
-            .once('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .once('error', () => listener("error"))
-
     }
 }
 

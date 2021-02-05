@@ -1,25 +1,45 @@
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { useWeb3React } from '@web3-react/core';
-import { injected } from '../../connectors';
+import { injected, } from '../../connectors';
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import { dappLink } from '../../config';
 import navbarItems from "../../utils/navs"
 import SubNavbar from './SubNavbar';
-import { formatAddress, getStayledNumber, notify } from '../../utils/utils';
+import { formatAddress, getStayledNumber, notify, setBackground, isDesktop } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
 import './navbar.scss';
+import Wallets from './Wallets';
 
 const Navs = navbarItems.reverse()
 
 const Navbar = () => {
 
     const web3React = useWeb3React()
-    const { account, activate, chainId } = web3React
+    const { connector, library, chainId, account, activate, deactivate, active, error } = web3React
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
     const [isMetamask, setIsMetamask] = useState(null)
+    const [showWallets, setShowWallets] = useState(false)
+    const [activatingConnector, setActivatingConnector] = useState()
+
+    // useEffect(() => {
+    //     if (activatingConnector && activatingConnector === connector) {
+    //         setActivatingConnector(undefined)
+    //     }
+    // }, [activatingConnector, connector])
+    if (!isDesktop()) {
+        try {
+            activate(injected)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        setShowWallets(false)
+    }, [account])
 
     const methods = {
         onStart: () => {
@@ -78,11 +98,9 @@ const Navbar = () => {
     }, [account, chainId])
 
     const handleConnect = async () => {
-        try {
-            await activate(injected)
-        } catch (error) {
-            console.log(error);
-        }
+        setShowWallets(true)
+        return
+
     }
 
     const toggleNav = () => {
@@ -98,21 +116,20 @@ const Navbar = () => {
     //DEUS staking
 
     return (<>
+        {showWallets && <Wallets setShow={setShowWallets} />}
         <nav id="nav">
             <div className="left-nav-wrap">
                 <ul className="left-nav">
                     <li>
                         <a className="logo-wrap" href="https://deus.finance/">
-                            <img src="img/logo.svg" alt="logo" />
+                            <img src={process.env.PUBLIC_URL + "/img/logo.svg"} alt="logo" />
                             <div className="finance">finance</div>
                         </a>
                     </li>
-                    {isMetamask && <li className="grad-wrap connect-wrap" onClick={handleConnect}>
+                    {<li className="grad-wrap connect-wrap" onClick={handleConnect}>
                         <div className={`grad ${connectCalass}`} style={{ cursor: connectCalass === "connect" ? "pointer" : "default" }}>{formatAddress(account)}</div>
                     </li>}
-                    {!isMetamask && <li className="grad-wrap connect-wrap ">
-                        <a href={dappLink} className={`grad`} style={{ color: "#ffffff" }}>Install Metamask</a>
-                    </li>}
+
                     {claimButton}
                     {chainId === 4 && <li className="rinkeby">Rinkeby <span role="img" aria-label="glass" >😎</span> </li>}
                 </ul>

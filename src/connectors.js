@@ -1,7 +1,17 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
-// import { NetworkConnector } from '@web3-react/network-connector'
-// import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-// import { INFURA_PREFIXES } from './sdk/constant';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { PortisConnector } from '@web3-react/portis-connector'
+import { FrameConnector } from '@web3-react/frame-connector'
+import { WalletLinkConnector } from '@web3-react/walletlink-connector'
+import { FortmaticConnector } from '@web3-react/fortmatic-connector'
+
+const networkNames = {
+    1: "Mainnet",
+    3: "Ropsten",
+    4: "Rinkeby",
+    42: "Kovan",
+}
+
 
 
 const supportedChainIds = [
@@ -10,37 +20,67 @@ const supportedChainIds = [
     4, // Rinkeby
     42, // Kovan
 ]
+
+
+const RPC_URLS = {
+    1: "wss://Mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093",
+    4: "wss://Rinkeby.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093"
+}
+
 export const injected = new InjectedConnector({
     supportedChainIds
 })
 
+const POLLING_INTERVAL = 2000
+
+export const walletconnect = new WalletConnectConnector({
+    rpc: { 1: RPC_URLS[1] },
+    bridge: 'https://bridge.walletconnect.org',
+    qrcode: true,
+    pollingInterval: POLLING_INTERVAL
+})
+
+export const walletlink = new WalletLinkConnector({
+    url: RPC_URLS[1],
+    appName: 'app.deus.finance'
+})
+
+export const fortmatic = new FortmaticConnector({ apiKey: "pk_live_643EBE31BE0118DA", chainId: 1 })
+
+export const portis = new PortisConnector({ dAppId: "5d62e539-885a-4ae8-b642-7547da7dff3c", networks: [1] })
+
+export const frame = new FrameConnector({ supportedChainIds: [1] })
 
 
+export const ConnectorNames = {
+    Injected: 'Metamask',
+    Network: 'Network',
+    WalletConnect: 'WalletConnect',
+    WalletLink: 'WalletLink',
+    Ledger: 'Ledger',
+    Trezor: 'Trezor',
+    Lattice: 'Lattice',
+    Frame: 'Frame',
+    Authereum: 'Authereum',
+    Fortmatic: 'Fortmatic',
+    Magic: 'Magic',
+    Portis: 'Portis',
+    Torus: 'Torus'
+}
 
 
-// export function getNetwork(defaultChainId = 1) {
-//     return new NetworkConnector({
-//         urls: supportedChainIds.reduce(
-//             (urls, chainId) =>
-//                 Object.assign(urls, {
-//                     [chainId]: `https://${INFURA_PREFIXES[chainId]}.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-//                 }),
-//             {}
-//         ),
-//         defaultChainId,
-//     })
-// }
-
-// // export const injected = new InjectedConnector({ supportedChainIds: supportedChainIds })
-
-// export const walletconnect = new WalletConnectConnector({
-//     rpc: {
-//         1: `https://${INFURA_PREFIXES[1]}.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-//     },
-//     bridge: 'https://bridge.walletconnect.org',
-// })
-
-// let networkLibrary
-// export function getNetworkLibrary() {
-//     return (networkLibrary = networkLibrary ?? new Web3Provider(network.provider))
-// }
+export const connectorsByName = {
+    [ConnectorNames.Injected]: injected,
+    // [ConnectorNames.Network]: network,
+    [ConnectorNames.WalletConnect]: walletconnect,
+    [ConnectorNames.WalletLink]: walletlink,
+    // [ConnectorNames.Ledger]: ledger,
+    // [ConnectorNames.Trezor]: trezor,
+    // [ConnectorNames.Lattice]: lattice,
+    [ConnectorNames.Frame]: frame,
+    // [ConnectorNames.Authereum]: authereum,
+    [ConnectorNames.Fortmatic]: fortmatic,
+    // [ConnectorNames.Magic]: magic,
+    [ConnectorNames.Portis]: portis,
+    // [ConnectorNames.Torus]: torus
+}

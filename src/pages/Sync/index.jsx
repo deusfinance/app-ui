@@ -1,23 +1,21 @@
 import React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { notify } from '../../utils/utils';
 import TokenMarket from './../../components/Swap/TokenMarket';
 import Title from './../../components/Swap/Title';
-import SwapStockButton from './../../components/Swap/SwapStockButton';
-import WrappedTokenButton from './../../components/Swap/WrappedTokenButton';
-import SearchAssets from './../../components/Swap/SearchAssets';
-import StockBox from './../../components/Swap/StockBox';
+import SwapStockButton from '../../components/Sync/SwapStockButton';
+import WrappedTokenButton from '../../components/Sync/WrappedTokenButton';
+import SearchAssets from '../../components/Sync/SearchAssets';
+import StockBox from '../../components/Sync/StockBox';
 import _ from "lodash"
 import { toast } from 'react-toastify';
 import { TokenType } from '../../config';
 import { StockService } from '../../services/StockService';
-import { useState, useEffect, useCallback } from 'react';
-import {
-    handleCalcPairPrice, deaToken, daiToken, fetcher, emptyToken
-} from '../../services/stock';
+import { handleCalcPairPrice, deaToken, daiToken, fetcher, emptyToken } from '../../services/stock';
 import './../../components/Swap/mainSwap.scss';
 import { useWeb3React } from '@web3-react/core';
-import PersonalCap from '../../components/Swap/PersonalCap';
+import PersonalCap from '../../components/Sync/PersonalCap';
 
 
 const Sync = () => {
@@ -36,7 +34,6 @@ const Sync = () => {
     )
 
     const [typingTimeout, setTypingTimeout] = useState(0)
-
     const isMobile = window.innerWidth < 670
     const [isLong, setLong] = useState(true)
     const [showSearchBox, setShowSearchBox] = useState(false)
@@ -62,12 +59,9 @@ const Sync = () => {
     useEffect(() => {
         if (account && chainId) {
             setWeb3Class(new StockService(account, chainId))
-            // web3Class.setWallet(account, chainId)
         }
         initialCap()
     }, [account, chainId])
-
-
 
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/conducted.json"), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/price.json"), [])

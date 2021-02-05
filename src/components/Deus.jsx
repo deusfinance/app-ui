@@ -4,9 +4,9 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
 
-const CoinBase = React.lazy(() => import('./Swap/CoinBase'));
-const Bakkt = React.lazy(() => import('./Swap/Bakkt'));
-const MainSwap = React.lazy(() => import('./Swap/MainSwap'));
+const CoinBase = React.lazy(() => import('../pages/Coinbase/CoinBase'));
+const Bakkt = React.lazy(() => import('../pages/Bakkt/Bakkt'));
+const MainSwap = React.lazy(() => import('../pages/Swap/MainSwap'));
 const StakingManager = React.lazy(() => import('./Pools/Stakings'));
 const Vault = React.lazy(() => import('./Vault/Vault'));
 const Dashboard = React.lazy(() => import('./Dashboard/Dashboard'));

@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
-import TokenBox from './TokenBox';
-import SearchBox from './SearchBox';
-import TokenMarket from './TokenMarket';
-import Title from './Title';
-import SwapButton from './SwapButton';
+import TokenBox from '../../components/Swap/TokenBox';
+import SearchBox from '../../components/Swap/SearchBox';
+import TokenMarket from '../../components/Swap/TokenMarket';
+import Title from '../../components/Swap/Title';
+import SwapButton from '../../components/Swap/SwapButton';
 import { SwapService } from '../../services/SwapService';
 // import PriceBox from './PriceBox';
 // import Slippage from './Slippage';
-import Routes from './Routes';
+import Routes from '../../components/Swap/Routes';
 // import Volume from './Volume/Volume';
-import './mainSwap.scss';
+import '../../components/Swap/mainSwap.scss';
+
 
 
 class MainSwap extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc"],
+        tokens: ["eth", "deus", "dea", "dai", "wbtc"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -68,7 +69,7 @@ class MainSwap extends Component {
         this.handleInitToken("from", "eth")
         this.handleInitToken("to", "deus")
 
-        if (!chainId || !account) return
+        // if (!chainId || !account) return
 
         await this.setState({ web3: new SwapService(account, chainId) })
         await this.handleIinitBalances()
@@ -82,7 +83,7 @@ class MainSwap extends Component {
         const { chainId, account } = this.props
 
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
-            if (!chainId || !account) return
+            // if (!chainId || !account) return
 
             await this.setState({ web3: new SwapService(account, chainId) })
             await this.handleIinitBalances(true)
@@ -414,6 +415,8 @@ class MainSwap extends Component {
                                 perPrice={""}
                                 tvl={""}
                                 tradeVol={""} />
+
+                            <div style={{ margin: "8px 0" }}></div>
 
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>

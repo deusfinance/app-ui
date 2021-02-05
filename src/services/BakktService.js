@@ -4,9 +4,10 @@ import addrs from './addresses.json'
 
 export class BakktService {
 
-    constructor(account, chainId) {
+    constructor(account, chainId = 1) {
         this.account = account;
         this.chainId = chainId;
+
         this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
         this.AutomaticMarketMakerContract = new this.infuraWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
@@ -170,7 +171,7 @@ export class BakktService {
     }
 
     getWithdrawableAmount() {
-        if (!this.checkWallet()) return 0
+        if (!this.checkWallet()) return
         return this.AutomaticMarketMakerContract.methods.payments(this.account).call().then(amount => {
             return this._fromWei(amount, 'ether');
         })
@@ -187,7 +188,6 @@ export class BakktService {
     }
 
     getAmountsOut(fromToken, toToken, amountIn) {
-        if (!this.checkWallet()) return 0
 
         if (this.getTokenAddr(fromToken) === this.getTokenAddr("bakkt") && this.getTokenAddr(toToken) === this.getTokenAddr("deus")) {
             return this.BakktContract.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()

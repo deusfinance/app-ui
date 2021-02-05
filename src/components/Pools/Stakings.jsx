@@ -36,7 +36,7 @@ class StakingManager extends Component {
 
         document.addEventListener("keydown", this.escFunction, false);
 
-        if (!chainId || !account) return
+        // if (!chainId || !account) return
 
         const { pools } = this.state
 
@@ -46,7 +46,7 @@ class StakingManager extends Component {
         pools.map(async (tokenName) => {
             await this.handleInitAllowances(tokenName)
             await this.getSingleBalance(tokenName)
-            this.getStakingAllAmounts(tokenName)
+            await this.getStakingAllAmounts(tokenName)
         })
 
     }
@@ -60,7 +60,7 @@ class StakingManager extends Component {
         const { chainId, account, navId } = this.props
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
 
-            if (!chainId || !account) return
+            // if (!chainId || !account) return
 
             const { pools } = this.state
 
@@ -210,15 +210,23 @@ class StakingManager extends Component {
 
         if (!web3) return
 
-        web3.getNumberOfStakedTokens(stakedToken).then((amount) => {
-            stakingsMap[stakedToken].deposited = amount
-            if (amount === "0") {
-                this.setState({ stakingsMap })
-                return
-            }
-            web3.getTotalStakedToken(stakedToken).then((amount) => {
-                stakingsMap[stakedToken].pool = stakingsMap[stakedToken].deposited === "0" || amount === "0" ?
-                    0 : (stakingsMap[stakedToken].deposited / amount) * 100
+        if (!this.props.account) {
+            stakingsMap[stakedToken].deposited = 0
+            this.setState({ stakingsMap })
+            return
+        }
+
+
+        web3.getTotalStakedToken(stakedToken).then((total) => {
+            //TODO
+            web3.getNumberOfStakedTokens(stakedToken).then((amount) => {
+                stakingsMap[stakedToken].deposited = amount
+                if (amount === "0") {
+                    this.setState({ stakingsMap })
+                    return
+                }
+                stakingsMap[stakedToken].pool = stakingsMap[stakedToken].deposited === "0" || total === "0" ?
+                    0 : (stakingsMap[stakedToken].deposited / total) * 100
 
                 web3.getNumberOfPendingRewardTokens(stakedToken).then((amount) => {
                     let claim = stakingsMap[stakedToken].isClose ? amount : parseFloat(amount) * 100 / 3

@@ -76,7 +76,7 @@ class Vault extends Component {
         document.addEventListener("keydown", this.escFunction, false);
 
         this.setState({ lockAllow: this.handleIsAllowLock() })
-        if (!chainId || !account) return
+        // if (!chainId || !account) return
 
         await this.setState({ web3: new VaultsService(account, chainId) })
         await this.handleIinitToken()
@@ -133,7 +133,7 @@ class Vault extends Component {
 
             console.log("chain id is", chainId);
 
-            if (!chainId || !account) return
+            // if (!chainId || !account) return
 
             console.log("log did update", account, chainId);
 

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import TokenBox from './TokenBox';
-import SearchBox from './SearchBox';
-import TokenMarket from './TokenMarket';
-import Title from './Title';
-import SwapButton from './SwapButton';
+import TokenBox from '../../components/Swap/TokenBox';
+import SearchBox from '../../components/Swap/SearchBox';
+import TokenMarket from '../../components/Swap/TokenMarket';
+import Title from '../../components/Swap/Title';
+import SwapButton from '../../components/Swap/SwapButton';
 import { ToastContainer } from 'react-toastify';
 import { BakktService } from '../../services/BakktService';
 import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
-import Routes from './Routes';
-import Risk from './Popups/Risk';
+import Routes from '../../components/Swap/Routes';
+import Risk from '../../components/Swap/Popups/Risk';
 
-import './mainSwap.scss';
+import '../../components/Swap/mainSwap.scss';
 
 
 class Bakkt extends Component {
@@ -68,7 +68,7 @@ class Bakkt extends Component {
 
 
 
-        if (!chainId || !account) return
+        // if (!chainId || !account) return
 
         await this.setState({ web3: new BakktService(account, chainId) })
         await this.handleIinitBalances()
@@ -84,7 +84,7 @@ class Bakkt extends Component {
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
 
 
-            if (!chainId || !account) return
+            // if (!chainId || !account) return
 
 
             await this.setState({ web3: new BakktService(account, chainId) })

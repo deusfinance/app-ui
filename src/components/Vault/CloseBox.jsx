@@ -21,12 +21,11 @@ const CloseBox = ({ token, vault, handleLock }) => {
                 </Link>
             </div> */}
             <div className="btns">
-                {vault.allowances ? <>
-                    <div className="grad-wrap" onClick={() => handleLock(vault)}>
+                {(vault.allowances || vault.total) ? <>
+                    {vault.allowances ? <div className="grad-wrap" onClick={() => handleLock(vault)}>
                         <div className="grad" >lock here
-                {/* <img src={process.env.PUBLIC_URL + "/vaults/lock-icon.svg"} alt="lock" /> */}
                         </div>
-                    </div >
+                    </div > : <span></span>}
                     <div className="grad-wrap get-wrap">
                         {AllStakings[vault.name].innerLink ?
                             <Link to={"/swap"} className="grad" >get {vault.title}</Link> :

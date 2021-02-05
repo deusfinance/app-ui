@@ -4,12 +4,9 @@ import { stocksABI, stakingABI, tokenABI } from '../utils/abis';
 import JSBI from 'jsbi';
 export class StockService {
 
-    constructor(account, chainId) {
+    constructor(account, chainId = 1) {
         this.account = account;
         this.chainId = chainId;
-        if (!chainId) {
-            this.chainId = 1
-        }
         this.marketMaker = "0x15e343d8Cebb2d9b17Feb7271bB26e127aa2E537";
         this.timeTokenAddress = '0x23459b0026Ed1cAE0b6da5E9364aCec07469Ffcd';
         this.timeStakingAddress = '0x982C54303622347fB3724Ee757cCF6ACc553A5f8';
@@ -20,7 +17,6 @@ export class StockService {
         if (this.INFURA_URL) return
         this.INFURA_URL = 'wss://' + this.getNetworkName().toLowerCase() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
-
     }
 
     setWallet(account, chainId) {

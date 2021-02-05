@@ -1,28 +1,21 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
+import TokenBox from '../../components/Swap/TokenBox';
+import SearchBox from '../../components/Swap/SearchBox';
+import TokenMarket from '../../components/Swap/TokenMarket';
+import Title from '../../components/Swap/Title';
+import SwapButton from '../../components/Swap/SwapButton';
 import { ToastContainer } from 'react-toastify';
-import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
-import TokenBox from './TokenBox';
-import TokenMarket from './TokenMarket';
-import Title from './Title';
-import SwapButton from './SwapButton';
 import { SwapService } from '../../services/SwapService';
-import Routes from './Routes';
-import WrappedTokenButton from './WrappedTokenButton';
-
-// import PriceBox from './PriceBox';
-// import Slippage from './Slippage';
-// import Volume from './Volume/Volume';
-import { useAllStocks } from '../../utils/stocks';
-
-import './mainSwap.scss';
-
-import { useWeb3React } from '@web3-react/core';
-const SearchBox = React.lazy(() => import('./SearchBox'));
+import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
+import Routes from '../../components/Swap/Routes';
+import Risk from '../../components/Swap/Popups/Risk';
+import '../../components/Swap/mainSwap.scss';
 
 
-class StockSwap2 extends Component {
+
+class CoinBase extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc"],
+        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc", "coinbase"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -35,14 +28,16 @@ class StockSwap2 extends Component {
         },
         showSearchBox: false,
         searchBoxType: "from",
-        fromPerTo: true,
+        fromPerTo: false,
+        showRiskPupop: false,
         claimable_amount: null,
         typingTimeout: 0,
         typeTransaction: "",
-        slippageAmount: 0.1,
         toAmount: "",
-        fromAmount: ""
+        fromAmount: "",
+        slippageAmount: 0.1
     }
+
 
     methods = {
         onStart: () => {
@@ -62,22 +57,30 @@ class StockSwap2 extends Component {
         onError: () => console.log("onError"),
     }
 
-
+    newService = null;
 
     async componentDidMount() {
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
         const { chainId, account } = this.props
-        console.log(useAllStocks());
+        const { swap } = this.state
         this.handleInitToken("from", "eth")
-        this.handleInitToken("to", "deus")
+        this.handleInitToken("to", "coinbase")
 
-        if (!chainId || !account) return
+        const payload = {
+            popup: this.handleRiskPopup
+        }
+        if (checkLimit(swap, payload)) {
+            return
+        }
+
+        // if (!chainId || !account) return
 
         await this.setState({ web3: new SwapService(account, chainId) })
         await this.handleIinitBalances()
         await this.getClaimable()
         await this.handleInitAllowances()
+
     }
 
     async componentDidUpdate(prevProps) {
@@ -85,7 +88,10 @@ class StockSwap2 extends Component {
         const { chainId, account } = this.props
 
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
-            if (!chainId || !account) return
+
+
+            // if (!chainId || !account) return
+
 
             await this.setState({ web3: new SwapService(account, chainId) })
             await this.handleIinitBalances(true)
@@ -93,7 +99,7 @@ class StockSwap2 extends Component {
             await this.handleInitAllowances(true)
 
             this.handleInitToken("from", "eth")
-            this.handleInitToken("to", "deus")
+            this.handleInitToken("to", "coinbase")
         }
     }
 
@@ -109,10 +115,6 @@ class StockSwap2 extends Component {
         }
     }
 
-
-    handleSlippage = (amount) => {
-        this.setState({ slippageAmount: amount })
-    }
 
     handleTokensToMap = () => {
         const { tokens, tokensMap } = this.state
@@ -180,6 +182,11 @@ class StockSwap2 extends Component {
     }
 
 
+    handleSlippage = (amount) => {
+        this.setState({ slippageAmount: amount })
+    }
+
+
     handleTyping = () => {
         if (this.state.typingTimeout) {
             clearTimeout(this.state.typingTimeout);
@@ -232,30 +239,30 @@ class StockSwap2 extends Component {
 
 
     getSingleBalance = async (tokenName, force = false) => {
-
         const { swap, web3 } = this.state
         if (!web3) return
         const { allTokens, setAllTokens } = this.props
 
         if (force || !allTokens[tokenName].lastFetchBalance) {
-
             try {
                 const data = await web3.getTokenBalance(tokenName)
                 const balance = formatBalance(data)
-                allTokens[tokenName].balance = balance
+                allTokens[tokenName].balance = parseFloat(balance)
                 allTokens[tokenName].lastFetchBalance = true
                 if (tokenName === swap.to.name || tokenName === swap.from.name) {
                     this.handleInitToken("from", swap.from.name)
                     this.handleInitToken("to", swap.to.name)
                 }
             } catch (error) {
-                console.log("getSingleBalance ", tokenName, error);
+                console.log(error);
             }
             setAllTokens(allTokens)
         } else {
             // console.log("fetched balance");
         }
     }
+
+
 
     handleInitAllowances = async (foceUpdate) => {
         const { tokens } = this.state
@@ -290,7 +297,7 @@ class StockSwap2 extends Component {
                 setAllTokens(allTokens)
 
             } catch (error) {
-                console.log(tokenName, error);
+                console.log(error);
             }
         }
 
@@ -317,7 +324,6 @@ class StockSwap2 extends Component {
         return tokens.filter(t => swap[searchBoxType].name !== t.name)
     }
 
-
     isApproved = () => {
         const { swap } = this.state
         return swap.from.allowances > 0
@@ -327,15 +333,9 @@ class StockSwap2 extends Component {
         const { swap, web3 } = this.state
         if (!web3) return
 
-        if (checkLimit(swap)) {
-            return
-        }
 
         const { from, to } = swap
-
         try {
-            this.setState({ typeTransaction: "swap" })
-
             !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :
                 await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
@@ -344,12 +344,9 @@ class StockSwap2 extends Component {
         }
     }
 
+
     handleApprove = async (swap) => {
         const { web3 } = this.state
-
-        if (checkLimit(swap)) {
-            return
-        }
 
         try {
             this.setState({ typeTransaction: "approve" })
@@ -361,8 +358,21 @@ class StockSwap2 extends Component {
         return 0
     }
 
+    handleRiskPopup = (flag) => {
+        if (flag) {
+            setBackground("dark")
+        } else {
+            setBackground("light")
+        }
+        this.setState({ showRiskPupop: flag })
+    }
+
+
+
+
     render() {
-        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
+
+        const { showSearchBox, showRiskPupop, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
         const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
@@ -370,22 +380,11 @@ class StockSwap2 extends Component {
         const isMobile = window.innerWidth < 670
         const { chainId } = this.props
 
-
         return (<div className="deus-swap-wrap">
-
+            {showRiskPupop && < Risk handleRiskPopup={this.handleRiskPopup} />}
             {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-            <Title web3={web3} claimable_amount={claimable_amount} />
+            <Title web3={web3} claimable_amount={claimable_amount} isCoinbase={true} />
 
-            {/* <Volume /> */}
-            <SearchBox
-                showSearchBox={showSearchBox}
-                choosedToken={swap[searchBoxType].name}
-                handleSearchBox={this.handleSearchBox}
-                allTokens={allTokens}
-                tokens={tokens}
-                handleFilterToken={this.state.tokensMap}
-                handleChangeToken={this.handleChangeToken}
-            />
 
             <div className="swap-container-wrap">
                 <div className="swap-container">
@@ -393,7 +392,8 @@ class StockSwap2 extends Component {
                         <div className="swap-box">
 
                             <TokenBox type="from" token={from_token}
-                                estimated=""
+                                estimated=" "
+
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
@@ -406,9 +406,11 @@ class StockSwap2 extends Component {
 
                             <TokenBox type="to" token={to_token}
                                 estimated=" (estimated)"
+
                                 handleSearchBox={this.handleSearchBox}
                                 handleTokenInputChange={this.handleTokenInputChange}
                             />
+
 
                             <TokenMarket
                                 handleSwich={this.handleSwichPerPrice}
@@ -420,22 +422,40 @@ class StockSwap2 extends Component {
                                 tvl={""}
                                 tradeVol={""} />
 
-                            <WrappedTokenButton isWrap={true} isLong={true} />
-
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
 
-
-
                         {/* <PriceBox impact={""} vaultsFee={""} /> */}
 
-                        {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
+                        <SearchBox
+                            showSearchBox={showSearchBox}
+                            choosedToken={swap[searchBoxType].name}
+                            handleSearchBox={this.handleSearchBox}
+                            allTokens={allTokens}
+                            tokens={tokens}
+                            handleFilterToken={this.state.tokensMap}
+                            handleChangeToken={this.handleChangeToken}
+                        />
+                        {from_token.name &&
+                            to_token &&
+                            <Routes from={from_token} to={to_token} chainId={chainId}
+                            />}
+
+
+                        {/*    {(from_token.name === "coinbase" ||
+                            to_token.name === "coinbase") &&
+                            <Slippage
+                                slippage={slippageAmount}
+                                setSlippage={this.handleSlippage}
+                            />} */}
+
+                        <p className="ipo"> trade the IPO before anyone else</p>
                     </div>
                 </div>
             </div>
-        </div >);
+        </div>);
     }
 }
 
 
-export default StockSwap2;
+export default CoinBase;

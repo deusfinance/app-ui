@@ -1,7 +1,6 @@
-import MetaMaskOnboarding from '@metamask/onboarding';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { dappLink, TokenType } from '../../config';
+import { TokenType } from '../../config';
 import { WaveLoading } from 'react-loadingg';
 import { injected } from '../../connectors';
 
@@ -9,16 +8,6 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleCondu
     const web3React = useWeb3React()
     const { account, activate } = web3React
     const { conducted } = to_token
-    const [isMetamask, setIsMetamask] = useState(null)
-
-    useEffect(() => {
-        if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-            setIsMetamask(true)
-        } else {
-            setIsMetamask(false)
-        }
-    }, [account]);
-
 
     const getBalance = () => {
         return from_token.type !== TokenType.Main ? isLong ? from_token.long?.balance : from_token.short?.balance : from_token.balance
@@ -53,14 +42,6 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleCondu
         </>)
     }
 
-    if (!isMetamask) {
-        return (<>
-            <a href={dappLink} target="_blank" rel="noopener noreferrer" className="swap-btn-wrap grad-wrap dapp-link">
-                <div className="swap-btn grad">{"Install Metamask"}</div>
-            </a>
-        </>)
-    }
-
     if (!account) {
         return (<>
             <a href={"#"} className="swap-btn-wrap grad-wrap dapp-link" onClick={handleConnect}>
@@ -70,13 +51,6 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleCondu
     }
 
     if (!conducted && to_token.type !== TokenType.Main) {
-        // return (<div className="grad-wrap swap-btn-wrap stock-swap-btn " onClick={() => handleConduct(to_token)}>
-        //     <div className="swap-btn grad" style={{ background: "none" }}>
-        //         SELECT AN ASSET
-        //         </div>
-        // </div>
-        // )
-
         return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
             <div className="swap-btn grad Insufficient" style={{ color: "#8d8d8d", background: "transparent" }}>
                 SELECT AN ASSET
@@ -85,6 +59,7 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleCondu
     }
 
     if (to_token.conducted || from_token.conducted || Number(remindCap) <= 0 || isClosed) {
+
 
         let errTxt = null
 
@@ -99,14 +74,18 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleCondu
         } else if (isClosed) {
             errTxt = "MARKET IS CLOSED"
         }
-        if (errTxt)
+
+        if (errTxt) {
             return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }}>
                 <div className="swap-btn grad Insufficient" style={{ color: "#8d8d8d", background: "transparent" }}>
                     {errTxt}
                 </div>
             </div>)
+        }
 
     }
+
+
 
     return (<>
         <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={handleSwap}>

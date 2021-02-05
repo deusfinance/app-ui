@@ -4,7 +4,7 @@ import addrs from './addresses.json'
 
 export class VaultsService {
 
-    constructor(account, chainId) {
+    constructor(account, chainId = 1) {
         this.account = account;
         this.chainId = chainId;
         this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
@@ -101,7 +101,6 @@ export class VaultsService {
 
 
     getTokenTotalSupply(tokenName) {
-        if (!this.checkWallet()) return 0;
 
         const TokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr(tokenName));
         return TokenContract.methods.totalSupply().call().then(supply => {
@@ -145,7 +144,7 @@ export class VaultsService {
 
 
     getTotalStakedToken(stakedToken) {
-        if (!this.checkWallet()) return 0;
+
         const stakedTokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr(stakedToken));
 
         return stakedTokenContract.methods.balanceOf(this.getStakeAddr(stakedToken)).call()
@@ -157,7 +156,6 @@ export class VaultsService {
 
 
     getSandAndTimeAmount(contractName, amount) {
-        if (!this.checkWallet()) return 0;
 
         const account = this.account;
         const Contract = new this.infuraWeb3.eth.Contract(abis["vaults"], this.getVaultsAddr(contractName));

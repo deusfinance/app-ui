@@ -1,6 +1,6 @@
 # app-ui
 
-It's front-end app that will be run on https://app.deus.finance.
+the front-end app, that runs on https://app.deus.finance.
 
 ### Install packages
 `npm install`

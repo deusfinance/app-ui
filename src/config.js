@@ -1,6 +1,5 @@
 export const contractEndpoint = "https://etherscan.io/address"
 export const dappLink = "https://metamask.app.link/dapp/deus.finance/"
-
 export const TokenType = {
     Time: "time",
     Sand: "sand",

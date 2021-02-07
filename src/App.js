@@ -5,11 +5,12 @@ import { injected } from './connectors';
 import { useEagerConnect } from './hooks';
 import Navbar from './components/common/Navbar';
 import Deus from './components/Deus';
-import Sync from './pages/Sync';
+// import Sync from './pages/Sync';
 import Stonks from './pages/Stonks/index';
 
 import { LoopCircleLoading } from 'react-loadingg';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from './components/common/Footer';
 
 import './styles/scss/base.scss';
 
@@ -37,16 +38,19 @@ function App() {
 
     <div id="blur-pop"></div>
     <Navbar cweb={context} />
-    <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
-      <Switch>
-        <Route exact path="/not-found" component={NotFound} />
-        <Route exact path="/stonks" component={Stonks} />
-        <Route exact path="/synchronizer" component={Sync} />
-        <Redirect exact from="/" to="/swap" />
-        <Route path="/" component={Deus} />
-        <Redirect to="not-found" />
-      </Switch>
-    </Suspense>
+    <div className="app-body">
+      <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
+        <Switch>
+          <Route exact path="/not-found" component={NotFound} />
+          <Route exact path="/synchronizer" component={Stonks} />
+          {/* <Route exact path="/synchronizer" component={Sync} /> */}
+          <Redirect exact from="/" to="/swap" />
+          <Route path="/" component={Deus} />
+          <Redirect to="not-found" />
+        </Switch>
+      </Suspense>
+    </div>
+    {/* <Footer /> */}
   </>);
 }
 

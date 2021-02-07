@@ -19,8 +19,6 @@ export class StockService {
     }
 
     makeProvider = () => {
-        console.log(this.chainId);
-
         if (this.INFURA_URL) return
         this.INFURA_URL = 'wss://' + this.getNetworkName().toLowerCase() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
@@ -106,7 +104,6 @@ export class StockService {
     approve = (tokenAddress, amount, listener) => {
         if (!this.checkWallet()) return 0
 
-        console.log(tokenAddress, amount);
         amount = Math.max(amount, 10 ** 20);
 
         const metamaskWeb3 = new Web3(Web3.givenProvider);
@@ -121,11 +118,11 @@ export class StockService {
     getTokenBalance = (tokenAddress, account) => {
         this.makeProvider()
         if (!account) return
-        console.log(tokenAddress, "called");
+        // console.log(tokenAddress, "called");
 
         const TokenContract = new this.infuraWeb3.eth.Contract(tokenABI, tokenAddress)
         return TokenContract.methods.balanceOf(account).call().then(balance => {
-            console.log(balance, "received");
+            // console.log(balance, "received");
             return Web3.utils.fromWei(balance, 'ether');
         })
     }
@@ -177,7 +174,6 @@ export class StockService {
                     const balace = Number(Web3.utils.fromWei(balance, 'ether'));
                     const stakedAmount2 = Number(Web3.utils.fromWei(stakedAmount[0], 'ether'));
                     const result = ((balace + stakedAmount2) * Number(Web3.utils.fromWei(ratio, 'ether')))
-                    console.log(balance);
                     return result;
                 })
             })

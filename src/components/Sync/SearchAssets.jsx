@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { getStayledNumber } from '../../utils/utils';
 import { TokenType } from '../../config';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { formatEtherscanLink, EtherscanType } from '../../sdk/constant';
 
 const SearchAssets = (props) => {
     const [typingTimeout, setTypeout] = useState(0)
@@ -53,7 +54,6 @@ const SearchAssets = (props) => {
         })
         setCurrToken(newTokens)
     }
-
     return (<>
         { showSearchBox && <div className="search-box-wrap" style={{ top: "50%" }}>
             <div className="search-box">
@@ -79,13 +79,13 @@ const SearchAssets = (props) => {
                                         <p style={{ marginLeft: "10px", fontSize: "11px", opacity: "0.5" }}>{token.name}</p>
                                     </div>
                                     {token.type !== TokenType.Main ? token.conducted ? <p>{getStayledNumber(token.short?.balance)}S
-                                        <CopyToClipboard text={token.short?.address}
+                                        <CopyToClipboard text={formatEtherscanLink(EtherscanType.Account, 1, token.short?.address)}
                                             onCopy={() => console.log("copied")}>
                                             <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
 
                                         </CopyToClipboard>
                                          / {getStayledNumber(token.long?.balance)}L
-                                    <CopyToClipboard text={token.long?.address}
+                                    <CopyToClipboard text={formatEtherscanLink(EtherscanType.Account, 1, token.long?.address)}
                                             onCopy={() => console.log("copied")}>
                                             <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
 

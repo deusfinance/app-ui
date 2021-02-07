@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { notify } from '../../utils/utils';
 import TokenMarket from './../../components/Swap/TokenMarket';
-import Title from './../../components/Swap/Title';
 import SwapStockButton from '../../components/Sync/SwapStockButton';
 import WrappedTokenButton from '../../components/Sync/WrappedTokenButton';
 import SearchAssets from '../../components/Sync/SearchAssets';
@@ -23,7 +22,7 @@ const Stonks = () => {
 
     const { account, chainId } = useWeb3React()
 
-    const [tokens, setTokens] = useState([{ ...daiTokenRinbkeby, type: TokenType.Main }, deaToken])
+    const [tokens, setTokens] = useState([{ ...daiToken, type: TokenType.Main }, deaToken])
 
     const [swap, setSwap] = useState(
         {
@@ -48,7 +47,7 @@ const Stonks = () => {
     const to_token = swap.to
     const from_token = swap.from
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     // const [loadingDAI, setLoadingDAI] = useState(true);
     const [loadingCap, setLoadingCAP] = useState(false);
     const [subscrible, setSubscrible] = useState(null);
@@ -56,26 +55,22 @@ const Stonks = () => {
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [web3Class, setWeb3Class] = useState(new StockService(account, chainId))
-    const [apiEndpoint, setApiEndpoint] = useState("https://sync.deus.finance/oracle-files")
-    // const [apiEndpoint, setApiEndpoint] = useState("https://oracle1.deus.finance")
+    // const [apiEndpoint, setApiEndpoint] = useState("https://sync.deus.finance/oracle-files")
+    const [apiEndpoint, setApiEndpoint] = useState("https://oracle1.deus.finance")
     let transactionType = {}
     useEffect(() => {
         if (account && chainId) {
             setWeb3Class(new StockService(account, chainId))
         }
         initialCap()
-        if (chainId && chainId !== 4) {
-            setTokens([{ ...daiToken, type: TokenType.Main }])
-            // setApiEndpoint("https://sync.deus.finance/oracle-files")
-            setApiEndpoint("https://oracle1.deus.finance")
-        }
+
     }, [account, chainId])
 
 
-    const getConducted = useCallback(() => fetcher(apiEndpoint + "/conducted.json"), [apiEndpoint])
+    const getConducted = useCallback(() => fetcher(apiEndpoint + "/conducted.json?v=2"), [apiEndpoint])
     const getPrices = useCallback(() => fetcher(apiEndpoint + "/price.json"), [])
     const getBuySell = useCallback(() => fetcher(apiEndpoint + "/buyOrSell.json"), [apiEndpoint])
-    const getStocks = useCallback(() => fetcher(apiEndpoint + "/registrar.json"), [apiEndpoint])
+    const getStocks = useCallback(() => fetcher(apiEndpoint + "/registrar.json?v=2"), [apiEndpoint])
 
     useEffect(() => {
         handleInitToken("from", { ...daiToken })
@@ -90,6 +85,7 @@ const Stonks = () => {
     useEffect(() => {
         document.body.style.backgroundColor = '#2c2f36'
         document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
+        document.body.style.backgroundRepeat = "no-reapet"
 
         const fromToken = tokens[0]
         const toToken = { ...emptyToken, balance: "0" }
@@ -100,7 +96,6 @@ const Stonks = () => {
     }, [web3Class])
 
     useEffect(() => { //adding chain and type wrap
-        console.log(web3Class.timeStakingAddress);
         if (conducted && stocks) {
             conducted.tokens.map(async (token) => {
                 stocks[token.id].decimals = 18
@@ -134,7 +129,6 @@ const Stonks = () => {
                 setTotalCap(total)
                 web3Class.getUsedCap(account).then(used => {
                     setRemindCap(total - used)
-                    console.log("used", used);
                     setLoadingCAP(false)
                 })
             })
@@ -330,7 +324,7 @@ const Stonks = () => {
         { symbol: "GME", name: " Gamestop Inc" },
         { symbol: "NOK", name: "Nokia Oyj" },
         { symbol: "BB", name: "BlackBerry Limited" },
-        { symbol: "APPL", name: "Alphabet Inc" },
+        { symbol: "APPL", name: "Apple Inc" },
         { symbol: "TSLA", name: " Tesla Inc" },
         { symbol: "SLV", name: "iShares Silver Trust" },
         { symbol: "PLTR", name: "Palantir Technologies Inc" },

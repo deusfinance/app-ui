@@ -59,7 +59,7 @@ export default [
             {
                 id: "wiki",
                 text: "DEUS wiki",
-                path: "https://wiki.deus.finance",
+                path: "https://wiki.deus.finance/docs",
                 out: true,
                 exact: true,
 

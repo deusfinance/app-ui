@@ -1,11 +1,11 @@
 import React from 'react';
 import { connectorsByName } from '../../../connectors';
+import './wallets.scss'
 import { useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import './wallets.scss'
 
 const Wallets = ({ setShow }) => {
-    const [setActivatingConnector] = useState()
+    const [, setActivatingConnector] = useState()
 
     const web3React = useWeb3React()
     const { activate } = web3React

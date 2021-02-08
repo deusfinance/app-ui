@@ -81,22 +81,20 @@ const SearchAssets = (props) => {
                                         </div>
                                     </div>
                                     {token.type !== TokenType.Main ? token.conducted ? <div style={{ display: "flex", flexDirection: "column", direction: "rtl", justifyContent: "end", alignItems: "end" }}>
-                                        <p className="balance-wrap">
+                                        <div className="balance-wrap">
                                             <p> {getStayledNumber(token.short?.balance)}</p> <p style={{ marginLeft: "12px" }}>S</p>
                                             <CopyToClipboard text={formatEtherscanLink(EtherscanType.Account, 1, token.short?.address)}
                                                 onCopy={() => console.log("copied")}>
                                                 <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
-
                                             </CopyToClipboard>
-                                        </p>
-                                        <p className="balance-wrap">
+                                        </div>
+                                        <div className="balance-wrap">
                                             <p>  {getStayledNumber(token.long?.balance)}</p> <p style={{ marginLeft: "12px" }}>L</p>
                                             <CopyToClipboard text={formatEtherscanLink(EtherscanType.Account, 1, token.long?.address)}
                                                 onCopy={() => console.log("copied")}>
                                                 <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
-
                                             </CopyToClipboard>
-                                        </p>
+                                        </div>
                                     </div> : <p>not conducted</p> :
                                         <p> {getStayledNumber(token?.balance)}</p>}
 

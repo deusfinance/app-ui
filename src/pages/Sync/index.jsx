@@ -85,7 +85,8 @@ const Sync = () => {
 
     useEffect(() => {
         document.body.style.backgroundColor = '#2c2f36'
-        document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
+        document.body.style.backgroundImage = 'radial-gradient(49.81% 49.81% at 50% 49.81%, #272727 0%, #000000 100%)'
+        // document.body.style.backgroundImage = 'radial-gradient(50% 50% at 50% 50%, #5c5c5c61 0%, #000000 100%)'
 
         const fromToken = tokens[0]
         const toToken = { ...emptyToken, balance: "0" }
@@ -325,6 +326,9 @@ const Sync = () => {
     let innnerText = <>
         <div className="swaggy-notif">
             <div className="seprator"  >
+                {assetsTitle.map((asset, i) => {
+                    return <span key={i}><span className="number">10%</span><span className="symbol">&nbsp;{asset.symbol}{assetsTitle.length > i + 1 ? "," : ""}&nbsp;</span></span>
+                })}
                 <Link to="/synchronizer/swaggy" className="announce-text">
                     <p>* NEW *</p>
                     <img src={process.env.PUBLIC_URL + "/img/sync-title.svg"} alt="SWAGGY" />

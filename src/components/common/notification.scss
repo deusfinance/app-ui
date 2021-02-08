@@ -10,12 +10,12 @@
     font-family: Monument Grotesk;
     display: flex;
     transform: translateX(100%);
-
+    width: 150%;
     align-items: center;
     font-weight: 400;
     height: 100%;
     font-size: 12.5px;
-    animation: scroll-left 20s linear infinite;
+    animation: scroll-left 15s linear infinite;
     .seprator {
         display: flex;
         align-items: center;

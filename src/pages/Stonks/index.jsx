@@ -11,18 +11,19 @@ import _ from "lodash"
 import { toast } from 'react-toastify';
 import { TokenType } from '../../config';
 import { StockService } from '../../services/StockService';
-import { handleCalcPairPrice, deaToken, daiToken, fetcher, emptyToken, daiTokenRinbkeby } from '../../services/stock';
+import { handleCalcPairPrice, deaToken, daiToken, fetcher, emptyToken } from '../../services/stock';
 import './../../components/Swap/mainSwap.scss';
 import { useWeb3React } from '@web3-react/core';
 import PersonalCap from '../../components/Sync/PersonalCap';
 
 import './styles/style.scss'
+import { assetsTitle } from '../../utils/constant';
 
 const Stonks = () => {
 
     const { account, chainId } = useWeb3React()
 
-    const [tokens, setTokens] = useState([{ ...daiToken, type: TokenType.Main }, deaToken])
+    const [tokens,] = useState([{ ...daiToken, type: TokenType.Main }, deaToken])
 
     const [swap, setSwap] = useState(
         {
@@ -56,7 +57,7 @@ const Stonks = () => {
     const [longPrice, setLongPrice] = useState("");
     const [web3Class, setWeb3Class] = useState(new StockService(account, chainId))
     // const [apiEndpoint, setApiEndpoint] = useState("https://sync.deus.finance/oracle-files")
-    const [apiEndpoint, setApiEndpoint] = useState("https://oracle1.deus.finance")
+    const [apiEndpoint,] = useState("https://oracle1.deus.finance")
     let transactionType = {}
     useEffect(() => {
         if (account && chainId) {
@@ -319,18 +320,18 @@ const Stonks = () => {
         </div>)
     }
 
-    const assetsTitle = [
-        { symbol: "AMC", name: " AMC Entertainment Holdings Inc" },
-        { symbol: "GME", name: " Gamestop Inc" },
-        { symbol: "NOK", name: "Nokia Oyj" },
-        { symbol: "BB", name: "BlackBerry Limited" },
-        { symbol: "APPL", name: "Apple Inc" },
-        { symbol: "TSLA", name: " Tesla Inc" },
-        { symbol: "SLV", name: "iShares Silver Trust" },
-        { symbol: "PLTR", name: "Palantir Technologies Inc" },
-        { symbol: "SNDL", name: "Sundial Growers Inc" },
-        { symbol: "SPCE", name: "Virgin Galactic Holdings Inc" },
-    ]
+    // const assetsTitle = [
+    //     { symbol: "AMC", name: " AMC Entertainment Holdings Inc" },
+    //     { symbol: "GME", name: " Gamestop Inc" },
+    //     { symbol: "NOK", name: "Nokia Oyj" },
+    //     { symbol: "BB", name: "BlackBerry Limited" },
+    //     { symbol: "APPL", name: "Apple Inc" },
+    //     { symbol: "TSLA", name: " Tesla Inc" },
+    //     { symbol: "SLV", name: "iShares Silver Trust" },
+    //     { symbol: "PLTR", name: "Palantir Technologies Inc" },
+    //     { symbol: "SNDL", name: "Sundial Growers Inc" },
+    //     { symbol: "SPCE", name: "Virgin Galactic Holdings Inc" },
+    // ]
 
     return (<div className="deus-swap-wrap">
 

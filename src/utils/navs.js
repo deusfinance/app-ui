@@ -74,4 +74,27 @@ export default [
             },
         ]
     },
+    {
+        id: "tools",
+        text: "TOOLS",
+        path: "/",
+        exact: true,
+        children: [
+            {
+                id: "simulate",
+                text: "DEUS simulator",
+                path: "https://simulate.deus.finance",
+                out: true,
+                exact: true,
+
+            },
+            {
+                id: "chart",
+                text: "DEUS tradingview",
+                path: "https://chart.deus.finance",
+                out: true,
+                exact: true,
+            },
+        ]
+    },
 ]

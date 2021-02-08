@@ -161,7 +161,8 @@ nav {
         .sub-nav {
             display: none;
             position: absolute;
-            min-width: 249px;
+            min-width: 250px;
+            // min-width: 300px;
             right: 0;
             top: 55px;
             z-index: 10;
@@ -182,7 +183,7 @@ nav {
                 font-size: 20px;
                 display: block;
                 .active {
-                    background-color: #8f9a9a;
+                    background-color: #1d1f20;
                     border-bottom: none;
                     &:hover {
                         color: #ffffff;

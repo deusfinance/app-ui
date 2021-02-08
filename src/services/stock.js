@@ -2,11 +2,11 @@ import { Token } from '../sdk/tokens';
 import { getStayledNumber } from '../utils/utils';
 import { TokenType } from '../config';
 
-export const emptyToken = new Token(1, "0x0", 18, "", "", "tokens/empty.svg");
+export const emptyToken = new Token(1, "0x0", 18, "", "", "/tokens/empty.svg");
 export const deaToken = new Token(1, "0x80ab141f324c3d6f2b18b030f1c4e95d4d658778", 18, "DEA", "DEA Finance", "tokens/dea.svg");
 
-export const daiTokenRinbkeby = new Token(4, "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735", 18, "DAI", "DAI", "tokens/dai.png");
-export const daiToken = new Token(1, "0x6B175474E89094C44Da98b954EedeAC495271d0F", 18, "DAI", "DAI", "tokens/dai.png");
+export const daiTokenRinbkeby = new Token(4, "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735", 18, "DAI", "DAI", "/tokens/dai.png");
+export const daiToken = new Token(1, "0x6B175474E89094C44Da98b954EedeAC495271d0F", 18, "DAI", "DAI", "/tokens/dai.png");
 
 export const fetcher = async function (url) {
     try {

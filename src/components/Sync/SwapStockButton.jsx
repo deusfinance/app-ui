@@ -2,11 +2,10 @@ import React from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { TokenType } from '../../config';
 import { WaveLoading } from 'react-loadingg';
-import { injected } from '../../connectors';
 
 const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleConduct, handleSwap, isLong, isMobile, prices }) => {
     const web3React = useWeb3React()
-    const { account, activate } = web3React
+    const { account } = web3React
     const { conducted } = to_token
 
     const getBalance = () => {
@@ -22,13 +21,13 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleCondu
         }
     }
 
-    const handleConnect = async () => {
-        try {
-            await activate(injected)
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // const handleConnect = async () => {
+    //     try {
+    //         await activate(injected)
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     let amount = typeof (from_token.amount) === "string" ? parseFloat(from_token.amount) : from_token.amount
 
@@ -43,12 +42,22 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleCondu
     }
 
     if (!account) {
-        return (<>
-            <a href={"#"} className="swap-btn-wrap grad-wrap dapp-link" onClick={handleConnect}>
-                <div className="swap-btn grad">{"CONNECT WALLET"}</div>
-            </a>
-        </>)
+        return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
+            <div className="swap-btn grad Insufficient" style={{ color: "#8d8d8d", background: "transparent" }}>
+                CONNECT WALLET
+            </div>
+        </div>)
     }
+
+    // if (!account) {
+    //     return (<>
+    //         <a href={"#"} className="swap-btn-wrap grad-wrap dapp-link" onClick={handleConnect}>
+    //             <div className="swap-btn grad">{"CONNECT WALLET"}</div>
+    //         </a>
+    //     </>)
+    // }
+
+
 
     if (!conducted && to_token.type !== TokenType.Main) {
         return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >

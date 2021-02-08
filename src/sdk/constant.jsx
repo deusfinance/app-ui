@@ -37,6 +37,9 @@ export function formatEtherscanLink(type, chainId, address) {
         case EtherscanType.Transaction: {
             return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/tx/${address}`
         }
+        default: {
+            return ""
+        }
     }
 }
 

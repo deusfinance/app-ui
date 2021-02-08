@@ -3,6 +3,7 @@
 @import "./styles/riskPopup.scss";
 @import "./styles/volume.scss";
 @import "./styles/personalCap.scss";
+@import "./styles/timerTrading.scss";
 
 .sync-wrap {
     font-family: Monument Grotesk;
@@ -11,9 +12,12 @@
     margin-left: -10px;
 }
 .copy-icon {
-    margin-left: 5px;
-    margin-right: 5px;
+    // margin-left: 0px !important;
+    margin-right: 0px !important;
     margin-bottom: 5px;
+    width: 20px !important;
+    height: 20px !important;
+    // width: 15px;
     cursor: pointer;
     vertical-align: middle;
     &:hover {
@@ -159,6 +163,12 @@
                     padding-left: 10px;
                     cursor: pointer;
                     align-items: center;
+                    .balance-wrap {
+                        display: flex;
+                        flex-direction: row-reverse;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
                     .wrap-stock-conduct {
                         background-size: contain;
                         background-image: url("/img/conduct-new.svg");
@@ -442,15 +452,17 @@
                         margin-top: 8px;
                         color: rgba(255, 255, 255, 0.75);
                         .token-market {
+                            line-height: 15px;
                             // margin: 3px;
-                            height: 20px;
-                            font-size: 11px;
+                            // height: 20px;
+                            font-size: 12px;
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
                             .per-wrap {
                                 display: flex;
                                 align-items: center;
+                                margin-top: 4px;
                             }
                             .switch-wrap {
                                 margin-left: 5px;

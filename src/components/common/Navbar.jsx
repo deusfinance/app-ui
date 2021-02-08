@@ -3,10 +3,9 @@ import { useWeb3React } from '@web3-react/core';
 import { injected, } from '../../connectors';
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
-import { dappLink } from '../../config';
 import navbarItems from "../../utils/navs"
 import SubNavbar from './SubNavbar';
-import { formatAddress, getStayledNumber, notify, setBackground, isDesktop } from '../../utils/utils';
+import { formatAddress, getStayledNumber, notify, isDesktop } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
 import './navbar.scss';
 import Wallets from './Wallets';
@@ -16,13 +15,12 @@ const Navs = navbarItems.reverse()
 const Navbar = () => {
 
     const web3React = useWeb3React()
-    const { connector, library, chainId, account, activate, deactivate, active, error } = web3React
+    const { chainId, account, activate } = web3React
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
-    const [isMetamask, setIsMetamask] = useState(null)
+    const [, setIsMetamask] = useState(null)
     const [showWallets, setShowWallets] = useState(false)
-    const [activatingConnector, setActivatingConnector] = useState()
 
     // useEffect(() => {
     //     if (activatingConnector && activatingConnector === connector) {
@@ -123,7 +121,7 @@ const Navbar = () => {
                     <li>
                         <a className="logo-wrap" href="https://deus.finance/">
                             <img src={process.env.PUBLIC_URL + "/img/logo.svg"} alt="logo" />
-                            <div className="finance">finance</div>
+                            {/* <div className="finance">finance</div> */}
                         </a>
                     </li>
                     {<li className="grad-wrap connect-wrap" onClick={handleConnect}>

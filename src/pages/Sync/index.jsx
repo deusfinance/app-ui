@@ -16,6 +16,10 @@ import { handleCalcPairPrice, deaToken, daiToken, fetcher, emptyToken } from '..
 import './../../components/Swap/mainSwap.scss';
 import { useWeb3React } from '@web3-react/core';
 import PersonalCap from '../../components/Sync/PersonalCap';
+import TimerTrading from '../../components/Sync/TimerTrading';
+import { MovableNotif } from '../../components/common/Nofication';
+import { assetsTitle } from '../../utils/constant';
+import { Link } from 'react-router-dom';
 
 
 const Sync = () => {
@@ -308,18 +312,37 @@ const Sync = () => {
             console.log("handleSync", error);
         }
     }
-    // let isClosed = false
 
-    // isClosed = prices && swap.from && swap.to && (prices[swap.from?.symbol]?.long?.is_close || prices[swap.to?.symbol]?.long?.is_close)
+    // let isClosed = prices && swap.from && swap.to && (prices[swap.from?.symbol]?.long?.is_close || prices[swap.to?.symbol]?.long?.is_close)
     // console.log(prices && swap.from?.symbol);
+
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
             <img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />
         </div>)
     }
 
+    let innnerText = <>
+        <div className="swaggy-notif">
+            <div className="seprator"  >
+                <Link to="/synchronizer/swaggy" className="announce-text">
+                    <p>* NEW *</p>
+                    <img src={process.env.PUBLIC_URL + "/img/sync-title.svg"} alt="SWAGGY" />
+                    <p>  SWAGGY STOCK INDEX – TOP 10 now tradable</p>
+                </Link>
+                {assetsTitle.map((asset, i) => {
+                    return <span key={i}><span className="number">10%</span><span className="symbol">&nbsp;{asset.symbol}{assetsTitle.length > i + 1 ? "," : ""}&nbsp;</span></span>
+                })}
+            </div>
+        </div>
+    </>
 
-    return (<div className="deus-swap-wrap">
+
+
+
+
+    return (<div className="deus-swap-wrap" style={{ paddingTop: 0, overflowX: "hidden" }}>
+        <MovableNotif text={innnerText} />
 
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
         <Title isStock={true} claimable_amount={claimable_amount} />
@@ -334,7 +357,7 @@ const Sync = () => {
             handleChangeToken={handleChangeToken}
         />
 
-        <div className="swap-container-wrap">
+        <div className="swap-container-wrap" >
             <div className="swap-container">
                 <div className="swap-box-wrap">
                     <div className="swap-box">
@@ -406,6 +429,7 @@ const Sync = () => {
                         <div style={{ margin: "4px 0" }}></div>
                     </div>
                     <PersonalCap remindedAmount={remindCap} totalAmount={totalCap} />
+                    <TimerTrading />
                     {/* <ConductedText /> */}
                 </div>
             </div>

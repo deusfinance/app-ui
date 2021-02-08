@@ -72,26 +72,34 @@ const SearchAssets = (props) => {
                             currTokens.map((token, i) => {
                                 if (token.symbol === choosedToken) return <></>
                                 return <div key={i} className="token-item" onClick={() => handleChangeToken(token)}>
-                                    <div>
+                                    <div style={{ display: "flex", justifyContent: "start" }}>
                                         {token.type !== TokenType.Wrapped && <img src={process.env.PUBLIC_URL + `${token?.logo}`} alt={token?.name} />}
                                         {token.type === TokenType.Wrapped && <div className={`wrap-stock-${token.conducted ? "" : "none-"}conduct`}><img src={process.env.PUBLIC_URL + `${token?.logo}`} style={{ marginLeft: "0px", marginRight: "0px" }} alt={token?.name} /></div>}
-                                        <p>{token?.symbol}</p>
-                                        <p style={{ marginLeft: "10px", fontSize: "11px", opacity: "0.5" }}>{token.name}</p>
+                                        <div style={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "start" }}>
+                                            <p>{token?.symbol}</p>
+                                            <p style={{ fontSize: "11px", opacity: "0.5" }}>{token.name}</p>
+                                        </div>
                                     </div>
-                                    {token.type !== TokenType.Main ? token.conducted ? <p>{getStayledNumber(token.short?.balance)}S
-                                        <CopyToClipboard text={formatEtherscanLink(EtherscanType.Account, 1, token.short?.address)}
-                                            onCopy={() => console.log("copied")}>
-                                            <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
+                                    {token.type !== TokenType.Main ? token.conducted ? <div style={{ display: "flex", flexDirection: "column", direction: "rtl", justifyContent: "end", alignItems: "end" }}>
+                                        <p className="balance-wrap">
+                                            <p> {getStayledNumber(token.short?.balance)}</p> <p style={{ marginLeft: "12px" }}>S</p>
+                                            <CopyToClipboard text={formatEtherscanLink(EtherscanType.Account, 1, token.short?.address)}
+                                                onCopy={() => console.log("copied")}>
+                                                <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
 
-                                        </CopyToClipboard>
-                                         / {getStayledNumber(token.long?.balance)}L
-                                    <CopyToClipboard text={formatEtherscanLink(EtherscanType.Account, 1, token.long?.address)}
-                                            onCopy={() => console.log("copied")}>
-                                            <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
+                                            </CopyToClipboard>
+                                        </p>
+                                        <p className="balance-wrap">
+                                            <p>  {getStayledNumber(token.long?.balance)}</p> <p style={{ marginLeft: "12px" }}>L</p>
+                                            <CopyToClipboard text={formatEtherscanLink(EtherscanType.Account, 1, token.long?.address)}
+                                                onCopy={() => console.log("copied")}>
+                                                <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
 
-                                        </CopyToClipboard>
-                                    </p> : <p>not conducted</p> :
+                                            </CopyToClipboard>
+                                        </p>
+                                    </div> : <p>not conducted</p> :
                                         <p> {getStayledNumber(token?.balance)}</p>}
+
                                 </div>
                             })
                         }

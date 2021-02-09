@@ -53,10 +53,6 @@ const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt })
             <div className="main-title">SPACEX FUTURE, ...</div>
             <div className="desc">
                 <div >Trade SPACEX futures before anyone else.</div>
-                <span style={{ opacity: "0.5" }}>
-                    Note this asset might never launch. Be aware that you are trading `
-                    a future asset – this is a speculative asset!
-                </span>
             </div>
         </div>}
     </>);

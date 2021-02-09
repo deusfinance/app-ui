@@ -5,7 +5,7 @@ import TokenMarket from '../../components/Swap/TokenMarket';
 import Title from '../../components/Swap/Title';
 import SwapButton from '../../components/Swap/SwapButton';
 import { ToastContainer } from 'react-toastify';
-import { BakktService } from '../../services/BakktService';
+import { MuskService } from '../../services/MuskService';
 import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
 import Routes from '../../components/Swap/Routes';
 import Risk from '../../components/Swap/Popups/Risk';
@@ -71,7 +71,7 @@ class Musk extends Component {
 
         // if (!chainId || !account) return
 
-        await this.setState({ web3: new BakktService(account, chainId) })
+        await this.setState({ web3: new MuskService(account, chainId) })
         await this.handleIinitBalances()
         await this.getClaimable()
         await this.handleInitAllowances()
@@ -88,7 +88,7 @@ class Musk extends Component {
             // if (!chainId || !account) return
 
 
-            await this.setState({ web3: new BakktService(account, chainId) })
+            await this.setState({ web3: new MuskService(account, chainId) })
             await this.handleIinitBalances(true)
             await this.getClaimable()
             await this.handleInitAllowances(true)
@@ -331,10 +331,13 @@ class Musk extends Component {
         const payload = {
             popup: this.handleRiskPopup
         }
-        if (checkLimit(swap, payload)) {
-            return
-        }
+        // if (checkLimit(swap, payload)) {
+        //     return
+        // }
+
         const { from, to } = swap
+
+        // console.log("Hi");
         try {
             !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :

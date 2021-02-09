@@ -13,11 +13,17 @@ const Routes = ({ from, to, chainId }) => {
             "bakkt": true,
             "coinbase": true
         },
+        "dea": {
+            "spcx": true,
+        },
         "coinbase": {
             "deus": true,
         },
         "bakkt": {
             "deus": true,
+        },
+        "spcx": {
+            "dea": true,
         },
         "eth": {
             "deus": true,

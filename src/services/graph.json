@@ -80,6 +80,10 @@
             "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
             "0xFD104902617231e053049044E3e51C1D37fE12D3"
         ],
+        "spcx": [
+            "0x71214d52b5205542f8a975e72a760cab73b725c4",
+            "0x20cff2e97ecfe8f95534edf5315036e40ca3d9ef"
+        ],
         "usdc": [
             "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934",
             "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842",
@@ -187,6 +191,12 @@
         "deus": [
             "0xE18cf55EC4e40cb3E4dD57c9150ceb9682c25329",
             "0x1424740D7Ba7f711cB194B8620E9cA417Ac54628"
+        ]
+    },
+    "spcx": {
+        "dea": [
+            "0x71214d52b5205542f8a975e72a760cab73b725c4",
+            "0x20cff2e97ecfe8f95534edf5315036e40ca3d9ef"
         ]
     },
     "coinbase": {

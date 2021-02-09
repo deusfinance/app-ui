@@ -10,11 +10,7 @@ export class MuskService {
 
         this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
-        this.AutomaticMarketMakerContract = new this.infuraWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
         this.SPCxContract = new this.infuraWeb3.eth.Contract(abis["sps"], this.getAddr("spcx_swap_contract"));
-        this.StaticSalePrice = new this.infuraWeb3.eth.Contract(abis["sps"], this.getAddr("sps"));
-        this.DeusSwapContract = new this.infuraWeb3.eth.Contract(abis["deus_swap_contract"], this.getAddr("deus_swap_contract"));
-        this.uniswapRouter = new this.infuraWeb3.eth.Contract(abis["uniswap_router"], this.getAddr("uniswap_router"));
     }
 
     checkWallet = () => this.account && this.chainId
@@ -136,16 +132,17 @@ export class MuskService {
 
         if (!this.checkWallet()) return 0
 
-
         let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const SPCxContract = new metamaskWeb3.eth.Contract(abis["spcx_swap_contract"], this.getAddr("spcx_swap_contract"));
+        const SPCxContractMeta = new metamaskWeb3.eth.Contract(abis["bakkt_swap_contract"], this.getAddr("spcx_swap_contract"));
 
         if (fromToken === 'spcx') {
-            if (toToken === 'deus') {
-                return SPCxContract.methods.calculateSaleReturn(this._getWei(tokenAmount, toToken)).call()
+            if (toToken === 'dea') {
+
+                console.log(tokenAmount);
+                return SPCxContractMeta.methods.calculateSaleReturn(this._getWei(tokenAmount, toToken)).call()
                     .then(amount => {
                         const deusAmount = this._fromWei(amount[0], toToken)
-                        return SPCxContract.methods.sell(this._getWei(tokenAmount, fromToken), this._getWei(0.95 * deusAmount, toToken))
+                        return SPCxContractMeta.methods.sell(this._getWei(tokenAmount, fromToken), this._getWei(0.95 * deusAmount, toToken))
                             .send({
                                 from: this.account
                             }).once('transactionHash', () => listener("transactionHash"))
@@ -154,13 +151,13 @@ export class MuskService {
                     })
             }
         }
-        if (fromToken === 'deus') {
-            if (toToken === 'spx') {
-                return SPCxContract.methods.calculatePurchaseReturn(this._getWei(tokenAmount)).call()
+        if (fromToken === 'dea') {
+            if (toToken === 'spcx') {
+                return SPCxContractMeta.methods.calculatePurchaseReturn(this._getWei(tokenAmount)).call()
                     .then(amount => {
                         const spcxAmount = this._fromWei(amount[0], toToken)
                         console.log(spcxAmount);
-                        return SPCxContract.methods.buy(this._getWei(spcxAmount * 0.95, fromToken), this._getWei(tokenAmount, toToken))
+                        return SPCxContractMeta.methods.buy(this._getWei(spcxAmount * 0.95, fromToken), this._getWei(tokenAmount, toToken))
                             .send({
                                 from: this.account
                             }).once('transactionHash', () => listener("transactionHash"))
@@ -171,31 +168,17 @@ export class MuskService {
         }
     }
 
-    getWithdrawableAmount() {
-        if (!this.checkWallet()) return
-        return this.AutomaticMarketMakerContract.methods.payments(this.account).call().then(amount => {
-            return this._fromWei(amount, 'ether');
-        })
-    }
 
-    withdrawPayment(listener) {
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const AutomaticMarketMakerContract = new metamaskWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
-        return AutomaticMarketMakerContract.methods.withdrawPayments(this.account)
-            .send({ from: this.account })
-            .once('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .once('error', () => listener("error"))
-    }
 
     getAmountsOut(fromToken, toToken, amountIn) {
 
-        if (this.getTokenAddr(fromToken) === this.getTokenAddr("spcx") && this.getTokenAddr(toToken) === this.getTokenAddr("deus")) {
+        if (this.getTokenAddr(fromToken) === this.getTokenAddr("spcx") && this.getTokenAddr(toToken) === this.getTokenAddr("dea")) {
             return this.SPCxContract.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
                 .then(deusAmount => {
+                    console.log(deusAmount);
                     return this._fromWei(deusAmount[0], toToken);
                 })
-        } else if (this.getTokenAddr(fromToken) === this.getTokenAddr("deus") && this.getTokenAddr(toToken) === this.getTokenAddr("spcx")) {
+        } else if (this.getTokenAddr(fromToken) === this.getTokenAddr("dea") && this.getTokenAddr(toToken) === this.getTokenAddr("spcx")) {
             return this.SPCxContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
                 .then(tokenAmount => {
                     return this._fromWei(tokenAmount[0], toToken);
@@ -215,56 +198,6 @@ export class MuskService {
         //     )
     }
 
-    approveStocks(amount, listener) {
-        if (!this.checkWallet()) return 0
 
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const TokenContract = new metamaskWeb3.eth.Contract(abis["token"], this.getTokenAddr("dai"));
-        amount = Math.max(amount, 10 ** 20);
-
-        return TokenContract.methods.approve(this.getAddr("stocks_contract"), this._getWei(amount, "ether"))
-            .send({ from: this.account })
-            .once('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .once('error', () => listener("error"));
-    }
-
-    getAllowancesStocks() {
-        if (!this.checkWallet()) return 0
-
-        const account = this.account;
-        const TokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr("dai"))
-        return TokenContract.methods.allowance(account, this.getAddr("stocks_contract"))
-            .call().then(amount => {
-                let result = this._fromWei(amount, 'dai');
-                return result;
-            });
-    }
-
-    buyStock(stockAddr, amount, blockNo, v, r, s, price, fee, listener) {
-        if (!this.checkWallet()) return 0
-
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const StocksContract = new metamaskWeb3.eth.Contract(abis["stocks_contract"], this.getAddr("stocks_contract"));
-        return StocksContract.methods.buyStock(stockAddr, amount, blockNo, v, r, s, price, fee)
-            .send({ from: this.account })
-            .once('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .once('error', () => listener("error"))
-
-    }
-
-    sellStock(stockAddr, amount, blockNo, v, r, s, price, fee, listener) {
-        if (!this.checkWallet()) return 0
-
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const StocksContract = new metamaskWeb3.eth.Contract(abis["stocks_contract"], this.getAddr("stocks_contract"));
-        return StocksContract.methods.sellStock(stockAddr, amount, blockNo, v, r, s, price, fee)
-            .send({ from: this.account })
-            .once('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .once('error', () => listener("error"))
-
-    }
 }
 

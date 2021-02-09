@@ -32,8 +32,13 @@ export default [
                 text: "BAKKT",
                 path: "/bakkt",
                 exact: true,
-
             },
+            // {
+            //     id: "musk",
+            //     text: "MUSK",
+            //     path: "/musk",
+            //     exact: true,
+            // },
             {
                 id: "staking",
                 text: "STAKING",

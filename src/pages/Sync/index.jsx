@@ -433,7 +433,7 @@ const Sync = () => {
                         <div style={{ margin: "4px 0" }}></div>
                     </div>
                     <PersonalCap remindedAmount={remindCap} totalAmount={totalCap} />
-                    <TimerTrading />
+                    {/* <TimerTrading /> */}
                     {/* <ConductedText /> */}
                 </div>
             </div>

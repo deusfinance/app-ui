@@ -1,7 +1,7 @@
 import React from 'react';
 import { notify, formatBalance } from '../../utils/utils';
 
-const Title = ({ claimable_amount, web3, isStock, isCoinbase, isBakkt }) => {
+const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt }) => {
     const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && formatBalance(claimable_amount) !== 0
     const isMobile = window.innerWidth < 670
 
@@ -22,7 +22,7 @@ const Title = ({ claimable_amount, web3, isStock, isCoinbase, isBakkt }) => {
         </div>
         }
         <div className="swap-title">
-            {!isStock && <> <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
+            {!(isStock || isSPCx) && <> <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
                 <div className="swap-wrap">
                     <div className="swap">
                         Swap
@@ -46,6 +46,18 @@ const Title = ({ claimable_amount, web3, isStock, isCoinbase, isBakkt }) => {
 
         {isBakkt && <div className="bakkt-wrap" style={{ textAlign: "center", marginBottom: "20px" }}>
             <img src={process.env.PUBLIC_URL + "/img/bakkt.svg"} alt="bakkt" />
+        </div>}
+
+        {isSPCx && <div className="spcx-wrap" style={{ textAlign: "center", marginBottom: "20px" }}>
+            <img src={process.env.PUBLIC_URL + "/img/musk-logo.svg"} alt="spcx" />
+            <div className="main-title">SPACEX FUTURE, ...</div>
+            <div className="desc">
+                <div >Trade SPACEX futures before anyone else.</div>
+                <span style={{ opacity: "0.5" }}>
+                    Note this asset might never launch. Be aware that you are trading `
+                    a future asset – this is a speculative asset!
+                </span>
+            </div>
         </div>}
     </>);
 }

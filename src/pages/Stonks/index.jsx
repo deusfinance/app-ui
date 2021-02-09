@@ -333,7 +333,7 @@ const Stonks = () => {
     //     { symbol: "SPCE", name: "Virgin Galactic Holdings Inc" },
     // ]
 
-    return (<div className="deus-swap-wrap">
+    return (<div className="deus-swap-wrap" style={{ paddingTop: "20px" }}>
 
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
 

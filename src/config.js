@@ -19,6 +19,7 @@ export const AddressChainMap = {
         "0x4185cf99745B2a20727B37EE798193DD4a56cDfa": "coinbase",
         "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": "wbtc",
         "0x11Aa73194769882521e4576D245ffacd4E98aCB4": "bakkt",
+        "0x0000000000000000000000000000000000000000": "spcx",
     },
     4: {
         "0xc778417E063141139Fce010982780140Aa0cD5Ab": "eth",
@@ -30,6 +31,7 @@ export const AddressChainMap = {
         "0xFD104902617231e053049044E3e51C1D37fE12D3": "coinbase",
         "0x577D296678535e4903D59A4C929B718e1D575e0A": "wbtc",
         "0xE18cf55EC4e40cb3E4dD57c9150ceb9682c25329": "bakkt",
+        "0x0000000000000000000000000000000000000000": "spcx",
     },
 }
 
@@ -62,6 +64,15 @@ export const AllTokens = {
         provideLink: "/swap",
         pic_name: "bakkt.svg",
         isBakkt: true
+    },
+    "spcx": {
+        name: "spcx",
+        title: "SPCx",
+        type: TokenType.Main,
+        innerLink: true,
+        provideLink: "/swap",
+        pic_name: "spcx.svg",
+        isFutures: true
     },
     "deus": {
         name: "deus",

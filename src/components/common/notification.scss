@@ -5,6 +5,11 @@
     margin-bottom: 60px;
     display: flex;
 }
+
+.top-notif {
+    margin-bottom: 30px;
+    // width: 100%;
+}
 .swaggy-notif {
     color: #ffffff;
     font-family: Monument Grotesk;
@@ -15,7 +20,7 @@
     font-weight: 400;
     height: 100%;
     font-size: 12.5px;
-    animation: scroll-left 15s linear infinite;
+    animation: scroll-left 40s linear infinite;
     .seprator {
         display: flex;
         align-items: center;

@@ -15,7 +15,7 @@ const Navs = navbarItems.reverse()
 const Navbar = () => {
 
     const web3React = useWeb3React()
-    const { chainId, account, activate } = web3React
+    const { chainId, account, activate, connector, library } = web3React
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
@@ -27,13 +27,17 @@ const Navbar = () => {
     //         setActivatingConnector(undefined)
     //     }
     // }, [activatingConnector, connector])
-    if (!isDesktop()) {
-        try {
-            activate(injected)
-        } catch (error) {
-            console.log(error);
+
+
+    useEffect(() => {
+        if (!isDesktop()) {
+            try {
+                activate(injected)
+            } catch (error) {
+                console.log(error);
+            }
         }
-    }
+    }, [chainId])
 
     useEffect(() => {
         setShowWallets(false)

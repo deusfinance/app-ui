@@ -16,7 +16,7 @@ export default [
             },
             {
                 id: "synthetics",
-                text: <span>SYNTHETICS</span>,
+                text: "SYNTHETICS",
                 path: "/synchronizer",
                 exact: true,
             },
@@ -33,12 +33,12 @@ export default [
                 path: "/bakkt",
                 exact: true,
             },
-            // {
-            //     id: "musk",
-            //     text: "MUSK",
-            //     path: "/musk",
-            //     exact: true,
-            // },
+            {
+                id: "musk",
+                text: "MUSK",
+                path: "/musk",
+                exact: true,
+            },
             {
                 id: "staking",
                 text: "STAKING",
@@ -54,7 +54,6 @@ export default [
             },
         ]
     },
-
     {
         id: "learn",
         text: "LEARN",

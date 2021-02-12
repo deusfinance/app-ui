@@ -1,25 +1,4 @@
-// @font-face {
-//     font-family: "Monument Grotesk";
-//     src: url("../../assets/fonts/MonumentGrotesk-Bold2.woff");
-//     src: url("../../assets/fonts/MonumentGrotesk-Bold2.ttf");
-//     font-weight: 700;
-// }
-
-// @font-face {
-//     font-family: "Monument Grotesk";
-//     src: url("../../assets/fonts/MonumentGrotesk-Bold2.woff"); /* IE9 Compat Modes */
-//     src: url("../../assets/fonts/MonumentGrotesk-Bold2.woff2") format("woff2"),
-//         url("../../assets/fonts/MonumentGrotesk-Bold2.ttf") format("truetype");
-//     font-weight: 700;
-// }
-
-// @font-face {
-//     font-family: "Monument Grotesk";
-//     src: url("../../assets/fonts/MonumentGrotesk-Semi-Mono2.woff");
-//     src: url("../../assets/fonts/MonumentGrotesk-Semi-Mono2.woff2") format("woff2");
-//     font-weight: 600;
-// }
-
+//new fonts
 @font-face {
     font-family: "Monument Grotesk";
     src: url("../../assets/fonts/MonumentGrotesk-Regular.woff");
@@ -36,7 +15,7 @@
     font-weight: 400;
 }
 
-//prev ../assets/fonts
+//old fonts
 @font-face {
     font-family: Lambok;
     src: url("../../assets/fonts/Lombok.ttf");

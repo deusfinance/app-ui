@@ -112,7 +112,6 @@ const Navbar = () => {
                     <li>
                         <a className="logo-wrap" href="https://deus.finance/">
                             <img src={process.env.PUBLIC_URL + "/img/logo.svg"} alt="logo" />
-                            {/* <div className="finance">finance</div> */}
                         </a>
                     </li>
                     {<li className="grad-wrap connect-wrap" onClick={handleConnect}>
@@ -153,10 +152,12 @@ const Navbar = () => {
             <ul id="mobile-menu-ul">
                 <li className="icon-close" onClick={toggleNav}>
                     <div className="menu-title">MENU</div>
-                    <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 15H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                        <path d="M21 8H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                        <path d="M21 1H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                    <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+                        <g id="Page-1" stroke="white" strokeWidth="1" fill="white" fillRule="evenodd">
+                            <g id="icon-shape">
+                                <polygon id="Combined-Shape" points="10 8.58578644 2.92893219 1.51471863 1.51471863 2.92893219 8.58578644 10 1.51471863 17.0710678 2.92893219 18.4852814 10 11.4142136 17.0710678 18.4852814 18.4852814 17.0710678 11.4142136 10 18.4852814 2.92893219 17.0710678 1.51471863 10 8.58578644"></polygon>
+                            </g>
+                        </g>
                     </svg>
                 </li>
                 {
@@ -174,11 +175,9 @@ const Navbar = () => {
 
             </ul>
 
-        </div>
+        </div >
     </>)
 
 }
-
-
 
 export default Navbar;

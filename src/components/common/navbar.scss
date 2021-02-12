@@ -73,7 +73,9 @@ nav {
                 border: 1px solid rgba(97, 192, 191, 0.25);
 
                 border-radius: 6px;
-
+                .grad {
+                    background: transparent;
+                }
                 .connected {
                     &:hover {
                         background: #111111;
@@ -85,7 +87,7 @@ nav {
                     &:hover {
                         background: #111111;
                         color: #ffffff;
-                        filter: brightness(2);
+                        // filter: brightness(2);
                     }
                 }
             }
@@ -313,6 +315,7 @@ nav {
         background-color: #0c0c0c;
         margin-right: 0;
         border-left: 1px solid #1c1c1c;
+        overflow-y: auto;
     }
 
     #mobile-menu {
@@ -354,6 +357,7 @@ nav {
         ul {
             display: flex;
             flex-direction: column;
+
             .active {
                 background: #232833;
             }
@@ -417,44 +421,44 @@ nav {
         .claimable-btn {
             display: none;
         }
-        .connect-wrap {
-            display: none;
-            a {
-                color: #ffffff;
-            }
-            .grad {
-                color: #ffffff;
-            }
-        }
+        // .connect-wrap {
+        //     display: none;
+        //     a {
+        //         color: #ffffff;
+        //     }
+        //     .grad {
+        //         color: #ffffff;
+        //     }
+        // }
 
         margin: 0;
 
         .left-nav-wrap {
-            ul {
-                .deus {
-                    font-family: Lambok;
-                    font-weight: 400;
-                    font-size: 24px;
-                    margin-left: 5px;
+            .left-nav {
+                li:nth-child(2) {
+                    margin-left: 15px;
+                    font-size: 12px;
+                    height: 30px;
+                    width: 130px;
                 }
             }
         }
-        .right-nav {
-            display: none;
-            margin: 0;
-            width: 100%;
-            ul {
-                font-size: 18px;
-                li {
-                    margin: 0;
-                }
+    }
+    .right-nav {
+        display: none;
+        margin: 0;
+        width: 100%;
+        ul {
+            font-size: 18px;
+            li {
                 margin: 0;
-                display: flex;
-                flex-direction: row-reverse;
-                justify-content: space-around;
-                a {
-                    padding: 2px 0;
-                }
+            }
+            margin: 0;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-around;
+            a {
+                padding: 2px 0;
             }
         }
     }

@@ -10,23 +10,18 @@ import { SwapService } from '../../services/SwapService';
 import './navbar.scss';
 import Wallets from './Wallets';
 
-const Navs = navbarItems.reverse()
+const Navs = navbarItems
 
 const Navbar = () => {
 
     const web3React = useWeb3React()
-    const { chainId, account, activate, connector, library } = web3React
+    const { chainId, account, activate } = web3React
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
     const [, setIsMetamask] = useState(null)
     const [showWallets, setShowWallets] = useState(false)
 
-    // useEffect(() => {
-    //     if (activatingConnector && activatingConnector === connector) {
-    //         setActivatingConnector(undefined)
-    //     }
-    // }, [activatingConnector, connector])
 
 
     useEffect(() => {
@@ -70,14 +65,6 @@ const Navbar = () => {
         </div>
     </li> : null
 
-
-    useEffect(() => {
-        if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-            setIsMetamask(true)
-        } else {
-            setIsMetamask(false)
-        }
-    }, [account]);
 
 
     useEffect(() => {
@@ -137,13 +124,17 @@ const Navbar = () => {
                 </ul>
             </div>
 
-            <div className="menu-mobile-icon" onClick={toggleNav}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-            </svg></div>
+            <div className="menu-mobile-icon" onClick={toggleNav}>
+                <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M21 8H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M21 1H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+            </div>
             <div className="right-nav">
                 <ul id="right-ul">
                     {
-                        Navs.map(nav => {
+                        Navs.reverse().map(nav => {
                             const classes = nav.linkDisabled ? "disabled-link" : ""
                             if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}><div className="nav-title">{nav.text}</div></a></li>
 
@@ -160,20 +151,27 @@ const Navbar = () => {
 
         <div className={menuMobileClass} id="mobile-menu">
             <ul id="mobile-menu-ul">
-
-                {
-                    Navs.map(nav => {
-                        if (nav.children) return <SubNavbar handleClick={toggleNav} key={nav.id} items={nav.children} />
-                        if (nav.out) return <li key={nav.id}><a href={nav.path}> {nav.text} </a></li>
-                        return <li key={nav.id}><NavLink onClick={toggleNav} exact={nav.exact} to={nav.path}> {nav.text} </NavLink></li>
-                    })
-                }
                 <li className="icon-close" onClick={toggleNav}>
-                    <div className="menu-title">Menu</div>
-                    <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: "pointer" }} viewBox="0 0 20 20">
-                        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                    <div className="menu-title">MENU</div>
+                    <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M21 8H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M21 1H1" stroke="white" strokeWidth="2" strokeLinecap="round" />
                     </svg>
                 </li>
+                {
+                    Navs.reverse().map(nav => {
+                        const classes = nav.linkDisabled ? "disabled-link" : ""
+                        if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}><div className="nav-title">{nav.text}</div></a></li>
+
+                        return <li key={nav.id} className="nav-item ">
+                            <NavLink className={classes} exact={nav.exact} to={nav.path}>
+                                <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} alt="arrow" />}</div>
+                            </NavLink>
+                            {nav.children && <SubNavbar key={nav.id} items={nav.children} handleClick={toggleNav} />}</li>
+                    })
+                }
+
             </ul>
 
         </div>

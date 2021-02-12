@@ -8,16 +8,16 @@ import Title from '../../components/Swap/Title';
 import SwapButton from '../../components/Swap/SwapButton';
 import { SwapService } from '../../services/SwapService';
 // import PriceBox from './PriceBox';
-// import Slippage from './Slippage';
 import Routes from '../../components/Swap/Routes';
 // import Volume from './Volume/Volume';
 import '../../components/Swap/mainSwap.scss';
+import Slippage from '../../components/Swap/Slippage';
 
 
 
 class MainSwap extends Component {
     state = {
-        tokens: ["eth", "deus", "dea", "dai", "wbtc"],
+        tokens: ["eth", "deus"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -337,7 +337,7 @@ class MainSwap extends Component {
 
             !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :
-                await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
+                await web3.swapTokens(from.name, to.name, from.amount, to.amount, notify(this.methods))
         } catch (error) {
 
         }
@@ -366,7 +366,7 @@ class MainSwap extends Component {
 
     render() {
 
-        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
+        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount, slippageAmount } = this.state
         const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
@@ -432,7 +432,7 @@ class MainSwap extends Component {
                         />
 
                         {/* <PriceBox impact={""} vaultsFee={""} /> */}
-
+                        {/* <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} /> */}
                         {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
                     </div>
                 </div>

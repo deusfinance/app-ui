@@ -1,0 +1,33 @@
+.under-maintenance-wrap {
+    text-align: center;
+    padding: 10px;
+    margin-top: 100px;
+    .maintenance {
+        max-width: 600px;
+        width: 90%;
+        border: 1px solid yellow;
+        border-radius: 20px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    color: #ffffff;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    img {
+        width: 30%;
+        max-width: 300px;
+        margin-bottom: 70px;
+        margin: auto;
+    }
+
+    p {
+        font-size: 25px;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+    div {
+        font-size: 16px;
+    }
+}

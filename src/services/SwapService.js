@@ -126,175 +126,38 @@ export class SwapService {
     }
 
 
-    swapTokens(fromToken, toToken, tokenAmount, listener) {
+    swapTokens(inputToken, outputToken, inputAmount, outputAmount, listener) {
+
 
         if (!this.checkWallet()) return 0
 
-
         let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const DeusSwapContract = new metamaskWeb3.eth.Contract(abis["deus_swap_contract"], this.getAddr("deus_swap_contract"));
 
-        var path = paths[fromToken][toToken];
+        if (inputToken === 'eth' && outputToken === 'deus') {
+            let metamaskWeb3 = new Web3(Web3.givenProvider);
+            const AutomaticMarketMakerContract = new metamaskWeb3.eth.Contract(abis["amm"], this.getAddr('amm'));
+            console.log(inputToken, outputToken, inputAmount, outputAmount);
+            return AutomaticMarketMakerContract.methods.buy(this._getWei(outputAmount * 0.98))
+                .send({
+                    from: this.account,
+                    value: this._getWei(inputAmount, inputToken)
+                }).on('transactionHash', () => listener("transactionHash"))
+                .on('receipt', () => listener("receipt"))
+                .on('error', () => listener("error"))
 
-        if (fromToken === 'coinbase') {
-            if (toToken === 'deus') {
-                return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 8, [], [])
-                    .send({
-                        from: this.account
-                    }).once('transactionHash', () => listener("transactionHash"))
-                    .once('receipt', () => listener("receipt"))
-                    .once('error', () => listener("error"))
-            } else if (toToken === 'eth') {
-
-                return DeusSwapContract.methods.swapTokensForEth(this._getWei(tokenAmount, fromToken), 2, [])
-                    .send({
-                        from: this.account
-                    }).once('transactionHash', () => listener("transactionHash"))
-                    .once('receipt', () => listener("receipt"))
-                    .once('error', () => listener("error"))
-            } else {
-                if (path[2] === this.getTokenAddr("weth")) {
-                    var path1 = path.slice(2);
-                    return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 4, path1, []) // change type
-                        .send({
-                            from: this.account
-                        }).once('transactionHash', () => listener("transactionHash"))
-                        .once('receipt', () => listener("receipt"))
-                        .once('error', () => listener("error"))
-
-                } else {
-                    let path1 = path.slice(1);
-                    return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 3, path1, []) // change type
-                        .send({
-                            from: this.account
-                        }).once('transactionHash', () => listener("transactionHash"))
-                        .once('receipt', () => listener("receipt"))
-                        .once('error', () => listener("error"))
-                }
-            }
-
-        } else if (toToken === 'coinbase') {
-            if (fromToken === 'deus') {
-                return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 7, [], [])
-                    .send({
-                        from: this.account
-                    }).once('transactionHash', () => listener("transactionHash"))
-                    .once('receipt', () => listener("receipt"))
-                    .once('error', () => listener("error"))
-            } else if (fromToken === 'eth') {
-                return DeusSwapContract.methods.swapEthForTokens([], 2)
-                    .send({
-                        from: this.account,
-                        value: this._getWei(tokenAmount, fromToken)
-                    }).once('transactionHash', () => listener("transactionHash"))
-                    .once('receipt', () => listener("receipt"))
-                    .once('error', () => listener("error"))
-            } else {
-                if (path[path.length - 3] === this.getTokenAddr("weth")) {
-                    let path1 = path.slice(0, path.length - 2);
-
-                    return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 5, path1, [])
-                        .send({
-                            from: this.account
-                        }).once('transactionHash', () => listener("transactionHash"))
-                        .once('receipt', () => listener("receipt"))
-                        .once('error', () => listener("error"))
-                } else {
-                    let path1 = path.slice(0, path.length - 1);
-
-                    return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 6, path1, [])
-                        .send({
-                            from: this.account
-                        }).once('transactionHash', () => listener("transactionHash"))
-                        .once('receipt', () => listener("receipt"))
-                        .once('error', () => listener("error"))
-                }
-            }
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        } else if (inputToken === 'deus' && outputToken === 'eth') {
+            const DeusSwapContract = new metamaskWeb3.eth.Contract(abis["deus_swap_contract"], this.getAddr("deus_swap_contract"));
+            // swap tokens to eth
+            let path = [this.getTokenAddr("deus")]
+            // path = path.slice(0, path.length - 1);
+            return DeusSwapContract.methods.swapTokensForEth(this._getWei(inputAmount, inputToken), 0, path)
+                .send({
+                    from: this.account
+                }).once('transactionHash', () => listener("transactionHash"))
+                .once('receipt', () => listener("receipt"))
+                .once('error', () => listener("error"))
         } else {
-
-            if (fromToken === 'eth') {
-                if (path[1] === this.getTokenAddr("deus")) {
-                    path = path.slice(1);
-
-                    // first on AMM then uniswap
-                    return DeusSwapContract.methods.swapEthForTokens(path, 0)
-                        .send({
-                            from: this.account,
-                            value: this._getWei(tokenAmount, fromToken)
-                        }).once('transactionHash', () => listener("transactionHash"))
-                        .once('receipt', () => listener("receipt"))
-                        .once('error', () => listener("error"))
-                } else {
-                    // only uniswap
-                    return DeusSwapContract.methods.swapEthForTokens(path, 1)
-                        .send({
-                            from: this.account,
-                            value: this._getWei(tokenAmount, fromToken)
-                        }).on('transactionHash', () => listener("transactionHash"))
-                        .on('receipt', () => listener("receipt"))
-                        .on('error', () => listener("error"))
-                }
-            } else if (toToken === 'eth') {
-                // swap tokens to eth
-                if (path[path.length - 2] === this.getTokenAddr("deus")) {
-
-                    path = path.slice(0, path.length - 1);
-                    return DeusSwapContract.methods.swapTokensForEth(this._getWei(tokenAmount, fromToken), 0, path)
-                        .send({
-                            from: this.account
-                        }).once('transactionHash', () => listener("transactionHash"))
-                        .once('receipt', () => listener("receipt"))
-                        .once('error', () => listener("error"))
-                } else {
-                    // only uniswap
-
-                    return DeusSwapContract.methods.swapTokensForEth(this._getWei(tokenAmount, fromToken), 1, path)
-                        .send({
-                            from: this.account
-                        }).once('transactionHash', () => listener("transactionHash"))
-                        .once('receipt', () => listener("receipt"))
-                        .once('error', () => listener("error"))
-                }
-
-            } else {
-                // swap tokens to tokens
-
-                const isDeus = (element) => element === this.getTokenAddr("deus");
-                var indexOfDeus = path.findIndex(isDeus);
-                if (indexOfDeus !== -1) {
-                    if (indexOfDeus < path.length - 1) {
-                        if (path[indexOfDeus + 1] === this.getTokenAddr("weth")) {
-                            let path1 = path.slice(0, indexOfDeus + 1);
-                            var path2 = path.slice(indexOfDeus + 1);
-                            return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 1, path1, path2)
-                                .send({
-                                    from: this.account
-                                }).once('transactionHash', () => listener("transactionHash"))
-                                .once('receipt', () => listener("receipt"))
-                                .once('error', () => listener("error"))
-                        }
-                    }
-                    if (indexOfDeus > 0) {
-                        if (path[indexOfDeus - 1] === this.getTokenAddr("weth")) {
-                            let path1 = path.slice(0, indexOfDeus);
-                            let path2 = path.slice(indexOfDeus);
-                            return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 0, path1, path2)
-                                .send({
-                                    from: this.account
-                                }).once('transactionHash', () => listener("transactionHash"))
-                                .once('receipt', () => listener("receipt"))
-                                .once('error', () => listener("error"))
-                        }
-                    }
-                }
-                return DeusSwapContract.methods.swapTokensForTokens(this._getWei(tokenAmount, fromToken), 2, path, [])
-                    .send({
-                        from: this.account
-                    }).once('transactionHash', () => listener("transactionHash"))
-                    .once('receipt', () => listener("receipt"))
-                    .once('error', () => listener("error"))
-            }
+            console.log('error');
         }
     }
 
@@ -357,8 +220,7 @@ export class SwapService {
                 return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
                     .then(etherAmount => {
                         return this._fromWei(etherAmount[0], toToken);
-                    }
-                    );
+                    });
             }
             path = path.slice(1)
             if (path[1] === this.getTokenAddr("weth")) {
@@ -558,4 +420,3 @@ export class SwapService {
         //     )
     }
 }
-

@@ -4,13 +4,14 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
 
-const CoinBase = React.lazy(() => import('../pages/Coinbase/CoinBase'));
+// const CoinBase = React.lazy(() => import('../pages/Coinbase/CoinBase'));
 const Bakkt = React.lazy(() => import('../pages/Bakkt/Bakkt'));
 const Musk = React.lazy(() => import('../pages/Musk/Musk'));
 const MainSwap = React.lazy(() => import('../pages/Swap/MainSwap'));
 const StakingManager = React.lazy(() => import('./Pools/Stakings'));
 const Vault = React.lazy(() => import('./Vault/Vault'));
 const Dashboard = React.lazy(() => import('./Dashboard/Dashboard'));
+const Under = React.lazy(() => import('../pages/Maintenance/Under'));
 
 const Deus = () => {
     const { account, chainId } = useWeb3React()
@@ -39,7 +40,9 @@ const Deus = () => {
                 <Route exact path="/staking/liquidity" render={() => <StakingManager pools={["bpt_native"]} navId={1} {...props} />} />
                 <Route exact path="/staking/old" render={() => <StakingManager pools={["coinbase_usdc", "deus_dea", "dea_usdc", "deus_eth", "deus", "dea", "ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
                 <Route exact path="/swap" render={() => <MainSwap {...props} />} />
-                <Route exact path="/coinbase" render={() => <CoinBase {...props} />} />
+                {/* <Route exact path="/coinbase" render={() => <CoinBase {...props} />} /> */}
+                {/* <Route exact path="/swap" render={() => <Under />} /> */}
+                <Route exact path="/coinbase" render={() => <Under />} />
                 <Route exact path="/Bakkt" render={() => <Bakkt {...props} />} />
                 <Route exact path="/Musk" render={() => <Musk {...props} />} />
                 <Route exact path="/vaults" render={() => <Vault {...props} />} />

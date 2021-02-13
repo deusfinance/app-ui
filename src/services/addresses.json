@@ -233,6 +233,10 @@
         "1": "0x1162FA0e82cA0d6962d1C12AE4D99EF5733036a5",
         "4": "0xd32969c96e51B77b87C1dEbdD381c0E743814B3F"
     },
+    "coinbase_swap_contract": {
+        "1": "0x6C70fB3fE24ed3A482338B0757BcEbd3b4591198",
+        "4": "0xFD104902617231e053049044E3e51C1D37fE12D3"
+    },
     "bakkt_swap_contract": {
         "1": "0x55FE6eD0617B9dca98141656B3356423bBfA9458",
         "4": "0x55FE6eD0617B9dca98141656B3356423bBfA9458"

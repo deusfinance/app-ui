@@ -6,6 +6,7 @@ import { useEagerConnect } from './hooks';
 import Navbar from './components/common/Navbar';
 import Deus from './components/Deus';
 // import Sync from './pages/Sync';
+import XSwap from './pages/XSwap/index';
 import Stonks from './pages/Stonks/index';
 
 import { LoopCircleLoading } from 'react-loadingg';
@@ -43,6 +44,7 @@ function App() {
         <Switch>
           <Route exact path="/not-found" component={NotFound} />
           <Route exact path="/synchronizer" component={Stonks} />
+          <Route exact path="/xswap" component={XSwap} />
           {/* <Route exact path="/synchronizer" component={Sync} /> */}
           <Redirect exact from="/" to="/swap" />
           <Route path="/" component={Deus} />

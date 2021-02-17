@@ -17,7 +17,7 @@ import Slippage from '../../components/Swap/Slippage';
 
 class MainSwap extends Component {
     state = {
-        tokens: ["eth", "deus"],
+        tokens: ["eth", "deus", "dea", "dai", "wbtc", "usdc"],
         web3: null,
         tokensMap: {},
         swap: {
@@ -34,7 +34,7 @@ class MainSwap extends Component {
         claimable_amount: null,
         typingTimeout: 0,
         typeTransaction: "",
-        slippageAmount: 0.1,
+        slippageAmount: 0.5,
         toAmount: "",
         fromAmount: ""
 
@@ -323,7 +323,7 @@ class MainSwap extends Component {
     }
 
     handleSwap = async () => {
-        const { swap, web3 } = this.state
+        const { swap, web3, slippageAmount } = this.state
         if (!web3) return
 
         if (checkLimit(swap)) {
@@ -337,7 +337,7 @@ class MainSwap extends Component {
 
             !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :
-                await web3.swapTokens(from.name, to.name, from.amount, to.amount, notify(this.methods))
+                await web3.swapTokens(from.name, to.name, from.amount, (1 - (slippageAmount / 100)) * (to.amount), notify(this.methods))
         } catch (error) {
 
         }
@@ -432,7 +432,7 @@ class MainSwap extends Component {
                         />
 
                         {/* <PriceBox impact={""} vaultsFee={""} /> */}
-                        {/* <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} /> */}
+                        <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} />
                         {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
                     </div>
                 </div>

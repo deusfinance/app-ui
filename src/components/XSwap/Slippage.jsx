@@ -1,8 +1,7 @@
-import React from 'react';
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
 const Slippage = ({ slippage, setSlippage }) => {
-    const amounts = [0.1, 0.5, 1]
+    const amounts = [0.1, 0.2, 1]
     const [isCusEnable, setCusEnable] = useState(false)
     const [cusAmount, setCusAmount] = useState("")
 

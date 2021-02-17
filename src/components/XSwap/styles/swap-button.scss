@@ -1,0 +1,43 @@
+.swap-btn-wrap {
+    height: 55px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(100, 100, 100, 0.498039);
+    background: linear-gradient(224.74deg, #c4eb89 0.19%, #5ec4d6 100.22%);
+    .swap-btn {
+        font-size: 25px;
+        border-radius: 10px;
+    }
+    .Insufficient {
+        font-size: 20px;
+        &:hover {
+            background-color: #111111;
+            color: #ffffff;
+            cursor: default;
+        }
+    }
+}
+.stock-swap-btn {
+    color: #ffffff;
+    background: linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%);
+    &:hover {
+        .grad {
+            color: #ffffff;
+        }
+    }
+    .grad {
+        &:hover {
+            color: #ffffff;
+        }
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .swap-btn-wrap {
+        height: 50px;
+        .swap-btn {
+            font-size: 18px;
+
+            border-radius: 6px;
+        }
+    }
+}

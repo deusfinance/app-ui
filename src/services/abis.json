@@ -1951,11 +1951,41 @@
             "type": "function"
         }
     ],
-    "deus_swap_contract": [
+    "multi_swap_contract": [
         {
-            "inputs": [],
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_uniswapRouter",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_AMM",
+                    "type": "address"
+                }
+            ],
             "stateMutability": "nonpayable",
             "type": "constructor"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "previousOwner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnershipTransferred",
+            "type": "event"
         },
         {
             "anonymous": false,
@@ -2003,9 +2033,67 @@
         },
         {
             "inputs": [],
-            "name": "approve",
-            "outputs": [],
-            "stateMutability": "nonpayable",
+            "name": "DAI",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "DEA",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "DEUS",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "USDC",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "WBTC",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
             "type": "function"
         },
         {
@@ -2013,6 +2101,11 @@
                 {
                     "internalType": "address",
                     "name": "token",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_where",
                     "type": "address"
                 }
             ],
@@ -2025,58 +2118,21 @@
             "inputs": [
                 {
                     "internalType": "address",
-                    "name": "dest",
+                    "name": "token",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address",
+                    "name": "to",
                     "type": "address"
                 }
             ],
-            "name": "payments",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address[]",
-                    "name": "path",
-                    "type": "address[]"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "swapType",
-                    "type": "uint256"
-                }
-            ],
-            "name": "swapEthForTokens",
-            "outputs": [],
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "amountIn",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "swapType",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "address[]",
-                    "name": "path",
-                    "type": "address[]"
-                }
-            ],
-            "name": "swapTokensForEth",
+            "name": "collectTokens",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
@@ -2089,8 +2145,159 @@
                     "type": "uint256"
                 },
                 {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                },
+                {
                     "internalType": "uint256",
-                    "name": "swapType",
+                    "name": "minAmountOut",
+                    "type": "uint256"
+                }
+            ],
+            "name": "deusEthUni",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "minAmountOut",
+                    "type": "uint256"
+                }
+            ],
+            "name": "ethDeusUni",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_amm",
+                    "type": "address"
+                }
+            ],
+            "name": "setAMM",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amountIn",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "minAmountOut",
+                    "type": "uint256"
+                }
+            ],
+            "name": "tokensToEthOnUni",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amountIn",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "minAmountOut",
+                    "type": "uint256"
+                }
+            ],
+            "name": "tokensToTokensOnUni",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amountIn",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "minAmountOut",
+                    "type": "uint256"
+                }
+            ],
+            "name": "uniDeusEth",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amountIn",
                     "type": "uint256"
                 },
                 {
@@ -2102,9 +2309,42 @@
                     "internalType": "address[]",
                     "name": "path2",
                     "type": "address[]"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "minAmountOut",
+                    "type": "uint256"
                 }
             ],
-            "name": "swapTokensForTokens",
+            "name": "uniDeusEthUni",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amountIn",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path1",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "path2",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "minAmountOut",
+                    "type": "uint256"
+                }
+            ],
+            "name": "uniEthDeusUni",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
@@ -2120,19 +2360,6 @@
                 }
             ],
             "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address payable",
-                    "name": "payee",
-                    "type": "address"
-                }
-            ],
-            "name": "withdrawPayments",
-            "outputs": [],
-            "stateMutability": "nonpayable",
             "type": "function"
         },
         {

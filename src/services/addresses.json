@@ -2,11 +2,11 @@
     "token": {
         "deus": {
             "1": "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
-            "4": "0x1424740D7Ba7f711cB194B8620E9cA417Ac54628"
+            "4": "0xf025DB474fcF9bA30844e91A54bC4747d4FC7842"
         },
         "dea": {
             "1": "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778",
-            "4": "0x71214d52b5205542f8a975e72a760cab73b725c4"
+            "4": "0x02b7a1AF1e9c7364Dd92CdC3b09340Aea6403934"
         },
         "timetoken": {
             "1": "0x23459b0026Ed1cAE0b6da5E9364aCec07469Ffcd",
@@ -229,9 +229,9 @@
         "1": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
         "4": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
     },
-    "deus_swap_contract": {
-        "1": "0x1162FA0e82cA0d6962d1C12AE4D99EF5733036a5",
-        "4": "0xd32969c96e51B77b87C1dEbdD381c0E743814B3F"
+    "multi_swap_contract": {
+        "1": "0x6f08afae33a140f6089df9349aa3528bc3cb838e",
+        "4": "0xd050bbb5a107ba4793ea234b8907965b837ce2de"
     },
     "coinbase_swap_contract": {
         "1": "0x6C70fB3fE24ed3A482338B0757BcEbd3b4591198",

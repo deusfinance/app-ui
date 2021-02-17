@@ -6,9 +6,9 @@ import { StakeService } from '../../services/StakeService';
 import StakePopup from '../common/Popup/StakePopup';
 import { withRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-
 import addrs from '../../services/addresses.json'
 import "./staking.scss"
+import { TopNotification } from '../common/Nofication';
 
 class StakingManager extends Component {
     state = {
@@ -317,13 +317,15 @@ class StakingManager extends Component {
         const { chainId } = this.props
         const currToken = tokensMap[currStake]
         const currStaking = stakingsMap[currStake]
+        const innnerText = <div className="staking-notif-wrap">Important system upgrade: Staking rewards will be temporarily paused, until we have activated the contracts for our automated staking-reward-controlling of tradingFees & transferFees. This will be worked on after launching hundreds of dAssets on our upgraded trading platform. We have taken a snapshot (block 11876332), if you stay in the pool, you will get a special reward to make up for the temporary reward pause.</div>
 
 
         this.blurBG()
 
+
         return (<>
             <ToastContainer style={{ width: "400px" }} />
-
+            <TopNotification text={innnerText} />
             { currStake && currToken && <StakePopup
                 title={"STAKE TOKENS TO EARN DEA"}
                 close={true}

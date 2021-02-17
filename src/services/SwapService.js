@@ -3,6 +3,10 @@ import paths from './graphbk.json'
 import abis from './abis'
 import addrs from './addresses.json'
 
+String.prototype.replaceAt = function (index, replacement) {
+    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+}
+
 export class SwapService {
 
     constructor(account, chainId = 1) {
@@ -12,8 +16,9 @@ export class SwapService {
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
         this.AutomaticMarketMakerContract = new this.infuraWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
         this.StaticSalePrice = new this.infuraWeb3.eth.Contract(abis["sps"], this.getAddr("sps"));
-        this.DeusSwapContract = new this.infuraWeb3.eth.Contract(abis["deus_swap_contract"], this.getAddr("deus_swap_contract"));
+        this.MultiSwapContract = new this.infuraWeb3.eth.Contract(abis["multi_swap_contract"], this.getAddr("multi_swap_contract"));
         this.uniswapRouter = new this.infuraWeb3.eth.Contract(abis["uniswap_router"], this.getAddr("uniswap_router"));
+
     }
 
     makeProvider = () => {
@@ -99,11 +104,11 @@ export class SwapService {
     approve(token, amount, listener) {
         if (!this.checkWallet()) return 0
 
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const TokenContract = new metamaskWeb3.eth.Contract(abis["token"], this.getTokenAddr(token));
+        let walletWeb3 = new Web3(Web3.givenProvider);
+        const TokenContract = new walletWeb3.eth.Contract(abis["token"], this.getTokenAddr(token));
         amount = Math.max(amount, 10 ** 20);
 
-        return TokenContract.methods.approve(this.getAddr("deus_swap_contract"), this._getWei(amount, token))
+        return TokenContract.methods.approve(this.getAddr("multi_swap_contract"), this._getWei(amount, token))
             .send({ from: this.account })
             .once('transactionHash', () => listener("transactionHash"))
             .once('receipt', () => listener("receipt"))
@@ -117,7 +122,7 @@ export class SwapService {
         if (token === "eth") return 9999
 
         const TokenContract = new this.infuraWeb3.eth.Contract(abis["token"], this.getTokenAddr(token))
-        return TokenContract.methods.allowance(account, this.getAddr("deus_swap_contract"))
+        return TokenContract.methods.allowance(account, this.getAddr("multi_swap_contract"))
             .call().then(amount => {
                 let result = this._fromWei(amount, token);
                 // console.log(result);
@@ -126,39 +131,176 @@ export class SwapService {
     }
 
 
-    swapTokens(inputToken, outputToken, inputAmount, outputAmount, listener) {
-
-
+    swapTokens(inputToken, outputToken, amountIn, minAmountOut, listener) {
         if (!this.checkWallet()) return 0
 
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
+
+
+        minAmountOut = parseFloat(minAmountOut).toFixed(19)
+        minAmountOut = minAmountOut.slice(0, minAmountOut.length - 1)
+
+        console.log(amountIn, minAmountOut);
+
+        amountIn = this._getWei(amountIn, inputToken);
+        minAmountOut = this._getWei(minAmountOut, outputToken);
+
+        let walletWeb3 = new Web3(Web3.givenProvider);
+        const MetaMask = new walletWeb3.eth.Contract(abis["multi_swap_contract"], this.getAddr("multi_swap_contract"));
+        const uniswapRouter = new walletWeb3.eth.Contract(abis["uniswap_router"], this.getAddr("uniswap_router"));
+        var path = paths[inputToken][outputToken];
 
         if (inputToken === 'eth' && outputToken === 'deus') {
-            let metamaskWeb3 = new Web3(Web3.givenProvider);
-            const AutomaticMarketMakerContract = new metamaskWeb3.eth.Contract(abis["amm"], this.getAddr('amm'));
-            console.log(inputToken, outputToken, inputAmount, outputAmount);
-            return AutomaticMarketMakerContract.methods.buy(this._getWei(outputAmount * 0.98))
+            let walletWeb3 = new Web3(Web3.givenProvider);
+            const AutomaticMarketMakerContract = new walletWeb3.eth.Contract(abis["amm"], this.getAddr('amm'));
+            // console.log(inputToken, outputToken, amountIn, minAmountOut);
+            return AutomaticMarketMakerContract.methods.buy(minAmountOut)
                 .send({
                     from: this.account,
-                    value: this._getWei(inputAmount, inputToken)
+                    value: amountIn
                 }).on('transactionHash', () => listener("transactionHash"))
                 .on('receipt', () => listener("receipt"))
                 .on('error', () => listener("error"))
 
-        } else if (inputToken === 'deus' && outputToken === 'eth') {
-            const DeusSwapContract = new metamaskWeb3.eth.Contract(abis["deus_swap_contract"], this.getAddr("deus_swap_contract"));
-            // swap tokens to eth
-            let path = [this.getTokenAddr("deus")]
-            // path = path.slice(0, path.length - 1);
-            return DeusSwapContract.methods.swapTokensForEth(this._getWei(inputAmount, inputToken), 0, path)
+        }
+        if (inputToken === 'deus' && outputToken === 'eth') {
+            path = []
+            return MetaMask.methods.uniDeusEth(amountIn, path, minAmountOut)
                 .send({
                     from: this.account
                 }).once('transactionHash', () => listener("transactionHash"))
                 .once('receipt', () => listener("receipt"))
                 .once('error', () => listener("error"))
-        } else {
-            console.log('error');
         }
+
+        const isDeus = (element) => element === this.getTokenAddr("deus");
+        var indexOfDeus = path.findIndex(isDeus);
+        if (indexOfDeus === -1) {
+            if (path[0] === this.getTokenAddr('weth')) {
+                const deadline = Math.floor(Date.now() / 1000) + 60 * 5000;
+                console.log(deadline);
+                return uniswapRouter.methods.swapExactETHForTokens(minAmountOut, path, this.account, deadline)
+                    .send({
+                        from: this.account,
+                        value: amountIn
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
+            }
+            if (path[path.length - 1] === this.getTokenAddr('weth')) {
+                console.log("hii");
+                return MetaMask.methods.tokensToEthOnUni(amountIn, path, minAmountOut)
+                    .send({
+                        from: this.account
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
+            }
+
+            return MetaMask.methods.tokensToTokensOnUni(amountIn, path, minAmountOut)
+                .send({
+                    from: this.account
+                }).once('transactionHash', () => listener("transactionHash"))
+                .once('receipt', () => listener("receipt"))
+                .once('error', () => listener("error"))
+        }
+
+        if (indexOfDeus === path.length - 1) {
+            if (path[path.length - 2] === this.getTokenAddr("weth")) {
+                var path1 = path.slice(0, indexOfDeus);
+                var path2 = [];
+                console.log("miyad? ", amountIn, path1, path2, minAmountOut);
+                return MetaMask.methods.uniEthDeusUni(amountIn, path1, path2, minAmountOut)
+                    .send({
+                        from: this.account
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
+            }
+
+            return MetaMask.methods.tokensToTokensOnUni(amountIn, path, minAmountOut)
+                .send({
+                    from: this.account
+                }).once('transactionHash', () => listener("transactionHash"))
+                .once('receipt', () => listener("receipt"))
+                .once('error', () => listener("error"))
+
+        }
+
+        console.log("miyad1");
+
+        if (indexOfDeus === 0) {
+            if (path[1] === this.getTokenAddr("weth")) {
+                var path = path.slice(1);
+                console.log("miyad 200")
+                return MetaMask.methods.deusEthUni(amountIn, path, minAmountOut)
+                    .send({
+                        from: this.account
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
+            }
+
+            console.log("miyad? ", amountIn, path, minAmountOut);
+            return MetaMask.methods.tokensToTokensOnUni(amountIn, path, minAmountOut)
+                .send({
+                    from: this.account
+                }).once('transactionHash', () => listener("transactionHash"))
+                .once('receipt', () => listener("receipt"))
+                .once('error', () => listener("error"))
+        }
+
+        console.log("miyad2");
+
+        if (path[indexOfDeus - 1] === this.getTokenAddr("weth")) {
+            var path1 = path.slice(0, indexOfDeus)
+            var path2 = path.slice(indexOfDeus)
+            if (path1.length > 1) {
+                return MetaMask.methods.uniEthDeusUni(amountIn, path1, path2, minAmountOut)
+                    .send({
+                        from: this.account
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
+            }
+            path = path.slice(indexOfDeus)
+            console.log(amountIn, path, minAmountOut);
+            return MetaMask.methods.ethDeusUni(path, minAmountOut)
+                .send({
+                    from: this.account,
+                    value: amountIn
+                }).once('transactionHash', () => listener("transactionHash"))
+                .once('receipt', () => listener("receipt"))
+                .once('error', () => listener("error"))
+
+        }
+
+        console.log("miyad3");
+
+        if (path[indexOfDeus + 1] === this.getTokenAddr("weth")) {
+            let path1 = path.slice(0, indexOfDeus + 1)
+            let path2 = path.slice(indexOfDeus + 1)
+            if (path1.length >= 2 && path2.length <= 1) {
+                path = path1;
+                return MetaMask.methods.uniDeusEth(amountIn, path, minAmountOut)
+                    .send({
+                        from: this.account
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
+            }
+            if (path1.length >= 2 && path2.length >= 2) {
+                console.log("miyad 600")
+                console.log(path1, path2)
+                return MetaMask.methods.uniDeusEthUni(amountIn, path1, path2, minAmountOut)
+                    .send({
+                        from: this.account
+                    }).once('transactionHash', () => listener("transactionHash"))
+                    .once('receipt', () => listener("receipt"))
+                    .once('error', () => listener("error"))
+            }
+        }
+
+
     }
 
     getWithdrawableAmount() {
@@ -169,8 +311,8 @@ export class SwapService {
     }
 
     withdrawPayment(listener) {
-        let metamaskWeb3 = new Web3(Web3.givenProvider);
-        const AutomaticMarketMakerContract = new metamaskWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
+        let walletWeb3 = new Web3(Web3.givenProvider);
+        const AutomaticMarketMakerContract = new walletWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
         return AutomaticMarketMakerContract.methods.withdrawPayments(this.account)
             .send({ from: this.account })
             .once('transactionHash', () => listener("transactionHash"))
@@ -178,245 +320,144 @@ export class SwapService {
             .once('error', () => listener("error"))
     }
 
-    getAmountsOut(fromToken, toToken, amountIn) {
+    getAmountsOut(inputToken, outputToken, amountIn) {
 
-        var path = paths[fromToken][toToken];
+        var path = paths[inputToken][outputToken];
+        amountIn = this._getWei(amountIn, inputToken);
 
-        if (this.getTokenAddr(fromToken) === this.getTokenAddr("deus") && this.getTokenAddr(toToken) === this.getTokenAddr("eth")) {
-            return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
+        if (inputToken === "deus" && outputToken === "eth") {
+            return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountIn).call()
                 .then(etherAmount => {
-                    return this._fromWei(etherAmount, toToken);
+                    return this._fromWei(etherAmount, outputToken);
                 })
-        } else if (this.getTokenAddr(fromToken) === this.getTokenAddr("eth") && this.getTokenAddr(toToken) === this.getTokenAddr("deus")) {
-            return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
+        } else if (inputToken === "eth" && outputToken === "deus") {
+            return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountIn).call()
                 .then(tokenAmount => {
-                    return this._fromWei(tokenAmount, toToken);
+                    return this._fromWei(tokenAmount, outputToken);
                 })
         }
 
-        // if (path.length == 3) {
-        //     if (this.getTokenAddr(fromToken) === this.getTokenAddr("dea") && this.getTokenAddr(toToken) === this.getTokenAddr("eth")) {
-        //         console.log('here')
-        //         return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path.slice(0, path.length-1)).call()
-        //             .then(amountsOut => {
-        //                 return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountsOut[amountsOut.length-1]).call()
-        //                     .then(etherAmount => {
-        //                         return this._fromWei(etherAmount, toToken);
-        //                     })
-        //             })
-        //     } else if (this.getTokenAddr(fromToken) === this.getTokenAddr("eth") && this.getTokenAddr(toToken) === this.getTokenAddr("dea")) {
-        //         console.log('here2')
-        //         return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
-        //                 .then(tokenAmount => {
-        //                     return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path.slice(1)).call()
-        //                         .then(amountsOut => {
-        //                             return this._fromWei(amountsOut[amountsOut.length-1], toToken);
-        //                         })
-        //                 })
-        //     }
-        // }
-        if (path[0] === this.getTokenAddr("coinbase")) {
-            if (path.length < 3) {
-                return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
-                    .then(etherAmount => {
-                        return this._fromWei(etherAmount[0], toToken);
-                    });
+        console.log("m1");
+        const isDeus = (element) => element === this.getTokenAddr("deus");
+        var indexOfDeus = path.findIndex(isDeus);
+        if (indexOfDeus === -1) {
+            return this.uniswapRouter.methods.getAmountsOut(amountIn, path).call()
+                .then(amountsOut => {
+                    return this._fromWei(amountsOut[amountsOut.length - 1], outputToken);
+                })
+        }
+        console.log("m2");
+
+        if (indexOfDeus === path.length - 1) {
+            if (path[path.length - 2] === this.getTokenAddr("weth")) {
+                path = path.slice(0, path.length - 1);
+                return this.uniswapRouter.methods.getAmountsOut(amountIn, path).call()
+                    .then(amountsOut => {
+                        return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountsOut[amountsOut.length - 1]).call()
+                            .then(tokenAmount => {
+                                return this._fromWei(tokenAmount, outputToken);
+                            })
+                    })
+            } else {
+                return this.uniswapRouter.methods.getAmountsOut(amountIn, path).call()
+                    .then(amountsOut => {
+                        return this._fromWei(amountsOut[amountsOut.length - 1], outputToken);
+                    })
+
             }
-            path = path.slice(1)
+        }
+        console.log("m3");
+
+        if (indexOfDeus === 0) {
             if (path[1] === this.getTokenAddr("weth")) {
-                return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
+                path = path.slice(1);
+                return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountIn).call()
                     .then(tokenAmount => {
-                        return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(tokenAmount[0]).call()
-                            .then(etherAmount => {
-                                path = path.slice(1)
-                                if (path.length < 2) {
-                                    return this._fromWei(etherAmount, toToken)
-                                } else {
-                                    return this.uniswapRouter.methods.getAmountsOut(etherAmount, path).call()
+                        return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path).call()
+                            .then(amountsOut => {
+                                return this._fromWei(amountsOut[amountsOut.length - 1], outputToken);
+                            })
+                    })
+            } else {
+
+                return this.uniswapRouter.methods.getAmountsOut(amountIn, path).call()
+                    .then(amountsOut => {
+                        return this._fromWei(amountsOut[amountsOut.length - 1], outputToken);
+                    })
+            }
+        }
+        console.log("m4");
+
+        if (path[indexOfDeus - 1] === this.getTokenAddr("weth")) {
+            var path1 = path.slice(0, indexOfDeus)
+            var path2 = path.slice(indexOfDeus)
+            if (path1.length > 1) {
+                return this.uniswapRouter.methods.getAmountsOut(amountIn, path1).call()
+                    .then(amountsOut2 => {
+                        return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountsOut2[amountsOut2.length - 1]).call()
+                            .then(tokenAmount => {
+                                if (path2.length > 1) {
+                                    return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
                                         .then(amountsOut => {
-                                            return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
+                                            return this._fromWei(amountsOut[amountsOut.length - 1], outputToken);
                                         })
+                                } else {
+                                    return this._fromWei(tokenAmount, outputToken);
                                 }
                             })
                     })
-
             } else {
-                return this.StaticSalePrice.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
-                    .then(etherAmount => {
-                        return this.uniswapRouter.methods.getAmountsOut(etherAmount[0], path).call()
-                            .then(amountsOut => {
-                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                            })
-                    })
-            }
-        } else if (path[path.length - 1] === this.getTokenAddr("coinbase")) {
-            if (path.length < 3) {
-                return this.StaticSalePrice.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
+                return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountIn).call()
                     .then(tokenAmount => {
-                        return this._fromWei(tokenAmount[0], toToken);
-                    });
-            }
-            path = path.slice(0, path.length - 1)
-
-            if (path[path.length - 2] === this.getTokenAddr("weth")) {
-                if (path.length > 2) {
-                    path = path.slice(0, path.length - 1)
-                    return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                        .then(amountsOut => {
-                            return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountsOut[amountsOut.length - 1]).call()
-                                .then(tokenAmount => {
-                                    return this.StaticSalePrice.methods.calculatePurchaseReturn(tokenAmount).call()
-                                        .then(amountOut => {
-                                            return this._fromWei(amountOut[0], toToken);
-                                        })
-                                })
-                        })
-                } else {
-                    return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
-                        .then(tokenAmount => {
-                            return this.StaticSalePrice.methods.calculatePurchaseReturn(tokenAmount).call()
-                                .then(amountOut => {
-                                    return this._fromWei(amountOut[0], toToken);
-                                })
-                        })
-                }
-            } else {
-                return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                    .then(amountsOut => {
-                        return this.StaticSalePrice.methods.calculatePurchaseReturn(amountsOut[amountsOut.length - 1]).call()
-                            .then(tokenAmount => {
-                                return this._fromWei(tokenAmount[0], toToken);
-                            });
-                    })
-            }
-        } else {
-            const isDeus = (element) => element === this.getTokenAddr("deus");
-            var indexOfDeus = path.findIndex(isDeus);
-            if (indexOfDeus === -1) {
-                return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                    .then(amountsOut => {
-                        return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                    })
-            } else {
-                if (indexOfDeus === path.length - 1) {
-                    if (path[path.length - 2] === this.getTokenAddr("weth")) {
-                        path = path.slice(0, path.length - 1);
-                        return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                            .then(amountsOut => {
-                                return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountsOut[amountsOut.length - 1]).call()
-                                    .then(tokenAmount => {
-                                        return this._fromWei(tokenAmount, toToken);
-                                    })
-                            })
-                    } else {
-                        return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                            .then(amountsOut => {
-                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                            })
-
-                    }
-                } else if (indexOfDeus === 0) {
-                    if (path[1] === this.getTokenAddr("weth")) {
-                        path = path.slice(1);
-                        return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
-                            .then(tokenAmount => {
-                                return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path).call()
-                                    .then(amountsOut => {
-                                        return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                                    })
-                            })
-                    } else {
-                        return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                            .then(amountsOut => {
-                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                            })
-                    }
-                } else {
-                    if (path[indexOfDeus - 1] === this.getTokenAddr("weth")) {
-                        var path1 = path.slice(0, indexOfDeus)
-                        var path2 = path.slice(indexOfDeus)
-                        if (path1.length > 1) {
-                            return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path1).call()
-                                .then(amountsOut2 => {
-                                    return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(amountsOut2[amountsOut2.length - 1]).call()
-                                        .then(tokenAmount => {
-                                            if (path2.length > 1) {
-                                                return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
-                                                    .then(amountsOut => {
-                                                        return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                                                    })
-                                            } else {
-                                                return this._fromWei(tokenAmount, toToken);
-                                            }
-                                        })
+                        if (path2.length > 1) {
+                            return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
+                                .then(amountsOut => {
+                                    return this._fromWei(amountsOut[amountsOut.length - 1], outputToken);
                                 })
                         } else {
-                            return this.AutomaticMarketMakerContract.methods.calculatePurchaseReturn(this._getWei(amountIn, fromToken)).call()
-                                .then(tokenAmount => {
-                                    if (path2.length > 1) {
-                                        return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
-                                            .then(amountsOut => {
-                                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                                            })
-                                    } else {
-                                        return this._fromWei(tokenAmount, toToken);
-                                    }
-                                })
-
+                            return this._fromWei(tokenAmount, outputToken);
                         }
+                    })
 
-                    } else if (path[indexOfDeus + 1] === this.getTokenAddr("weth")) {
-                        let path1 = path.slice(0, indexOfDeus + 1)
-                        let path2 = path.slice(indexOfDeus + 1)
-                        if (path1.length > 1) {
-                            return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path1).call()
-                                .then(amountsOut2 => {
-                                    return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountsOut2[amountsOut2.length - 1]).call()
-                                        .then(tokenAmount => {
-                                            if (path2.length > 1) {
-                                                return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
-                                                    .then(amountsOut => {
-                                                        return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                                                    })
-                                            } else {
-                                                return this._fromWei(tokenAmount, toToken);
-                                            }
+            }
+
+        }
+
+        if (path[indexOfDeus + 1] === this.getTokenAddr("weth")) {
+            let path1 = path.slice(0, indexOfDeus + 1)
+            let path2 = path.slice(indexOfDeus + 1)
+            if (path1.length > 1) {
+                return this.uniswapRouter.methods.getAmountsOut(amountIn, path1).call()
+                    .then(amountsOut2 => {
+                        return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountsOut2[amountsOut2.length - 1]).call()
+                            .then(tokenAmount => {
+                                if (path2.length > 1) {
+                                    return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
+                                        .then(amountsOut => {
+                                            return this._fromWei(amountsOut[amountsOut.length - 1], outputToken);
                                         })
+                                } else {
+                                    return this._fromWei(tokenAmount, outputToken);
+                                }
+                            })
+                    })
+            } else {
+                return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(amountIn).call()
+                    .then(tokenAmount => {
+                        if (path2.length > 1) {
+                            return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
+                                .then(amountsOut => {
+                                    return this._fromWei(amountsOut[amountsOut.length - 1], outputToken);
                                 })
                         } else {
-                            return this.AutomaticMarketMakerContract.methods.calculateSaleReturn(this._getWei(amountIn, fromToken)).call()
-                                .then(tokenAmount => {
-                                    if (path2.length > 1) {
-                                        return this.uniswapRouter.methods.getAmountsOut(tokenAmount, path2).call()
-                                            .then(amountsOut => {
-                                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                                            })
-                                    } else {
-                                        return this._fromWei(tokenAmount, toToken);
-                                    }
-                                })
-
+                            return this._fromWei(tokenAmount, outputToken);
                         }
-                    } else {
-                        return this.uniswapRouter.methods.getAmountsOut(this._getWei(amountIn, fromToken), path).call()
-                            .then(amountsOut => {
-                                return this._fromWei(amountsOut[amountsOut.length - 1], toToken);
-                            })
-                    }
-                }
+                    })
             }
         }
     }
 
-    getAmountsIn(fromToken, toToken, amountOut) {
-        // if (!this.checkWallet()) return 0
+    getAmountsIn(inputToken, outputToken, amountOut) {
         return -1;
-        // console.log(fromToken, toToken, amountOut);
-        // var path = paths[fromToken][toToken];
-        // return this.uniswapRouter.methods.getAmountsIn(this._getWei(amountOut, fromToken), path).call()
-        //     .then(amountsIn => {
-        //         return this._fromWei(amountsIn[amountsIn.length - 2], toToken);
-        //     }
-        //     )
     }
 }

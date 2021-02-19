@@ -317,7 +317,11 @@ class StakingManager extends Component {
         const { chainId } = this.props
         const currToken = tokensMap[currStake]
         const currStaking = stakingsMap[currStake]
-        const innnerText = <div className="staking-notif-wrap">Important system upgrade: Staking rewards will be temporarily paused, until we have activated the contracts for our automated staking-reward-controlling of tradingFees & transferFees. This will be worked on after launching hundreds of dAssets on our upgraded trading platform. We have taken a snapshot (block 11876332), if you stay in the pool, you will get a special reward to make up for the temporary reward pause.</div>
+        const innnerText = <div className="staking-notif-wrap">Important system upgrade: Staking rewards will be temporarily paused,
+        until we have activated the contracts for our automated staking-reward-controlling of tradingFees & transferFees.
+        This will be worked on after launching hundreds of dAssets on our upgraded trading platform.
+        We have taken a snapshot (block 11880575),
+         if you stay in the pool, you will get a special reward to make up for the temporary reward pause.</div>
 
 
         this.blurBG()

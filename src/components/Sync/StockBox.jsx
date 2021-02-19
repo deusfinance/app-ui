@@ -2,6 +2,8 @@ import React from 'react';
 import { getStayledNumber } from '../../utils/utils';
 import { TokenType } from '../../config';
 
+import './styles/stock-box.scss';
+
 const StockBox = (props) => {
 
     const { type, estimated, handleSearchBox, handleTokenInputChange, token, isIPO, isLong } = props
@@ -20,8 +22,6 @@ const StockBox = (props) => {
     const getBalance = () => {
         return token.type === TokenType.Wrapped ? isLong ? token.long?.balance : token.short?.balance : token.balance
     }
-
-
 
     return (<div className="token-box-wrap">
         <div className="token-box">

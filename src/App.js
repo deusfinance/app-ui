@@ -4,16 +4,15 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { injected } from './connectors';
 import { useEagerConnect } from './hooks';
 import Navbar from './components/common/Navbar';
-import Deus from './components/Deus';
-// import Sync from './pages/Sync';
-import XSwap from './pages/XSwap/index';
-import Stonks from './pages/Stonks/index';
-
 import { LoopCircleLoading } from 'react-loadingg';
 import 'react-toastify/dist/ReactToastify.css';
 // import Footer from './components/common/Footer';
-
 import './styles/scss/base.scss';
+
+const Deus = React.lazy(() => import('./components/Deus'));
+const Sync = React.lazy(() => import('./pages/Sync'));
+const Stonks = React.lazy(() => import('./pages/Stonks/index'));
+const Bridge = React.lazy(() => import('./pages/Bridge/BridgeWrap'));
 
 const NotFound = React.lazy(() => import('./components/NotFound'));
 
@@ -43,9 +42,9 @@ function App() {
       <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
         <Switch>
           <Route exact path="/not-found" component={NotFound} />
-          <Route exact path="/synchronizer" component={Stonks} />
-          <Route exact path="/xswap" component={XSwap} />
-          {/* <Route exact path="/synchronizer" component={Sync} /> */}
+          <Route exact path="/bridge" component={Bridge} />
+          <Route exact path="/synchronizer/stonks" component={Stonks} />
+          <Route exact path="/synchronizer" component={Sync} />
           <Redirect exact from="/" to="/swap" />
           <Route path="/" component={Deus} />
           <Redirect to="not-found" />

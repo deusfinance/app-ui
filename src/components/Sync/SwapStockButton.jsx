@@ -3,6 +3,8 @@ import { useWeb3React } from '@web3-react/core';
 import { TokenType } from '../../config';
 import { WaveLoading } from 'react-loadingg';
 
+import './styles/stock-button.scss';
+
 const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleSwap, isLong, prices }) => {
     const web3React = useWeb3React()
     const { account } = web3React
@@ -35,7 +37,7 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleSwap,
 
     if (!account) {
         return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
-            <div className="swap-btn grad Insufficient" style={{ color: "#8d8d8d", background: "transparent" }}>
+            <div className="swap-btn grad Insufficient" >
                 CONNECT WALLET
             </div>
         </div>)
@@ -53,7 +55,7 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleSwap,
 
     if (!conducted && to_token.type !== TokenType.Main) {
         return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
-            <div className="swap-btn grad Insufficient" style={{ color: "#8d8d8d", background: "transparent" }}>
+            <div className="swap-btn grad Insufficient" >
                 SELECT AN ASSET
             </div>
         </div>)
@@ -78,7 +80,7 @@ const SwapStockButton = ({ loading, from_token, remindCap, to_token, handleSwap,
 
         if (errTxt) {
             return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }}>
-                <div className="swap-btn grad Insufficient" style={{ color: "#8d8d8d", background: "transparent" }}>
+                <div className="swap-btn grad Insufficient" >
                     {errTxt}
                 </div>
             </div>)

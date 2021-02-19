@@ -4,6 +4,8 @@ import { TokenType } from '../../config';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { formatEtherscanLink, EtherscanType } from '../../sdk/constant';
 
+import './styles/search-assets.scss';
+
 const SearchAssets = (props) => {
     const [typingTimeout, setTypeout] = useState(0)
     const [currTokens, setCurrToken] = useState([])

@@ -13,10 +13,13 @@
             color: #c6c6c6;
         }
         .bottom {
+            // border: #69c9ce solid 2px;
             display: flex;
+            // flex: 1;
             white-space: nowrap;
             align-items: center;
             justify-content: space-between;
+
             width: 100%;
             margin-top: 4px;
             .input-amount {
@@ -28,12 +31,14 @@
                 border: none;
                 outline-style: none;
                 width: 0px;
+                // font-size: 30px;
                 font-size: 28px;
                 color: #ffffff;
                 background: transparent;
             }
             .max-btn {
                 font-size: 12px;
+                // display: inline-block;
                 padding: 3px 5px;
                 background: linear-gradient(
                     135deg,
@@ -65,7 +70,6 @@
                     border-radius: 50%;
                 }
                 .token-name {
-                    text-transform: uppercase;
                     margin-left: 10px;
                     font-size: 22px;
                     font-weight: 400;
@@ -87,27 +91,6 @@
                 padding-right: 15px;
                 &:hover {
                     opacity: 1;
-                }
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 670px) {
-    .token-box-wrap {
-        .token-box {
-            .bottom {
-                .token-info {
-                    .futures {
-                        width: 50px;
-                    }
-                    .token-name {
-                        font-size: 17px;
-                    }
-                    .token-icon {
-                        margin-left: 8px;
-                        margin-right: -5px;
-                    }
                 }
             }
         }

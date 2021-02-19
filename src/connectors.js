@@ -19,6 +19,7 @@ const supportedChainIds = [
     3, // Ropsten
     4, // Rinkeby
     42, // Kovan
+    100, // xDAI
 ]
 
 

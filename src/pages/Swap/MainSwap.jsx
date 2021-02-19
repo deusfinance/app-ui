@@ -12,6 +12,7 @@ import Routes from '../../components/Swap/Routes';
 // import Volume from './Volume/Volume';
 import '../../components/Swap/mainSwap.scss';
 import Slippage from '../../components/Swap/Slippage';
+import SwapWrap from '../../components/Swap/SwapWrap';
 
 
 
@@ -380,63 +381,62 @@ class MainSwap extends Component {
             {!isMobile && <ToastContainer style={{ width: "450px" }} />}
             <Title web3={web3} claimable_amount={claimable_amount} />
 
-            {/* <Volume /> */}
+            <SwapWrap>
+                <div className="swap-box">
 
-            <div className="swap-container-wrap">
-                <div className="swap-container">
+                    <TokenBox type="from" token={from_token}
+                        estimated=""
+                        handleSearchBox={this.handleSearchBox}
+                        handleTokenInputChange={this.handleTokenInputChange}
+                    />
 
-                    <div className="swap-box-wrap">
-                        <div className="swap-box">
+                    <img
+                        onClick={this.handleChangeType}
+                        src={process.env.PUBLIC_URL + "/img/arrow.svg"}
+                        alt="arrow"
+                        className="arrow" />
 
-                            <TokenBox type="from" token={from_token}
-                                estimated=""
-                                handleSearchBox={this.handleSearchBox}
-                                handleTokenInputChange={this.handleTokenInputChange}
-                            />
+                    <TokenBox type="to" token={to_token}
+                        estimated=" (estimated)"
+                        handleSearchBox={this.handleSearchBox}
+                        handleTokenInputChange={this.handleTokenInputChange}
+                    />
 
-                            <img
-                                onClick={this.handleChangeType}
-                                src={process.env.PUBLIC_URL + "/img/arrow.svg"}
-                                alt="arrow"
-                                className="arrow" />
+                    <TokenMarket
+                        handleSwich={this.handleSwichPerPrice}
+                        swap={swap}
+                        toAmount={toAmount}
+                        fromAmount={fromAmount}
+                        fromPerTo={fromPerTo}
+                        perPrice={""}
+                        tvl={""}
+                        tradeVol={""} />
 
-                            <TokenBox type="to" token={to_token}
-                                estimated=" (estimated)"
-                                handleSearchBox={this.handleSearchBox}
-                                handleTokenInputChange={this.handleTokenInputChange}
-                            />
+                    <div style={{ margin: "8px 0" }}></div>
 
-                            <TokenMarket
-                                handleSwich={this.handleSwichPerPrice}
-                                swap={swap}
-                                toAmount={toAmount}
-                                fromAmount={fromAmount}
-                                fromPerTo={fromPerTo}
-                                perPrice={""}
-                                tvl={""}
-                                tradeVol={""} />
-
-                            <div style={{ margin: "8px 0" }}></div>
-
-                            <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
-                        </div>
-
-                        <SearchBox
-                            showSearchBox={showSearchBox}
-                            choosedToken={swap[searchBoxType].name}
-                            handleSearchBox={this.handleSearchBox}
-                            allTokens={allTokens}
-                            tokens={tokens}
-                            handleFilterToken={this.state.tokensMap}
-                            handleChangeToken={this.handleChangeToken}
-                        />
-
-                        {/* <PriceBox impact={""} vaultsFee={""} /> */}
-                        <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} />
-                        {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
-                    </div>
+                    <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                 </div>
-            </div>
+
+                <SearchBox
+                    showSearchBox={showSearchBox}
+                    choosedToken={swap[searchBoxType].name}
+                    handleSearchBox={this.handleSearchBox}
+                    allTokens={allTokens}
+                    tokens={tokens}
+                    handleFilterToken={this.state.tokensMap}
+                    handleChangeToken={this.handleChangeToken}
+                />
+
+                {/* <PriceBox impact={""} vaultsFee={""} /> */}
+                <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} />
+                {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
+
+
+            </SwapWrap>
+
+
+
+
         </div>);
     }
 }

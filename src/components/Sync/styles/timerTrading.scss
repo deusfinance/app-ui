@@ -1,0 +1,54 @@
+.timer-trading-wrap {
+    width: 100%;
+    padding: 0 16px;
+    background: #0d0d0d;
+    border: 1px solid #1c1c1c;
+    margin-top: 0px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    color: #ffffff;
+    padding: 15px 10px;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    .timer {
+        font-size: 25px;
+    }
+    .close {
+        color: #d00000;
+    }
+    .open {
+        color: #00d16c;
+    }
+    .title {
+        font-size: 12.5px;
+        color: #ffffff;
+        opacity: 0.5;
+        margin-top: 5px;
+    }
+
+    .timer-trading {
+        font-family: Monument Grotesk;
+        font-weight: 400;
+        width: 100%;
+        text-align: center;
+        margin: auto;
+        .title {
+            font-size: 12.5px;
+            color: #ffffff;
+            opacity: 0.5;
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .timer-trading-wrap {
+        background-color: #292929;
+    }
+    .timer-trading-wrap .get-time {
+        margin-top: 10px;
+    }
+}

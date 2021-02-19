@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './styles/contucted-text.scss';
+
 const ConductedText = () => {
     return (<p className="conducted-desc">
         <span style={{ textTransform: "uppercase", }}>conduct *  -{`>`} long/short  -{`>`} synchronize <br /></span>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 
+import './styles/personal-cap.scss';
+
 const PersonalCap = ({ remindedAmount, totalAmount }) => {
 
     const [posX, setPosX] = useState(0)

@@ -33,12 +33,69 @@
     }
 }
 
+.action-btn {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+
+    .action {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #000000;
+        background: #00cfc8;
+        margin: 0 10px;
+        width: 45%;
+        height: 55px;
+        border-radius: 10px;
+        font-size: 25px;
+        cursor: pointer;
+        &:hover {
+            filter: brightness(1.2);
+        }
+    }
+    .disabled {
+        background: #cecece;
+        color: rgba(0, 0, 0, 0.5);
+        cursor: default;
+        &:hover {
+            filter: brightness(1);
+        }
+    }
+}
+.indicator {
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    .cyc {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #00cfc8;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        color: #000000;
+    }
+
+    .c-line {
+        background: #00cfc8;
+        height: 4px;
+        width: 50%;
+    }
+    .disabled {
+        background: #cecece;
+        color: rgba(0, 0, 0, 0.5);
+    }
+}
+
 @media screen and (max-width: 670px) {
     .swap-btn-wrap {
         height: 50px;
         .swap-btn {
             font-size: 18px;
-
             border-radius: 6px;
         }
     }

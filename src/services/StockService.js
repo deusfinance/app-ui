@@ -52,7 +52,7 @@ export class StockService {
         3: "Ropsten",
         4: "Rinkeby",
         42: "Kovan",
-        100: "Xdai",
+        100: "xDAI",
     }
 
     _getWei(number, token = "eth") {

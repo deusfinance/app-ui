@@ -22,7 +22,12 @@
         }
         .bottom {
             color: #000000;
-
+            .token-info {
+                margin-right: 14px;
+                .select-icon {
+                    display: none;
+                }
+            }
             .input-amount {
                 color: #000000;
             }

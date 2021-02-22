@@ -170,6 +170,7 @@ const Sync = () => {
             handleInitToken(vstype, tokens[0])
         }
         setLong(true)
+        setLongPrice("")
         handleSearchBox(false)
     }
 
@@ -346,7 +347,10 @@ const Sync = () => {
 
 
     return (<div className="deus-swap-wrap" style={{ paddingTop: 0, overflowX: "hidden" }}>
-        <MovableNotif text={innnerText} />
+        {/* <MovableNotif text={innnerText} /> */}
+
+        <div style={{ margin: "64px 0" }}></div>
+
 
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
         <Title isStock={true} claimable_amount={claimable_amount} />
@@ -361,7 +365,7 @@ const Sync = () => {
             handleChangeToken={handleChangeToken}
         />
 
-        <div className="swap-container-wrap" >
+        <div className="swap-container-wrap">
             <div className="swap-container">
                 <div className="swap-box-wrap">
                     <div className="swap-box">

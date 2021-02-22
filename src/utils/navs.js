@@ -99,6 +99,13 @@ export default [
                 out: true,
                 exact: true,
             },
+            {
+                id: "vote",
+                text: "DEUS vote",
+                path: "https://vote.deus.finance",
+                out: true,
+                exact: true,
+            },
         ]
     },
 ]

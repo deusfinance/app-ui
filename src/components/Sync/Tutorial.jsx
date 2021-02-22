@@ -1,8 +1,10 @@
 import React from 'react';
 
 import './styles/tutorial.scss';
+import { useState } from 'react';
 
 const Tutorial = () => {
+    const [currStep, setCurrStep] = useState(2)
     const steps = [
         {
             title: "get xDAI",
@@ -30,14 +32,15 @@ const Tutorial = () => {
         <div className="steps">
             {
                 steps.map((step, index) => {
+                    const finished = (index + 1) < currStep
                     return (
-                        <div className="step-content" key={index}>
+                        <div className="step-content" key={index} style={{ opacity: finished ? "0.75" : "1" }}>
                             <div className="step">
                                 <div className="number">{index + 1}</div>
                                 <div className="title">{step.title}
-                                    <span className="passed">
+                                    {finished && <span className="passed">
                                         <img src={process.env.PUBLIC_URL + "/img/bridge/passed.svg"} alt="passed" />
-                                    </span>
+                                    </span>}
                                 </div>
                                 <div className="actions">
                                     <div className="grad-wrap" onClick={step.onClick}>
@@ -47,10 +50,9 @@ const Tutorial = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="decription">
-
+                            {!finished && <div className="decription">
                                 {step.description}
-                            </div>
+                            </div>}
                         </div>)
                 })
             }

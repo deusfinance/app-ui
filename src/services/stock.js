@@ -23,12 +23,12 @@ export const handleGetAmountsOut = (from, to, amount, isLong, priceStocks, setLo
     if (to.type !== TokenType.Main) {
         const p = isLong ? priceStocks[to.id].Long : priceStocks[to.id].Short
         const sum = (parseFloat(amount) / p.price)
-        setLongPrice(parseFloat((priceStocks[to.id].Long.price)) * (1 + priceStocks[to.id].Long.fee))
+        setLongPrice(parseFloat((priceStocks[to.id].Long.price)))
         return sum * (1 - p.fee)
     } else {
         const p = isLong ? priceStocks[from.id].Long : priceStocks[from.id].Short
         const sum = (parseFloat(amount) * p.price)
-        setLongPrice(parseFloat(priceStocks[from.id].Long.price) * (1 - priceStocks[from.id].Long.fee))
+        setLongPrice(parseFloat(priceStocks[from.id].Long.price))
         return sum * (1 - p.fee)
     }
 }
@@ -37,12 +37,13 @@ export const handleGetAmountsIn = (from, to, amount, isLong, priceStocks, setLon
     if (from.type !== TokenType.Main) {
         const p = isLong ? priceStocks[from.id].Long : priceStocks[from.id].Short
         const sum = (parseFloat(amount) / p.price)
-        setLongPrice(priceStocks[from.id].Long.price * (1 + priceStocks[from.id].Long.fee))
+        console.log(priceStocks[from.id]);
+        setLongPrice(priceStocks[from.id].Long.price)
         return sum * (1 + p.fee)
     } else {
         const p = isLong ? priceStocks[to.id].Long : priceStocks[to.id].Short
         const sum = (parseFloat(amount) * p.price)
-        setLongPrice(priceStocks[to.id].Long.price * (1 + priceStocks[to.id].Long.fee))
+        setLongPrice(priceStocks[to.id].Long.price)
         return sum * (1 + p.fee)
     }
 }

@@ -104,6 +104,14 @@ const Navbar = () => {
     const connectCalass = account ? "connected" : "connect"
     //DEUS staking
 
+    const networkNames = {
+        1: "Mainnet",
+        3: "Ropsten",
+        4: "Rinkeby",
+        42: "Kovan",
+        100: "xDAI"
+    }
+
     return (<>
         {showWallets && <Wallets setShow={setShowWallets} />}
         <nav id="nav">
@@ -114,12 +122,17 @@ const Navbar = () => {
                             <img src={process.env.PUBLIC_URL + "/img/logo.svg"} alt="logo" />
                         </a>
                     </li>
+
                     {<li className="grad-wrap connect-wrap" onClick={handleConnect}>
                         <div className={`grad ${connectCalass}`} style={{ cursor: connectCalass === "connect" ? "pointer" : "default" }}>{formatAddress(account)}</div>
                     </li>}
 
+                    {<li className="grad-wrap connect-wrap" style={{ height: "35px", fontSize: "15px", marginLeft: "10px", width: "100px" }}>
+                        <div className={`grad connected`} style={{ cursor: "default" }}>{networkNames[chainId]}</div>
+                    </li>}
+
                     {claimButton}
-                    {chainId === 4 && <li className="rinkeby">Rinkeby <span role="img" aria-label="glass" >😎</span> </li>}
+
                 </ul>
             </div>
 

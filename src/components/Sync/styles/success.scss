@@ -1,0 +1,31 @@
+.success-wrap {
+    margin: auto;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    text-align: center;
+    .title {
+        font-size: 20px;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+    }
+    .about {
+        font-size: 17px;
+    }
+    .grad-wrap {
+        margin: auto;
+        margin-top: 40px;
+        height: 53px;
+        border-radius: 10px;
+        width: 95%;
+        max-width: 523px;
+        background: linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%);
+        &:hover {
+            filter: brightness(1.2);
+        }
+        .igrad {
+            border-radius: 10px;
+
+            font-size: 25px;
+        }
+    }
+}

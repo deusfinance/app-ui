@@ -11,7 +11,7 @@ import './styles/scss/base.scss';
 
 const Deus = React.lazy(() => import('./components/Deus'));
 const Sync = React.lazy(() => import('./pages/Sync'));
-const Stonks = React.lazy(() => import('./pages/Stonks/index'));
+// const Stonks = React.lazy(() => import('./pages/Stonks/index'));
 const Bridge = React.lazy(() => import('./pages/Bridge/BridgeWrap'));
 
 const NotFound = React.lazy(() => import('./components/NotFound'));
@@ -43,7 +43,7 @@ function App() {
         <Switch>
           <Route exact path="/not-found" component={NotFound} />
           <Route exact path="/bridge" component={Bridge} />
-          <Route exact path="/synchronizer/stonks" component={Stonks} />
+          {/* <Route exact path="/synchronizer/swaggy" component={Stonks} /> */}
           <Route exact path="/synchronizer" component={Sync} />
           <Redirect exact from="/" to="/swap" />
           <Route path="/" component={Deus} />

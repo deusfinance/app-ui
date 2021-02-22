@@ -3,18 +3,18 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
-import _ from "lodash"
 import { notify } from '../../utils/utils';
-
 import { TokenType } from '../../config';
 import BridgeButton from '../../components/Sync/BridgeButton';
 import StockBox from '../../components/Sync/StockBox';
 import { StockService } from '../../services/StockService';
-import { handleCalcPairPrice, deaToken, daiToken, daiTokenRinbkeby, xdaiToken } from '../../services/stock';
+import { handleCalcPairPrice, deaToken, daiTokenRinbkeby, xdaiToken } from '../../services/stock';
 import SyncWrap from '../../components/Sync/SyncWrap';
 import Tutorial from '../../components/Sync/Tutorial';
+
 import './../../components/Swap/sync.scss';
 import './../../components/Swap/bridge.scss';
+import Success from '../../components/Sync/Success';
 
 
 const BridgeWrap = () => {
@@ -85,7 +85,6 @@ const BridgeWrap = () => {
     }
 
     const handleChangeType = () => {
-
         const { from, to } = swap
         from.amount = ""
         to.amount = ""
@@ -208,7 +207,9 @@ const BridgeWrap = () => {
 
         <Tutorial />
 
-        <SyncWrap>
+        {/* <Success /> */}
+
+        {    true && <SyncWrap>
             <div className="swap-box">
 
                 <p className="xtitle">xDAI BRIDGE</p>
@@ -243,10 +244,9 @@ const BridgeWrap = () => {
                     loading={false}
                     isMobile={isMobile} />
 
-
                 <div style={{ margin: "4px 0" }}></div>
             </div>
-        </SyncWrap >
+        </SyncWrap >}
     </div >);
 }
 

@@ -57,7 +57,7 @@ const SearchAssets = (props) => {
         setCurrToken(newTokens)
     }
     return (<>
-        { showSearchBox && <div className="search-box-wrap" style={{ top: "50%" }}>
+        { showSearchBox && <div className="search-box-wrap" style={{ top: "50%", position: "fixed" }}>
             <div className="search-box">
                 <div className="label">
                     <p> </p>

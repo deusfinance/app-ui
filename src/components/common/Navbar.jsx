@@ -1,4 +1,3 @@
-import MetaMaskOnboarding from '@metamask/onboarding';
 import { useWeb3React } from '@web3-react/core';
 import { injected, } from '../../connectors';
 import React, { useState, useEffect } from 'react'
@@ -7,8 +6,8 @@ import navbarItems from "../../utils/navs"
 import SubNavbar from './SubNavbar';
 import { formatAddress, getStayledNumber, notify, isDesktop } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
-import './navbar.scss';
 import Wallets from './Wallets';
+import './navbar.scss';
 
 const Navs = navbarItems
 
@@ -19,8 +18,29 @@ const Navbar = () => {
     const [menuMobileClass, setMenuMobileClass] = useState("close-menu");
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
-    const [, setIsMetamask] = useState(null)
     const [showWallets, setShowWallets] = useState(false)
+    const [tvl, setTvl] = useState(null)
+
+    useEffect(() => {
+        const getTVL = async () => {
+            const url = "https://app.deus.finance/tvl.json"
+            try {
+                const resp = await fetch(url)
+                const result = await resp.json()
+                const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.etherLockedInMarketMaker)
+
+                var formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0
+                });
+                setTvl(formatter.format(intResult))
+            } catch (error) {
+                console.log("fetch " + url + " had some error", error);
+            }
+        }
+        getTVL()
+    }, [])
 
 
 
@@ -57,15 +77,12 @@ const Navbar = () => {
         }
     }
 
-
     const claimButton = parseFloat(claimAmount) > 0.000001 ? <li className="grad-wrap claimable-btn" onClick={handleClaim}>
         <div className={`grad `}>
             <div> {getStayledNumber(claimAmount)} ETH</div>
             <div>claim</div>
         </div>
     </li> : null
-
-
 
     useEffect(() => {
         const getClaimable = async (swapServie) => {
@@ -127,11 +144,15 @@ const Navbar = () => {
                         <div className={`grad ${connectCalass}`} style={{ cursor: connectCalass === "connect" ? "pointer" : "default" }}>{formatAddress(account)}</div>
                     </li>}
 
-                    {<li className="grad-wrap connect-wrap" style={{ height: "35px", fontSize: "15px", marginLeft: "10px", width: "100px" }}>
+                    {chainId && <li className="grad-wrap connect-wrap network-name" >
                         <div className={`grad connected`} style={{ cursor: "default" }}>{networkNames[chainId]}</div>
                     </li>}
 
                     {claimButton}
+
+                    {tvl && <li className="grad-wrap connect-wrap tvl-wrap" >
+                        <div className={`grad connected`} >{"TVL:" + tvl}</div>
+                    </li>}
 
                 </ul>
             </div>

@@ -13,6 +13,8 @@ import Routes from '../../components/Swap/Routes';
 import '../../components/Swap/mainSwap.scss';
 import Slippage from '../../components/Swap/Slippage';
 import SwapWrap from '../../components/Swap/SwapWrap';
+import PriceBox from '../../components/Swap/PriceBox';
+import SelectedNetworks from '../../components/Sync/SelectNetworks';
 
 
 
@@ -32,12 +34,14 @@ class MainSwap extends Component {
         showSearchBox: false,
         searchBoxType: "from",
         fromPerTo: true,
+        minPerTo: 0,
         claimable_amount: null,
         typingTimeout: 0,
         typeTransaction: "",
         slippageAmount: 0.5,
         toAmount: "",
-        fromAmount: ""
+        fromAmount: "",
+        priceImpact: 0
 
     }
 
@@ -197,6 +201,7 @@ class MainSwap extends Component {
             return
         }
 
+        this.handlePriceImpact()
 
         try {
             const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : await web3.getAmountsIn(swap.from.name, swap.to.name, amount)
@@ -308,6 +313,7 @@ class MainSwap extends Component {
             const tmp = swap[vstype].name
             this.handleInitToken(vstype, tmp)
         }
+        this.setState({ minPerTo: 0 })
         this.handleInitToken(searchBoxType, tokenName)
         this.handleSearchBox(false)
     }
@@ -336,9 +342,11 @@ class MainSwap extends Component {
         try {
             this.setState({ typeTransaction: "swap" })
 
-            !(swap.from.allowances > 0) ?
+            const data = !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :
                 await web3.swapTokens(from.name, to.name, from.amount, (1 - (slippageAmount / 100)) * (to.amount), notify(this.methods))
+
+            console.log(data);
         } catch (error) {
 
         }
@@ -362,23 +370,34 @@ class MainSwap extends Component {
         return 0
     }
 
-
+    handlePriceImpact = async () => {
+        const { swap, web3 } = this.state
+        try {
+            const result = await web3.getAmountsOut(swap.from.name, swap.to.name, 0.1)
+            this.setState({ minPerTo: parseFloat(result) })
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     render() {
 
-        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount, slippageAmount } = this.state
+        const { showSearchBox, swap, fromPerTo, toAmount, fromAmount,
+            searchBoxType, tokens, web3, claimable_amount, slippageAmount, minPerTo } = this.state
         const { allTokens } = this.props
         const from_token = swap.from
         const to_token = swap.to
         const approved = this.isApproved()
         const isMobile = window.innerWidth < 670
         const { chainId } = this.props
-
-
+        const priceImpactResult = toAmount === "" ? 0 : ((1 - (toAmount / ((fromAmount / 0.1) * minPerTo))) * 100).toFixed(3)
         return (<div className="deus-swap-wrap">
 
             {!isMobile && <ToastContainer style={{ width: "450px" }} />}
+
+
+
             <Title web3={web3} claimable_amount={claimable_amount} />
 
             <SwapWrap>
@@ -428,14 +447,17 @@ class MainSwap extends Component {
                 />
 
                 {/* <PriceBox impact={""} vaultsFee={""} /> */}
-                <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} />
+                {<PriceBox impact={priceImpactResult} />}
+
                 {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
+                <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} />
 
 
             </SwapWrap>
 
-
-
+            <div className='tut-left-wrap'>
+                <SelectedNetworks />
+            </div>
 
         </div>);
     }

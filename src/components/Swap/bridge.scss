@@ -1,4 +1,15 @@
+.app-body {
+    overflow-x: hidden;
+    min-height: calc(100vh - 55px);
+    // padding: 50px 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .deus-swap-wrap {
+    // height: 100vh;
+
     .swap-container-wrap {
         .swap-container {
             .swap-box-wrap {
@@ -53,5 +64,50 @@
             background: #cecece;
             color: rgba(0, 0, 0, 0.5);
         }
+    }
+}
+
+.tut-left-wrap {
+    position: absolute;
+    z-index: 1;
+    // background: coral;
+    left: 20px;
+    top: 30px;
+    max-width: 300px;
+    .min-tut-wrap {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 1150px) {
+    .tut-left-wrap {
+        position: relative !important;
+        margin: auto !important;
+        text-align: center !important;
+        top: 0 !important;
+        left: 0 !important;
+        margin-top: 30px !important;
+        margin-bottom: 40px !important;
+        // z-index: 2;
+        // left: 20px;
+        // top: 100px;
+        .min-tut-wrap {
+            margin: 0 !important;
+            margin-top: 10px !important;
+        }
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .app-body {
+        min-height: calc(100vh - 55px);
+        padding: 50px 0;
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .app-body {
+        min-height: calc(100vh - 55px);
+        padding: 0;
     }
 }

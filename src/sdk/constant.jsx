@@ -21,6 +21,7 @@ export const EtherscanType = {
     Account: 1,
     TokenBalance: 2,
     Transaction: 3,
+    Token: 4,
 }
 
 // export const EtherscanTypeData = {
@@ -30,12 +31,19 @@ export const EtherscanType = {
 // }
 
 export function formatEtherscanLink(type, chainId, address) {
+
+    if (chainId === 100) {
+        return "https://blockscout.com/poa/xdai/address/" + address
+    }
     switch (type) {
         case EtherscanType.Account: {
             return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/address/${address}`
         }
         case EtherscanType.Transaction: {
             return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/tx/${address}`
+        }
+        case EtherscanType.Token: {
+            return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/token/${address}`
         }
         default: {
             return ""

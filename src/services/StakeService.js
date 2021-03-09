@@ -6,7 +6,7 @@ export class StakeService {
 
     constructor(account, chainId) {
         this.account = account;
-        this.chainId = chainId;
+        this.chainId = 1;
         if (!chainId) {
             this.chainId = 1
         }

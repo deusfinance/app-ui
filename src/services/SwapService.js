@@ -311,6 +311,7 @@ export class SwapService {
     }
 
     withdrawPayment(listener) {
+
         let walletWeb3 = new Web3(Web3.givenProvider);
         const AutomaticMarketMakerContract = new walletWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
         return AutomaticMarketMakerContract.methods.withdrawPayments(this.account)

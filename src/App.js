@@ -6,20 +6,19 @@ import { useEagerConnect } from './hooks';
 import Navbar from './components/common/Navbar';
 import { LoopCircleLoading } from 'react-loadingg';
 import 'react-toastify/dist/ReactToastify.css';
-// import Footer from './components/common/Footer';
 import './styles/scss/base.scss';
-
+// import Footer from './components/common/Footer';
 const Deus = React.lazy(() => import('./components/Deus'));
 const Sync = React.lazy(() => import('./pages/Sync'));
-// const Stonks = React.lazy(() => import('./pages/Stonks/index'));
+const SyncXdai = React.lazy(() => import('./pages/SyncXdai'));
 const Bridge = React.lazy(() => import('./pages/Bridge/BridgeWrap'));
-
+// const Under = React.lazy(() => import('./pages/Maintenance/Under'));
 const NotFound = React.lazy(() => import('./components/NotFound'));
+
 
 function App() {
 
   const context = useWeb3React()
-  // const { connector, library, chainId, account, activate, deactivate, active, error } = context
   const { connector, chainId } = context
 
   // handle logic to recognize the connector currently being activated
@@ -31,7 +30,6 @@ function App() {
     }
   }, [activatingConnector, connector, chainId])
 
-  // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
   useEagerConnect(injected)
 
   return (<>
@@ -39,11 +37,13 @@ function App() {
     <div id="blur-pop"></div>
     <Navbar cweb={context} />
     <div className="app-body">
+
       <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
         <Switch>
           <Route exact path="/not-found" component={NotFound} />
-          <Route exact path="/bridge" component={Bridge} />
+          <Route exact path="/crosschain/xdai/tutorial" component={Bridge} />
           {/* <Route exact path="/synchronizer/swaggy" component={Stonks} /> */}
+          <Route exact path="/crosschain/xdai/synchronizer" component={SyncXdai} />
           <Route exact path="/synchronizer" component={Sync} />
           <Redirect exact from="/" to="/swap" />
           <Route path="/" component={Deus} />

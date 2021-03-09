@@ -1,5 +1,5 @@
 import React from 'react';
-
+//Tools / Learn /Futures/ Synchronizer / App
 export default [
     {
         id: "app",
@@ -14,12 +14,54 @@ export default [
                 exact: true,
 
             },
+            // {
+            //     id: "synthetics",
+            //     text: "SYNTHETICS",
+            //     path: "/synchronizer",
+            //     exact: true,
+            // },
             {
-                id: "synthetics",
-                text: "SYNTHETICS",
+                id: "staking",
+                text: "STAKING",
+                path: "/staking",
+                exact: false,
+            },
+
+            {
+                id: "vaults",
+                text: "VAULTS",
+                path: "/vaults",
+                exact: true,
+            },
+        ]
+    },
+
+    {
+        id: "sync",
+        text: "SYNCHRONIZER",
+        path: "/",
+        exact: true,
+        children: [
+            {
+                id: "mainsync",
+                text: "MAINNET",
                 path: "/synchronizer",
                 exact: true,
             },
+            {
+                id: "crosschain",
+                text: "xDAI",
+                path: "/crosschain/xdai/synchronizer",
+                exact: true,
+            },
+        ]
+    },
+    {
+        id: "futures",
+        text: "FUTURES",
+        path: "/",
+        exact: true,
+        children: [
             {
                 id: "coinbase",
                 text: "COINBASE",
@@ -38,20 +80,7 @@ export default [
                 text: "MUSK",
                 path: "/musk",
                 exact: true,
-            },
-            {
-                id: "staking",
-                text: "STAKING",
-                path: "/staking",
-                exact: false,
-            },
-
-            {
-                id: "vaults",
-                text: "VAULTS",
-                path: "/vaults",
-                exact: true,
-            },
+            }
         ]
     },
     {
@@ -78,6 +107,7 @@ export default [
             },
         ]
     },
+
     {
         id: "tools",
         text: "TOOLS",

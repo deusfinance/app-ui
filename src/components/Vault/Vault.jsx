@@ -11,6 +11,7 @@ import { notify, formatBalance, setBackground } from '../../utils/utils';
 
 import { ToastContainer } from 'react-toastify';
 import './vaults.scss'
+import ChainPupop from '../common/Popup/ChainPopup';
 
 class Vault extends Component {
     state = {
@@ -279,11 +280,36 @@ class Vault extends Component {
     render() {
         const { locked, showLockAlert, currToken, currVault, currSand, vaults, vaultsList, allTokens } = this.state
 
+        const { chainId } = this.props
 
         const timetoken = allTokens.timetoken
 
         return (<div>
             <ToastContainer style={{ width: "400px" }} />
+
+
+            <ChainPupop
+                title={"ARE YOU IN THE RIGHT PLACE?"}
+                show={chainId && chainId !== 1}
+                close={false}
+                handlePopup={() => console.log()}
+                popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
+                    <div>
+                        This page is specific for Ethereum mainnet and it seems like you are connected to another network.
+                </div>
+                    <div style={{ marginTop: "20px" }}>
+                        1) Change your wallets network to Ethereum <br />
+                        2) Go to Crosschain
+                </div>
+
+                    <div style={{ marginTop: "20px" }}>
+                        Need more help?<br />
+                        <a href="https://wiki.deus.finance" target="_blank" style={{ marginTop: "10px" }}>Visit our wiki ↗</a>
+                    </div>
+
+                </div>}
+            />
+
             <div style={{ position: "relative" }}>
 
                 {/* {unlocked && <UnLockPupop

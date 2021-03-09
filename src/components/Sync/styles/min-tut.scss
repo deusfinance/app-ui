@@ -1,0 +1,21 @@
+.min-tut-wrap {
+    background-color: #0d0d0d;
+    font-family: Monument Grotesk;
+    font-weight: 400;
+    padding: 31px 20px 29px 20px;
+    width: 100%;
+    border: 2px solid #1c1c1c;
+    border-radius: 10px;
+    color: #ffffff;
+    display: inline-block;
+    .title {
+        opacity: 0.5;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .action-btn {
+        width: 100%;
+        font-size: 12.5px;
+    }
+}

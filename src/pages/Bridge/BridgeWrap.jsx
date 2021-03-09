@@ -12,9 +12,11 @@ import { handleCalcPairPrice, deaToken, daiTokenRinbkeby, xdaiToken } from '../.
 import SyncWrap from '../../components/Sync/SyncWrap';
 import Tutorial from '../../components/Sync/Tutorial';
 
-import './../../components/Swap/sync.scss';
+// import './../../components/Swap/sync.scss';
 import './../../components/Swap/bridge.scss';
 import Success from '../../components/Sync/Success';
+import SelectedNetworks from '../../components/Sync/SelectNetworks';
+import MinToturial from '../../components/Sync/MinTutorials';
 
 
 const BridgeWrap = () => {
@@ -205,48 +207,17 @@ const BridgeWrap = () => {
     return (<div className="deus-swap-wrap" style={{ paddingTop: 0, overflowX: "hidden" }}>
         <ToastContainer style={{ width: "450px" }} />
 
+
+
         <Tutorial />
+
+        <div className='tut-left-wrap'>
+            <SelectedNetworks />
+            <MinToturial isOpen={false} />
+        </div>
 
         {/* <Success /> */}
 
-        {    true && <SyncWrap>
-            <div className="swap-box">
-
-                <p className="xtitle">xDAI BRIDGE</p>
-                <StockBox
-                    type="from"
-                    token={swap.from}
-                    estimated=""
-                    handleSearchBox={handleSearchBox}
-                    handleTokenInputChange={handleTokenInputChange}
-                />
-
-                <img
-                    onClick={handleChangeType}
-                    src={process.env.PUBLIC_URL + "/img/arrow-black.svg"}
-                    alt="arrow"
-                    className="arrow" />
-
-                <StockBox
-                    type="to"
-                    token={swap.to}
-                    estimated=" (estimated)"
-                    handleSearchBox={handleSearchBox}
-                    handleTokenInputChange={handleTokenInputChange}
-                />
-
-                <div style={{ margin: "40px 0" }}></div>
-
-                <BridgeButton
-                    handleSwap={handleSwap}
-                    from_token={from_token}
-                    to_token={to_token}
-                    loading={false}
-                    isMobile={isMobile} />
-
-                <div style={{ margin: "4px 0" }}></div>
-            </div>
-        </SyncWrap >}
     </div >);
 }
 

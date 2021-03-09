@@ -16,10 +16,11 @@ import { handleCalcPairPrice, deaToken, daiToken, fetcher, emptyToken } from '..
 import './../../components/Swap/mainSwap.scss';
 import { useWeb3React } from '@web3-react/core';
 import PersonalCap from '../../components/Sync/PersonalCap';
-import TimerTrading from '../../components/Sync/TimerTrading';
-import { MovableNotif } from '../../components/common/Nofication';
-import { assetsTitle } from '../../utils/constant';
-import { Link } from 'react-router-dom';
+// import TimerTrading from '../../components/Sync/TimerTrading';
+// import { MovableNotif } from '../../components/common/Nofication';
+
+import SelectedNetworks from '../../components/Sync/SelectNetworks';
+// import MinToturial from '../../components/Sync/MinTutorials';
 
 
 const Sync = () => {
@@ -58,12 +59,12 @@ const Sync = () => {
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const { account, chainId } = useWeb3React()
-    const [web3Class, setWeb3Class] = useState(new StockService(account, chainId))
+    const [web3Class, setWeb3Class] = useState(new StockService(account, 1))
 
     let transactionType = {}
     useEffect(() => {
         if (account && chainId) {
-            setWeb3Class(new StockService(account, chainId))
+            setWeb3Class(new StockService(account, 1))
         }
         initialCap()
     }, [account, chainId])
@@ -124,6 +125,7 @@ const Sync = () => {
     }, [isLong, prices])
 
     const initialCap = useCallback(async () => {
+        if (chainId !== 1) return 0
         if (account) {
             setLoadingCAP(true)
             web3Class.getTotalCap(account).then(total => {
@@ -324,23 +326,23 @@ const Sync = () => {
         </div>)
     }
 
-    let innnerText = <>
-        <div className="swaggy-notif">
-            <div className="seprator"  >
-                {assetsTitle.map((asset, i) => {
-                    return <span key={i}><span className="number">10%</span><span className="symbol">&nbsp;{asset.symbol}{assetsTitle.length > i + 1 ? "," : ""}&nbsp;</span></span>
-                })}
-                <Link to="/synchronizer/swaggy" className="announce-text">
-                    <p>* NEW *</p>
-                    <img src={process.env.PUBLIC_URL + "/img/sync-title.svg"} alt="SWAGGY" />
-                    <p>  SWAGGY STOCK INDEX – TOP 10 now tradable</p>
-                </Link>
-                {assetsTitle.map((asset, i) => {
-                    return <span key={i}><span className="number">10%</span><span className="symbol">&nbsp;{asset.symbol}{assetsTitle.length > i + 1 ? "," : ""}&nbsp;</span></span>
-                })}
-            </div>
-        </div>
-    </>
+    // let innnerText = <>
+    //     <div className="swaggy-notif">
+    //         <div className="seprator"  >
+    //             {assetsTitle.map((asset, i) => {
+    //                 return <span key={i}><span className="number">10%</span><span className="symbol">&nbsp;{asset.symbol}{assetsTitle.length > i + 1 ? "," : ""}&nbsp;</span></span>
+    //             })}
+    //             <Link to="/synchronizer/swaggy" className="announce-text">
+    //                 <p>* NEW *</p>
+    //                 <img src={process.env.PUBLIC_URL + "/img/sync-title.svg"} alt="SWAGGY" />
+    //                 <p>  SWAGGY STOCK INDEX – TOP 10 now tradable</p>
+    //             </Link>
+    //             {assetsTitle.map((asset, i) => {
+    //                 return <span key={i}><span className="number">10%</span><span className="symbol">&nbsp;{asset.symbol}{assetsTitle.length > i + 1 ? "," : ""}&nbsp;</span></span>
+    //             })}
+    //         </div>
+    //     </div>
+    // </>
 
 
 
@@ -353,6 +355,9 @@ const Sync = () => {
 
 
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
+
+
+
         <Title isStock={true} claimable_amount={claimable_amount} />
 
         <SearchAssets
@@ -425,6 +430,7 @@ const Sync = () => {
                             from_token={from_token}
                             to_token={to_token}
                             isLong={isLong}
+                            // under_maintenance={true}
                             prices={prices}
                             remindCap={remindCap}
                             isMobile={isMobile} />
@@ -441,6 +447,10 @@ const Sync = () => {
                     {/* <ConductedText /> */}
                 </div>
             </div>
+        </div>
+
+        <div className='tut-left-wrap'>
+            <SelectedNetworks />
         </div>
     </div >);
 }

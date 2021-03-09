@@ -6,6 +6,11 @@
 
     .grad-wrap {
         background: linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%);
+        .grad{
+            &:hover{
+            color: #ffffff;
+            }
+        }
     }
     .wrap-btn {
         height: 50px;

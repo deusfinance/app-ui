@@ -6,7 +6,7 @@ import pathsMain from './../../services/graphbk.json'
 
 const Routes = ({ from, to, chainId }) => {
     const path = chainId && chainId === 4 ? pathsRink[from.name][to.name] : pathsMain[from.name][to.name]
-    const AddressMap = AddressChainMap[chainId ? chainId : 1]
+    const AddressMap = AddressChainMap[chainId && chainId === 4 ? chainId : 1]
     const deusPath = {
         "deus": {
             "eth": true,

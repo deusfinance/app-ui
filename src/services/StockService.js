@@ -7,34 +7,19 @@ export class StockService {
 
     constructor(account, chainId = 1) {
         this.account = account;
-        this.chainId = chainId;
-        if (chainId === 1) {
-            this.marketMaker = "0x15e343d8Cebb2d9b17Feb7271bB26e127aa2E537";
-        } else {
-            this.marketMaker = "0xBa13DaE5D0dB9B6683b4ad6b6dbee5251D18eAcb";
-            // this.makeProvider()
-        }
+        this.chainId = 1;
+        this.marketMaker = "0x15e343d8Cebb2d9b17Feb7271bB26e127aa2E537";
         this.timeTokenAddress = this.getTokenAddr("timetoken")
         this.timeStakingAddress = this.getStakingAddr("timetoken")
     }
 
     makeProvider = () => {
         if (this.INFURA_URL) return
-        this.INFURA_URL = 'wss://' + this.getNetworkName().toLowerCase() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+        this.INFURA_URL = 'wss://Mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
     }
 
-    // setWallet(account, chainId) {
-    //     this.account = account
-    //     if (!chainId) return
 
-    //     const currChain = chainId ? chainId : 4
-    //     if (this.chainId !== currChain) {
-    //         // this.INFURA_URL = 'wss://' + this.getNetworkName().toLowerCase() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
-    //         // this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
-    //         // this.chainId = chainId;
-    //     }
-    // }
 
     TokensMaxDigit = {
         wbtc: 8,
@@ -52,7 +37,6 @@ export class StockService {
         3: "Ropsten",
         4: "Rinkeby",
         42: "Kovan",
-        100: "xDAI",
     }
 
     _getWei(number, token = "eth") {
@@ -70,22 +54,8 @@ export class StockService {
     getAddr = (tokenName) => addrs[tokenName][this.chainId.toString()]
 
     getTokenAddr = (tokenName) => addrs["token"][tokenName][this.chainId.toString()]
+
     getStakingAddr = (tokenName) => addrs["staking"][tokenName][this.chainId.toString()]
-
-    // conduct = (token, listener) => {
-
-    //     if (!this.checkWallet()) return 0
-
-    //     const metamaskWeb3 = new Web3(Web3.givenProvider);
-    //     const conductorContract = new metamaskWeb3.eth.Contract(conductorABI, '0x905719b8303350f4528158042C6A0032Ff24c429');
-    //     return conductorContract.methods.conduct(
-    //         token.symbol, token.short_name, token.short_symbol, token.long_name, token.long_symbol, token.sign_for_conduct.v, token.sign_for_conduct.r, token.sign_for_conduct.s
-    //     )
-    //         .send({ from: this.account })
-    //         .once('transactionHash', () => listener("transactionHash"))
-    //         .once('receipt', () => listener("receipt"))
-    //         .once('error', () => listener("error"));
-    // }
 
     getAllowances = (tokenAddress, account, spender = this.marketMaker) => {
         this.makeProvider()

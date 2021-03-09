@@ -155,6 +155,34 @@ export const notify = (methods = method, payload = null) => (state) => {
         }
     }
 };
+export const notifSync = (methods = method, payload = null) => (state) => {
+
+    switch (state) {
+        case "transactionHash": {
+            methods.onStart(payload)
+            break
+        }
+        case "receipt": {
+            methods.onSuccess(payload)
+            break
+        }
+        case "error": {
+            toast.dismiss();
+            toast.warn("Transaction Failed.", {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+            break
+        }
+        default: {
+            toast.dismiss();
+            toast.info("Unhandled Event.", {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+            methods.onError(payload)
+            break;
+        }
+    }
+};
 
 export const checkLimit = (swap, payload) => {
 

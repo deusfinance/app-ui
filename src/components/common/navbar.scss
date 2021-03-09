@@ -47,11 +47,25 @@ nav {
                     }
                 }
             }
-            li:nth-child(2) {
-                margin-left: 22px;
+
+            .connect-wrap {
+                margin-left: 10px;
                 font-size: 15px;
                 height: 35px;
-                width: 200px;
+                width: 150px;
+            }
+
+            li:nth-child(2) {
+                margin-left: 10px;
+                width: 150px;
+            }
+
+            .tvl-wrap {
+                width: 170px;
+            }
+            .network-name {
+                width: 100px;
+                display: flex;
             }
 
             .install {
@@ -81,7 +95,7 @@ nav {
                 }
                 .connected {
                     &:hover {
-                        background: #111111;
+                        // background: #111111;
                         color: #ffffff;
                     }
                 }
@@ -438,11 +452,39 @@ nav {
 
         .left-nav-wrap {
             .left-nav {
+                margin: 0;
                 li:nth-child(2) {
-                    margin-left: 15px;
-                    font-size: 12px;
+                    margin-left: 4px;
+                    font-size: 11px;
                     height: 30px;
-                    width: 130px;
+                    width: 105px;
+                }
+                li:nth-child(1) {
+                    margin-right: 2px;
+                    a {
+                        img {
+                            height: 20px;
+                        }
+                    }
+                }
+
+                li:nth-child(3) {
+                    margin-left: 4px;
+                    font-size: 11px;
+                    height: 30px;
+                    // width: 115px;
+                }
+                .tvl-wrap {
+                    margin-left: 4px;
+                    font-size: 11px;
+                    height: 30px;
+                    width: 115px;
+                    .connected {
+                        cursor: default;
+                    }
+                }
+                .network-name {
+                    display: none;
                 }
             }
         }

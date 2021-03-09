@@ -6,7 +6,7 @@ export class MuskService {
 
     constructor(account, chainId = 1) {
         this.account = account;
-        this.chainId = chainId;
+        this.chainId = 1;
 
         this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));

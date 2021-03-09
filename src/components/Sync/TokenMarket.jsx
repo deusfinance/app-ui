@@ -9,7 +9,7 @@ const TokenMarket = ({ handleSwich, isLong = true, swap, longPrice, toAmount, fr
     const [perPrice, setPerPrice] = useState("")
     const [perTo, setPerTo] = useState(fromPerTo)
     const { from, to } = swap
-    const getTokenName = (token) => token.type !== TokenType.Main ? isLong ? "d" + token.symbol + "-L" : "d" + token.symbol + "-S" : (token.title || token.name)
+    const getTokenName = (token) => token.type !== TokenType.Main ? isLong ? "d" + token.symbol : "d" + token.symbol + "-S" : (token.title || token.name)
 
     useEffect(() => {
         const calcPerPerice = () => {

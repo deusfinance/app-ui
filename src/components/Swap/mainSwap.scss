@@ -26,6 +26,19 @@
     }
 }
 
+// .tut-left-wrap {
+//     position: absolute;
+//     z-index: 1;
+//     // background: coral;
+//     left: 20px;
+//     top: 180px;
+//     width: 100%;
+//     max-width: 300px;
+//     .min-tut-wrap {
+//         margin-top: 10px;
+//     }
+// }
+
 .musk-wrap {
     background: #d00000;
     color: #ffffff;
@@ -564,9 +577,9 @@
                         margin-top: 4px;
                         display: flex;
                         justify-content: space-between;
-                        p:nth-child(1) {
-                            color: rgba(255, 255, 255, 0.75);
-                        }
+                        // p:nth-child(1) {
+                        //     color: rgba(255, 255, 255, 0.75);
+                        // }
                     }
                 }
 

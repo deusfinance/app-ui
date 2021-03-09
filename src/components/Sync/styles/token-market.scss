@@ -45,3 +45,24 @@
         }
     }
 }
+
+
+.short-price-info {
+    display: flex;
+    align-items: center;
+    .icon-info {
+        color: #ffffff;
+        font-family: Monument Grotesk;
+        font-weight: 400;
+        padding-top: 1px;
+        display: inline-block;
+        text-align: center;
+        width: 15px;
+        height: 15px;
+        color: #ffffff;
+        vertical-align: middle;
+        margin-right: 5px;
+        border-radius: 50%;
+        background: linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%);
+    }
+}

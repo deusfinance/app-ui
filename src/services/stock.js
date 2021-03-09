@@ -1,27 +1,41 @@
 import { Token } from '../sdk/tokens';
 import { getStayledNumber } from '../utils/utils';
 import { TokenType } from '../config';
+import { BigNumber } from 'ethers';
 
 export const emptyToken = new Token(1, "0x0", 18, "", "", "/tokens/empty.svg");
 export const deaToken = new Token(1, "0x80ab141f324c3d6f2b18b030f1c4e95d4d658778", 18, "DEA", "DEA Finance", "tokens/dea.svg");
 
 export const daiTokenRinbkeby = new Token(4, "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735", 18, "DAI", "DAI", "/tokens/dai.png");
 export const daiToken = new Token(1, "0x6B175474E89094C44Da98b954EedeAC495271d0F", 18, "DAI", "DAI", "/tokens/dai.png");
-export const xdaiToken = new Token(1, "0x80ab141f324c3d6f2b18b030f1c4e95d4d658778", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
+export const xdaiToken = new Token(1, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
+export const wxdaiToken = new Token(1, "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18, "wxDAI", "wxDAI", "/tokens/xdai.svg");
 
-export const fetcher = async function (url) {
+export const fetcher = async function (url, init) {
     try {
-        const resp = await fetch(url)
+        const resp = await fetch(url, init)
         return await resp.json()
     } catch (error) {
         console.log("fetch " + url + " had some error", error);
     }
 }
 
+// bigDiv = (from, to) => {
+//     const fromBig = new BigNumber(from)
+//     const toBig = new BigNumber(to)
+//     return fromBig.div(toBig).toString()
+// }
+
+// bigMultiply = (from, to) => {
+//     const fromBig = new BigNumber(from)
+//     const toBig = new BigNumber(to)
+//     return fromBig.mul(toBig).toString()
+// }
 
 export const handleGetAmountsOut = (from, to, amount, isLong, priceStocks, setLongPrice) => {
     if (to.type !== TokenType.Main) {
         const p = isLong ? priceStocks[to.id].Long : priceStocks[to.id].Short
+        // console.log(parseFloat(amount), p.price);
         const sum = (parseFloat(amount) / p.price)
         setLongPrice(parseFloat((priceStocks[to.id].Long.price)))
         return sum * (1 - p.fee)
@@ -37,7 +51,7 @@ export const handleGetAmountsIn = (from, to, amount, isLong, priceStocks, setLon
     if (from.type !== TokenType.Main) {
         const p = isLong ? priceStocks[from.id].Long : priceStocks[from.id].Short
         const sum = (parseFloat(amount) / p.price)
-        console.log(priceStocks[from.id]);
+        // console.log(priceStocks[from.id]);
         setLongPrice(priceStocks[from.id].Long.price)
         return sum * (1 + p.fee)
     } else {

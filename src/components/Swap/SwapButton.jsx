@@ -18,7 +18,7 @@ const SwapButton = ({ approved, token, handleSwap, isMobile }) => {
     const amount = typeof (token.amount) === "string" ? parseFloat(token.amount) : token.amount
 
 
-    if (chainId !== 1) {
+    if (chainId && chainId !== 1) {
         return (<>
             <div className="swap-btn-wrap grad-wrap Insufficient ">
                 <div className="swap-btn grad Insufficient" style={{ backgroundColor: "#111111" }} >

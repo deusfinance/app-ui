@@ -331,26 +331,18 @@ class StakingManager extends Component {
         return (<>
             <ToastContainer style={{ width: "400px" }} />
             <ChainPupop
-                title={"ARE YOU IN THE RIGHT PLACE?"}
+                title={"Wrong Network"}
                 show={chainId && chainId !== 1}
                 close={false}
                 handlePopup={() => console.log()}
                 popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
                     <div>
-                        This page is specific for Ethereum mainnet and it seems like you are connected to another network.
-                </div>
-                    <div style={{ marginTop: "20px" }}>
-                        1) Change your wallets network to Ethereum <br />
-                        2) Go to Crosschain
-                </div>
-
-                    <div style={{ marginTop: "20px" }}>
-                        Need more help?<br />
-                        <a href="https://wiki.deus.finance" target="_blank" style={{ marginTop: "10px" }}>Visit our wiki ↗</a>
+                        Looks like you are not connected to the right network.
+                         <br />
+                        <br />
+                        Change network to Mainnet
                     </div>
-
                 </div>}
-
             />
             <TopNotification text={innnerText} />
             { currStake && currToken && <StakePopup

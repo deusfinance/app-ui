@@ -1,5 +1,26 @@
 export const contractEndpoint = "https://etherscan.io/address"
 export const dappLink = "https://metamask.app.link/dapp/deus.finance/"
+
+export const deusChains = {
+    1: "Main",
+    4: "Rinkbey",
+    100: "xDAI",
+    56: "BSC",
+    97: "BSCTest"
+}
+
+export const getCorrectChainId = (str) => {
+    const arr = Object.entries(deusChains)
+
+    for (let i = 0; i < arr.length; i++) {
+        if (str.includes('/' + arr[i][1].toLowerCase())) {
+            return Number(arr[i][0])
+        }
+    }
+    return 1 //mainnet
+}
+
+
 export const TokenType = {
     Time: "time",
     Sand: "sand",
@@ -34,9 +55,6 @@ export const AddressChainMap = {
         "0x20cff2e97ecfe8f95534edf5315036e40ca3d9ef": "spcx",
     },
 }
-
-
-
 
 export const AllTokens = {
     "timetoken": {

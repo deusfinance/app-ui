@@ -11,6 +11,7 @@ import Routes from '../../components/Swap/Routes';
 import Risk from '../../components/Swap/Popups/Risk';
 
 import '../../components/Swap/mainSwap.scss';
+import './styles.scss';
 import { TopNotification } from '../../components/common/Nofication';
 
 

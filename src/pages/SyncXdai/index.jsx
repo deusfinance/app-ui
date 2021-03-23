@@ -19,6 +19,7 @@ import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import MinToturial from '../../components/Sync/MinTutorials';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
+import { addRPC } from '../../services/addRPC';
 import './styles/sync-xdai.scss';
 
 
@@ -58,7 +59,7 @@ const SyncXdai = () => {
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
-    const { account, chainId } = useWeb3React()
+    const { account, chainId, activate } = useWeb3React()
     const [web3Class, setWeb3Class] = useState(new StockService(account, 100))
     const apis = [
         "https://oracle1.deus.finance/xdai/buyOrSell.json",
@@ -305,12 +306,18 @@ const SyncXdai = () => {
 
 
     const methods = {
-        onStart: () => {
+        onStart: (hash) => {
+            if (hash) console.log(hash)
+            else {
+                console.log("didnt defined");
+            }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    {`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</div>, {
+                    <a href={`https://blockscout.com/xdai/mainnet/tx/${hash}/internal-transactions`} target="_blank">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
-                    autoClose: false
+                    autoClose: false,
+                    closeOnClick: false,
+                    pauseOnFocusLoss: false,
                 });
             else {
                 toast.info(<div>Transaction Pending <br />
@@ -427,28 +434,23 @@ const SyncXdai = () => {
 
 
 
-        <Popup
-            title={"ARE YOU IN THE RIGHT PLACE?"}
+        {/* <Popup
+            title={"Wrong Network"}
             show={chainId && chainId !== 100 && showPopup}
             close={true}
             handlePopup={setShowPopup}
             popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
                 <div>
-                    This page is specific for xDAI and it seems like you are connected to the other network.
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                    1) Change your network in your wallet to xDAI <br />
-                    2) Use the <a href="/synchronizer">Synchronizer</a> on Ethereum
+                    Looks like you are not connected to the right network.
                 </div>
 
-                <div style={{ marginTop: "20px" }}>
-                    Need more help?<br />
-                    <a href="https://wiki.deus.finance" style={{ marginTop: "10px" }}>Visit our wiki ↗</a>
+                <div className="switch-btn xdai-button" style={{ marginTop: "20px" }} onClick={() => addRPC(account, activate)}>
+                    <p>Change network to xDAI</p>
                 </div>
 
             </div>}
 
-        />
+        /> */}
 
         <div className="swap-title">
             <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
@@ -545,7 +547,6 @@ const SyncXdai = () => {
 
         <div className='tut-left-wrap'>
             <SelectedNetworks />
-            <MinToturial isOpen={true} />
         </div>
 
     </div >);

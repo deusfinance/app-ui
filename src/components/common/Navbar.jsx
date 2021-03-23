@@ -1,12 +1,14 @@
 import { useWeb3React } from '@web3-react/core';
 import { injected, } from '../../connectors';
 import React, { useState, useEffect } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import navbarItems from "../../utils/navs"
 import SubNavbar from './SubNavbar';
 import { formatAddress, getStayledNumber, notify, isDesktop } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
 import Wallets from './Wallets';
+import { getCorrectChainId } from '../../config';
+import { addRPC } from '../../services/addRPC';
 import './navbar.scss';
 
 const Navs = navbarItems
@@ -19,32 +21,40 @@ const Navbar = () => {
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
     const [showWallets, setShowWallets] = useState(false)
-    const [tvl, setTvl] = useState(null)
+    // const [tvl, setTvl] = useState(null)
+    // const [vaultsAmount, setVaultsAmount] = useState(null)
+    const location = useLocation()
+    // useEffect(() => {
+    //     const getTVL = async () => {
+    //         const url = "https://app.deus.finance/tvl.json"
+    //         try {
+    //             const resp = await fetch(url)
+    //             const result = await resp.json()
+    //             const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.uniswapLockedValue + result.balancerLockedValue + result.etherLockedInMarketMaker)
+    //             const vaults = parseInt(result.vaultLockedValue)
+
+    //             var formatter = new Intl.NumberFormat('en-US', {
+    //                 style: 'currency',
+    //                 currency: 'USD',
+    //                 minimumFractionDigits: 0
+    //             });
+    //             setTvl(formatter.format(intResult))
+    //             setVaultsAmount(formatter.format(vaults))
+    //         } catch (error) {
+    //             console.log("fetch " + url + " had some error", error);
+    //         }
+    //     }
+    //     getTVL()
+    // }, [])
+
+
 
     useEffect(() => {
-        const getTVL = async () => {
-            const url = "https://app.deus.finance/tvl.json"
-            try {
-                const resp = await fetch(url)
-                const result = await resp.json()
-                const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.etherLockedInMarketMaker)
 
-                var formatter = new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0
-                });
-                setTvl(formatter.format(intResult))
-            } catch (error) {
-                console.log("fetch " + url + " had some error", error);
-            }
-        }
-        getTVL()
-    }, [])
+        // currHref.includes("/xdai") ? "xDai" : "Main"
 
 
 
-    useEffect(() => {
         if (!isDesktop()) {
             try {
                 activate(injected)
@@ -52,7 +62,18 @@ const Navbar = () => {
                 console.log(error);
             }
         }
+
     }, [chainId])
+
+
+
+
+    useEffect(() => {
+        console.log(typeof chainId);
+        console.log(typeof getCorrectChainId(location.pathname));
+        console.log((chainId) === getCorrectChainId(location.pathname));
+    }, [location, chainId])
+
 
     useEffect(() => {
         setShowWallets(false)
@@ -148,11 +169,25 @@ const Navbar = () => {
                         <div className={`grad connected`} style={{ cursor: "default" }}>{networkNames[chainId]}</div>
                     </li>}
 
-                    {claimButton}
+                    {chainId && chainId !== getCorrectChainId(location.pathname) && <>
+                        <li className="grad-wrap  wrong-network" >
+                            <div className={`grad connected`} style={{ cursor: "default" }}>Wrong Network</div>
+                        </li>
+                        <li className="grad-wrap  connect-wrap change-network">
+                            <div className={`grad connect`} onClick={() => addRPC(account, activate, getCorrectChainId(location.pathname))}>
+                                Change to {networkNames[getCorrectChainId(location.pathname)]}
+                            </div>
+                        </li>
+                    </>}
 
-                    {tvl && <li className="grad-wrap connect-wrap tvl-wrap" >
+
+                    {/* {tvl && <li className="grad-wrap connect-wrap tvl-wrap" >
                         <div className={`grad connected`} >{"TVL:" + tvl}</div>
-                    </li>}
+                    </li>} */}
+                    {claimButton}
+                    {/* {vaultsAmount && <li className="grad-wrap connect-wrap tvl-wrap" style={{ width: "185px" }}>
+                        <div className={`grad connected`} >{"Vaults:" + vaultsAmount}</div>
+                    </li>} */}
 
                 </ul>
             </div>

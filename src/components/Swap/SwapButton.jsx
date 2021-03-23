@@ -4,7 +4,7 @@ import { injected } from '../../connectors';
 
 const SwapButton = ({ approved, token, handleSwap, isMobile }) => {
     const web3React = useWeb3React()
-    const { account, activate } = web3React
+    const { account, activate, chainId } = web3React
 
     const handleConnect = async () => {
         try {
@@ -16,6 +16,18 @@ const SwapButton = ({ approved, token, handleSwap, isMobile }) => {
     }
 
     const amount = typeof (token.amount) === "string" ? parseFloat(token.amount) : token.amount
+
+
+    if (chainId !== 1) {
+        return (<>
+            <div className="swap-btn-wrap grad-wrap Insufficient ">
+                <div className="swap-btn grad Insufficient" style={{ backgroundColor: "#111111" }} >
+                    WRONG NETWORK
+                </div>
+            </div>
+        </>)
+    }
+
     return (<>
         { account && <>{(token.balance < amount) ? <div className="swap-btn-wrap grad-wrap Insufficient ">
             <div className="swap-btn grad Insufficient">

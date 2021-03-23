@@ -6,7 +6,8 @@ import { useEagerConnect } from './hooks';
 import Navbar from './components/common/Navbar';
 import { LoopCircleLoading } from 'react-loadingg';
 import 'react-toastify/dist/ReactToastify.css';
-import './styles/scss/base.scss';
+import './assets/styles/base.scss';
+import MarketNavbar from './components/common/MarketNavbar';
 // import Footer from './components/common/Footer';
 const Deus = React.lazy(() => import('./components/Deus'));
 const Sync = React.lazy(() => import('./pages/Sync'));
@@ -33,16 +34,13 @@ function App() {
   useEagerConnect(injected)
 
   return (<>
-
     <div id="blur-pop"></div>
     <Navbar cweb={context} />
     <div className="app-body">
-
       <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
         <Switch>
           <Route exact path="/not-found" component={NotFound} />
-          <Route exact path="/crosschain/xdai/tutorial" component={Bridge} />
-          {/* <Route exact path="/synchronizer/swaggy" component={Stonks} /> */}
+          {/* <Route exact path="/crosschain/xdai/tutorial" component={Bridge} /> */}
           <Route exact path="/crosschain/xdai/synchronizer" component={SyncXdai} />
           <Route exact path="/synchronizer" component={Sync} />
           <Redirect exact from="/" to="/swap" />
@@ -51,6 +49,7 @@ function App() {
         </Switch>
       </Suspense>
     </div>
+    <MarketNavbar />
     {/* <Footer /> */}
   </>);
 }

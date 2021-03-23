@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import './styles/selected-networks.scss'
 import { useEffect } from 'react';
+import './styles/selected-networks.scss'
 
 const SelectedNetworks = () => {
     const { chainId } = useWeb3React()
@@ -35,6 +35,14 @@ const SelectedNetworks = () => {
                 title: "SYNTHETICS",
                 link: "/crosschain/xdai/synchronizer"
             },
+            {
+                img: <svg width="24" height="9" viewBox="0 0 24 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.224 9C21.984 9 21.792 8.82692 21.744 8.60439C21.48 7.31868 20.424 3.38736 17.448 3.38736C14.472 3.38736 13.44 7.29396 13.176 8.57967C13.128 8.82692 12.912 8.97527 12.696 8.97527H11.352C11.112 8.97527 10.92 8.8022 10.872 8.57967C10.608 7.29396 9.552 3.36264 6.576 3.36264C3.6 3.36264 2.52 7.29396 2.256 8.57967C2.208 8.82692 1.992 8.97527 1.776 8.97527H0.504C0.24 8.97527 0 8.75275 0 8.45604V0.519231C0 0.222527 0.216 0 0.504 0H23.496C23.76 0 24 0.222527 24 0.519231V8.48077C24 8.75275 23.784 9 23.496 9H22.224Z" fill="white" />
+                </svg>
+                ,
+                title: "Bridge Tokens",
+                link: "https://bridge.xdaichain.com/",
+            },
         ]
     }
     return (<div className="wrap-networks">
@@ -57,10 +65,10 @@ const SelectedNetworks = () => {
                     </div>
                         <p>({chain})</p>
                     </>
-                    // if (item.link.charAt(0) === "/") {
-                    return <a key={index} href={item.link} className={`items ${activeClass}`}>{itemElm}</a>
-                    // }
-                    // return <Link key={index} to={item.link} className="items">{itemElm}</Link>
+                    if (item.link.charAt(0) === "/") {
+                        return <a key={index} href={item.link} className={`items ${activeClass}`}>{itemElm}</a>
+                    }
+                    return <a key={index} href={item.link} className={`items ${activeClass}`} target="_blank">{itemElm}</a>
                 })
             }
         </div>

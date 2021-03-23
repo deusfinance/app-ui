@@ -1,0 +1,94 @@
+.market-nav-wrap {
+    position: fixed;
+    top: 130px;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    color: #ffffff;
+    .market-nav {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        .connect-wrap {
+            margin-top: 10px;
+            font-size: 15px;
+            height: 35px;
+            width: 190px;
+        }
+        .connect-wrap {
+            background: linear-gradient(
+                135deg,
+                rgba(91, 204, 189, 0.14902) 0%,
+                rgba(97, 192, 191, 0.14902) 33.33%,
+                rgba(85, 188, 200, 0.14902) 74.49%,
+                rgba(105, 207, 184, 0.14902) 100%
+            );
+            border: 1px solid rgba(97, 192, 191, 0.25);
+            border-radius: 6px;
+            .grad {
+                padding: 0 5px;
+                background: transparent;
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row;
+                align-items: center;
+            }
+            .connected {
+                cursor: default;
+
+                &:hover {
+                    // background: #111111;
+                    color: #ffffff;
+                }
+            }
+            .connect {
+                cursor: default;
+                &:hover {
+                    background: #111111;
+                    color: #ffffff;
+                    // filter: brightness(2);
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1050px) {
+    .market-nav-wrap {
+        z-index: 2;
+        background: #000000;
+        border-top: 1px solid #1c1c1c;
+        padding: 5px 0;
+        top: unset;
+        bottom: 0;
+        width: 100%;
+        align-items: center;
+        .market-nav {
+            text-align: center;
+            display: block;
+            // flex-direction: row;
+            // justify-content: flex-start;
+            // align-items: center;
+            .connect-wrap {
+                width: unset;
+                margin: 5px auto;
+                margin-left: 10px;
+                display: inline-block;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .market-nav-wrap {
+        .market-nav {
+            .connect-wrap {
+                font-size: 12px;
+            }
+        }
+    }
+}

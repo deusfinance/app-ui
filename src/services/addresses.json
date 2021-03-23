@@ -245,6 +245,10 @@
         "1": "0xd2aa885f3231CbB7763450E94b79B9fc4d101D03",
         "4": "0xda7B311409F435Cf6e433e5604c67219096B49c4"
     },
+    "dea_swap_contract": {
+        "1": "0xF8dB95d7A1d241FA7CACB33B5fC9B82E8bA607b1",
+        "4": "0x246C89f31320c1011C8dFCB2856459686D3d2b80"
+    },
     "sps": {
         "1": "0x9b9d41172854c753f066f1089781435f16aeb631",
         "4": "0xc2f6C57bD82C3d356f4aA05018E9d434a6ba2cA7"

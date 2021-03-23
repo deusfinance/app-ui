@@ -1,12 +1,12 @@
 import React from 'react';
 import { notify, formatBalance } from '../../utils/utils';
-import ChainPupop from '../common/Popup/ChainPopup';
-import { useWeb3React } from '@web3-react/core';
+// import ChainPupop from '../common/Popup/ChainPopup';
+// import { useWeb3React } from '@web3-react/core';
 
 const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, isDEA }) => {
     const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && formatBalance(claimable_amount) !== 0
     const isMobile = window.innerWidth < 670
-    const { chainId } = useWeb3React()
+    // const { chainId } = useWeb3React()
     const handleClaim = async () => {
         try {
             await web3.withdrawPayment(notify())
@@ -17,9 +17,9 @@ const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, i
 
     return (<>
 
-        <ChainPupop
+        {/*         <ChainPupop
             title={"ARE YOU IN THE RIGHT PLACE?"}
-            show={chainId && chainId !== 1}
+            show={chainId && (chainId !== 1 && chainId !== 4)}
             close={false}
             handlePopup={() => console.log()}
             popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
@@ -37,7 +37,7 @@ const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, i
                 </div>
 
             </div>}
-        />
+        /> */}
 
         {isClaimBtn && isMobile && <div className="grad-wrap claimable-btn" onClick={handleClaim}>
             <div className={`grad `}>
@@ -82,8 +82,9 @@ const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, i
         </div>}
 
         {isDEA && <div className="spcx-wrap" style={{ textAlign: "center", marginBottom: "40px" }}>
-            <img src={process.env.PUBLIC_URL + "/tokens/dea.svg"} style={{ width: "100px", marginBottom: "30px" }} alt="spcx" />
-            <div className="main-title">DEA OTC counter</div>
+            <img src={process.env.PUBLIC_URL + "/tokens/usdc.svg"} style={{ width: "90px", height: "90px", marginRight: "-30px" }} alt="spcx" />
+            <img src={process.env.PUBLIC_URL + "/tokens/dea.svg"} style={{ width: "100px", height: "100px" }} alt="spcx" />
+            {/* <div className="main-title">DEA OTC counter</div> */}
             {/* <div className="desc">
                 <div >Trade SPACEX futures before anyone else.</div>
             </div> */}

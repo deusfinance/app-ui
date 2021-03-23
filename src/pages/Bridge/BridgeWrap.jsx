@@ -5,16 +5,15 @@ import { ToastContainer } from 'react-toastify';
 import { useWeb3React } from '@web3-react/core';
 import { notify } from '../../utils/utils';
 import { TokenType } from '../../config';
-import BridgeButton from '../../components/Sync/BridgeButton';
-import StockBox from '../../components/Sync/StockBox';
+// import BridgeButton from '../../components/Sync/BridgeButton';
+// import StockBox from '../../components/Sync/StockBox';
 import { StockService } from '../../services/StockService';
 import { handleCalcPairPrice, deaToken, daiTokenRinbkeby, xdaiToken } from '../../services/stock';
-import SyncWrap from '../../components/Sync/SyncWrap';
+// import SyncWrap from '../../components/Sync/SyncWrap';
 import Tutorial from '../../components/Sync/Tutorial';
 
 // import './../../components/Swap/sync.scss';
 import './../../components/Swap/bridge.scss';
-import Success from '../../components/Sync/Success';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import MinToturial from '../../components/Sync/MinTutorials';
 

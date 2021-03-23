@@ -12,14 +12,7 @@ export default [
                 text: "SWAP",
                 path: "/swap",
                 exact: true,
-
             },
-            // {
-            //     id: "synthetics",
-            //     text: "SYNTHETICS",
-            //     path: "/synchronizer",
-            //     exact: true,
-            // },
             {
                 id: "staking",
                 text: "STAKING",
@@ -35,10 +28,9 @@ export default [
             },
         ]
     },
-
     {
         id: "sync",
-        text: "SYNCHRONIZER",
+        text: <span>BUY&thinsp;Stocks</span>,
         path: "/",
         exact: true,
         children: [
@@ -107,7 +99,6 @@ export default [
             },
         ]
     },
-
     {
         id: "tools",
         text: "TOOLS",

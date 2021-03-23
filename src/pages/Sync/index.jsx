@@ -430,6 +430,7 @@ const Sync = () => {
                             from_token={from_token}
                             to_token={to_token}
                             isLong={isLong}
+                            validChain={1}
                             // under_maintenance={true}
                             prices={prices}
                             remindCap={remindCap}

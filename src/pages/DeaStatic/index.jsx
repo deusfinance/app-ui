@@ -5,11 +5,9 @@ import TokenMarket from '../../components/Swap/TokenMarket';
 import Title from '../../components/Swap/Title';
 import SwapButton from '../../components/Swap/SwapButton';
 import { ToastContainer } from 'react-toastify';
-import { MuskService } from '../../services/MuskService';
+import { BuyDeaService } from '../../services/BuyDeaService';
 import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
-import Routes from '../../components/Swap/Routes';
 import Risk from '../../components/Swap/Popups/Risk';
-import { TopNotification } from '../../components/common/Nofication';
 
 import '../../components/Swap/mainSwap.scss';
 
@@ -71,7 +69,7 @@ class DeaStatic extends Component {
 
         // if (!chainId || !account) return
 
-        await this.setState({ web3: new MuskService(account, chainId) })
+        await this.setState({ web3: new BuyDeaService(account, chainId) })
         await this.handleIinitBalances()
         await this.getClaimable()
         await this.handleInitAllowances()
@@ -88,7 +86,7 @@ class DeaStatic extends Component {
             // if (!chainId || !account) return
 
 
-            await this.setState({ web3: new MuskService(account, chainId) })
+            await this.setState({ web3: new BuyDeaService(account, chainId) })
             await this.handleIinitBalances(true)
             await this.getClaimable()
             await this.handleInitAllowances(true)
@@ -321,7 +319,7 @@ class DeaStatic extends Component {
 
     isApproved = () => {
         const { swap } = this.state
-        return swap.from.allowances > 0
+        return swap.from.allowances > 2000000
     }
 
     handleSwap = async () => {
@@ -339,7 +337,7 @@ class DeaStatic extends Component {
 
         // console.log("Hi");
         try {
-            !(swap.from.allowances > 0) ?
+            !(swap.from.allowances > 2000000) ?
                 this.handleApprove(swap) :
                 await web3.swapTokens(from.name, to.name, from.amount, notify(this.methods))
         } catch (error) {
@@ -458,8 +456,8 @@ class DeaStatic extends Component {
 
                         <div className="routes"><p>Route</p>
                             <div className="routes-tokens">
-                                <div className="route-token"><div className="token-wrap"><img className="icon" src="/tokens/dea.svg" alt="eth" /><div className="symbol">DEA</div></div></div>
-                                <div className="route-token"><div className="swap-place"><img src="img/swap/d-swap.svg" alt="uni" /><img src="img/swap/right-arrow.svg" alt="arrow" /></div><div className="token-wrap"><img className="icon" src="/tokens/usdc.svg" alt="eth" /><div className="symbol">USDC</div></div></div><div className="route-token"></div>
+                                <div className="route-token"><div className="token-wrap"><img className="icon" src="/tokens/usdc.svg" alt="eth" /><div className="symbol">USDC</div></div></div>
+                                <div className="route-token"><div className="swap-place"><img src="img/swap/d-swap.svg" alt="uni" /><img src="img/swap/right-arrow.svg" alt="arrow" /></div><div className="token-wrap"><img className="icon" src="/tokens/dea.svg" alt="eth" /><div className="symbol">DEA</div></div></div><div className="route-token"></div>
                             </div>
                         </div>
 

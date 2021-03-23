@@ -1,0 +1,30 @@
+//new fonts
+@font-face {
+    font-family: "Monument Grotesk";
+    src: url("../fonts/MonumentGrotesk-Regular.woff");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Monument Grotesk";
+    src: url("../fonts/Monument/edumonumentgroteskmono-regular-webfont.woff2") format("woff2"),
+        url("../fonts/Monument/edumonumentgroteskmono-regular-webfont.woff") format("woff"),
+        url("../fonts/Monument/edumonumentgroteskmono-regular-webfont.ttf") format("truetype"),
+        url("../fonts/Monument/edumonumentgroteskmono-regular-webfont.svg#edu_monument_grotesk_monoRg") format("svg");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Lambok;
+    src: url("../fonts/Lombok.ttf");
+}
+
+@font-face {
+    font-family: Segoe UI;
+    src: url("../fonts/SegoeUI.woff");
+}
+
+@font-face {
+    font-family: Roboto Medium;
+    src: url("../fonts/Roboto-Medium.ttf");
+}

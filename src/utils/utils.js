@@ -155,11 +155,11 @@ export const notify = (methods = method, payload = null) => (state) => {
         }
     }
 };
-export const notifSync = (methods = method, payload = null) => (state) => {
+export const notifSync = (methods = method, payload = null) => (state, tx) => {
 
     switch (state) {
         case "transactionHash": {
-            methods.onStart(payload)
+            methods.onStart(tx)
             break
         }
         case "receipt": {

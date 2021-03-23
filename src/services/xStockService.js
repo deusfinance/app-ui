@@ -134,7 +134,7 @@ export class StockService {
                 [oracles[0]["signs"]["buy"].r.toString(), oracles[1]["signs"]["buy"].r.toString()],
                 [oracles[0]["signs"]["buy"].s.toString(), oracles[1]["signs"]["buy"].s.toString()])
                 .send({ from: this.account, value: xdaiAmount, gasPrice: Web3.utils.toWei("1", "Gwei") })
-                .on('transactionHash', () => listener("transactionHash"))
+                .on('transactionHash', (hash) => listener("transactionHash", hash))
                 .once('receipt', () => listener("receipt"))
                 .on('error', () => listener("error"));
         })

@@ -17,6 +17,20 @@
     }
 }
 
+.popup-wrap {
+    .popup {
+        .description {
+            .switch-btn {
+                cursor: pointer;
+                border: 0.5px solid #000000;
+                width: 300px;
+                height: 35px;
+                margin: auto;
+            }
+        }
+    }
+}
+
 .deus-swap-wrap {
     padding-top: 60px;
     color: #ffffff;

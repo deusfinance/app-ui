@@ -12,7 +12,7 @@ const MainSwap = React.lazy(() => import('../pages/Swap/MainSwap'));
 const StakingManager = React.lazy(() => import('./Pools/Stakings'));
 const Vault = React.lazy(() => import('./Vault/Vault'));
 const Dashboard = React.lazy(() => import('./Dashboard/Dashboard'));
-const Under = React.lazy(() => import('../pages/Maintenance/Under'));
+// const Under = React.lazy(() => import('../pages/Maintenance/Under'));
 
 const Deus = () => {
     const { account, chainId } = useWeb3React()

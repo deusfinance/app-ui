@@ -7,7 +7,7 @@ import SubNavbar from './SubNavbar';
 import { formatAddress, getStayledNumber, notify, isDesktop } from '../../utils/utils';
 import { SwapService } from '../../services/SwapService';
 import Wallets from './Wallets';
-import { getCorrectChainId } from '../../config';
+import { getCorrectChainId, deusChains } from '../../config';
 import { addRPC } from '../../services/addRPC';
 import './navbar.scss';
 
@@ -21,40 +21,9 @@ const Navbar = () => {
     const [claimAmount, setClaim] = useState(0)
     const [web3, setWeb3] = useState(null)
     const [showWallets, setShowWallets] = useState(false)
-    // const [tvl, setTvl] = useState(null)
-    // const [vaultsAmount, setVaultsAmount] = useState(null)
     const location = useLocation()
-    // useEffect(() => {
-    //     const getTVL = async () => {
-    //         const url = "https://app.deus.finance/tvl.json"
-    //         try {
-    //             const resp = await fetch(url)
-    //             const result = await resp.json()
-    //             const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.uniswapLockedValue + result.balancerLockedValue + result.etherLockedInMarketMaker)
-    //             const vaults = parseInt(result.vaultLockedValue)
-
-    //             var formatter = new Intl.NumberFormat('en-US', {
-    //                 style: 'currency',
-    //                 currency: 'USD',
-    //                 minimumFractionDigits: 0
-    //             });
-    //             setTvl(formatter.format(intResult))
-    //             setVaultsAmount(formatter.format(vaults))
-    //         } catch (error) {
-    //             console.log("fetch " + url + " had some error", error);
-    //         }
-    //     }
-    //     getTVL()
-    // }, [])
-
-
 
     useEffect(() => {
-
-        // currHref.includes("/xdai") ? "xDai" : "Main"
-
-
-
         if (!isDesktop()) {
             try {
                 activate(injected)
@@ -64,9 +33,6 @@ const Navbar = () => {
         }
 
     }, [chainId])
-
-
-
 
     useEffect(() => {
         console.log(typeof chainId);
@@ -138,17 +104,7 @@ const Navbar = () => {
         setMenuMobileClass("close-menu")
     }
 
-
     const connectCalass = account ? "connected" : "connect"
-    //DEUS staking
-
-    const networkNames = {
-        1: "Mainnet",
-        3: "Ropsten",
-        4: "Rinkeby",
-        42: "Kovan",
-        100: "xDAI"
-    }
 
     return (<>
         {showWallets && <Wallets setShow={setShowWallets} />}
@@ -166,7 +122,7 @@ const Navbar = () => {
                     </li>}
 
                     {chainId && <li className="grad-wrap connect-wrap network-name" >
-                        <div className={`grad connected`} style={{ cursor: "default" }}>{networkNames[chainId]}</div>
+                        <div className={`grad connected`} style={{ cursor: "default" }}>{deusChains[chainId]}</div>
                     </li>}
 
                     {chainId && chainId !== getCorrectChainId(location.pathname) && <>
@@ -175,20 +131,11 @@ const Navbar = () => {
                         </li>
                         <li className="grad-wrap  connect-wrap change-network">
                             <div className={`grad connect`} onClick={() => addRPC(account, activate, getCorrectChainId(location.pathname))}>
-                                Change to {networkNames[getCorrectChainId(location.pathname)]}
+                                Change to {deusChains[getCorrectChainId(location.pathname)]}
                             </div>
                         </li>
                     </>}
-
-
-                    {/* {tvl && <li className="grad-wrap connect-wrap tvl-wrap" >
-                        <div className={`grad connected`} >{"TVL:" + tvl}</div>
-                    </li>} */}
                     {claimButton}
-                    {/* {vaultsAmount && <li className="grad-wrap connect-wrap tvl-wrap" style={{ width: "185px" }}>
-                        <div className={`grad connected`} >{"Vaults:" + vaultsAmount}</div>
-                    </li>} */}
-
                 </ul>
             </div>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-//Tools / Learn /Futures/ Synchronizer / App
+
 export default [
     {
         id: "app",
@@ -41,9 +41,15 @@ export default [
                 exact: true,
             },
             {
-                id: "crosschain",
+                id: "xdai-sync",
                 text: "xDAI",
                 path: "/crosschain/xdai/synchronizer",
+                exact: true,
+            },
+            {
+                id: "bsc-sync",
+                text: "BSC",
+                path: "/crosschain/bsc/synchronizer",
                 exact: true,
             },
         ]

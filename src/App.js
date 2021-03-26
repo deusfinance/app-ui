@@ -12,7 +12,7 @@ import MarketNavbar from './components/common/MarketNavbar';
 const Deus = React.lazy(() => import('./components/Deus'));
 const Sync = React.lazy(() => import('./pages/Sync'));
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'));
-const Bridge = React.lazy(() => import('./pages/Bridge/BridgeWrap'));
+const SyncBsc = React.lazy(() => import('./pages/SyncBsc'));
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));
 const NotFound = React.lazy(() => import('./components/NotFound'));
 
@@ -42,6 +42,7 @@ function App() {
           <Route exact path="/not-found" component={NotFound} />
           {/* <Route exact path="/crosschain/xdai/tutorial" component={Bridge} /> */}
           <Route exact path="/crosschain/xdai/synchronizer" component={SyncXdai} />
+          <Route exact path="/crosschain/bsc/synchronizer" component={SyncBsc} />
           <Route exact path="/synchronizer" component={Sync} />
           <Redirect exact from="/" to="/swap" />
           <Route path="/" component={Deus} />

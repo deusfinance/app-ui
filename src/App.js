@@ -3,7 +3,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from "react-router-dom";
 import { injected } from './connectors';
 import { useEagerConnect } from './hooks';
-import Navbar from './components/common/Navbar';
+import Navbar from 'deus-navbar';
 import { LoopCircleLoading } from 'react-loadingg';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/styles/base.scss';
@@ -35,7 +35,7 @@ function App() {
 
   return (<>
     <div id="blur-pop"></div>
-    <Navbar cweb={context} />
+    <Navbar />
     <div className="app-body">
       <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
         <Switch>

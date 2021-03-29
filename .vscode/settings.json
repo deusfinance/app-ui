@@ -3,8 +3,8 @@
     "node_modules": true,
     "src/setupTests.js": true,
     "src/serviceWorker.js": true,
-    ".gitignore": true,
     "LICENSE": true,
-    "package-lock.json": true
+    "package-lock.json": true,
+    ".gitignore": true
   }
 }

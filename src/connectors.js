@@ -10,6 +10,7 @@ const supportedChainIds = [
     4, // Rinkeby
     42, // Kovan
     0x64, // xDAI
+    0x38, // BSC
 ]
 
 const RPC_URLS = {

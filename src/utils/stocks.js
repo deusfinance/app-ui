@@ -2,7 +2,6 @@ import { useWeb3React } from '@web3-react/core';
 import assets from './constituents.json'
 import output from './../services/output.json'
 import { TokenType } from '../config';
-import { Token } from './tokens';
 import { useMemo } from 'react';
 import _ from "lodash"
 
@@ -55,33 +54,4 @@ export const useAllStocks = () => {
 
 export const newStocksTokens = output
 
-export const conducted = { "count": 1, "tokens": [{ "id": "ABT", "long": "0xdB82e2Abf8dC45C43D220342941c3a4Bd670d991", "short": "0x2C466Ed8619Eb92C0AB9F51D2A43573A41EAb53c" }] }
 
-export const makerBuySell = { "0x2C466Ed8619Eb92C0AB9F51D2A43573A41EAb53c": { "signs": [{ "v": 28, "r": "0xfea4ee0aa8320184c7cfd0189c40e4441bb49b3e4eb8bbe142e66d31db979391", "s": "0x0848096c22548cead7f9277eff7905cf40a38a4e7ce583338bcb7c0dcad94c25" }], "price": 112890000000000000000, "fee": 10000000000000000, "blockNo": 7940319 }, "0xdB82e2Abf8dC45C43D220342941c3a4Bd670d991": { "signs": [{ "v": 27, "r": "0xd428aba04136e0a68528a5a6907f5c80e197b3d5f558262f68b620cc61a7a414", "s": "0x2b331bbf8fec64dd2f0ca1d0500cdf904acae133a50c3ec8591f04c9b5bf0c83" }], "price": 112890000000000000000, "fee": 10000000000000000, "blockNo": 7940319 } }
-
-// export const conducted = {
-//     "count": 2,
-//     "tokens": [
-//         { "id": "AOS", "long": "0xe83CCb25d373bae3f5a5c6E33314Fa567E7F20eC", "short": "0x7A921758C615EC13Eb8716F531B5cA2058BcCAFb" },
-//         { "id": "MMM", "long": "0xe83CCb25d373bae3f5a5c6E33314Fa567E7F20eC", "short": "0x7A921758C615EC13Eb8716F531B5cA2058BcCAFb" }]
-// }
-
-// export const deployedStocks = () => {
-//     const ticker_path = "/img/ticker/"
-
-//     const dstocks = [
-//         new Token("dai", "DAI", 18, "0x00000000000abcd0ef000", 4, "/tokens/" + "dai.png"),
-//         new Token("long_aapl", "Long Apple", 18, "0x000000000000000", 4, ticker_path + "AAPL.png"),
-//         new Token("short_aapl", "Short Apple", 18, "0x000000000000000", 4, ticker_path + "AAPL.png")
-//     ]
-//     let mStock = {}
-//     for (let i = 0; i < dstocks.length; i++) {
-//         mStock[dstocks[i].symbol] = dstocks[i]
-//     }
-
-//     return mStock;
-// }
-
-// export const deployed = [
-//     { symbol: "APPL", chainId: 4, long: "0x00000000000abcd0ef000", short: "0x000000000000000" }
-// ]

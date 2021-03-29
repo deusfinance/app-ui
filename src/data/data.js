@@ -5,21 +5,6 @@ import { Contract } from '@ethersproject/contracts';
 import { formatEther, formatUnits } from '@ethersproject/units'
 import { useContract } from '../hooks/useContract';
 
-//   return async (): Promise<number> => {
-//     return library.getBlockNumber()
-//   }
-// }
-
-
-// function getTokenBalance(contract, token) {
-// Promise  {
-//         return async (address: string): Promise<TokenAmount> =>
-//             contract
-//                 .balanceOf(address)
-//                 .then((balance: { toString: () => string }) => new TokenAmount(token, balance.toString()))
-//     }
-// }
-
 
 
 export function useTokenBalance(
@@ -42,7 +27,7 @@ export function useTokenBalance(
     return result
 }
 
-const { data: balance } = useSWR(["getBalance", account, "latest"])
+// const { data: balance } = useSWR(["getBalance", account, "latest"])
 
 
 const fetcher = (library) => (...args) => {
@@ -122,21 +107,6 @@ export const TokenBalance = ({ symbol, address, decimals }) => {
         </div>
     )
 }
-
-// const fetcher = (library, abi) => (...args) => {
-//     const [arg1, arg2, ...params] = args
-//     // it's a contract
-//     if (isAddress(arg1)) {
-//         const address = arg1
-//         const method = arg2
-//         const contract = new Contract(address, abi, library.getSigner())
-//         return contract[method](...params)
-//     }
-//     // it's a eth call
-//     const method = arg1
-//     return library[method](arg2, ...params)
-// }
-
 
 
 

@@ -1,7 +1,7 @@
 import { Token } from '../sdk/tokens';
 import { getStayledNumber } from '../utils/utils';
 import { TokenType } from '../config';
-import { BigNumber } from 'ethers';
+// import { BigNumber } from 'ethers';
 
 export const emptyToken = new Token(1, "0x0", 18, "", "", "/tokens/empty.svg");
 export const deaToken = new Token(1, "0x80ab141f324c3d6f2b18b030f1c4e95d4d658778", 18, "DEA", "DEA Finance", "tokens/dea.svg");
@@ -10,6 +10,8 @@ export const daiTokenRinbkeby = new Token(4, "0xc7AD46e0b8a400Bb3C915120d284Aafb
 export const daiToken = new Token(1, "0x6B175474E89094C44Da98b954EedeAC495271d0F", 18, "DAI", "DAI", "/tokens/dai.png");
 export const xdaiToken = new Token(1, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
 export const wxdaiToken = new Token(1, "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18, "wxDAI", "wxDAI", "/tokens/xdai.svg");
+
+export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 
 export const fetcher = async function (url, init) {
     try {

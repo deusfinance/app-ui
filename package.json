@@ -15,7 +15,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/walletconnect-connector": "^6.1.6",
     "@web3-react/walletlink-connector": "^6.1.6",
-    "deus-navbar": "github:deusfinance/navbar-library",
+    "deus-navbar": "github:deusfinance/navbar-library#7e513e613a366230b968a66b2c6ddbf7636e436d",
     "ether-swr": "^0.4.5",
     "ethers": "^5.0.26",
     "jsbi": "^3.1.4",

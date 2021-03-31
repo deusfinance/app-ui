@@ -10,6 +10,7 @@ import addrs from '../../services/addresses.json'
 import "./staking.scss"
 import { TopNotification } from '../common/Nofication';
 import ChainPupop from '../common/Popup/ChainPopup';
+import WithdrawPopup from '../common/Popup/WithdrawPopup';
 
 class StakingManager extends Component {
     state = {
@@ -17,6 +18,7 @@ class StakingManager extends Component {
         tokensMap: this.props.allTokens,
         stakingsMap: this.props.allStakings,
         isStakePopup: false,
+        isWithdrawPopup: false,
         approved: false,
     }
 
@@ -88,6 +90,7 @@ class StakingManager extends Component {
             this.setState({
                 pools: currentPools[navId],
                 isStakePopup: false,
+                isWithdrawPopup: false,
                 approved: false,
             })
 
@@ -141,7 +144,7 @@ class StakingManager extends Component {
 
     escFunction = (event) => {
         if (event.keyCode === 27) {
-            this.setState({ isStakePopup: false, approved: false })
+            this.setState({ isStakePopup: false, isWithdrawPopup: false, approved: false })
         }
     }
 
@@ -159,7 +162,7 @@ class StakingManager extends Component {
                 this.getSingleBalance(currStake, true)
                 this.getStakingAllAmounts(currStake)
             }
-            this.setState({ typeTransaction: "", isStakePopup: false })
+            this.setState({ typeTransaction: "", isStakePopup: false, isWithdrawPopup: false })
         },
         onError: () => {
             console.log("onError")
@@ -262,10 +265,10 @@ class StakingManager extends Component {
 
 
     blurBG = () => {
-        const { isStakePopup } = this.state
+        const { isStakePopup, isWithdrawPopup } = this.state
 
         const blurPop = "blured"
-        if (!(isStakePopup)) {
+        if (!(isStakePopup || isWithdrawPopup)) {
             document.getElementById("blur-pop").classList.remove(blurPop)
         } else {
             document.getElementById("blur-pop").classList.add(blurPop)
@@ -313,8 +316,14 @@ class StakingManager extends Component {
         this.setState({ isStakePopup: !isStakePopup, currStake: stakedToken, approved })
     }
 
+    handleWithdrawPopup = (stakedToken) => {
+        const { isWithdrawPopup } = this.state
+        console.log(stakedToken, " handleWithdrawPopup called");
+        this.setState({ isWithdrawPopup: !isWithdrawPopup, currStake: stakedToken })
+    }
+
     render() {
-        const { tokensMap, pools, stakingsMap, isStakePopup, approved, currStake } = this.state
+        const { tokensMap, pools, stakingsMap, isStakePopup, isWithdrawPopup, approved, currStake } = this.state
         const { chainId } = this.props
         const currToken = tokensMap[currStake]
         const currStaking = stakingsMap[currStake]
@@ -358,6 +367,18 @@ class StakingManager extends Component {
                 isApproved={approved}
             />}
 
+            { currStake && currToken && <WithdrawPopup
+                title={"WITHDRAW"}
+                close={true}
+                deposited={stakingsMap[currToken.name].deposited}
+                isWithdrawPopup={isWithdrawPopup}
+                handleWithdraw={this.handleWithdraw(currToken.name)}
+                handleWithdrawPopup={this.handleWithdrawPopup}
+                token={currToken}
+                staking={currStaking}
+                contractAddr={addrs["staking"][currStake][chainId ? chainId : 1]}
+            />}
+
             <div className="staking-wrap" >
                 {/* <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" /> */}
 
@@ -370,8 +391,9 @@ class StakingManager extends Component {
                             return <QStake
                                 key={i}
                                 handleClaim={this.handleClaim(token)}
-                                handleWithdraw={this.handleWithdraw(token)}
+                                // handleWithdraw={this.handleWithdraw(token)}
                                 handleStakePopup={this.handlePopup}
+                                handleWithdrawPopup={this.handleWithdrawPopup}
                                 staking={stakingsMap[token]}
                                 handleStake={this.handleStake}
                                 deposited={stakingsMap[token].deposited}

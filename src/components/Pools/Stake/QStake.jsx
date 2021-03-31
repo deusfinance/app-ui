@@ -3,7 +3,7 @@ import { getStayledNumber } from '../../../utils/utils';
 import { WaveLoading, RotateCircleLoading } from 'react-loadingg';
 import { Link } from 'react-router-dom';
 
-const QStake = ({ staking, deposited, handleStakePopup, dollarPool, handleClaim, handleWithdraw }) => {
+const QStake = ({ staking, deposited, handleStakePopup, dollarPool, handleClaim, handleWithdrawPopup }) => {
 
     const { claimable_unit, claimable_amount } = staking
     const isStaked = staking ? parseFloat(deposited) > 0 ? true : false : false
@@ -72,7 +72,7 @@ const QStake = ({ staking, deposited, handleStakePopup, dollarPool, handleClaim,
                     <div className="btns-wrap">
                         <div className="btns">
                             <div className="left-single disabled">{getStayledNumber(deposited)} deposited</div>
-                            <div className="right-single" onClick={() => handleWithdraw(deposited)}>
+                            <div className="right-single" onClick={() => handleWithdrawPopup(staking.name)}>
                                 <span>withdraw and claim</span>
                             </div>
                         </div>

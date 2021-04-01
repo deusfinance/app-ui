@@ -291,7 +291,7 @@ class StakingManager extends Component {
 
     handleStake = (stakedToken) => async (amount) => {
 
-        const { isStakePopup, approved, web3 } = this.state
+        const { approved, web3 } = this.state
         if (!approved) return
 
         try {
@@ -303,7 +303,8 @@ class StakingManager extends Component {
 
         this.setState({
             currStake: stakedToken,
-            isStakePopup: !isStakePopup,
+            isStakePopup: false,
+            isWithdrawPopup: false,
             stakeAmount: undefined
         })
     }
@@ -319,6 +320,7 @@ class StakingManager extends Component {
     handleWithdrawPopup = (stakedToken) => {
         const { isWithdrawPopup } = this.state
         console.log(stakedToken, " handleWithdrawPopup called");
+        this.setState({ isWithdrawPopup: !isWithdrawPopup, currStake: stakedToken })
         this.setState({ isWithdrawPopup: !isWithdrawPopup, currStake: stakedToken })
     }
 

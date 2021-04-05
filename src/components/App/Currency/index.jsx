@@ -9,7 +9,7 @@ import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
 // export const getTokenLogoURL = (address) =>
 //     `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
 
-const StyledLogo = styled.img`
+export const StyledLogo = styled.img`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: ${({ size }) => size};

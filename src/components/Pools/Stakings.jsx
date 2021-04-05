@@ -382,7 +382,6 @@ class StakingManager extends Component {
             />}
 
             <div className="staking-wrap" >
-                {/* <img className="st-bg" src={process.env.PUBLIC_URL + "/img/staking-bg.svg"} alt="dd" /> */}
 
                 <TopNotif typeID={this.props.navId} />
 
@@ -393,7 +392,6 @@ class StakingManager extends Component {
                             return <QStake
                                 key={i}
                                 handleClaim={this.handleClaim(token)}
-                                // handleWithdraw={this.handleWithdraw(token)}
                                 handleStakePopup={this.handlePopup}
                                 handleWithdrawPopup={this.handleWithdrawPopup}
                                 staking={stakingsMap[token]}

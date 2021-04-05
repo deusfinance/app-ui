@@ -1,0 +1,193 @@
+//navs
+MENU
+TOOLS arrow
+DEUS simulator
+DEUS tradingview
+DEUS vote
+LEARN arrow
+FUTURES arrow
+BUY Stocks arrow
+
+//risk.jsx
+
+TRADING FUTURES/IOUs IS A HIGH-RISK INVESTMENT
+No matter how small they might be, there are risks to be considered when trading IOUs/Futures on DEUS Swap.
+There are also systemic risks in buying IOUs with the intent to swap them to wrapped tokens. This only concerns swapping IOUs to wrapped tokens and has nothing to do with trading IOUs.
+GENERAL RISKS OF TRADING  FUTURES/IOUS:
+The event on which you are speculating, e.g. "Coinbase IPO" might not occur (The IPO might be called off by regulators, etc.)
+he market for that specific futures/IOU would be closed.
+DEUS total stock market might reach its temporary (!) hard cap:
+EFFECT: You will simply have to wait a bit to swap to the wrapped version. You might also consider selling it back to the bonding curve. (always possible)
+Short/long-position imbalances might increase the system’s trading fees or lower hard cap amounts:
+EFFECT: You will not be able to open a position, or have to pay very high fees
+Unforeseen technical/network delays might happen on swapping from IOUs to wrapped tokens
+EFFECT: You will simply have to wait for the technical issues to be resolved.
+
+I Understand
+Learn more
+
+TRADING FUTURES ON DEUS SWAP IS AN EXPERIMENTAL FEATURE
+
+//footer
+COMMUNITY
+Discord
+Telegram
+CONTRACTS
+DEUS
+DEA
+RESOURCES
+WIKI
+Github
+Youtube
+Twitter
+Medium
+Twitch
+APP
+SWAP
+SYNCHRONIZER (xDAI)
+COINBASE
+BAKKT
+STAKING
+VAULTS
+
+//market navs
+SELECTED NETWORK
+Main
+xDAI
+SWAP
+SYNTHETICS
+Bridge Tokens
+
+//wallets
+Select a wallet provider
+Wrong Network
+Change to xxx (xxx xDAI)
+connect wallet
+Metamask
+Network
+WalletConnect
+WalletLink
+Ledger
+Trezor
+Lattice
+Frame
+Fortmatic
+
+
+//popup
+
+close
+max
+Balance
+Show me the contract
+APPROVED
+APPROVE
+STAKE
+1
+2
+Staked Amount: 
+WITHDRAW & CLAIM
+
+
+STAKING (https://app.deus.finance/staking)
+
+Important system upgrade: Staking rewards will be temporarily paused,
+until we have activated the contracts for our automated staking-reward-controlling of tradingFees & transferFees.
+This will be worked on after launching hundreds of dAssets on our upgraded trading platform.
+We have taken a snapshot (block 11880575),
+if you stay in the pool, you will get a special reward to make up for the temporary reward pause.
+
+Looks like you are not connected to the right network.
+Change network to Mainnet
+
+STAKE TOKENS TO EARN DEA
+WITHDRAW
+
+buy
+buy more
+provide more/Liquidity
+stake here/more
+APY
+deposited (amount)
+DEA claimable
+In order to stake you need to  provide <br /> liquidity  to the following Balancer pool
+you own 5% of the pool
+claim
+
+Single
+Liquidity
+Old
+
+
+
+VAULTS
+https://app.deus.finance/vaults
+
+
+Total
+minted
+lock here/more
+provide  xxx
+get xxx
+
+
+Vaults cheat sheetclose
+Deposits are locked for 6 months.
+Emergency exits will be implemented in Q1.
+sTokens act as LP tokens, you can sell them any time on Balancer to exit your Vaultpositions.
+Vault-stakers are liquidity providers for traders.
+Unusual trading profits lead to a loss of stake for Vault-stakers.
+
+more infos
+Got it
+
+TIME VAULT LOCKED
+show me the contract
+From
+To
+Balance:
+APPROVE
+LOCK & MINT
+
+//swap
+Please be aware that there is a possibility that SPACEX will never launch. Be aware that you are trading a futures asset – this is a speculative asset!
+Trade SPACEX futures before anyone else.
+SPACEX FUTURE, .
+
+
+http://localhost:3000/synchronizer
+synchronizer xDAI
+synchronizer BSC
+SELECT AN ASSET
+ENTER AN AMOUNT
+ UNDER MAINTENANCE
+  LOADING ...
+  WRONG NETWORK
+  MARKET IS CLOSED
+  CONNECT WALLET
+  INSUFFICIENT BALANCE
+  YOU NEED TIME TOKENS
+  YOU NEED MORE TIME TOKENS
+  SYNC Buy/Sell
+  Market Price
+
+
+Personal SYNCHRONIZER Cap
+long
+short
+
+  //Search
+Asset Name
+token Name
+Search symbol and name
+
+
+
+//TopNotification
+Transaction Pending
+Transaction failed
+Swap  10.26 xxx to 6.32 yyy
+Swapped  10.26 xxx to 6.32 yyy
+Approve xxx
+Approved xxx
+

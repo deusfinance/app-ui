@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from 'styled-components'
-import { Text } from 'rebass/styled-components'
-import CurrencyLogo from '../Currency';
+import styled, { css } from 'styled-components'
+import { FlexCenter } from '../Container';
 
 
 export const InputAmount = styled.input.attrs({
@@ -10,23 +9,44 @@ export const InputAmount = styled.input.attrs({
     autocorrect: "off",
     spellcheck: "false"
 })`
-    /* padding-left: 14px; */
-    /* padding-right: 8px; */
     font-weight: 400;
     flex: 1 1 auto;
     border: ${({ border }) => border || "none"};
     outline-style: none;
     width: ${({ width }) => width || "0px"};
-    font-size: ${({ fontSize }) => fontSize || "28px"};
+    font-size: ${({ fontSize }) => fontSize || "25px"};
      color: ${({ theme }) => theme.text1};
     background: transparent;
 
 `
-const StyleTokenInfo = styled.div`
 
+
+export const SwapTitle = styled(FlexCenter)`
+    display: inline-flex;
+    font-family:"Monument Grotesk Semi";
+    padding:7px 20px 4px 20px;
+    border-radius: 15px 1px;
+    font-size:25px;
+    color:#000;
+    background:${({ theme }) => theme.grad3}
 `
-const StyleTokenBox = styled.div`
 
+
+export const StyleSwapBase = css`
+    background: ${({ theme }) => theme.bg3};
+    border: 1px solid ${({ theme }) => theme.border1};
+    border-radius: 15px;
+    text-align:center;
+    margin:auto;
+    width:100%;
+    max-width:500px;
+`
+
+export const StyleTitles = css`
+    font-family:"Monument Grotesk Semi";
+   .title{
+        opacity:0.75;
+    }
 `
 
 // export const TokenInfo = <StyleTokenInfo>

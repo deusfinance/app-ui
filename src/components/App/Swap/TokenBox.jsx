@@ -13,21 +13,20 @@ const Wrapper = styled.div`
     position: relative;
     height: ${({ height }) => (height || "90px")};
     width: ${({ width }) => (width || "100%")};
-    background: #1c1c1c;
+    background: ${({ theme }) => theme.border1};
     border: 2px solid #000000;
     padding:0 15px;
     border-radius: ${({ borderRadius }) => borderRadius || "15px"};
 `
 const TokenInfo = styled(Flex)`
 align-items:center;
-margin-left:8px;
 &:hover{
   filter:brightness(0.8)  
 }
 `
 
 
-const TokenBox = ({ hasMax, currency }) => {
+const TokenBox = ({ hasMax, currency, setActive }) => {
     const [onMax, setOnMax] = useState(false)
     const [inputAmount, setInputAmount] = useState("")
 
@@ -71,16 +70,18 @@ const TokenBox = ({ hasMax, currency }) => {
                 MAX
             </ButtonMax>}
 
-            <TokenInfo>
+            <TokenInfo onClick={() => setActive(true)}>
                 <CurrencyLogo
                     style={{ verticalAlign: "middle" }}
                     currency={currency}
                     size={"25px"}
                 />
-                <Type.LG color="text1" ml="1" mr="2">BUSD</Type.LG>
-                <Image src="/img/select.svg" size="15px" />
+                <Type.XL color="text1" ml="7px" mr="9px">{currency.symbol.toUpperCase()}</Type.XL>
+                <Image src="/img/select.svg" size="10px" />
             </TokenInfo>
         </Flex>
+
+
 
     </Wrapper>);
 }

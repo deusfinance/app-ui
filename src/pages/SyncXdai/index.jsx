@@ -14,12 +14,9 @@ import { StockService } from '../../services/xStockService';
 import { handleCalcPairPrice, deaToken, xdaiToken, fetcher, emptyToken } from '../../services/stock';
 import { useWeb3React } from '@web3-react/core';
 import SyncCap from '../../components/Sync/SyncCap';
-import Popup from '../../components/Sync/Popup';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
-import MinToturial from '../../components/Sync/MinTutorials';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
-import { addRPC } from '../../services/addRPC';
 import './styles/sync-xdai.scss';
 
 
@@ -46,7 +43,6 @@ const SyncXdai = () => {
     const [stocks, setStocks] = useState(null)
     const [conducted, setConducted] = useState(null)
     const [prices, setPrice] = useState(null)
-    const [showPopup, setShowPopup] = useState(true)
     const [fromPerTo, setFromPerTo] = useState(true)
     const [searchBoxType, setSearchBoxType] = useState("from")
     const to_token = swap.to
@@ -59,7 +55,7 @@ const SyncXdai = () => {
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
-    const { account, chainId, activate } = useWeb3React()
+    const { account, chainId } = useWeb3React()
     const [web3Class, setWeb3Class] = useState(new StockService(account, 100))
     const apis = [
         "https://oracle1.deus.finance/xdai/buyOrSell.json",

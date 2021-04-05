@@ -11,9 +11,10 @@ import './assets/styles/base.scss';
 
 const Deus = React.lazy(() => import('./components/Deus'));
 const Sync = React.lazy(() => import('./pages/Sync'));
+const Swap2 = React.lazy(() => import('./pages/Swap2'));
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'));
 const NotFound = React.lazy(() => import('./components/NotFound'));
-// const Test = React.lazy(() => import('./pages/Test'));
+const Test = React.lazy(() => import('./pages/Test'));
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));
 
 
@@ -29,7 +30,8 @@ function App() {
             <Route exact path="/not-found" component={NotFound} />
             <Route exact path="/crosschain/xdai/synchronizer" component={SyncXdai} />
             <Route exact path="/synchronizer" component={Sync} />
-            {/* <Route exact path="/test-style" component={Test} /> */}
+            <Route exact path="/swap2" component={Swap2} />
+            <Route exact path="/test-style" component={Test} />
             <Redirect exact from="/" to="/swap" />
             <Route path="/" component={Deus} />
             <Redirect to="not-found" />

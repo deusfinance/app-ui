@@ -4,6 +4,7 @@ import abis from './abis'
 import addrs from './addresses.json'
 
 String.prototype.replaceAt = function (index, replacement) {
+    if (!replacement) return
     return this.substr(0, index) + replacement + this.substr(index + replacement.length);
 }
 

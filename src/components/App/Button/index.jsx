@@ -18,7 +18,7 @@ export const Base = styled(RebassButton)`
   justify-content: center;
   flex-wrap: nowrap;
   align-items: center;
-  cursor: pointer;
+  cursor:${({ active }) => active && "pointer"};
   position: relative;
   z-index: 1;
   transition: all 0.35s;
@@ -35,6 +35,8 @@ padding: 3px 5px;
 background: ${({ theme }) => theme.grad2};
 border: 1px solid #ffffff;
 transition: all 0.25s;
+margin-left:5px;
+margin-right:10px;
 &:hover{
     background: #5bccbd;
     color: #0d0d0d;
@@ -50,6 +52,7 @@ const ButtonSync = styled(Base).attrs({
 
 export const ButtonSyncDeactive = styled(ButtonSync)`
     box-shadow: none;
+    font-family:"Monument Grotesk Semi";
     background: ${({ theme }) => theme.sync_dactive};
     color: #8d8d8d;
     cursor: default;
@@ -58,10 +61,9 @@ export const ButtonSyncDeactive = styled(ButtonSync)`
 export const ButtonSyncActice = styled(ButtonSync)`
   background: ${({ theme }) => theme.sync_active};
   box-shadow: 0px 2px 4px rgb(100 100 100 / 50%);
-  cursor:pointer;
   font-size: 25px;
   &:hover{
-    filter : brightness(1.2);
+    filter:${({ active }) => active && "brightness(1.2)"};
   }
 `
 
@@ -71,8 +73,17 @@ export const ButtonSecondery = styled(Base)`
     background: ${({ theme }) => theme.grad2};
     color:${({ theme }) => theme.text1};
     border: 1px solid rgba(97, 192, 191, 0.25);
-    cursor: pointer;
     &:hover{
       filter : brightness(1.2);
+  }
+`
+
+export const ButtonIcon = styled(Base)`
+  background:transparent;
+  padding:0;
+  margin:auto;
+  cursor:pointer;
+  &:hover{
+    filter : brightness(1.2);
   }
 `

@@ -64,7 +64,6 @@ class MainSwap extends Component {
         onError: () => console.log("onError"),
     }
 
-    newService = null;
 
     async componentDidMount() {
         document.body.style.backgroundColor = '#2c2f36'

@@ -10,16 +10,11 @@ import { FlexCenter } from '../Container';
 
 const fadein = keyframes`
   from {
-    /* transform: scale(0.8) */
     opacity:0;
-    /* transform: translateY(0%); */
 
   }
   to {
-    /* transform: scale(1); */
-    /* transform: translateY(-50%); */
     opacity:1;
-
   }
 `;
 
@@ -40,9 +35,9 @@ const Wrapper = styled.div`
   animation: ${fadein} 0.3s linear forwards;
   transform: translateY(-50%);
   padding-bottom:20px;
-    top:calc(50%);
-    z-index: 2;
-    margin:auto;
+  top:calc(50%);
+  z-index: 2;
+  margin:auto;
 `
 const StyledClose = styled(X)`
   :hover {

@@ -48,6 +48,13 @@ export const StyleTitles = css`
         opacity:0.75;
     }
 `
+export const SwapArrow = styled(FlexCenter)`
+    display:inline-flex;
+    cursor:pointer;
+    &:hover{
+        filter:brightness(0.8)
+    }
+`
 
 // export const TokenInfo = <StyleTokenInfo>
 //     <Text >BUSD</Text>

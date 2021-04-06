@@ -14,8 +14,8 @@ const supportedChainIds = [
 ]
 
 const RPC_URLS = {
-    1: "wss://Mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093",
-    4: "wss://Rinkeby.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093"
+    1: "wss://mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093",
+    4: "wss://rinkeby.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093"
 }
 
 export const injected = new InjectedConnector({

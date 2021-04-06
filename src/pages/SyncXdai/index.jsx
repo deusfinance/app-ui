@@ -18,6 +18,7 @@ import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
 import './styles/sync-xdai.scss';
+import { formatEther } from '@ethersproject/units';
 
 
 
@@ -55,7 +56,8 @@ const SyncXdai = () => {
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
-    const { account, chainId } = useWeb3React()
+    const { account, chainId, library, connector } = useWeb3React()
+
     const [web3Class, setWeb3Class] = useState(new StockService(account, 100))
     const apis = [
         "https://oracle1.deus.finance/xdai/buyOrSell.json",
@@ -66,6 +68,8 @@ const SyncXdai = () => {
     useEffect(() => {
         if (account && chainId) {
             setWeb3Class(new StockService(account, 100))
+            // console.log(library.getBalance(account).then(balance => console.log(formatEther(balance))));
+            // console.log(connector);
         }
         initialCap()
     }, [account, chainId])

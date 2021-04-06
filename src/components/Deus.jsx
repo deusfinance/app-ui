@@ -31,7 +31,7 @@ const Deus = () => {
         setAllTokens: setAllTokens,
         allStakings: allStakings,
         account: account,
-        chainId: chainId
+        chainId: chainId,
     }
 
     return (

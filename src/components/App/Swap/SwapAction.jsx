@@ -8,7 +8,10 @@ const checkError = () => {
     return false;
 }
 
+
+
 const WrapActions = styled.div`
+    margin-top:33px;
     height: "55px";
     display:flex;
     font-size:20px;
@@ -49,7 +52,7 @@ const SwapAction = ({ isPreApproved }) => {
     }
 
     return (<>
-        {isPreApproved ? <ButtonSwap active={true} > SWAP</ButtonSwap> : <>
+        {isPreApproved ? <WrapActions><ButtonSwap active={true} > SWAP</ButtonSwap> </WrapActions> : <>
             <WrapActions>
                 <ButtonSwap active={true} >
                     APPROVE

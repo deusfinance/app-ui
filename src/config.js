@@ -1,5 +1,6 @@
 export const contractEndpoint = "https://etherscan.io/address"
-export const dappLink = "https://metamask.app.link/dapp/deus.finance/"
+export const dappLinkMetamask = "https://metamask.app.link/dapp/deus.finance/"
+export const dappLinkTrustWallet = "https://metamask.app.link/dapp/deus.finance/"
 
 export const deusChains = {
     1: "Main",

@@ -10,6 +10,7 @@ import { Type } from '../../components/App/Text';
 import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
 import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
+import PriceBox from '../../components/App/Swap/PriceBox';
 
 
 const MainWrapper = styled.div`
@@ -54,8 +55,11 @@ const Swap2 = () => {
                     setActive={setActiveSearchBox}
                     currency={{ logo: "/tokens/deus.svg", symbol: "deus", balance: "95.284456129464577913" }}
                 />
+                <PriceBox />
                 <SwapAction isPreApproved={false} />
+
             </SwapWrapper>
+
             <PriceImpact>
                 <Type.SM className="title">Price Impact</Type.SM>
                 <Type.SM >{"<"}0.005 %</Type.SM>

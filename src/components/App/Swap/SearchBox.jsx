@@ -55,7 +55,7 @@ const TokenRow = styled(RowBetween)`
 padding:0 20px;
     :hover{
         cursor:pointer;
-        background : #7a7a7a
+        background : #292929
     }
 `
 const TokensWrap = styled.div`
@@ -68,38 +68,38 @@ const TokenWrap = styled(FlexCenter)`
 `
 
 const currencies = [
-    { symbol: "DEA", logo: "/tokens/dea.svg" },
-    { symbol: "DEUS", logo: "/tokens/deus.svg" },
-    { symbol: "ETH", logo: "/tokens/eth-logo.svg" },
+  { symbol: "DEA", logo: "/tokens/dea.svg" },
+  { symbol: "DEUS", logo: "/tokens/deus.svg" },
+  { symbol: "ETH", logo: "/tokens/eth-logo.svg" },
 ]
 
 const SearchBox = ({ currencies1, currency2, active, setActive }) => {
-    return (active &&
-        <Wrapper>
-            <RowBetween fontWeight="300" >
-                <Type.LG  >Select a Token</Type.LG>
-                <StyledClose stroke="white" onClick={() => setActive(false)} />
-            </RowBetween>
-            <Line my="20px"></Line>
-            <RowBetween mt="5px" opacity="0.5">
-                <Type.MD >Token</Type.MD>
-                <Type.MD >Balance</Type.MD>
-            </RowBetween>
-            <Line my="5px"></Line>
-            <TokensWrap>
-                {currencies.map((currency, id) => (
-                    <TokenRow id={id}>
-                        <TokenWrap>
-                            <StyledLogo size="40px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
-                            <Type.LG style={{ marginLeft: "10px" }} >{currency?.symbol}</Type.LG>
-                        </TokenWrap>
-                        <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || 0}</Type.LG>
-                    </TokenRow>
-                ))}
+  return (active &&
+    <Wrapper>
+      <RowBetween fontWeight="300" >
+        <Type.LG  >Select a Token</Type.LG>
+        <StyledClose stroke="white" onClick={() => setActive(false)} />
+      </RowBetween>
+      <Line my="20px"></Line>
+      <RowBetween mt="5px" opacity="0.5">
+        <Type.MD >Token</Type.MD>
+        <Type.MD >Balance</Type.MD>
+      </RowBetween>
+      <Line my="5px"></Line>
+      <TokensWrap>
+        {currencies.map((currency, id) => (
+          <TokenRow id={id}>
+            <TokenWrap>
+              <StyledLogo size="40px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
+              <Type.LG style={{ marginLeft: "10px" }} >{currency?.symbol}</Type.LG>
+            </TokenWrap>
+            <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || 0}</Type.LG>
+          </TokenRow>
+        ))}
 
-            </TokensWrap>
-        </Wrapper>
-    );
+      </TokensWrap>
+    </Wrapper>
+  );
 }
 
 export default SearchBox;

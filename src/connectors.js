@@ -11,6 +11,7 @@ const supportedChainIds = [
     42, // Kovan
     0x64, // xDAI
     0x38, // BSC
+    0x61, // BSC TEST
 ]
 
 const RPC_URLS = {

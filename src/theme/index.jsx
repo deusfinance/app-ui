@@ -31,7 +31,7 @@ export function colors(darkMode) {
 
     //border
     border1: darkMode ? "#1C1C1C" : "#c6c6c6",
-
+    border2: darkMode ? "#101010" : "#c6c6c6",
 
     //bg
     bg1: darkMode ? black : "#d4d3d3",
@@ -39,11 +39,13 @@ export function colors(darkMode) {
     bg3: darkMode ? "#0d0d0d" : "#fff",
     bg4: darkMode ? "#242424" : "#d4d3d3",
     bg5: darkMode ? "#171717" : "#d4d3d3",
-    sync_active: darkMode ? 'linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%)' : 'linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%)',
+    bg6: darkMode ? "#111111" : "#d4d3d3",
+
+    sync_active: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)' : "linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)",
     sync_dactive: darkMode ? 'rgb(28, 28, 28)' : "rgb(200, 28, 28)",
 
     //gradinant
-    grad1: darkMode ? 'linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%)' : 'linear-gradient(90deg, #0779e4 -0.01%, #ea2c62 93.44%)',
+    grad1: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%)' : 'linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%)',
     grad2: darkMode ? "linear-gradient(135deg, rgba(91, 204, 189, 0.14902) 0%, rgba(97, 192, 191, 0.14902) 33.33%, rgba(85, 188, 200, 0.14902) 74.49%, rgba(105, 207, 184, 0.14902) 100%)" : "rgba(105, 207, 184, 0.14902)",
     grad3: darkMode ? "linear-gradient(247.41deg, #A2FBB0 16.32%, #5EC4D6 87.6%);" : "rgba(105, 207, 184, 0.14902)",
 
@@ -127,6 +129,9 @@ html {
   color: ${({ theme }) => theme.text1};
   /* background-color: ${({ theme }) => theme.bg1}; */
   background: radial-gradient(49.81% 49.81% at 50% 49.81%, #272727 0%, #000000 100%);
+}
+a{
+      color: inherit;
 }
 body {
   min-height: 100vh;

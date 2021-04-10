@@ -11,7 +11,7 @@ const PriceBox = () => {
         <Flex justifyContent="space-between" mt="15px" px="10px">
             <Type.XS>Price</Type.XS>
             <FlexCenter>
-                <Type.XS>1.1 DEUS per ETH  </Type.XS>
+                <Type.XS>0.0050866 DEUS per ETH  </Type.XS>
                 <SwapArrow style={{ marginLeft: "5px" }} >
                     <svg width={15} height={15} viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx={5} cy={5} r={5} fill="white" fillOpacity="0.75" />

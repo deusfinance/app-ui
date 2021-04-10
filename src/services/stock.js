@@ -12,6 +12,7 @@ export const xdaiToken = new Token(1, "0x000000000000000000000000000000000000000
 export const wxdaiToken = new Token(1, "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18, "wxDAI", "wxDAI", "/tokens/xdai.svg");
 
 export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg");
+export const busdTestToken = new Token(97, "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 
 export const fetcher = async function (url, init) {
     try {

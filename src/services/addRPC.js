@@ -1,4 +1,3 @@
-
 import { injected } from '../connectors';
 import { toast } from 'react-toastify';
 
@@ -26,7 +25,6 @@ export const addRPC = (account, activate, chainId = 100) => {
                         console.log("error ", error);
                     }
                 }, 500)
-
             })
             .catch((error) => {
                 console.log('We can encrypt anything without the key.');
@@ -70,5 +68,16 @@ const NetworksData = {
         },
         rpcUrls: ["https://bsc-dataseed1.binance.org"],
         blockExplorerUrls: ["https://bscscan.com"],
+    },
+    97: {
+        chainId: "0x61",
+        chainName: "Binance Smart Chain Testnet",
+        nativeCurrency: {
+            name: "BNB",
+            symbol: "BNB",
+            decimals: 18,
+        },
+        rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545"],
+        blockExplorerUrls: ["https://testnet.bscscan.com"],
     },
 }

@@ -29,7 +29,7 @@ const RouteToken = styled.div`
     padding: 5px 0;
     display: inline-flex;
     vertical-align: middle;
-    align-items: center
+    align-items: center;
 `
 const WrapToken = styled.div`
     display: inline-flex;
@@ -59,9 +59,9 @@ const RouteBox = () => {
         <Type.SM className="title" >Route</Type.SM>
         <WrapTokens>
             <RouteToken>
-                <WrapToken><TokenLogo className="icon" src="/tokens/usdc.svg" alt="eth" /> <Type.MD>USDC</Type.MD></WrapToken>
+                <WrapToken><TokenLogo className="icon" src="/tokens/eth-logo.svg" alt="eth" /> <Type.MD>ETH</Type.MD></WrapToken>
             </RouteToken>
-            <RouteToken><WrapSwapPlace  ><PlaceLogo src="img/swap/d-swap.svg" alt="uni" /><img src="img/swap/right-arrow.svg" alt="arrow" /></WrapSwapPlace><WrapToken className="token-wrap"><TokenLogo className="icon" src="/tokens/dea.svg" alt="eth" /><div className="symbol">DEA</div></WrapToken></RouteToken><div className="route-token"></div>
+            <RouteToken><WrapSwapPlace  ><PlaceLogo src="img/swap/d-swap.svg" alt="uni" /><img src="img/swap/right-arrow.svg" alt="arrow" /></WrapSwapPlace><WrapToken className="token-wrap"><TokenLogo className="icon" src="/tokens/deus.svg" alt="deus" /><div className="symbol">DEUS</div></WrapToken></RouteToken><div className="route-token"></div>
         </WrapTokens>
     </Wrapper>
     );

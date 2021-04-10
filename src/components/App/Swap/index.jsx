@@ -55,13 +55,24 @@ export const SwapArrow = styled(FlexCenter)`
         filter:brightness(0.8)
     }
 `
+export const MainWrapper = styled.div`
+   padding-top: 60px;
+   text-align:center;
+`
+export const SwapWrapper = styled.div`
+${StyleSwapBase}
+border-color:#000;
+padding:20px 15px;
+margin-top:30px;
+`
 
-// export const TokenInfo = <StyleTokenInfo>
-//     <Text >BUSD</Text>
-//     <CurrencyLogo
-//         currency={{ logo: "/tokens/usdc.svg" }}
-//         size={"25px"}
-//     />
-// </StyleTokenInfo>
+export const PriceImpact = styled(FlexCenter)`
+    ${StyleSwapBase}
+    ${StyleTitles}
+    justify-content:space-between;
+    height:50px;
+    margin-top:-1px; 
+    padding:0 20px;
+`
 
 

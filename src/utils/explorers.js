@@ -126,7 +126,7 @@ export function SwapTranaction(type, payload) {
         case TransactionState.LOADING:
             ToastTransaction("info", "Transaction Pending",
                 <ExternalLink href={getTransactionLink(payload.chainId, payload.hash, 'transaction')}>
-                    {`Swap ${payload.from.amount} ${payload.from.symbol} for ~${payload.to.amount} ${payload.to.symbol} ↗ `}
+                    {`Swap ${payload.from.amount} ${payload.from.symbol} for ${payload.to.amount} ${payload.to.symbol} ↗ `}
                 </ExternalLink>
             )
             break;
@@ -134,7 +134,7 @@ export function SwapTranaction(type, payload) {
         case TransactionState.SUCCESS:
             ToastTransaction("success", "Transaction Successful",
                 <ExternalLink href={getTransactionLink(payload.chainId, payload.hash, 'transaction')}>
-                    {`Swapped ${payload.from.amount} ${payload.from.symbol} for ~${payload.to.amount} ${payload.to.symbol} ↗ `}
+                    {`Swapped ${payload.from.amount} ${payload.from.symbol} for ${payload.to.amount} ${payload.to.symbol} ↗ `}
                 </ExternalLink>
             )
             break;

@@ -13,7 +13,7 @@ const SelectedNetworks = () => {
 
     const networkChooser = () => {
         if (currHref.includes("/xdai"))
-            return "xDAI";
+            return "xDai";
         else if (currHref.includes("/bsc-test")) {
             return "BSC-Test"
         }
@@ -24,6 +24,7 @@ const SelectedNetworks = () => {
             return "Main"
         }
     }
+
     const actionMenu = {
         "Main": [
 
@@ -93,13 +94,14 @@ const SelectedNetworks = () => {
         <select name="networks" id="networks" value={chain} onChange={(e) => setChain(e.currentTarget.value)}>
             {
                 Object.keys(actionMenu).map((currChain) => {
+
                     return <option key={currChain} value={currChain} >{currChain}</option>
                 })
             }
-
         </select>
         <div className="action-wrap">
             {
+
                 actionMenu[chain].map((item, index) => {
                     const activeClass = currHref === item.link ? "active" : ""
                     const itemElm = <> <div className="names">

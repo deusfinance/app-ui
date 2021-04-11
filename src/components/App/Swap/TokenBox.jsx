@@ -26,7 +26,7 @@ align-items:center;
 `
 
 
-const TokenBox = ({ hasMax, currency, setActive }) => {
+const TokenBox = ({ hasMax, currency, type, setActive }) => {
     const [onMax, setOnMax] = useState(false)
     const [inputAmount, setInputAmount] = useState("")
 
@@ -70,7 +70,7 @@ const TokenBox = ({ hasMax, currency, setActive }) => {
                 MAX
             </ButtonMax>}
 
-            <TokenInfo onClick={() => setActive(true)}>
+            <TokenInfo onClick={() => setActive(true, type)}>
                 <CurrencyLogo
                     style={{ verticalAlign: "middle" }}
                     currency={currency}

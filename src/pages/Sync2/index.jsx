@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 
 import styled from 'styled-components'
 import { Image } from 'rebass/styled-components';
-import { ToastContainer } from 'react-toastify';
 import { FlexCenter } from '../../components/App/Container';
-import { StyleSwapBase } from '../../components/App/Swap';
-import { SwapWrapper, SwapArrow, PriceImpact } from '../../components/App/Swap';
+import { SwapWrapper, SwapArrow, SmallWrapper } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
 import { Type } from '../../components/App/Text';
 import SyncAction from '../../components/App/Synchronizer/SyncAction';
@@ -14,6 +12,7 @@ import SearchBox from '../../components/App/Synchronizer/SearchBox';
 import { Base } from '../../components/App/Button';
 import LongShort from '../../components/App/Synchronizer/LongShort';
 import PriceBox from '../../components/App/Synchronizer/PriceBox';
+import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
 import { SwapTranaction } from '../../utils/explorers';
 import { TransactionState } from '../../utils/constant';
 
@@ -76,6 +75,7 @@ const Sync2 = () => {
                 <SyncAction isPreApproved={true} mt="20px" />
 
             </SwapWrapper>
+            <RemainingCap />
         </MainWrapper >
     </>);
 }

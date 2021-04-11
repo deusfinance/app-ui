@@ -6,8 +6,6 @@ export const isDesktop = () => {
     return ((typeof window.orientation === "undefined") || (navigator.userAgent.indexOf('IEMobile') === -1)) && !(isMobile);
 };
 
-
-
 export const getStayledNumber = (number, space = 9, flag = true) => {
     if (!number && flag) return "0"
     if (number < 0) return ""
@@ -20,7 +18,7 @@ export const getStayledNumber = (number, space = 9, flag = true) => {
     return strNumber.substring(0, indexDot).concat(strNumber.substring(indexDot, space))
 }
 
-
+export const getSwapVsType = (t) => t === "from" ? "to" : "from"
 
 export const formatBalance = (number, decimal = 9) => {
     if (!number) return "0"

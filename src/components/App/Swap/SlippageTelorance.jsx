@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
-import { Flex } from 'rebass/styled-components'
-
 import { StyleSwapBase, StyleTitles } from '.';
 import { Base } from '../Button';
-import { RowFlat } from '../Row';
 import { FlexCenter } from '../Container';
 import { Type } from '../Text';
 
@@ -32,6 +29,7 @@ export const Option = styled(Base)`
   margin-right:5px;
   width:50px;
   font-size: 13px;
+  transition:all 0s ;
   cursor:${({ active }) => active ? "default" : "pointer"};
   &:hover{
     background : ${({ active, theme }) => active ? theme.grad3 : "#5f5f5f"};
@@ -61,16 +59,21 @@ const InputSlippage = styled.input`
    background:transparent;
 
 `
+const defaultAmounts = [0.1, 0.5, 1]
+const SlippageTelorance = ({ slipage, setSlipage }) => {
 
-const SlippageTelorance = () => {
     return (<Wrapper>
         <Type.SM className="title">Slippage Telorance</Type.SM>
-        <div style={{ display: "inline-block" }} justifyContent="flex-end" wrap={false} height="25px">
-            <Option>0.1%</Option>
-            <Option>0.5%</Option>
-            <Option active={true}>1%</Option>
-            <CustomOption >
-                <InputSlippage placeholder="0.5" />
+        <div style={{ display: "inline-block" }} height="25px">
+            {defaultAmounts.map(amount => {
+                return <Option key={amount} active={amount === slipage} onClick={() => setSlipage(amount)}>{amount}%</Option>
+            })}
+            <CustomOption active={defaultAmounts.indexOf(slipage) === -1} >
+                <InputSlippage
+                    placeholder={slipage.toFixed(1)}
+                    value={defaultAmounts.indexOf(slipage) === -1 ? slipage : ""}
+                    onChange={(e) => setSlipage(parseFloat(e.currentTarget.value))}
+                />
                  %
             </CustomOption>
         </div>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components'
-import { Box } from 'rebass/styled-components'
 import { Type } from '../../App/Text';
 import { RowBetween } from '../../App/Row';
 import CircleToken from '../../../assets/images/circle-token.svg'
@@ -67,13 +66,13 @@ const TokenWrap = styled(FlexCenter)`
   
 `
 
-const currencies = [
-  { symbol: "DEA", logo: "/tokens/dea.svg" },
-  { symbol: "DEUS", logo: "/tokens/deus.svg" },
-  { symbol: "ETH", logo: "/tokens/eth-logo.svg" },
-]
+// const currencies = [
+//   { symbol: "DEA", logo: "/tokens/dea.svg" },
+//   { symbol: "DEUS", logo: "/tokens/deus.svg" },
+//   { symbol: "ETH", logo: "/tokens/eth-logo.svg" },
+// ]
 
-const SearchBox = ({ currencies1, currency2, active, setActive }) => {
+const SearchBox = ({ currencies, swapState, escapedType, changeToken, active, setActive }) => {
   return (active &&
     <Wrapper>
       <RowBetween fontWeight="300" >
@@ -87,15 +86,17 @@ const SearchBox = ({ currencies1, currency2, active, setActive }) => {
       </RowBetween>
       <Line my="5px"></Line>
       <TokensWrap>
-        {currencies.map((currency, id) => (
-          <TokenRow id={id}>
-            <TokenWrap>
-              <StyledLogo size="40px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
-              <Type.LG style={{ marginLeft: "10px" }} >{currency?.symbol}</Type.LG>
-            </TokenWrap>
-            <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || 0}</Type.LG>
-          </TokenRow>
-        ))}
+        {currencies
+          .filter(currency => currency.symbol !== swapState[escapedType].symbol)
+          .map((currency, id) => (
+            <TokenRow key={id} onClick={() => changeToken(currency, escapedType)}>
+              <TokenWrap>
+                <StyledLogo size="40px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
+                <Type.LG style={{ marginLeft: "10px" }} >{currency?.symbol}</Type.LG>
+              </TokenWrap>
+              <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || 0}</Type.LG>
+            </TokenRow>
+          ))}
 
       </TokensWrap>
     </Wrapper>

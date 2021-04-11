@@ -66,7 +66,7 @@ padding:20px 15px;
 margin-top:30px;
 `
 
-export const PriceImpact = styled(FlexCenter)`
+export const SmallWrapper = styled(FlexCenter)`
     ${StyleSwapBase}
     ${StyleTitles}
     justify-content:space-between;

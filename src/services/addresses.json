@@ -34,7 +34,15 @@
         },
         "coinbase": {
             "1": "0x4185cf99745B2a20727B37EE798193DD4a56cDfa",
-            "4": "0xFD104902617231e053049044E3e51C1D37fE12D3"
+            "4": "0xeF0500F9B82E72f045499932F0925C6393A5BD77"
+        },
+        "dcoin": {
+            "1": "0x83757970914121240072e7Aa7dD62E0C8E136B50",
+            "4": "0xbddAE02E37A2c85200c73FB2114aB188979eA861"
+        },
+        "dcoin-s": {
+            "1": "0x505dFFC2a1e488965ce4f526A5Cc85c2EeB13B79",
+            "4": "0x0527E2c43A64d6cB0D2B11853B5e78bC46e20c5E"
         },
         "busd": {
             "97": "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47",
@@ -267,5 +275,9 @@
     },
     "stocks_contract": {
         "4": "0xE7d50574C1aCa5b25710990E12919ff9d4c66589"
+    },
+    "migrator": {
+        "1": "0xF38BDfadb978B0CC081bcdF82447d0a75D81Ef55",
+        "4": "0xA72D114d333Fb06e95c3F5D73aB16c643Ad22911"
     }
 }

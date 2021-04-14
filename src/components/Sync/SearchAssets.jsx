@@ -30,8 +30,8 @@ const SearchAssets = (props) => {
 
     useEffect(() => {
         if (searchBoxType === "to") {
-            setSortedList(arrToken)
-            setCurrToken(arrToken)
+            setSortedList(arrToken && arrToken.filter(t => t.conducted))
+            setCurrToken(arrToken && arrToken.filter(t => t.conducted))
             setQuery("")
         } else {
             setSortedList(arrToken && arrToken.filter(t => t.conducted))

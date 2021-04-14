@@ -1,10 +1,19 @@
-import { Web3Provider } from '@ethersproject/providers';
+import { InfuraProvider, Web3Provider } from '@ethersproject/providers';
+import { isAddress } from '@ethersproject/address';
+import { Contract } from '@ethersproject/contracts';
+
 import { toast } from 'react-toastify';
 
 export const isDesktop = () => {
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     return ((typeof window.orientation === "undefined") || (navigator.userAgent.indexOf('IEMobile') === -1)) && !(isMobile);
 };
+
+export const formatBalance2 = (balance = null, fixed = 9) => {
+    if (!balance) return '0'
+    if (parseFloat(balance) === 0) return 0
+    return parseFloat(balance).toPrecision(fixed).substring(0, fixed)
+}
 
 export const getStayledNumber = (number, space = 9, flag = true) => {
     if (!number && flag) return "0"
@@ -34,6 +43,7 @@ export const formatBalance = (number, decimal = 9) => {
 
 export const newFormatAmount = (number, decimal = 9) => {
     if (!number) return "0"
+    // console.log(number,typeof number);
     if (parseFloat(number) === 0) return 0
 
     if (parseFloat(number) >= 1) {
@@ -52,6 +62,20 @@ export const newFormatAmount = (number, decimal = 9) => {
     return number
 }
 
+
+export const fetcher = (library, abi) => (...args) => {
+    const [arg1, arg2, ...params] = args
+    // it's a contract
+    if (isAddress(arg1)) {
+        const address = arg1
+        const method = arg2
+        const contract = new Contract(address, abi, library.getSigner())
+        return contract[method](...params)
+    }
+    // it's a eth call
+    const method = arg1
+    return library[method](arg2, ...params)
+}
 
 export const setBackground = (type) => {
     const elm = document.getElementById("blur-pop")
@@ -80,9 +104,6 @@ export const formatAddress = (address) => {
     return address ? address.substring(0, 6) + "..." + address.substring(address.length - 4, address.length) : 'connect wallet'
 }
 
-
-
-
 export function dollarPrice(price, fixed = 0) {
     return Number(price).toLocaleString('en-US', {
         style: 'currency',
@@ -92,8 +113,8 @@ export function dollarPrice(price, fixed = 0) {
 }
 
 export function getLibrary(provider) {
-    // const currProvider = provider ? provider : InfuraProvider.getWebSocketProvider("homestead", "cf6ea736e00b4ee4bc43dfdb68f51093")
-    const library = new Web3Provider(provider, 'any')
+    const currProvider = provider ? provider : InfuraProvider.getWebSocketProvider("homestead", "cf6ea736e00b4ee4bc43dfdb68f51093")
+    const library = new Web3Provider(currProvider, 'any')
     library.pollingInterval = 15000
     return library
 }

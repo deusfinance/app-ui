@@ -3,7 +3,7 @@ import { notify, formatBalance } from '../../utils/utils';
 // import ChainPupop from '../common/Popup/ChainPopup';
 // import { useWeb3React } from '@web3-react/core';
 
-const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, isDEA }) => {
+const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, isDEA, isMigrator }) => {
     const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && formatBalance(claimable_amount) !== 0
     const isMobile = window.innerWidth < 670
     // const { chainId } = useWeb3React()
@@ -47,7 +47,7 @@ const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, i
         </div>
         }
         <div className="swap-title">
-            {!(isStock || isSPCx || isDEA) && <> <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
+            {!(isStock || isSPCx || isDEA || isMigrator) && <> <img src={process.env.PUBLIC_URL + "/img/DEUSName.svg"} alt="DEUS" />
                 <div className="swap-wrap">
                     <div className="swap">
                         Swap
@@ -64,9 +64,21 @@ const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, i
             </>}
 
         </div>
+        {isMigrator && <div className="swap-title">
+            <div className="swap-wrap">
+                <div className="swap">
+                    Swap
+                    </div>
+            </div>
+        </div>}
+
         {isCoinbase && <div className="coinbase-wrap">
             <div className="top">coinbase</div>
             <img src={process.env.PUBLIC_URL + "/img/futures.svg"} alt="CoinBase" />
+        </div>}
+        {isMigrator && <div className="coinbase-wrap migrator-wrap">
+            <div className="top">coinbase</div>
+            <img src={process.env.PUBLIC_URL + "/img/migrator.svg"} alt="migrator" />
         </div>}
 
         {isBakkt && <div className="bakkt-wrap" style={{ textAlign: "center", marginBottom: "20px" }}>

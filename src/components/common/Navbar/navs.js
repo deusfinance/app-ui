@@ -55,12 +55,19 @@ export default [
         exact: true,
         children: [
             {
-                id: "coinbase",
-                text: "COINBASE",
-                path: "/coinbase",
+                id: "migrator",
+                text: <span>COINBASE MIGRATOR</span>,
+                path: "/migrator",
                 exact: true,
 
             },
+            // {
+            //     id: "coinbase",
+            //     text: "COINBASE",
+            //     path: "/coinbase",
+            //     exact: true,
+
+            // },
             {
                 id: "bakkt",
                 text: "BAKKT",

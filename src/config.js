@@ -75,6 +75,24 @@ export const AllTokens = {
         pic_name: "coinbase.svg",
         isFutures: true
     },
+    "dcoin": {
+        name: "dcoin",
+        title: "COIN",
+        type: TokenType.Main,
+        innerLink: true,
+        provideLink: "/swap",
+        pic_name: "dcoin.svg",
+        isFutures: true
+    },
+    "dcoin-s": {
+        name: "dcoin-s",
+        title: "COIN-S",
+        type: TokenType.Main,
+        innerLink: true,
+        provideLink: "/swap",
+        pic_name: "dcoin.svg",
+        isFutures: true
+    },
     "bakkt": {
         name: "bakkt",
         title: "Bakkt",

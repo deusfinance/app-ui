@@ -61,7 +61,7 @@ const SyncBscTest = () => {
     const [web3Class, setWeb3Class] = useState(new StockService(account, 97))
     const apis = [
         "https://oracle1.deus.finance/test/BSC/signatures.json",
-        "https://oracle3.deus.finance/test/BSC/signatures.json",
+        "https://oracle3.deus.finance/BSC/signatures.json",
     ]
     let transactionType = {}
     useEffect(() => {
@@ -219,6 +219,24 @@ const SyncBscTest = () => {
             console.log("token balance ", token.balance);
             if (!token.allowances || !parseInt(token.allowances) > 0)
                 token.allowances = await web3Class.getAllowances(token.address, account)
+        } else {
+            if (token.long) {
+                token.long.balance = await web3Class.getTokenBalance(token.long.address, account)
+                if (!parseInt(token.long.allowances) > 0) {
+                    token.long.allowances = await web3Class.getAllowances(token.long.address, account)
+                    // const currLong = token.long
+                    // swap[type] = { ...token, long: { ...currLong }, amount: amount }
+                }
+            }
+
+            if (token.short) {
+                token.short.balance = await web3Class.getTokenBalance(token.short.address, account)
+                if (!parseInt(token.short.allowances) > 0) {
+                    token.short.allowances = await web3Class.getAllowances(token.short.address, account)
+                    // const currShort = token.short
+                    // swap[type] = { ...token, short: { ...currShort }, amount: amount }
+                }
+            }
         }
         setLoadingAllowance(false)
         swap[type] = { ...token, amount: amount }
@@ -289,7 +307,7 @@ const SyncBscTest = () => {
             }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    <a href={`https://blockscout.com/xdai/mainnet/tx/${hash}/internal-transactions`} target="_blank">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://testnet.bscscan.com/tx//${hash}`} target="_blank">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
                     closeOnClick: false,

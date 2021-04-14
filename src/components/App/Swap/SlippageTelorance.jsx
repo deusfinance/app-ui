@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
 import { StyleSwapBase, StyleTitles } from '.';
 import { Base } from '../Button';
@@ -49,7 +49,9 @@ export const CustomOption = styled.div`
 `
 
 
-const InputSlippage = styled.input`
+const InputSlippage = styled.input.attrs(
+    { type: "number", min: 0.1 }
+)`
    direction:rtl;
    color:#FFFFFF;
    border:0;
@@ -61,18 +63,40 @@ const InputSlippage = styled.input`
 `
 const defaultAmounts = [0.1, 0.5, 1]
 const SlippageTelorance = ({ slipage, setSlipage }) => {
+    const [customActive, setCustomActive] = useState(false)
+
+    const handleMinSlipage = () => {
+        if (slipage < 0.1) {
+            setSlipage(0.1)
+            setCustomActive(false)
+        }
+    }
+
+    const handleCustomChange = (e) => {
+        if (e.currentTarget.value !== "") {
+            setCustomActive(true)
+            setSlipage(parseFloat(e.currentTarget.value))
+        } else {
+            setCustomActive(false)
+            setSlipage(0.5)
+        }
+    }
 
     return (<Wrapper>
         <Type.SM className="title">Slippage Telorance</Type.SM>
         <div style={{ display: "inline-block" }} height="25px">
             {defaultAmounts.map(amount => {
-                return <Option key={amount} active={amount === slipage} onClick={() => setSlipage(amount)}>{amount}%</Option>
+                return <Option key={amount} active={amount === slipage && !customActive} onClick={() => {
+                    setCustomActive(false)
+                    setSlipage(amount)
+                }}>{amount}%</Option>
             })}
-            <CustomOption active={defaultAmounts.indexOf(slipage) === -1} >
+            <CustomOption active={customActive}  >
                 <InputSlippage
                     placeholder={slipage.toFixed(1)}
-                    value={defaultAmounts.indexOf(slipage) === -1 ? slipage : ""}
-                    onChange={(e) => setSlipage(parseFloat(e.currentTarget.value))}
+                    value={customActive ? slipage : ""}
+                    onBlur={handleMinSlipage}
+                    onChange={(e) => handleCustomChange(e)}
                 />
                  %
             </CustomOption>

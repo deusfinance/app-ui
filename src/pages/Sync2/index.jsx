@@ -43,6 +43,8 @@ const Sync2 = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
 
     return (<>
+
+
         <SearchBox active={activeSearchBox} setActive={setActiveSearchBox} />
 
         <MainWrapper>

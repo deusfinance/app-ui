@@ -16,10 +16,10 @@ const OpenBox = ({ handleLock, handleUnLock, vault, token }) => {
                     <div className="description">{vault?.total} {token.title} minted</div>
                 </div>}
 
-                {token?.balance && vault?.total && <div className="wrap-info">
+                {/* {token?.balance && vault?.total && <div className="wrap-info">
                     <div className="titles">You own: </div>
                     <div className="description">{newFormatAmount(token.balance, 6)} {token.title} <br /> {getStayledNumber(token.balance / vault?.total * 100, 5)}%</div>
-                </div>}
+                </div>} */}
             </div>
             <div className="door-btns">
                 {/* <div className="label-lock">

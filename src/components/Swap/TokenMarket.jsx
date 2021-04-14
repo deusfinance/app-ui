@@ -39,14 +39,6 @@ const TokenMarket = ({ handleSwich, isLong = true, swap, longPrice, toAmount, fr
                 </div>
             </div>
         </div>
-        {/* <div className="token-market" style={{ opacity: 0 }}>
-            <p>TVL</p>
-            <p>{tvl} ETH</p>
-        </div> */}
-        {/* <div className="token-market" style={{ opacity: 0 }}>
-            <p>Trading Volume</p>
-            <p>{tradeVol} ETH</p>
-        </div> */}
     </div>);
 }
 

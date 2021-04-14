@@ -2,9 +2,10 @@ import React from 'react';
 import { sendMessage } from "./telegramLogger"
 import { toast } from 'react-toastify';
 
-const expectedNumberOracles = 1
+let expectedNumberOracles = 2
 
-export const xdaiMutileOracleHandler = (type, address, prices) => {
+export const xdaiMutileOracleHandler = (type, address, prices, expected = 2) => {
+    expectedNumberOracles = expected
     // console.log(prices);
     let liveCounts = 0
     console.log(prices);

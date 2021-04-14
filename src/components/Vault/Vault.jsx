@@ -268,13 +268,13 @@ class Vault extends Component {
     // }
 
     handleOkAllow = () => {
-        localStorage.setItem("lockPermission", Date())
+        localStorage.setItem("lockPermission2", Date())
         this.handleClose()
         this.handleLock(this.state.savedVault)
     }
 
     handleIsAllowLock = () => {
-        return localStorage.getItem("lockPermission") !== null
+        return localStorage.getItem("lockPermission2") !== null
     }
 
     render() {

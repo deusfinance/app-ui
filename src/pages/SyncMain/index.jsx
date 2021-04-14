@@ -10,21 +10,22 @@ import StockBox from '../../components/Sync/StockBox';
 import _ from "lodash"
 import { toast } from 'react-toastify';
 import { TokenType } from '../../config';
-import { StockService } from '../../services/xStockService';
-import { handleCalcPairPrice, deaToken, xdaiToken, fetcher, emptyToken } from '../../services/stock';
+import { StockService } from '../../services/SyncMainService';
+
+import { handleCalcPairPrice, daiToken, fetcher, emptyToken } from '../../services/stock';
 import { useWeb3React } from '@web3-react/core';
-import SyncCap from '../../components/Sync/SyncCap';
+// import SyncCap from '../../components/Sync/SyncCap';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
+
 import './styles/sync-xdai.scss';
-import { formatEther } from '@ethersproject/units';
 
 
 
-const SyncXdai = () => {
+const SyncMain = () => {
 
-    const [tokens,] = useState([{ ...xdaiToken, type: TokenType.Main }, deaToken])
+    const [tokens,] = useState([{ ...daiToken, type: TokenType.Main }])
 
     const [swap, setSwap] = useState(
         {
@@ -52,32 +53,27 @@ const SyncXdai = () => {
     const [loadingCap, setLoadingCAP] = useState(false);
     const [loadingAllowance, setLoadingAllowance] = useState(false);
     const [subscrible, setSubscrible] = useState(null);
-    const [totalCap, setTotalCap] = useState(0);
+    // const [totalCap, setTotalCap] = useState(0);
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
-    const { account, chainId, library, connector } = useWeb3React()
-
-    const [web3Class, setWeb3Class] = useState(new StockService(account, 100))
+    const { account, chainId } = useWeb3React()
+    const [web3Class, setWeb3Class] = useState(new StockService(account, 1))
     const apis = [
-        "https://oracle1.deus.finance/xdai/signatures.json",
-        "https://oracle3.deus.finance/xdai/signatures.json",
-        // "https://oracle2.deus.finance/xdai/signatures.json",
+        "https://oracle1.deus.finance/mainnet/signatures.json",
+        "https://oracle3.deus.finance/mainnet/signatures.json",
     ]
     let transactionType = {}
     useEffect(() => {
         if (account && chainId) {
-            setWeb3Class(new StockService(account, 100))
-            // console.log(library.getBalance(account).then(balance => console.log(formatEther(balance))));
-            // console.log(connector);
+            setWeb3Class(new StockService(account, 1))
         }
-        initialCap()
+        // initialCap()
     }, [account, chainId])
 
-    const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/xdai/conducted.json", { cache: "no-cache" }), [])
-    const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/xdai/price.json", { cache: "no-cache" }), [])
+    const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/mainnet/conducted.json", { cache: "no-cache" }), [])
+    const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/mainnet/price.json", { cache: "no-cache" }), [])
 
-    // const getBuySell = useCallback(() => fetcher("https://oracle1.deus.finance/xdai/buyOrSell.json"), [])
     let reportMessages = ""
     const getBuySell = useCallback(() =>
         Promise.allSettled(
@@ -89,7 +85,7 @@ const SyncXdai = () => {
                 return false
             })
             if (reportMessages !== "") {
-                sendMessage(reportMessages)
+                // sendMessage(reportMessages)
                 reportMessages = ""
             }
             return Promise.all(responses.map(function (response) {
@@ -102,7 +98,7 @@ const SyncXdai = () => {
     const getStocks = useCallback(() => fetcher("https://oracle1.deus.finance/registrar-detail.json", { cache: "no-cache" }), [])
 
     useEffect(() => {
-        handleInitToken("from", { ...xdaiToken })
+        handleInitToken("from", { ...daiToken })
         setSubscrible(setInterval(() => {
             getPrices().then((res) => {
                 setPrice(res)
@@ -124,7 +120,7 @@ const SyncXdai = () => {
         if (conducted && stocks) {
             conducted.tokens.map(async (token) => {
                 if (!stocks[token.id]) {
-                    console.log(token.id, " isnt there in registrar");
+                    console.log(token.id, " there isn't in registrar");
                     return
                 }
                 stocks[token.id].decimals = 18
@@ -143,6 +139,7 @@ const SyncXdai = () => {
             // handleInitTokenByName("to", "TSLA")
 
         }
+
     }, [conducted, stocks, account])
 
 
@@ -151,18 +148,18 @@ const SyncXdai = () => {
         handleTokenInputChange(stype, swap[stype].amount)
     }, [isLong, prices])
 
-    const initialCap = useCallback(async () => {
-        if (account && chainId && chainId === 100) {
-            setLoadingCAP(true)
-            web3Class.getTotalCap().then(total => {
-                setTotalCap(total)
-                web3Class.getUsedCap().then(used => {
-                    setRemindCap(parseFloat(used))
-                    setLoadingCAP(false)
-                })
-            })
-        }
-    }, [account, chainId])
+    // const initialCap = useCallback(async () => {
+    //     if (account && chainId && chainId === 97) {
+    //         setLoadingCAP(true)
+    //         web3Class.getTotalCap().then(total => {
+    //             setTotalCap(total)
+    //             web3Class.getUsedCap().then(used => {
+    //                 setRemindCap(parseFloat(used))
+    //                 setLoadingCAP(false)
+    //             })
+    //         })
+    //     }
+    // }, [account, chainId])
 
 
     const getData = useCallback(() => {
@@ -193,7 +190,7 @@ const SyncXdai = () => {
         const vstype = searchBoxType === "from" ? "to" : "from"
         handleInitToken(searchBoxType, token)
 
-        if (token.symbol !== "xDAI") {
+        if (token.symbol !== "DAI") {
             handleInitToken(vstype, tokens[0])
         }
 
@@ -221,11 +218,9 @@ const SyncXdai = () => {
         if (token.type === TokenType.Main) {
             token.balance = await web3Class.getTokenBalance(token.address, account)
             console.log("token balance ", token.balance);
-            if (!token.allowances)
+            if (!token.allowances || !parseInt(token.allowances) > 0)
                 token.allowances = await web3Class.getAllowances(token.address, account)
         } else {
-            // console.log("from ", token);
-
             if (token.long) {
                 token.long.balance = await web3Class.getTokenBalance(token.long.address, account)
                 if (!parseInt(token.long.allowances) > 0) {
@@ -313,7 +308,7 @@ const SyncXdai = () => {
             }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    <a href={`https://blockscout.com/xdai/mainnet/tx/${hash}/internal-transactions`} target="_blank">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://etherscan.io/tx/${hash}`} target="_blank">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
                     closeOnClick: false,
@@ -321,7 +316,7 @@ const SyncXdai = () => {
                 });
             else {
                 toast.info(<div>Transaction Pending <br />
-                    {`Approve d${swap.from.symbol}${!isLong ? '-s' : ''}`}</div>, {
+                    {`Approve ${swap.from.symbol}`}</div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false
 
@@ -334,7 +329,7 @@ const SyncXdai = () => {
             if (transactionType.action === "approve") {
                 handleInitToken(transactionType.type, transactionType.token, transactionType.token.amount)
                 toast.success(<div>Transaction Successful <br />
-                    {`Approved d${swap.from.symbol}${!isLong ? '-s' : ''}`}</div>, {
+                    {`Approved ${swap.from.symbol}`}</div>, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
             }
@@ -364,23 +359,11 @@ const SyncXdai = () => {
     const handleSwap = async () => {
         const { from, to } = swap
         try {
-            if (from.type === TokenType.Wrapped) {
-                if (isLong && !parseInt(from.long.allowances) > 0) {
-                    const payload = { action: "approve", type: "from", token: from }
-                    transactionType = payload
-                    return await web3Class.approve(from.long.address, from.amount, notifSync(methods))
-                }
-                if (!isLong && !parseInt(from.short.allowances) > 0) {
-                    const payload = { action: "approve", type: "from", token: from }
-                    transactionType = payload
-                    return await web3Class.approve(from.short.address, from.amount, notifSync(methods))
-                }
-            } else {
-                if (!parseInt(from.allowances) > 0) {
-                    const payload = { action: "approve", type: "from", token: from }
-                    transactionType = payload
-                    return await web3Class.approve(from.address, from.amount, notifSync(methods))
-                }
+            if (from.type === TokenType.Main && !parseInt(from.allowances) > 0) {
+                console.log({ action: "approve", type: "from" });
+                const payload = { action: "approve", type: "from", token: from }
+                transactionType = payload
+                return await web3Class.approve(from.address, from.amount, notifSync(methods))
             }
 
             if (to.type === TokenType.Main) {
@@ -390,7 +373,7 @@ const SyncXdai = () => {
             }
 
         } catch (error) {
-
+            console.log(error);
         }
     }
 
@@ -399,12 +382,12 @@ const SyncXdai = () => {
         const tokenAddress = isLong ? token.long.address : token.short.address
         const makerBuySell = await getBuySell()
 
-        const oracles = xdaiMutileOracleHandler(type, tokenAddress, makerBuySell)
+        const oracles = xdaiMutileOracleHandler(type, tokenAddress, makerBuySell, 2)
 
         try {
             transactionType = { action: "buy", swap: swap, isLong: isLong }
             const data = type === "buy" ?
-                await web3Class.buy(tokenAddress, amount, oracles.result, oracles.price, notifSync(methods)) :
+                await web3Class.buy(tokenAddress, amount, oracles.result, notifSync(methods)) :
                 await web3Class.sell(tokenAddress, amount, oracles.result, notifSync(methods))
             // console.log(data);
         } catch (error) {
@@ -416,10 +399,6 @@ const SyncXdai = () => {
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
             { <img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
-            {/* {<div className="description">
-                <p>You are in <span>WRONG</span> network</p>
-                <p>please change your network to <span>xDAI</span> </p>
-            </div>} */}
         </div>)
     }
 
@@ -429,38 +408,16 @@ const SyncXdai = () => {
 
         <div style={{ margin: "64px 0" }}></div>
 
-
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-
-
-
-        {/* <Popup
-            title={"Wrong Network"}
-            show={chainId && chainId !== 100 && showPopup}
-            close={true}
-            handlePopup={setShowPopup}
-            popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
-                <div>
-                    Looks like you are not connected to the right network.
-                </div>
-
-                <div className="switch-btn xdai-button" style={{ marginTop: "20px" }} onClick={() => addRPC(account, activate)}>
-                    <p>Change network to xDAI</p>
-                </div>
-
-            </div>}
-
-        /> */}
 
         <div className="swap-title">
             <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
             <div className="sync-wrap" >
                 <div className="sync" style={{ textTransform: "uppercase" }}>
-                    synchronizer xDAI
+                    synchronizer
                         </div>
             </div>
         </div>
-
 
         <SearchAssets
             searchBoxType={searchBoxType}
@@ -527,7 +484,7 @@ const SyncXdai = () => {
                         <div style={{ margin: "16px 0" }}></div>
 
                         <SwapStockButton
-                            validChain={100}
+                            validChain={1}
                             loading={loadingAllowance}
                             handleSwap={handleSwap}
                             from_token={from_token}
@@ -539,7 +496,7 @@ const SyncXdai = () => {
 
                         <div style={{ margin: "6px 0" }}></div>
                     </div>
-                    {chainId && chainId === 100 && <SyncCap remindedAmount={remindCap} totalAmount={totalCap} />}
+                    {/* {chainId && chainId === 1 && <SyncCap remindedAmount={remindCap} totalAmount={totalCap} />} */}
                     {/* <TimerTrading /> */}
                 </div>
             </div>
@@ -552,4 +509,4 @@ const SyncXdai = () => {
     </div >);
 }
 
-export default SyncXdai;
+export default SyncMain;

@@ -1,10 +1,14 @@
-import React from 'react';
+import { formatUnits } from '@ethersproject/units';
+import { useWeb3React } from '@web3-react/core';
+import React, { useCallback } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
+import useSWR from 'swr';
 import { InputAmount } from '.';
-import { newFormatAmount } from '../../../utils/utils';
+import { tokenABI } from '../../../utils/abis';
+import { fetcher, formatBalance2 } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';
 import { Type } from '../Text';
@@ -25,13 +29,22 @@ align-items:center;
 }
 `
 
-
 const TokenBox = ({ hasMax, currency, type, setActive }) => {
-    const [onMax, setOnMax] = useState(false)
     const [inputAmount, setInputAmount] = useState("")
+    const [onMax, setOnMax] = useState(false)
+
+    const { account, library } = useWeb3React()
+    const { data, mutate } = useSWR([currency?.address, 'balanceOf', account], {
+        fetcher: fetcher(library, tokenABI),
+    })
+    const [balance, setBalance] = useState(data)
 
     useEffect(() => {
-        if (inputAmount === currency?.balance) {
+        setBalance(data ? formatUnits(data, currency?.decimals) : null)
+    }, [data])
+
+    useEffect(() => {
+        if (inputAmount === balance) {
             setOnMax(true)
         } else {
             setOnMax(false)
@@ -50,7 +63,7 @@ const TokenBox = ({ hasMax, currency, type, setActive }) => {
             </Box>
             <Box>
                 <Type.SM color={'secodery'}>
-                    Balance: {newFormatAmount(currency?.balance)}
+                    Balance: {formatBalance2(balance)}
                 </Type.SM>
             </Box>
         </Flex>
@@ -66,7 +79,7 @@ const TokenBox = ({ hasMax, currency, type, setActive }) => {
             <InputAmount placeholder="0.0" value={inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
 
             {hasMax && !onMax && <ButtonMax width={"40px"}
-                onClick={() => setInputAmount(currency.balance)}>
+                onClick={() => setInputAmount(balance)}>
                 MAX
             </ButtonMax>}
 

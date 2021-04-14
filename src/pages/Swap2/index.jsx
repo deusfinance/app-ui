@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapTitle, SwapWrapper, SwapArrow } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
@@ -9,13 +9,14 @@ import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
 import PriceImpact from '../../components/App/Swap/PriceImpact';
 import { getSwapVsType } from '../../utils/utils';
+import { useWeb3React } from '@web3-react/core';
 
 //close with esc
 const tokens = [
     { logo: "/tokens/eth-logo.svg", symbol: "ETH", balance: "35.284456129464577913" },
-    { logo: "/tokens/deus.svg", symbol: "DEUS", balance: "95.1111" },
-    { logo: "/tokens/dea.svg", symbol: "DEA", balance: "27.54877" },
-    { logo: "/tokens/usdc.svg", symbol: "USDC", balance: "5" },
+    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x3b62F3820e0B035cc4aD602dECe6d796BC325325", decimals: 18 },
+    { logo: "/tokens/dea.svg", symbol: "DEA", address: "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778", decimals: 18 },
+    { logo: "/tokens/usdc.svg", symbol: "USDC", decimals: 6, address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48" },
 ]
 
 const Swap2 = () => {
@@ -24,7 +25,7 @@ const Swap2 = () => {
     const [escapedType, setEscapedType] = useState("from")
     const [slipage, setSlipage] = useState(0.5)
     const [swapState, setSwapState] = useState({
-        from: tokens[0],
+        from: tokens[2],
         to: tokens[1],
     })
 
@@ -43,6 +44,7 @@ const Swap2 = () => {
 
         setSwapState({ ...swapState, [type]: token })
     }
+
 
     return (<>
         <SearchBox currencies={tokens} swapState={swapState} escapedType={escapedType} changeToken={changeToken} active={activeSearchBox} setActive={setActiveSearchBox} />

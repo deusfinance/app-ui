@@ -4,17 +4,16 @@ import { bscSynchronizerABI, tokenABI } from '../utils/abis';
 
 export class StockService {
 
-    constructor(account, chainId = 97) {
+    constructor(account, chainId = 1) {
         this.account = account;
         this.chainId = chainId;
-        this.marketMaker = "0x800CE878C2e01CbDec612903d19b0538D5B2F544";
-
+        this.marketMaker = "0x7a27a7BF25d64FAa090404F94606c580ce8E1D37";
     }
 
     makeProvider = () => {
         if (this.INFURA_URL) return
-        this.INFURA_URL = 'https://data-seed-prebsc-1-s1.binance.org:8545/';
-        this.infuraWeb3 = new Web3(new Web3.providers.HttpProvider(this.INFURA_URL));
+        this.INFURA_URL = 'wss://mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+        this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
     }
 
     TokensMaxDigit = {
@@ -47,7 +46,7 @@ export class StockService {
 
         if (!account) return
 
-        if (tokenAddress !== this.getTokenAddr("busd")) {
+        if (tokenAddress !== this.getTokenAddr("dai")) {
             console.log("hii");
             return 1000000000000000
         }
@@ -105,11 +104,11 @@ export class StockService {
         const metamaskWeb3 = new Web3(Web3.givenProvider);
         const marketMakerContract = new metamaskWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
         const info = oracles[0]
-        console.log("oracles", oracles);
-        console.log("conrtact", marketMakerContract);
-        console.log("wallet ", this.account);
-        console.log("address ", address);
-        console.log("amount ", amount);
+        // console.log("oracles", oracles);
+        // console.log("conrtact", marketMakerContract);
+        // console.log("wallet ", this.account);
+        // console.log("address ", address);
+        // console.log("amount ", amount);
 
         //, gasPrice: Web3.utils.toWei("1", "Gwei")
         return marketMakerContract.methods.buyFor(
@@ -118,11 +117,11 @@ export class StockService {
             address.toString(),
             this._getWei(amount),
             info.fee.toString(),
-            [oracles[0].blockNo.toString()],
-            [oracles[0].price],
-            [oracles[0]["signs"]["buy"].v.toString()],
-            [oracles[0]["signs"]["buy"].r.toString()],
-            [oracles[0]["signs"]["buy"].s.toString()])
+            [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
+            [oracles[0].price, oracles[1].price],
+            [oracles[0]["signs"]["buy"].v.toString(), oracles[1]["signs"]["buy"].v.toString()],
+            [oracles[0]["signs"]["buy"].r.toString(), oracles[1]["signs"]["buy"].r.toString()],
+            [oracles[0]["signs"]["buy"].s.toString(), oracles[1]["signs"]["buy"].s.toString()])
             .send({ from: this.account })
             .on('transactionHash', (hash) => listener("transactionHash", hash))
             .once('receipt', () => listener("receipt"))
@@ -141,13 +140,13 @@ export class StockService {
             address.toString(),
             this._getWei(amount),
             info.fee.toString(),
-            [oracles[0].blockNo.toString()],
-            [oracles[0].price],
-            [oracles[0]["signs"]["sell"].v.toString()],
-            [oracles[0]["signs"]["sell"].r.toString()],
-            [oracles[0]["signs"]["sell"].s.toString()])
+            [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
+            [oracles[0].price, oracles[1].price],
+            [oracles[0]["signs"]["sell"].v.toString(), oracles[1]["signs"]["sell"].v.toString()],
+            [oracles[0]["signs"]["sell"].r.toString(), oracles[1]["signs"]["sell"].r.toString()],
+            [oracles[0]["signs"]["sell"].s.toString(), oracles[1]["signs"]["sell"].s.toString()])
             .send({ from: this.account })
-            .on('transactionHash', () => listener("transactionHash"))
+            .on('transactionHash', (hash) => listener("transactionHash", hash))
             .once('receipt', () => listener("receipt"))
             .on('error', () => listener("error"));
     }

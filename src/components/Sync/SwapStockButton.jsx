@@ -69,7 +69,7 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, remindCap, to
     }
 
 
-    if (to_token.conducted || from_token.conducted || Number(remindCap) <= 0 || isClosed || !account) {
+    if (to_token.conducted || from_token.conducted || isClosed || !account) {
 
         let errTxt = null
 
@@ -81,10 +81,6 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, remindCap, to
             errTxt = "CONNECT WALLET"
         } else if (getBalance() < amount) {
             errTxt = "INSUFFICIENT BALANCE"
-        } else if (Number(remindCap) <= 0 && from_token.symbol === "DAI") {
-            errTxt = "YOU NEED TIME TOKENS"
-        } else if (Number(remindCap) < Number(from_token.amount) && from_token.symbol === "DAI") {
-            errTxt = "YOU NEED MORE TIME TOKENS"
         }
 
         if (errTxt) {

@@ -465,6 +465,7 @@ const SyncXdai = () => {
         <SearchAssets
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
+            chainId={100}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}

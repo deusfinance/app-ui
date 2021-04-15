@@ -37,13 +37,13 @@ export function formatEtherscanLink(type, chainId, address) {
     }
     switch (type) {
         case EtherscanType.Account: {
-            return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/address/${address}`
+            return `https://etherscan.io/address/${address}`
         }
         case EtherscanType.Transaction: {
-            return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/tx/${address}`
+            return `https://etherscan.io/tx/${address}`
         }
         case EtherscanType.Token: {
-            return `https://${ETHERSCAN_PREFIXES[chainId]}etherscan.io/token/${address}`
+            return `https://etherscan.io/token/${address}`
         }
         default: {
             return ""

@@ -24,7 +24,7 @@ class TokenBox extends Component {
 
 
     render() {
-        const { type, estimated, handleSearchBox, handleTokenInputChange, token, isIPO, isMigrator } = this.props
+        const { type, disabled, estimated, handleSearchBox, handleTokenInputChange, token, isIPO, isMigrator } = this.props
         return (<div className="token-box-wrap">
             <div className="token-box">
                 <div className="top">
@@ -35,7 +35,7 @@ class TokenBox extends Component {
                     </div>
                 </div>
                 <div className="bottom">
-                    <input type="number" className="input-amount"
+                    <input type="number" className="input-amount" disabled={disabled}
                         value={token.amount}
                         onKeyPress={this.validate}
                         onChange={(e) => handleTokenInputChange(type, e.currentTarget.value)}

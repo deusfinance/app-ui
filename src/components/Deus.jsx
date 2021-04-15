@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
 
-const CoinBase = React.lazy(() => import('../pages/Coinbase/Index'));
+// const CoinBase = React.lazy(() => import('../pages/Coinbase/Index'));
 const Migrator = React.lazy(() => import('../pages/Migrator'));
 const Bakkt = React.lazy(() => import('../pages/Bakkt/Bakkt'));
 const Musk = React.lazy(() => import('../pages/Musk/Musk'));

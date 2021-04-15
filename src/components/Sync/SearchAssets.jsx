@@ -12,7 +12,9 @@ const SearchAssets = (props) => {
     const [currTokens, setCurrToken] = useState([])
     const [sortedList, setSortedList] = useState([])
     const { nAllStocks } = props
-    const { chainId } = useWeb3React()
+    const chainId = props.chainId
+    // const { chainId } = useWeb3React()
+
     const [query, setQuery] = useState("")
     const height = useState("500px")
 

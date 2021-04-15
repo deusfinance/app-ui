@@ -39,9 +39,9 @@ const MigratorButton = ({ approved, token, handleMigrate, isMobile }) => {
             </div>}
         </>}
         {
-            !account && <div className="swap-btn-wrap grad-wrap  dapp-link" style={{ background: "linear-gradient(90deg, #DFF4FE 0%, #8EB5FF 100%);" }} onClick={handleConnect}>
-                <div className="swap-btn grad" style={{ color: "#000" }}>{"connect wallet"}</div>
-            </div>
+            !account && <ButtonSyncDeactive>
+                CONNECT WALLET
+            </ButtonSyncDeactive>
         }
 
     </>);

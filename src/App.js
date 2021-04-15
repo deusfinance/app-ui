@@ -12,8 +12,8 @@ import './assets/styles/base.scss';
 const Deus = React.lazy(() => import('./components/Deus'));
 // const Sync = React.lazy(() => import('./pages/Sync'));
 // const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
-// const Sync2 = React.lazy(() => import('./pages/Sync2'));
-// const Swap2 = React.lazy(() => import('./pages/Swap2'));
+const Sync2 = React.lazy(() => import('./pages/Sync2'));
+const Swap2 = React.lazy(() => import('./pages/Swap2'));
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'));
 const SyncMain = React.lazy(() => import('./pages/SyncMain'));
 const NotFound = React.lazy(() => import('./components/NotFound'));
@@ -35,8 +35,8 @@ function App() {
             {/* <Route exact path="/crosschain/bsc-test/synchronizer" component={SyncBSCTest} /> */}
             <Route exact path="/synchronizer" component={SyncMain} />
             {/* <Route exact path="/synchronizer" component={Under} /> */}
-            {/* <Route exact path="/synchronizer2" component={Sync2} /> */}
-            {/* <Route exact path="/swap2" component={Swap2} /> */}
+            <Route exact path="/synchronizer2" component={Sync2} />
+            <Route exact path="/swap2" component={Swap2} />
             {/* <Route exact path="/test-style" component={Test} /> */}
             <Redirect exact from="/" to="/swap" />
             <Route path="/" component={Deus} />

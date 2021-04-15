@@ -33,10 +33,12 @@ class MainSwap extends Component {
         },
         showSearchBox: false,
         searchBoxType: "from",
+        currInputType: "from",
         fromPerTo: true,
         minPerTo: 0,
         claimable_amount: null,
         typingTimeout: 0,
+        typingInterval: 0,
         typeTransaction: "",
         slippageAmount: 0.5,
         toAmount: "",
@@ -172,6 +174,13 @@ class MainSwap extends Component {
 
         this.setState({
             typingTimeout: setTimeout(() => {
+
+                this.setState({
+                    typingInterval: setInterval(() => {
+                        this.handleCalcPairPrice(stype, amount)
+                    }, 10000)
+                })
+
                 this.handleCalcPairPrice(stype, amount)
 
                 this.setState({ swap })
@@ -185,11 +194,15 @@ class MainSwap extends Component {
     handleTyping = () => {
         if (this.state.typingTimeout) {
             clearTimeout(this.state.typingTimeout);
+            clearInterval(this.state.typingInterval)
         }
     }
 
     handleCalcPairPrice = async (searchBoxType, amount) => {
         const { swap, web3 } = this.state
+        console.log(searchBoxType, amount);
+        this.setState({ currInputType: searchBoxType })
+
         if (!web3) return
 
         const vstype = searchBoxType === "from" ? "to" : "from"
@@ -418,6 +431,7 @@ class MainSwap extends Component {
                         estimated=" (estimated)"
                         handleSearchBox={this.handleSearchBox}
                         handleTokenInputChange={this.handleTokenInputChange}
+                        disabled={true}
                     />
 
                     <TokenMarket

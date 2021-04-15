@@ -422,6 +422,7 @@ const SyncMain = () => {
         <SearchAssets
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
+            chainId={1}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}

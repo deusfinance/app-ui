@@ -24,7 +24,7 @@ class SearchBox extends Component {
                         <div className="token-items">
                             {
                                 sortedList.map((tokenName, i) => {
-                                    if (tokenName === choosedToken) return <></>
+                                    if (tokenName === choosedToken) return <div key={i}></div>
                                     const token = allTokens[tokenName]
                                     return <div key={i} className="token-item" onClick={() => handleChangeToken(token.name)}>
                                         <div>

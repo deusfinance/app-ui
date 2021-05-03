@@ -8,10 +8,10 @@ import UnLockPupop from './UnLockPupop';
 import Alert from './Alert/Alert';
 import { VaultsService } from '../../services/VaultsService';
 import { notify, formatBalance, setBackground } from '../../utils/utils';
-
 import { ToastContainer } from 'react-toastify';
 import './vaults.scss'
 import ChainPupop from '../common/Popup/ChainPopup';
+import { withTranslation } from 'react-i18next'
 
 class Vault extends Component {
     state = {
@@ -19,7 +19,6 @@ class Vault extends Component {
         locked: false,
         typeTransaction: "",
         allTokens: {},
-        // vaultsList: ["deus_dea", "dea_usdc", "deus_eth", "deus", "dea", "dai", "eth", "wbtc"],
         vaultsList: ["deus_dea", "dea_usdc", "deus_eth", "deus", "dea"],
         vaults: vaultsStaking,
         approved: false,
@@ -46,7 +45,6 @@ class Vault extends Component {
                 this.getSingleBalance("sand_" + currToken.name, true)
                 this.getTotalStakedToken("sand_" + currToken.name)
                 this.getSingleBalance("timetoken", true)
-                // this.getLockedAmount("timetoken", true)
             }
         },
         onError: () => console.log("onError"),
@@ -58,13 +56,9 @@ class Vault extends Component {
 
         try {
             const data = await web3.getTokenTotalSupply(tokenName)
-            // console.log("getTokenTotalSupply", data);
-            // const balance = formatBalance(data, 4)
             const balance = formatBalance(data, 3)
             vaults[tokenName.substring(5)].total = balance
-            // console.log("vaults", balance);
             this.setState({ vaults })
-            // vaults[tokenName].own = parseFloat(own / balance * 100).toFixed(2)
         } catch (error) {
             console.log(tokenName, error);
         }
@@ -150,6 +144,7 @@ class Vault extends Component {
 
     handleIinitToken = async () => {
         const { vaultsList } = this.state
+        //eslint-disable-next-line
         vaultsList.map((tokenName) => {
             this.getSingleBalance(tokenName)
             this.handleInitAllowances(tokenName, tokenName)
@@ -280,7 +275,7 @@ class Vault extends Component {
     render() {
         const { locked, showLockAlert, currToken, currVault, currSand, vaults, vaultsList, allTokens } = this.state
 
-        const { chainId } = this.props
+        const { chainId, t } = this.props
 
         const timetoken = allTokens.timetoken
 
@@ -290,31 +285,22 @@ class Vault extends Component {
 
 
             <ChainPupop
-                title={"Wrong Network"}
+                title={t("WrongNetwork")}
                 show={chainId && chainId !== 1}
                 close={false}
                 handlePopup={() => console.log()}
                 popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
                     <div>
-                        Looks like you are not connected to the right network.
-                         <br />
+                        {t("badNetwork1")}
                         <br />
-                        Change network to Mainnet
+                        <br />
+                        {t("changeToMain")}
                     </div>
                 </div>}
             />
 
             <div style={{ position: "relative" }}>
 
-                {/* {unlocked && <UnLockPupop
-                    token={currToken}
-                    handleLock={this.handleLock}
-                    handleClose={this.handleClose}
-                    sandToken={sandToken}
-                    handleSwap={this.handleSwap}
-                    handleToggle={this.handleLock}
-                    locked={unlocked}
-                />} */}
                 <Alert show={showLockAlert} handleGotIt={this.handleOkAllow} handleClose={this.handleClose} />
 
                 {locked && currVault && <UnLockPupop
@@ -334,9 +320,6 @@ class Vault extends Component {
 
                 <div className={`vaults-wrap`}>
                     <div className="gonbad"></div>
-
-                    {/* {vaults.uni_lp_deus_dea.locked > 0 ? <GonbadOpen token={allTokens.uni_lp_deus_dea} handleLock={this.handleLock} />
-                        : <GonbadBox token={allTokens.uni_lp_deus_dea} handleLock={this.handleLock} />} */}
 
                     <div className="doors-wrap">
 
@@ -371,4 +354,4 @@ class Vault extends Component {
     }
 }
 
-export default Vault;
+export default withTranslation()(Vault);

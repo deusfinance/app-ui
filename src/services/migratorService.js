@@ -4,7 +4,7 @@ import { migratorABI, tokenABI } from '../utils/abis';
 
 export class MigratorService {
 
-    constructor(account, chainId = 4) {
+    constructor(account, chainId = 1) {
         this.account = account;
         this.chainId = chainId;
         if (chainId !== 4 && chainId !== 1) {

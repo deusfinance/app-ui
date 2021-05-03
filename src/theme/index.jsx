@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import styled, {
+import {
   ThemeProvider as StyledComponentsThemeProvider,
   createGlobalStyle,
   css

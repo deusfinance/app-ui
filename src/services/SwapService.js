@@ -3,8 +3,9 @@ import paths from './graphbk.json'
 import abis from './abis'
 import addrs from './addresses.json'
 
+//eslint-disable-next-line
 String.prototype.replaceAt = function (index, replacement) {
-    if (!replacement) return
+    if (!replacement) return ''
     return this.substr(0, index) + replacement + this.substr(index + replacement.length);
 }
 
@@ -12,7 +13,7 @@ export class SwapService {
 
     constructor(account, chainId = 1) {
         this.account = account;
-        this.chainId = chainId;
+        this.chainId = 1;
         this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
         this.AutomaticMarketMakerContract = new this.infuraWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
@@ -135,8 +136,6 @@ export class SwapService {
     swapTokens(inputToken, outputToken, amountIn, minAmountOut, listener) {
         if (!this.checkWallet()) return 0
 
-
-
         minAmountOut = parseFloat(minAmountOut).toFixed(19)
         minAmountOut = minAmountOut.slice(0, minAmountOut.length - 1)
 
@@ -224,13 +223,13 @@ export class SwapService {
                 }).once('transactionHash', () => listener("transactionHash"))
                 .once('receipt', () => listener("receipt"))
                 .once('error', () => listener("error"))
-
         }
 
         console.log("miyad1");
 
         if (indexOfDeus === 0) {
             if (path[1] === this.getTokenAddr("weth")) {
+                //eslint-disable-next-line
                 var path = path.slice(1);
                 console.log("miyad 200")
                 return MetaMask.methods.deusEthUni(amountIn, path, minAmountOut)
@@ -253,7 +252,9 @@ export class SwapService {
         console.log("miyad2");
 
         if (path[indexOfDeus - 1] === this.getTokenAddr("weth")) {
+            //eslint-disable-next-line
             var path1 = path.slice(0, indexOfDeus)
+            //eslint-disable-next-line
             var path2 = path.slice(indexOfDeus)
             if (path1.length > 1) {
                 return MetaMask.methods.uniEthDeusUni(amountIn, path1, path2, minAmountOut)

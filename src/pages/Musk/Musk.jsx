@@ -329,16 +329,8 @@ class Musk extends Component {
         const { swap, web3 } = this.state
         if (!web3) return
 
-        const payload = {
-            popup: this.handleRiskPopup
-        }
-        // if (checkLimit(swap, payload)) {
-        //     return
-        // }
-
         const { from, to } = swap
 
-        // console.log("Hi");
         try {
             !(swap.from.allowances > 0) ?
                 this.handleApprove(swap) :

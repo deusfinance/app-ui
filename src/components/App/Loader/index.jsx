@@ -33,4 +33,10 @@ const Loader = () => {
   return (<LoaderWrap size="15px" />);
 }
 
+const Spinner = () => {
+  return (<div class="loadingio-spinner-spinner-obfegvo9szm"><div class="ldio-u1f1leachji">
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+  </div></div>);
+}
+export { Spinner }
 export default Loader;

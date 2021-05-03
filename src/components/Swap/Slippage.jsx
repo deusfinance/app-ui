@@ -1,11 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const Slippage = ({ slippage, setSlippage }) => {
     const amounts = [0.1, 0.5, 1]
     const [isCusEnable, setCusEnable] = useState(false)
     const [cusAmount, setCusAmount] = useState("")
-
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (!isNaN(cusAmount) && parseFloat(cusAmount) > 0.1) {
@@ -22,7 +23,7 @@ const Slippage = ({ slippage, setSlippage }) => {
 
     return (<div className="slippage">
         <div className="item">
-            <div className="item-title">Slippage Tolerance</div>
+            <div className="item-title">{t("slipage")}</div>
 
             <div className="buttons-wrap">
                 {amounts.map((amount, i) => {

@@ -9,8 +9,7 @@ export const xdaiMutileOracleHandler = (type, address, prices, expected = 2) => 
     // console.log(prices);
     let liveCounts = 0
     console.log(prices);
-    // console.log(prices.length);
-
+    //eslint-disable-next-line
     prices.map((price, index) => {
         if (price && price[address]) {
             liveCounts++

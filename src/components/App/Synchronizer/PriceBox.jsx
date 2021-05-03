@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components'
-import { Flex } from 'rebass/styled-components';
 import { FlexCenter } from '../Container';
 import { Type } from '../Text';
 

@@ -10,6 +10,8 @@ import Wallets from './Wallets';
 import { getCorrectChainId, deusChains } from '../../../config';
 import { addRPC } from '../../../services/addRPC';
 import './navbar.scss';
+import LanguageSelector from './LanguageSelector';
+import { useTranslation } from 'react-i18next'
 
 const Navs = navbarItems
 
@@ -23,6 +25,8 @@ const Navbar = () => {
     const [showWallets, setShowWallets] = useState(false)
     const location = useLocation()
 
+    const { t } = useTranslation()
+
     useEffect(() => {
         if (!isDesktop()) {
             try {
@@ -32,14 +36,7 @@ const Navbar = () => {
             }
         }
 
-    }, [chainId])
-
-    useEffect(() => {
-        console.log(typeof chainId);
-        console.log(typeof getCorrectChainId(location.pathname));
-        console.log((chainId) === getCorrectChainId(location.pathname));
-    }, [location, chainId])
-
+    }, [chainId, activate])
 
     useEffect(() => {
         setShowWallets(false)
@@ -67,7 +64,7 @@ const Navbar = () => {
     const claimButton = parseFloat(claimAmount) > 0.000001 ? <li className="grad-wrap claimable-btn" onClick={handleClaim}>
         <div className={`grad `}>
             <div> {getStayledNumber(claimAmount)} ETH</div>
-            <div>claim</div>
+            <div>{t("claim")}</div>
         </div>
     </li> : null
 
@@ -83,7 +80,7 @@ const Navbar = () => {
         }
 
         if (account && chainId) {
-            const swapServie = new SwapService(account, chainId)
+            const swapServie = new SwapService(account, 1)
             setWeb3(swapServie)
             getClaimable(swapServie)
 
@@ -127,11 +124,11 @@ const Navbar = () => {
 
                     {chainId && chainId !== getCorrectChainId(location.pathname) && <>
                         <li className="grad-wrap  wrong-network" >
-                            <div className={`grad connected`} style={{ cursor: "default" }}>Wrong Network</div>
+                            <div className={`grad connected`} style={{ cursor: "default" }}>{t("WrongNetwork")}</div>
                         </li>
                         <li className="grad-wrap  connect-wrap change-network">
                             <div className={`grad connect`} onClick={() => addRPC(account, activate, getCorrectChainId(location.pathname))}>
-                                Change to {deusChains[getCorrectChainId(location.pathname)]}
+                                {t("changeTo")} {deusChains[getCorrectChainId(location.pathname)]}
                             </div>
                         </li>
                     </>}
@@ -148,18 +145,24 @@ const Navbar = () => {
             </div>
             <div className="right-nav">
                 <ul id="right-ul">
+
                     {
                         Navs.reverse().map(nav => {
                             const classes = nav.linkDisabled ? "disabled-link" : ""
-                            if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}><div className="nav-title">{nav.text}</div></a></li>
+                            if (nav.out) return <li key={nav.id}><a className={classes} href={nav.path}><div className="nav-title">{t(nav.id)}</div></a></li>
 
                             return <li key={nav.id} className="nav-item">
                                 <NavLink className={classes} exact={nav.exact} to={nav.path}>
-                                    <div className="nav-title"> {nav.text} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav.svg"} alt="arrow" />}</div>
+                                    <div className="nav-title"> {t(nav.id)} {nav.children && <img className="arrow-nav" src={process.env.PUBLIC_URL + "/img/arrow-nav-2.svg"} alt="arrow" />}</div>
                                 </NavLink>
                                 {nav.children && <SubNavbar key={nav.id} items={nav.children} />}</li>
                         })
                     }
+                    <li key="language" className="language">
+                        {
+                            <LanguageSelector />
+                        }
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -167,7 +170,7 @@ const Navbar = () => {
         <div className={menuMobileClass} id="mobile-menu">
             <ul id="mobile-menu-ul">
                 <li className="icon-close" onClick={toggleNav}>
-                    <div className="menu-title">MENU</div>
+                    <div className="menu-title">{t("menu")}</div>
                     <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" >
                         <g id="Page-1" stroke="white" strokeWidth="1" fill="white" fillRule="evenodd">
                             <g id="icon-shape">
@@ -175,6 +178,11 @@ const Navbar = () => {
                             </g>
                         </g>
                     </svg>
+                </li>
+                <li key="language" className="language">
+                    {
+                        <LanguageSelector name="mob-language" />
+                    }
                 </li>
                 {
                     Navs.reverse().map(nav => {

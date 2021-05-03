@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { keyframes } from 'styled-components'
 import { Type } from '../../App/Text';
 import { RowBetween } from '../../App/Row';
@@ -6,6 +6,8 @@ import CircleToken from '../../../assets/images/circle-token.svg'
 import { X } from 'react-feather'
 import { StyledLogo } from '../Currency';
 import { FlexCenter } from '../Container';
+import { formatBalance2 } from '../../../utils/utils';
+import { isZero } from '../../../constant/number';
 
 const fadein = keyframes`
   from {
@@ -66,13 +68,7 @@ const TokenWrap = styled(FlexCenter)`
   
 `
 
-// const currencies = [
-//   { symbol: "DEA", logo: "/tokens/dea.svg" },
-//   { symbol: "DEUS", logo: "/tokens/deus.svg" },
-//   { symbol: "ETH", logo: "/tokens/eth-logo.svg" },
-// ]
-
-const SearchBox = ({ currencies, swapState, escapedType, changeToken, active, setActive }) => {
+const SearchBox = ({ currencies, swapState, escapedType, changeToken, disbaleLoading = true, account, active, setActive }) => {
   return (active &&
     <Wrapper>
       <RowBetween fontWeight="300" >
@@ -86,15 +82,18 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, active, se
       </RowBetween>
       <Line my="5px"></Line>
       <TokensWrap>
-        {currencies
-          .filter(currency => currency.symbol !== swapState[escapedType].symbol)
-          .map((currency, id) => (
-            <TokenRow key={id} onClick={() => changeToken(currency, escapedType)}>
+        {Object.keys(currencies)
+          .filter(address => currencies[address].symbol !== swapState[escapedType].symbol)
+          .map((address, id) => (
+            <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
               <TokenWrap>
-                <StyledLogo size="40px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
-                <Type.LG style={{ marginLeft: "10px" }} >{currency?.symbol}</Type.LG>
+                <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
+                <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
               </TokenWrap>
-              <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || 0}</Type.LG>
+              {!account || disbaleLoading || currencies[address].balance || isZero(currencies[address].balance)
+                ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance2(currencies[address]?.balance, 9) || 0}</Type.LG>
+                : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
+              }
             </TokenRow>
           ))}
 

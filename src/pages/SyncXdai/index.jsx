@@ -18,7 +18,7 @@ import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
 import './styles/sync-xdai.scss';
-import { formatEther } from '@ethersproject/units';
+import { useTranslation } from 'react-i18next'
 
 
 
@@ -56,36 +56,49 @@ const SyncXdai = () => {
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
-    const { account, chainId, library, connector } = useWeb3React()
-
+    const { account, chainId } = useWeb3React()
+    const { t } = useTranslation()
+    let transactionType = {}
     const [web3Class, setWeb3Class] = useState(new StockService(account, 100))
     const apis = [
         "https://oracle1.deus.finance/xdai/signatures.json",
         "https://oracle3.deus.finance/xdai/signatures.json",
         // "https://oracle2.deus.finance/xdai/signatures.json",
     ]
-    let transactionType = {}
+
+
+    const initialCap = useCallback(async () => {
+        if (account && chainId && chainId === 100) {
+            setLoadingCAP(true)
+            web3Class.getTotalCap().then(total => {
+                setTotalCap(total)
+                web3Class.getUsedCap().then(used => {
+                    setRemindCap(parseFloat(used))
+                    setLoadingCAP(false)
+                })
+            })
+        }
+    }, [account, chainId])//eslint-disable-line
+
     useEffect(() => {
         if (account && chainId) {
             setWeb3Class(new StockService(account, 100))
-            // console.log(library.getBalance(account).then(balance => console.log(formatEther(balance))));
-            // console.log(connector);
         }
         initialCap()
-    }, [account, chainId])
+    }, [account, chainId, initialCap])
 
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/xdai/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/xdai/price.json", { cache: "no-cache" }), [])
 
-    // const getBuySell = useCallback(() => fetcher("https://oracle1.deus.finance/xdai/buyOrSell.json"), [])
-    let reportMessages = ""
-    const getBuySell = useCallback(() =>
-        Promise.allSettled(
+    const getBuySell = useCallback(() => {
+        let reportMessages = ""
+        return Promise.allSettled(
             apis.map(api => fetch(api, { cache: "no-cache" }))
         ).then(function (responses) {
+
             responses = responses.filter((result, i) => {
                 if (result?.value?.ok) return true
-                reportMessages = apis[i] + "\t is down" + "\n"
+                reportMessages = apis[i] + "\t is down\n"
                 return false
             })
             if (reportMessages !== "") {
@@ -97,7 +110,8 @@ const SyncXdai = () => {
             }));
         }).catch(function (error) {
             console.log(error);
-        }), [])
+        })
+    }, [apis])
 
     const getStocks = useCallback(() => fetcher("https://oracle1.deus.finance/registrar-detail.json", { cache: "no-cache" }), [])
 
@@ -109,7 +123,8 @@ const SyncXdai = () => {
             })
         }, 15000))
         return clearInterval(subscrible)
-    }, [])
+    }, [])//eslint-disable-line
+
 
     useEffect(() => {
         document.body.style.backgroundColor = '#2c2f36'
@@ -118,7 +133,8 @@ const SyncXdai = () => {
         const toToken = { ...emptyToken, balance: "0" }
         handleInitToken("from", { ...fromToken })
         handleInitToken("to", { ...toToken })
-    }, [web3Class])
+    }, [web3Class])//eslint-disable-line
+
 
     useEffect(() => { //adding chain and type wrap
         if (conducted && stocks) {
@@ -143,26 +159,17 @@ const SyncXdai = () => {
             // handleInitTokenByName("to", "TSLA")
 
         }
-    }, [conducted, stocks, account])
+    }, [conducted, stocks, account])//eslint-disable-line
+
 
 
     useEffect(() => {
         const stype = lastInputFocus ? lastInputFocus : "from"
         handleTokenInputChange(stype, swap[stype].amount)
-    }, [isLong, prices])
+    }, [isLong, prices])//eslint-disable-line
 
-    const initialCap = useCallback(async () => {
-        if (account && chainId && chainId === 100) {
-            setLoadingCAP(true)
-            web3Class.getTotalCap().then(total => {
-                setTotalCap(total)
-                web3Class.getUsedCap().then(used => {
-                    setRemindCap(parseFloat(used))
-                    setLoadingCAP(false)
-                })
-            })
-        }
-    }, [account, chainId])
+
+
 
 
     const getData = useCallback(() => {
@@ -313,7 +320,7 @@ const SyncXdai = () => {
             }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    <a href={`https://blockscout.com/xdai/mainnet/tx/${hash}/internal-transactions`} target="_blank">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://blockscout.com/xdai/mainnet/tx/${hash}/internal-transactions`} target="_blank" rel="noopener noreferrer">{`${t("swap")} ${swap.from.amount} ${swap.from.symbol} ${t("for")} ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
                     closeOnClick: false,
@@ -321,7 +328,7 @@ const SyncXdai = () => {
                 });
             else {
                 toast.info(<div>Transaction Pending <br />
-                    {`Approve d${swap.from.symbol}${!isLong ? '-s' : ''}`}</div>, {
+                    {`${t("approve")} d${swap.from.symbol}${!isLong ? '-s' : ''}`}</div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false
 
@@ -334,14 +341,14 @@ const SyncXdai = () => {
             if (transactionType.action === "approve") {
                 handleInitToken(transactionType.type, transactionType.token, transactionType.token.amount)
                 toast.success(<div>Transaction Successful <br />
-                    {`Approved d${swap.from.symbol}${!isLong ? '-s' : ''}`}</div>, {
+                    {`${t("approve")} d${swap.from.symbol}${!isLong ? '-s' : ''}`}</div>, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
             }
 
             if (transactionType.action === "sell" || transactionType.action === "buy") {
                 toast.success(<div>Transaction Successful <br />
-                    {`Swapped ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol}`}</div>, {
+                    {`${t("swap")} ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol}`}</div>, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
 
@@ -403,10 +410,12 @@ const SyncXdai = () => {
 
         try {
             transactionType = { action: "buy", swap: swap, isLong: isLong }
-            const data = type === "buy" ?
-                await web3Class.buy(tokenAddress, amount, oracles.result, oracles.price, notifSync(methods)) :
+
+            if (type === "buy")
+                await web3Class.buy(tokenAddress, amount, oracles.result, oracles.price, notifSync(methods))
+            else
                 await web3Class.sell(tokenAddress, amount, oracles.result, notifSync(methods))
-            // console.log(data);
+
         } catch (error) {
             console.log("handleSync", error);
         }
@@ -432,32 +441,12 @@ const SyncXdai = () => {
 
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
 
-
-
-        {/* <Popup
-            title={"Wrong Network"}
-            show={chainId && chainId !== 100 && showPopup}
-            close={true}
-            handlePopup={setShowPopup}
-            popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
-                <div>
-                    Looks like you are not connected to the right network.
-                </div>
-
-                <div className="switch-btn xdai-button" style={{ marginTop: "20px" }} onClick={() => addRPC(account, activate)}>
-                    <p>Change network to xDAI</p>
-                </div>
-
-            </div>}
-
-        /> */}
-
         <div className="swap-title">
             <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
             <div className="sync-wrap" >
                 <div className="sync" style={{ textTransform: "uppercase" }}>
-                    synchronizer xDAI
-                        </div>
+                    {t("synchronizerXdai")}
+                </div>
             </div>
         </div>
 
@@ -496,7 +485,7 @@ const SyncXdai = () => {
                         <StockBox
                             type="to"
                             token={swap.to}
-                            estimated=" (estimated)"
+                            estimated={` (${t("estimated")})`}
                             isLong={isLong}
                             handleSearchBox={handleSearchBox}
                             handleTokenInputChange={handleTokenInputChange}

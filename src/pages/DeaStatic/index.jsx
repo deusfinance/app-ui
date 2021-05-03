@@ -200,7 +200,7 @@ class DeaStatic extends Component {
 
 
         try {
-            const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : await web3.getAmountsIn(swap.from.name, swap.to.name, amount)
+            const data = searchBoxType === "from" ? await web3.getAmountsOut(swap.from.name, swap.to.name, amount) : ""
             swap[vstype].amount = getStayledNumber(data, 9)
             this.setState({
                 swap,
@@ -326,16 +326,9 @@ class DeaStatic extends Component {
         const { swap, web3 } = this.state
         if (!web3) return
 
-        const payload = {
-            popup: this.handleRiskPopup
-        }
-        // if (checkLimit(swap, payload)) {
-        //     return
-        // }
 
         const { from, to } = swap
 
-        // console.log("Hi");
         try {
             !(swap.from.allowances > 2000000) ?
                 this.handleApprove(swap) :
@@ -386,7 +379,6 @@ class DeaStatic extends Component {
         const to_token = swap.to
         const approved = this.isApproved()
         const isMobile = window.innerWidth < 670
-        const { chainId } = this.props
 
         return (<div className="deus-swap-wrap" style={{ paddingTop: "30px" }}>
             {showRiskPupop && < Risk handleRiskPopup={this.handleRiskPopup} />}
@@ -418,6 +410,7 @@ class DeaStatic extends Component {
                                 handleSearchBox={() => console.log("disabled")}
                                 handleTokenInputChange={this.handleTokenInputChange}
                                 isIPO={true}
+                                disabled={true}
                                 isFutures={true}
                             />
 
@@ -438,8 +431,6 @@ class DeaStatic extends Component {
                             <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
                         </div>
 
-                        {/* <PriceBox impact={""} vaultsFee={""} /> */}
-
                         <SearchBox
                             showSearchBox={showSearchBox}
                             choosedToken={swap[searchBoxType].name}
@@ -449,10 +440,6 @@ class DeaStatic extends Component {
                             handleFilterToken={this.state.tokensMap}
                             handleChangeToken={this.handleChangeToken}
                         />
-                        {/* {from_token.name &&
-                            to_token &&
-                            <Routes from={from_token} to={to_token} chainId={chainId}
-                            />} */}
 
                         <div className="routes"><p>Route</p>
                             <div className="routes-tokens">
@@ -460,14 +447,6 @@ class DeaStatic extends Component {
                                 <div className="route-token"><div className="swap-place"><img src="img/swap/d-swap.svg" alt="uni" /><img src="img/swap/right-arrow.svg" alt="arrow" /></div><div className="token-wrap"><img className="icon" src="/tokens/dea.svg" alt="eth" /><div className="symbol">DEA</div></div></div><div className="route-token"></div>
                             </div>
                         </div>
-
-
-                        {/*    {(from_token.name === "Bakkt" ||
-                            to_token.name === "Bakkt") &&
-                            <Slippage
-                                slippage={slippageAmount}
-                                setSlippage={this.handleSlippage}
-                            />} */}
 
                         <p className="ipo">  </p>
                     </div>

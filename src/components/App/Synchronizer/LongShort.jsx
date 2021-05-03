@@ -1,14 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { ButtonSyncDeactive, ButtonSyncActice, Base } from '../Button';
-import { flexCenter, FlexCenter } from '../Container';
-import Loader from '../Loader';
-
-const checkError = () => {
-    return false;
-}
-
-
+import { ButtonSyncActice } from '../Button';
 
 const WrapActions = styled.div`
     margin-top:20px;
@@ -26,16 +18,16 @@ const ButtonSelect = styled(ButtonSyncActice)`
   font-size:20px;
   cursor:pointer;
   &:hover{
-    filter : ${({ active }) => !active && "brightness(1.5)"};
+    filter : ${({ active }) => active ? "none" : "brightness(1.2)"};
   }
 `
 
 
-const LongShort = ({ isLong }) => {
+const LongShort = ({ isLong, setLong }) => {
     return (<>
         <WrapActions>
-            <ButtonSelect active={isLong} >LONG</ButtonSelect>
-            <ButtonSelect active={!isLong}>SHORT</ButtonSelect>
+            <ButtonSelect active={isLong} onClick={() => setLong(true)} >LONG</ButtonSelect>
+            <ButtonSelect active={!isLong} onClick={() => setLong(false)} >SHORT</ButtonSelect>
         </WrapActions>
     </>);
 }

@@ -4,8 +4,7 @@ import TokenMarket from '../../components/Swap/TokenMarket';
 import Title from '../../components/Swap/Title';
 import { ToastContainer } from 'react-toastify';
 import { MigratorService as SwapService } from '../../services/migratorService';
-// import { SwapService } from '../../services/SwapService';
-import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
+import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
 import LongShort from '../../components/Swap/LongShort';
 import '../../components/Swap/mainSwap.scss';
 import MigratorButton from '../../components/Swap/MigratorButton';
@@ -44,7 +43,7 @@ class Migrator extends Component {
 
         },
         onSuccess: () => {
-            const { swap, typeTransaction } = this.state
+            const { typeTransaction } = this.state
             if (typeTransaction === "approve") {
                 // this.getSingleAllowances(swap.from.name, true)
                 this.setState({ typeTransaction: "" })
@@ -66,21 +65,9 @@ class Migrator extends Component {
         const { chainId, account } = this.props
         this.handleInitToken("from", "coinbase")
         this.handleInitToken("to", "dcoin")
-
-        const payload = {
-            popup: this.handleRiskPopup
-        }
-        // if (checkLimit(swap, payload)) {
-        //     return
-        // }
-
-        // if (!chainId || !account) return
-
         await this.setState({ web3: new SwapService(account, chainId) })
         await this.handleIinitBalances()
         await this.getClaimable()
-        // await this.handleInitAllowances()
-
     }
 
     async componentDidUpdate(prevProps) {
@@ -90,13 +77,10 @@ class Migrator extends Component {
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
 
             this.setState({ isLong: true })
-            // if (!chainId || !account) return
-
 
             await this.setState({ web3: new SwapService(account, chainId) })
             await this.handleIinitBalances(true)
             await this.getClaimable()
-            // await this.handleInitAllowances(true)
 
             this.handleInitToken("from", "coinbase")
             this.handleInitToken("to", "dcoin")
@@ -326,46 +310,16 @@ class Migrator extends Component {
     }
 
 
-    // handleApprove = async (swap) => {
-    //     const { web3 } = this.state
-
-    //     try {
-    //         this.setState({ typeTransaction: "approve" })
-    //         const data = await web3.approve(swap.from.name, swap.from.amount, notify(this.methods))
-    //         return data
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    //     return 0
-    // }
-
-    // handleRiskPopup = (flag) => {
-    //     if (flag) {
-    //         setBackground("dark")
-    //     } else {
-    //         setBackground("light")
-    //     }
-    //     this.setState({ showRiskPupop: flag })
-    // }
-
-
-
-
     render() {
 
-        const { showSearchBox, isLong, swap, fromPerTo, toAmount, fromAmount, searchBoxType, tokens, web3, claimable_amount } = this.state
-        const { allTokens } = this.props
+        const { isLong, swap, fromPerTo, toAmount, fromAmount, web3, claimable_amount } = this.state
         const from_token = swap.from
         const to_token = swap.to
-        const approved = this.isApproved()
         const isMobile = window.innerWidth < 670
-        const { chainId } = this.props
 
         return (<div className="deus-swap-wrap">
-            {/* {showRiskPupop && < Risk handleRiskPopup={this.handleRiskPopup} />} */}
             {!isMobile && <ToastContainer style={{ width: "450px" }} />}
             <Title web3={web3} claimable_amount={claimable_amount} isMigrator={true} />
-
 
             <div className="swap-container-wrap">
                 <div className="swap-container">
@@ -417,7 +371,6 @@ class Migrator extends Component {
                             <MigratorButton handleMigrate={this.handleMigrate} token={swap.from} approved={true} web3={web3} isMobile={isMobile} />
                         </div>
 
-                        {/* <PriceBox impact={""} vaultsFee={""} /> */}
 
                     </div>
                 </div>

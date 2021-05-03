@@ -1,17 +1,19 @@
 import React from 'react';
 import './market-nav.scss';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next'
 
 const MarketNavbar = () => {
     const [tvl, setTvl] = useState(null)
     const [vaultsAmount, setVaultsAmount] = useState(null)
-
+    const {t} = useTranslation()
     useEffect(() => {
         const getTVL = async () => {
             const url = "https://app.deus.finance/tvl.json"
             try {
                 const resp = await fetch(url)
                 const result = await resp.json()
+                console.log(result);
                 const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.uniswapLockedValue + result.balancerLockedValue + result.etherLockedInMarketMaker)
                 const vaults = parseInt(result.vaultLockedValue)
 
@@ -33,7 +35,7 @@ const MarketNavbar = () => {
         <ul className="market-nav">
             {tvl && <li className="grad-wrap connect-wrap tvl-wrap" >
                 <div className={`grad connected`} >
-                    <div>TVL:</div>
+                    <div>{t("tvl")}:</div>
                     <div>{tvl}</div>
                 </div>
 
@@ -41,7 +43,7 @@ const MarketNavbar = () => {
 
             {vaultsAmount && <li className="grad-wrap connect-wrap tvl-wrap">
                 <div className={`grad connected`} >
-                    <div>Vaults:</div>
+                    <div>{t("vaults")}:</div>
                     <div>{vaultsAmount}</div>
                 </div>
             </li>}

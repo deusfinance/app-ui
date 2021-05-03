@@ -1,14 +1,12 @@
-import { formatUnits } from '@ethersproject/units';
-import { useWeb3React } from '@web3-react/core';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
-import useSWR from 'swr';
 import { InputAmount } from '.';
-import { tokenABI } from '../../../utils/abis';
-import { fetcher, formatBalance2 } from '../../../utils/utils';
+import { getBalanceNumber } from '../../../helper/formatBalance';
+import useTokenBalance from '../../../helper/useTokenBalance';
+import { formatBalance2 } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';
 import { Type } from '../Text';
@@ -29,19 +27,17 @@ align-items:center;
 }
 `
 
-const TokenBox = ({ hasMax, currency, type, setActive }) => {
-    const [inputAmount, setInputAmount] = useState("")
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate }) => {
     const [onMax, setOnMax] = useState(false)
-
-    const { account, library } = useWeb3React()
-    const { data, mutate } = useSWR([currency?.address, 'balanceOf', account], {
-        fetcher: fetcher(library, tokenABI),
-    })
-    const [balance, setBalance] = useState(data)
+    const data = useTokenBalance(currency?.address, fastUpdate)
+    const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
 
     useEffect(() => {
-        setBalance(data ? formatUnits(data, currency?.decimals) : null)
-    }, [data])
+        setBalance(data ? getBalanceNumber(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
+        if (TokensMap[currency.address])
+            TokensMap[currency.address].balance = getBalanceNumber(data, currency?.decimals)
+
+    }, [data, currency, wrongNetwork, TokensMap])
 
     useEffect(() => {
         if (inputAmount === balance) {
@@ -49,16 +45,17 @@ const TokenBox = ({ hasMax, currency, type, setActive }) => {
         } else {
             setOnMax(false)
         }
-    }, [inputAmount])
+    }, [inputAmount, balance])
 
-    return (<Wrapper  >
+
+    return (<Wrapper>
         <Flex
             p="10px 0"
             justifyContent={"space-between"}
         >
             <Box>
                 <Type.SM color={'secodery'}>
-                    From
+                    {title || "From"}
                 </Type.SM>
             </Box>
             <Box>
@@ -76,7 +73,7 @@ const TokenBox = ({ hasMax, currency, type, setActive }) => {
                 cursor: "pointer"
             }}
         >
-            <InputAmount placeholder="0.0" value={inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
+            <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
 
             {hasMax && !onMax && <ButtonMax width={"40px"}
                 onClick={() => setInputAmount(balance)}>
@@ -89,7 +86,7 @@ const TokenBox = ({ hasMax, currency, type, setActive }) => {
                     currency={currency}
                     size={"25px"}
                 />
-                <Type.XL color="text1" ml="7px" mr="9px">{currency.symbol.toUpperCase()}</Type.XL>
+                <Type.LG color="text1" ml="7px" mr="9px">{currency?.symbol}</Type.LG>
                 <Image src="/img/select.svg" size="10px" />
             </TokenInfo>
         </Flex>

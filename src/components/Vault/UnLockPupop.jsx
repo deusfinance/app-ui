@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { contractEndpoint } from '../../config';
-
+import { withTranslation } from 'react-i18next'
 import addrs from '../../services/addresses.json'
 import InputBox from './Input';
 
@@ -50,7 +50,7 @@ class UnLockPupop extends Component {
     }
 
     render() {
-        const { handleClose, token, sandToken, timeToken, approved, handleApprove, handleSwap, vault } = this.props
+        const { handleClose, token, sandToken, timeToken, approved, handleApprove, handleSwap, vault,t } = this.props
         const { tokenAmount, timeAmount, sandAmount, locked, oldApprove } = this.state
 
         const lockedClasses = !locked ? "unlocked" : "locked"
@@ -62,11 +62,11 @@ class UnLockPupop extends Component {
 
         return (<div className={`lock-swap ${lockedClasses}`} >
             <div className="top">
-                <div className="close-btn" onClick={handleClose}>close</div>
-                <div className="time-vaults">Time Vault {locked ? "Locked" : "UnLock"}</div>
+                <div className="close-btn" onClick={handleClose}>{t("close")}</div>
+                <div className="time-vaults">{t("timeVaultsLocked")}</div>
                 <div className="token" >{token.title}</div>
                 {locked && <div className="locked-text" style={{ opacity: 0 }}> Your tokens will be locked until 01.06.2021 </div>}
-                <a href={contractEndpoint + "/" + addrs["vaults"][vault.name]["1"]} className={`contract  ${lockedClasses}`} target="_blank" rel="noopener noreferrer"  >show me the contract</a>
+                <a href={contractEndpoint + "/" + addrs["vaults"][vault.name]["1"]} className={`contract  ${lockedClasses}`} target="_blank" rel="noopener noreferrer"  >{t("showContract")}</a>
 
                 {locked ? <InputBox
                     token={token}
@@ -151,11 +151,11 @@ class UnLockPupop extends Component {
 
                 {!oldApprove && <> <div className={`btns ${approvedClasses}`}>
                     <div className=" grad-wrap swap-btn-wrap ">
-                        <div className={`swap-btn  ${swapLeftClasses}`} onClick={() => handleApprove(tokenAmount)}>APPROVE</div>
+                        <div className={`swap-btn  ${swapLeftClasses}`} onClick={() => handleApprove(tokenAmount)}>{t("approve")}</div>
                     </div>
 
                     <div className=" grad-wrap swap-btn-wrap  ">
-                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "LOCK & MINT" : "UnLock"}</div>
+                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? t("lockAndMint") : "UnLock"}</div>
                     </div>
                 </div>
                     <div className={`stepper ${approvedClasses}`}>
@@ -168,7 +168,7 @@ class UnLockPupop extends Component {
 
                 {oldApprove && <div className="btns">
                     <div className=" grad-wrap swap-btn-wrap " style={{ margin: "auto", marginTop: "15px" }} >
-                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ? "LOCK & MINT" : "UnLock"}</div>
+                        <div className={`swap-btn  ${swapRightClasses}`} onClick={() => handleSwap(tokenAmount)}>{locked ?t("lockAndMint")  : "UnLock"}</div>
                     </div>
                 </div>
                 }
@@ -178,4 +178,4 @@ class UnLockPupop extends Component {
     }
 }
 
-export default UnLockPupop;
+export default withTranslation()(UnLockPupop);

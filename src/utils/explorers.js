@@ -10,12 +10,12 @@ export function shortenHex(hex, length = 4) {
 
 const EXPLORER_PREFIXES = {
     1: '',
+    3: 'ropsten.',
     4: 'rinkeby.',
     56: '',
     100: 'mainnet',
     97: 'testnet.',
 }
-
 
 function getEtherscanLink(chainId, data, type) {
     const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]}etherscan.io`
@@ -69,6 +69,7 @@ export function getTransactionLink(chainId, data, type) {
 
     switch (chainId) {
         case 1:
+        case 3:
         case 4: {
             return getEtherscanLink(chainId, data, type)
         }
@@ -89,7 +90,7 @@ export function getTransactionLink(chainId, data, type) {
 export function ToastTransaction(type, title, data = "") {
     switch (type) {
         case "success":
-            toast.success(<div><Type.LG style={{ marginBottom: "5px" }}> {title}</Type.LG>
+            toast.success(<div><Type.MD style={{ marginBottom: "3px" }}> {title}</Type.MD>
                 {data}
             </div>, {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -99,18 +100,19 @@ export function ToastTransaction(type, title, data = "") {
             });
             break
         case "warn":
-            toast.warn(<div><Type.LG style={{ marginBottom: "5px" }}> {title}</Type.LG>
+            toast.warn(<div><Type.MD style={{ marginBottom: "3px" }}> {title}</Type.MD>
                 {data}
             </div>, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: false,
+                draggable: false,
                 closeOnClick: false,
             });
             break;
 
         case "info":
         default:
-            toast.info(<div><Type.LG style={{ marginBottom: "5px" }}> {title}</Type.LG>
+            toast.info(<div><Type.MD style={{ marginBottom: "3px" }}> {title}</Type.MD>
                 {data}
             </div>, {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -140,9 +142,13 @@ export function SwapTranaction(type, payload) {
             break;
 
         case TransactionState.FAILED:
+            if (!payload.hash) {
+                ToastTransaction("warn", "Transaction Rejected")
+                return
+            }
             ToastTransaction("warn", "Transaction Failed",
                 <ExternalLink href={getTransactionLink(payload.chainId, payload.hash, 'transaction')}>
-                    {`View On Explorer ↗ `}
+                    {`View On Explorer ↗`}
                 </ExternalLink>
             )
             break;
@@ -150,7 +156,7 @@ export function SwapTranaction(type, payload) {
         default:
             ToastTransaction("info", "Transaction Unhandled",
                 <ExternalLink href={getTransactionLink(payload.chainId, payload.hash, 'transaction')}>
-                    {`View On Explorer ↗ `}
+                    {`View On Explorer ↗`}
                 </ExternalLink>
             )
     }
@@ -163,7 +169,7 @@ export function ApproveTranaction(type, payload) {
         case TransactionState.LOADING:
             ToastTransaction("info", "Transaction Pending",
                 <ExternalLink href={getTransactionLink(payload.chainId, payload.hash, 'transaction')}>
-                    {`Approve  ${payload.from.symbol} ↗ `}
+                    {`Approve  ${payload.from.symbol} ↗`}
                 </ExternalLink>
             )
             break;
@@ -171,15 +177,19 @@ export function ApproveTranaction(type, payload) {
         case TransactionState.SUCCESS:
             ToastTransaction("success", "Transaction Successful",
                 <ExternalLink href={getTransactionLink(payload.chainId, payload.hash, 'transaction')}>
-                    {`Approved ${payload.from.symbol}`}
+                    {`Approved ${payload.from.symbol} ↗`}
                 </ExternalLink>
             )
             break;
 
         case TransactionState.FAILED:
+            if (!payload.hash) {
+                ToastTransaction("warn", "Transaction Rejected")
+                return
+            }
             ToastTransaction("warn", "Transaction Failed",
                 <ExternalLink href={getTransactionLink(payload.chainId, payload.hash, 'transaction')}>
-                    {`View On Explorer`}
+                    {`View On Explorer ↗`}
                 </ExternalLink>
             )
             break;
@@ -187,6 +197,77 @@ export function ApproveTranaction(type, payload) {
         default:
             ToastTransaction("info", "Transaction Unhandled",
                 <ExternalLink href={getTransactionLink(payload.chainId, payload.hash, 'transaction')}>
+                    {`View On Explorer ↗`}
+                </ExternalLink>
+            )
+    }
+    return
+}
+
+//to do
+export function CustomTranaction(type, payload) {
+    toast.dismiss()
+
+    switch (type) {
+        case TransactionState.LOADING:
+            ToastTransaction(
+                'info',
+                'Transaction Pending',
+                <ExternalLink
+                    href={getTransactionLink(
+                        payload.chainId,
+                        payload.hash,
+                        'transaction'
+                    )}
+                >
+                    {`${payload.message} ↗ `}
+                </ExternalLink>
+            )
+            break
+
+        case TransactionState.SUCCESS:
+            ToastTransaction(
+                'success',
+                'Transaction Successful',
+                <ExternalLink
+                    href={getTransactionLink(
+                        payload.chainId,
+                        payload.hash,
+                        'transaction'
+                    )}
+                >
+                    {`${payload.message}`}
+                </ExternalLink>
+            )
+            break
+
+        case TransactionState.FAILED:
+            ToastTransaction(
+                'warn',
+                'Transaction Failed',
+                // <ExternalLink
+                //   href={getTransactionLink(
+                //     payload.chainId,
+                //     payload.hash,
+                //     'transaction'
+                //   )}
+                // >
+                //   {`View On Explorer`}
+                // </ExternalLink>
+            )
+            break
+
+        default:
+            ToastTransaction(
+                'info',
+                'Transaction Unhandled',
+                <ExternalLink
+                    href={getTransactionLink(
+                        payload.chainId,
+                        payload.hash,
+                        'transaction'
+                    )}
+                >
                     {`View On Explorer`}
                 </ExternalLink>
             )

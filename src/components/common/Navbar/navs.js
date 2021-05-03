@@ -29,21 +29,27 @@ export default [
         ]
     },
     {
-        id: "sync",
+        id: "buyStocks",
         text: <span>BUY&thinsp;Stocks</span>,
         path: "/",
         exact: true,
         children: [
             {
-                id: "mainsync",
+                id: "mainnet",
                 text: "MAINNET",
                 path: "/synchronizer",
                 exact: true,
             },
             {
-                id: "xdai-sync",
+                id: "xDai",
                 text: "xDAI",
                 path: "/crosschain/xdai/synchronizer",
+                exact: true,
+            },
+            {
+                id: "bsc",
+                text: "BSC",
+                path: "/crosschain/bsc/synchronizer",
                 exact: true,
             },
         ]
@@ -55,19 +61,11 @@ export default [
         exact: true,
         children: [
             {
-                id: "migrator",
+                id: "coinbaseMigrator",
                 text: <span>COINBASE MIGRATOR</span>,
                 path: "/migrator",
                 exact: true,
-
             },
-            // {
-            //     id: "coinbase",
-            //     text: "COINBASE",
-            //     path: "/coinbase",
-            //     exact: true,
-
-            // },
             {
                 id: "bakkt",
                 text: "BAKKT",
@@ -89,7 +87,7 @@ export default [
         exact: true,
         children: [
             {
-                id: "wiki",
+                id: "deusWiki",
                 text: "DEUS wiki",
                 path: "https://wiki.deus.finance/docs",
                 out: true,
@@ -113,7 +111,7 @@ export default [
         exact: true,
         children: [
             {
-                id: "simulate",
+                id: "simulator",
                 text: "DEUS simulator",
                 path: "https://simulate.deus.finance",
                 out: true,
@@ -121,7 +119,7 @@ export default [
 
             },
             {
-                id: "chart",
+                id: "tradingview",
                 text: "DEUS tradingview",
                 path: "https://chart.deus.finance",
                 out: true,

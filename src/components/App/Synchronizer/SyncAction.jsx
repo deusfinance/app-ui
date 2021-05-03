@@ -1,13 +1,17 @@
+import { useWeb3React } from '@web3-react/core';
 import React from 'react';
 import styled from 'styled-components'
-import { ButtonSyncDeactive, ButtonSyncActice, Base } from '../Button';
+import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
 import { FlexCenter } from '../Container';
 // import Loader from '../Loader';
 
-const checkError = () => {
-    return false;
-}
 
+
+const errors = {
+    NotConnected: "CONNECT WALLET",
+    WrongNetwork: "WRONG NETWORK",
+    EMPTY: "ENTER AMOUNT",
+}
 
 
 const WrapActions = styled.div`
@@ -44,11 +48,21 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ isPreApproved, mt }) => {
+const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrency, mt }) => {
+
+    const { account, chainId } = useWeb3React()
+    const checkError = () => {
+        if (!account) return errors.NotConnected
+        if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
+        return null;
+    }
+    // useEffect(() => {
+    // }, [])
 
     if (checkError()) {
-        return <ButtonSyncDeactive>ENTER AN AMOUNT</ButtonSyncDeactive>
+        return <ButtonSyncDeactive mt={mt}>{checkError()}</ButtonSyncDeactive>
     }
+
 
     return (<>
         {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} > SYNC</ButtonSwap> </WrapActions> : <>

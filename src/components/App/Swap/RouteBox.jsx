@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components'
 import { StyleSwapBase, StyleTitles } from '.';
 import { FlexCenter } from '../Container';
 import { Type } from '../Text';
-
+import path from '../../../constant/path.json'
+import pathTest from '../../../constant/pathTest.json'
+import { DeusPath, Weth, WethRinkeby } from '../../../constant/token';
 
 const Wrapper = styled(FlexCenter)`
     ${StyleSwapBase}
@@ -54,14 +56,47 @@ const PlaceLogo = styled.img`
   margin-right:5px;
 `
 
-const RouteBox = () => {
+const RouteBox = ({ swapState, tokensMap, chainId }) => {
+
+    const fromSymbol = swapState.from.symbol?.toLowerCase()
+    const toSymbol = swapState.to.symbol?.toLowerCase()
+    const AllTokens = useMemo(() => {
+        const tokens = { ...tokensMap }
+        const currWeth = chainId === 4 ? WethRinkeby : Weth
+        tokens[currWeth.address] = currWeth
+        return tokens
+    }, [tokensMap, chainId])
+    const currPath = chainId === 4 ? pathTest : path
+    const routes = currPath[fromSymbol][toSymbol]
+
     return (<Wrapper>
         <Type.SM className="title" >Route</Type.SM>
         <WrapTokens>
-            <RouteToken>
-                <WrapToken><TokenLogo className="icon" src="/tokens/eth-logo.svg" alt="eth" /> <Type.MD>ETH</Type.MD></WrapToken>
-            </RouteToken>
-            <RouteToken><WrapSwapPlace  ><PlaceLogo src="img/swap/d-swap.svg" alt="uni" /><img src="img/swap/right-arrow.svg" alt="arrow" /></WrapSwapPlace><WrapToken className="token-wrap"><TokenLogo className="icon" src="/tokens/deus.svg" alt="deus" /><div className="symbol">DEUS</div></WrapToken></RouteToken><div className="route-token"></div>
+            {routes &&
+                routes.map((route, index) => {
+                    const token = AllTokens[route]
+                    if (index === 0)
+                        return <RouteToken key={index}>
+                            <WrapToken>
+                                <TokenLogo className="icon" src={token?.logo} alt={token?.symbol} /> <Type.MD>{token?.symbol}</Type.MD>
+                            </WrapToken>
+                        </RouteToken>
+                    else {
+                        return <RouteToken key={index}>
+                            <WrapSwapPlace >
+                                {DeusPath[AllTokens[routes[index - 1]].symbol.toLowerCase()] && DeusPath[AllTokens[routes[index - 1]].symbol.toLowerCase()][AllTokens[routes[index]].symbol.toLowerCase()]
+                                    ? <PlaceLogo src="img/swap/d-swap.svg" alt="deus swap" />
+                                    : <PlaceLogo src="img/swap/uni.svg" alt="uni swap" />
+                                }
+                                <img src="img/swap/right-arrow.svg" alt="arrow" />
+                            </WrapSwapPlace>
+                            <WrapToken className="token-wrap">
+                                <TokenLogo className="icon" src={token?.logo} alt={token?.symbol} /><Type.MD>{token?.symbol}</Type.MD>
+                            </WrapToken>
+                        </RouteToken>
+                    }
+                })
+            }
         </WrapTokens>
     </Wrapper>
     );

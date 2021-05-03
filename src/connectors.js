@@ -15,8 +15,11 @@ const supportedChainIds = [
 ]
 
 const RPC_URLS = {
-    1: "wss://mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093",
-    4: "wss://rinkeby.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093"
+    1: "https://mainnet.infura.io/v3/cf6ea736e00b4ee4bc43dfdb68f51093",
+    4: "https://rinkeby.infura.io/v3/cf6ea736e00b4ee4bc43dfdb68f51093",
+    56: "https://bsc-dataseed1.binance.org",
+    97: "https://data-seed-prebsc-1-s1.binance.org:8545",
+    100: "https://rpc.xdaichain.com",
 }
 
 export const injected = new InjectedConnector({
@@ -25,6 +28,7 @@ export const injected = new InjectedConnector({
 
 const POLLING_INTERVAL = 2000
 
+//only mainnet (walletconnect only one chain supports)
 export const walletconnect = new WalletConnectConnector({
     rpc: { 1: RPC_URLS[1] },
     bridge: 'https://bridge.walletconnect.org',
@@ -42,7 +46,7 @@ export const fortmatic = new FortmaticConnector({ apiKey: "pk_live_643EBE31BE011
 export const frame = new FrameConnector({ supportedChainIds: [1] })
 
 export const ConnectorNames = {
-    Injected: 'Metamask',
+    Injected: 'MetaMask',
     Network: 'Network',
     WalletConnect: 'WalletConnect',
     WalletLink: 'WalletLink',

@@ -7,15 +7,13 @@ import TokenMarket from '../../components/Swap/TokenMarket';
 import Title from '../../components/Swap/Title';
 import SwapButton from '../../components/Swap/SwapButton';
 import { SwapService } from '../../services/SwapService';
-// import PriceBox from './PriceBox';
 import Routes from '../../components/Swap/Routes';
-// import Volume from './Volume/Volume';
 import '../../components/Swap/mainSwap.scss';
 import Slippage from '../../components/Swap/Slippage';
 import SwapWrap from '../../components/Swap/SwapWrap';
 import PriceBox from '../../components/Swap/PriceBox';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
-
+import { withTranslation } from 'react-i18next'
 
 
 class MainSwap extends Component {
@@ -46,6 +44,7 @@ class MainSwap extends Component {
         priceImpact: 0
 
     }
+
 
 
     methods = {
@@ -403,7 +402,8 @@ class MainSwap extends Component {
         const approved = this.isApproved()
         const isMobile = window.innerWidth < 670
         const { chainId } = this.props
-        const priceImpactResult = toAmount === "" ? 0 : ((1 - (toAmount / ((fromAmount / 0.1) * minPerTo))) * 100).toFixed(3)
+        const { t } = this.props;
+        const priceImpactResult = (toAmount === "" || fromAmount === "") ? 0 : ((1 - (toAmount / ((fromAmount / 0.1) * minPerTo))) * 100).toFixed(3)
         return (<div className="deus-swap-wrap">
 
             {!isMobile && <ToastContainer style={{ width: "450px" }} />}
@@ -415,7 +415,7 @@ class MainSwap extends Component {
             <SwapWrap>
                 <div className="swap-box">
 
-                    <TokenBox type="from" token={from_token}
+                    <TokenBox type={"from"} token={from_token}
                         estimated=""
                         handleSearchBox={this.handleSearchBox}
                         handleTokenInputChange={this.handleTokenInputChange}
@@ -427,8 +427,8 @@ class MainSwap extends Component {
                         alt="arrow"
                         className="arrow" />
 
-                    <TokenBox type="to" token={to_token}
-                        estimated=" (estimated)"
+                    <TokenBox type={"to"} token={to_token}
+                        estimated={` (${t("estimated")})`}
                         handleSearchBox={this.handleSearchBox}
                         handleTokenInputChange={this.handleTokenInputChange}
                         disabled={true}
@@ -477,4 +477,4 @@ class MainSwap extends Component {
 }
 
 
-export default MainSwap;
+export default withTranslation()(MainSwap);

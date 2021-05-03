@@ -8,9 +8,9 @@ import { withRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import addrs from '../../services/addresses.json'
 import "./staking.scss"
-import { TopNotification } from '../common/Nofication';
 import ChainPupop from '../common/Popup/ChainPopup';
 import WithdrawPopup from '../common/Popup/WithdrawPopup';
+import { withTranslation } from 'react-i18next'
 
 class StakingManager extends Component {
     state = {
@@ -326,14 +326,12 @@ class StakingManager extends Component {
 
     render() {
         const { tokensMap, pools, stakingsMap, isStakePopup, isWithdrawPopup, approved, currStake } = this.state
-        const { chainId } = this.props
+        const { chainId, t } = this.props
         const currToken = tokensMap[currStake]
         const currStaking = stakingsMap[currStake]
-        const innnerText = <div className="staking-notif-wrap">Important system upgrade: Staking rewards will be temporarily paused,
-        until we have activated the contracts for our automated staking-reward-controlling of tradingFees & transferFees.
-        This will be worked on after launching hundreds of dAssets on our upgraded trading platform.
-        We have taken a snapshot (block 11880575),
-         if you stay in the pool, you will get a special reward to make up for the temporary reward pause.</div>
+        // const innnerText = <div className="staking-notif-wrap">{t("importantText1")}{t("importantText2")} <br />
+        //     {t("importantText3")}{t("importantText4")}{t("importantText5")}</div>
+
 
 
         this.blurBG()
@@ -342,22 +340,22 @@ class StakingManager extends Component {
         return (<>
             <ToastContainer style={{ width: "400px" }} />
             <ChainPupop
-                title={"Wrong Network"}
+                title={t("wrongNetwork")}
                 show={chainId && chainId !== 1}
                 close={false}
                 handlePopup={() => console.log()}
                 popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
                     <div>
-                        Looks like you are not connected to the right network.
-                         <br />
+                        {t("badNetwork1")}
                         <br />
-                        Change network to Mainnet
+                        <br />
+                        {t("changeToMain")}
                     </div>
                 </div>}
             />
-            <TopNotification text={innnerText} />
+            {/* <TopNotification text={innnerText} /> */}
             { currStake && currToken && <StakePopup
-                title={"STAKE TOKENS TO EARN DEA"}
+                title={t("stakeToEarn")}
                 close={true}
                 isStakePopup={isStakePopup}
                 handleApprove={this.handleApprove(currToken)}
@@ -370,7 +368,7 @@ class StakingManager extends Component {
             />}
 
             { currStake && currToken && <WithdrawPopup
-                title={"WITHDRAW"}
+                title={t("withdraw")}
                 close={true}
                 deposited={stakingsMap[currToken.name].deposited}
                 isWithdrawPopup={isWithdrawPopup}
@@ -409,4 +407,4 @@ class StakingManager extends Component {
     }
 }
 
-export default withRouter(StakingManager);
+export default withTranslation()(withRouter(StakingManager));

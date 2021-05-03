@@ -179,11 +179,11 @@ nav {
     }
 
     .right-nav {
-        font-family: Monument Grotesk;
+        font-family: Monument Grotesk2;
         font-weight: 400;
         .arrow-nav {
-            margin-left: -5px;
-            margin-bottom: 2px;
+            margin-left: 2px;
+            margin-bottom: 1px;
         }
         .sub-nav {
             display: none;
@@ -208,7 +208,7 @@ nav {
                 color: #ffffff;
                 text-align: left;
                 text-decoration: none;
-                font-size: 20px;
+                font-size: 17px;
                 display: block;
                 white-space: nowrap;
                 .active {
@@ -238,7 +238,7 @@ nav {
         }
         ul {
             margin-right: 10px;
-            font-size: 20px;
+            font-size: 15px;
             list-style-type: none;
             height: 101%;
             display: flex;
@@ -327,6 +327,29 @@ nav {
     background: rgba(91, 204, 189, 0.5);
     border: 1px solid rgba(97, 192, 191, 0.25);
     border-radius: 6px;
+}
+@media screen and (max-width: 1260px) {
+    nav {
+        .left-nav-wrap {
+            .left-nav {
+                li:nth-child(2) {
+                    width: 120px;
+                }
+                .network-name {
+                    display: none;
+                }
+                .connect-wrap {
+                    margin-left: 10px;
+                    font-size: 13px;
+                    height: 35px;
+                    width: 120px;
+                }
+                .change-network {
+                    width: unset;
+                }
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 1150px) {

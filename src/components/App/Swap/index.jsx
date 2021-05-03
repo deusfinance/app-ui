@@ -1,7 +1,5 @@
-import React from 'react';
 import styled, { css } from 'styled-components'
 import { FlexCenter } from '../Container';
-
 
 export const InputAmount = styled.input.attrs({
     type: "number",
@@ -19,8 +17,6 @@ export const InputAmount = styled.input.attrs({
     background: transparent;
 
 `
-
-
 export const SwapTitle = styled(FlexCenter)`
     display: inline-flex;
     font-family:"Monument Grotesk Semi";
@@ -30,7 +26,6 @@ export const SwapTitle = styled(FlexCenter)`
     color:#000;
     background:${({ theme }) => theme.grad3}
 `
-
 
 export const StyleSwapBase = css`
     background: ${({ theme }) => theme.bg3};

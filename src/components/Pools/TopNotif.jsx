@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withTranslation } from 'react-i18next'
 
 class TopNotif extends Component {
     state = {
         tokenTypes: [
-            { id: 0, name: "Single", path: "/staking/single" },
-            { id: 1, name: "Liquidity", path: "/staking/liquidity" },
-            { id: 2, name: "Old", path: "/staking/old" },
+            { id: 0, name: this.props.t("single"), path: "/staking/single" },
+            { id: 1, name: this.props.t("liquidity"), path: "/staking/liquidity" },
+            { id: 2, name: this.props.t("old"), path: "/staking/old" },
         ],
         show: false
     }
@@ -17,11 +18,19 @@ class TopNotif extends Component {
     }
 
 
+
     componentDidUpdate(prevProps) {
+
         if (this.props.typeID !== prevProps.typeID)
             console.log(this.props.typeID);
+        if(this.props.t!== prevProps.t){
+                   this.setState({tokenTypes:[
+            { id: 0, name: this.props.t("single"), path: "/staking/single" },
+            { id: 1, name: this.props.t("liquidity"), path: "/staking/liquidity" },
+            { id: 2, name: this.props.t("old"), path: "/staking/old" },
+                ]})
+        }
     }
-
     render() {
 
         const { show, tokenTypes } = this.state
@@ -72,4 +81,4 @@ class TopNotif extends Component {
     }
 }
 
-export default TopNotif;
+export default withTranslation()(TopNotif);

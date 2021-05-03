@@ -11,7 +11,6 @@ import { FlexCenter } from '../Container';
 const fadein = keyframes`
   from {
     opacity:0;
-
   }
   to {
     opacity:1;
@@ -44,15 +43,15 @@ const StyledClose = styled(X)`
     cursor: pointer;
     filter:brightness(0.8);
   }
-  `
+`
 
 const TokenLogo = styled(FlexCenter)`
 background: linear-gradient(90deg, #EA2C62 -0.01%, #0779E4 100.03%);
 padding:3px;
 border-radius:50%;
 filter: drop-shadow(0px 0px 8px #0E77E1);
-
 `
+
 const Line = styled.div`
 height: 1px;
 background: rgba(255, 255, 255, 0.15);
@@ -94,7 +93,6 @@ const InputAmount = styled.input.attrs({
     background:  ${({ theme }) => theme.bg6};
 
 `
-
 export const Copy = styled.img`
 &:hover{
   transform:scale(1.1);

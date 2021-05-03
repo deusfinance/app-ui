@@ -2,12 +2,13 @@ import React from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { TokenType } from '../../config';
 import { WaveLoading } from 'react-loadingg';
-
+import { useTranslation } from 'react-i18next';
 import './styles/stock-button.scss';
 
-const SwapStockButton = ({ loading, under_maintenance, from_token, remindCap, to_token, handleSwap, isLong, prices, validChain }) => {
+const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, handleSwap, isLong, prices, validChain }) => {
     const { account, chainId } = useWeb3React()
     const { conducted } = to_token
+    const { t } = useTranslation()
 
     const getBalance = () => {
         return from_token.type !== TokenType.Main ? isLong ? from_token.long?.balance : from_token.short?.balance : from_token.balance
@@ -22,13 +23,17 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, remindCap, to
         }
     }
 
+    const isClosedMarket = (tokenType) => {
+        const position = isLong ? "Long" : "Short"
+        return prices[tokenType["symbol"]][position]?.is_close || !prices[tokenType["symbol"]][position].price || prices[tokenType["symbol"]][position].price === 0
+    }
 
     let isClosed = false
     if (prices && from_token.address !== "0x0" && to_token.address !== "0x0") {
         if (from_token.type !== TokenType.Main) {
-            isClosed = prices[from_token.symbol]["Long"]?.is_close || !prices[from_token.symbol]["Long"].price || prices[from_token.symbol]["Long"].price === 0
+            isClosed = isClosedMarket(from_token)
         } else if (to_token.type !== TokenType.Main && to_token.symbol !== "") {
-            isClosed = prices[to_token.symbol]["Long"]?.is_close || !prices[to_token.symbol]["Long"].price || prices[to_token.symbol]["Long"].price === 0
+            isClosed = isClosedMarket(to_token)
         }
     }
 
@@ -38,7 +43,7 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, remindCap, to
     if (under_maintenance) {
         return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
             <div className="swap-btn grad Insufficient" >
-                UNDER MAINTENANCE
+                {t("underMaintenance")}
             </div>
         </div>)
     }
@@ -46,41 +51,35 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, remindCap, to
     if (loading) {
         return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
             <div className="swap-btn grad Insufficient" >
-                <WaveLoading color="#ffffff" ></WaveLoading> LOADING ...
+                <WaveLoading color="#ffffff" ></WaveLoading> {t("loading")} ...
             </div>
         </div>)
     }
 
-
-    if (validChain && chainId && chainId !== validChain) {
-        return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
-            <div className="swap-btn grad Insufficient" >
-                WRONG NETWORK
-            </div>
-        </div>)
-    }
 
     if (!conducted && to_token.type !== TokenType.Main) {
         return (<div className="swap-btn-wrap grad-wrap Insufficient stock-swap-btn " style={{ padding: 0, boxShadow: "none", background: "#1C1C1C" }} >
             <div className="swap-btn grad Insufficient" >
-                SELECT AN ASSET
+                {t("selectAnAsset")}
             </div>
         </div>)
     }
 
 
-    if (to_token.conducted || from_token.conducted || isClosed || !account) {
+    if (to_token.conducted || from_token.conducted || isClosed || !account || (validChain && chainId && chainId !== validChain)) {
 
         let errTxt = null
 
-        if (isClosed) {
-            errTxt = "MARKET IS CLOSED"
+        if (isClosed)
+            errTxt = t("marketIsClosed")
+        else if ((validChain && chainId && chainId !== validChain)) {
+            errTxt = t("wrongNetwork")
         } else if (isNaN(amount) || Number(amount) === 0) {
-            errTxt = "ENTER AN AMOUNT"
+            errTxt = t("enterAmount")
         } else if (!account) {
-            errTxt = "CONNECT WALLET"
+            errTxt = t("connectWallet")
         } else if (getBalance() < amount) {
-            errTxt = "INSUFFICIENT BALANCE"
+            errTxt = t("insufficientBalance")
         }
 
         if (errTxt) {
@@ -95,7 +94,7 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, remindCap, to
     return (<>
         <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={handleSwap}>
             <div className="swap-btn grad" style={{ background: "none" }} >
-                {getAllowances() ? `SYNC ${from_token.type === TokenType.Main ? "(BUY)" : "(SELL)"} ` : "APPROVE"}
+                {getAllowances() ? `SYNC ${from_token.type === TokenType.Main ? `(${t("buy")})` : `(${t("sell")})`} ` : t("approve")}
             </div>
         </div>
     </>);

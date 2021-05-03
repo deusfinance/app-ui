@@ -3,8 +3,8 @@ import { useWeb3React } from '@web3-react/core';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AllTokens, AllStakings } from '../config';
 import { LoopCircleLoading } from 'react-loadingg';
+// import '../i18n'
 
-// const CoinBase = React.lazy(() => import('../pages/Coinbase/Index'));
 const Migrator = React.lazy(() => import('../pages/Migrator'));
 const Bakkt = React.lazy(() => import('../pages/Bakkt/Bakkt'));
 const Musk = React.lazy(() => import('../pages/Musk/Musk'));
@@ -42,10 +42,7 @@ const Deus = () => {
                 <Route exact path="/staking/liquidity" render={() => <StakingManager pools={["bpt_native"]} navId={1} {...props} />} />
                 <Route exact path="/staking/old" render={() => <StakingManager pools={["coinbase_usdc", "deus_dea", "dea_usdc", "deus_eth", "deus", "dea", "ampl_eth", "snx", "uni"]} navId={2} {...props} />} />
                 <Route exact path="/swap" render={() => <MainSwap {...props} />} />
-                {/* <Route exact path="/coinbase" render={() => <CoinBase {...props} />} /> */}
                 <Route exact path="/migrator" render={() => <Migrator {...props} />} />
-                {/* <Route exact path="/swap" render={() => <Under />} /> */}
-                {/* <Route exact path="/coinbase" render={() => <Under />} /> */}
                 <Route exact path="/Bakkt" render={() => <Bakkt {...props} />} />
                 <Route exact path="/Musk" render={() => <Musk {...props} />} />
                 <Route exact path="/otc-buy" render={() => <DeaStatic {...props} />} />

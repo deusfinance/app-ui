@@ -4,16 +4,23 @@ import { bscSynchronizerABI, tokenABI } from '../utils/abis';
 
 export class StockService {
 
-    constructor(account, chainId = 97) {
+    constructor(account, chainId = 56) {
         this.account = account;
         this.chainId = chainId;
-        this.marketMaker = "0x800CE878C2e01CbDec612903d19b0538D5B2F544";
-
+        if (chainId === 56) {
+            this.marketMaker = "0x3b62F3820e0B035cc4aD602dECe6d796BC325325";
+        } else {
+            this.marketMaker = "0x800CE878C2e01CbDec612903d19b0538D5B2F544";
+        }
     }
 
     makeProvider = () => {
         if (this.INFURA_URL) return
-        this.INFURA_URL = 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+        if (this.chainId === 56) {
+            this.INFURA_URL = 'https://bsc-dataseed.binance.org/';
+        } else {
+            this.INFURA_URL = 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+        }
         this.infuraWeb3 = new Web3(new Web3.providers.HttpProvider(this.INFURA_URL));
     }
 
@@ -147,7 +154,7 @@ export class StockService {
             [oracles[0]["signs"]["sell"].r.toString()],
             [oracles[0]["signs"]["sell"].s.toString()])
             .send({ from: this.account })
-            .on('transactionHash', () => listener("transactionHash"))
+            .on('transactionHash', (hash) => listener("transactionHash", hash))
             .once('receipt', () => listener("receipt"))
             .on('error', () => listener("error"));
     }

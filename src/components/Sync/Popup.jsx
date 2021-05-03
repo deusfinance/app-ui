@@ -1,7 +1,6 @@
 import React from 'react';
 import "./styles/popup.scss";
 
-
 const Popup = ({ title, close, show, popBody, handlePopup }) => {
     return (<>
         {show && <div className="popup-wrap">
@@ -12,8 +11,6 @@ const Popup = ({ title, close, show, popBody, handlePopup }) => {
                             <path d="M1 1L7 7L13 1" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                             <path d="M13 13L7 7L0.999999 13" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
-
-
                     </div>}
                 </div>
                 {popBody}

@@ -3,6 +3,7 @@ import { Flex } from 'rebass/styled-components';
 import { FlexCenter } from '../Container';
 import { Type } from '../Text';
 import { SwapArrow } from '.';
+import BigNumber from 'bignumber.js';
 
 const handleName = (state, invert) => {
     const { from, to } = state
@@ -10,26 +11,25 @@ const handleName = (state, invert) => {
     return ` ${from.symbol} per ${to.symbol}`
 }
 
-const handleRatio = (state, invert) => {
-    const { from, to } = state
-
-    if (!from || !to) return ""
-    if (!from.amount || !to.amount || parseFloat(from.amount) <= 0 || parseFloat(to.amount) <= 0) return ''
-
+const handleRatio = (amountIn, amountOut, invert) => {
+    if (!amountIn || !amountOut || isNaN(amountIn) || isNaN(amountOut)) return ""
+    if (parseFloat(amountIn) <= 0 || parseFloat(amountOut) <= 0) return ''
+    const amountInBig = new BigNumber(amountIn)
+    const amountOutBig = new BigNumber(amountOut)
     if (invert) {
-        const invertRatio = parseFloat(to.amount) / parseFloat(from.amount)
+        const invertRatio = amountOutBig.div(amountInBig, 10).toFixed(6, 0)
         return `${invertRatio}`
     }
-    const ratio = parseFloat(from.amount) / parseFloat(to.amount)
+    const ratio = amountInBig.div(amountOutBig, 10).toFixed(6, 0)
     return `${ratio}`
 }
 
-const RateBox = ({ state, invert, setInvert }) => {
+const RateBox = ({ amountIn, amountOut, state, invert, setInvert }) => {
     return (
         <Flex justifyContent="space-between" mt="15px" px="10px">
             <Type.XS>Price</Type.XS>
             <FlexCenter>
-                <Type.XS>{handleRatio(state, invert)} {handleName(state, invert)}  </Type.XS>
+                <Type.XS>{handleRatio(amountIn, amountOut, invert)} {handleName(state, invert)}  </Type.XS>
                 <SwapArrow style={{ marginLeft: "5px" }} onClick={() => setInvert(!invert)} >
                     <svg width={15} height={15} viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx={5} cy={5} r={5} fill="white" fillOpacity="0.75" />

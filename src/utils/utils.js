@@ -1,7 +1,7 @@
-import { InfuraProvider, Web3Provider } from '@ethersproject/providers';
+
 import { isAddress } from '@ethersproject/address';
 import { Contract } from '@ethersproject/contracts';
-
+import React from 'react';
 import { toast } from 'react-toastify';
 
 export const isDesktop = () => {
@@ -28,6 +28,13 @@ export const getStayledNumber = (number, space = 9, flag = true) => {
 }
 
 export const getSwapVsType = (t) => t === "from" ? "to" : "from"
+
+export const spaceToSemi = (word) => {
+    const chunk = word.split(" ");
+    if (chunk.length === 1)
+        return chunk
+    return <span>{chunk[0]}&thinsp;{chunk[1]}</span>
+}
 
 export const formatBalance = (number, decimal = 9) => {
     if (!number) return "0"
@@ -65,6 +72,7 @@ export const newFormatAmount = (number, decimal = 9) => {
 
 export const fetcher = (library, abi) => (...args) => {
     const [arg1, arg2, ...params] = args
+    // const library = useWeb3()
     // it's a contract
     if (isAddress(arg1)) {
         const address = arg1
@@ -113,10 +121,9 @@ export function dollarPrice(price, fixed = 0) {
 }
 
 export function getLibrary(provider) {
-    const currProvider = provider ? provider : InfuraProvider.getWebSocketProvider("homestead", "cf6ea736e00b4ee4bc43dfdb68f51093")
-    const library = new Web3Provider(currProvider, 'any')
-    library.pollingInterval = 15000
-    return library
+    // const library = new Web3Provider(provider, 'any')
+    // library.pollingInterval = 15000
+    return provider
 }
 
 const method = {

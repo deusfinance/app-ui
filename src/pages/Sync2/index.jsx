@@ -3,18 +3,19 @@ import React, { useState } from 'react';
 import styled from 'styled-components'
 import { Image } from 'rebass/styled-components';
 import { FlexCenter } from '../../components/App/Container';
-import { SwapWrapper, SwapArrow, SmallWrapper } from '../../components/App/Swap';
+import { SwapWrapper, SwapArrow, } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
-import { Type } from '../../components/App/Text';
 import SyncAction from '../../components/App/Synchronizer/SyncAction';
 import SearchBox from '../../components/App/Synchronizer/SearchBox';
-
 import { Base } from '../../components/App/Button';
 import LongShort from '../../components/App/Synchronizer/LongShort';
 import PriceBox from '../../components/App/Synchronizer/PriceBox';
 import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
-import { SwapTranaction } from '../../utils/explorers';
+import { ApproveTranaction } from '../../utils/explorers';
 import { TransactionState } from '../../utils/constant';
+import { dAmcTestToken } from '../../constant/token';
+import { busdToken } from '../../services/stock';
+
 
 
 const MainWrapper = styled.div`
@@ -41,40 +42,51 @@ export const NetworkTitle = styled(Base)`
 
 const Sync2 = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
+    const [fromCurrency, setFromCurrency] = useState(busdToken)
+    const [toCurrency, setToCurrency] = useState(dAmcTestToken)
+    const [long, setLong] = useState(true)
+
+    const changePosition = () => {
+        setFromCurrency({ ...toCurrency, amount: "" })
+        setToCurrency({ ...fromCurrency, amount: "" })
+    }
 
     return (<>
-
-
         <SearchBox active={activeSearchBox} setActive={setActiveSearchBox} />
-
         <MainWrapper>
-            <Title>
+            <Title onClick={() => ApproveTranaction(TransactionState.LOADING, {
+                hash: "0xe944437d0c622734341348acc91b31dbe53fca5b23ca5db17d813f9cc2e43f30",
+                from: { logo: "/tokens/dea.svg", symbol: "dGME", amount: "0.0017165" },
+                chainId: 3,
+            })}>
                 <Image src="/img/sync-logo.svg" alt="sync" height="45px" />
-                <NetworkTitle>xDAI</NetworkTitle>
+                <NetworkTitle>BSC Test</NetworkTitle>
             </Title>
+
             <SwapWrapper>
                 <TokenBox
                     setActive={setActiveSearchBox}
                     hasMax={true}
-                    currency={{ logo: "/tokens/dea.svg", symbol: "dea", balance: "35.284456129464577913" }}
+                    currency={fromCurrency}
                 />
-                <SwapArrow onClick={() => SwapTranaction(TransactionState.LOADING, {
-                    hash: "0xe944437d0c622734341348acc91b31dbe53fca5b23ca5db17d813f9cc2e43f30",
-                    from: { logo: "/tokens/dea.svg", symbol: "dGME", amount: "0.0017165" },
-                    to: { logo: "/tokens/dea.svg", symbol: "xDAI", amount: "1" },
-                    chainId: 97,
-                })}>
+
+                <SwapArrow onClick={changePosition}>
                     <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
                 </SwapArrow>
 
                 <TokenBox
+                    title="To (estimated)"
                     setActive={setActiveSearchBox}
-                    currency={{ logo: "/tokens/deus.svg", symbol: "deus", balance: "95.284456129464577913" }}
+                    currency={toCurrency}
                 />
-                <LongShort />
+                <LongShort setLong={setLong} isLong={long} />
                 <PriceBox />
 
-                <SyncAction isPreApproved={true} mt="20px" />
+                <SyncAction
+                    fromCurrency={fromCurrency}
+                    validNetworks={[56]}
+                    isPreApproved={true}
+                    mt="20px" />
 
             </SwapWrapper>
             <RemainingCap />

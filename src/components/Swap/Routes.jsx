@@ -2,6 +2,7 @@ import React from 'react';
 import { AllTokens, AddressChainMap } from '../../config';
 import pathsRink from './../../services/graph.json'
 import pathsMain from './../../services/graphbk.json'
+import { useTranslation } from 'react-i18next'
 
 
 const Routes = ({ from, to, chainId }) => {
@@ -29,8 +30,9 @@ const Routes = ({ from, to, chainId }) => {
             "deus": true,
         },
     }
+    const {t}= useTranslation()
     return (<div className="routes">
-        <p>Route</p>
+        <p>{t("route")}</p>
         <div className="routes-tokens">
             {path && path.map((p, i) => {
                 const name = AddressMap[p]

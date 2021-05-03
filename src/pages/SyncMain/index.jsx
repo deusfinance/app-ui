@@ -20,6 +20,7 @@ import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
 
 import './styles/sync-xdai.scss';
+import { useTranslation } from 'react-i18next'
 
 
 
@@ -50,11 +51,11 @@ const SyncMain = () => {
     const to_token = swap.to
     const from_token = swap.from
     const [loading, setLoading] = useState(false);
-    const [loadingCap, setLoadingCAP] = useState(false);
+    const [loadingCap,] = useState(false);
     const [loadingAllowance, setLoadingAllowance] = useState(false);
     const [subscrible, setSubscrible] = useState(null);
-    // const [totalCap, setTotalCap] = useState(0);
-    const [remindCap, setRemindCap] = useState(0);
+    const { t } = useTranslation()
+    const [remindCap,] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
     const { account, chainId } = useWeb3React()
@@ -74,18 +75,19 @@ const SyncMain = () => {
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/mainnet/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/mainnet/price.json", { cache: "no-cache" }), [])
 
-    let reportMessages = ""
-    const getBuySell = useCallback(() =>
-        Promise.allSettled(
+    const getBuySell = useCallback(() => {
+        let reportMessages = ""
+        return Promise.allSettled(
             apis.map(api => fetch(api, { cache: "no-cache" }))
         ).then(function (responses) {
+
             responses = responses.filter((result, i) => {
                 if (result?.value?.ok) return true
-                reportMessages = apis[i] + "\t is down" + "\n"
+                reportMessages = apis[i] + "\t is down\n"
                 return false
             })
             if (reportMessages !== "") {
-                // sendMessage(reportMessages)
+                sendMessage(reportMessages)
                 reportMessages = ""
             }
             return Promise.all(responses.map(function (response) {
@@ -93,7 +95,8 @@ const SyncMain = () => {
             }));
         }).catch(function (error) {
             console.log(error);
-        }), [])
+        })
+    }, [apis])
 
     const getStocks = useCallback(() => fetcher("https://oracle1.deus.finance/registrar-detail.json", { cache: "no-cache" }), [])
 
@@ -105,7 +108,8 @@ const SyncMain = () => {
             })
         }, 15000))
         return clearInterval(subscrible)
-    }, [])
+    }, [])//eslint-disable-line
+
 
     useEffect(() => {
         document.body.style.backgroundColor = '#2c2f36'
@@ -114,7 +118,7 @@ const SyncMain = () => {
         const toToken = { ...emptyToken, balance: "0" }
         handleInitToken("from", { ...fromToken })
         handleInitToken("to", { ...toToken })
-    }, [web3Class])
+    }, [web3Class])//eslint-disable-line
 
     useEffect(() => { //adding chain and type wrap
         if (conducted && stocks) {
@@ -136,17 +140,16 @@ const SyncMain = () => {
                 }
             })
             setStocks(stocks)
-            // handleInitTokenByName("to", "TSLA")
 
         }
 
-    }, [conducted, stocks, account])
+    }, [conducted, stocks, account])//eslint-disable-line
 
 
     useEffect(() => {
         const stype = lastInputFocus ? lastInputFocus : "from"
         handleTokenInputChange(stype, swap[stype].amount)
-    }, [isLong, prices])
+    }, [isLong, prices])//eslint-disable-line
 
     // const initialCap = useCallback(async () => {
     //     if (account && chainId && chainId === 97) {
@@ -308,7 +311,7 @@ const SyncMain = () => {
             }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    <a href={`https://etherscan.io/tx/${hash}`} target="_blank">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://etherscan.io/tx/${hash}`} target="_blank" rel="noopener noreferrer" >{`${t("swap")} ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
                     closeOnClick: false,
@@ -316,7 +319,7 @@ const SyncMain = () => {
                 });
             else {
                 toast.info(<div>Transaction Pending <br />
-                    {`Approve ${swap.from.symbol}`}</div>, {
+                    {`${t("approve")}  ${swap.from.symbol}`}</div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false
 
@@ -329,14 +332,14 @@ const SyncMain = () => {
             if (transactionType.action === "approve") {
                 handleInitToken(transactionType.type, transactionType.token, transactionType.token.amount)
                 toast.success(<div>Transaction Successful <br />
-                    {`Approved ${swap.from.symbol}`}</div>, {
+                    {`${t("approve")}  ${swap.from.symbol}`}</div>, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
             }
 
             if (transactionType.action === "sell" || transactionType.action === "buy") {
                 toast.success(<div>Transaction Successful <br />
-                    {`Swapped ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol}`}</div>, {
+                    {`${t("swap")} ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol}`}</div>, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
 
@@ -386,10 +389,10 @@ const SyncMain = () => {
 
         try {
             transactionType = { action: "buy", swap: swap, isLong: isLong }
-            const data = type === "buy" ?
-                await web3Class.buy(tokenAddress, amount, oracles.result, notifSync(methods)) :
+            if (type === "buy")
+                await web3Class.buy(tokenAddress, amount, oracles.result, notifSync(methods))
+            else
                 await web3Class.sell(tokenAddress, amount, oracles.result, notifSync(methods))
-            // console.log(data);
         } catch (error) {
             console.log("handleSync", error);
         }
@@ -414,8 +417,8 @@ const SyncMain = () => {
             <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
             <div className="sync-wrap" >
                 <div className="sync" style={{ textTransform: "uppercase" }}>
-                    synchronizer
-                        </div>
+                    {t("synchronizer")}
+                </div>
             </div>
         </div>
 
@@ -453,7 +456,7 @@ const SyncMain = () => {
                         <StockBox
                             type="to"
                             token={swap.to}
-                            estimated=" (estimated)"
+                            estimated={` (${t("estimated")})`}
                             isLong={isLong}
                             handleSearchBox={handleSearchBox}
                             handleTokenInputChange={handleTokenInputChange}

@@ -22,18 +22,18 @@ const tokens = {
       yieldable: true,
       link: '/swap'
     },
-    {
-      tokenName: 'timetoken',
+    // {
+    //   tokenName: 'timetoken',
 
-      title: 'TIME',
-      titleExit: 'TIME',
-      stakingContract: '0x4244abF6151153b8d3eEfbBfDBAB91CD85a8b222',
-      vaultContract: '0x23459b0026Ed1cAE0b6da5E9364aCec07469Ffcd',
+    //   title: 'TIME',
+    //   titleExit: 'TIME',
+    //   stakingContract: '0x4244abF6151153b8d3eEfbBfDBAB91CD85a8b222',
+    //   vaultContract: '0x23459b0026Ed1cAE0b6da5E9364aCec07469Ffcd',
 
-      exitable: false,
-      category: '',
-      yieldable: false
-    },
+    //   exitable: false,
+    //   category: '',
+    //   yieldable: false
+    // },
     {
       tokenName: 'bpt',
       title: 'BPT',

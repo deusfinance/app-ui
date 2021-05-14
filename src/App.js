@@ -11,9 +11,10 @@ import './assets/styles/base.scss';
 import { RefreshContextProvider } from './helper/RefreshContex';
 const Deus = React.lazy(() => import('./components/Deus'));
 // const Sync = React.lazy(() => import('./pages/Sync'));
-const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
-const SyncBSC = React.lazy(() => import('./pages/SyncBsc'));
-const Sync2 = React.lazy(() => import('./pages/Sync2'));
+// const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
+// const SyncBSC = React.lazy(() => import('./pages/SyncBsc'));
+// const Sync2 = React.lazy(() => import('./pages/Sync2'));
+const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'));
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'));
 const SyncMain = React.lazy(() => import('./pages/SyncMain'));
@@ -34,10 +35,11 @@ function App() {
             <Switch>
               <Route exact path="/not-found" component={NotFound} />
               <Route exact path="/crosschain/xdai/synchronizer" component={SyncXdai} />
-              <Route exact path="/crosschain/bsc-test/synchronizer" component={SyncBSCTest} />
-              <Route exact path="/crosschain/bsc/synchronizer" component={SyncBSC} />
+              {/* <Route exact path="/crosschain/bsc-test/synchronizer" component={SyncBSCTest} />
+              <Route exact path="/crosschain/bsc/synchronizer" component={SyncBSC} /> */}
               <Route exact path="/synchronizer" component={SyncMain} />
-              <Route exact path="/synchronizer2" component={Sync2} />
+              <Route exact path="/stake-and-yield" component={StakeAndYield} />
+              {/* <Route exact path="/synchronizer2" component={Sync2} /> */}
               <Route exact path="/swap2" component={Swap2} />
               {/* <Route exact path="/test-style" component={Test} /> */}
               <Redirect exact from="/" to="/swap" />

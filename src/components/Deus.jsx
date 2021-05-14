@@ -13,7 +13,6 @@ const MainSwap = React.lazy(() => import('../pages/Swap/MainSwap'))
 const StakingManager = React.lazy(() => import('./Pools/Stakings'))
 const Vault = React.lazy(() => import('./Vault/Vault'))
 const Dashboard = React.lazy(() => import('./Dashboard/Dashboard'))
-const Staking = React.lazy(() => import('../pages/StakeAndYield'))
 
 // const Under = React.lazy(() => import('../pages/Maintenance/Under'));
 
@@ -88,11 +87,6 @@ const Deus = () => {
           exact
           path="/dashboard"
           render={() => <Dashboard {...props} />}
-        />
-        <Route
-          exact
-          path="/stakeandyield"
-          render={() => <Staking {...props} />}
         />
         <Redirect from="/staking" to="/staking/single" />
         <Redirect from="/coinbase-staking" to="/staking/old" />

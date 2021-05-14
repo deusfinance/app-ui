@@ -383,6 +383,9 @@ nav {
         width: 300px;
         transition: 0.2s all;
         flex-direction: column-reverse;
+        .language {
+            margin-left: 20px;
+        }
         .nav-title {
             opacity: 0.5;
         }

@@ -22,7 +22,7 @@ export default [
       {
         id: 'STAKE & YIELD',
         text: 'STAKE & YIELD',
-        path: '/stakeandyield',
+        path: '/stake-and-yield',
         exact: true
       },
       {
@@ -51,12 +51,12 @@ export default [
         path: '/crosschain/xdai/synchronizer',
         exact: true
       },
-      {
-        id: 'bsc',
-        text: 'BSC',
-        path: '/crosschain/bsc/synchronizer',
-        exact: true
-      }
+      // {
+      //   id: 'bsc',
+      //   text: 'BSC',
+      //   path: '/crosschain/bsc/synchronizer',
+      //   exact: true
+      // }
     ]
   },
   {

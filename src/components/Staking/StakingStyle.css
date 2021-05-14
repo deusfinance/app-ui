@@ -1,13 +1,3 @@
-@font-face {
-  font-family: "Monument Grotesk Semi";
-  src: url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff2") format("woff2"),
-    url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff") format("woff")
-      url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.otf") format("otf");
-}
-@font-face {
-  font-family: "Monument Grotesk";
-  src: url("../../assets/fonts/MonumentGrotesk/MonumentGrotesk-Regular.woff") format("woff");
-}
 .container-staking {
   font-family: "Monument Grotesk Semi";
   padding: 5px;
@@ -973,7 +963,7 @@ input:focus {
 .pt-3 {
   padding-top: 3px;
 }
-.token-info {
+.container-staking .token-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1091,6 +1081,7 @@ ul.tab li input[type="radio"]:checked ~ label {
   flex-direction: column;
   justify-content: center;
   font-family: "Monument Grotesk";
+  font-weight: 300;
 }
 .exit-modal-title {
   font-style: normal;

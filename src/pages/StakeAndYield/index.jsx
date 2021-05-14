@@ -42,8 +42,8 @@ const Staking = () => {
       category === 'all'
         ? tokens[selesctedChainId]
         : tokens[selesctedChainId].filter(
-            (token) => token.category === category
-          )
+          (token) => token.category === category
+        )
     setShowTokens(result)
   }
 
@@ -86,6 +86,7 @@ const Staking = () => {
           handleSelectedButton={chooseType}
           name="Single-Liquidity"
           defaultChecked={type}
+          classes="main-toggle-btn"
         />
 
         <div className="wrap-tokens">

@@ -1234,6 +1234,18 @@ ul.tab li input[type="radio"]:checked ~ label {
     flex-direction: column;
   } */
 
+  ul.tab li label {
+    font-size: 11px;
+    line-height: 13px;
+    padding: 7px 6px;
+  }
+
+  .main-toggle-btn ul.tab li label {
+    font-size: 13px;
+    /* line-height: 1px; */
+    padding: 10px 10px;
+  }
+
   .flex-column {
     flex-direction: column;
   }
@@ -1266,7 +1278,7 @@ ul.tab li input[type="radio"]:checked ~ label {
   }
   .container-staking {
     padding: 0px;
-    width: 85%;
+    width: 90%;
   }
   .swap-BPT {
     font-size: 9px;
@@ -1287,7 +1299,7 @@ ul.tab li input[type="radio"]:checked ~ label {
     padding-top: 40px;
   }
   .token-container {
-    padding: 15px;
+    padding: 15px 8px;
   }
   .token-title {
     font-size: 18px;
@@ -1333,16 +1345,27 @@ ul.tab li input[type="radio"]:checked ~ label {
   }
   .swap-BPT {
     font-size: 10px;
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 10px;
+  }
+  .apy {
+    position: absolute;
+    top: 0px;
+    right: 8px;
+    font-size: 15px;
+  }
+  .expand-btn {
+    flex-grow: 1;
+    position: absolute;
+    bottom: -25px;
+    right: 0;
   }
   .token-title {
     font-size: 19px;
     white-space: nowrap;
   }
-  /* .tvl-container {
-    position: absolute;
-    width: 400px;
-    left: 0;
-} */
   ul.togglebuttontab {
     /* display: flex;
     flex-direction: column; */
@@ -1359,9 +1382,6 @@ ul.tab li input[type="radio"]:checked ~ label {
   ul.tab li input[type="radio"]:checked ~ label {
     border-radius: 10px;
   }
-  .stake-deposit-btn {
-    width: 100%;
-  }
   ul.togglebuttontab li {
     width: 100%;
     min-width: none;
@@ -1371,18 +1391,22 @@ ul.tab li input[type="radio"]:checked ~ label {
     min-width: none;
   }
   .collapse-trigger {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    position: relative;
+    display: block;
   }
-  /* .expand-container {
-    flex-direction: column;
-    margin: 0 auto;
-  } */
+
+  .wallet-amount {
+    font-size: 11.5px;
+    line-height: 14px;
+  }
+
+  .expand-container {
+    clear: both;
+    flex-direction: row;
+    margin: 15px auto;
+  }
   .deposit-container {
     width: 100%;
-    display: flex;
-    flex-direction: column;
     margin: 60px auto 0;
   }
   .approve-btn {
@@ -1394,19 +1418,12 @@ ul.tab li input[type="radio"]:checked ~ label {
   .title-container img {
     width: 15px;
   }
-  .staking-desc p {
-    /* font-size: 9px; */
-  }
 }
 @media screen and (min-width: 445px) and (max-width: 576px) {
   ul.tab li label {
     width: 110px;
   }
-  ul.togglebuttontab {
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-  }
+
   ul.togglebuttontab li {
     width: 100%;
   }
@@ -1419,6 +1436,13 @@ ul.tab li input[type="radio"]:checked ~ label {
 }
 
 @media screen and (min-width: 370px) and (max-width: 445px) {
+  .expand-btn {
+    flex-grow: 1;
+    position: absolute;
+    bottom: -25px;
+
+    right: 0;
+  }
   .wrap-box-gray {
     padding: 8px 5px;
   }
@@ -1455,11 +1479,12 @@ ul.tab li input[type="radio"]:checked ~ label {
 }
 
 @media screen and (max-width: 370px) {
-  /* .tvl-container {
+  .expand-btn {
+    flex-grow: 1;
     position: absolute;
-    width: 360px;
-    left: 0;
-} */
+    bottom: -25px;
+    right: 0;
+  }
   ul.togglebuttontab {
     /* display: flex;
     flex-direction: column; */

@@ -5,10 +5,11 @@ const ToggleButtons = ({
   handleSelectedButton,
   name,
   defaultChecked,
-  lockStakeType
+  lockStakeType,
+  classes
 }) => {
   return (
-    <div className="flex-center flex-column-res">
+    <div className={`flex-center flex-column-res ${classes}`}>
       <ul className="tab togglebuttontab">
         {data.map((item, index) => (
           <li
@@ -27,9 +28,8 @@ const ToggleButtons = ({
             />
             <label
               htmlFor={`${name}-${item.value}-${index}`}
-              className={`${
-                lockStakeType || item.disabled ? ' ' : ' pointer '
-              } ${defaultChecked === item.value ? 'checkedType' : ''}`}
+              className={`${lockStakeType || item.disabled ? ' ' : ' pointer '
+                } ${defaultChecked === item.value ? 'checkedType' : ''}`}
             >
               {item.title}
             </label>

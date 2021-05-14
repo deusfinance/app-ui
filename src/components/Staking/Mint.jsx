@@ -34,7 +34,7 @@ const Mint = (props) => {
   })
 
   React.useEffect(() => {
-    if (chainId && tokenName && title !== 'TIME') {
+    if (chainId && tokenName && title !== 'TIME' && tokenName !== 'bpt') {
       let link = getTransactionLink(
         chainId,
         addresses['vaults'][tokenName][chainId]
@@ -192,17 +192,16 @@ const Mint = (props) => {
                       allowance === 0
                         ? 'flex-between'
                         : approveClick
-                        ? 'flex-between'
-                        : 'flex-center'
+                          ? 'flex-between'
+                          : 'flex-center'
                     }
                   >
                     {allowance === 0 ? (
                       <div
-                        className={`${
-                          !approveClick
-                            ? 'approve-btn pointer'
-                            : 'stake-deposit-btn'
-                        } `}
+                        className={`${!approveClick
+                          ? 'approve-btn pointer'
+                          : 'stake-deposit-btn'
+                          } `}
                         onClick={handleApprove}
                       >
                         Approve
@@ -210,11 +209,10 @@ const Mint = (props) => {
                     ) : (
                       approveClick && (
                         <div
-                          className={`${
-                            !approveClick
-                              ? 'approve-btn pointer'
-                              : 'stake-deposit-btn'
-                          } `}
+                          className={`${!approveClick
+                            ? 'approve-btn pointer'
+                            : 'stake-deposit-btn'
+                            } `}
                           onClick={handleApprove}
                         >
                           Approve
@@ -222,11 +220,10 @@ const Mint = (props) => {
                       )
                     )}
                     <div
-                      className={`${
-                        allowance !== 0
-                          ? 'approve-btn pointer'
-                          : 'stake-deposit-btn'
-                      } `}
+                      className={`${allowance !== 0
+                        ? 'approve-btn pointer'
+                        : 'stake-deposit-btn'
+                        } `}
                       onClick={handleMint}
                     >
                       Mint

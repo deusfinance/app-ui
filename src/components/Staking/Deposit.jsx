@@ -156,7 +156,9 @@ const Deposit = (props) => {
           </div>
         )}
         <div>
-          <p className="balance-wallet"> {`Balance: ${balanceWallet}`}</p>
+          <p className="balance-wallet">
+            {`${title} Balance: ${balanceWallet}`}
+          </p>
         </div>
         <div className="gray-box flex-between">
           <input

@@ -14,22 +14,22 @@ export default [
         exact: true
       },
       {
-        id: 'staking',
-        text: 'STAKING',
-        path: '/staking',
-        exact: false
-      },
-      {
-        id: 'STAKE & YIELD',
-        text: 'STAKE & YIELD',
+        id: 'stakeAndYield',
+        text: 'STAKE & YIELD (NEW)',
         path: '/stake-and-yield',
         exact: true
       },
       {
         id: 'vaults',
-        text: 'VAULTS',
+        text: 'LEGACY VAULTS (OLD)',
         path: '/vaults',
         exact: true
+      },
+      {
+        id: 'staking',
+        text: 'LEGACY STAKING (OLD)',
+        path: '/staking',
+        exact: false
       }
     ]
   },

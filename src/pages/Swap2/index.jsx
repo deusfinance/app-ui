@@ -214,6 +214,7 @@ const Swap2 = () => {
 
                 <TokenBox
                     type="to"
+                    title="To"
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
                     setActive={showSearchBox}

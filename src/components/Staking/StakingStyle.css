@@ -1,19 +1,15 @@
 @font-face {
-  font-family: 'Monument Grotesk Semi';
-  src: url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff2')
-      format('woff2'),
-    url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff')
-      format('woff')
-      url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.otf')
-      format('otf');
+  font-family: "Monument Grotesk Semi";
+  src: url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff2") format("woff2"),
+    url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff") format("woff")
+      url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.otf") format("otf");
 }
 @font-face {
-  font-family: 'Monument Grotesk';
-  src: url('../../assets/fonts/MonumentGrotesk/MonumentGrotesk-Regular.woff')
-    format('woff');
+  font-family: "Monument Grotesk";
+  src: url("../../assets/fonts/MonumentGrotesk/MonumentGrotesk-Regular.woff") format("woff");
 }
 .container-staking {
-  font-family: 'Monument Grotesk Semi';
+  font-family: "Monument Grotesk Semi";
   padding: 5px;
   max-width: 1200px;
   width: 100%;
@@ -447,11 +443,11 @@
   padding: 8px 10px;
   max-width: 571px;
   width: 100%;
-  height: 35px;
+  /* height: 35px; */
   text-align: center;
 }
 .wrap-box-gradient-complete::before {
-  content: '';
+  content: "";
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -472,7 +468,7 @@
   text-align: center;
 }
 .wrap-box-gradient::before {
-  content: '';
+  content: "";
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -494,7 +490,7 @@
   text-align: center;
 }
 .wrap-box-gradient-left::before {
-  content: '';
+  content: "";
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -529,7 +525,7 @@
 }
 .frozen-desc {
   max-width: 400px;
-  font-family: 'Monument Grotesk Semi';
+  font-family: "Monument Grotesk Semi";
   font-size: 12.5px;
   line-height: 15px;
   margin-bottom: 15px;
@@ -860,11 +856,7 @@ input:focus {
 .convert-box-mint {
   height: 35px;
   padding: 1px 21px;
-  background: linear-gradient(
-    90deg,
-    rgb(223, 244, 254, 0.25) 0%,
-    rgb(142, 181, 255, 0.25) 100%
-  );
+  background: linear-gradient(90deg, rgb(223, 244, 254, 0.25) 0%, rgb(142, 181, 255, 0.25) 100%);
   /* opacity: 0.25; */
   border: 1px solid rgba(100, 100, 100, 0.498039);
   box-sizing: border-box;
@@ -907,6 +899,7 @@ input:focus {
   background: #0d0d0d;
   display: block;
   /* padding: 1px 10px; */
+  padding-top: 2px;
   border-radius: 6px;
   width: 150px;
   height: 35px;
@@ -922,20 +915,19 @@ input:focus {
   background: linear-gradient(90deg, #08a4f5 -0.01%, #2bede3 93.42%),
     linear-gradient(247.41deg, #a2fbb0 16.32%, #5ec4d6 87.6%) !important;
   border-radius: 6px;
+  color: #000000;
 }
 
 .get-btn span:hover {
-  background: linear-gradient(
-    247.41deg,
-    #a2fbb0 16.32%,
-    #5ec4d6 87.6%
-  ) !important;
+  background: linear-gradient(247.41deg, #a2fbb0 16.32%, #5ec4d6 87.6%) !important;
   border-radius: 6px;
+  color: #000000;
 }
 
 .uni-get-btn span:hover {
   background: #ec357a !important;
   border-radius: 6px;
+  color: #ffffff;
 }
 
 .wrong-network {
@@ -1022,14 +1014,14 @@ ul.tab li label {
   border: 1px solid transparent;
   text-transform: uppercase;
 }
-ul.tab li input[type='radio'] {
+ul.tab li input[type="radio"] {
   opacity: 0;
   width: 1px;
   height: 1px;
   position: absolute;
   left: 15px;
 }
-ul.tab li input[type='radio']:checked ~ label {
+ul.tab li input[type="radio"]:checked ~ label {
   background: #1c1c1c;
   border: 1px solid rgba(61, 61, 61, 0.5);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -1082,7 +1074,7 @@ ul.tab li input[type='radio']:checked ~ label {
 }
 
 .tooltip .tooltip-text::after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 100%; /* At the bottom of the tooltip */
   left: 50%;
@@ -1098,7 +1090,7 @@ ul.tab li input[type='radio']:checked ~ label {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
 }
 .exit-modal-title {
   font-style: normal;
@@ -1170,7 +1162,7 @@ ul.tab li input[type='radio']:checked ~ label {
     flex-direction: column;
   } */
   .container-staking {
-    font-family: 'Monument Grotesk Semi';
+    font-family: "Monument Grotesk Semi";
     padding: 5px;
     max-width: 1000px;
     margin: 0 auto;
@@ -1241,6 +1233,7 @@ ul.tab li input[type='radio']:checked ~ label {
   /* .expand-container {
     flex-direction: column;
   } */
+
   .flex-column {
     flex-direction: column;
   }
@@ -1254,13 +1247,22 @@ ul.tab li input[type='radio']:checked ~ label {
     width: 100%;
   }
   .title {
-    font-size: 14px;
+    font-size: 25px;
+  }
+  .title-container {
+    margin-bottom: 10px;
   }
   .title-container img {
     width: 15.8px;
   }
+  .staking-desc {
+    padding: 0;
+  }
+
   .staking-desc p {
-    font-size: 11px;
+    /* font-size: 11px; */
+    margin: 10px auto;
+    line-height: 25px;
   }
   .container-staking {
     padding: 0px;
@@ -1282,6 +1284,7 @@ ul.tab li input[type='radio']:checked ~ label {
   }
   .staking-content {
     padding: 0px;
+    padding-top: 40px;
   }
   .token-container {
     padding: 15px;
@@ -1344,7 +1347,7 @@ ul.tab li input[type='radio']:checked ~ label {
     /* display: flex;
     flex-direction: column; */
     border-radius: 10px;
-    flex-direction: column !important;
+    /* flex-direction: column !important; */
     min-width: 100%;
   }
   .stake-btn {
@@ -1353,7 +1356,7 @@ ul.tab li input[type='radio']:checked ~ label {
   .stake-btn span {
     width: 100%;
   }
-  ul.tab li input[type='radio']:checked ~ label {
+  ul.tab li input[type="radio"]:checked ~ label {
     border-radius: 10px;
   }
   .stake-deposit-btn {
@@ -1386,13 +1389,13 @@ ul.tab li input[type='radio']:checked ~ label {
     margin: 0 3px;
   }
   .title {
-    font-size: 13px;
+    font-size: 25px;
   }
   .title-container img {
     width: 15px;
   }
   .staking-desc p {
-    font-size: 9px;
+    /* font-size: 9px; */
   }
 }
 @media screen and (min-width: 445px) and (max-width: 576px) {

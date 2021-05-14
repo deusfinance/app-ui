@@ -285,25 +285,25 @@ const TokenContainer = (props) => {
     if (owner && tokenName && chainId === 1) {
       onlyLocking ? fetchUNIToken() : fetchDataUser()
 
-      // let subscription = web3.eth.subscribe(
-      //   'newBlockHeaders',
-      //   (error, result) => {
-      //     if (!error && owner && chainId === 1) {
-      //       onlyLocking ? fetchUNIToken() : fetchDataUser()
-      //       return
-      //     }
+      let subscription = web3.eth.subscribe(
+        'newBlockHeaders',
+        (error, result) => {
+          if (!error && owner && chainId === 1) {
+            onlyLocking ? fetchUNIToken() : fetchDataUser()
+            return
+          }
 
-      //     console.error(error)
-      //   }
-      // )
-      // return () => {
-      //   // unsubscribes the subscription
-      //   subscription.unsubscribe(function (error, success) {
-      //     if (success) {
-      //       console.log('Successfully unsubscribed!')
-      //     }
-      //   })
-      // }
+          console.error(error)
+        }
+      )
+      return () => {
+        // unsubscribes the subscription
+        subscription.unsubscribe(function (error, success) {
+          if (success) {
+            console.log('Successfully unsubscribed!')
+          }
+        })
+      }
     }
   }, [
     web3,

@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/styles/base.scss';
 import { RefreshContextProvider } from './helper/RefreshContex';
+import Announce from './components/common/Annonuce';
 const Deus = React.lazy(() => import('./components/Deus'));
 // const Sync = React.lazy(() => import('./pages/Sync'));
 // const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
@@ -29,6 +30,7 @@ function App() {
       <Web3ReactManager>
         <RefreshContextProvider>
           <Navbar />
+          <Announce />
           <div id="blur-pop"></div>
           <div className="app-body">
             <ToastContainer style={{ width: "450px" }} />

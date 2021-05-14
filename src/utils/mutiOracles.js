@@ -24,8 +24,8 @@ export const xdaiMutileOracleHandler = (type, address, prices, expected = 2) => 
     if (liveCounts < expectedNumberOracles) {
 
         toast.warn(<div>NOT ENOUGH SIGNATURES <br /><br />
-        There are not enough Oracle signatures, for security  reasons we cannot execute this trade right now. <br /><br />
-        If this problem persists please contact our Admins  in <u> <a href="https://t.me/deusfinance" style={{ color: "#fff" }}>Telegram ↗</a></u> we will immediatly look into the issue.
+            There are not enough Oracle signatures. For security reasons, we cannot execute this trade right now.<br /><br />
+            If this problem persists, please contact our Admins in  <u> <a href="https://t.me/deusfinance" style={{ color: "#fff" }}>Telegram ↗</a></u>, we will immediately look into the issue.
         </div >, {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false

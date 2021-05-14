@@ -1145,7 +1145,21 @@ ul.tab li input[type='radio']:checked ~ label {
   color: #ffffff;
   margin-bottom: 30px;
 }
+.close {
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 28px;
+  font-weight: bold;
+}
 
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
 .exit-modal-content {
   max-width: 435px;
   width: 100%;

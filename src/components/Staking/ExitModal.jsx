@@ -36,6 +36,9 @@ const ExitModal = (props) => {
       onRequestClose={hide}
       shouldCloseOnOverlayClick={true}
     >
+      <div className="close" onClick={hide}>
+        &times;
+      </div>
       <div className="modal-content">
         <div className="exit-modal-title">
           Are you sure you want to exit the Vaults?

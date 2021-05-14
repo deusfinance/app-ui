@@ -317,7 +317,7 @@ const TokenContainer = (props) => {
 
   React.useEffect(() => {
     if (!onlyLocking && owner) {
-      if (userInfo.stakeType === '0' || userInfo.balance === '0') {
+      if (userInfo.balance === '0') {
         setCollapseContent('stake')
       } else {
         setCollapseContent('default')

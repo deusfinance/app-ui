@@ -55,7 +55,11 @@ const CollapseTriggerOpen = ({
         <p className="token-title">{title}</p>
         <p className="wallet-amount">
           <span className="blue-color">{balanceWallet}</span> in your wallet
-          <span className="blue-color">{`  ${balance}`}</span> Staked
+          {!onlyLocking && (
+            <>
+              <span className="blue-color">{`  ${balance}`}</span> Staked
+            </>
+          )}
         </p>
       </div>
       {onlyLocking ? (

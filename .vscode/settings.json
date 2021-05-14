@@ -4,7 +4,9 @@
     "src/setupTests.js": true,
     "src/serviceWorker.js": true,
     "LICENSE": true,
+    "*.vscode": true,
     "package-lock.json": true,
-    ".gitignore": true
+    ".gitignore": true,
+    "README.md": true
   }
 }

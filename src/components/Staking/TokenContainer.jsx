@@ -202,9 +202,6 @@ const TokenContainer = (props) => {
             }
           })
         }
-        if (balance === '0') {
-          setCollapseContent('stake')
-        }
 
         setUserInfo((prev) => {
           return {
@@ -318,15 +315,15 @@ const TokenContainer = (props) => {
     tokenAddress
   ])
 
-  // React.useEffect(() => {
-  //   if (!onlyLocking && owner) {
-  //     if (userInfo.stakeType === '0' || userInfo.balance === '0') {
-  //       setCollapseContent('stake')
-  //     } else {
-  //       setCollapseContent('default')
-  //     }
-  //   }
-  // }, [owner, chainId, userInfo.balance, onlyLocking])
+  React.useEffect(() => {
+    if (!onlyLocking && owner) {
+      if (userInfo.stakeType === '0' || userInfo.balance === '0') {
+        setCollapseContent('stake')
+      } else {
+        setCollapseContent('default')
+      }
+    }
+  }, [owner, chainId, userInfo.balance, onlyLocking])
 
   const handleCollapseContent = (data) => {
     setCollapseContent(data)

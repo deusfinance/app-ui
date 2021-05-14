@@ -103,7 +103,6 @@ const Deposit = (props) => {
     }
     setExitBtn(data)
   }
-  console.log('******************', exitBtn)
   return (
     <>
       {lockStakeType && (

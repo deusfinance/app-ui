@@ -1,5 +1,5 @@
 .container-staking {
-  font-family: "Monument Grotesk Semi";
+  font-family: 'Monument Grotesk Semi';
   padding: 5px;
   max-width: 1200px;
   width: 100%;
@@ -437,7 +437,7 @@
   text-align: center;
 }
 .wrap-box-gradient-complete::before {
-  content: "";
+  content: '';
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -458,7 +458,7 @@
   text-align: center;
 }
 .wrap-box-gradient::before {
-  content: "";
+  content: '';
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -480,7 +480,7 @@
   text-align: center;
 }
 .wrap-box-gradient-left::before {
-  content: "";
+  content: '';
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -515,7 +515,7 @@
 }
 .frozen-desc {
   max-width: 400px;
-  font-family: "Monument Grotesk Semi";
+  font-family: 'Monument Grotesk Semi';
   font-size: 12.5px;
   line-height: 15px;
   margin-bottom: 15px;
@@ -642,6 +642,46 @@
 }
 .deposit-container > * {
   margin-bottom: 10px;
+}
+.btn-yes {
+  height: 40px;
+  background: rgba(0, 209, 108, 0.2);
+  border: 1px solid #00d16c;
+  border-radius: 6px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  /* identical to box height */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  color: #00d16c;
+}
+.desc-btn {
+  padding: 10px 30px;
+}
+.btn-no {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  /* identical to box height */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  color: #ff5555;
+  height: 40px;
+  border: 1px solid #ff5555;
+
+  background: rgba(255, 85, 85, 0.2);
+  border-radius: 6px;
 }
 .vault-exit {
   background: #0d0d0d;
@@ -846,7 +886,11 @@ input:focus {
 .convert-box-mint {
   height: 35px;
   padding: 1px 21px;
-  background: linear-gradient(90deg, rgb(223, 244, 254, 0.25) 0%, rgb(142, 181, 255, 0.25) 100%);
+  background: linear-gradient(
+    90deg,
+    rgb(223, 244, 254, 0.25) 0%,
+    rgb(142, 181, 255, 0.25) 100%
+  );
   /* opacity: 0.25; */
   border: 1px solid rgba(100, 100, 100, 0.498039);
   box-sizing: border-box;
@@ -909,7 +953,11 @@ input:focus {
 }
 
 .get-btn span:hover {
-  background: linear-gradient(247.41deg, #a2fbb0 16.32%, #5ec4d6 87.6%) !important;
+  background: linear-gradient(
+    247.41deg,
+    #a2fbb0 16.32%,
+    #5ec4d6 87.6%
+  ) !important;
   border-radius: 6px;
   color: #000000;
 }
@@ -1004,14 +1052,14 @@ ul.tab li label {
   border: 1px solid transparent;
   text-transform: uppercase;
 }
-ul.tab li input[type="radio"] {
+ul.tab li input[type='radio'] {
   opacity: 0;
   width: 1px;
   height: 1px;
   position: absolute;
   left: 15px;
 }
-ul.tab li input[type="radio"]:checked ~ label {
+ul.tab li input[type='radio']:checked ~ label {
   background: #1c1c1c;
   border: 1px solid rgba(61, 61, 61, 0.5);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -1064,7 +1112,7 @@ ul.tab li input[type="radio"]:checked ~ label {
 }
 
 .tooltip .tooltip-text::after {
-  content: " ";
+  content: ' ';
   position: absolute;
   top: 100%; /* At the bottom of the tooltip */
   left: 50%;
@@ -1080,72 +1128,39 @@ ul.tab li input[type="radio"]:checked ~ label {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: "Monument Grotesk";
+  font-family: 'Monument Grotesk';
   font-weight: 300;
+  align-items: center;
+  text-align: justify;
+  flex-direction: column;
 }
 .exit-modal-title {
+  font-family: 'Monument Grotesk';
   font-style: normal;
   font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
+  font-size: 17px;
+  line-height: 24px;
   text-align: center;
+
   color: #ffffff;
   margin-bottom: 30px;
 }
 
 .exit-modal-content {
-  max-width: 844px;
+  max-width: 435px;
   width: 100%;
-  background: #2d2f35;
-  border: 1px solid #1c1c1c;
-  box-sizing: border-box;
-  border-radius: 10px;
-  padding: 40px 20px 20px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
-  text-align: center;
-  color: #ffffff;
-  opacity: 0.5;
 }
 .exit-modal-content > p {
   margin-bottom: 20px;
-}
-.container-exit-modal-btn {
-  display: flex;
-  justify-content: center;
-  margin: 40px;
-}
-.exit-modal-btn {
-  border-radius: 6px;
-  color: #ffffff;
-  display: inline-block;
-  padding: 1px;
-  text-decoration: none;
-  margin: 0 20px;
-  border: none;
-  background: linear-gradient(90deg, #dff4fe 0%, #8eb5ff 100%);
-}
-.exit-modal-btn span {
-  background: #2d2f35;
-  display: block;
-  /* padding: 1px 10px; */
-  border-radius: 6px;
-  width: 150px;
-  height: 35px;
+  font-family: 'Monument Grotesk';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
-  line-height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.lock-btn span:hover {
-  background: linear-gradient(90deg, #08a4f5 -0.01%, #2bede3 93.42%),
-    linear-gradient(247.41deg, #a2fbb0 16.32%, #5ec4d6 87.6%) !important;
-  border-radius: 6px;
+  line-height: 16px;
+
+  color: #ffffff;
+
+  opacity: 0.5;
 }
 
 @media screen and (max-width: 1200px) {
@@ -1153,7 +1168,7 @@ ul.tab li input[type="radio"]:checked ~ label {
     flex-direction: column;
   } */
   .container-staking {
-    font-family: "Monument Grotesk Semi";
+    font-family: 'Monument Grotesk Semi';
     padding: 5px;
     max-width: 1000px;
     margin: 0 auto;
@@ -1370,7 +1385,7 @@ ul.tab li input[type="radio"]:checked ~ label {
   .stake-btn span {
     width: 100%;
   }
-  ul.tab li input[type="radio"]:checked ~ label {
+  ul.tab li input[type='radio']:checked ~ label {
     border-radius: 10px;
   }
   ul.togglebuttontab li {

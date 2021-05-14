@@ -17,12 +17,12 @@ const customStyles = {
     display: 'flex',
     flexDirection: 'column',
     maxHeight: '95%',
-    maxWidth: '1007px',
-    with: '95%',
+    maxWidth: '550px',
+    width: '80%',
     background: '#2D2F35',
-    border: '1px solid #1c1c1c',
+    border: '1px solid #000000',
     borderRadius: '10px',
-    padding: '25px 80px 35px'
+    padding: '50px 50px 20px'
   }
 }
 const ExitModal = (props) => {
@@ -55,23 +55,20 @@ const ExitModal = (props) => {
             will be 2, and your farming rewards will diminished by 2/90. And so
             on.
           </p>
-          <p>
-            Exit means, I want to exit, I agree to unlocking my tokens in the
-            schedule outlined above, and I agree to diminishing my staking
-            returns.
+          <div className="btn-yes pointer" onClick={handleOn}>
+            YES
+          </div>
+          <p className="desc-btn">
+            YES, I want to exit, I agree to unlocking my tokens in the schedule
+            outlined above, and I agree to diminishing my staking returns.
           </p>
-          <p>
-            Don’t EXIT means, I want to stay in the Vaults, continue earning
-            trading fees, and support the DEUS ecosystem.
+          <div className="btn-no pointer" onClick={handleOff}>
+            NO
+          </div>
+          <p className="desc-btn">
+            I want to stay in the Vaults, continue earning trading fees, and
+            support the DEUS ecosystem.
           </p>
-        </div>
-        <div className="container-exit-modal-btn">
-          <span className="exit-modal-btn pointer " onClick={handleOff}>
-            <span>DON’T EXIT</span>
-          </span>
-          <span className="exit-modal-btn pointer " onClick={handleOn}>
-            <span>EXIT</span>
-          </span>
         </div>
       </div>
     </ReactModal>

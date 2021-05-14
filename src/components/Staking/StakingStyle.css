@@ -653,7 +653,8 @@
   font-size: 18px;
   line-height: 24px;
   /* identical to box height */
-
+  max-width: 200px;
+  width: 100%;
   display: flex;
   align-items: center;
   text-align: center;
@@ -661,8 +662,13 @@
 
   color: #00d16c;
 }
-.desc-btn {
-  padding: 10px 30px;
+.desc-btn-yes {
+  color: #00d16c !important;
+  opacity: 1 !important;
+}
+.desc-btn-no {
+  color: #ff5555 !important;
+  opacity: 1 !important;
 }
 .btn-no {
   font-style: normal;
@@ -670,7 +676,8 @@
   font-size: 18px;
   line-height: 24px;
   /* identical to box height */
-
+  max-width: 200px;
+  width: 100%;
   display: flex;
   align-items: center;
   text-align: center;

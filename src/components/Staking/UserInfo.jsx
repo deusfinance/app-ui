@@ -32,20 +32,20 @@ const UserInfo = (props) => {
     }
   }
   // const handleRedeem = async () => {}
-  const handleStopExit = () => {
-    try {
-      sendTransaction(
-        StakeAndYieldContract,
-        `setExit`,
-        [!exit],
-        owner,
-        chainId,
-        `${exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}`
-      )
-    } catch (error) {
-      console.log('error happend in exit', error)
-    }
-  }
+  // const handleStopExit = () => {
+  //   try {
+  //     sendTransaction(
+  //       StakeAndYieldContract,
+  //       `setExit`,
+  //       [!exit],
+  //       owner,
+  //       chainId,
+  //       `${exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}`
+  //     )
+  //   } catch (error) {
+  //     console.log('error happend in exit', error)
+  //   }
+  // }
   return (
     <div className="userInfo-container">
       <div className="flex-between flex-column mb-15">

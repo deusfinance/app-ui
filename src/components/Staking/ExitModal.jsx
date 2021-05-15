@@ -65,14 +65,14 @@ const ExitModal = (props) => {
           </p>
 
           <p className="desc-btn-no">
-            I want to stay in the Vaults, continue earning trading fees, and
+            No, I want to stay in the Vaults, continue earning trading fees, and
             support the DEUS ecosystem.
           </p>
           <div className="flex-between">
-            <div className="btn-yes pointer" onClick={handleOn}>
+            <div className="btn-yes pointer" onClick={handleOn} style={{ margin: "0 5px" }}>
               YES
             </div>
-            <div className="btn-no pointer" onClick={handleOff}>
+            <div className="btn-no pointer" onClick={handleOff} style={{ margin: "0 5px" }}>
               NO
             </div>
           </div>

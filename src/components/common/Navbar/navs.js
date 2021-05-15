@@ -20,7 +20,7 @@ export default [
         exact: true
       },
       {
-        id: 'vaults',
+        id: 'vaultsL',
         text: 'LEGACY VAULTS (OLD)',
         path: '/vaults',
         exact: true

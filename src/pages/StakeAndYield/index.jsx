@@ -59,7 +59,7 @@ const Staking = () => {
         </div>
 
         <p>
-          Stake your locked DEUS/DEA, Balancer Liquidity to
+          Stake your locked DEUS/DEA or Balancer Liquidity to
           earn trading fees.
         </p>
         <p>

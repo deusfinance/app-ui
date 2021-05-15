@@ -83,8 +83,8 @@ const UserInfo = (props) => {
                 <p>
                   You burn
                   <span className="blue-color">{` ${burn.toFixed(
-                    4
-                  )} ${title} per day `}</span>
+                  4
+                )} ${title} per day `}</span>
                   {`(fully unlocked at ${fullyUnlock})`}
                 </p>
               </div>
@@ -102,13 +102,13 @@ const UserInfo = (props) => {
             </div>
           </div>
 
-          {exitable && (
+          {/* {exitable && (
             <div className="wrap-box">
               <div className="wrap-box-exit pointer" onClick={handleStopExit}>
                 {exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

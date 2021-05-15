@@ -65,7 +65,7 @@ const ExitModal = (props) => {
           </p>
 
           <p className="desc-btn-no">
-            I want to stay in the Vaults, continue earning trading fees, and
+            No, I want to stay in the Vaults, continue earning trading fees, and
             support the DEUS ecosystem.
           </p>
           <div className="flex-between">

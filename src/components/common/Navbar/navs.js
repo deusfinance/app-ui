@@ -20,7 +20,7 @@ export default [
         exact: true
       },
       {
-        id: 'vaults',
+        id: 'vaultsL',
         text: 'LEGACY VAULTS (OLD)',
         path: '/vaults',
         exact: true
@@ -51,12 +51,12 @@ export default [
         path: '/crosschain/xdai/synchronizer',
         exact: true
       },
-      // {
-      //   id: 'bsc',
-      //   text: 'BSC',
-      //   path: '/crosschain/bsc/synchronizer',
-      //   exact: true
-      // }
+      {
+        id: 'bsc',
+        text: 'BSC',
+        path: '/crosschain/bsc/synchronizer',
+        exact: true
+      }
     ]
   },
   {

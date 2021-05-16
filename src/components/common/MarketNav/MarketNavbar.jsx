@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 const MarketNavbar = () => {
     const [tvl, setTvl] = useState(null)
     const [vaultsAmount, setVaultsAmount] = useState(null)
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     useEffect(() => {
         const getTVL = async () => {
             const url = "https://app.deus.finance/tvl.json"

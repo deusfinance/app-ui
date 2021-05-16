@@ -32,20 +32,20 @@ const UserInfo = (props) => {
     }
   }
   // const handleRedeem = async () => {}
-  const handleStopExit = () => {
-    try {
-      sendTransaction(
-        StakeAndYieldContract,
-        `setExit`,
-        [!exit],
-        owner,
-        chainId,
-        `${exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}`
-      )
-    } catch (error) {
-      console.log('error happend in exit', error)
-    }
-  }
+  // const handleStopExit = () => {
+  //   try {
+  //     sendTransaction(
+  //       StakeAndYieldContract,
+  //       `setExit`,
+  //       [!exit],
+  //       owner,
+  //       chainId,
+  //       `${exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}`
+  //     )
+  //   } catch (error) {
+  //     console.log('error happend in exit', error)
+  //   }
+  // }
   return (
     <div className="userInfo-container">
       <div className="flex-between flex-column mb-15">
@@ -87,8 +87,8 @@ const UserInfo = (props) => {
                 <p>
                   You burn
                   <span className="blue-color">{` ${burn.toFixed(
-                    4
-                  )} ${title} per day `}</span>
+                  4
+                )} ${title} per day `}</span>
                   {`(fully unlocked at ${fullyUnlock})`}
                 </p>
               </div>
@@ -106,13 +106,13 @@ const UserInfo = (props) => {
             </div>
           </div>
 
-          {exitable && (
+          {/* {exitable && (
             <div className="wrap-box">
               <div className="wrap-box-exit pointer" onClick={handleStopExit}>
                 {exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

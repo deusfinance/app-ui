@@ -1,0 +1,644 @@
+@font-face {
+  font-family: 'Monument Grotesk Semi';
+  src: url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff2')
+      format('woff2'),
+    url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff')
+      format('woff')
+      url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.otf')
+      format('otf');
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+.pointer {
+  cursor: pointer;
+}
+.mb-5 {
+  margin-bottom: 5px;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mt-100 {
+  margin-top: 100px;
+}
+.pt-13 {
+  padding-top: 13px;
+}
+
+input:focus {
+  outline: none;
+}
+.input-transparent {
+  background: transparent;
+  border: transparent;
+}
+
+.container-bridge {
+  font-family: 'Monument Grotesk Semi';
+  max-width: 830px;
+  display: flex;
+  flex-direction: column;
+  margin: 60px auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.bridge-title h1 {
+  height: 82px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 35px;
+  line-height: 48px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #dff4fe 0%, #8eb5ff 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 32px;
+}
+
+.bridge {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.bridge img {
+  width: 100%;
+}
+
+.bridge-box {
+  height: 90px;
+  padding: 15px;
+  background: linear-gradient(90deg, #dff4fe 0%, #8eb5ff 100%);
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+.container-btn {
+  display: flex;
+  justify-content: space-between;
+  max-width: 530px;
+  width: 100%;
+  margin-top: 100px;
+}
+.bridge-approve {
+  max-width: 255px;
+  width: 100%;
+  height: 55px;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: normal;
+  background: linear-gradient(90deg, #b35480 0%, #d99d94 100%),
+    linear-gradient(224.74deg, #c4eb89 0.19%, #5ec4d6 100.22%), #111111;
+  box-shadow: 0px 2px 4px rgba(100, 100, 100, 0.498039);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bridge-deposit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 255px;
+  width: 100%;
+  height: 55px;
+  background: #1c1c1c;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.bridge-from {
+  height: 14.98px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 17px;
+
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.bridge-amount {
+  width: 131px;
+  height: 42px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 42px;
+  color: #000000;
+}
+
+.bridge-max {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 17px;
+  text-align: center;
+
+  color: #ffffff;
+  width: 39px;
+  height: 22px;
+  padding: 1px 5px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(91, 204, 189, 0.14902) 0%,
+    rgba(97, 192, 191, 0.14902) 33.33%,
+    rgba(85, 188, 200, 0.14902) 74.49%,
+    rgba(105, 207, 184, 0.14902) 100%
+  );
+  border: 1px solid #61779b;
+  border-radius: 6px;
+}
+
+.bridge-token {
+  line-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bridge-token img {
+  height: 22px;
+}
+
+.notify {
+  position: relative;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  margin-right: 25px;
+}
+
+.notify .badge {
+  position: absolute;
+  top: -10px;
+  right: -20px;
+  width: 30px;
+  height: 15px;
+
+  border-radius: 3px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.badge-BSC {
+  background: #fbc856;
+  color: #000000 !important;
+}
+.badge-ETH {
+  background: #335cff;
+  color: #ffffff;
+}
+
+.bridge-assets {
+  /* width: 85px; */
+  height: 35px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 35px;
+  text-align: right;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.bridge-assets img {
+  padding: 0 5px;
+  width: 18px;
+}
+.bridge-box-1 {
+  position: absolute;
+  bottom: 118px;
+  max-width: 530px;
+  width: 100%;
+}
+.bridge-box-2 {
+  position: absolute;
+  bottom: -78px;
+  max-width: 530px;
+  width: 100%;
+}
+
+/* The Modal (background) */
+.show {
+  display: block !important;
+  z-index: 1050 !important;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  font-family: 'Monument Grotesk';
+
+  position: relative;
+  width: 560px;
+  background: #242424;
+  border-radius: 10px;
+  margin: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 27px;
+  display: flex;
+  align-items: center;
+  font-family: 'Monument Grotesk';
+  justify-content: space-between;
+  color: #ffffff;
+}
+
+.modal-body {
+  padding-top: 20px;
+}
+.input-search {
+  width: 100%;
+  height: 55px;
+  padding: 0 20px;
+  background: #111111;
+  border: 1px solid #010101;
+  border-radius: 10px;
+  color: #ffffff;
+}
+.content-modal-bridge {
+  display: flex;
+  flex-direction: column;
+}
+.content-modal-bridge label {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 21px;
+  /* identical to box height */
+  color: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+}
+.filter {
+  padding: 15px 0;
+  width: 56px;
+  height: 21px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 21px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.bridge-checkbox {
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+}
+.bridge-checkbox > label {
+  color: #ffffff;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 21px;
+  padding: 10px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.token-name {
+  padding-top: 37px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 21px;
+
+  color: rgba(255, 255, 255, 0.5);
+}
+.token-list {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0 15px;
+}
+.pt-20 {
+  padding-top: 20px;
+}
+
+.token-list-item {
+  display: flex;
+  align-items: center;
+}
+
+.token-list-item img {
+  width: 40px;
+}
+.token-list-item span {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 35px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-left: 5px;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.opacity-5 {
+  opacity: 0.5;
+}
+
+.instruction {
+  font-family: 'Monument Grotesk Semi';
+
+  position: absolute;
+  max-width: 340px;
+  width: 100%;
+  left: 21px;
+  top: 75px;
+  padding: 20px 25px;
+  background: #0d0d0d;
+  border: 1px solid #1c1c1c;
+  border-radius: 10px;
+}
+.instruction-title {
+  padding-bottom: 14px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11.5px;
+  line-height: 16px;
+  /* identical to box height */
+
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.border-bottom-instruction {
+  border-bottom: 1px solid #1c1c1c;
+}
+
+.ptb-6 {
+  padding: 6px 0;
+}
+.content-collapse {
+  padding: 10px 2px;
+}
+
+.container-status-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 530px;
+  width: 100%;
+}
+.status-button {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid;
+
+  border-image-source: linear-gradient(247.41deg, #a2fbb0 16.32%, #5ec4d6 87.6%),
+    linear-gradient(90deg, #fdcad5 0%, #d99d94 100%);
+
+  border-image-slice: 5;
+  padding-top: 24px;
+  margin-top: 22px;
+}
+
+.status-button div {
+  background-color: #1c1c1c;
+  font-weight: normal;
+  margin-top: -35px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.status-button .active {
+  background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%);
+  color: #000000;
+}
+.green-color {
+  color: #00d16c;
+}
+.arrow {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  bottom: 50px;
+
+  background: #b5d4ff;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.arrow img {
+  width: 20px;
+}
+
+.pink-btn {
+  width: 100%;
+  height: 55px;
+  background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%);
+  border-radius: 10px;
+  max-width: 530px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  margin-bottom: 5px;
+  margin-top: 100px;
+}
+.wrong-network {
+  max-width: 530px;
+  width: 100%;
+  height: 55px;
+  background: #1c1c1c;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  margin-top: 100px;
+}
+
+.claim-token {
+  position: absolute;
+  max-width: 478px;
+  width: 100%;
+  right: 21px;
+  top: 75px;
+
+  background: #242424;
+  border: 1px solid #1c1c1c;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 2;
+}
+.claim-token-title {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11.5px;
+  line-height: 16px;
+
+  color: #ffffff;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #1c1c1c;
+  margin-bottom: 15px;
+}
+
+.token-item {
+  display: flex;
+  align-items: center;
+}
+
+.token-item img {
+  width: 25px;
+}
+.token-item span {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+
+  color: rgba(255, 255, 255, 0.75);
+}
+.claim-amount {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+
+  color: rgba(255, 255, 255, 0.75);
+}
+.container-claim-btn {
+  display: flex;
+  align-items: center;
+  flex-basis: 35%;
+  justify-content: flex-end;
+}
+.claim-btn {
+  max-width: 80px;
+  width: 100%;
+  height: 24px;
+  background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%);
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 6px;
+  line-height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+  color: #000000;
+}
+.logo {
+  width: 32px !important;
+  position: absolute;
+}
+.bsc-logo {
+  width: 25px !important;
+  position: absolute;
+  top: 50px;
+  left: 73px;
+}
+.eth-logo {
+  width: 32px !important;
+  position: absolute;
+  right: 10px;
+  top: 155px;
+}

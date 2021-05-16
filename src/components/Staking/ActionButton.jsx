@@ -6,7 +6,7 @@ const ActionButton = (props) => {
     <span
       className={`action-btn pointer ${
         type === 'GET' ? (onlyLocking ? 'uni-get-btn' : 'get-btn') : 'lock-btn'
-      }`}
+      } ${title === 'BPT' && type === 'LOCK' ? 'opacity-0' : ''}`}
       onClick={(e) => onClick(e)}
     >
       <span className={`${onlyLocking ? 'uni-background' : ''}`}>

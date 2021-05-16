@@ -68,6 +68,7 @@ const CollapseTrigger = ({
           onlyLocking={onlyLocking}
           onClick={handleGet}
         />
+
         <ActionButton
           type="LOCK"
           title={titleExit}

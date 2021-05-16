@@ -51,7 +51,11 @@ const UserInfo = (props) => {
       <div className="flex-between flex-column mb-15">
         <div className="mb-15">
           <div className="userInfo-pool mb-15">
-            <p>{`You own ${own}% of the pool `}</p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: own
+              }}
+            ></p>
             <p>
               with
               <span className="blue-color">{` ${balance} ${title} `}</span>

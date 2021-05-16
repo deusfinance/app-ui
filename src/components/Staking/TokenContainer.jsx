@@ -153,7 +153,6 @@ const TokenContainer = (props) => {
         if (showFluid <= 0 && (withDrawable > 0 || withDrawableExit > 0)) {
           setShowFluid(true)
         }
-        let total = 0
         let stakeTypeName = ''
         let strategyLink = ''
         if (stakeType === '2' || stakeType === '3') {
@@ -170,17 +169,39 @@ const TokenContainer = (props) => {
             .call()
           strategyLink = getTransactionLink(chainId, strategy)
         }
+        let own = ''
         switch (stakeType) {
           case '1':
-            total = totalSupply
+            let value =
+              totalSupply > 0
+                ? ((Number(balance) / totalSupply) * 100).toFixed(2)
+                : 0
+            own = `You own <span class="blue-color">${value}%</span> of the 'Stake' pool`
+
+            // total = totalSupply
             stakeTypeName = 'Stake'
             break
           case '2':
-            total = totalSupplyYield
+            let valueYield =
+              totalSupplyYield > 0
+                ? ((Number(balance) / totalSupplyYield) * 100).toFixed(2)
+                : 0
+            own = `You own <span class="blue-color">${valueYield}%</span> of the 'Yield' pool`
+            // total = totalSupplyYield
             stakeTypeName = 'Yield'
             break
           case '3':
-            total = totalSupplyYield + totalSupply
+            let value1 =
+              totalSupply > 0
+                ? ((Number(balance) / totalSupply) * 100).toFixed(2)
+                : 0
+            let value2 =
+              totalSupplyYield > 0
+                ? ((Number(balance) / totalSupplyYield) * 100).toFixed(2)
+                : 0
+            // total = totalSupplyYield + totalSupply
+            own = `You own <span class="blue-color">${value1}%</span> of the 'Stake' pool and <span class="blue-color">${value2}%</span> of the  'Yield' pool`
+
             stakeTypeName = 'Stake & Yield'
             break
           default:
@@ -227,15 +248,16 @@ const TokenContainer = (props) => {
             burn,
             fullyUnlock,
             withDrawTime,
-            strategyLink
+            strategyLink,
+            own
           }
         })
-        if (total > 0) {
-          const own = ((Number(balance) / total) * 100).toFixed(2)
-          setUserInfo((prev) => {
-            return { ...prev, own }
-          })
-        }
+        // if (total > 0) {
+        //   const own = ((Number(balance) / total) * 100).toFixed(2)
+        //   setUserInfo((prev) => {
+        //     return { ...prev, own }
+        //   })
+        // }
       } catch (error) {
         console.log('error Happend in Fetch data', error)
       }

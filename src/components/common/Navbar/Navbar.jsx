@@ -9,9 +9,9 @@ import { SwapService } from '../../../services/SwapService';
 import Wallets from './Wallets';
 import { getCorrectChainId, deusChains } from '../../../config';
 import { addRPC } from '../../../services/addRPC';
-import './navbar.scss';
 import LanguageSelector from './LanguageSelector';
 import { useTranslation } from 'react-i18next'
+import './navbar.scss';
 
 const Navs = navbarItems
 
@@ -35,7 +35,6 @@ const Navbar = () => {
                 console.log(error);
             }
         }
-
     }, [chainId, activate])
 
     useEffect(() => {

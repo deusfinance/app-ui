@@ -81,19 +81,106 @@ const Bridge = () => {
   }, [chainId, bridge, account])
 
   React.useEffect(() => {
+    const findClaim = async () => {
+      let claims = []
+
+      const ethContract = makeContract(ethWeb3, BridgeABI, ETHContract)
+      const bscContract = makeContract(bscWeb3, BridgeABI, BSCContract)
+
+      for (let index = 0; index < chains.length; index++) {
+        const chain = chains[index]
+
+        let originContract = ''
+        switch (chain.network) {
+          case 1:
+            originContract = ethContract
+            break
+          case 2:
+            originContract = bscContract
+            break
+          default:
+            break
+        }
+        let dest = chains.filter((item) => item.network !== chain.network)
+
+        for (let index = 0; index < dest.length; index++) {
+          const item = dest[index]
+          let destContract = ''
+          switch (item.network) {
+            case 1:
+              destContract = ethContract
+              break
+            case 2:
+              destContract = bscContract
+              break
+            default:
+              break
+          }
+          let userTxs = await originContract.methods
+            .getUserTxs(account, item.network)
+            .call()
+
+          let pendingTxs = await destContract.methods
+            .pendingTxs(chain.network, userTxs)
+            .call()
+          console.log({ userTxs, pendingTxs })
+          const pendingIndex = pendingTxs.reduce(
+            (out, bool, index) => (bool ? out : out.concat(index)),
+            []
+          )
+          for (let index = 0; index < pendingIndex.length; index++) {
+            let claim = await originContract.methods
+              .txs(userTxs[pendingIndex[index]])
+              .call()
+
+            claims.push(claim)
+          }
+        }
+      }
+
+      // let ethUserTxs = await ethContract.methods.getUserTxs(account, 2).call()
+      // let bscPendingTxs = await bscContract.methods
+      //   .pendingTxs(1, ethUserTxs)
+      //   .call()
+      // const bscPendingIndex = bscPendingTxs.reduce(
+      //   (out, bool, index) => (bool ? out : out.concat(index)),
+      //   []
+      // )
+
+      // for (let index = 0; index < bscPendingIndex.length; index++) {
+      //   let claim = await ethContract.methods
+      //     .txs(ethUserTxs[bscPendingIndex[index]])
+      //     .call()
+      //   claims.push(claim)
+      // }
+
+      // let bscUserTxs = await bscContract.methods.getUserTxs(account, 1).call()
+      // let ethPendingTxs = await ethContract.methods
+      //   .pendingTxs(2, bscUserTxs)
+      //   .call()
+      // const ethPendingIndex = ethPendingTxs.reduce(
+      //   (out, bool, index) => (bool ? out : out.concat(index)),
+      //   []
+      // )
+      // for (let index = 0; index < ethPendingIndex.length; index++) {
+      //   let claim = await bscContract.methods
+      //     .txs(bscUserTxs[ethPendingIndex[index]])
+      //     .call()
+      //   claims.push(claim)
+      // }
+      console.log({ claims })
+
+      setClaims(claims)
+    }
     const getBalance = async () => {
       let bridgeWeb3 = ''
       let bridgeToWeb3 = ''
-      let bridgeToContract = ''
-      let bridgeFromContract = ''
 
       switch (bridge.from.chainId) {
         case 4:
-          bridgeFromContract = ETHContract
           bridgeWeb3 = ethWeb3
           break
         case 97:
-          bridgeFromContract = BSCContract
           bridgeWeb3 = bscWeb3
           break
         default:
@@ -101,11 +188,9 @@ const Bridge = () => {
       }
       switch (bridge.to.chainId) {
         case 4:
-          bridgeToContract = ETHContract
           bridgeToWeb3 = ethWeb3
           break
         case 97:
-          bridgeToContract = BSCContract
           bridgeToWeb3 = bscWeb3
           break
         default:
@@ -120,36 +205,11 @@ const Bridge = () => {
       let toBalance = await toContract.methods.balanceOf(account).call()
       toBalance = web3.utils.fromWei(toBalance, 'ether')
       setToBalance(toBalance)
-
-      let claims = []
-      let dest = []
-
-      const Contract = makeContract(bridgeWeb3, BridgeABI, bridgeFromContract)
-      const ToContract = makeContract(bridgeToWeb3, BridgeABI, bridgeToContract)
-      let userTxs = await Contract.methods.getUserTxs(account).call()
-      let pendingTxs = await Contract.methods.pendingTxs(userTxs).call()
-      const pendingIndex = pendingTxs.reduce(
-        (out, bool, index) => (bool ? out : out.concat(index)),
-        []
-      )
-      for (let index = 0; index < pendingIndex.length; index++) {
-        dest.push(userTxs[pendingIndex[index]])
-      }
-      let pending = await ToContract.methods.pendingTxs(dest).call()
-      const pIndex = pending.reduce(
-        (out, bool, index) => (bool ? out : out.concat(index)),
-        []
-      )
-
-      for (let index = 0; index < pIndex.length; index++) {
-        const element = dest[pIndex[index]]
-        let claim = await Contract.methods.txs(element).call()
-        claims.push(claim)
-      }
-      setClaims(claims)
-      console.log({ claims })
     }
-    if (account && validNetworks.includes(chainId)) getBalance()
+    if (account && validNetworks.includes(chainId)) {
+      getBalance()
+      findClaim()
+    }
   }, [bridge, account, chainId, fetch])
 
   React.useEffect(() => {
@@ -174,15 +234,12 @@ const Bridge = () => {
         .allowance(account, bridgeContract)
         .call()
       if (approve !== '0') {
-        setCollapse((prev) => {
-          return {
-            ...prev,
-            approve: {
-              pending: false,
-              success: true
-            },
-            deposit: { pending: true, success: false }
-          }
+        setCollapse({
+          approve: { pending: false, success: true },
+          deposit: { pending: true, success: false },
+          network: { pending: false, success: false },
+          bridge: { pending: false, success: false },
+          claim: { pending: false, success: false }
         })
       } else {
         setCollapse({

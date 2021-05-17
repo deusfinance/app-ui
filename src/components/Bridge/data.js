@@ -1,6 +1,10 @@
+// step 1. set network
+// step 2. ownerAddToken
+// setp 3. mint token
+
 const validNetworks = [4, 97, 4002]
-const BSCContract = '0x70EF3ae9Db80462caFd048748d5Fc905fc471Ae4'
-const ETHContract = '0xFe9Cece1D202199Bf85427C7BEBE2Be8A870124F'
+const BSCContract = '0x3Fdc49a74992054e3DB67eCeC7eC7604f5c8Dfbe'
+const ETHContract = '0xaB63a80776c75238fb5F63fE092f1d8C7ed4B12f'
 
 const tokens = [
   {
@@ -53,6 +57,7 @@ const tokens = [
 const chains = [
   { id: 97, name: 'BSC', network: 2 },
   { id: 4, name: 'ETH', network: 1 }
+  // { id: 4002, name: 'FTM', network: 3 }
 ]
 
 const instructions = [

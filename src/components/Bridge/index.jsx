@@ -8,7 +8,13 @@ import Instruction from './Instruction'
 import Web3 from 'web3'
 import TokenModal from './TokenModal'
 import { makeContract } from '../../utils/Stakefun'
-import { BSCContract, chains, ETHContract, validNetworks } from './data'
+import {
+  BSCContract,
+  chains,
+  ETHContract,
+  FTMContract,
+  validNetworks
+} from './data'
 import { abi, BridgeABI } from '../../utils/StakingABI'
 import { sendTransaction } from '../../utils/Stakefun'
 import useWeb3 from '../../helper/useWeb3'
@@ -71,6 +77,14 @@ const Bridge = () => {
     new Web3.providers.HttpProvider('https://rpc.testnet.fantom.network/')
   )
 
+  const ethContract = makeContract(ethWeb3, BridgeABI, ETHContract)
+  const bscContract = makeContract(bscWeb3, BridgeABI, BSCContract)
+  const ftmContract = makeContract(ftmWeb3, BridgeABI, FTMContract)
+
+  const activeEthContract = makeContract(web3, BridgeABI, ETHContract)
+  const activeBscContract = makeContract(web3, BridgeABI, BSCContract)
+  const activeFtmContract = makeContract(web3, BridgeABI, FTMContract)
+
   React.useEffect(() => {
     if (!validNetworks.includes(chainId)) {
       setWrongNetwork(true)
@@ -84,9 +98,6 @@ const Bridge = () => {
     const findClaim = async () => {
       let claims = []
 
-      const ethContract = makeContract(ethWeb3, BridgeABI, ETHContract)
-      const bscContract = makeContract(bscWeb3, BridgeABI, BSCContract)
-
       for (let index = 0; index < chains.length; index++) {
         const chain = chains[index]
 
@@ -97,6 +108,9 @@ const Bridge = () => {
             break
           case 2:
             originContract = bscContract
+            break
+          case 3:
+            originContract = ftmContract
             break
           default:
             break
@@ -113,6 +127,9 @@ const Bridge = () => {
             case 2:
               destContract = bscContract
               break
+            case 3:
+              destContract = ftmContract
+              break
             default:
               break
           }
@@ -123,7 +140,6 @@ const Bridge = () => {
           let pendingTxs = await destContract.methods
             .pendingTxs(chain.network, userTxs)
             .call()
-          console.log({ userTxs, pendingTxs })
           const pendingIndex = pendingTxs.reduce(
             (out, bool, index) => (bool ? out : out.concat(index)),
             []
@@ -138,38 +154,6 @@ const Bridge = () => {
         }
       }
 
-      // let ethUserTxs = await ethContract.methods.getUserTxs(account, 2).call()
-      // let bscPendingTxs = await bscContract.methods
-      //   .pendingTxs(1, ethUserTxs)
-      //   .call()
-      // const bscPendingIndex = bscPendingTxs.reduce(
-      //   (out, bool, index) => (bool ? out : out.concat(index)),
-      //   []
-      // )
-
-      // for (let index = 0; index < bscPendingIndex.length; index++) {
-      //   let claim = await ethContract.methods
-      //     .txs(ethUserTxs[bscPendingIndex[index]])
-      //     .call()
-      //   claims.push(claim)
-      // }
-
-      // let bscUserTxs = await bscContract.methods.getUserTxs(account, 1).call()
-      // let ethPendingTxs = await ethContract.methods
-      //   .pendingTxs(2, bscUserTxs)
-      //   .call()
-      // const ethPendingIndex = ethPendingTxs.reduce(
-      //   (out, bool, index) => (bool ? out : out.concat(index)),
-      //   []
-      // )
-      // for (let index = 0; index < ethPendingIndex.length; index++) {
-      //   let claim = await bscContract.methods
-      //     .txs(bscUserTxs[ethPendingIndex[index]])
-      //     .call()
-      //   claims.push(claim)
-      // }
-      console.log({ claims })
-
       setClaims(claims)
     }
     const getBalance = async () => {
@@ -183,6 +167,9 @@ const Bridge = () => {
         case 97:
           bridgeWeb3 = bscWeb3
           break
+        case 4002:
+          bridgeWeb3 = ftmWeb3
+          break
         default:
           break
       }
@@ -193,6 +180,8 @@ const Bridge = () => {
         case 97:
           bridgeToWeb3 = bscWeb3
           break
+        case 4002:
+          bridgeToWeb3 = ftmWeb3
         default:
           break
       }
@@ -210,6 +199,15 @@ const Bridge = () => {
       getBalance()
       findClaim()
     }
+
+    const interval = setInterval(() => {
+      if (account && validNetworks.includes(chainId)) {
+        getBalance()
+        findClaim()
+      }
+    }, 15000)
+
+    return () => clearInterval(interval)
   }, [bridge, account, chainId, fetch])
 
   React.useEffect(() => {
@@ -225,6 +223,10 @@ const Bridge = () => {
         case 97:
           bridgeContract = BSCContract
           bridgeWeb3 = bscWeb3
+          break
+        case 4002:
+          bridgeContract = FTMContract
+          bridgeWeb3 = ftmWeb3
           break
         default:
           break
@@ -330,20 +332,24 @@ const Bridge = () => {
       if (amount === '0' || amount === '') return
       let network = chains.find((item) => item.id === bridge.to.chainId).network
 
-      let bridgeContract = ''
+      let Contract = ''
 
       switch (bridge.from.chainId) {
         case 4:
-          bridgeContract = ETHContract
+          Contract = activeEthContract
+          // bridgeContract = ETHContract
           break
         case 97:
-          bridgeContract = BSCContract
+          Contract = activeBscContract
+          // bridgeContract = BSCContract
+          break
+        case 97:
+          Contract = activeFtmContract
           break
         default:
           break
       }
-      console.log({ bridgeContract })
-      const Contract = makeContract(web3, BridgeABI, bridgeContract)
+      // const Contract = makeContract(web3, BridgeABI, bridgeContract)
       let amountWie = web3.utils.toWei(amount)
       sendTransaction(
         Contract,
@@ -390,8 +396,6 @@ const Bridge = () => {
       return
     }
 
-    const ethContract = makeContract(ethWeb3, BridgeABI, ETHContract)
-    const bscContract = makeContract(bscWeb3, BridgeABI, BSCContract)
     let toChain = chains.find((item) => item.id === bridge.to.chainId).network
     let fromChain = chains.find(
       (item) => item.id === bridge.from.chainId
@@ -406,6 +410,9 @@ const Bridge = () => {
       case 97:
         originContract = bscContract
         break
+      case 4002:
+        originContract = ftmContract
+        break
       default:
         break
     }
@@ -416,6 +423,9 @@ const Bridge = () => {
         break
       case 2:
         destContract = bscContract
+        break
+      case 3:
+        destContract = ftmContract
         break
       default:
         break
@@ -448,14 +458,17 @@ const Bridge = () => {
       setWrongNetwork(true)
       return
     }
-    let bridgeContract = ''
+    let Contract = ''
 
     switch (chainId) {
       case 4:
-        bridgeContract = ETHContract
+        Contract = activeEthContract
         break
       case 97:
-        bridgeContract = BSCContract
+        Contract = activeBscContract
+        break
+      case 4002:
+        Contract = activeFtmContract
         break
       default:
         break
@@ -465,7 +478,7 @@ const Bridge = () => {
     let fromChain = chains.find(
       (item) => item.id === bridge.from.chainId
     ).network
-    const Contract = makeContract(web3, BridgeABI, bridgeContract)
+    // const Contract = makeContract(web3, BridgeABI, bridgeContract)
 
     sendTransaction(
       Contract,

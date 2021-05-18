@@ -211,6 +211,11 @@ input:focus {
   color: #ffffff;
 }
 
+.badge-FTM {
+  background: #335cff;
+  color: #ffffff;
+}
+
 .bridge-assets {
   /* width: 85px; */
   height: 35px;

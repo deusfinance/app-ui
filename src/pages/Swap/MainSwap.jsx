@@ -100,6 +100,11 @@ class MainSwap extends Component {
         }
     }
 
+    componentWillUnmount() {
+        clearInterval(this.state.typingInterval)
+    }
+
+
     getClaimable = async () => {
         const { web3 } = this.state
         if (!web3) return
@@ -111,6 +116,7 @@ class MainSwap extends Component {
             return 0
         }
     }
+
 
 
     handleSlippage = (amount) => {

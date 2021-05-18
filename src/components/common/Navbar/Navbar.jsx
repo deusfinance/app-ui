@@ -114,7 +114,7 @@ const Navbar = () => {
                     </li>
 
                     {<li className="grad-wrap connect-wrap" onClick={handleConnect}>
-                        <div className={`grad ${connectCalass}`} style={{ cursor: connectCalass === "connect" ? "pointer" : "default" }}>{formatAddress(account)}</div>
+                        <div className={`grad ${connectCalass}`} style={{ cursor: connectCalass === "connect" ? "pointer" : "default" }}>{t(formatAddress(account))}</div>
                     </li>}
 
                     {chainId && <li className="grad-wrap connect-wrap network-name" >

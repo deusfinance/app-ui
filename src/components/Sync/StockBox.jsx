@@ -7,7 +7,7 @@ import './styles/stock-box.scss';
 const StockBox = (props) => {
 
     const { type, estimated, handleSearchBox, handleTokenInputChange, token, isIPO, isLong } = props
-    const { t} = useTranslation()
+    const { t } = useTranslation()
 
     const validate = (e) => {
         var ev = e || window.event;
@@ -27,9 +27,9 @@ const StockBox = (props) => {
     return (<div className="token-box-wrap">
         <div className="token-box">
             <div className="top">
-                  <p>{t(type) + estimated}</p>
+                <p>{t(type) + estimated}</p>
                 <div className="balance">
-                    <span>{t("balance")}: </span>
+                    <span>{t("balance")}:</span>
                     {/* <span>{getStayledNumber(token.balance)}</span> */}
                     <span> {getStayledNumber(getBalance())}</span>
                 </div>

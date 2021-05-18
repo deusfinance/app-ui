@@ -390,25 +390,43 @@ const Bridge = () => {
       return
     }
 
-    let bridgeContract = ''
-    let bridgeWeb3 = ''
+    const ethContract = makeContract(ethWeb3, BridgeABI, ETHContract)
+    const bscContract = makeContract(bscWeb3, BridgeABI, BSCContract)
+    let toChain = chains.find((item) => item.id === bridge.to.chainId).network
+    let fromChain = chains.find(
+      (item) => item.id === bridge.from.chainId
+    ).network
 
+    let destContract = ''
+    let originContract = ''
     switch (bridge.from.chainId) {
       case 4:
-        bridgeContract = ETHContract
-        bridgeWeb3 = ethWeb3
+        originContract = ethContract
         break
       case 97:
-        bridgeContract = BSCContract
-        bridgeWeb3 = bscWeb3
+        originContract = bscContract
         break
       default:
         break
     }
 
-    const Contract = makeContract(bridgeWeb3, BridgeABI, bridgeContract)
-    let userTxs = await Contract.methods.getUserTxs(account).call()
-    let pendingTxs = await Contract.methods.pendingTxs(userTxs).call()
+    switch (toChain) {
+      case 1:
+        destContract = ethContract
+        break
+      case 2:
+        destContract = bscContract
+        break
+      default:
+        break
+    }
+    let userTxs = await originContract.methods
+      .getUserTxs(account, toChain)
+      .call()
+
+    let pendingTxs = await destContract.methods
+      .pendingTxs(fromChain, userTxs)
+      .call()
     let currentPending = pendingTxs[pendingTxs.length - 1]
     if (!currentPending) {
       setCurrentTx(userTxs[userTxs.length - 1])
@@ -443,21 +461,16 @@ const Bridge = () => {
         break
     }
     let amountWie = web3.utils.toWei(amount)
-    let network = chains.find((item) => item.id === bridge.to.chainId).network
-
+    let toChain = chains.find((item) => item.id === bridge.to.chainId).network
+    let fromChain = chains.find(
+      (item) => item.id === bridge.from.chainId
+    ).network
     const Contract = makeContract(web3, BridgeABI, bridgeContract)
-    console.log({
-      account,
-      amountWie,
-      network,
-      tokenId: bridge.from.tokenId,
-      currentTx,
-      type: typeof currentTx
-    })
+
     sendTransaction(
       Contract,
       `claim`,
-      [account, amountWie, network, bridge.from.tokenId, currentTx],
+      [account, amountWie, fromChain, toChain, bridge.from.tokenId, currentTx],
       account,
       chainId,
       `Claim ${amount} ${bridge.to.chain}`
@@ -470,6 +483,7 @@ const Bridge = () => {
         bridge: { pending: false, success: false },
         claim: { pending: false, success: false }
       })
+      setAmount('0')
     })
   }
   const handleConnectWallet = async () => {

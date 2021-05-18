@@ -9,11 +9,6 @@ import { sendTransaction } from '../../utils/Stakefun'
 const ClaimToken = (props) => {
   const { claims, chainId, account, setFetch } = props
   const web3 = useWeb3()
-  // let network = ''
-  // if (chainId && validNetworks.includes(chainId)) {
-  //   network = chains.find((item) => item.id === chainId).network
-  // }
-  // let showClaims = claims.filter((item) => Number(item.toChain) === network)
   const handleClaim = async (claim, id) => {
     if (chainId !== id) {
       return
@@ -33,18 +28,18 @@ const ClaimToken = (props) => {
     let amount = web3.utils.fromWei(claim.amount, 'ether')
     let chain = chains.find((item) => item.network === Number(claim.toChain))
     const Contract = makeContract(web3, BridgeABI, bridgeContract)
-    console.log({
-      claim,
-      camount: claim.amount,
-      amount,
-      network: Number(claim.toChain),
-      tokenId: claim.tokenId,
-      cTx: claim.txId
-    })
+
     sendTransaction(
       Contract,
       `claim`,
-      [account, claim.amount, Number(claim.toChain), claim.tokenId, claim.txId],
+      [
+        account,
+        claim.amount,
+        Number(claim.fromChain),
+        Number(claim.toChain),
+        claim.tokenId,
+        claim.txId
+      ],
       account,
       chainId,
       `Claim ${amount} ${chain.name}`

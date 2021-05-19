@@ -72,7 +72,7 @@ class MainSwap extends Component {
         const { chainId, account } = this.props
 
         this.handleInitToken("from", "eth")
-        this.handleInitToken("to", "deus")
+        this.handleInitToken("to", "dea")
 
         // if (!chainId || !account) return
 
@@ -96,9 +96,14 @@ class MainSwap extends Component {
             await this.handleInitAllowances(true)
 
             this.handleInitToken("from", "eth")
-            this.handleInitToken("to", "deus")
+            this.handleInitToken("to", "dea")
         }
     }
+
+    componentWillUnmount() {
+        clearInterval(this.state.typingInterval)
+    }
+
 
     getClaimable = async () => {
         const { web3 } = this.state
@@ -111,6 +116,7 @@ class MainSwap extends Component {
             return 0
         }
     }
+
 
 
     handleSlippage = (amount) => {

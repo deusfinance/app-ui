@@ -56,7 +56,6 @@ nav {
         display: flex;
         justify-content: left;
         font-size: 20px;
-        line-height: 40px;
         list-style-type: none;
         text-decoration: none;
 
@@ -114,7 +113,10 @@ nav {
             }
             .change-network {
                 width: unset;
-                padding: 0 5px;
+                padding: 0;
+                .connect {
+                    padding: 0 10px;
+                }
             }
 
             .install {
@@ -220,15 +222,9 @@ nav {
         .sub-nav {
             display: none;
             position: absolute;
-            // width: calc(100% + 30px);
-            // min-width: 250px;
-            // min-width: 300px;
             right: 0;
             top: 55px;
             z-index: 10;
-            // border: 1px solid #808080;
-            // padding-top: 15px;
-            // border-top: none;
             background: #0d0d0d;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             border-radius: 0px 0px 5px 5px;
@@ -415,6 +411,7 @@ nav {
         width: 300px;
         transition: 0.2s all;
         flex-direction: column-reverse;
+        padding-bottom: 30px;
         .language {
             margin-left: 20px;
         }
@@ -472,7 +469,7 @@ nav {
                 text-align: left;
                 display: block;
                 font-family: Monument Grotesk;
-                font-weight: 400;
+                font-weight: 300;
                 a {
                     margin: auto;
                     display: block;

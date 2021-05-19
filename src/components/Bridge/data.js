@@ -1,11 +1,25 @@
+// Deploy muon
+// 1. ownerAddSigner(muon_node_1/2/3)
+
+// Deploy bridge
 // step 1. set network
 // step 2. ownerAddToken
 // setp 3. mint token
+// setp 4. ownerSetSideContract
 
 const validNetworks = [4, 97, 4002]
-const BSCContract = '0x3Fdc49a74992054e3DB67eCeC7eC7604f5c8Dfbe'
-const ETHContract = '0xaB63a80776c75238fb5F63fE092f1d8C7ed4B12f'
-const FTMContract = '0x96E03143716382835B7544E55f8988C7dD8D1541'
+
+const MUON_NODE_1 = '0x06A85356DCb5b307096726FB86A78c59D38e08ee'
+const MUON_NODE_2 = '0x4513218Ce2e31004348Fd374856152e1a026283C'
+const MUON_NODE_3 = '0xe4f507b6D5492491f4B57f0f235B158C4C862fea'
+
+const BSCMuon = '0xA740811dBA35B719DAc61395A913dE67AA60a415'
+const ETHMuon = '0xf0A7580d99E71785C892080Ac29E2F653B00d63d'
+const FTMMuon = '0x73349C38E06470a55901e3388006C68Ce4140D97'
+
+const BSCContract = '0x5D91EA00E414BB113C8ECe6674F84C906BD8b5D4'
+const ETHContract = '0x42196Ecdd7fa421706Cb9CEA0BBE560fc05D3248'
+const FTMContract = '0x4Cf8106B486A5b6df8FB748c94EB129c104fdba4'
 
 const tokens = [
   {
@@ -14,7 +28,7 @@ const tokens = [
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
       97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6'
+      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
     },
     icon: 'DEUS.svg'
   },
@@ -24,7 +38,7 @@ const tokens = [
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
       97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6'
+      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
     },
     icon: 'DEA.svg'
   },
@@ -34,7 +48,7 @@ const tokens = [
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
       97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6'
+      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
     },
     icon: 'BPT.svg'
   },
@@ -44,7 +58,7 @@ const tokens = [
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
       97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6'
+      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
     },
     icon: 'sDEA.svg'
   },
@@ -54,7 +68,7 @@ const tokens = [
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
       97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6'
+      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
     },
     icon: 'sDEUS.svg'
   }
@@ -91,6 +105,23 @@ const instructions = [
     name: 'claim',
     title: '5 – Claim on destination Network',
     desc: 'Claim your bridged token.'
+  }
+]
+
+const getTxABI = [
+  {
+    inputs: [{ internalType: 'uint256', name: '_txId', type: 'uint256' }],
+    name: 'getTx',
+    outputs: [
+      { internalType: 'uint256', name: 'txId', type: 'uint256' },
+      { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
+      { internalType: 'uint256', name: 'toChain', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
   }
 ]
 

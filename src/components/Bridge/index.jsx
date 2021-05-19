@@ -182,6 +182,7 @@ const Bridge = () => {
           break
         case 4002:
           bridgeToWeb3 = ftmWeb3
+          break
         default:
           break
       }

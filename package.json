@@ -11,6 +11,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/walletconnect-connector": "^6.2.0",
     "@web3-react/walletlink-connector": "^6.2.0",
+    "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
     "ethers": "^5.0.26",
     "i18next": "^20.2.2",

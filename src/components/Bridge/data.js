@@ -7,6 +7,10 @@
 // setp 3. mint token
 // setp 4. ownerSetSideContract
 
+import { makeContract } from '../../utils/Stakefun'
+import { BridgeABI } from '../../utils/StakingABI'
+import Web3 from 'web3'
+
 const validNetworks = [4, 97, 4002]
 
 const MUON_NODE_1 = '0x06A85356DCb5b307096726FB86A78c59D38e08ee'
@@ -75,9 +79,9 @@ const tokens = [
 ]
 
 const chains = [
-  { id: 97, name: 'BSC', network: 2 },
-  { id: 4, name: 'ETH', network: 1 },
-  { id: 4002, name: 'FTM', network: 3 }
+  { id: 97, name: 'BSC', network: 2, networkName: 'bsctest' },
+  { id: 4, name: 'ETH', network: 1, networkName: 'rinkeby' },
+  { id: 4002, name: 'FTM', network: 3, networkName: 'ftmtest' }
 ]
 
 const instructions = [
@@ -108,22 +112,25 @@ const instructions = [
   }
 ]
 
-const getTxABI = [
-  {
-    inputs: [{ internalType: 'uint256', name: '_txId', type: 'uint256' }],
-    name: 'getTx',
-    outputs: [
-      { internalType: 'uint256', name: 'txId', type: 'uint256' },
-      { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
-      { internalType: 'uint256', name: 'toChain', type: 'uint256' },
-      { internalType: 'address', name: 'user', type: 'address' }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  }
-]
+const bscWeb3 = new Web3(
+  new Web3.providers.HttpProvider(
+    'https://data-seed-prebsc-1-s1.binance.org:8545/'
+  )
+)
+
+const ethWeb3 = new Web3(
+  new Web3.providers.HttpProvider(
+    'https://rinkeby.infura.io/v3/4e955a81217a477e88e3793856deb18b'
+  )
+)
+
+const ftmWeb3 = new Web3(
+  new Web3.providers.HttpProvider('https://rpc.testnet.fantom.network/')
+)
+
+const ethContract = makeContract(ethWeb3, BridgeABI, ETHContract)
+const bscContract = makeContract(bscWeb3, BridgeABI, BSCContract)
+const ftmContract = makeContract(ftmWeb3, BridgeABI, FTMContract)
 
 export {
   ETHContract,
@@ -132,5 +139,11 @@ export {
   tokens,
   chains,
   instructions,
-  validNetworks
+  validNetworks,
+  ethContract,
+  bscContract,
+  ftmContract,
+  ethWeb3,
+  bscWeb3,
+  ftmWeb3
 }

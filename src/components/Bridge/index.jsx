@@ -5,19 +5,25 @@ import './bridge.css'
 import BridgeBox from './BridgeBox'
 import ClaimToken from './ClaimToken'
 import Instruction from './Instruction'
-import Web3 from 'web3'
 import TokenModal from './TokenModal'
 import { makeContract } from '../../utils/Stakefun'
 import {
-  BSCContract,
   chains,
+  BSCContract,
   ETHContract,
   FTMContract,
-  validNetworks
+  validNetworks,
+  ethContract,
+  bscContract,
+  ftmContract,
+  ethWeb3,
+  bscWeb3,
+  ftmWeb3
 } from './data'
 import { abi, BridgeABI } from '../../utils/StakingABI'
 import { sendTransaction } from '../../utils/Stakefun'
 import useWeb3 from '../../helper/useWeb3'
+import { ethCallContract } from './utils'
 
 const Bridge = () => {
   const { account, chainId } = useWeb3React()
@@ -60,26 +66,6 @@ const Bridge = () => {
   const [amount, setAmount] = React.useState('0')
   const [fetch, setFetch] = React.useState('')
   const web3 = useWeb3()
-
-  const bscWeb3 = new Web3(
-    new Web3.providers.HttpProvider(
-      'https://data-seed-prebsc-1-s1.binance.org:8545/'
-    )
-  )
-
-  const ethWeb3 = new Web3(
-    new Web3.providers.HttpProvider(
-      'https://rinkeby.infura.io/v3/4e955a81217a477e88e3793856deb18b'
-    )
-  )
-
-  const ftmWeb3 = new Web3(
-    new Web3.providers.HttpProvider('https://rpc.testnet.fantom.network/')
-  )
-
-  const ethContract = makeContract(ethWeb3, BridgeABI, ETHContract)
-  const bscContract = makeContract(bscWeb3, BridgeABI, BSCContract)
-  const ftmContract = makeContract(ftmWeb3, BridgeABI, FTMContract)
 
   const activeEthContract = makeContract(web3, BridgeABI, ETHContract)
   const activeBscContract = makeContract(web3, BridgeABI, BSCContract)
@@ -431,6 +417,20 @@ const Bridge = () => {
       default:
         break
     }
+    let originContractAddress = ''
+    switch (fromChain) {
+      case 1:
+        originContractAddress = ETHContract
+        break
+      case 2:
+        originContractAddress = BSCContract
+        break
+      case 3:
+        originContractAddress = FTMContract
+        break
+      default:
+        break
+    }
     let userTxs = await originContract.methods
       .getUserTxs(account, toChain)
       .call()
@@ -440,7 +440,19 @@ const Bridge = () => {
       .call()
     let currentPending = pendingTxs[pendingTxs.length - 1]
     if (!currentPending) {
-      setCurrentTx(userTxs[userTxs.length - 1])
+      let txId = userTxs[userTxs.length - 1]
+      let nodesSigResults = await ethCallContract(
+        originContractAddress,
+        'getTx',
+        [txId],
+        BridgeABI,
+        fromChain
+      )
+      console.log({ nodesSigResults, currentPending })
+      let sigs = nodesSigResults.result.signatures.map(
+        ({ signature }) => signature
+      )
+      setCurrentTx({ txId, sigs })
     }
 
     setCollapse((prev) => {
@@ -484,7 +496,15 @@ const Bridge = () => {
     sendTransaction(
       Contract,
       `claim`,
-      [account, amountWie, fromChain, toChain, bridge.from.tokenId, currentTx],
+      [
+        account,
+        amountWie,
+        fromChain,
+        toChain,
+        bridge.from.tokenId,
+        currentTx.txId,
+        currentTx.sigs
+      ],
       account,
       chainId,
       `Claim ${amount} ${bridge.to.chain}`

@@ -1,8 +1,14 @@
 const axios = require('axios')
+const { chains } = require('./data')
 
-const BASE_URL = process.env.MUON_NODE_GATEWAY
+const BASE_URL = 'http://104.131.177.195/v1'
 
-function ethCallContract(address, method, params, abi, network) {
+console.log({ BASE_URL })
+
+const ethCallContract = (address, method, params, abi, fromChian) => {
+  console.log({ address, method, params, abi, fromChian })
+
+  let network = chains.find((item) => item.network === fromChian).networkName
   let filteredAbi = [
     abi.find(({ name, type }) => name === method && type === 'function')
   ]
@@ -18,8 +24,6 @@ function ethCallContract(address, method, params, abi, network) {
       network
     }
   }
-
-}
   return axios.post(BASE_URL, data).then(({ data }) => data)
 }
 

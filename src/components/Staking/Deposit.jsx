@@ -105,11 +105,11 @@ const Deposit = (props) => {
   }
   return (
     <>
-      {lockStakeType && (
-        <div className="back-btn pointer" onClick={handleBack}>
-          Back
-        </div>
-      )}
+      {/* {lockStakeType && ( */}
+      <div className="back-btn pointer" onClick={handleBack}>
+        Back
+      </div>
+      {/* )} */}
       <div className="deposit-container">
         <ToggleButtons
           data={[

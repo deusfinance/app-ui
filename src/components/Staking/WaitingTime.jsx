@@ -12,6 +12,7 @@ const WaitingTime = ({ withDrawTime, showFluid }) => {
     if (timer > 0) {
       let duration = moment.duration(timer)
       let waitingTime = [
+        duration.days(),
         duration.hours(),
         duration.minutes(),
         duration.seconds()
@@ -22,6 +23,7 @@ const WaitingTime = ({ withDrawTime, showFluid }) => {
         setTimer(newTime)
         let duration = moment.duration(newTime)
         let waitingTime = [
+          duration.days(),
           duration.hours(),
           duration.minutes(),
           duration.seconds()

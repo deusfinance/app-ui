@@ -146,7 +146,9 @@ const TokenContainer = (props) => {
         let earned = Number(web3.utils.fromWei(numbers[9], 'ether'))
 
         let burn = balance / 90
-        let withDrawTime = Number(numbers[2]) + 24 * 3600
+        // TODO remove 7 days
+
+        let withDrawTime = Number(numbers[2]) + 24 * 7 * 3600
         withDrawTime = new Date(withDrawTime * 1000)
         let showFluid = moment(withDrawTime).diff(moment(new Date()))
         // TODO check after transaction contract become ok

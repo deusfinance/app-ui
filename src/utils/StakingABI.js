@@ -1296,9 +1296,71 @@ export const YearnStrategyABI = [
 
 export const BridgeABI = [
   {
-    inputs: [{ internalType: 'uint256', name: '_network', type: 'uint256' }],
+    inputs: [
+      { internalType: 'uint256', name: '_network', type: 'uint256' },
+      { internalType: 'address', name: '_muon', type: 'address' }
+    ],
     stateMutability: 'nonpayable',
     type: 'constructor'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'fromChain',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256'
+      },
+      { indexed: false, internalType: 'uint256', name: 'txId', type: 'uint256' }
+    ],
+    name: 'Claim',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'txId',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'toChain',
+        type: 'uint256'
+      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' }
+    ],
+    name: 'Deposit',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -1323,9 +1385,11 @@ export const BridgeABI = [
     inputs: [
       { internalType: 'address', name: 'user', type: 'address' },
       { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
       { internalType: 'uint256', name: 'toChain', type: 'uint256' },
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-      { internalType: 'uint256', name: 'txId', type: 'uint256' }
+      { internalType: 'uint256', name: 'txId', type: 'uint256' },
+      { internalType: 'bytes[]', name: 'sigs', type: 'bytes[]' }
     ],
     name: 'claim',
     outputs: [],
@@ -1333,7 +1397,10 @@ export const BridgeABI = [
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    inputs: [
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'uint256', name: '', type: 'uint256' }
+    ],
     name: 'claimedTxs',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
@@ -1346,7 +1413,7 @@ export const BridgeABI = [
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' }
     ],
     name: 'deposit',
-    outputs: [],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function'
   },
@@ -1358,7 +1425,7 @@ export const BridgeABI = [
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' }
     ],
     name: 'depositFor',
-    outputs: [],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function'
   },
@@ -1384,9 +1451,33 @@ export const BridgeABI = [
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    inputs: [{ internalType: 'uint256', name: '_txId', type: 'uint256' }],
+    name: 'getTx',
+    outputs: [
+      { internalType: 'uint256', name: 'txId', type: 'uint256' },
+      { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
+      { internalType: 'uint256', name: 'toChain', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'toChain', type: 'uint256' }
+    ],
     name: 'getUserTxs',
     outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'muonContract',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function'
   },
@@ -1422,7 +1513,20 @@ export const BridgeABI = [
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'uint256[]', name: 'ids', type: 'uint256[]' }],
+    inputs: [
+      { internalType: 'uint256', name: '_network', type: 'uint256' },
+      { internalType: 'address', name: '_addr', type: 'address' }
+    ],
+    name: 'ownerSetSideContract',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
+      { internalType: 'uint256[]', name: 'ids', type: 'uint256[]' }
+    ],
     name: 'pendingTxs',
     outputs: [{ internalType: 'bool[]', name: 'unclaimedIds', type: 'bool[]' }],
     stateMutability: 'view',
@@ -1433,6 +1537,13 @@ export const BridgeABI = [
     name: 'renounceOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    name: 'sideContracts',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
     type: 'function'
   },
   {
@@ -1456,6 +1567,7 @@ export const BridgeABI = [
       { internalType: 'uint256', name: 'txId', type: 'uint256' },
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
       { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
       { internalType: 'uint256', name: 'toChain', type: 'uint256' },
       { internalType: 'address', name: 'user', type: 'address' }
     ],
@@ -1465,6 +1577,7 @@ export const BridgeABI = [
   {
     inputs: [
       { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
       { internalType: 'uint256', name: '', type: 'uint256' }
     ],
     name: 'userTxs',

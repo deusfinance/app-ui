@@ -4,16 +4,7 @@ import useWeb3 from '../../helper/useWeb3'
 import { makeContract } from '../../utils/Stakefun'
 import { BridgeABI } from '../../utils/StakingABI'
 import { sendTransaction } from '../../utils/Stakefun'
-import {
-  chains,
-  tokens,
-  ethContract,
-  bscContract,
-  ftmContract,
-  BSCContract,
-  ETHContract,
-  FTMContract
-} from './data'
+import { chains, tokens, BSCContract, ETHContract, FTMContract } from './data'
 import { ethCallContract } from './utils'
 
 const ClaimToken = (props) => {

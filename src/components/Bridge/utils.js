@@ -1,13 +1,9 @@
 const axios = require('axios')
 const { chains } = require('./data')
 
-const BASE_URL = 'http://104.131.177.195/v1'
-
-console.log({ BASE_URL })
+const BASE_URL = process.env.REACT_APP_MUON_NODE_GATEWAY
 
 const ethCallContract = (address, method, params, abi, fromChian) => {
-  console.log({ address, method, params, abi, fromChian })
-
   let network = chains.find((item) => item.network === fromChian).networkName
   let filteredAbi = [
     abi.find(({ name, type }) => name === method && type === 'function')

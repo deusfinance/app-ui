@@ -115,6 +115,7 @@ const TokenModal = (props) => {
                       key={index}
                       onClick={() => {
                         changeToken(token, chain.id)
+                        setChainToken(chains)
                         hide()
                       }}
                     >

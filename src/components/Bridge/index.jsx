@@ -145,28 +145,31 @@ const Bridge = () => {
     const getBalance = async () => {
       let bridgeWeb3 = ''
       let bridgeToWeb3 = ''
-
-      switch (bridge.from.chainId) {
-        case 4:
+      let toChain = chains.find((item) => item.id === bridge.to.chainId).network
+      let fromChain = chains.find(
+        (item) => item.id === bridge.from.chainId
+      ).network
+      switch (fromChain) {
+        case 1:
           bridgeWeb3 = ethWeb3
           break
-        case 97:
+        case 2:
           bridgeWeb3 = bscWeb3
           break
-        case 4002:
+        case 3:
           bridgeWeb3 = ftmWeb3
           break
         default:
           break
       }
-      switch (bridge.to.chainId) {
-        case 4:
+      switch (toChain) {
+        case 1:
           bridgeToWeb3 = ethWeb3
           break
-        case 97:
+        case 2:
           bridgeToWeb3 = bscWeb3
           break
-        case 4002:
+        case 3:
           bridgeToWeb3 = ftmWeb3
           break
         default:
@@ -195,23 +198,25 @@ const Bridge = () => {
     }, 15000)
 
     return () => clearInterval(interval)
-  }, [bridge, account, chainId, fetch])
+  }, [bridge, account, chainId, fetch]) // eslint-disable-line
 
   React.useEffect(() => {
-    const fetchData = async () => {
+    const checkApprove = async () => {
       let bridgeWeb3 = ''
       let bridgeContract = ''
-
-      switch (bridge.from.chainId) {
-        case 4:
+      let fromChain = chains.find(
+        (item) => item.id === bridge.from.chainId
+      ).network
+      switch (fromChain) {
+        case 1:
           bridgeContract = ETHContract
           bridgeWeb3 = ethWeb3
           break
-        case 97:
+        case 2:
           bridgeContract = BSCContract
           bridgeWeb3 = bscWeb3
           break
-        case 4002:
+        case 3:
           bridgeContract = FTMContract
           bridgeWeb3 = ftmWeb3
           break
@@ -222,6 +227,7 @@ const Bridge = () => {
       let approve = await fromContract.methods
         .allowance(account, bridgeContract)
         .call()
+
       if (approve !== '0') {
         setCollapse({
           approve: { pending: false, success: true },
@@ -240,8 +246,8 @@ const Bridge = () => {
         })
       }
     }
-    if (account) fetchData()
-  }, [bridge.from])
+    if (account) checkApprove()
+  }, [bridge.from, account])
 
   const handleOpenModal = (data) => {
     setTarget(data)
@@ -271,13 +277,18 @@ const Bridge = () => {
       let Contract = makeContract(web3, abi, bridge.from.address)
       let amount = web3.utils.toWei('1000000000000000000')
       let bridgeContract = ''
-
-      switch (bridge.from.chainId) {
-        case 4:
+      let fromChain = chains.find(
+        (item) => item.id === bridge.from.chainId
+      ).network
+      switch (fromChain) {
+        case 1:
           bridgeContract = ETHContract
           break
-        case 97:
+        case 2:
           bridgeContract = BSCContract
+          break
+        case 3:
+          bridgeContract = FTMContract
           break
         default:
           break
@@ -317,20 +328,21 @@ const Bridge = () => {
         return
       }
       if (amount === '0' || amount === '') return
-      let network = chains.find((item) => item.id === bridge.to.chainId).network
+      let toChain = chains.find((item) => item.id === bridge.to.chainId).network
+      let fromChain = chains.find(
+        (item) => item.id === bridge.from.chainId
+      ).network
 
       let Contract = ''
 
-      switch (bridge.from.chainId) {
-        case 4:
+      switch (fromChain) {
+        case 1:
           Contract = activeEthContract
-          // bridgeContract = ETHContract
           break
-        case 97:
+        case 2:
           Contract = activeBscContract
-          // bridgeContract = BSCContract
           break
-        case 97:
+        case 3:
           Contract = activeFtmContract
           break
         default:
@@ -341,7 +353,7 @@ const Bridge = () => {
       sendTransaction(
         Contract,
         `deposit`,
-        [amountWie, network, bridge.from.tokenId],
+        [amountWie, toChain, bridge.from.tokenId],
         account,
         chainId,
         `Deposite ${amount} ${bridge.from.name}`
@@ -390,19 +402,7 @@ const Bridge = () => {
 
     let destContract = ''
     let originContract = ''
-    switch (bridge.from.chainId) {
-      case 4:
-        originContract = ethContract
-        break
-      case 97:
-        originContract = bscContract
-        break
-      case 4002:
-        originContract = ftmContract
-        break
-      default:
-        break
-    }
+    let originContractAddress = ''
 
     switch (toChain) {
       case 1:
@@ -417,15 +417,17 @@ const Bridge = () => {
       default:
         break
     }
-    let originContractAddress = ''
     switch (fromChain) {
       case 1:
+        originContract = ethContract
         originContractAddress = ETHContract
         break
       case 2:
+        originContract = bscContract
         originContractAddress = BSCContract
         break
       case 3:
+        originContract = ftmContract
         originContractAddress = FTMContract
         break
       default:

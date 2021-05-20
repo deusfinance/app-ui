@@ -246,8 +246,8 @@ const Bridge = () => {
         })
       }
     }
-    if (account) checkApprove()
-  }, [bridge.from, account])
+    if (account && !collapse.network.pending) checkApprove()
+  }, [bridge.from, account]) // eslint-disable-line
 
   const handleOpenModal = (data) => {
     setTarget(data)

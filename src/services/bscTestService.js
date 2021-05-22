@@ -159,13 +159,10 @@ export class StockService {
             .on('error', () => listener("error"));
     }
 
-    getTotalCap = async () => {
-        return 1000000
-    }
 
     getUsedCap = async () => {
         const metamaskWeb3 = new Web3(Web3.givenProvider);
-        const marketMakerContract = new metamaskWeb3.eth.Contract(this.marketMaker, this.marketMaker);
+        const marketMakerContract = new metamaskWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
         return marketMakerContract.methods.remainingDollarCap().call().then(info => {
             return Web3.utils.fromWei(info, 'ether');
         })

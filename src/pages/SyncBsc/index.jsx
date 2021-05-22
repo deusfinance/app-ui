@@ -53,7 +53,6 @@ const SyncBscTest = () => {
     const [loadingCap, setLoadingCAP] = useState(false);
     const [loadingAllowance, setLoadingAllowance] = useState(false);
     const [subscrible, setSubscrible] = useState(null);
-    const [totalCap, setTotalCap] = useState(0);
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
@@ -69,8 +68,8 @@ const SyncBscTest = () => {
         if (account && chainId) {
             setWeb3Class(new StockService(account, 56))
         }
-        // initialCap()
-    }, [account, chainId])
+        initialCap()
+    }, [account, chainId])//eslint-disable-line
 
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/price.json", { cache: "no-cache" }), [])
@@ -154,12 +153,9 @@ const SyncBscTest = () => {
     const initialCap = useCallback(async () => {
         if (account && chainId && chainId === 56) {
             setLoadingCAP(true)
-            web3Class.getTotalCap().then(total => {
-                setTotalCap(total)
-                web3Class.getUsedCap().then(used => {
-                    setRemindCap(parseFloat(used))
-                    setLoadingCAP(false)
-                })
+            web3Class.getUsedCap().then(used => {
+                setRemindCap(parseFloat(used))
+                setLoadingCAP(false)
             })
         }
     }, [account, chainId])//eslint-disable-line
@@ -500,7 +496,7 @@ const SyncBscTest = () => {
 
                         <div style={{ margin: "6px 0" }}></div>
                     </div>
-                    {chainId && chainId === 56 && <SyncCap remindedAmount={remindCap} totalAmount={totalCap} />}
+                    {chainId && chainId === 56 && <SyncCap remindedAmount={remindCap} />}
                     {/* <TimerTrading /> */}
                 </div>
             </div>

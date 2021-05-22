@@ -134,8 +134,7 @@ const tokens = {
   //     tokenAddress: '0xb91e3e0c16080a0df0b1e9f54f9467210383e45e',
   //     category: 'liquidity',
   //     onlyLocking: true,
-  //     link:
-  //       'https://app.uniswap.org/#/add/0x3b62F3820e0B035cc4aD602dECe6d796BC325325/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778'
+  //     link: 'https://app.uniswap.org/#/add/0x3b62F3820e0B035cc4aD602dECe6d796BC325325/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778'
   //   },
   //   {
   //     tokenName: 'dea_usdc',
@@ -146,8 +145,7 @@ const tokens = {
   //     tokenAddress: '0xb91e3e0c16080a0df0b1e9f54f9467210383e45e',
   //     category: 'liquidity',
   //     onlyLocking: true,
-  //     link:
-  //       'https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778'
+  //     link: 'https://app.uniswap.org/#/add/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/0x80aB141F324C3d6F2b18b030f1C4E95d4d658778'
   //   },
   //   {
   //     tokenName: 'deus_eth',
@@ -158,10 +156,10 @@ const tokens = {
   //     tokenAddress: '0xb91e3e0c16080a0df0b1e9f54f9467210383e45e',
   //     category: 'liquidity',
   //     onlyLocking: true,
-  //     link:
-  //       'https://app.uniswap.org/#/add/0x3b62f3820e0b035cc4ad602dece6d796bc325325/ETH'
+  //     link: 'https://app.uniswap.org/#/add/0x3b62f3820e0b035cc4ad602dece6d796bc325325/ETH'
   //   }
   // ]
 }
+export const validChains = [1]
 
 export default tokens

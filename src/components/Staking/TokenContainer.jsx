@@ -14,6 +14,7 @@ import { getTransactionLink } from '../../utils/explorers'
 import addresses from '../../services/addresses.json'
 import useWeb3 from '../../helper/useWeb3'
 import abis from '../../services/abis.json'
+import { validChains } from './Data'
 
 const TokenContainer = (props) => {
   const {
@@ -306,13 +307,13 @@ const TokenContainer = (props) => {
       setCollapseContent('stake')
     }
     // TODO condition chainID (error in fetchUni)
-    if (owner && tokenName && chainId === 1) {
+    if (owner && tokenName && validChains.includes(chainId)) {
       onlyLocking ? fetchUNIToken() : fetchDataUser()
 
       let subscription = web3.eth.subscribe(
         'newBlockHeaders',
         (error, result) => {
-          if (!error && owner && chainId === 1) {
+          if (!error && owner && validChains.includes(chainId)) {
             onlyLocking ? fetchUNIToken() : fetchDataUser()
             return
           }

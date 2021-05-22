@@ -6,6 +6,7 @@ import { injected } from '../../connectors'
 import { getTransactionLink } from '../../utils/explorers'
 import useWeb3 from '../../helper/useWeb3'
 import ExitModal from './ExitModal'
+import { validChains } from './Data'
 
 const Deposit = (props) => {
   const {
@@ -186,7 +187,7 @@ const Deposit = (props) => {
         </div>
 
         {owner ? (
-          chainId === 1 ? (
+          validChains.includes(chainId) ? (
             <>
               <div
                 className={

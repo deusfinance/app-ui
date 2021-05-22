@@ -42,8 +42,8 @@ const Staking = () => {
       category === 'all'
         ? tokens[selesctedChainId]
         : tokens[selesctedChainId].filter(
-          (token) => token.category === category
-        )
+            (token) => token.category === category
+          )
     setShowTokens(result)
   }
 
@@ -59,8 +59,7 @@ const Staking = () => {
         </div>
 
         <p>
-          Stake your locked DEUS/DEA or Balancer Liquidity to
-          earn trading fees.
+          Stake your locked DEUS/DEA or Balancer Liquidity to earn trading fees.
         </p>
         <p>
           You can also opt for Stake+Yield where the underlying ETH value of

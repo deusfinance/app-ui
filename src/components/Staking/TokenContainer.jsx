@@ -214,7 +214,7 @@ const TokenContainer = (props) => {
             break
         }
 
-        if (Number(balance) > 0) {
+        if (Number(balance) > 0 || withDrawable > 0 || withDrawableExit > 0) {
           setUserInfo((prev) => {
             return {
               ...prev,

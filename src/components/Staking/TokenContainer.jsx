@@ -61,7 +61,8 @@ const TokenContainer = (props) => {
     lockStakeType: false,
     burn: '',
     fullyUnlock: '',
-    withDrawTime: ''
+    withDrawTime: '',
+    exitBalance: ''
   })
   React.useMemo(() => {
     setShowFluid(false)
@@ -87,7 +88,8 @@ const TokenContainer = (props) => {
       lockStakeType: false,
       burn: '',
       fullyUnlock: '',
-      withDrawTime: ''
+      withDrawTime: '',
+      exitBalance: ''
     })
   }, [owner, chainId]) // eslint-disable-line
 
@@ -145,6 +147,7 @@ const TokenContainer = (props) => {
         let withDrawable = Number(web3.utils.fromWei(numbers[3], 'ether'))
         let withDrawableExit = Number(web3.utils.fromWei(numbers[13], 'ether'))
         let earned = Number(web3.utils.fromWei(numbers[9], 'ether'))
+        let exitBalance = web3.utils.fromWei(numbers[11], 'ether')
 
         let burn = balance / 90
         // TODO remove 7 days
@@ -252,7 +255,8 @@ const TokenContainer = (props) => {
             fullyUnlock,
             withDrawTime,
             strategyLink,
-            own
+            own,
+            exitBalance
           }
         })
         // if (total > 0) {
@@ -421,6 +425,14 @@ const TokenContainer = (props) => {
               owner={owner}
               chainId={chainId}
               exitable={exitable}
+              updateUserInfo={(exitBalance) => {
+                setUserInfo((prev) => {
+                  return {
+                    ...prev,
+                    exitBalance
+                  }
+                })
+              }}
             />
             {userInfo.stakeType !== '1' ? (
               <>

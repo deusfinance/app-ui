@@ -1,5 +1,6 @@
 import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
+import useWeb3 from '../../helper/useWeb3'
 
 const UserInfo = (props) => {
   const {
@@ -15,8 +16,12 @@ const UserInfo = (props) => {
     burn,
     fullyUnlock,
     exitable,
-    strategyLink
+    strategyLink,
+    exitBalance,
+    updateUserInfo
   } = props
+  const web3 = useWeb3()
+
   const handleClaim = () => {
     try {
       sendTransaction(
@@ -31,7 +36,30 @@ const UserInfo = (props) => {
       console.log('Error happend in Claim', error)
     }
   }
-  // const handleRedeem = async () => {}
+  const handleRedeem = async () => {
+    try {
+      if (exitBalance === '0' || exitBalance === '') return
+
+      let amount = web3.utils.toWei(String(exitBalance))
+
+      sendTransaction(
+        StakeAndYieldContract,
+        `unfreeze`,
+        [amount],
+        owner,
+        chainId,
+        `Redeem ${exitBalance} ${title}`
+      ).then(() => {})
+    } catch (error) {
+      console.log('error happend in Redeem', error)
+    }
+  }
+  const handleRedeemable = async () => {
+    let result = await StakeAndYieldContract.methods.userInfo(owner).call()
+    let { numbers } = result
+    let exitBalance = web3.utils.fromWei(numbers[11], 'ether')
+    updateUserInfo(exitBalance)
+  }
   // const handleStopExit = () => {
   //   try {
   //     sendTransaction(
@@ -87,8 +115,8 @@ const UserInfo = (props) => {
                 <p>
                   You burn
                   <span className="blue-color">{` ${burn.toFixed(
-                  4
-                )} ${title} per day `}</span>
+                    4
+                  )} ${title} per day `}</span>
                   {`(fully unlocked at ${fullyUnlock})`}
                 </p>
               </div>
@@ -105,7 +133,19 @@ const UserInfo = (props) => {
               Claim
             </div>
           </div>
-
+          {exitable && exit && (
+            <div className="wrap-box mb-15">
+              <div className="wrap-box-gray">
+                <div>{`${exitBalance} ${title} `}</div>
+                <div className="opacity-5 pointer" onClick={handleRedeemable}>
+                  redeemable
+                </div>
+              </div>
+              <div className="wrap-box-gradient pointer" onClick={handleRedeem}>
+                Redeem
+              </div>
+            </div>
+          )}
           {/* {exitable && (
             <div className="wrap-box">
               <div className="wrap-box-exit pointer" onClick={handleStopExit}>

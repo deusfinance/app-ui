@@ -1,5 +1,5 @@
 .container-staking {
-  font-family: 'Monument Grotesk Semi';
+  font-family: "Monument Grotesk Semi";
   padding: 5px;
   max-width: 1200px;
   width: 100%;
@@ -45,6 +45,9 @@
 .width-402 {
   width: 402px !important;
 }
+.width-300 {
+  width: 300px !important;
+}
 .width-202 {
   width: 202px !important;
 }
@@ -53,9 +56,29 @@
   width: 100%;
 }
 
-.mt-20 {
-  margin-top: 20px;
+.mt-4 {
+  margin-top: 4px !important;
 }
+.mt-2 {
+  margin-top: 2px;
+}
+
+.mt-20 {
+  margin-top: 20px !important;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.font-sm {
+  font-size: 12.5px;
+}
+
+.font-xs {
+  font-size: 10px;
+}
+
 .border-radius-6 {
   border-radius: 6px !important;
 }
@@ -105,17 +128,31 @@
 
 .staking-desc {
   /* margin-top: 100px; */
+  text-align: center;
   max-width: 895px;
   margin: 100px auto 0;
   padding: 0px 90px;
 }
-.title-container {
-  padding: 10px;
-  text-align: center;
+
+.staking-desc .deus-yearn-logo {
+  width: 120px;
+  margin-bottom: 10px;
 }
-.title-container img {
-  padding-left: 5px;
-  width: 28px;
+
+.staking-desc .explainer {
+  background: linear-gradient(90deg, #0779e4 -0.01%, #1dd3bd 93.42%);
+  font-size: 14px;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.staking-desc .explainer:hover {
+  filter: brightness(1.5);
+}
+
+.title-container {
+  /* padding: 10px; */
+  text-align: center;
 }
 .title {
   /* height: 42px; */
@@ -160,11 +197,12 @@
 /* Content */
 .staking-content {
   padding: 50px;
+  padding-top: 35px;
   margin: 0 auto;
 }
 
 .wrap-tokens {
-  margin-top: 30px;
+  margin-top: 50px;
 }
 .token-container {
   display: block;
@@ -173,9 +211,15 @@
   border: 1px solid #1c1c1c;
   box-sizing: border-box;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 
   padding: 30px;
+}
+.staked-pool {
+  border: 2px solid #ffffff;
+  /* box-shadow: 0px 4px 4px #d2eaff; */
+  /* filter: drop-shadow(0px 0px 45px #7acec1); */
+  filter: drop-shadow(0px 0px 8px #d2eaffd5);
 }
 
 .collapse-trigger {
@@ -198,7 +242,12 @@
   font-style: normal;
   font-weight: 400;
   font-size: 12.5px;
+  margin-top: 4px;
   line-height: 14px;
+}
+
+.wallet-amount .item {
+  margin-bottom: 2px;
 }
 
 .apy {
@@ -213,6 +262,20 @@
   align-items: center;
   justify-content: center;
 }
+.apy-wrap {
+  font-family: "Monument Grotesk2";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+}
+
+.apy-wrap .apy-stake {
+  display: inline-block;
+  border-bottom: 2px solid #ffffff;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+}
 .swap-BPT {
   font-style: normal;
   font-size: 12px;
@@ -221,7 +284,7 @@
   color: #ffffff;
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .expand-container {
   display: flex;
@@ -354,12 +417,12 @@
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
-  /* max-width: 571px; */
-  width: 100%;
+  max-width: 400px;
+  width: 420px;
   height: 35px;
 }
 .wrap-box-gray-complete > div {
-  flex-basis: 33.33%;
+  flex-basis: 50%;
   border-right: 1px solid rgba(100, 100, 100, 0.498039);
   padding: 8px 24px;
   text-align: center;
@@ -412,6 +475,16 @@
   box-sizing: border-box;
   padding: 8px 17px;
 }
+
+.sub-description {
+  font-weight: 400;
+  font-size: 10px;
+  text-align: right;
+  opacity: 0.5;
+  margin-top: -8px;
+  margin-bottom: 20px;
+}
+
 .wrap-box-exit {
   border-radius: 6px;
   width: 200px;
@@ -438,8 +511,9 @@
   /* height: 35px; */
   text-align: center;
 }
+
 .wrap-box-gradient-complete::before {
-  content: '';
+  content: "";
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -455,12 +529,15 @@
 .wrap-box-gradient {
   position: relative;
   padding: 8px 10px;
-  width: 150px;
+  width: 160px;
   height: 35px;
   text-align: center;
+  border-radius: 6px;
 }
 .wrap-box-gradient::before {
-  content: '';
+  overflow: hidden;
+
+  content: "";
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -468,6 +545,21 @@
   right: 0;
   bottom: 0;
   border-radius: 0px 6px 6px 0px;
+  background: linear-gradient(90deg, #08a4f5 -0.01%, #2bede3 93.42%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+
+.wrap-box-gradient-single::before {
+  content: "";
+  border: 1px solid transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 6px;
   background: linear-gradient(90deg, #08a4f5 -0.01%, #2bede3 93.42%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
@@ -482,7 +574,7 @@
   text-align: center;
 }
 .wrap-box-gradient-left::before {
-  content: '';
+  content: "";
   border: 1px solid transparent;
   position: absolute;
   top: 0;
@@ -517,7 +609,7 @@
 }
 .frozen-desc {
   max-width: 400px;
-  font-family: 'Monument Grotesk Semi';
+  font-family: "Monument Grotesk Semi";
   font-size: 12.5px;
   line-height: 15px;
   margin-bottom: 15px;
@@ -603,7 +695,8 @@
   float: right;
 }
 .fluid-footer > div {
-  flex-basis: 33.33%;
+  flex-basis: 50%;
+  text-align: center;
 }
 .fluid-footer-container {
   display: flex;
@@ -862,6 +955,13 @@
 .pointer {
   cursor: pointer;
 }
+.cursor-default {
+  cursor: default;
+}
+.pointer:hover {
+  opacity: 1;
+}
+
 /* @media screen and (max-width: 930px) {
   .expand-container {
     flex-direction: column;
@@ -889,17 +989,14 @@
     font-size: 19px;
   }
 } */
+
 input:focus {
   outline: none;
 }
 .convert-box-mint {
   height: 35px;
   padding: 1px 21px;
-  background: linear-gradient(
-    90deg,
-    rgb(223, 244, 254, 0.25) 0%,
-    rgb(142, 181, 255, 0.25) 100%
-  );
+  background: linear-gradient(90deg, rgb(223, 244, 254, 0.25) 0%, rgb(142, 181, 255, 0.25) 100%);
   /* opacity: 0.25; */
   border: 1px solid rgba(100, 100, 100, 0.498039);
   box-sizing: border-box;
@@ -962,11 +1059,7 @@ input:focus {
 }
 
 .get-btn span:hover {
-  background: linear-gradient(
-    247.41deg,
-    #a2fbb0 16.32%,
-    #5ec4d6 87.6%
-  ) !important;
+  background: linear-gradient(247.41deg, #a2fbb0 16.32%, #5ec4d6 87.6%) !important;
   border-radius: 6px;
   color: #000000;
 }
@@ -1061,14 +1154,14 @@ ul.tab li label {
   border: 1px solid transparent;
   text-transform: uppercase;
 }
-ul.tab li input[type='radio'] {
+ul.tab li input[type="radio"] {
   opacity: 0;
   width: 1px;
   height: 1px;
   position: absolute;
   left: 15px;
 }
-ul.tab li input[type='radio']:checked ~ label {
+ul.tab li input[type="radio"]:checked ~ label {
   background: #1c1c1c;
   border: 1px solid rgba(61, 61, 61, 0.5);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -1121,7 +1214,7 @@ ul.tab li input[type='radio']:checked ~ label {
 }
 
 .tooltip .tooltip-text::after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 100%; /* At the bottom of the tooltip */
   left: 50%;
@@ -1137,14 +1230,14 @@ ul.tab li input[type='radio']:checked ~ label {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   font-weight: 300;
   align-items: center;
   text-align: justify;
   flex-direction: column;
 }
 .exit-modal-title {
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   font-style: normal;
   font-weight: normal;
   font-size: 17px;
@@ -1175,7 +1268,7 @@ ul.tab li input[type='radio']:checked ~ label {
 }
 .exit-modal-content > p {
   margin-bottom: 20px;
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1191,7 +1284,7 @@ ul.tab li input[type='radio']:checked ~ label {
     flex-direction: column;
   } */
   .container-staking {
-    font-family: 'Monument Grotesk Semi';
+    font-family: "Monument Grotesk Semi";
     padding: 5px;
     max-width: 1000px;
     margin: 0 auto;
@@ -1408,7 +1501,7 @@ ul.tab li input[type='radio']:checked ~ label {
   .stake-btn span {
     width: 100%;
   }
-  ul.tab li input[type='radio']:checked ~ label {
+  ul.tab li input[type="radio"]:checked ~ label {
     border-radius: 10px;
   }
   ul.togglebuttontab li {

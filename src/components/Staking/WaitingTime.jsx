@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 
 const WaitingTime = ({ withDrawTime, showFluid }) => {
-  const [waiting, setWaiting] = useState('00:00:00')
+  const [waiting, setWaiting] = useState('')
 
   const [timer, setTimer] = useState(
     moment(withDrawTime).diff(moment(new Date()))
@@ -17,7 +17,7 @@ const WaitingTime = ({ withDrawTime, showFluid }) => {
         duration.minutes(),
         duration.seconds()
       ].join(':')
-      setWaiting(waitingTime)
+      setWaiting(": " + waitingTime)
       const interval = setInterval(() => {
         let newTime = timer - 1000
         setTimer(newTime)
@@ -28,7 +28,7 @@ const WaitingTime = ({ withDrawTime, showFluid }) => {
           duration.minutes(),
           duration.seconds()
         ].join(':')
-        setWaiting(waitingTime)
+        setWaiting(": " + waitingTime)
       }, 1000)
 
       return () => {

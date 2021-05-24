@@ -46,37 +46,42 @@ const CollapseTrigger = ({
     <div className="collapse-trigger">
       <div className="token-info">
         <p className="token-title">{title}</p>
-        <p className="wallet-amount">
-          <span className="blue-color">{balanceWallet}</span> in your wallet
-          {!onlyLocking && (
-            <>
-              <span className="blue-color">{`  ${balance}`}</span> Staked
+        <div className="wallet-amount">
+          <div className="item"><span className="blue-color">{balanceWallet}</span> wallet </div>
+          <div className="item">
+            {!onlyLocking && (
+              <>
+                <span className="blue-color">{`  ${balance}`}</span> Staked
             </>
-          )}
-        </p>
+            )}
+          </div>
+        </div>
       </div>
       {onlyLocking ? (
         <div className="swap-BPT">get BPT and stake for APY</div>
       ) : (
-        <div className="apy">{`${apy.toFixed(2)}% apy`}</div>
+        <div className="apy-wrap">
+          <div className="apy-stake"> {`${apy.toFixed(0)}% APY (STAKE)`}</div>
+          <div className="apy-yield"> {`${apy.toFixed(0)}% APY (YIELD)`}</div>
+        </div>
       )}
 
       <div className="expand-container">
-        <ActionButton
+        {/* <ActionButton
           type="GET"
           title={titleExit}
           onlyLocking={onlyLocking}
           onClick={handleGet}
-        />
+        /> */}
 
         <ActionButton
-          type="LOCK"
-          title={titleExit}
+          type="GET"
+          title={title}
           onlyLocking={onlyLocking}
           onClick={handleLock}
         />
         <ActionButton
-          type="STAKE"
+          type="DEPOSIT"
           title={title}
           onlyLocking={onlyLocking}
           onClick={handleStake}

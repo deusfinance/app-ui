@@ -15,7 +15,7 @@ import addresses from '../../services/addresses.json'
 import useWeb3 from '../../helper/useWeb3'
 import abis from '../../services/abis.json'
 import { validChains } from './Data'
-
+import { isZero } from '../../constant/number'
 const TokenContainer = (props) => {
   const {
     open,
@@ -64,6 +64,7 @@ const TokenContainer = (props) => {
     withDrawTime: '',
     exitBalance: ''
   })
+
   React.useMemo(() => {
     setShowFluid(false)
     setUserInfo({
@@ -382,7 +383,7 @@ const TokenContainer = (props) => {
   }
 
   return (
-    <div className={`token-container ${onlyLocking ? 'uni-background' : ''}`}>
+    <div className={`token-container ${onlyLocking ? 'uni-background' : ''} ${!isZero(userInfo.balance) && !onlyLocking ? "staked-pool" : ""}`}>
       <Collapsible
         handleTriggerClick={() => handleTriggerClick(title)}
         open={open[title]}
@@ -466,18 +467,20 @@ const TokenContainer = (props) => {
                   />
                   <div
                     onClick={() => setUnfreezStake(userInfo.balance)}
-                    className="opacity-75"
+                    className="opacity-75 pointer"
                   >
                     Max
                   </div>
                 </div>
 
                 <div
-                  className="wrap-box-gradient width-402"
+                  className="wrap-box-gradient width-402 pointer"
                   onClick={handleUnfreezStake}
                 >
-                  Withdraw + Claim
+                  {userInfo.exit ? "UNSTAKE + REDEEM" : "UNSTAKE"}
+
                 </div>
+
               </div>
             )}
           </>

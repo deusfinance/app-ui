@@ -498,7 +498,6 @@ const SyncMain = () => {
                         <div style={{ margin: "6px 0" }}></div>
                     </div>
                     {chainId && chainId === 1 && <SyncCap remindedAmount={remindCap} />}
-                    {/* <TimerTrading /> */}
                 </div>
             </div>
         </div>

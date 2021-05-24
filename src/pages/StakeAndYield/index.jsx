@@ -23,6 +23,7 @@ const Staking = () => {
     'sUNI-DE': false
   })
 
+
   React.useEffect(() => {
     if (account) {
       setType('all')
@@ -42,37 +43,26 @@ const Staking = () => {
       category === 'all'
         ? tokens[selesctedChainId]
         : tokens[selesctedChainId].filter(
-            (token) => token.category === category
-          )
+          (token) => token.category === category
+        )
     setShowTokens(result)
   }
 
   return (
     <div className="container-staking">
       <div className="staking-desc">
+        <img
+          className="deus-yearn-logo"
+          src="/img/yearn-deus.png"
+          alt="deus-yearn"
+        />
         <div className="title-container">
-          <span className="title">STAKE AND YIELD WITH YEARN FINANCE</span>
-          <img
-            src="/img/staking/yearn-finance-logo.svg"
-            alt="yearn-finance-logo"
-          />
+          <span className="title">STAKE AND YIELD</span>
         </div>
+        <a href="#" className="explainer">
+          Explainer
+        </a>
 
-        <p>
-          Stake your locked DEUS/DEA or Balancer Liquidity to earn trading fees.
-        </p>
-        <p>
-          You can also opt for Stake+Yield where the underlying ETH value of
-          your stake will be used to earn yield on{' '}
-          <span className="yearn-finance">
-            YEARN FINANCE{' '}
-            <img
-              src="/img/staking/yearn-finance-logo.svg"
-              alt="yearn-finance-logo"
-            />{' '}
-          </span>
-          – <span className="blue-color">basically double rewards!</span>
-        </p>
       </div>
 
       <div className="staking-content">

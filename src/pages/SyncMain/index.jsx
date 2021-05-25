@@ -21,6 +21,7 @@ import { sendMessage } from '../../utils/telegramLogger';
 
 import './styles/sync-xdai.scss';
 import { useTranslation } from 'react-i18next'
+import useAssetBalances from '../../helper/useAssetBalances';
 
 
 
@@ -74,6 +75,9 @@ const SyncMain = () => {
 
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/mainnet/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/mainnet/price.json", { cache: "no-cache" }), [])
+
+    const balances = useAssetBalances(conducted, 1)
+
 
     const getBuySell = useCallback(() => {
         let reportMessages = ""
@@ -423,6 +427,8 @@ const SyncMain = () => {
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
             chainId={1}
+            balances={balances}
+
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}

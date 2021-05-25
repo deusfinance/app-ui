@@ -20,6 +20,7 @@ import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
 
 import './styles/sync-xdai.scss';
+import useAssetBalances from '../../helper/useAssetBalances';
 
 
 
@@ -57,6 +58,7 @@ const SyncBscTest = () => {
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
     const { account, chainId } = useWeb3React()
+
     const [web3Class, setWeb3Class] = useState(new StockService(account, 56))
     const apis = [
         "https://oracle1.deus.finance/bsc/signatures.json",
@@ -73,6 +75,10 @@ const SyncBscTest = () => {
 
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/price.json", { cache: "no-cache" }), [])
+
+    const balances = useAssetBalances(conducted, 56)
+    // console.log(balances);
+
 
     const getBuySell = useCallback(() => {
         let reportMessages = ""
@@ -422,6 +428,7 @@ const SyncBscTest = () => {
         <SearchAssets
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
+            balances={balances}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}

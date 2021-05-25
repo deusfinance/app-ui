@@ -12,7 +12,7 @@ const Fluid = (props) => {
     StakeAndYieldContract,
     chainId,
     showFluid,
-    earned,
+    // earned,
     withdrawIsActive
   } = props
 

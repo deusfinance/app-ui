@@ -19,6 +19,7 @@ import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
 import './styles/sync-xdai.scss';
 import { useTranslation } from 'react-i18next'
+import useAssetBalances from '../../helper/useAssetBalances';
 
 
 
@@ -89,6 +90,9 @@ const SyncXdai = () => {
 
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/xdai/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/xdai/price.json", { cache: "no-cache" }), [])
+
+    const balances = useAssetBalances(conducted, 100)
+
 
     const getBuySell = useCallback(() => {
         let reportMessages = ""
@@ -455,6 +459,7 @@ const SyncXdai = () => {
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
             chainId={100}
+            balances={balances}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}

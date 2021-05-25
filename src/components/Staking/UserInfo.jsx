@@ -1,6 +1,5 @@
 import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
-import useWeb3 from '../../helper/useWeb3'
 import { ExternalLink } from '../App/Link'
 
 const UserInfo = (props) => {

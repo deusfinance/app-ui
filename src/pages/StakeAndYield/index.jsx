@@ -6,6 +6,7 @@ import '../../components/Staking/StakingStyle.css'
 import ToggleButtons from '../../components/Staking/ToggleButtons'
 import TokenContainer from '../../components/Staking/TokenContainer'
 import tokens from '../../components/Staking/Data'
+import { ExternalLink } from '../../components/App/Link'
 
 const Staking = () => {
   const { account, chainId } = useWeb3React()
@@ -59,9 +60,8 @@ const Staking = () => {
         <div className="title-container">
           <span className="title">STAKE AND YIELD</span>
         </div>
-        <a href="#" className="explainer">
-          Explainer
-        </a>
+
+        <ExternalLink className="explainer"> Explainer</ExternalLink>
 
       </div>
 

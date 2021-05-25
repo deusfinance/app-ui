@@ -12,15 +12,15 @@ const CollapseTrigger = ({
   balance,
   handleCollapseContent
 }) => {
-  const handleGet = (e) => {
-    if (link) {
-      e.stopPropagation()
-      e.preventDefault()
-      window.open(link, '_blank')
-    } else {
-      handleCollapseContent('lock')
-    }
-  }
+  // const handleGet = (e) => {
+  //   if (link) {
+  //     e.stopPropagation()
+  //     e.preventDefault()
+  //     window.open(link, '_blank')
+  //   } else {
+  //     handleCollapseContent('lock')
+  //   }
+  // }
   const handleLock = (e) => {
     if (balancer) {
       e.stopPropagation()
@@ -61,7 +61,7 @@ const CollapseTrigger = ({
         <div className="swap-BPT">get BPT and stake for APY</div>
       ) : (
         <div className="apy-wrap">
-          <div className="apy-stake"> {`${apy.toFixed(0)}% APY (STAKE)`}</div>
+          <div className="apy-stake"> {`${0}% APY (STAKE)`}</div>
           <div className="apy-yield"> {`${apy.toFixed(0)}% APY (YIELD)`}</div>
         </div>
       )}

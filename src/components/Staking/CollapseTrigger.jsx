@@ -2,8 +2,9 @@ import React from 'react'
 import ActionButton from './ActionButton'
 
 const CollapseTrigger = ({
+  open,
   title,
-  titleExit,
+  // titleExit,
   balancer,
   link,
   onlyLocking,
@@ -27,6 +28,10 @@ const CollapseTrigger = ({
       e.preventDefault()
       window.open(link, '_blank')
     } else {
+      if (open) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
       handleCollapseContent('lock')
     }
   }
@@ -39,6 +44,10 @@ const CollapseTrigger = ({
         '_blank'
       )
     } else {
+      if (open) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
       handleCollapseContent('stake')
     }
   }
@@ -47,12 +56,14 @@ const CollapseTrigger = ({
       <div className="token-info">
         <p className="token-title">{title}</p>
         <div className="wallet-amount">
-          <div className="item"><span className="blue-color">{balanceWallet}</span> wallet </div>
+          <div className="item">
+            <span className="blue-color">{balanceWallet}</span> wallet
+          </div>
           <div className="item">
             {!onlyLocking && (
               <>
                 <span className="blue-color">{`  ${balance}`}</span> Staked
-            </>
+              </>
             )}
           </div>
         </div>
@@ -88,8 +99,12 @@ const CollapseTrigger = ({
         />
 
         <span className="expand-btn pointer" name="expand-btn">
-          Expand
-          <img src="/img/arrow-nav.svg" alt="arrow" />
+          {open ? 'Collapse' : 'Expand'}
+          <img
+            src="/img/arrow-nav.svg"
+            className={open ? 'expand-btn-open' : ''}
+            alt="arrow"
+          />
         </span>
       </div>
     </div>

@@ -2,7 +2,6 @@ import React from 'react'
 import Collapsible from 'react-collapsible'
 import moment from 'moment'
 import CollapseTrigger from './CollapseTrigger'
-import CollapseTriggerOpen from './CollapseTriggerOpen'
 import { makeContract, sendTransaction } from '../../utils/Stakefun'
 import { abi, StakeAndYieldABI, ControllerABI } from '../../utils/StakingABI'
 import UserInfo from './UserInfo'
@@ -33,7 +32,8 @@ const TokenContainer = (props) => {
     chainId,
     category,
     balancer,
-    handleTriggerClick
+    handleTriggerClick,
+    type
   } = props
   const web3 = useWeb3()
   const [collapseContent, setCollapseContent] = React.useState('default')
@@ -184,8 +184,6 @@ const TokenContainer = (props) => {
                 ? ((Number(balance) / totalSupply) * 100).toFixed(2)
                 : 0
             own = `You own <span class="blue-color">${value}%</span> of the 'Stake' pool`
-
-            // total = totalSupply
             stakeTypeName = 'Stake'
             break
           case '2':
@@ -194,7 +192,6 @@ const TokenContainer = (props) => {
                 ? ((Number(balance) / totalSupplyYield) * 100).toFixed(2)
                 : 0
             own = `You own <span class="blue-color">${valueYield}%</span> of the 'Yield' pool`
-            // total = totalSupplyYield
             stakeTypeName = 'Yield'
             break
           case '3':
@@ -206,7 +203,6 @@ const TokenContainer = (props) => {
               totalSupplyYield > 0
                 ? ((Number(balance) / totalSupplyYield) * 100).toFixed(2)
                 : 0
-            // total = totalSupplyYield + totalSupply
             own = `You own <span class="blue-color">${value1}%</span> of the 'Stake' pool and <span class="blue-color">${value2}%</span> of the  'Yield' pool`
 
             stakeTypeName = 'Stake & Yield'
@@ -260,12 +256,6 @@ const TokenContainer = (props) => {
             exitBalance
           }
         })
-        // if (total > 0) {
-        //   const own = ((Number(balance) / total) * 100).toFixed(2)
-        //   setUserInfo((prev) => {
-        //     return { ...prev, own }
-        //   })
-        // }
       } catch (error) {
         console.log('error Happend in Fetch data', error)
       }
@@ -355,6 +345,14 @@ const TokenContainer = (props) => {
     }
   }, [owner, chainId, userInfo.balance, onlyLocking])
 
+  React.useEffect(() => {
+    if (Number(userInfo.balance) > 0) {
+      handleTriggerClick(title, userInfo.balance)
+    } else {
+      handleTriggerClick(title, false)
+    }
+  }, [userInfo.balance, title, type]) // eslint-disable-line
+
   const handleCollapseContent = (data) => {
     setCollapseContent(data)
   }
@@ -381,9 +379,12 @@ const TokenContainer = (props) => {
       console.log('error happend in withDraw Stake', error)
     }
   }
-
   return (
-    <div className={`token-container ${onlyLocking ? 'uni-background' : ''} ${!isZero(userInfo.balance) && !onlyLocking ? "staked-pool" : ""}`}>
+    <div
+      className={`token-container ${onlyLocking ? 'uni-background' : ''} ${
+        !isZero(userInfo.balance) && !onlyLocking ? 'staked-pool' : ''
+      }`}
+    >
       <Collapsible
         handleTriggerClick={() => handleTriggerClick(title)}
         open={open[title]}
@@ -399,20 +400,7 @@ const TokenContainer = (props) => {
             balance={userInfo.balance}
             balanceWallet={userInfo.balanceWallet}
             handleCollapseContent={(data) => handleCollapseContent(data)}
-          />
-        }
-        triggerWhenOpen={
-          <CollapseTriggerOpen
-            title={title}
-            titleExit={titleExit}
-            onlyLocking={onlyLocking}
-            link={link}
-            apy={userInfo.apy}
-            category={category}
-            balancer={balancer}
-            balance={userInfo.balance}
-            balanceWallet={userInfo.balanceWallet}
-            handleCollapseContent={(data) => handleCollapseContent(data)}
+            open={open[title]}
           />
         }
       >
@@ -477,10 +465,8 @@ const TokenContainer = (props) => {
                   className="wrap-box-gradient width-402 pointer"
                   onClick={handleUnfreezStake}
                 >
-                  {userInfo.exit ? "UNSTAKE + REDEEM" : "UNSTAKE"}
-
+                  {userInfo.exit ? 'UNSTAKE + REDEEM' : 'UNSTAKE'}
                 </div>
-
               </div>
             )}
           </>

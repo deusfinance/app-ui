@@ -24,7 +24,6 @@ const Staking = () => {
     'sUNI-DE': false
   })
 
-
   React.useEffect(() => {
     if (account) {
       setType('all')
@@ -39,13 +38,21 @@ const Staking = () => {
   const chooseType = (e) => {
     let category = e.target.value
     setType(category)
-    setOpen(false)
+    // setOpen(false)
     let result =
       category === 'all'
         ? tokens[selesctedChainId]
         : tokens[selesctedChainId].filter(
-          (token) => token.category === category
-        )
+            (token) => token.category === category
+          )
+    let titles = result.map((item) => item.title)
+    let newOpen = open
+    Object.keys(open).forEach((item) => {
+      if (!titles.includes(item)) {
+        newOpen[item] = false
+      }
+    })
+    setOpen(newOpen)
     setShowTokens(result)
   }
 
@@ -62,7 +69,6 @@ const Staking = () => {
         </div>
 
         <ExternalLink className="explainer"> Explainer</ExternalLink>
-
       </div>
 
       <div className="staking-content">
@@ -82,15 +88,20 @@ const Staking = () => {
           {showTokens.map((token, index) => (
             <TokenContainer
               key={index}
+              type={type}
               {...token}
               owner={account}
               chainId={chainId}
               open={open}
-              handleTriggerClick={(token) => {
+              handleTriggerClick={(token, balance) => {
                 setOpen((prev) => {
                   return {
                     ...prev,
-                    [token]: !open[token]
+                    [token]: balance
+                      ? true
+                      : balance === undefined
+                      ? !open[token]
+                      : false
                   }
                 })
               }}

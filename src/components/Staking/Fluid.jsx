@@ -1,5 +1,7 @@
 import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
+import { getStayledNumber } from '../../utils/utils'
+import { ExternalLink } from '../App/Link'
 
 const Fluid = (props) => {
   const {
@@ -11,8 +13,15 @@ const Fluid = (props) => {
     StakeAndYieldContract,
     chainId,
     showFluid,
-    earned
+    withDrawTime,
+    nextEpochTime,
   } = props
+
+  // console.log(title, nextEpochTime, withDrawTime, nextEpochTime - (6 * 24 * 3600) > withDrawTime);
+  const currtimestamp = Math.floor(Date.now() / 1000)
+
+  // const withdrawIsActive = withDrawTime !== "" && nextEpochTime !== "" ? nextEpochTime - (6 * 24 * 3600) > withDrawTime : false
+  const withdrawIsActive = withDrawTime !== "" && nextEpochTime !== "" ? currtimestamp > nextEpochTime : false
 
   const handleWithDraw = () => {
     try {
@@ -22,7 +31,7 @@ const Fluid = (props) => {
         [],
         owner,
         chainId,
-        `Withdraw + Claim`
+        `WITHDRAW + REDEEM`
       ).then(() => {
         showFluid()
       })
@@ -35,10 +44,9 @@ const Fluid = (props) => {
       <div className="flex-between flex-column">
         <div>
           <div className="frozen-desc">
-            <p>Fluid</p>
+            <p>Withdrawable tokens </p>
             <p className="opacity-5">
-              Tokens that are available to withdraw, as the ETH has already been
-              withdrawn back into the treasury.
+              Unstaked, claimable & redeemable tokens that are available to withdraw.
             </p>
           </div>
         </div>
@@ -52,26 +60,27 @@ const Fluid = (props) => {
             width="width-402 border-radius-6"
           /> */}
             <div className="wrap-box-gray-complete">
-              <div>{`${withDrawableExit} ${titleExit}`}</div>
-              <div>{`${earned} DEA`}</div>
-              <div>{`${withDrawable} ${title}`}</div>
+              <div>{`${getStayledNumber(withDrawableExit)} ${titleExit}`}</div>
+              <div>{`${(getStayledNumber(withDrawable))} ${title}`}</div>
             </div>
           </div>
-          <div className="fluid-footer-container  mb-15">
-            <div className="mb-15 fluid-footer">
-              <div>currently redeemable Vault tokens</div>
-              <div>currently claimable Reward tokens</div>
-              <div>currently unfrozen withdrawable Staked tokens</div>
+          <div className="fluid-footer-container">
+            <div className="mb-15 mt-4 fluid-footer">
+              <div>estimated redeemable Vault tokens.</div>
+              <div>currently  withdrawable Staked tokens.</div>
             </div>
             <div className="wrap-box float-right">
               <div
-                className="wrap-box-gradient-complete pointer"
-                onClick={handleWithDraw}
+                className={`wrap-box-gradient-complete ${withdrawIsActive ? "pointer" : " default opacity-25"}  `}
+                onClick={withdrawIsActive ? handleWithDraw : undefined}
               >
                 <div className="fluid-box-content">
-                  Withdraw + Claim + Redeem
+                  WITHDRAW + REDEEM
                 </div>
               </div>
+            </div>
+            <div className="sub-description mt-4">
+              <ExternalLink active={true} href={"http://wiki.deus.finance/docs/stake-and-yield"}>after yearn harvest. ↗</ExternalLink>
             </div>
           </div>
         </div>

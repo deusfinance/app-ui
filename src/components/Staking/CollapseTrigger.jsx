@@ -2,8 +2,9 @@ import React from 'react'
 import ActionButton from './ActionButton'
 
 const CollapseTrigger = ({
+  open,
   title,
-  titleExit,
+  // titleExit,
   balancer,
   link,
   onlyLocking,
@@ -12,21 +13,25 @@ const CollapseTrigger = ({
   balance,
   handleCollapseContent
 }) => {
-  const handleGet = (e) => {
-    if (link) {
-      e.stopPropagation()
-      e.preventDefault()
-      window.open(link, '_blank')
-    } else {
-      handleCollapseContent('lock')
-    }
-  }
+  // const handleGet = (e) => {
+  //   if (link) {
+  //     e.stopPropagation()
+  //     e.preventDefault()
+  //     window.open(link, '_blank')
+  //   } else {
+  //     handleCollapseContent('lock')
+  //   }
+  // }
   const handleLock = (e) => {
     if (balancer) {
       e.stopPropagation()
       e.preventDefault()
       window.open(link, '_blank')
     } else {
+      if (open) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
       handleCollapseContent('lock')
     }
   }
@@ -39,6 +44,10 @@ const CollapseTrigger = ({
         '_blank'
       )
     } else {
+      if (open) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
       handleCollapseContent('stake')
     }
   }
@@ -46,44 +55,56 @@ const CollapseTrigger = ({
     <div className="collapse-trigger">
       <div className="token-info">
         <p className="token-title">{title}</p>
-        <p className="wallet-amount">
-          <span className="blue-color">{balanceWallet}</span> in your wallet
-          {!onlyLocking && (
-            <>
-              <span className="blue-color">{`  ${balance}`}</span> Staked
-            </>
-          )}
-        </p>
+        <div className="wallet-amount">
+          <div className="item">
+            <span className="blue-color">{balanceWallet}</span> wallet
+          </div>
+          <div className="item">
+            {!onlyLocking && (
+              <>
+                <span className="blue-color">{`  ${balance}`}</span> Staked
+              </>
+            )}
+          </div>
+        </div>
       </div>
       {onlyLocking ? (
         <div className="swap-BPT">get BPT and stake for APY</div>
       ) : (
-        <div className="apy">{`${apy.toFixed(2)}% apy`}</div>
+        <div className="apy-wrap">
+          <div className="apy-stake"> {`${0}% APY (STAKE)`}</div>
+          <div className="apy-yield"> {`${apy.toFixed(0)}% APY (YIELD)`}</div>
+        </div>
       )}
 
       <div className="expand-container">
-        <ActionButton
+        {/* <ActionButton
           type="GET"
           title={titleExit}
           onlyLocking={onlyLocking}
           onClick={handleGet}
-        />
+        /> */}
+
         <ActionButton
-          type="LOCK"
-          title={titleExit}
+          type="GET"
+          title={title}
           onlyLocking={onlyLocking}
           onClick={handleLock}
         />
         <ActionButton
-          type="STAKE"
+          type="DEPOSIT"
           title={title}
           onlyLocking={onlyLocking}
           onClick={handleStake}
         />
 
-        <span className="expand-btn pointer" name="expand-btn">
-          Expand
-          <img src="/img/arrow-nav.svg" alt="arrow" />
+        <span className="expand-btn pointer" name="expand-btn" onClick={open ? () => handleCollapseContent("default") : undefined}>
+          {open ? 'Collapse' : 'Expand'}
+          <img
+            src="/img/arrow-nav.svg"
+            className={open ? 'expand-btn-open' : ''}
+            alt="arrow"
+          />
         </span>
       </div>
     </div>

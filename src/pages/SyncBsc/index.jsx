@@ -20,6 +20,7 @@ import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
 
 import './styles/sync-xdai.scss';
+import useAssetBalances from '../../helper/useAssetBalances';
 
 
 
@@ -53,11 +54,11 @@ const SyncBscTest = () => {
     const [loadingCap, setLoadingCAP] = useState(false);
     const [loadingAllowance, setLoadingAllowance] = useState(false);
     const [subscrible, setSubscrible] = useState(null);
-    const [totalCap, setTotalCap] = useState(0);
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
     const { account, chainId } = useWeb3React()
+
     const [web3Class, setWeb3Class] = useState(new StockService(account, 56))
     const apis = [
         "https://oracle1.deus.finance/bsc/signatures.json",
@@ -69,11 +70,15 @@ const SyncBscTest = () => {
         if (account && chainId) {
             setWeb3Class(new StockService(account, 56))
         }
-        // initialCap()
-    }, [account, chainId])
+        initialCap()
+    }, [account, chainId])//eslint-disable-line
 
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/price.json", { cache: "no-cache" }), [])
+
+    const balances = useAssetBalances(conducted, 56)
+    // console.log(balances);
+
 
     const getBuySell = useCallback(() => {
         let reportMessages = ""
@@ -154,12 +159,9 @@ const SyncBscTest = () => {
     const initialCap = useCallback(async () => {
         if (account && chainId && chainId === 56) {
             setLoadingCAP(true)
-            web3Class.getTotalCap().then(total => {
-                setTotalCap(total)
-                web3Class.getUsedCap().then(used => {
-                    setRemindCap(parseFloat(used))
-                    setLoadingCAP(false)
-                })
+            web3Class.getUsedCap().then(used => {
+                setRemindCap(parseFloat(used))
+                setLoadingCAP(false)
             })
         }
     }, [account, chainId])//eslint-disable-line
@@ -426,6 +428,7 @@ const SyncBscTest = () => {
         <SearchAssets
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
+            balances={balances}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}
@@ -500,7 +503,7 @@ const SyncBscTest = () => {
 
                         <div style={{ margin: "6px 0" }}></div>
                     </div>
-                    {chainId && chainId === 56 && <SyncCap remindedAmount={remindCap} totalAmount={totalCap} />}
+                    {chainId && chainId === 56 && <SyncCap remindedAmount={remindCap} />}
                     {/* <TimerTrading /> */}
                 </div>
             </div>

@@ -5,6 +5,7 @@ import { getTransactionLink } from '../../utils/explorers'
 import { sendTransaction } from '../../utils/Stakefun'
 import addresses from '../../services/addresses.json'
 import useWeb3 from '../../helper/useWeb3'
+import { validChains } from './Data'
 
 const Mint = (props) => {
   const {
@@ -151,7 +152,7 @@ const Mint = (props) => {
             </div>
             <div className="gray-box flex-between">
               <input
-                type="text"
+                type="number"
                 className="input-transparent"
                 placeholder={`0 ${titleExit}`}
                 value={amount}
@@ -185,7 +186,7 @@ const Mint = (props) => {
             </div>
 
             {owner ? (
-              chainId === 1 ? (
+              validChains.includes(chainId) ? (
                 <>
                   <div
                     className={
@@ -199,8 +200,8 @@ const Mint = (props) => {
                     {allowance === 0 ? (
                       <div
                         className={`${!approveClick
-                          ? 'approve-btn pointer'
-                          : 'stake-deposit-btn'
+                            ? 'approve-btn pointer'
+                            : 'stake-deposit-btn'
                           } `}
                         onClick={handleApprove}
                       >
@@ -210,8 +211,8 @@ const Mint = (props) => {
                       approveClick && (
                         <div
                           className={`${!approveClick
-                            ? 'approve-btn pointer'
-                            : 'stake-deposit-btn'
+                              ? 'approve-btn pointer'
+                              : 'stake-deposit-btn'
                             } `}
                           onClick={handleApprove}
                         >
@@ -221,8 +222,8 @@ const Mint = (props) => {
                     )}
                     <div
                       className={`${allowance !== 0
-                        ? 'approve-btn pointer'
-                        : 'stake-deposit-btn'
+                          ? 'approve-btn pointer'
+                          : 'stake-deposit-btn'
                         } `}
                       onClick={handleMint}
                     >

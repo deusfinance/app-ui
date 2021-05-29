@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 
 const StyledLink = styled.a`
-  text-decoration: none;
+  text-decoration: ${({ active }) => active ? "underline" : "none"};
   cursor: pointer;
   font-weight: 400;
   :hover {
@@ -21,6 +21,7 @@ const StyledLink = styled.a`
 export function ExternalLink({
   target = '_blank',
   href,
+  active = false,
   rel = 'noopener noreferrer',
   ...rest
 }) {
@@ -35,5 +36,5 @@ export function ExternalLink({
     },
     [target]
   )
-  return <StyledLink target={target} rel={rel} href={href} onClick={handleClick}  {...rest} />
+  return <StyledLink active={active} target={target} rel={rel} href={href} onClick={handleClick}  {...rest} />
 }

@@ -5,7 +5,7 @@ import { WaveLoading } from 'react-loadingg';
 import { useTranslation } from 'react-i18next';
 import './styles/stock-button.scss';
 
-const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, handleSwap, isLong, prices, validChain }) => {
+const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, handleSwap, isLong, prices, remindCap, validChain }) => {
     const { account, chainId } = useWeb3React()
     const { conducted } = to_token
     const { t } = useTranslation()
@@ -66,7 +66,7 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, han
     }
 
 
-    if (to_token.conducted || from_token.conducted || isClosed || !account || (validChain && chainId && chainId !== validChain)) {
+    if (to_token.conducted || from_token.conducted || isClosed || !account || (validChain && chainId && chainId !== validChain) || remindCap < amount) {
 
         let errTxt = null
 
@@ -80,6 +80,8 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, han
             errTxt = t("connectWallet")
         } else if (getBalance() < amount) {
             errTxt = t("insufficientBalance")
+        } else if (remindCap < amount) {
+            errTxt = "EXCEEDS SYNCHRONIZER CAP"
         }
 
         if (errTxt) {

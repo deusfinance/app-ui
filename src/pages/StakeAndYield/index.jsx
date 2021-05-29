@@ -6,6 +6,7 @@ import '../../components/Staking/StakingStyle.css'
 import ToggleButtons from '../../components/Staking/ToggleButtons'
 import TokenContainer from '../../components/Staking/TokenContainer'
 import tokens from '../../components/Staking/Data'
+import { ExternalLink } from '../../components/App/Link'
 
 const Staking = () => {
   const { account, chainId } = useWeb3React()
@@ -37,43 +38,37 @@ const Staking = () => {
   const chooseType = (e) => {
     let category = e.target.value
     setType(category)
-    setOpen(false)
+    // setOpen(false)
     let result =
       category === 'all'
         ? tokens[selesctedChainId]
         : tokens[selesctedChainId].filter(
           (token) => token.category === category
         )
+    let titles = result.map((item) => item.title)
+    let newOpen = open
+    Object.keys(open).forEach((item) => {
+      if (!titles.includes(item)) {
+        newOpen[item] = false
+      }
+    })
+    setOpen(newOpen)
     setShowTokens(result)
   }
 
   return (
     <div className="container-staking">
       <div className="staking-desc">
+        <img
+          className="deus-yearn-logo"
+          src="/img/yearn-deus.png"
+          alt="deus-yearn"
+        />
         <div className="title-container">
-          <span className="title">STAKE AND YIELD WITH YEARN FINANCE</span>
-          <img
-            src="/img/staking/yearn-finance-logo.svg"
-            alt="yearn-finance-logo"
-          />
+          <span className="title">STAKE AND YIELD</span>
         </div>
 
-        <p>
-          Stake your locked DEUS/DEA or Balancer Liquidity to
-          earn trading fees.
-        </p>
-        <p>
-          You can also opt for Stake+Yield where the underlying ETH value of
-          your stake will be used to earn yield on{' '}
-          <span className="yearn-finance">
-            YEARN FINANCE{' '}
-            <img
-              src="/img/staking/yearn-finance-logo.svg"
-              alt="yearn-finance-logo"
-            />{' '}
-          </span>
-          – <span className="blue-color">basically double rewards!</span>
-        </p>
+        <ExternalLink className="explainer"> Explainer</ExternalLink>
       </div>
 
       <div className="staking-content">
@@ -93,15 +88,20 @@ const Staking = () => {
           {showTokens.map((token, index) => (
             <TokenContainer
               key={index}
+              type={type}
               {...token}
               owner={account}
               chainId={chainId}
               open={open}
-              handleTriggerClick={(token) => {
+              handleTriggerClick={(token, balance, withDrawable, withDrawableExit) => {
                 setOpen((prev) => {
                   return {
                     ...prev,
-                    [token]: !open[token]
+                    [token]: (balance || withDrawable || withDrawableExit)
+                      ? true
+                      : balance === undefined
+                        ? !open[token]
+                        : false
                   }
                 })
               }}

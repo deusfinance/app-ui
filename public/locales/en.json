@@ -1,4 +1,5 @@
 {
+    "mobileApp": "Mobile Android",
     "tradestocks": "trade stocks",
     "app": "APP",
     "swap": "SWAP",
@@ -21,10 +22,10 @@
     "tvl2": "Total Value Locked",
     "simulator": "DEUS simulator",
     "tradingview": "DEUS tradingview",
-    "vote": "DEUS simulator",
+    "vote": "DEUS vote",
     "learn": "LEARN",
     "futures": "FUTURES",
-    "buyStocks": "BUY Stocks",
+    "buyStocks": "BUY Registrars",
     "menu": "MENU",
     "close": "close",
     "max": "MAX",

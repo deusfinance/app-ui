@@ -1,21 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { injected } from '../../connectors';
 import { useTranslation } from 'react-i18next'
+import Wallets from '../common/Navbar/Wallets';
 
 const SwapButton = ({ approved, token, handleSwap, isMobile }) => {
     const web3React = useWeb3React()
-    const { account, activate, chainId } = web3React
+    const { account, chainId } = web3React
+    const [showWallets, setShowWallets] = useState(false)
+
     const { t } = useTranslation()
 
-    const handleConnect = async () => {
-        try {
-            const data = await activate(injected)
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    useEffect(() => {
+        setShowWallets(false)
+    }, [account])
 
     const amount = typeof (token.amount) === "string" ? parseFloat(token.amount) : token.amount
 
@@ -31,6 +28,8 @@ const SwapButton = ({ approved, token, handleSwap, isMobile }) => {
     }
 
     return (<>
+
+        {showWallets && <Wallets setShow={setShowWallets} />}
         { account && <>{(token.balance < amount) ? <div className="swap-btn-wrap grad-wrap Insufficient ">
             <div className="swap-btn grad Insufficient">
                 {t("insufficientBalance")}
@@ -43,7 +42,7 @@ const SwapButton = ({ approved, token, handleSwap, isMobile }) => {
             </div>}
         </>}
         {
-            !account && <div className="swap-btn-wrap grad-wrap dapp-link" onClick={handleConnect}>
+            !account && <div className="swap-btn-wrap grad-wrap dapp-link" onClick={() => setShowWallets(true)}>
                 <div className="swap-btn grad">{t("connectWallet")}</div>
             </div>
         }

@@ -7,6 +7,7 @@ import CircleToken from '../../../assets/images/circle-token.svg'
 import { X } from 'react-feather'
 import { StyledLogo } from '../Currency';
 import { FlexCenter } from '../Container';
+import FilterBox from './FilterBox';
 
 const fadein = keyframes`
   from {
@@ -106,6 +107,8 @@ const currencies = [
 
 
 
+
+
 const SearchBox = ({ currencies1, currency2, active, setActive }) => {
   return (active &&
     <Wrapper>
@@ -115,26 +118,7 @@ const SearchBox = ({ currencies1, currency2, active, setActive }) => {
       </RowBetween>
       <InputAmount placeholder="Search symbol and name" />
       <Type.MD opacity="0.5"  >Filter</Type.MD>
-      <ul className="unstyled centered" style={{ listStyleType: "none", margin: "10px 0 20px 0 ", }}>
-        {["sp500", "forex", "crypto", "asia",].map(i => <li style={{
-          display: "inline-block",
-          marginRight: "15px",
-          marginBottom: "3px",
-        }}>
-          <input className="styled-checkbox" id="styled-checkbox-1" type="checkbox" value="value1"
-            style={{
-              background: "rgba(91, 204, 189, 0.14902)",
-              border: "1px solid #FFFFFF",
-              borderRadius: "2px"
-            }}
-          />
-          <label for="styled-checkbox-1" style={{
-            marginLeft: "4px",
-            fontSize: "15px"
-          }}>{i}</label>
-        </li>)}
-
-      </ul>
+      <FilterBox items={["sp500", "forex", "crypto", "asia"]} />
       <RowBetween mt="5px" opacity="0.5">
         <Type.MD >Asset name</Type.MD>
         <Type.MD >Balance</Type.MD>
@@ -142,7 +126,7 @@ const SearchBox = ({ currencies1, currency2, active, setActive }) => {
       <Line my="5px"></Line>
       <TokensWrap>
         {currencies.map((currency, id) => (
-          <TokenRow id={id}>
+          <TokenRow key={id}>
             <TokenWrap>
               <TokenLogo >
                 <StyledLogo size="37px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />

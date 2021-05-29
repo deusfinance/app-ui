@@ -6,6 +6,7 @@ import { injected } from '../../connectors'
 import { getTransactionLink } from '../../utils/explorers'
 import useWeb3 from '../../helper/useWeb3'
 import ExitModal from './ExitModal'
+import { validChains } from './Data'
 
 const Deposit = (props) => {
   const {
@@ -105,11 +106,11 @@ const Deposit = (props) => {
   }
   return (
     <>
-      {lockStakeType && (
-        <div className="back-btn pointer" onClick={handleBack}>
-          Back
-        </div>
-      )}
+      {/* {lockStakeType && ( */}
+      <div className="back-btn pointer" onClick={handleBack}>
+        Back
+      </div>
+      {/* )} */}
       <div className="deposit-container">
         <ToggleButtons
           data={[
@@ -162,7 +163,7 @@ const Deposit = (props) => {
         </div>
         <div className="gray-box flex-between">
           <input
-            type="text"
+            type="number"
             className="input-transparent"
             value={stakeAmount}
             placeholder={`0 ${title}`}
@@ -186,24 +187,23 @@ const Deposit = (props) => {
         </div>
 
         {owner ? (
-          chainId === 1 ? (
+          validChains.includes(chainId) ? (
             <>
               <div
                 className={
                   approve === 0
                     ? 'flex-between'
                     : approveClick
-                    ? 'flex-between'
-                    : 'flex-center'
+                      ? 'flex-between'
+                      : 'flex-center'
                 }
               >
                 {approve === 0 ? (
                   <div
-                    className={`${
-                      !approveClick
+                    className={`${!approveClick
                         ? 'approve-btn pointer'
                         : 'stake-deposit-btn'
-                    } `}
+                      } `}
                     onClick={handleApprove}
                   >
                     Approve
@@ -211,11 +211,10 @@ const Deposit = (props) => {
                 ) : (
                   approveClick && (
                     <div
-                      className={`${
-                        !approveClick
+                      className={`${!approveClick
                           ? 'approve-btn pointer'
                           : 'stake-deposit-btn'
-                      } `}
+                        } `}
                       onClick={handleApprove}
                     >
                       Approve
@@ -223,9 +222,8 @@ const Deposit = (props) => {
                   )
                 )}
                 <div
-                  className={`${
-                    approve ? 'approve-btn pointer' : 'stake-deposit-btn'
-                  } `}
+                  className={`${approve ? 'approve-btn pointer' : 'stake-deposit-btn'
+                    } `}
                   onClick={handleStake}
                 >
                   stake

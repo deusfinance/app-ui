@@ -11,7 +11,7 @@ const SearchAssets = (props) => {
     const [typingTimeout, setTypeout] = useState(0)
     const [currTokens, setCurrToken] = useState([])
     const [sortedList, setSortedList] = useState([])
-    const { nAllStocks } = props
+    const { nAllStocks, balances } = props
     const chainId = props.chainId
     const { t } = useTranslation()
     const [query, setQuery] = useState("")
@@ -86,14 +86,14 @@ const SearchAssets = (props) => {
                                     </div>
                                     {token.type !== TokenType.Main ? token.conducted ? <div style={{ display: "flex", flexDirection: "column", direction: "rtl", justifyContent: "end", alignItems: "end" }}>
                                         <div className="balance-wrap">
-                                            <p> {getStayledNumber(token.short?.balance)}</p> <p style={{ marginLeft: "12px" }}>S</p>
+                                            <p> {balances && balances[token.short?.address] ? balances[token.short?.address] : getStayledNumber(token.short?.balance)}</p> <p style={{ marginLeft: "12px" }}>S</p>
                                             <CopyToClipboard text={formatEtherscanLink(EtherscanType.Token, chainId, token.short?.address)}
                                                 onCopy={() => console.log("copied")}>
                                                 <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
                                             </CopyToClipboard>
                                         </div>
                                         <div className="balance-wrap">
-                                            <p>  {getStayledNumber(token.long?.balance)}</p> <p style={{ marginLeft: "12px" }}>L</p>
+                                            <p>  {balances && balances[token.long?.address] ? balances[token.long?.address] : getStayledNumber(token.long?.balance)}</p> <p style={{ marginLeft: "12px" }}>L</p>
                                             <CopyToClipboard text={formatEtherscanLink(EtherscanType.Token, chainId, token.long?.address)}
                                                 onCopy={() => console.log("copied")}>
                                                 <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />

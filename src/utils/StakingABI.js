@@ -814,6 +814,672 @@ export const StakeAndYieldABI = [
     type: 'function'
   }
 ]
+export const StakeAndYieldOldABI = [
+  {
+    inputs: [
+      { internalType: 'address', name: '_stakedToken', type: 'address' },
+      { internalType: 'address', name: '_rewardToken', type: 'address' },
+      { internalType: 'address', name: '_yieldRewardToken', type: 'address' },
+      { internalType: 'uint256', name: '_daoShare', type: 'uint256' },
+      { internalType: 'address', name: '_daoWallet', type: 'address' },
+      { internalType: 'address', name: '_controller', type: 'address' },
+      { internalType: 'bool', name: '_exitable', type: 'bool' }
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'stakeType',
+        type: 'uint256'
+      }
+    ],
+    name: 'Deposit',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      }
+    ],
+    name: 'EmergencyWithdraw',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'stakeType',
+        type: 'uint256'
+      }
+    ],
+    name: 'Exit',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address'
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address'
+      }
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'stakeType',
+        type: 'uint256'
+      }
+    ],
+    name: 'RewardClaimed',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'stakeType',
+        type: 'uint256'
+      }
+    ],
+    name: 'Unfreeze',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'user',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'stakeType',
+        type: 'uint256'
+      }
+    ],
+    name: 'Withdraw',
+    type: 'event'
+  },
+  {
+    inputs: [],
+    name: 'EXIT_PERIOD',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'PERIOD',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: '_totalBurned',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: '_totalExit',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: '_totalSupply',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: '_totalSupplyYield',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: '_totalYieldWithdrawed',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'allowEmergencyWithdraw',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'account', type: 'address' },
+      { internalType: 'uint256', name: 'stakeType', type: 'uint256' }
+    ],
+    name: 'balanceOf',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'claim',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'controller',
+    outputs: [
+      { internalType: 'contract IController', name: '', type: 'address' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'daoShare',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'daoWallet',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'stakeType', type: 'uint256' },
+      { internalType: 'bool', name: '_exit', type: 'bool' }
+    ],
+    name: 'deposit',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_user', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'stakeType', type: 'uint256' },
+      { internalType: 'bool', name: '_exit', type: 'bool' }
+    ],
+    name: 'depositFor',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'earned',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'account', type: 'address' },
+      { internalType: 'uint256', name: 'stakeType', type: 'uint256' }
+    ],
+    name: 'earned',
+    outputs: [
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'uint256', name: '', type: 'uint256' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_tokenAddr', type: 'address' },
+      { internalType: 'address', name: '_to', type: 'address' },
+      { internalType: 'uint256', name: '_amount', type: 'uint256' }
+    ],
+    name: 'emergencyWithdrawERC20Tokens',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'address', name: 'addr', type: 'address' }
+    ],
+    name: 'emergencyWithdrawETH',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
+    name: 'emergencyWithdrawFor',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'exitBalance',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'exitRewardDenominator',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'exitable',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getRewardToken',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'lastTimeRewardApplicable',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'lastUpdateTime',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'lastUpdatedBlock',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'reward', type: 'uint256' },
+      { internalType: 'uint256', name: 'stakeType', type: 'uint256' }
+    ],
+    name: 'notifyRewardAmount',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'operator',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'periodFinish',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'stakeType', type: 'uint256' }],
+    name: 'rewardPerToken',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'rewardRate',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'rewardRateYield',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'rewardTillNowPerToken',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'rewardToken',
+    outputs: [
+      { internalType: 'contract StandardToken', name: '', type: 'address' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'scale',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'bool', name: '_val', type: 'bool' }],
+    name: 'setAllowEmergencyWithdraw',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_controller', type: 'address' }],
+    name: 'setController',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_daoShare', type: 'uint256' }],
+    name: 'setDaoShare',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_daoWallet', type: 'address' }],
+    name: 'setDaoWallet',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'bool', name: '_val', type: 'bool' }],
+    name: 'setExit',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'period', type: 'uint256' }],
+    name: 'setExitPeriod',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_val', type: 'uint256' }],
+    name: 'setExitRewardDenominator',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'bool', name: '_val', type: 'bool' }],
+    name: 'setExitable',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_addr', type: 'address' }],
+    name: 'setOperator',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'period', type: 'uint256' }],
+    name: 'setPeriod',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'stakedToken',
+    outputs: [
+      { internalType: 'contract StandardToken', name: '', type: 'address' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'totalExit',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'stakeType', type: 'uint256' }],
+    name: 'totalSupply',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'totalYieldWithdrawed',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'unfreeze',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'unfreezeAllAndClaim',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'userInfo',
+    outputs: [
+      { internalType: 'uint256[15]', name: 'numbers', type: 'uint256[15]' },
+      { internalType: 'address', name: 'rewardTokenAddress', type: 'address' },
+      { internalType: 'address', name: 'stakedTokenAddress', type: 'address' },
+      { internalType: 'address', name: 'controllerAddress', type: 'address' },
+      { internalType: 'address', name: 'strategyAddress', type: 'address' },
+      { internalType: 'bool', name: 'exit', type: 'bool' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'users',
+    outputs: [
+      { internalType: 'uint256', name: 'balance', type: 'uint256' },
+      { internalType: 'uint256', name: 'stakeType', type: 'uint256' },
+      { internalType: 'uint256', name: 'paidReward', type: 'uint256' },
+      { internalType: 'uint256', name: 'yieldPaidReward', type: 'uint256' },
+      { internalType: 'uint256', name: 'paidRewardPerToken', type: 'uint256' },
+      {
+        internalType: 'uint256',
+        name: 'yieldPaidRewardPerToken',
+        type: 'uint256'
+      },
+      { internalType: 'uint256', name: 'withdrawable', type: 'uint256' },
+      { internalType: 'uint256', name: 'withdrawableExit', type: 'uint256' },
+      { internalType: 'uint256', name: 'withdrawTime', type: 'uint256' },
+      { internalType: 'bool', name: 'exit', type: 'bool' },
+      { internalType: 'uint256', name: 'exitStartTime', type: 'uint256' },
+      { internalType: 'uint256', name: 'exitAmountTillNow', type: 'uint256' },
+      { internalType: 'uint256', name: 'lastCliamTime', type: 'uint256' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'withdrawToBurn',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'withdrawUnfreezed',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'yieldRewardTillNowPerToken',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'yieldRewardToken',
+    outputs: [
+      { internalType: 'contract StandardToken', name: '', type: 'address' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  }
+]
 
 export const ControllerABI = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
@@ -1296,9 +1962,71 @@ export const YearnStrategyABI = [
 
 export const BridgeABI = [
   {
-    inputs: [{ internalType: 'uint256', name: '_network', type: 'uint256' }],
+    inputs: [
+      { internalType: 'uint256', name: '_network', type: 'uint256' },
+      { internalType: 'address', name: '_muon', type: 'address' }
+    ],
     stateMutability: 'nonpayable',
     type: 'constructor'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'fromChain',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256'
+      },
+      { indexed: false, internalType: 'uint256', name: 'txId', type: 'uint256' }
+    ],
+    name: 'Claim',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'txId',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256'
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'toChain',
+        type: 'uint256'
+      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' }
+    ],
+    name: 'Deposit',
+    type: 'event'
   },
   {
     anonymous: false,
@@ -1323,9 +2051,11 @@ export const BridgeABI = [
     inputs: [
       { internalType: 'address', name: 'user', type: 'address' },
       { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
       { internalType: 'uint256', name: 'toChain', type: 'uint256' },
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-      { internalType: 'uint256', name: 'txId', type: 'uint256' }
+      { internalType: 'uint256', name: 'txId', type: 'uint256' },
+      { internalType: 'bytes[]', name: 'sigs', type: 'bytes[]' }
     ],
     name: 'claim',
     outputs: [],
@@ -1333,7 +2063,10 @@ export const BridgeABI = [
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    inputs: [
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'uint256', name: '', type: 'uint256' }
+    ],
     name: 'claimedTxs',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
@@ -1346,7 +2079,7 @@ export const BridgeABI = [
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' }
     ],
     name: 'deposit',
-    outputs: [],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function'
   },
@@ -1358,7 +2091,7 @@ export const BridgeABI = [
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' }
     ],
     name: 'depositFor',
-    outputs: [],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function'
   },
@@ -1384,9 +2117,33 @@ export const BridgeABI = [
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    inputs: [{ internalType: 'uint256', name: '_txId', type: 'uint256' }],
+    name: 'getTx',
+    outputs: [
+      { internalType: 'uint256', name: 'txId', type: 'uint256' },
+      { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
+      { internalType: 'uint256', name: 'toChain', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'toChain', type: 'uint256' }
+    ],
     name: 'getUserTxs',
     outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'muonContract',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function'
   },
@@ -1422,7 +2179,20 @@ export const BridgeABI = [
     type: 'function'
   },
   {
-    inputs: [{ internalType: 'uint256[]', name: 'ids', type: 'uint256[]' }],
+    inputs: [
+      { internalType: 'uint256', name: '_network', type: 'uint256' },
+      { internalType: 'address', name: '_addr', type: 'address' }
+    ],
+    name: 'ownerSetSideContract',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
+      { internalType: 'uint256[]', name: 'ids', type: 'uint256[]' }
+    ],
     name: 'pendingTxs',
     outputs: [{ internalType: 'bool[]', name: 'unclaimedIds', type: 'bool[]' }],
     stateMutability: 'view',
@@ -1433,6 +2203,13 @@ export const BridgeABI = [
     name: 'renounceOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    name: 'sideContracts',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
     type: 'function'
   },
   {
@@ -1456,6 +2233,7 @@ export const BridgeABI = [
       { internalType: 'uint256', name: 'txId', type: 'uint256' },
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
       { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
       { internalType: 'uint256', name: 'toChain', type: 'uint256' },
       { internalType: 'address', name: 'user', type: 'address' }
     ],
@@ -1465,6 +2243,7 @@ export const BridgeABI = [
   {
     inputs: [
       { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
       { internalType: 'uint256', name: '', type: 'uint256' }
     ],
     name: 'userTxs',

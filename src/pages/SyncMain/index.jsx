@@ -14,13 +14,14 @@ import { StockService } from '../../services/SyncMainService';
 
 import { handleCalcPairPrice, daiToken, fetcher, emptyToken } from '../../services/stock';
 import { useWeb3React } from '@web3-react/core';
-// import SyncCap from '../../components/Sync/SyncCap';
+import SyncCap from '../../components/Sync/SyncCap';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
 
 import './styles/sync-xdai.scss';
 import { useTranslation } from 'react-i18next'
+import useAssetBalances from '../../helper/useAssetBalances';
 
 
 
@@ -51,13 +52,13 @@ const SyncMain = () => {
     const to_token = swap.to
     const from_token = swap.from
     const [loading, setLoading] = useState(false);
-    const [loadingCap,] = useState(false);
+    const [loadingCap, setLoadingCAP] = useState(false);
     const [loadingAllowance, setLoadingAllowance] = useState(false);
     const [subscrible, setSubscrible] = useState(null);
-    const { t } = useTranslation()
-    const [remindCap,] = useState(0);
+    const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
+    const { t } = useTranslation()
     const { account, chainId } = useWeb3React()
     const [web3Class, setWeb3Class] = useState(new StockService(account, 1))
     const apis = [
@@ -69,11 +70,14 @@ const SyncMain = () => {
         if (account && chainId) {
             setWeb3Class(new StockService(account, 1))
         }
-        // initialCap()
-    }, [account, chainId])
+        initialCap()
+    }, [account, chainId])//eslint-disable-line
 
     const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/mainnet/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/mainnet/price.json", { cache: "no-cache" }), [])
+
+    const balances = useAssetBalances(conducted, 1)
+
 
     const getBuySell = useCallback(() => {
         let reportMessages = ""
@@ -151,18 +155,15 @@ const SyncMain = () => {
         handleTokenInputChange(stype, swap[stype].amount)
     }, [isLong, prices])//eslint-disable-line
 
-    // const initialCap = useCallback(async () => {
-    //     if (account && chainId && chainId === 97) {
-    //         setLoadingCAP(true)
-    //         web3Class.getTotalCap().then(total => {
-    //             setTotalCap(total)
-    //             web3Class.getUsedCap().then(used => {
-    //                 setRemindCap(parseFloat(used))
-    //                 setLoadingCAP(false)
-    //             })
-    //         })
-    //     }
-    // }, [account, chainId])
+    const initialCap = useCallback(async () => {
+        if (account && chainId && chainId === 1) {
+            setLoadingCAP(true)
+            web3Class.getUsedCap().then(used => {
+                setRemindCap(parseFloat(used))
+                setLoadingCAP(false)
+            })
+        }
+    }, [account, chainId, web3Class])
 
 
     const getData = useCallback(() => {
@@ -426,6 +427,8 @@ const SyncMain = () => {
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
             chainId={1}
+            balances={balances}
+
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}
@@ -500,8 +503,7 @@ const SyncMain = () => {
 
                         <div style={{ margin: "6px 0" }}></div>
                     </div>
-                    {/* {chainId && chainId === 1 && <SyncCap remindedAmount={remindCap} totalAmount={totalCap} />} */}
-                    {/* <TimerTrading /> */}
+                    {chainId && chainId === 1 && <SyncCap remindedAmount={remindCap} />}
                 </div>
             </div>
         </div>

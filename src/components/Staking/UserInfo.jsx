@@ -1,5 +1,6 @@
 import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
+import { ExternalLink } from '../App/Link'
 
 const UserInfo = (props) => {
   const {
@@ -15,8 +16,11 @@ const UserInfo = (props) => {
     burn,
     fullyUnlock,
     exitable,
-    strategyLink
+    strategyLink,
+    exitBalance,
   } = props
+  // const web3 = useWeb3()
+
   const handleClaim = () => {
     try {
       sendTransaction(
@@ -31,7 +35,32 @@ const UserInfo = (props) => {
       console.log('Error happend in Claim', error)
     }
   }
-  // const handleRedeem = async () => {}
+  /*   const handleRedeem = async () => {
+      try {
+        if (exitBalance === '0' || exitBalance === '') return
+  
+        let amount = web3.utils.toWei(String(exitBalance))
+  
+        sendTransaction(
+          StakeAndYieldContract,
+          `unfreeze`,
+          [amount],
+          owner,
+          chainId,
+          `Redeem ${exitBalance} ${title}`
+        ).then(() => { })
+      } catch (error) {
+        console.log('error happend in Redeem', error)
+      }
+    }
+    const handleRedeemable = async () => {
+      let result = await StakeAndYieldContract.methods.userInfo(owner).call()
+      let { numbers } = result
+      let exitBalance = web3.utils.fromWei(numbers[11], 'ether')
+      updateUserInfo(exitBalance)
+    } */
+
+
   const handleStopExit = () => {
     try {
       sendTransaction(
@@ -46,20 +75,24 @@ const UserInfo = (props) => {
       console.log('error happend in exit', error)
     }
   }
+
   return (
     <div className="userInfo-container">
       <div className="flex-between flex-column mb-15">
         <div className="mb-15">
-          <div className="userInfo-pool mb-15">
-            <p>{`You own ${own}% of the pool `}</p>
-            <p>
-              with
-              <span className="blue-color">{` ${balance} ${title} `}</span>
-              deposited
+          <div className="userInfo-pool mb-20">
+            <p>Staked :  <span className="blue-color">{` ${balance} ${title} `}</span></p>
+            <p
+              className="font-xs mt-2"
+              dangerouslySetInnerHTML={{
+                __html: own
+              }}
+            >
             </p>
+
           </div>
 
-          <div className="userInfo-pool mb-15">
+          <div className="userInfo-pool mb-20">
             <p>
               <span> Staketype: </span>
               <span className="blue-color">
@@ -72,46 +105,62 @@ const UserInfo = (props) => {
                 )}
               </span>
             </p>
-            <p className="opacity-5">generating yield with this strategy</p>
+            <div className="font-xs mt-2  ">generating yield with this <ExternalLink active={true} href={strategyLink}> Strategy ↗</ExternalLink> </div>
           </div>
-          {exitable && exit && (
-            <div className="flex-between mb-15">
-              <div className="exit-valuet">
-                <p>
-                  <span className="blue-color">Exit Vault</span> activated
-                </p>
-                <p>
-                  You burn
+
+          {title !== "BPT" && <div className="flex-between mb-15">
+            <div className="exit-valuet">
+              <p>
+                <span className="blue-color">Exit Vault:</span> {exit ? "activated" : "deactivated"}
+              </p>
+              {exitable && exit && (
+                <div className="font-xs mt-2">
+                  <p>
+                    You burn
                   <span className="blue-color">{` ${burn.toFixed(
-                  4
-                )} ${title} per day `}</span>
-                  {`(fully unlocked at ${fullyUnlock})`}
-                </p>
-              </div>
+                    4
+                  )} ${title} per day `}</span>
+                    {`(fully unlocked at ${fullyUnlock})`}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          </div>}
         </div>
         <div>
           <div className="wrap-box mb-15">
-            <div className="wrap-box-gray">
-              <div>{`${claim} DEA `}</div>
-              {/* <div className="opacity-5">claimable</div> */}
+            <div className="wrap-box-gray cursor-default">
+              <div >{`${claim} DEA `}</div>
+              <div className="opacity-5">claimable</div>
             </div>
             <div className="wrap-box-gradient pointer" onClick={handleClaim}>
-              Claim
+              CLAIM
             </div>
           </div>
-
-          {/* {exitable && (
-            <div className="wrap-box">
-              <div className="wrap-box-exit pointer" onClick={handleStopExit}>
-                {exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}
+          <div className="sub-description">
+            *currently claimable Stake&Yield reward Tokens.
+          </div>
+          {title !== "BPT" && (
+            <>
+              <div className="wrap-box mb-15">
+                {exit && <div className="wrap-box-gray cursor-default">
+                  <div>{`${exitBalance} ${title} `}</div>
+                  <div className="opacity-5" >
+                    redeemable
+                </div>
+                </div>}
+                <div className={`wrap-box-gradient pointer ${!exit ? 'wrap-box-gradient-single' : ''}`} onClick={handleStopExit}>
+                  {exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}
+                </div>
               </div>
-            </div>
-          )} */}
+
+              <div className="sub-description">
+                *estimated unstakeable Vault tokens.
+          </div>
+            </>)}
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

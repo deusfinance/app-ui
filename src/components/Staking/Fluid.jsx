@@ -1,5 +1,6 @@
 import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
+import { getStayledNumber } from '../../utils/utils'
 import { ExternalLink } from '../App/Link'
 
 const Fluid = (props) => {
@@ -12,9 +13,15 @@ const Fluid = (props) => {
     StakeAndYieldContract,
     chainId,
     showFluid,
-    // earned,
-    withdrawIsActive
+    withDrawTime,
+    nextEpochTime,
   } = props
+
+  // console.log(title, nextEpochTime, withDrawTime, nextEpochTime - (6 * 24 * 3600) > withDrawTime);
+  const currtimestamp = Math.floor(Date.now() / 1000)
+
+  // const withdrawIsActive = withDrawTime !== "" && nextEpochTime !== "" ? nextEpochTime - (6 * 24 * 3600) > withDrawTime : false
+  const withdrawIsActive = withDrawTime !== "" && nextEpochTime !== "" ? currtimestamp > nextEpochTime : false
 
   const handleWithDraw = () => {
     try {
@@ -24,7 +31,7 @@ const Fluid = (props) => {
         [],
         owner,
         chainId,
-        `Withdraw + Claim`
+        `WITHDRAW + REDEEM`
       ).then(() => {
         showFluid()
       })
@@ -53,8 +60,8 @@ const Fluid = (props) => {
             width="width-402 border-radius-6"
           /> */}
             <div className="wrap-box-gray-complete">
-              <div>{`${withDrawableExit} ${titleExit}`}</div>
-              <div>{`${withDrawable} ${title}`}</div>
+              <div>{`${getStayledNumber(withDrawableExit)} ${titleExit}`}</div>
+              <div>{`${(getStayledNumber(withDrawable))} ${title}`}</div>
             </div>
           </div>
           <div className="fluid-footer-container">
@@ -73,7 +80,7 @@ const Fluid = (props) => {
               </div>
             </div>
             <div className="sub-description mt-4">
-              <ExternalLink active={true} href="#">after yearn harvest. ↗</ExternalLink>
+              <ExternalLink active={true} href={"http://wiki.deus.finance/docs/stake-and-yield"}>after yearn harvest. ↗</ExternalLink>
             </div>
           </div>
         </div>

@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 
-const WaitingTime = ({ withDrawTime, showFluid }) => {
+const WaitingTime = ({ withDrawTime, nextEpochTime, showFluid }) => {
   const [waiting, setWaiting] = useState('')
+  const currtimestamp = Math.floor(Date.now() / 1000)
+  let remindedTime = null
+  if (currtimestamp > nextEpochTime) {
+    remindedTime = 0
+  } else {
+    remindedTime = nextEpochTime - currtimestamp
+  }
+  // if ((nextEpochTime - withDrawTime) < 24 * 3600) {
+  //   remindedTime = nextEpochTime + 8 * 24 * 3600
+  // } else {
+  //   remindedTime = nextEpochTime
+  // }
+  const [timer, setTimer] = useState((remindedTime) * 1000) //convert to milisecond
 
-  const [timer, setTimer] = useState(
-    moment(withDrawTime).diff(moment(new Date()))
-  )
 
   useEffect(() => {
     if (timer > 0) {

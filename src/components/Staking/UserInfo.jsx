@@ -105,10 +105,10 @@ const UserInfo = (props) => {
                 )}
               </span>
             </p>
-            <div className="font-xs mt-2  ">generating yield with this <ExternalLink active={true} href=""> Strategy ↗</ExternalLink> </div>
+            <div className="font-xs mt-2  ">generating yield with this <ExternalLink active={true} href={strategyLink}> Strategy ↗</ExternalLink> </div>
           </div>
 
-          <div className="flex-between mb-15">
+          {title !== "BPT" && <div className="flex-between mb-15">
             <div className="exit-valuet">
               <p>
                 <span className="blue-color">Exit Vault:</span> {exit ? "activated" : "deactivated"}
@@ -125,7 +125,7 @@ const UserInfo = (props) => {
                 </div>
               )}
             </div>
-          </div>
+          </div>}
         </div>
         <div>
           <div className="wrap-box mb-15">
@@ -140,23 +140,24 @@ const UserInfo = (props) => {
           <div className="sub-description">
             *currently claimable Stake&Yield reward Tokens.
           </div>
-          {(
-            <div className="wrap-box mb-15">
-              {exit && <div className="wrap-box-gray">
-                <div>{`${exitBalance} ${title} `}</div>
-                <div className="opacity-5 pointer" >
-                  redeemable
+          {title !== "BPT" && (
+            <>
+              <div className="wrap-box mb-15">
+                {exit && <div className="wrap-box-gray cursor-default">
+                  <div>{`${exitBalance} ${title} `}</div>
+                  <div className="opacity-5" >
+                    redeemable
                 </div>
-              </div>}
-              <div className={`wrap-box-gradient pointer ${!exit ? 'wrap-box-gradient-single' : ''}`} onClick={handleStopExit}>
-                {exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}
+                </div>}
+                <div className={`wrap-box-gradient pointer ${!exit ? 'wrap-box-gradient-single' : ''}`} onClick={handleStopExit}>
+                  {exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}
+                </div>
               </div>
-            </div>
-          )}
-          <div className="sub-description">
-            *estimated unstakeable Vault tokens.
-          </div>
 
+              <div className="sub-description">
+                *estimated unstakeable Vault tokens.
+          </div>
+            </>)}
         </div>
       </div>
     </div >

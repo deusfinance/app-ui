@@ -43,8 +43,8 @@ const Staking = () => {
       category === 'all'
         ? tokens[selesctedChainId]
         : tokens[selesctedChainId].filter(
-            (token) => token.category === category
-          )
+          (token) => token.category === category
+        )
     let titles = result.map((item) => item.title)
     let newOpen = open
     Object.keys(open).forEach((item) => {
@@ -93,15 +93,15 @@ const Staking = () => {
               owner={account}
               chainId={chainId}
               open={open}
-              handleTriggerClick={(token, balance) => {
+              handleTriggerClick={(token, balance, withDrawable, withDrawableExit) => {
                 setOpen((prev) => {
                   return {
                     ...prev,
-                    [token]: balance
+                    [token]: (balance || withDrawable || withDrawableExit)
                       ? true
                       : balance === undefined
-                      ? !open[token]
-                      : false
+                        ? !open[token]
+                        : false
                   }
                 })
               }}

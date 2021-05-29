@@ -98,7 +98,7 @@ const CollapseTrigger = ({
           onClick={handleStake}
         />
 
-        <span className="expand-btn pointer" name="expand-btn">
+        <span className="expand-btn pointer" name="expand-btn" onClick={open ? () => handleCollapseContent("default") : undefined}>
           {open ? 'Collapse' : 'Expand'}
           <img
             src="/img/arrow-nav.svg"

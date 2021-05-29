@@ -8,6 +8,13 @@ export default [
     exact: true,
     children: [
       {
+        id: 'mobileApp',
+        text: 'Mobile Android',
+        path: 'https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US',
+        out: true,
+        exact: true
+      },
+      {
         id: 'swap',
         text: 'SWAP',
         path: '/swap',
@@ -98,13 +105,13 @@ export default [
         out: true,
         exact: true
       },
-      {
-        id: 'litepaper',
-        text: 'LITEPAPER',
-        path: 'https://deus.finance/litepaper.pdf',
-        out: true,
-        exact: true
-      }
+      // {
+      //   id: 'litepaper',
+      //   text: 'LITEPAPER',
+      //   path: 'https://deus.finance/litepaper.pdf',
+      //   out: true,
+      //   exact: true
+      // }
     ]
   },
   {

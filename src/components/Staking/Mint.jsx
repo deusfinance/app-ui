@@ -152,7 +152,7 @@ const Mint = (props) => {
             </div>
             <div className="gray-box flex-between">
               <input
-                type="text"
+                type="number"
                 className="input-transparent"
                 placeholder={`0 ${titleExit}`}
                 value={amount}
@@ -193,17 +193,16 @@ const Mint = (props) => {
                       allowance === 0
                         ? 'flex-between'
                         : approveClick
-                        ? 'flex-between'
-                        : 'flex-center'
+                          ? 'flex-between'
+                          : 'flex-center'
                     }
                   >
                     {allowance === 0 ? (
                       <div
-                        className={`${
-                          !approveClick
+                        className={`${!approveClick
                             ? 'approve-btn pointer'
                             : 'stake-deposit-btn'
-                        } `}
+                          } `}
                         onClick={handleApprove}
                       >
                         Approve
@@ -211,11 +210,10 @@ const Mint = (props) => {
                     ) : (
                       approveClick && (
                         <div
-                          className={`${
-                            !approveClick
+                          className={`${!approveClick
                               ? 'approve-btn pointer'
                               : 'stake-deposit-btn'
-                          } `}
+                            } `}
                           onClick={handleApprove}
                         >
                           Approve
@@ -223,11 +221,10 @@ const Mint = (props) => {
                       )
                     )}
                     <div
-                      className={`${
-                        allowance !== 0
+                      className={`${allowance !== 0
                           ? 'approve-btn pointer'
                           : 'stake-deposit-btn'
-                      } `}
+                        } `}
                       onClick={handleMint}
                     >
                       Mint

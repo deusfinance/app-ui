@@ -534,6 +534,26 @@
   text-align: center;
   border-radius: 6px;
 }
+.wrap-box-fluid {
+  position: relative;
+  padding: 8px 0;
+  width: 160px;
+  height: 35px;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.wrap-box-fluid::before {
+  content: "";
+  border: 1px solid #ff0000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0px 6px 6px 0px;
+}
+
 .wrap-box-gradient::before {
   overflow: hidden;
 
@@ -1366,6 +1386,13 @@ ul.tab li input[type="radio"]:checked ~ label {
     font-size: 13px;
     /* line-height: 1px; */
     padding: 10px 10px;
+  }
+
+  .apy-wrap {
+    position: absolute;
+    font-size: 13px;
+    top: 5px;
+    right: 12px;
   }
 
   .flex-column {

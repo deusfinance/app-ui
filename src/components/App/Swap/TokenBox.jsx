@@ -33,9 +33,15 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
 
     useEffect(() => {
-        setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
-        if (TokensMap[currency.address])
-            TokensMap[currency.address].balance = getFullDisplayBalance(data, currency?.decimals)
+        const getBalance = () => {
+            setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
+            // if (TokensMap && TokensMap[currency.address])
+            //     TokensMap[currency.address].balance = getFullDisplayBalance(data, currency?.decimals)
+        }
+
+        if (currency) {
+            getBalance()
+        }
 
     }, [data, currency, wrongNetwork, TokensMap])
 

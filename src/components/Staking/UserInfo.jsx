@@ -1,6 +1,8 @@
 import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
 import { ExternalLink } from '../App/Link'
+import useWeb3 from '../../helper/useWeb3'
+import { ToastTransaction } from '../../utils/explorers'
 
 const UserInfo = (props) => {
   const {
@@ -12,6 +14,7 @@ const UserInfo = (props) => {
     claim,
     StakeAndYieldContract,
     owner,
+    maxRedeem,
     exit,
     burn,
     fullyUnlock,
@@ -19,7 +22,7 @@ const UserInfo = (props) => {
     strategyLink,
     exitBalance,
   } = props
-  // const web3 = useWeb3()
+  const web3 = useWeb3()
 
   const handleClaim = () => {
     try {
@@ -35,30 +38,37 @@ const UserInfo = (props) => {
       console.log('Error happend in Claim', error)
     }
   }
-  /*   const handleRedeem = async () => {
-      try {
-        if (exitBalance === '0' || exitBalance === '') return
-  
-        let amount = web3.utils.toWei(String(exitBalance))
-  
-        sendTransaction(
-          StakeAndYieldContract,
-          `unfreeze`,
-          [amount],
-          owner,
-          chainId,
-          `Redeem ${exitBalance} ${title}`
-        ).then(() => { })
-      } catch (error) {
-        console.log('error happend in Redeem', error)
-      }
+  const handleRedeem = async () => {
+    try {
+
+      if (exitBalance === '0' || exitBalance === '') return
+
+      // if (Number(maxRedeem) < Number(exitBalance)) {
+      //   ToastTransaction("warn", "Reedem Faild", "You could not reedem your token at the moment!")
+      //   return
+      // }
+
+      let amount = web3.utils.toWei(String(exitBalance))
+
+      sendTransaction(
+        StakeAndYieldContract,
+        `unfreeze`,
+        [amount],
+        owner,
+        chainId,
+        `Redeem ${exitBalance} ${title}`
+      ).then(() => { })
+    } catch (error) {
+      console.log('error happend in Redeem', error)
     }
-    const handleRedeemable = async () => {
-      let result = await StakeAndYieldContract.methods.userInfo(owner).call()
-      let { numbers } = result
-      let exitBalance = web3.utils.fromWei(numbers[11], 'ether')
-      updateUserInfo(exitBalance)
-    } */
+  }
+
+  /*     const handleRedeemable = async () => {
+       let result = await StakeAndYieldContract.methods.userInfo(owner).call()
+       let { numbers } = result
+       let exitBalance = web3.utils.fromWei(numbers[11], 'ether')
+       updateUserInfo(exitBalance)
+     } */
 
 
   const handleStopExit = () => {
@@ -142,21 +152,28 @@ const UserInfo = (props) => {
           </div>
           {title !== "BPT" && (
             <>
-              <div className="wrap-box mb-15">
-                {exit && <div className="wrap-box-gray cursor-default">
-                  <div>{`${exitBalance} ${title} `}</div>
-                  <div className="opacity-5" >
-                    redeemable
+              {exit && <>
+                <div className="wrap-box mb-15">
+                  <div className="wrap-box-gray cursor-default">
+                    <div>{`${exitBalance} ${title} `}</div>
+                    <div className="opacity-5" >
+                      redeemable
+                    </div>
+                  </div>
+                  <div className={`wrap-box-gradient pointer wrap-box-gradient pointer`} onClick={handleRedeem}>
+                    REEDEM
                 </div>
-                </div>}
-                <div className={`wrap-box-gradient pointer ${!exit ? 'wrap-box-gradient-single' : ''}`} onClick={handleStopExit}>
+                </div>
+
+                <div className="sub-description">
+                  *estimated unstakeable Vault tokens.
+             </div>
+              </>}
+              <div className="wrap-box mb-15">
+                <div className={`wrap-box-gradient pointer wrap-box-gradient-single`} onClick={handleStopExit}>
                   {exit ? 'Stop Vault Exit' : 'Enable Vault Exit'}
                 </div>
               </div>
-
-              <div className="sub-description">
-                *estimated unstakeable Vault tokens.
-          </div>
             </>)}
         </div>
       </div>

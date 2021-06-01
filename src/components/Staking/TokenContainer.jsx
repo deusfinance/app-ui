@@ -65,6 +65,7 @@ const TokenContainer = (props) => {
     fullyUnlock: '',
     withDrawTime: '',
     nextEpochTime: '',
+    maxRedeem: 0,
     exitBalance: ''
   })
 
@@ -94,6 +95,7 @@ const TokenContainer = (props) => {
       fullyUnlock: '',
       withDrawTime: '',
       nextEpochTime: '',
+      maxRedeem: 0,
       exitBalance: ''
     })
   }, [owner, chainId]) // eslint-disable-line
@@ -187,7 +189,7 @@ const TokenContainer = (props) => {
           if (portion >= 1) {
             exitBalance = balance
           } else {
-            exitBalance = balance * portion
+            exitBalance = String(balance * portion)
           }
         }
         else {
@@ -215,13 +217,31 @@ const TokenContainer = (props) => {
         // if (showFluid <= 0 && (withDrawable > 0 || withDrawableExit > 0)) {
         //   setShowFluid(true)
         // }
+        let controller = await StakeAndYieldContract.methods
+          .controller()
+          .call()
+
+
+        let maxRedeem = 0
+
+        if (tokenName === "deus") {
+          const deusContract = makeContract(web3, abi, addresses['token']["deus"][chainId])
+          const deusBalance = await deusContract.methods.balanceOf(controller).call()
+          maxRedeem = web3.utils.fromWei(deusBalance, 'ether')
+        }
+
+        if (tokenName === "dea") {
+          const deaContract = makeContract(web3, abi, addresses['token']["dea"][chainId])
+          const deaBalance = await deaContract.methods.balanceOf(controller).call()
+          maxRedeem = web3.utils.fromWei(deaBalance, 'ether')
+        }
+
+        console.log(tokenName, maxRedeem);
+        console.log(controller);
 
         let stakeTypeName = ''
         let strategyLink = ''
         if (stakeType === '2' || stakeType === '3') {
-          let controller = await StakeAndYieldContract.methods
-            .controller()
-            .call()
           const ControllerContract = makeContract(
             web3,
             ControllerABI,
@@ -310,6 +330,7 @@ const TokenContainer = (props) => {
             nextEpochTime,
             strategyLink,
             own,
+            maxRedeem,
             exitBalance
           }
         })

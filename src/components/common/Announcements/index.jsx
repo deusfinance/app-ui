@@ -6,12 +6,8 @@ const Announcements = () => {
 
     const messages = [
         {
-            key: "stakingV2",
-            text: <span> Staking V2 (stake and yield + vault exit system) is now live. <Link className="link" to="/stake-and-yield">Click here </Link>.</span>
-        },
-        {
-            key: "sync50BSC",
-            text: <span> 50 Stocks on BSC are now Live <Link className="link" to="/crosschain/bsc/synchronizer">Click here </Link>.</span>
+            key: "coinbaseMigrator",
+            text: <span> Migrating wCoinbase to dCOIN will be open until 03.06.2021 17:30 UTC+0 afterwards we will take down the migrator page in Order to clear the outstanding Synchronizer Debt positions.. <Link className="link" to="/migrator">Click here </Link>.</span>
         },
     ]
 

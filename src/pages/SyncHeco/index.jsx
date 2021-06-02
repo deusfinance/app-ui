@@ -73,38 +73,8 @@ const SyncHeco = () => {
         initialCap()
     }, [account, chainId])//eslint-disable-line
 
-    const getConducted = useCallback(async () => ({
-        "count": 5,
-        "tokens": [
-            {
-                "id": "KSM",
-                "long": "0xaB8222f93C16858Eb789283A0feF1f5B3a4a6EAE",
-                "short": "0x0b188B5Fd69B48C7103187c0DeEbEbcd0FcADc2a"
-            },
-            {
-                "id": "MATIC",
-                "long": "0xC9f186BbFEb3845E7Fa4Ad273283e289AAd10f43",
-                "short": "0x8db52955AEfdE84d21583528deB57B7Cb6f33a31"
-            },
-            {
-                "id": "ADA",
-                "long": "0x42aCcEed58a523Ee767f3BdeeE6FF16645c28367",
-                "short": "0xC2447ed7fC596F9DDf664f830545D652c08A7EBe"
-            },
-            {
-                "id": "AVAX",
-                "long": "0xa710C75d1e20cBf6E124E555D2332ffc1dcF05FB",
-                "short": "0xac237b419CaF67F6192F6294460Bb822beE2259E"
-            },
-            {
-                "id": "BNB",
-                "long": "0x03D29ab626b76D1F756D46Db9Bc69A1391d59DD7",
-                "short": "0x4cc6D349B2cA7aEB249fF9689f4F6f8dEfBAD656"
-            }
-        ]
-    }), [])
 
-    // const getConducted = useCallback(() => fetcher("https://oracle3.deus.finance/heco/conducted.json", { cache: "no-cache" }), [])
+    const getConducted = useCallback(() => fetcher("https://oracle3.deus.finance/heco/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle3.deus.finance/heco/price.json", { cache: "no-cache" }), [])
 
     const balances = useAssetBalances(conducted, 256)
@@ -522,7 +492,7 @@ const SyncHeco = () => {
                         <div style={{ margin: "16px 0" }}></div>
 
                         <SwapStockButton
-                            validChain={56}
+                            validChain={256}
                             loading={loadingAllowance}
                             handleSwap={handleSwap}
                             from_token={from_token}

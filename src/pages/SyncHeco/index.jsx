@@ -158,7 +158,7 @@ const SyncHeco = () => {
 
     //eslint-disable-next-line
     const initialCap = useCallback(async () => {
-        if (account && chainId && chainId === 56) {
+        if (account && chainId && chainId === 256) {
             setLoadingCAP(true)
             web3Class.getUsedCap().then(used => {
                 setRemindCap(parseFloat(used))
@@ -504,7 +504,7 @@ const SyncHeco = () => {
 
                         <div style={{ margin: "6px 0" }}></div>
                     </div>
-                    {chainId && chainId === 56 && <SyncCap remindedAmount={remindCap} />}
+                    {chainId && chainId === 256 && <SyncCap remindedAmount={remindCap} />}
                     {/* <TimerTrading /> */}
                 </div>
             </div>

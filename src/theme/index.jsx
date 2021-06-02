@@ -48,6 +48,7 @@ export function colors(darkMode) {
     grad1: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%)' : 'linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%)',
     grad2: darkMode ? "linear-gradient(135deg, rgba(91, 204, 189, 0.14902) 0%, rgba(97, 192, 191, 0.14902) 33.33%, rgba(85, 188, 200, 0.14902) 74.49%, rgba(105, 207, 184, 0.14902) 100%)" : "rgba(105, 207, 184, 0.14902)",
     grad3: darkMode ? "linear-gradient(247.41deg, #A2FBB0 16.32%, #5EC4D6 87.6%);" : "rgba(105, 207, 184, 0.14902)",
+    grad4: darkMode ? "linear-gradient(90deg, #DFF4FE 0%, #8EB5FF 100%)" : "linear-gradient(90deg, #DFF4FE 0%, #8EB5FF 100%)",
 
     //label
     label_primary: darkMode ? "#0779e4" : "rgb(28, 28, 28)",

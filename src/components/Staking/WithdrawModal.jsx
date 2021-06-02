@@ -26,7 +26,7 @@ const customStyles = {
   }
 }
 const WithdrawModal = (props) => {
-  const { open, hide, handleOff, handleWidthraw } = props
+  const { open, hide, handleWidthraw } = props
 
   return (
     <ReactModal

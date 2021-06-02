@@ -3,7 +3,6 @@ import { sendTransaction } from '../../utils/Stakefun'
 import DrawableAmount from './DrawableAmount'
 import WaitingTime from './WaitingTime'
 import useWeb3 from '../../helper/useWeb3'
-import { isZero } from '../../constant/number'
 import WithdrawModal from './WithdrawModal'
 
 const Frozen = (props) => {

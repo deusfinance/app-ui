@@ -2,7 +2,7 @@ import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
 import { ExternalLink } from '../App/Link'
 import useWeb3 from '../../helper/useWeb3'
-import { ToastTransaction } from '../../utils/explorers'
+// import { ToastTransaction } from '../../utils/explorers'
 
 const UserInfo = (props) => {
   const {
@@ -14,7 +14,7 @@ const UserInfo = (props) => {
     claim,
     StakeAndYieldContract,
     owner,
-    maxRedeem,
+    // maxRedeem,
     exit,
     burn,
     fullyUnlock,

@@ -80,4 +80,26 @@ const NetworksData = {
         rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545"],
         blockExplorerUrls: ["https://testnet.bscscan.com"],
     },
+    128: {
+        chainId: "0x80",
+        chainName: "Huobi ECO Chain Mainnet",
+        nativeCurrency: {
+            name: "HT",
+            symbol: "HT",
+            decimals: 18,
+        },
+        rpcUrls: ["https://http-mainnet.hecochain.com"],
+        blockExplorerUrls: ["https://hecoinfo.com"],
+    },
+    256: {
+        chainId: "0x100",
+        chainName: "Huobi ECO Chain Testnet",
+        nativeCurrency: {
+            name: "htt",
+            symbol: "htt",
+            decimals: 18,
+        },
+        rpcUrls: ["https://http-testnet.hecochain.com"],
+        blockExplorerUrls: ["https://testnet.hecoinfo.com"],
+    },
 }

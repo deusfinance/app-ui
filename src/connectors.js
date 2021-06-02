@@ -13,7 +13,9 @@ const supportedChainIds = [
   0x38, // BSC
   0x61, // BSC TEST
   250, // Fantom
-  4002 // Fantom TEST
+  4002, // Fantom TEST
+  128, // HECO Main
+  256 // HECO TEST
 ]
 
 const RPC_URLS = {
@@ -23,6 +25,8 @@ const RPC_URLS = {
   97: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   100: 'https://rpc.xdaichain.com',
   4002: 'https://rpc.testnet.fantom.network/',
+  128: 'https://http-mainnet-node.huobichain.com',
+  256: 'https://http-testnet.hecochain.com',
   250: 'https://rpcapi.fantom.network'
 }
 

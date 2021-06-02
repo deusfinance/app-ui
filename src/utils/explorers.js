@@ -14,7 +14,9 @@ const EXPLORER_PREFIXES = {
   4: 'rinkeby.',
   56: '',
   100: 'mainnet',
-  97: 'testnet.'
+  97: 'testnet.',
+  128: '',
+  256: 'testnet.',
 }
 
 function getEtherscanLink(chainId, data, type) {
@@ -66,6 +68,22 @@ function getBscscanLink(chainId, data, type) {
     }
   }
 }
+function getHechoInfo(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[128]
+    }hecoinfo.com`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
 
 export function getTransactionLink(chainId, data, type) {
   switch (chainId) {
@@ -80,6 +98,11 @@ export function getTransactionLink(chainId, data, type) {
     }
     case 100: {
       return getBlockscoutLink(chainId, data, type)
+    }
+
+    case 256:
+    case 128: {
+      return getHechoInfo(chainId, data, type)
     }
     default: {
       return getEtherscanLink(chainId, data, type)

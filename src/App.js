@@ -14,7 +14,7 @@ const Deus = React.lazy(() => import('./components/Deus'))
 // const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
 const dbETH = React.lazy(() => import('./pages/dbETH'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
-const Sync2 = React.lazy(() => import('./pages/Sync2'));
+const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
@@ -48,6 +48,11 @@ function App() {
                   path="/crosschain/bsc/synchronizer"
                   component={SyncBSC}
                 />
+                <Route
+                  exact
+                  path="/crosschain/heco/synchronizer"
+                  component={SyncHeco}
+                />
                 <Route exact path="/synchronizer" component={SyncMain} />
                 <Route
                   exact
@@ -61,7 +66,6 @@ function App() {
                 /> */}
                 <Route exact path="/dbETH" component={dbETH} />
                 <Route exact path="/bridge" component={Bridge} />
-                <Route exact path="/synchronizer2" component={Sync2} />
                 <Route exact path="/swap2" component={Swap2} />
                 {/* <Route exact path="/test-style" component={Test} /> */}
                 <Redirect exact from="/" to="/swap" />

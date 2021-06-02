@@ -7,7 +7,8 @@ export const deusChains = {
     4: "Rinkbey",
     100: "xDAI",
     56: "BSC",
-    97: "BSC-Test"
+    97: "BSC-Test",
+    256: "HECO",
 }
 
 export const getCorrectChainId = (str) => {

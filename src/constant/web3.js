@@ -6,4 +6,6 @@ export const ChainMap = {
     XDAI: 100,
     BSC: 56,
     BSC_TESTNET: 97,
+    HECO: 128,
+    HECO_TESTNET: 256,
 }

@@ -1,13 +1,9 @@
-import { injected } from '../connectors';
-import { toast } from 'react-toastify';
+import { ToastTransaction } from '../utils/explorers';
 
 export const addRPC = (account, activate, chainId = 100) => {
     console.log(account, chainId)
     if (chainId === 1) {
-        toast.info("Please switch your network to Mainnet manually.", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false
-        });
+        ToastTransaction("info", "Switch Network", "Please switch your network to Mainnet manually.", { autoClose: true })
         return
     }
     if (account && (window.ethereum)) {
@@ -18,13 +14,6 @@ export const addRPC = (account, activate, chainId = 100) => {
             })
             .then((result) => {
                 console.log("success");
-                setTimeout(() => {
-                    try {
-                        activate(injected)
-                    } catch (error) {
-                        console.log("error ", error);
-                    }
-                }, 500)
             })
             .catch((error) => {
                 console.log('We can encrypt anything without the key.');

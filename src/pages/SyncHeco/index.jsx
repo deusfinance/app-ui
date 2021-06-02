@@ -18,11 +18,8 @@ import SyncCap from '../../components/Sync/SyncCap';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
-
-import './styles/sync-xdai.scss';
 import useAssetBalances from '../../helper/useAssetBalances';
-
-
+import './styles/sync-xdai.scss';
 
 const SyncHeco = () => {
 
@@ -58,11 +55,8 @@ const SyncHeco = () => {
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
     const { account, chainId } = useWeb3React()
-
     const [web3Class, setWeb3Class] = useState(new StockService(account, 256))
-    const apis = [
-        "https://oracle3.deus.finance/heco/signatures.json",
-    ]
+    const apis = ["https://oracle3.deus.finance/heco/signatures.json",]
     const { t } = useTranslation()
 
     let transactionType = {}
@@ -76,11 +70,6 @@ const SyncHeco = () => {
 
     const getConducted = useCallback(() => fetcher("https://oracle3.deus.finance/heco/conducted.json", { cache: "no-cache" }), [])
     const getPrices = useCallback(() => fetcher("https://oracle3.deus.finance/heco/price.json", { cache: "no-cache" }), [])
-
-    const balances = useAssetBalances(conducted, 256)
-    // console.log(balances);
-
-
     const getBuySell = useCallback(() => {
         let reportMessages = ""
         return Promise.allSettled(
@@ -105,6 +94,8 @@ const SyncHeco = () => {
     }, [apis])
 
     const getStocks = useCallback(() => fetcher("https://oracle1.deus.finance/registrar-detail.json", { cache: "no-cache" }), [])
+
+    const balances = useAssetBalances(conducted, 256)
 
     useEffect(() => {
         handleInitToken("from", { ...usdTestToken })
@@ -314,7 +305,7 @@ const SyncHeco = () => {
             }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    <a href={`https://bscscan.com/tx/${hash}`} target="_blank" rel="noopener noreferrer">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://testnet.hecoinfo.com/tx/${hash}`} target="_blank" rel="noopener noreferrer">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
                     closeOnClick: false,

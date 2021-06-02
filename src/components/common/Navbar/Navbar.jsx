@@ -7,12 +7,13 @@ import SubNavbar from './SubNavbar';
 import { formatAddress, getStayledNumber, notify, isDesktop } from '../../../utils/utils';
 import { SwapService } from '../../../services/SwapService';
 import Wallets from './Wallets';
-import { getCorrectChainId, deusChains } from '../../../config';
 import { addRPC } from '../../../services/addRPC';
 import LanguageSelector from './LanguageSelector';
 import { useTranslation } from 'react-i18next'
-import './navbar.scss';
+import { getCorrectChains } from '../../../constant/correctChain';
+import { NameChainMap } from '../../../constant/web3';
 
+import './navbar.scss';
 const Navs = navbarItems
 
 const Navbar = () => {
@@ -24,7 +25,6 @@ const Navbar = () => {
     const [web3, setWeb3] = useState(null)
     const [showWallets, setShowWallets] = useState(false)
     const location = useLocation()
-
     const { t } = useTranslation()
 
     useEffect(() => {
@@ -89,7 +89,6 @@ const Navbar = () => {
     const handleConnect = async () => {
         setShowWallets(true)
         return
-
     }
 
     const toggleNav = () => {
@@ -101,6 +100,7 @@ const Navbar = () => {
     }
 
     const connectCalass = account ? "connected" : "connect"
+    const validChains = getCorrectChains(location.pathname)
 
     return (<>
         {showWallets && <Wallets setShow={setShowWallets} />}
@@ -118,16 +118,16 @@ const Navbar = () => {
                     </li>}
 
                     {chainId && <li className="grad-wrap connect-wrap network-name" >
-                        <div className={`grad connected`} style={{ cursor: "default" }}>{deusChains[chainId]}</div>
+                        <div className={`grad connected`} style={{ cursor: "default" }}>{NameChainMap[chainId]}</div>
                     </li>}
 
-                    {chainId && chainId !== getCorrectChainId(location.pathname) && <>
+                    {chainId && validChains.indexOf(chainId) === -1 && <>
                         <li className="grad-wrap  wrong-network" >
                             <div className={`grad connected`} style={{ cursor: "default" }}>{t("WrongNetwork")}</div>
                         </li>
                         <li className="grad-wrap  connect-wrap change-network">
-                            <div className={`grad connect`} onClick={() => addRPC(account, activate, getCorrectChainId(location.pathname))}>
-                                {t("changeTo")} {deusChains[getCorrectChainId(location.pathname)]}
+                            <div className={`grad connect`} onClick={() => addRPC(account, activate, validChains[0])}>
+                                {t("changeTo")} {NameChainMap[validChains[0]] || "ETH"}
                             </div>
                         </li>
                     </>}
@@ -144,7 +144,6 @@ const Navbar = () => {
             </div>
             <div className="right-nav">
                 <ul id="right-ul">
-
                     {
                         Navs.reverse().map(nav => {
                             const classes = nav.linkDisabled ? "disabled-link" : ""

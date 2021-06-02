@@ -13,7 +13,6 @@ const MarketNavbar = () => {
             try {
                 const resp = await fetch(url)
                 const result = await resp.json()
-                console.log(result);
                 const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.uniswapLockedValue + result.balancerLockedValue + result.etherLockedInMarketMaker + result.stakingV2LockedValue)
                 const vaults = parseInt(result.vaultLockedValue)
 

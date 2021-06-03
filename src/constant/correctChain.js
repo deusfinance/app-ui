@@ -60,6 +60,7 @@ export const correctChains = [
 ]
 
 export function getCorrectChains(path) {
+    if (path === "/") return [ChainMap.MAINNET]
     for (let i = 0; i < correctChains.length; i++) {
         if (path.includes(correctChains[i].url)) {
             if (correctChains[i].exact) {

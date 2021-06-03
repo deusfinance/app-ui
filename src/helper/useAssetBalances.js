@@ -30,7 +30,6 @@ const useAssetBalances = (conducted, validChainId) => {
             })
             if (calls) {
                 const concatCalls = concat(...calls)
-                console.log(concatCalls);
                 let balanceMap = {}
                 const result = await multicall(web3, ERC20Abi, concatCalls, chainId)
                 for (let i = 0; i < result.length; i++) {

@@ -3,7 +3,7 @@ import { ToastTransaction } from '../utils/explorers';
 export const addRPC = (account, activate, chainId = 100) => {
     console.log(account, chainId)
     if (chainId === 1) {
-        ToastTransaction("info", "Switch Network", "Please switch your network to Mainnet manually.", { autoClose: true })
+        ToastTransaction("info", "Switch Network", "Please switch your network to ETH chains manually.", { autoClose: true })
         return
     }
     if (account && (window.ethereum)) {

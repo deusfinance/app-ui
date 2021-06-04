@@ -7,10 +7,11 @@ export class StockService {
     constructor(account, chainId = 128) {
         this.account = account;
         this.chainId = chainId;
+        this.usdtokenAddress = "0xD23ecf29F12F0385a42e7e9643df8F0Ea5CB595c"
         if (chainId === 128) {
             this.marketMaker = "0x3b62F3820e0B035cc4aD602dECe6d796BC325325";
         } else {
-            this.marketMaker = "0xe0CaAd2916054559e268aD7A11926F61DF0e8483";
+            this.marketMaker = "0xeF0500F9B82E72f045499932F0925C6393A5BD77";
         }
     }
 
@@ -28,6 +29,7 @@ export class StockService {
         wbtc: 8,
         usdt: 6,
         usdc: 6,
+        usd: 8,
         coinbase: 18,
         dea: 18,
         deus: 18,
@@ -43,6 +45,25 @@ export class StockService {
         return ans.toString()
     }
 
+    
+    _fromWei(value, token) {
+        let max = this.TokensMaxDigit[token] ? this.TokensMaxDigit[token] : 18
+        let ans;
+        if (typeof value != "string") {
+            ans = value.toString()
+        } else {
+            ans = value;
+        }
+        while (ans.length < max) {
+            ans = "0" + ans;
+        }
+        ans = ans.substr(0, ans.length - max) + "." + ans.substr(ans.length - max);
+        if (ans[0] === ".") {
+            ans = "0" + ans;
+        }
+        return ans.toString()
+    }
+
     checkWallet = () => this.account && this.chainId
 
     getAddr = (tokenName) => addrs[tokenName][this.chainId.toString()]
@@ -54,7 +75,7 @@ export class StockService {
 
         if (!account) return
 
-        if (tokenAddress !== this.getTokenAddr("busd")) {
+        if (tokenAddress !== this.usdtokenAddress) {
             console.log("hii");
             return 1000000000000000
         }
@@ -82,27 +103,18 @@ export class StockService {
     }
 
 
-    getEtherBalance(account) {
-        return this.infuraWeb3.eth.getBalance(account).then(balance => {
-            // console.log(balance);
-            // console.log("balance ", balance);
-            return Web3.utils.fromWei(balance, 'ether');
-        })
-    }
-
-
     getTokenBalance = (tokenAddress, account) => {
         this.makeProvider()
         if (!account) return
 
-        if (tokenAddress === this.xdaiTokenAddress)
-            return this.getEtherBalance(account)
 
         console.log(tokenAddress, account);
 
         const TokenContract = new this.infuraWeb3.eth.Contract(tokenABI, tokenAddress)
         return TokenContract.methods.balanceOf(account).call().then(balance => {
-            console.log(tokenAddress, balance);
+           if(tokenAddress===this.usdtokenAddress){
+               return this._fromWei(balance,"usd")
+           }
             return Web3.utils.fromWei(balance, 'ether');
         })
     }

@@ -9,6 +9,7 @@ const UserInfo = (props) => {
     own,
     balance,
     title,
+    titleExit,
     chainId,
     stakeTypeName,
     claim,
@@ -155,7 +156,7 @@ const UserInfo = (props) => {
               {exit && <>
                 <div className="wrap-box mb-15">
                   <div className="wrap-box-gray cursor-default">
-                    <div>{`${exitBalance} ${title} `}</div>
+                    <div>{`${exitBalance} ${titleExit} `}</div>
                     <div className="opacity-5" >
                       redeemable
                     </div>

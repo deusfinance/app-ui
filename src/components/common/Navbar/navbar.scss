@@ -9,13 +9,6 @@ nav {
     color: #ffffff;
 
     .language {
-        // input[type="radio"] {
-        //     opacity: 0;
-        //     width: 1px;
-        //     height: 1px;
-        //     position: absolute;
-        //     left: 15px;
-        // }
         input[type="radio"] {
             display: none;
         }
@@ -81,32 +74,34 @@ nav {
 
             .connect-wrap {
                 margin-left: 10px;
-                font-size: 15px;
+                font-size: 13px;
                 height: 35px;
-                width: 150px;
+                padding: 0 10px;
+                width: unset;
             }
 
             li:nth-child(2) {
                 margin-left: 10px;
-                width: 150px;
+                width: unset;
             }
 
-            .tvl-wrap {
-                width: 170px;
-            }
             .network-name {
-                width: 100px;
+                width: unset;
+                padding: 0 10px;
                 display: flex;
             }
             .wrong-network {
                 margin-left: 10px;
                 padding: 0;
+                padding: 0 10px;
                 height: 35px;
-                width: 135px;
+                width: unset;
                 background: rgba(213, 0, 0, 0.2);
                 border: 1px solid #d50000;
                 font-size: 12.5px;
                 margin-top: 0;
+                text-transform: unset;
+                border-radius: 6px;
                 .connected {
                     color: #d40000;
                     background: rgba(213, 0, 0, 0.05);
@@ -237,7 +232,7 @@ nav {
                 color: #ffffff;
                 text-align: left;
                 text-decoration: none;
-                font-size: 17px;
+                font-size: 15px;
                 display: block;
                 white-space: nowrap;
                 .active {
@@ -267,7 +262,7 @@ nav {
         }
         ul {
             margin-right: 10px;
-            font-size: 15px;
+            font-size: 13px;
             list-style-type: none;
             height: 101%;
             display: flex;

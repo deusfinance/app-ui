@@ -7,6 +7,7 @@ export class StockService {
     constructor(account, chainId = 128) {
         this.account = account;
         this.chainId = chainId;
+        
         this.usdtokenAddress = "0xD23ecf29F12F0385a42e7e9643df8F0Ea5CB595c"
         if (chainId === 128) {
             this.marketMaker = "0x3b62F3820e0B035cc4aD602dECe6d796BC325325";

@@ -70,38 +70,6 @@ const SyncHeco = () => {
 
     const getConducted = useCallback(() => fetcher("https://oracle3.deus.finance/heco/conducted.json", { cache: "no-cache" }), [])
   
-    const getConducted2 = useCallback(async() => (  {
-        "count": 5,
-        "tokens": [
-            {
-                "id": "KSM",
-                "long": "0x8cf0097bE789382B5426edd15D0897fF31760408",
-                "short": "0x99a3b63dDf45a59B57bCCb022b1705a89793E1b1"
-            },
-            {
-                "id": "MATIC",
-                "long": "0x5C1b3a3588bC832c021F7f7E70C645918FCe1f7F",
-                "short": "0x66D554F47BF8a1677B7eAc59ec81e3aFd99B5a16"
-            },
-            {
-                "id": "ADA",
-                "long": "0x1ed0029dC3Eb7C61c63B410bd8fcEE549B326737",
-                "short": "0xAB1c691FBa25ae8b668fbF89861ED931212Ee022"
-            },
-            {
-                "id": "AVAX",
-                "long": "0x115d505d67d424125Ee8FE94cDCE0E21f4bAd76B",
-                "short": "0x628C506564A1172c07f2ef55Ae5DdeE5a902006A"
-            },
-            {
-                "id": "BNB",
-                "long": "0xb7031073146347bC80d3f4974180E69a4CA56c5b",
-                "short": "0x915cE818E618f31affaa8e55f111a1BfB2E7c643"
-            }
-        ]
-    }), [])
-
-  
     const getPrices = useCallback(() => fetcher("https://oracle3.deus.finance/heco/price.json", { cache: "no-cache" }), [])
     const getBuySell = useCallback(() => {
         let reportMessages = ""

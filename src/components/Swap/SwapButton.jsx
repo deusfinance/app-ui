@@ -43,7 +43,7 @@ const SwapButton = ({ approved, token, handleSwap, isMobile }) => {
         </>}
         {
             !account && <div className="swap-btn-wrap grad-wrap dapp-link" onClick={() => setShowWallets(true)}>
-                <div className="swap-btn grad">{t("connectWallet")}</div>
+                <div className="swap-btn grad">{t("ConnectWallet")}</div>
             </div>
         }
 

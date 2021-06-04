@@ -21,5 +21,5 @@ export const NameChainMap = {
     56: "BSC",
     128: "HECO",
     256: "HECOT",
-    97: "BSC TEST",
+    97: "BSCT",
 }

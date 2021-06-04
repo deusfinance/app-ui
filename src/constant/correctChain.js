@@ -55,7 +55,7 @@ export const correctChains = [
     },
     {
         url: "/bridge",
-        chains: [ChainMap.RINKEBY],
+        chains: [ChainMap.RINKEBY, ChainMap.BSC_TESTNET],
     },
 ]
 

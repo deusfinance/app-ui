@@ -28,6 +28,7 @@ const useAssetBalances = (conducted, validChainId) => {
                         params: [account],
                     }]
             })
+
             if (calls) {
                 const concatCalls = concat(...calls)
                 let balanceMap = {}

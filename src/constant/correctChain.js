@@ -17,7 +17,7 @@ export const correctChains = [
     },
     {
         url: "/crosschain/heco",
-        chains: [ChainMap.HECO_TESTNET],
+        chains: [ChainMap.HECO],
     },
     {
         url: "/synchronizer",

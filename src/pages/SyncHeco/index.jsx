@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import { TokenType } from '../../config';
 import { StockService } from '../../services/hecoService';
 import { useTranslation } from 'react-i18next'
-import { handleCalcPairPrice, usdTestToken, fetcher, emptyToken } from '../../services/stock';
+import { handleCalcPairPrice, husdToken, fetcher, emptyToken } from '../../services/stock';
 import { useWeb3React } from '@web3-react/core';
 import SyncCap from '../../components/Sync/SyncCap';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
@@ -23,7 +23,7 @@ import './styles/sync-xdai.scss';
 
 const SyncHeco = () => {
 
-    const [tokens,] = useState([{ ...usdTestToken, type: TokenType.Main }])
+    const [tokens,] = useState([{ ...husdToken, type: TokenType.Main }])
 
     const [swap, setSwap] = useState(
         {
@@ -55,21 +55,22 @@ const SyncHeco = () => {
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
     const { account, chainId } = useWeb3React()
-    const [web3Class, setWeb3Class] = useState(new StockService(account, 256))
+    const syncChainId = 128
+    const [web3Class, setWeb3Class] = useState(new StockService(account, syncChainId))
     const apis = ["https://oracle3.deus.finance/heco/signatures.json",]
     const { t } = useTranslation()
 
     let transactionType = {}
     useEffect(() => {
         if (account && chainId) {
-            setWeb3Class(new StockService(account, 256))
+            setWeb3Class(new StockService(account, syncChainId))
         }
         initialCap()
     }, [account, chainId])//eslint-disable-line
 
 
     const getConducted = useCallback(() => fetcher("https://oracle3.deus.finance/heco/conducted.json", { cache: "no-cache" }), [])
-  
+
     const getPrices = useCallback(() => fetcher("https://oracle3.deus.finance/heco/price.json", { cache: "no-cache" }), [])
     const getBuySell = useCallback(() => {
         let reportMessages = ""
@@ -96,10 +97,10 @@ const SyncHeco = () => {
 
     const getStocks = useCallback(() => fetcher("https://oracle1.deus.finance/registrar-detail.json", { cache: "no-cache" }), [])
 
-    const balances = useAssetBalances(conducted, 256)
+    const balances = useAssetBalances(conducted, syncChainId)
 
     useEffect(() => {
-        handleInitToken("from", { ...usdTestToken })
+        handleInitToken("from", { ...husdToken })
         setSubscrible(setInterval(() => {
             getPrices().then((res) => {
                 setPrice(res)
@@ -150,7 +151,7 @@ const SyncHeco = () => {
 
     //eslint-disable-next-line
     const initialCap = useCallback(async () => {
-        if (account && chainId && chainId === 256) {
+        if (account && chainId && chainId === syncChainId) {
             setLoadingCAP(true)
             web3Class.getUsedCap().then(used => {
                 setRemindCap(parseFloat(used))
@@ -484,7 +485,7 @@ const SyncHeco = () => {
                         <div style={{ margin: "16px 0" }}></div>
 
                         <SwapStockButton
-                            validChain={256}
+                            validChain={syncChainId}
                             loading={loadingAllowance}
                             handleSwap={handleSwap}
                             from_token={from_token}
@@ -496,7 +497,7 @@ const SyncHeco = () => {
 
                         <div style={{ margin: "6px 0" }}></div>
                     </div>
-                    {chainId && chainId === 256 && <SyncCap remindedAmount={remindCap} />}
+                    {chainId && chainId === syncChainId && <SyncCap remindedAmount={remindCap} />}
                     {/* <TimerTrading /> */}
                 </div>
             </div>

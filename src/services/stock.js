@@ -14,8 +14,8 @@ export const wxdaiToken = new Token(1, "0xe91d153e0b41518a2ce8dd3d7944fa863463a9
 export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 export const busdTestToken = new Token(97, "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 
-export const usdToken = new Token(128, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "USD", "USD", "/tokens/busd.svg");
-export const usdTestToken = new Token(256, "0xD23ecf29F12F0385a42e7e9643df8F0Ea5CB595c", 8, "USD", "USD", "/tokens/busd.svg");
+export const husdToken = new Token(128, "0x0298c2b32eae4da002a15f36fdf7615bea3da047", 18, "HUSD", "HUSD", "/tokens/husd.svg");
+export const husdTestToken = new Token(256, "0xD23ecf29F12F0385a42e7e9643df8F0Ea5CB595c", 8, "USD", "USD", "/tokens/busd.svg");
 
 export const fetcher = async function (url, init) {
     try {

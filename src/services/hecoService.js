@@ -4,11 +4,11 @@ import { bscSynchronizerABI, tokenABI } from '../utils/abis';
 
 export class StockService {
 
-    constructor(account, chainId = 128) {
+    constructor(account, chainId = 256) {
         this.account = account;
         this.chainId = chainId;
-        
-        this.usdtokenAddress = "0xD23ecf29F12F0385a42e7e9643df8F0Ea5CB595c"
+
+        this.husd = "0x0298c2b32eae4da002a15f36fdf7615bea3da047"
         if (chainId === 128) {
             this.marketMaker = "0x3b62F3820e0B035cc4aD602dECe6d796BC325325";
         } else {
@@ -46,7 +46,7 @@ export class StockService {
         return ans.toString()
     }
 
-    
+
     _fromWei(value, token) {
         let max = this.TokensMaxDigit[token] ? this.TokensMaxDigit[token] : 18
         let ans;
@@ -76,7 +76,7 @@ export class StockService {
 
         if (!account) return
 
-        if (tokenAddress !== this.usdtokenAddress) {
+        if (tokenAddress !== this.husd) {
             console.log("hii");
             return 1000000000000000
         }
@@ -113,9 +113,9 @@ export class StockService {
 
         const TokenContract = new this.infuraWeb3.eth.Contract(tokenABI, tokenAddress)
         return TokenContract.methods.balanceOf(account).call().then(balance => {
-           if(tokenAddress===this.usdtokenAddress){
-               return this._fromWei(balance,"usd")
-           }
+            if (tokenAddress === this.husd) {
+                return this._fromWei(balance, "usd")
+            }
             return Web3.utils.fromWei(balance, 'ether');
         })
     }
@@ -177,7 +177,7 @@ export class StockService {
         const metamaskWeb3 = new Web3(Web3.givenProvider);
         const marketMakerContract = new metamaskWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
         return marketMakerContract.methods.remainingDollarCap().call().then(info => {
-            return Web3.utils.fromWei(info, 'ether');
+            return this._fromWei(info, "usd")
         })
     }
 }

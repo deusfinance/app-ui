@@ -1,8 +1,9 @@
+import { ChainMap } from '../constant/web3';
 import { ToastTransaction } from '../utils/explorers';
 
 export const addRPC = (account, activate, chainId = 100) => {
     console.log(account, chainId)
-    if (chainId === 1) {
+    if (chainId === ChainMap.MAINNET || chainId === ChainMap.RINKEBY) {
         ToastTransaction("info", "Switch Network", "Please switch your network to ETH chains manually.", { autoClose: true })
         return
     }

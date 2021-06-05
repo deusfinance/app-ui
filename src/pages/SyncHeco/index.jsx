@@ -307,7 +307,7 @@ const SyncHeco = () => {
             }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    <a href={`https://testnet.hecoinfo.com/tx/${hash}`} target="_blank" rel="noopener noreferrer">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://hecoinfo.com/tx/${hash}`} target="_blank" rel="noopener noreferrer">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
                     closeOnClick: false,

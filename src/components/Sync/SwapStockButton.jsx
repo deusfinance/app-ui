@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { TokenType } from '../../config';
 import { WaveLoading } from 'react-loadingg';
+import Wallets from '../common/Navbar/Wallets';
+
 import { useTranslation } from 'react-i18next';
 import './styles/stock-button.scss';
 
 const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, handleSwap, isLong, prices, remindCap, validChain }) => {
     const { account, chainId } = useWeb3React()
+    const [showWallets, setShowWallets] = useState(false)
     const { conducted } = to_token
     const { t } = useTranslation()
 
@@ -66,7 +69,7 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, han
     }
 
 
-    if (to_token.conducted || from_token.conducted || isClosed || !account || (validChain && chainId && chainId !== validChain) || remindCap < amount) {
+    if (to_token.conducted || from_token.conducted || isClosed || (validChain && chainId && chainId !== validChain) || remindCap < amount) {
 
         let errTxt = null
 
@@ -76,11 +79,9 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, han
             errTxt = t("wrongNetwork")
         } else if (isNaN(amount) || Number(amount) === 0) {
             errTxt = t("enterAmount")
-        } else if (!account) {
-            errTxt = t("connectWallet")
         } else if (getBalance() < amount) {
             errTxt = t("insufficientBalance")
-        } else if (remindCap < amount) {
+        } else if (account && remindCap < amount) {
             errTxt = "EXCEEDS SYNCHRONIZER CAP"
         }
 
@@ -94,11 +95,18 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, han
     }
 
     return (<>
-        <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={handleSwap}>
+        {!account && showWallets && <Wallets setShow={setShowWallets} />}
+        {account ? <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={handleSwap}>
             <div className="swap-btn grad" style={{ background: "none" }} >
                 {getAllowances() ? `SYNC ${from_token.type === TokenType.Main ? `(${t("buy")})` : `(${t("sell")})`} ` : t("approve")}
             </div>
-        </div>
+        </div> :
+            <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={() => setShowWallets(true)}>
+                <div className="swap-btn grad" style={{ background: "none" }} >
+                    {t("ConnectWallet")}
+                </div>
+            </div>
+        }
     </>);
 }
 

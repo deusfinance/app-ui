@@ -54,6 +54,16 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/swap2",
+        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        exact: true,
+    },
+    {
+        url: "/sync2",
+        chains: [ChainMap.BSC, ChainMap.RINKEBY],
+        exact: true,
+    },
+    {
         url: "/bridge",
         chains: [ChainMap.RINKEBY, ChainMap.BSC_TESTNET],
     },

@@ -5,13 +5,13 @@ import MarketNavbar from './components/common/MarketNav/MarketNavbar'
 import Navbar from './components/common/Navbar/Navbar'
 import { LoopCircleLoading } from 'react-loadingg'
 import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import './assets/styles/base.scss'
 import { RefreshContextProvider } from './helper/RefreshContex'
 import Announcements from './components/common/Announcements'
+import 'react-toastify/dist/ReactToastify.css'
+import './assets/styles/base.scss'
+
 const Deus = React.lazy(() => import('./components/Deus'))
-// const Sync = React.lazy(() => import('./pages/Sync'));
-// const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
+const Sync2 = React.lazy(() => import('./pages/Sync2'));
 const dbETH = React.lazy(() => import('./pages/dbETH'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
@@ -42,7 +42,6 @@ function App() {
                   path="/crosschain/xdai/synchronizer"
                   component={SyncXdai}
                 />
-                {/* <Route exact path="/crosschain/bsc-test/synchronizer" component={SyncBSCTest} />*/}
                 <Route
                   exact
                   path="/crosschain/bsc/synchronizer"
@@ -59,17 +58,13 @@ function App() {
                   path="/stake-and-yield"
                   component={StakeAndYield}
                 />
-                {/* <Route
-                  exact
-                  path="/stake-and-yield"
-                  component={Under}
-                /> */}
                 <Route exact path="/dbETH" component={dbETH} />
                 <Route exact path="/bridge" component={Bridge} />
+                <Route exact path="/sync2" component={Sync2} />
                 <Route exact path="/swap2" component={Swap2} />
-                {/* <Route exact path="/test-style" component={Test} /> */}
                 <Redirect exact from="/" to="/swap" />
                 <Route path="/" component={Deus} />
+                {/* <Route exact path="/test-style" component={Test} /> */}
                 <Redirect to="not-found" />
               </Switch>
             </div>

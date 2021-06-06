@@ -92,7 +92,7 @@ const SelectedNetworks = () => {
                 </svg>
                 ,
                 title: t("bridgeTokens"),
-                link: "https://huobi.anyswap.exchange/",
+                link: "https://www.huobi.com/en-us/exchange/",
             },
         ],
     }

@@ -12,7 +12,7 @@ import Announcements from './components/common/Announcements'
 const Deus = React.lazy(() => import('./components/Deus'))
 // const Sync = React.lazy(() => import('./pages/Sync'));
 // const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
-const dbETH = React.lazy(() => import('./pages/dbETH'))
+// const dbETH = React.lazy(() => import('./pages/dbETH'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
@@ -20,7 +20,7 @@ const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
 const NotFound = React.lazy(() => import('./components/NotFound'))
-const Bridge = React.lazy(() => import('./components/Bridge'))
+// const Bridge = React.lazy(() => import('./components/Bridge'))
 // const Test = React.lazy(() => import('./pages/Test'));
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));
 
@@ -64,8 +64,8 @@ function App() {
                   path="/stake-and-yield"
                   component={Under}
                 /> */}
-                <Route exact path="/dbETH" component={dbETH} />
-                <Route exact path="/bridge" component={Bridge} />
+                {/* <Route exact path="/dbETH" component={dbETH} /> */}
+                {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/swap2" component={Swap2} />
                 {/* <Route exact path="/test-style" component={Test} /> */}
                 <Redirect exact from="/" to="/swap" />

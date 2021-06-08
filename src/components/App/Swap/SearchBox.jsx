@@ -6,7 +6,7 @@ import CircleToken from '../../../assets/images/circle-token.svg'
 import { X } from 'react-feather'
 import { StyledLogo } from '../Currency';
 import { FlexCenter } from '../Container';
-import { formatBalance2 } from '../../../utils/utils';
+import { formatBalance3 } from '../../../utils/utils';
 import { isZero } from '../../../constant/number';
 
 const fadein = keyframes`
@@ -91,7 +91,7 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disbaleLoa
                 <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
               </TokenWrap>
               {!account || disbaleLoading || currencies[address].balance || isZero(currencies[address].balance)
-                ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance2(currencies[address]?.balance, 9) || 0}</Type.LG>
+                ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[address]?.balance) || 0}</Type.LG>
                 : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
               }
             </TokenRow>

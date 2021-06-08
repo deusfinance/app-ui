@@ -18,9 +18,9 @@ import SyncCap from '../../components/Sync/SyncCap';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
+import useAssetBalances from '../../helper/useAssetBalances';
 
 import './styles/sync-xdai.scss';
-import useAssetBalances from '../../helper/useAssetBalances';
 
 
 
@@ -62,6 +62,7 @@ const SyncBscTest = () => {
     const [web3Class, setWeb3Class] = useState(new StockService(account, 56))
     const apis = [
         "https://oracle1.deus.finance/bsc/signatures.json",
+        "https://oracle3.deus.finance/bsc/signatures.json",
     ]
     const { t } = useTranslation()
 
@@ -387,7 +388,7 @@ const SyncBscTest = () => {
         const tokenAddress = isLong ? token.long.address : token.short.address
         const makerBuySell = await getBuySell()
 
-        const oracles = xdaiMutileOracleHandler(type, tokenAddress, makerBuySell, 1)
+        const oracles = xdaiMutileOracleHandler(type, tokenAddress, makerBuySell, 2)
 
         try {
             transactionType = { action: "buy", swap: swap, isLong: isLong }
@@ -417,10 +418,10 @@ const SyncBscTest = () => {
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
 
         <div className="swap-title">
-            <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
+            <img src={process.env.PUBLIC_URL + "/img/chains/bsc.png"} style={{ width: "30px", height: "30px" }} alt="DEUS" />
             <div className="sync-wrap" >
-                <div className="sync" style={{ textTransform: "uppercase" }}>
-                    {t("synchronizerBSC")}
+                <div className="sync">
+                    <span>BSC</span>
                 </div>
             </div>
         </div>

@@ -446,13 +446,14 @@ const SyncXdai = () => {
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
 
         <div className="swap-title">
-            <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
+            <img src={process.env.PUBLIC_URL + "/tokens/xdai.svg"} style={{ width: "30px", height: "30px" }} alt="DEUS" />
             <div className="sync-wrap" >
-                <div className="sync" style={{ textTransform: "uppercase" }}>
-                    {t("synchronizerXdai")}
+                <div className="sync" >
+                    <span>xDAI</span>
                 </div>
             </div>
         </div>
+
 
 
         <SearchAssets

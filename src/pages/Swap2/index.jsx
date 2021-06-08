@@ -8,7 +8,7 @@ import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
 import PriceImpact from '../../components/App/Swap/PriceImpact';
-import { getSwapVsType } from '../../utils/utils';
+import { formatBalance3, getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
@@ -176,7 +176,7 @@ const Swap2 = () => {
             console.error(e)
         }
     }, [onSwap])
-
+    console.log((formatBalance3(0.0000001)));
 
     return (<>
         <SearchBox

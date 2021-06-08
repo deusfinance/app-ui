@@ -7,7 +7,7 @@ import './styles/selected-networks.scss'
 const SelectedNetworks = () => {
     const { chainId } = useWeb3React()
     const { t } = useTranslation()
-    const [chain, setChain] = useState("Main")
+    const [chain, setChain] = useState("ETH")
     const currHref = window.location.pathname
 
 
@@ -24,7 +24,7 @@ const SelectedNetworks = () => {
             return "HECO"
         }
         else {
-            return "Main"
+            return "ETH"
         }
     }
 
@@ -33,7 +33,7 @@ const SelectedNetworks = () => {
     }, [chainId]) //eslint-disable-line
 
     const actionMenu = {
-        "Main": [
+        "ETH": [
 
             {
                 img: <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -98,7 +98,7 @@ const SelectedNetworks = () => {
     }
     return (<div className="wrap-networks">
         <p >{t("selectNetwork")}</p>
-        <select name="networks" id="networks" value={chain} onChange={(e) => setChain(e.currentTarget.value)}>
+        <select name="networks" id="networks" value={chain} style={{ cursor: "pointer" }} onChange={(e) => setChain(e.currentTarget.value)}>
             {
                 Object.keys(actionMenu).map((currChain) => {
 

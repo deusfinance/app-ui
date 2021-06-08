@@ -47,8 +47,8 @@ export default [
     exact: true,
     children: [
       {
-        id: 'mainnet',
-        text: 'MAINNET',
+        id: 'ETH',
+        text: 'ETH',
         path: '/synchronizer',
         exact: true
       },
@@ -62,6 +62,12 @@ export default [
         id: 'bsc',
         text: 'BSC',
         path: '/crosschain/bsc/synchronizer',
+        exact: true
+      },
+      {
+        id: 'heco',
+        text: 'HECO',
+        path: '/crosschain/heco/synchronizer',
         exact: true
       }
     ]

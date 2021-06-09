@@ -4,11 +4,10 @@ import Web3ReactManager from './components/App/Web3ReactManager'
 import MarketNavbar from './components/common/MarketNav/MarketNavbar'
 import Navbar from './components/common/Navbar/Navbar'
 import { LoopCircleLoading } from 'react-loadingg'
-import ReactGA from 'react-ga'
 import { ToastContainer } from 'react-toastify'
 import { RefreshContextProvider } from './helper/RefreshContex'
 import Announcements from './components/common/Announcements'
-import { useLocation } from 'react-router-dom';
+import useGoogleAnalytics from './helper/useGoogleAnalytics'
 
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
@@ -28,28 +27,12 @@ const NotFound = React.lazy(() => import('./components/NotFound'))
 // const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
 // const dbETH = React.lazy(() => import('./pages/dbETH'))
 
-const GOOGLE_ANALYTICS_ID = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
-if (typeof GOOGLE_ANALYTICS_ID === 'string') {
-  ReactGA.initialize(GOOGLE_ANALYTICS_ID, {
-    gaOptions: {
-      storage: 'none',
-      storeGac: false,
-    },
-  })
-}
 
 
 function App() {
 
-  const location = useLocation()
+  useGoogleAnalytics()
 
-  useEffect(() => {
-    ReactGA.set({
-      anonymizeIp: true,
-      page: location.pathname
-    })
-    ReactGA.pageview(location.pathname);
-  }, [location])
 
   return (
     <>

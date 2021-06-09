@@ -27,6 +27,7 @@
     "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "^17.0.2",
     "react-feather": "^2.0.9",
+    "react-ga": "^3.3.0",
     "react-i18next": "^11.8.14",
     "react-loadingg": "^1.7.2",
     "react-modal": "^3.13.1",

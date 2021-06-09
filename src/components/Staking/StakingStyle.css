@@ -1318,11 +1318,11 @@ ul.tab li input[type="radio"]:checked ~ label {
     font-size: 10.5px;
   }
   .action-btn {
-    margin: 0 1px 3px;
+    margin: 0 3px 3px;
   }
   .action-btn span {
     font-size: 10.5px;
-    width: 90px;
+    width: 100px;
     height: 30px;
   }
   .token-title {
@@ -1356,11 +1356,11 @@ ul.tab li input[type="radio"]:checked ~ label {
     font-size: 9px;
   }
   .action-btn {
-    margin: 0 1px 3px;
+    margin: 0 3px 3px;
   }
   .action-btn span {
     font-size: 9px;
-    width: 70px;
+    width: 85px;
     height: 28px;
   }
   .token-title {
@@ -1437,7 +1437,7 @@ ul.tab li input[type="radio"]:checked ~ label {
   }
   .action-btn span {
     font-size: 9px;
-    width: 70px;
+    width: 85px;
     height: 28px;
   }
   .yearn-finance img {
@@ -1486,7 +1486,7 @@ ul.tab li input[type="radio"]:checked ~ label {
   }
   .action-btn span {
     font-size: 10px;
-    width: 85px;
+    width: 100px;
     height: 28px;
   }
   .token-title {

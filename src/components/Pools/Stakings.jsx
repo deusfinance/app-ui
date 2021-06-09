@@ -7,10 +7,11 @@ import StakePopup from '../common/Popup/StakePopup';
 import { withRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import addrs from '../../services/addresses.json'
-import "./staking.scss"
 import ChainPupop from '../common/Popup/ChainPopup';
 import WithdrawPopup from '../common/Popup/WithdrawPopup';
 import { withTranslation } from 'react-i18next'
+
+import "./staking.scss"
 
 class StakingManager extends Component {
     state = {
@@ -39,13 +40,9 @@ class StakingManager extends Component {
 
         document.addEventListener("keydown", this.escFunction, false);
 
-        // if (!chainId || !account) return
-
         const { pools } = this.state
 
         await this.setState({ web3: new StakeService(account, chainId) })
-
-
         pools.map(async (tokenName) => {
             await this.handleInitAllowances(tokenName)
             await this.getSingleBalance(tokenName)
@@ -62,8 +59,6 @@ class StakingManager extends Component {
     async componentDidUpdate(prevProps) {
         const { chainId, account, navId } = this.props
         if (prevProps.account !== account || prevProps.chainId !== chainId) {
-
-            // if (!chainId || !account) return
 
             const { pools } = this.state
 

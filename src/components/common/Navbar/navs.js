@@ -64,12 +64,12 @@ export default [
         path: '/crosschain/bsc/synchronizer',
         exact: true
       },
-      {
-        id: 'heco',
-        text: 'HECO',
-        path: '/crosschain/heco/synchronizer',
-        exact: true
-      }
+      // {
+      //   id: 'heco',
+      //   text: 'HECO',
+      //   path: '/crosschain/heco/synchronizer',
+      //   exact: true
+      // }
     ]
   },
   {

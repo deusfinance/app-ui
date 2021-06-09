@@ -5,7 +5,6 @@ import { AllTokens, AllStakings } from '../config'
 import { LoopCircleLoading } from 'react-loadingg'
 // import '../i18n'
 
-const Migrator = React.lazy(() => import('../pages/Migrator'))
 const Bakkt = React.lazy(() => import('../pages/Bakkt/Bakkt'))
 const Musk = React.lazy(() => import('../pages/Musk/Musk'))
 const DeaStatic = React.lazy(() => import('../pages/DeaStatic//index'))
@@ -78,7 +77,6 @@ const Deus = () => {
           )}
         />
         <Route exact path="/swap" render={() => <MainSwap {...props} />} />
-        <Route exact path="/migrator" render={() => <Migrator {...props} />} />
         <Route exact path="/Bakkt" render={() => <Bakkt {...props} />} />
         <Route exact path="/Musk" render={() => <Musk {...props} />} />
         <Route exact path="/otc-buy" render={() => <DeaStatic {...props} />} />
@@ -90,8 +88,7 @@ const Deus = () => {
         />
         <Redirect from="/staking" to="/staking/single" />
         <Redirect from="/coinbase-staking" to="/staking/old" />
-        <Redirect from="/coinbase" to="/migrator" />
-        <Redirect from="/" to="/synchronizer" />
+        <Redirect from="/" to="/swap" />
       </Switch>
     </Suspense>
   )

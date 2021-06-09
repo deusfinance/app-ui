@@ -78,12 +78,12 @@ export default [
     path: '/',
     exact: true,
     children: [
-      {
-        id: 'coinbaseMigrator',
-        text: <span>COINBASE MIGRATOR</span>,
-        path: '/migrator',
-        exact: true
-      },
+      // {
+      //   id: 'coinbaseMigrator',
+      //   text: <span>COINBASE MIGRATOR</span>,
+      //   path: '/migrator',
+      //   exact: true
+      // },
       {
         id: 'bakkt',
         text: 'BAKKT',

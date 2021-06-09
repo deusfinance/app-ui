@@ -17,6 +17,9 @@ export const busdTestToken = new Token(97, "0x8301f2213c0eed49a7e28ae4c3e9172291
 export const husdToken = new Token(128, "0x0298c2b32eae4da002a15f36fdf7615bea3da047", 18, "HUSD", "HUSD", "/tokens/husd.svg");
 export const husdTestToken = new Token(256, "0xD23ecf29F12F0385a42e7e9643df8F0Ea5CB595c", 8, "USD", "USD", "/tokens/busd.svg");
 
+export const usdcTokenPolygon = new Token(137, "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", 6, "USDC", "USDC", "/tokens/usdc.svg");
+
+
 export const fetcher = async function (url, init) {
     try {
         const resp = await fetch(url, init)

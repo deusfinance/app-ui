@@ -20,6 +20,10 @@ export const correctChains = [
         chains: [ChainMap.HECO],
     },
     {
+        url: "/crosschain/polygon",
+        chains: [ChainMap.MATIC],
+    },
+    {
         url: "/synchronizer",
         chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
         exact: true,

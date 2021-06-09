@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react'
+import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Web3ReactManager from './components/App/Web3ReactManager'
 import MarketNavbar from './components/common/MarketNav/MarketNavbar'

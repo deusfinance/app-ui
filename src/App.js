@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Web3ReactManager from './components/App/Web3ReactManager'
 import MarketNavbar from './components/common/MarketNav/MarketNavbar'
-import Navbar from './components/common/Navbar/Navbar'
+import Navbar from './components/common/Navbar/Navbar2'
 import { LoopCircleLoading } from 'react-loadingg'
 import { ToastContainer } from 'react-toastify'
 import { RefreshContextProvider } from './helper/RefreshContex'
@@ -81,7 +81,7 @@ function App() {
                 <Redirect to="not-found" />
               </Switch>
             </div>
-            <MarketNavbar />
+            {/* <MarketNavbar /> */}
           </RefreshContextProvider>
         </Web3ReactManager>
       </Suspense>

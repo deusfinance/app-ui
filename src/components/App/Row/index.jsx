@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Box } from 'rebass/styled-components'
 
-const Row = styled(Box)`
+export const Row = styled(Box)`
   width: ${({ width }) => width ?? '100%'};
   display: flex;
   padding: 0;
@@ -14,6 +14,10 @@ const Row = styled(Box)`
 
 export const RowBetween = styled(Row)`
   justify-content: space-between;
+`
+
+export const RowCenter = styled(Row)`
+  justify-content: center;
 `
 
 export const RowFlat = styled.div`

@@ -69,7 +69,7 @@ const MEDIA_WIDTHS = {
 const mediaWidthTemplates = Object.keys(MEDIA_WIDTHS).reduce(
   (accumulator, size) => {
     ; (accumulator)[size] = (a, b, c) => css`
-      @media (max-width: ${(MEDIA_WIDTHS)[size]}px) {
+      @media screen and (max-width: ${(MEDIA_WIDTHS)[size]}px) {
         ${css(a, b, c)}
       }
     `
@@ -135,6 +135,9 @@ html {
 }
 a{
       color: inherit;
+}
+ul{
+  list-style: none;
 }
 body {
   min-height: 100vh;

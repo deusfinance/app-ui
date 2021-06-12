@@ -17,9 +17,11 @@ import {
     NavButton,
     NavbarSideWrap,
     NavWarningButton,
-    SubNavbarContentWrap
+    SubNavbarContentWrap,
+    NavbarMobileContent
 } from '../../App/Navbar';
 import LanguageSelector from './LanguageSelector';
+import { ExternalLink } from '../../App/Link';
 
 
 const Navbar = () => {
@@ -27,6 +29,7 @@ const Navbar = () => {
     const { chainId, account, activate } = useWeb3React()
     const location = useLocation()
     const [showWallets, setShowWallets] = useState(false)
+    const [open, setOpen] = useState(false)
     const [tvl, setTvl] = useState(null)
 
     useEffect(() => {
@@ -51,8 +54,6 @@ const Navbar = () => {
                 const resp = await fetch(url)
                 const result = await resp.json()
                 const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.uniswapLockedValue + result.balancerLockedValue + result.etherLockedInMarketMaker + result.stakingV2LockedValue)
-                const vaults = parseInt(result.vaultLockedValue)
-
                 var formatter = new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: 'USD',
@@ -74,7 +75,7 @@ const Navbar = () => {
     return (<>
         {showWallets && <Wallets setShow={setShowWallets} />}
         <NavbarWrap>
-            <NavbarSideWrap>
+            <NavbarSideWrap className="deus-logo">
                 <svg width={137} height={31} viewBox="0 0 137 31" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M60 5.08609C60 4.9605 60.084 4.87677 60.2099 4.87677H67.2417C69.3617 4.87677 71.1879 5.31635 72.6992 6.19551C74.2105 7.07468 75.3649 8.30969 76.1626 9.90055C76.9602 11.4914 77.359 13.3544 77.359 15.4895C77.359 17.6874 76.9602 19.5923 76.1626 21.1831C75.3649 22.774 74.2105 24.009 72.6782 24.8463C71.1669 25.6836 69.3617 26.1232 67.2627 26.1232H60.2099C60.084 26.1232 60 26.0395 60 25.9139V5.08609ZM66.9478 23.7578C68.3332 23.7578 69.5086 23.5694 70.5162 23.1717C71.5027 22.774 72.2584 22.2298 72.7411 21.5181C73.2659 20.7436 73.6647 19.9063 73.8956 18.9643C74.1265 18.0433 74.2525 16.8711 74.2525 15.4895C74.2525 14.108 74.1265 12.9776 73.8746 12.0566C73.6227 11.1356 73.2449 10.2983 72.7202 9.5447C72.1954 8.81207 71.4397 8.24689 70.4532 7.84918C69.4457 7.45146 68.2702 7.24214 66.9478 7.24214H62.9386C62.8127 7.24214 62.7287 7.32586 62.7287 7.45146V23.5485C62.7287 23.6741 62.8127 23.7578 62.9386 23.7578H66.9478Z" fill="white" />
                     <path d="M80.9484 4.87677H95.6207C95.7466 4.87677 95.8306 4.9605 95.8306 5.08609V7.11654C95.8306 7.24214 95.7466 7.32587 95.6207 7.32587H83.6772C83.5512 7.32587 83.4673 7.4096 83.4673 7.53519V12.0775C83.4673 12.2031 83.5512 12.2869 83.6772 12.2869H94.4872C94.6131 12.2869 94.6971 12.3706 94.6971 12.4962V14.5266C94.6971 14.6522 94.6131 14.7359 94.4872 14.7359H83.4673H80.9484C80.8225 14.7359 80.7385 14.6522 80.7385 14.5266V5.08609C80.7385 4.9605 80.8225 4.87677 80.9484 4.87677Z" fill="white" />
@@ -94,7 +95,7 @@ const Navbar = () => {
                         </linearGradient>
                     </defs>
                 </svg>
-                <NavButton active={false} >
+                <NavButton className="tvl" active={false} >
                     TVL: {tvl}
                 </NavButton>
             </NavbarSideWrap>
@@ -121,12 +122,27 @@ const Navbar = () => {
                         <path d="M17.6601 0.219953C17.3531 -0.0344475 16.8708 -0.0708476 16.3722 0.124753H16.3713C15.8469 0.330354 1.52653 6.33197 0.943561 6.57717C0.837529 6.61317 -0.088506 6.95077 0.00688135 7.70278C0.092034 8.38078 0.836301 8.66158 0.927185 8.69398L4.56787 9.91198C4.80941 10.6976 5.69983 13.596 5.89674 14.2152C6.01956 14.6012 6.21975 15.1084 6.5706 15.2128C6.87846 15.3288 7.18468 15.2228 7.38282 15.0708L9.60866 13.0536L13.2019 15.7916L13.2874 15.8416C13.5314 15.9472 13.7652 16 13.9883 16C14.1606 16 14.326 15.9684 14.4841 15.9052C15.0224 15.6892 15.2377 15.188 15.2603 15.1312L17.9442 1.50036C18.108 0.772355 17.8803 0.401954 17.6601 0.219953ZM7.7787 10.3992L6.55054 13.5992L5.32237 9.59918L14.7383 2.79916L7.7787 10.3992Z" fill="white" />
                     </svg>
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+
                     <SubNavbarContentWrap>
-                        <li><a href="https://simulate.deus.finance"> Announcment Channel </a></li>
-                        <li><a href="https://chart.deus.finance">Community Channel </a></li>
+                        <li>
+                            <ExternalLink href="https://t.me/deusfinance_news" textDecoration="none">Announcment Channel</ExternalLink>
+                        </li>
+                        <li>
+                            <ExternalLink href="https://t.me/deusfinance" textDecoration="none">Community Channel</ExternalLink>
+                        </li>
+                    </SubNavbarContentWrap>
+
+                </li>
+                <li>
+                    <p>DOCS</p>
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+
+                    <SubNavbarContentWrap>
+                        <li>
+                            <ExternalLink href="https://wiki.deus.finance" textDecoration="none">DEUS wiki </ExternalLink>
+                        </li>
                     </SubNavbarContentWrap>
                 </li>
-                <li>DOCS</li>
                 <li>
                     <p>TOOLS</p>
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
@@ -136,17 +152,40 @@ const Navbar = () => {
                         <li><a href="https://vote.deus.finance"> DEUS vote </a></li>
                     </SubNavbarContentWrap>
                 </li>
-                <li>SWAP</li>
-                <li>SYNTHETICS</li>
-                <li>STAKING</li>
+                <li>
+                    <p>APP</p>
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+                    <SubNavbarContentWrap>
+                        <li><NavLink to="/swap">SWAP </NavLink></li>
+                        <li><a href="https://chart.deus.finance">MUSK</a></li>
+                        <li><a href="https://vote.deus.finance"> BAKKT </a></li>
+                    </SubNavbarContentWrap>
+                </li>
+                <li>
+                    <p>SYNTHETICS</p>
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+                    <SubNavbarContentWrap>
+                        <li><a href="https://simulate.deus.finance"> ETH </a></li>
+                        <li><a href="https://chart.deus.finance"> xDAI </a></li>
+                        <li><a href="https://vote.deus.finance"> BSC </a></li>
+                    </SubNavbarContentWrap>
+                </li>
+                <li>
+                    <p>STAKING</p>
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+                    <SubNavbarContentWrap>
+                        <li><a href="https://simulate.deus.finance"> STAKE & YIELD </a></li>
+                        <li><a href="https://chart.deus.finance"> VAULTS (LEGACY) </a></li>
+                        <li><a href="https://vote.deus.finance"> STAKING (LEGACY) </a></li>
+                    </SubNavbarContentWrap>
+                </li>
 
             </NavbarContentWrap>
 
             <NavbarSideWrap >
-
                 {account && <>
                     {chainId && validChains.indexOf(chainId) === -1 ?
-                        <NavWarningButton active={false} >
+                        <NavWarningButton className="wrong-label" active={false} >
                             Wrong Network
                     </NavWarningButton>
                         :
@@ -174,9 +213,31 @@ const Navbar = () => {
                     </NavButton>
                 }
 
-                <LanguageSelector />
-
+                <svg className="hamb" onClick={() => setOpen(!open)} width={22} height={16} viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15H1" stroke="white" strokeWidth={2} strokeLinecap="round" /><path d="M21 8H1" stroke="white" strokeWidth={2} strokeLinecap="round" /><path d="M21 1H1" stroke="white" strokeWidth={2} strokeLinecap="round" /></svg>
             </NavbarSideWrap>
+
+
+            <NavbarMobileContent open={open}>
+
+                <ul>
+                    <li className="icon-close"><div className="menu-title">MENU</div><svg onClick={() => setOpen(!open)} viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="Page-1" stroke="white" strokeWidth={1} fill="white" fillRule="evenodd"><g id="icon-shape"><polygon id="Combined-Shape" points="10 8.58578644 2.92893219 1.51471863 1.51471863 2.92893219 8.58578644 10 1.51471863 17.0710678 2.92893219 18.4852814 10 11.4142136 17.0710678 18.4852814 18.4852814 17.0710678 11.4142136 10 18.4852814 2.92893219 17.0710678 1.51471863 10 8.58578644" /></g></g></svg></li>
+                    <li className="nav-item ">
+                        <a className href="/"><div className="nav-title"> APP</div></a>
+                        <ul className="sub-nav">
+                            <li className="sub-nav-item">
+                                <a href="/swap" aria-current="page" className="active"> SWAP </a>
+                            </li>
+                            <li className="sub-nav-item"><a href="/stake-and-yield"> STAKE &amp; YIELD </a></li>
+                            <li className="sub-nav-item"><a href="/vaults"> VAULTS (LEGACY) </a></li>
+                            <li className="sub-nav-item"><a href="/staking"> STAKING (LEGACY) </a></li>
+                            <li className="sub-nav-item">
+                                <a href="https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US"> Mobile Android </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </NavbarMobileContent>
 
         </NavbarWrap>
     </>);

@@ -46,9 +46,8 @@ body,
     position: absolute;
     z-index: 1;
     width: 100%;
-    // background: coral;
     left: 20px;
-    top: 130px;
+    top: 110px;
     max-width: 300px;
     .min-tut-wrap {
         margin-top: 10px;
@@ -62,8 +61,7 @@ body,
     z-index: 5;
     bottom: 0;
     height: calc(100vh -55px);
-    // filter: blur(5px);
-    // background: #00000088;
+
     .loader {
         margin: auto;
         position: fixed;

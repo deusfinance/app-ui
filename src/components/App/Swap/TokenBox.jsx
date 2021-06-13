@@ -35,8 +35,6 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
     useEffect(() => {
         const getBalance = () => {
             setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
-            // if (TokensMap && TokensMap[currency.address])
-            //     TokensMap[currency.address].balance = getFullDisplayBalance(data, currency?.decimals)
         }
 
         if (currency) {
@@ -75,9 +73,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             justifyContent="space-between"
             alignItems="center"
             mt="5px"
-            style={{
-                cursor: "pointer"
-            }}
+            style={{ cursor: "pointer" }}
         >
             <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
 

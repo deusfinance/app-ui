@@ -8,11 +8,11 @@ export class StockService {
         this.account = account;
         this.chainId = chainId;
         this.marketMaker = "0x7a27a7BF25d64FAa090404F94606c580ce8E1D37";
+        this.INFURA_URL = 'wss://mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
     }
 
     makeProvider = () => {
-        if (this.INFURA_URL) return
-        this.INFURA_URL = 'wss://mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+        if (this.infuraWeb3) return
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
     }
 
@@ -152,8 +152,8 @@ export class StockService {
     }
 
     getUsedCap = async () => {
-        const metamaskWeb3 = new Web3(Web3.givenProvider);
-        const marketMakerContract = new metamaskWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
+        this.makeProvider()
+        const marketMakerContract = new this.infuraWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
         return marketMakerContract.methods.remainingDollarCap().call().then(info => {
             return Web3.utils.fromWei(info, 'ether');
         })

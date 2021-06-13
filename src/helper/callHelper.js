@@ -7,6 +7,7 @@ import graph from '../constant/path.json'
 import graphTest from '../constant/pathTest.json'
 import addrs from '../constant/addresses.json'
 import { getTokenAddr } from "../utils/contracts"
+import { isZero } from "../constant/number"
 
 
 export const approve = async (contract, contractAddress, account, payload) => {
@@ -36,11 +37,10 @@ export const approve = async (contract, contractAddress, account, payload) => {
 
 export const swap = async (fromCurrency, toCurrency, amountIn, amountOut, minAmountOut, account, chainId, web3) => {
     let hash = null
-    const amountInWei = getToWei(amountIn, fromCurrency.decimals)
-    const minAmountOutWei = getToWei(minAmountOut, toCurrency.decimals)
-    console.log(minAmountOutWei.toNumber(), chainId);
+    const amountInWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
+    const minAmountOutWei = getToWei(minAmountOut, toCurrency.decimals).toFixed(0)
 
-    if (amountIn === "" || amountInWei.isZero() || amountOut === "" || minAmountOutWei.isZero()) return { status: false }
+    if (amountIn === "" || isZero(amountInWei) || amountOut === "" || isZero(minAmountOutWei)) return { status: false }
 
     const swapFunc = swapFuncMaker(fromCurrency, toCurrency, amountInWei, minAmountOutWei, account, chainId, web3)
     let sendArgs = sendAgrsMaker(fromCurrency, toCurrency, amountInWei, account, chainId)
@@ -79,9 +79,7 @@ const swapFuncMaker = (fromCurrency, toCurrency, amountIn, minAmountOut, account
     let path = currGrapth[fromCurrency.symbol.toLowerCase()][toCurrency.symbol.toLowerCase()]
     var deusIndex = path.indexOf(deusAddress);
 
-    console.log(amountIn.toString(), minAmountOut.toString());
-    console.log(path);
-    console.log(deusIndex);
+    // console.log(amountIn.toString(), minAmountOut.toString());
 
     if (fromCurrency.symbol === "ETH" && toCurrency.symbol === "DEUS")
         return getDeusAutomaticMarketMakerContract(web3, chainId)
@@ -189,6 +187,7 @@ export const getSwapAmountsOut = async (fromCurrency, toCurrency, amountIn, chai
     const deusIndex = path.indexOf(deusAddress);
 
 
+
     const calculatePurchaseReturn = async (amountIn) => {
         try {
             return getDeusAutomaticMarketMakerContract(web3, chainId)
@@ -223,7 +222,8 @@ export const getSwapAmountsOut = async (fromCurrency, toCurrency, amountIn, chai
         }
     }
 
-    const amountInWeid = getToWei(amountIn, fromCurrency.decimals)
+    const amountInWeid = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
+
     try {
         if (fromCurrency.symbol === "ETH" && toCurrency.symbol === "DEUS")
             return calculatePurchaseReturn(amountInWeid)

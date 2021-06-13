@@ -39,6 +39,9 @@ const Wrapper = styled.div`
   top:calc(50%);
   z-index: 2;
   margin:auto;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+      width: 95vw;
+  `}
 `
 const StyledClose = styled(X)`
   :hover {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core';
 import { injected } from './connectors';
+import { isDesktop } from './utils/utils';
 
 
 export function useEagerConnect() {
@@ -15,7 +16,13 @@ export function useEagerConnect() {
                     setTried(true)
                 })
             } else {
-                setTried(true)
+                if (!isDesktop && window.ethereum) {
+                    activate(injected, undefined, true).catch(() => {
+                        setTried(true)
+                    })
+                } else {
+                    setTried(true)
+                }
             }
         })
     }, []) //eslint-disable-line

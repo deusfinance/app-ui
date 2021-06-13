@@ -8,7 +8,7 @@ import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
 import PriceImpact from '../../components/App/Swap/PriceImpact';
-import { formatBalance3, getSwapVsType } from '../../utils/utils';
+import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
@@ -22,6 +22,7 @@ import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
+import SelectedNetworks from '../../components/Sync/SelectNetworks';
 
 const Swap2 = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -51,7 +52,7 @@ const Swap2 = () => {
     const tokens = useMemo(() => DefaultTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = token, map), {})
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = { ...token, address: token.address.toLowerCase() }, map), {})
     ), [tokens])
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
@@ -75,8 +76,7 @@ const Swap2 = () => {
     let fromAddress = inputCurrency ? inputCurrency : "0x"
 
     let toAddress = outputCurrency ? outputCurrency : deaContract
-    console.log("outputCurrency", toAddress);
-    console.log(TokensMap);
+
     if (toAddress === fromAddress) {
         if (fromAddress === "0x") {
             if (!inputCurrency) {
@@ -108,7 +108,6 @@ const Swap2 = () => {
     const [amountOut, setAmountOut] = useState("")
     const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
-
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -116,6 +115,7 @@ const Swap2 = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
+
     }, [chainId, account]);
 
     useEffect(() => {
@@ -146,7 +146,7 @@ const Swap2 = () => {
             }
         }
         //eslint-disable-next-line 
-    }, [allowance]) //isPreApproved ?
+    }, [allowance, isPreApproved]) //isPreApproved ?
 
 
     const showSearchBox = (active = false, type) => {
@@ -162,6 +162,7 @@ const Swap2 = () => {
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
         }
+        console.log(token);
         setSwapState({ ...swapState, [type]: token })
     }
 
@@ -227,7 +228,6 @@ const Swap2 = () => {
             console.error(e)
         }
     }, [onSwap])
-    console.log((formatBalance3(0.0000001)));
 
     return (<>
         <SearchBox
@@ -305,6 +305,9 @@ const Swap2 = () => {
 
             <SlippageTelorance slipage={slipage} setSlipage={setSlipage} />
         </MainWrapper>
+        <div className='tut-left-wrap'>
+            <SelectedNetworks />
+        </div>
     </>);
 }
 

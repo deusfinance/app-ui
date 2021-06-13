@@ -12,5 +12,6 @@ export default function useGoogleAnalytics() {
     React.useEffect(() => {
         const currentPath = location.pathname + location.search
         analytics.sendPageview(currentPath)
+        window.scrollTo(0, 0)
     }, [location])
 }

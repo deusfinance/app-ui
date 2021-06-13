@@ -21,7 +21,7 @@ export function ExternalLink({
   target = '_blank',
   href,
   active = false,
-  textDecoration = true,
+  textDecoration = "underline",
   rel = 'noopener noreferrer',
   ...rest
 }) {

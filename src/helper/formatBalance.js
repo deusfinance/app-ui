@@ -18,7 +18,7 @@ export const getToWei = (amount, decimals = 18) => {
 }
 
 export const getFullDisplayBalance = (balance, decimals = 18) => {
-    return balance.dividedBy(new BigNumber(10).pow(decimals)).toFixed()
+    return new BigNumber(balance).dividedBy(new BigNumber(10).pow(decimals)).toFixed()
 }
 
 export const formatNumber = (number, minPrecision = 2, maxPrecision = 2) => {

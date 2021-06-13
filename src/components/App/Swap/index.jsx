@@ -35,6 +35,9 @@ export const StyleSwapBase = css`
     margin:auto;
     width:100%;
     max-width:500px;
+    ${({ theme }) => theme.mediaWidth.upToLarge`
+        background: ${({ theme }) => theme.bg7};
+    `}
 `
 
 export const StyleTitles = css`
@@ -52,7 +55,11 @@ export const SwapArrow = styled(FlexCenter)`
 `
 export const MainWrapper = styled.div`
    padding-top: 60px;
+   padding-bottom: 30px;
    text-align:center;
+   max-width: 95%;
+   margin:auto;
+
 `
 export const SwapWrapper = styled.div`
 ${StyleSwapBase}

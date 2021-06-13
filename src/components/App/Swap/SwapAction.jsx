@@ -29,11 +29,6 @@ const ButtonSwap = styled(ButtonSyncActice)`
   font-size:${({ fontSize }) => fontSize || "20px"};
 `
 
-// const ButtonMigration = styled(ButtonSyncActice)`
-//   background: ${({ theme }) => theme.grad4};
-//   color: ${({ theme }) => theme.text1_2};
-//   font-size:${({ fontSize }) => fontSize || "20px"};
-// `
 const WrapStep = styled(FlexCenter)`
 margin-top:10px;
 `

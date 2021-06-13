@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Web3ReactManager from './components/App/Web3ReactManager'
-import MarketNavbar from './components/common/MarketNav/MarketNavbar'
 import Navbar from './components/common/Navbar/Navbar2'
 import { LoopCircleLoading } from 'react-loadingg'
 import { ToastContainer } from 'react-toastify'
@@ -14,7 +13,7 @@ import './assets/styles/base.scss'
 
 const Deus = React.lazy(() => import('./components/Deus'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
-const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
+// const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
@@ -57,11 +56,11 @@ function App() {
                   path="/crosschain/bsc/synchronizer"
                   component={SyncBSC}
                 />
-                <Route
+                {/* <Route
                   exact
                   path="/crosschain/heco/synchronizer"
                   component={SyncHeco}
-                />
+                /> */}
                 {/* <Route
                   exact
                   path="/crosschain/polygon/synchronizer"

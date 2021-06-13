@@ -40,6 +40,7 @@ export function colors(darkMode) {
     bg4: darkMode ? "#242424" : "#d4d3d3",
     bg5: darkMode ? "#171717" : "#d4d3d3",
     bg6: darkMode ? "#111111" : "#d4d3d3",
+    bg7: darkMode ? "#272727" : "#d4d3d3",
     bg_warning: darkMode ? "rgba(255, 85, 85, 0.2)" : "#d4d3d3",
 
     sync_active: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)' : "linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)",

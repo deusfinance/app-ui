@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { formatAddress, isDesktop } from '../../../utils/utils';
+import { formatAddress } from '../../../utils/utils';
 import { useTranslation } from 'react-i18next'
 import { getCorrectChains } from '../../../constant/correctChain';
 import { NameChainMap } from '../../../constant/web3';
 import { NavLink, useLocation } from 'react-router-dom';
-import { injected, } from '../../../connectors';
 
 import Wallets from './Wallets';
 import { addRPC } from '../../../services/addRPC';
@@ -31,16 +30,6 @@ const Navbar = () => {
     const [open, setOpen] = useState(false)
     const [tvl, setTvl] = useState(null)
     const { t } = useTranslation()
-
-    useEffect(() => {
-        if (!isDesktop()) {
-            try {
-                activate(injected)
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    }, [chainId, activate])
 
     useEffect(() => {
         if (account)
@@ -127,7 +116,7 @@ const Navbar = () => {
                             <path d="M17.6601 0.219953C17.3531 -0.0344475 16.8708 -0.0708476 16.3722 0.124753H16.3713C15.8469 0.330354 1.52653 6.33197 0.943561 6.57717C0.837529 6.61317 -0.088506 6.95077 0.00688135 7.70278C0.092034 8.38078 0.836301 8.66158 0.927185 8.69398L4.56787 9.91198C4.80941 10.6976 5.69983 13.596 5.89674 14.2152C6.01956 14.6012 6.21975 15.1084 6.5706 15.2128C6.87846 15.3288 7.18468 15.2228 7.38282 15.0708L9.60866 13.0536L13.2019 15.7916L13.2874 15.8416C13.5314 15.9472 13.7652 16 13.9883 16C14.1606 16 14.326 15.9684 14.4841 15.9052C15.0224 15.6892 15.2377 15.188 15.2603 15.1312L17.9442 1.50036C18.108 0.772355 17.8803 0.401954 17.6601 0.219953ZM7.7787 10.3992L6.55054 13.5992L5.32237 9.59918L14.7383 2.79916L7.7787 10.3992Z" fill="white" />
                         </svg>
                     </ExternalLink>
-                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" alt="polygon" />
                     <SubNavbarContentWrap>
                         <li>
                             <ExternalLink href="https://t.me/deusfinance_news" textDecoration="none">Announcment Channel</ExternalLink>
@@ -140,7 +129,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <p>{t("learn")}</p>
-                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" alt="polygon" />
 
                     <SubNavbarContentWrap>
                         <li>
@@ -150,7 +139,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <p>{t("tools")}</p>
-                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" alt="polygon" />
                     <SubNavbarContentWrap>
                         <li>  <ExternalLink href="https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US" textDecoration="none"> DEUS android</ExternalLink></li>
                         <li>  <ExternalLink href="https://simulate.deus.finance" textDecoration="none"> {t("simulator")}</ExternalLink></li>
@@ -163,7 +152,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <p>{t("buyStocks")} </p>
-                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" alt="polygon" />
                     <SubNavbarContentWrap>
                         <li> <NavLink to="/synchronizer" >ETH </NavLink> </li>
                         <li> <NavLink to="/crosschain/xdai/synchronizer/" >xDAI </NavLink></li>
@@ -172,7 +161,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <NavLink to="/stake-and-yield"> {t("staking")}</NavLink>
-                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
+                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" alt="polygon" />
                     <SubNavbarContentWrap>
                         <li><NavLink to="/stake-and-yield"> STAKE & YIELD </NavLink></li>
                         <li><NavLink to="/vaults" exact>  {t("vaultsL")} </NavLink></li>

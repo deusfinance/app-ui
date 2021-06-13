@@ -196,7 +196,7 @@ export function SwapTranaction(type, payload) {
 
     case TransactionState.FAILED:
       if (!payload.hash) {
-        ToastTransaction('warn', 'Transaction Rejected')
+        ToastTransaction('warn', 'Transaction Rejected', "", { autoClose: true })
         return
       }
       ToastTransaction(

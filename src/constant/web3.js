@@ -9,6 +9,9 @@ export const ChainMap = {
     BSC_TESTNET: 97,
     HECO: 128,
     HECO_TESTNET: 256,
+    MATIC: 137,
+    MATIC_TESTNET: 0,
+
 }
 
 export const NameChainMap = {
@@ -22,4 +25,5 @@ export const NameChainMap = {
     128: "HECO",
     256: "HECOT",
     97: "BSCT",
+    137: "MATIC",
 }

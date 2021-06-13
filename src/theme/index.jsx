@@ -22,7 +22,7 @@ export function colors(darkMode) {
     primary: darkMode ? "#0779e4" : black,
     secodery: darkMode ? "#c6c6c6" : black,
     success: darkMode ? "#00AA00" : black,
-    warning: darkMode ? "#d40000" : black,
+    warning: darkMode ? "#FF5555" : black,
 
     //text
     text1: darkMode ? white : black,
@@ -40,6 +40,7 @@ export function colors(darkMode) {
     bg4: darkMode ? "#242424" : "#d4d3d3",
     bg5: darkMode ? "#171717" : "#d4d3d3",
     bg6: darkMode ? "#111111" : "#d4d3d3",
+    bg_warning: darkMode ? "rgba(255, 85, 85, 0.2)" : "#d4d3d3",
 
     sync_active: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)' : "linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)",
     sync_dactive: darkMode ? 'rgb(28, 28, 28)' : "rgb(200, 28, 28)",
@@ -49,10 +50,11 @@ export function colors(darkMode) {
     grad2: darkMode ? "linear-gradient(135deg, rgba(91, 204, 189, 0.14902) 0%, rgba(97, 192, 191, 0.14902) 33.33%, rgba(85, 188, 200, 0.14902) 74.49%, rgba(105, 207, 184, 0.14902) 100%)" : "rgba(105, 207, 184, 0.14902)",
     grad3: darkMode ? "linear-gradient(247.41deg, #A2FBB0 16.32%, #5EC4D6 87.6%);" : "rgba(105, 207, 184, 0.14902)",
     grad4: darkMode ? "linear-gradient(90deg, #DFF4FE 0%, #8EB5FF 100%)" : "linear-gradient(90deg, #DFF4FE 0%, #8EB5FF 100%)",
+    grad5: darkMode ? "linear-gradient(135deg, rgba(91, 204, 189, 0.14902) 0%, rgba(97, 192, 191, 0.14902) 33.33%, rgba(85, 188, 200, 0.14902) 74.49%, rgba(105, 207, 184, 0.14902) 100%)" : "linear-gradient(90deg, #DFF4FE 0%, #8EB5FF 100%)",
 
     //label
     label_primary: darkMode ? "#0779e4" : "rgb(28, 28, 28)",
-    label_warning: "#d40000",
+    label_warning: "#FF5555",
 
   }
 }
@@ -67,7 +69,7 @@ const MEDIA_WIDTHS = {
 const mediaWidthTemplates = Object.keys(MEDIA_WIDTHS).reduce(
   (accumulator, size) => {
     ; (accumulator)[size] = (a, b, c) => css`
-      @media (max-width: ${(MEDIA_WIDTHS)[size]}px) {
+      @media screen and (max-width: ${(MEDIA_WIDTHS)[size]}px) {
         ${css(a, b, c)}
       }
     `
@@ -133,6 +135,9 @@ html {
 }
 a{
       color: inherit;
+}
+ul{
+  list-style: none;
 }
 body {
   min-height: 100vh;

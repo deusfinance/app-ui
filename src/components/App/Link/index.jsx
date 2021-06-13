@@ -5,13 +5,12 @@ import styled from 'styled-components'
 const StyledLink = styled.a`
   text-decoration: ${({ active }) => active ? "underline" : "none"};
   cursor: pointer;
-  font-weight: 400;
   :hover {
-    text-decoration: underline;
+    text-decoration: ${({ textDecoration }) => textDecoration || "underline"};
   }
   :focus {
     outline: none;
-    text-decoration: underline;
+    text-decoration: ${({ textDecoration }) => textDecoration || "underline"};
   }
   :active {
     text-decoration: none;
@@ -22,6 +21,7 @@ export function ExternalLink({
   target = '_blank',
   href,
   active = false,
+  textDecoration = true,
   rel = 'noopener noreferrer',
   ...rest
 }) {
@@ -36,5 +36,5 @@ export function ExternalLink({
     },
     [target]
   )
-  return <StyledLink active={active} target={target} rel={rel} href={href} onClick={handleClick}  {...rest} />
+  return <StyledLink textDecoration={textDecoration} active={active} target={target} rel={rel} href={href} onClick={handleClick}  {...rest} />
 }

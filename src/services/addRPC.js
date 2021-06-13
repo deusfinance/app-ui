@@ -48,6 +48,18 @@ const NetworksData = {
         blockExplorerUrls: ["https://blockscout.com/poa/xdai/"],
         iconUrls: ["https://app.deus.finance/tokens/xdai.svg"]
     },
+    137: {
+        chainId: "0x89",
+        chainName: "Matic Mainnet",
+        nativeCurrency: {
+            name: "Matic",
+            symbol: "MATIC",
+            decimals: 18,
+        },
+        rpcUrls: ["https://rpc-mainnet.matic.network", "wss://ws-mainnet.matic.network"],
+        blockExplorerUrls: ["https://explorer.matic.network/"],
+        iconUrls: []
+    },
     56: {
         chainId: "0x38",
         chainName: "Binance Smart Chain Mainnet",

@@ -75,7 +75,7 @@ const Deus = () => {
           )}
         />
         <Route exact path="/swap" render={() => <MainSwap {...props} />} />
-        <Route exact path="/Bakkt" render={() => <Bakkt {...props} />} />
+        <Route exact path="/bakkt" render={() => <Bakkt {...props} />} />
         <Route exact path="/Musk" render={() => <Musk {...props} />} />
         <Route exact path="/otc-buy" render={() => <DeaStatic {...props} />} />
         <Route exact path="/vaults" render={() => <Vault {...props} />} />

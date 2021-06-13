@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Web3ReactManager from './components/App/Web3ReactManager'
 import MarketNavbar from './components/common/MarketNav/MarketNavbar'
-import Navbar from './components/common/Navbar/Navbar'
+import Navbar from './components/common/Navbar/Navbar2'
 import { LoopCircleLoading } from 'react-loadingg'
 import { ToastContainer } from 'react-toastify'
 import { RefreshContextProvider } from './helper/RefreshContex'
@@ -18,6 +18,7 @@ const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
+// const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
 const NotFound = React.lazy(() => import('./components/NotFound'))
 
@@ -61,6 +62,11 @@ function App() {
                   path="/crosschain/heco/synchronizer"
                   component={SyncHeco}
                 />
+                {/* <Route
+                  exact
+                  path="/crosschain/polygon/synchronizer"
+                  component={SyncMatic}
+                /> */}
                 <Route exact path="/synchronizer" component={SyncMain} />
                 <Route
                   exact
@@ -75,7 +81,7 @@ function App() {
                 <Redirect to="not-found" />
               </Switch>
             </div>
-            <MarketNavbar />
+            {/* <MarketNavbar /> */}
           </RefreshContextProvider>
         </Web3ReactManager>
       </Suspense>

@@ -10,7 +10,7 @@ export class StockService {
 
         this.husd = "0x0298c2b32eae4da002a15f36fdf7615bea3da047"
         if (chainId === 128) {
-            this.marketMaker = "0x3b62F3820e0B035cc4aD602dECe6d796BC325325";
+            this.marketMaker = "0xe82aa18b107aaf8D3829111C91CD0D133E0773DC";
         } else {
             this.marketMaker = "0xeF0500F9B82E72f045499932F0925C6393A5BD77";
         }
@@ -84,7 +84,7 @@ export class StockService {
 
         const TokenContract = new this.infuraWeb3.eth.Contract(tokenABI, tokenAddress)
         return TokenContract.methods.allowance(account, spender).call().then(balance => {
-            return Web3.utils.fromWei(balance, 'ether');
+            return this._fromWei(balance, "usd")
         })
     }
 

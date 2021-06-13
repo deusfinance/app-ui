@@ -6,6 +6,7 @@ import Wallets from '../common/Navbar/Wallets';
 
 import { useTranslation } from 'react-i18next';
 import './styles/stock-button.scss';
+import { isZero } from '../../constant/number';
 
 const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, handleSwap, isLong, prices, remindCap, validChain }) => {
     const { account, chainId } = useWeb3React()
@@ -19,10 +20,10 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, han
 
     const getAllowances = () => {
         if (from_token.type === TokenType.Main) {
-            return from_token.allowances !== "0"
+            return !isZero(from_token.allowances)
         } else {
-            if (isLong) return from_token.long.allowances !== "0"
-            else return from_token.short.allowances !== "0"
+            if (isLong) return !isZero(from_token.long.allowances)
+            else return !isZero(from_token.short.allowances)
         }
     }
 

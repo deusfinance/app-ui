@@ -8,7 +8,7 @@ export class StockService {
         this.account = account;
         this.chainId = 137;
         this.usdc = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
-        this.marketMaker = "0x3b62F3820e0B035cc4aD602dECe6d796BC325325";
+        this.marketMaker = "0x5e16B021994e3c2536435CA3A45f0dA6536eD315";
     }
 
     makeProvider = () => {

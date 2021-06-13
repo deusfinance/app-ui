@@ -57,7 +57,7 @@ const SyncHeco = () => {
     const { account, chainId } = useWeb3React()
     const syncChainId = 128
     const [web3Class, setWeb3Class] = useState(new StockService(account, syncChainId))
-    const apis = ["https://oracle3.deus.finance/heco/signatures.json", "https://oracle1.deus.finance/heco/signatures.json"]
+    const apis = ["https://oracle1.deus.finance/heco/signatures.json", "https://oracle3.deus.finance/heco/signatures.json"]
     const { t } = useTranslation()
 
     let transactionType = {}

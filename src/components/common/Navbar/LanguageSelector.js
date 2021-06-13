@@ -23,7 +23,7 @@ const LanguageSelector = ({ name = "language" }) => {
     const currLang = ["en", "cn", "ara"].indexOf(i18n.language) === -1 ? "en" : i18n.language
 
     return (
-        <div className="lang-warp" style={{ display: "flex", justifyContent: "center", flexDirection: "row" }}>
+        <div className="lang-warp" style={{ display: "flex", flexDirection: "row" }}>
             {
                 data.map((lang, index) => {
                     return <div key={lang.value} className="wrap-item" style={{

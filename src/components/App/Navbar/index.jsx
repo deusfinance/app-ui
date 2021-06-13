@@ -2,8 +2,6 @@ import styled from 'styled-components'
 import { Base } from '../Button'
 import { RowBetween } from '../Row'
 
-
-
 export const NavbarWrap = styled(RowBetween)`
     position: relative;
     height: 55px;
@@ -22,7 +20,7 @@ export const NavbarWrap = styled(RowBetween)`
     `}
 
     ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        .wrong-label{
+        .network-label{
             display: none;
         }
         .deus-logo{
@@ -33,18 +31,22 @@ export const NavbarWrap = styled(RowBetween)`
         }
     `}
 
-
+    @media screen and (max-width: 1400px) {
+        font-size: 12px;
+    }
     
-    @media screen and (max-width: 1050px) {
+    @media screen and (max-width: 1150px) {
         font-size: 11px;
-        .hamb{
-            display: block;
-        }
-    
         .tvl{
             display:none;
         }
      }
+    @media screen and (max-width: 1050px) {
+          .hamb{
+            display: block;
+        }
+     }
+
         
 `
 
@@ -160,13 +162,18 @@ export const NavbarContentWrap = styled.ul`
         display:none;
     }
     >li{
-        height: 100%;
+        padding: 0 15px;
         position:relative;
         display: flex;
         justify-content: center;
         flex-direction: column;
+        >a{
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
         cursor:pointer;
-        padding: 0 15px;
         ${({ theme }) => theme.mediaWidth.upToLarge`
             padding: 0 10px;
         `}
@@ -192,27 +199,32 @@ export const NavbarContentWrap = styled.ul`
 `
 export const SubNavbarContentWrap = styled.ul`
     display:  none;
-    padding:18px 0 12px 0px;
+    padding:12px 0 12px 0px;
     background: #FFFFFF;
     border-radius: 10px;
     list-style: none;
     width: 200px;
     >li{
-        padding-top: 5px;
-        padding-bottom: 5px;
-        padding-left: 18px;
+ 
         display:block;
         white-space: nowrap;
         color:${({ theme }) => theme.text1_2};
         a{
             display: inline-block;
             width:100%;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 18px;
         }
         &:hover{
             background:#0a0a0acf;
             a{
                 color:#ffffff;
             }
+        }
+        .active{
+            color:#ffffff;
+            background:#0a0a0acf;
         }
     }
     position: absolute;

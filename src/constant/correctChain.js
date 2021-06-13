@@ -48,7 +48,7 @@ export const correctChains = [
         exact: true,
     },
     {
-        url: "/baktt",
+        url: "/bakkt",
         chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
         exact: true,
     },

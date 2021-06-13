@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { formatAddress, getStayledNumber, notify, isDesktop } from '../../../utils/utils';
-import { SwapService } from '../../../services/SwapService';
+import { formatAddress, isDesktop } from '../../../utils/utils';
 import { useTranslation } from 'react-i18next'
 import { getCorrectChains } from '../../../constant/correctChain';
 import { NameChainMap } from '../../../constant/web3';
@@ -31,6 +30,7 @@ const Navbar = () => {
     const [showWallets, setShowWallets] = useState(false)
     const [open, setOpen] = useState(false)
     const [tvl, setTvl] = useState(null)
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (!isDesktop()) {
@@ -95,34 +95,39 @@ const Navbar = () => {
                         </linearGradient>
                     </defs>
                 </svg>
-                <NavButton className="tvl" active={false} >
-                    TVL: {tvl}
-                </NavButton>
+                {tvl && <NavButton className="tvl" active={false} >
+                    {t("tvl")}: {tvl}
+                </NavButton>}
             </NavbarSideWrap>
 
             <NavbarContentWrap>
                 <li>
-                    <svg width={22} height={20} viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                        <rect width="21.0356" height={20} fill="url(#pattern0)" />
-                        <defs>
-                            <pattern id="pattern0" patternContentUnits="objectBoundingBox" width={1} height={1}>
-                                <use xlinkHref="#image0" transform="translate(0 -0.02589) scale(0.00390625 0.00410852)" />
-                            </pattern>
-                            <image id="image0" width={256} height={256} xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAMAAABrrFhUAAADAFBMVEX///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+/LkhhAAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1O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" />
-                        </defs>
-                    </svg>
+                    <ExternalLink href="https://discord.com/invite/xfeYT6acha">
+                        <svg width={22} height={20} viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                            <rect width="21.0356" height={20} fill="url(#pattern0)" />
+                            <defs>
+                                <pattern id="pattern0" patternContentUnits="objectBoundingBox" width={1} height={1}>
+                                    <use xlinkHref="#image0" transform="translate(0 -0.02589) scale(0.00390625 0.00410852)" />
+                                </pattern>
+                                <image id="image0" width={256} height={256} xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAMAAABrrFhUAAADAFBMVEX///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+/LkhhAAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1O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" />
+                            </defs>
+                        </svg>
+                    </ExternalLink>
                 </li>
                 <li>
-                    <svg width={19} height={15} viewBox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.0548 3.73421C17.0664 3.89695 17.0664 4.05969 17.0664 4.22393C17.0664 9.22836 13.1452 15 5.97518 15V14.997C3.85712 15 1.78306 14.4105 0 13.2991C0.307983 13.3351 0.61751 13.3531 0.927808 13.3539C2.68308 13.3554 4.38818 12.7831 5.76908 11.7295C4.10104 11.6987 2.63831 10.642 2.12732 9.09937C2.71164 9.20887 3.31371 9.18637 3.88722 9.03413C2.06866 8.67715 0.760309 7.12475 0.760309 5.32186C0.760309 5.30536 0.760309 5.28961 0.760309 5.27386C1.30217 5.5671 1.90888 5.72984 2.52947 5.74783C0.816657 4.63565 0.288686 2.42179 1.32301 0.690903C3.30213 3.057 6.22218 4.49541 9.35682 4.64765C9.04266 3.33224 9.47183 1.95382 10.4845 1.02913C12.0546 -0.404778 14.5238 -0.331282 15.9997 1.19337C16.8727 1.02613 17.7094 0.714902 18.4751 0.27393C18.1841 1.15062 17.5751 1.89533 16.7615 2.36855C17.5342 2.28005 18.2891 2.07907 19 1.77234C18.4767 2.53429 17.8175 3.198 17.0548 3.73421Z" fill="white" />
-                    </svg>
+                    <ExternalLink href="https://t.me/deusdao">
+                        <svg width={19} height={15} viewBox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.0548 3.73421C17.0664 3.89695 17.0664 4.05969 17.0664 4.22393C17.0664 9.22836 13.1452 15 5.97518 15V14.997C3.85712 15 1.78306 14.4105 0 13.2991C0.307983 13.3351 0.61751 13.3531 0.927808 13.3539C2.68308 13.3554 4.38818 12.7831 5.76908 11.7295C4.10104 11.6987 2.63831 10.642 2.12732 9.09937C2.71164 9.20887 3.31371 9.18637 3.88722 9.03413C2.06866 8.67715 0.760309 7.12475 0.760309 5.32186C0.760309 5.30536 0.760309 5.28961 0.760309 5.27386C1.30217 5.5671 1.90888 5.72984 2.52947 5.74783C0.816657 4.63565 0.288686 2.42179 1.32301 0.690903C3.30213 3.057 6.22218 4.49541 9.35682 4.64765C9.04266 3.33224 9.47183 1.95382 10.4845 1.02913C12.0546 -0.404778 14.5238 -0.331282 15.9997 1.19337C16.8727 1.02613 17.7094 0.714902 18.4751 0.27393C18.1841 1.15062 17.5751 1.89533 16.7615 2.36855C17.5342 2.28005 18.2891 2.07907 19 1.77234C18.4767 2.53429 17.8175 3.198 17.0548 3.73421Z" fill="white" />
+                        </svg>
+                    </ExternalLink>
                 </li>
                 <li>
-                    <svg width={18} height={16} viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.6601 0.219953C17.3531 -0.0344475 16.8708 -0.0708476 16.3722 0.124753H16.3713C15.8469 0.330354 1.52653 6.33197 0.943561 6.57717C0.837529 6.61317 -0.088506 6.95077 0.00688135 7.70278C0.092034 8.38078 0.836301 8.66158 0.927185 8.69398L4.56787 9.91198C4.80941 10.6976 5.69983 13.596 5.89674 14.2152C6.01956 14.6012 6.21975 15.1084 6.5706 15.2128C6.87846 15.3288 7.18468 15.2228 7.38282 15.0708L9.60866 13.0536L13.2019 15.7916L13.2874 15.8416C13.5314 15.9472 13.7652 16 13.9883 16C14.1606 16 14.326 15.9684 14.4841 15.9052C15.0224 15.6892 15.2377 15.188 15.2603 15.1312L17.9442 1.50036C18.108 0.772355 17.8803 0.401954 17.6601 0.219953ZM7.7787 10.3992L6.55054 13.5992L5.32237 9.59918L14.7383 2.79916L7.7787 10.3992Z" fill="white" />
-                    </svg>
+                    <ExternalLink href="https://t.me/deusfinance">
+                        <svg style={{ marginBottom: "2px" }} height={16} viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.6601 0.219953C17.3531 -0.0344475 16.8708 -0.0708476 16.3722 0.124753H16.3713C15.8469 0.330354 1.52653 6.33197 0.943561 6.57717C0.837529 6.61317 -0.088506 6.95077 0.00688135 7.70278C0.092034 8.38078 0.836301 8.66158 0.927185 8.69398L4.56787 9.91198C4.80941 10.6976 5.69983 13.596 5.89674 14.2152C6.01956 14.6012 6.21975 15.1084 6.5706 15.2128C6.87846 15.3288 7.18468 15.2228 7.38282 15.0708L9.60866 13.0536L13.2019 15.7916L13.2874 15.8416C13.5314 15.9472 13.7652 16 13.9883 16C14.1606 16 14.326 15.9684 14.4841 15.9052C15.0224 15.6892 15.2377 15.188 15.2603 15.1312L17.9442 1.50036C18.108 0.772355 17.8803 0.401954 17.6601 0.219953ZM7.7787 10.3992L6.55054 13.5992L5.32237 9.59918L14.7383 2.79916L7.7787 10.3992Z" fill="white" />
+                        </svg>
+                    </ExternalLink>
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
-
                     <SubNavbarContentWrap>
                         <li>
                             <ExternalLink href="https://t.me/deusfinance_news" textDecoration="none">Announcment Channel</ExternalLink>
@@ -134,60 +139,58 @@ const Navbar = () => {
 
                 </li>
                 <li>
-                    <p>DOCS</p>
+                    <p>{t("learn")}</p>
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
 
                     <SubNavbarContentWrap>
                         <li>
-                            <ExternalLink href="https://wiki.deus.finance" textDecoration="none">DEUS wiki </ExternalLink>
+                            <ExternalLink href="https://wiki.deus.finance" textDecoration="none">{t("deusWiki")} </ExternalLink>
                         </li>
                     </SubNavbarContentWrap>
                 </li>
                 <li>
-                    <p>TOOLS</p>
+                    <p>{t("tools")}</p>
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
                     <SubNavbarContentWrap>
-                        <li><a href="https://simulate.deus.finance"> DEUS simulator </a></li>
-                        <li><a href="https://chart.deus.finance"> DEUS tradingview </a></li>
-                        <li><a href="https://vote.deus.finance"> DEUS vote </a></li>
+                        <li>  <ExternalLink href="https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US" textDecoration="none"> DEUS android</ExternalLink></li>
+                        <li>  <ExternalLink href="https://simulate.deus.finance" textDecoration="none"> {t("simulator")}</ExternalLink></li>
+                        <li>  <ExternalLink href="https://chart.deus.finance" textDecoration="none"> {t("tradingview")}</ExternalLink></li>
+                        <li>  <ExternalLink href="https://vote.deus.finance" textDecoration="none"> {t("vote")}</ExternalLink></li>
                     </SubNavbarContentWrap>
                 </li>
                 <li>
-                    <p>APP</p>
+                    <NavLink to="/swap" >{t("swap")} </NavLink>
+                </li>
+                <li>
+                    <p>{t("buyStocks")} </p>
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
                     <SubNavbarContentWrap>
-                        <li><NavLink to="/swap">SWAP </NavLink></li>
-                        <li><a href="https://chart.deus.finance">MUSK</a></li>
-                        <li><a href="https://vote.deus.finance"> BAKKT </a></li>
+                        <li> <NavLink to="/synchronizer" >ETH </NavLink> </li>
+                        <li> <NavLink to="/crosschain/xdai/synchronizer/" >xDAI </NavLink></li>
+                        <li> <NavLink to="/crosschain/bsc/synchronizer/" >BSC </NavLink></li>
                     </SubNavbarContentWrap>
                 </li>
                 <li>
-                    <p>SYNTHETICS</p>
+                    <NavLink to="/stake-and-yield"> {t("staking")}</NavLink>
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
                     <SubNavbarContentWrap>
-                        <li><a href="https://simulate.deus.finance"> ETH </a></li>
-                        <li><a href="https://chart.deus.finance"> xDAI </a></li>
-                        <li><a href="https://vote.deus.finance"> BSC </a></li>
+                        <li><NavLink to="/stake-and-yield"> STAKE & YIELD </NavLink></li>
+                        <li><NavLink to="/vaults" exact>  {t("vaultsL")} </NavLink></li>
+                        <li><NavLink to="/staking" > {t("stakingL")} </NavLink></li>
                     </SubNavbarContentWrap>
-                </li>
-                <li>
-                    <p>STAKING</p>
-                    <img className="polygon" src="/img/navbar/polygon.png" width="13px" />
-                    <SubNavbarContentWrap>
-                        <li><a href="https://simulate.deus.finance"> STAKE & YIELD </a></li>
-                        <li><a href="https://chart.deus.finance"> VAULTS (LEGACY) </a></li>
-                        <li><a href="https://vote.deus.finance"> STAKING (LEGACY) </a></li>
-                    </SubNavbarContentWrap>
-                </li>
 
+                </li>
+                <li style={{ cursor: "default" }}>
+                    <LanguageSelector />
+                </li>
             </NavbarContentWrap>
 
             <NavbarSideWrap >
                 {account && <>
                     {chainId && validChains.indexOf(chainId) === -1 ?
-                        <NavWarningButton className="wrong-label" active={false} >
-                            Wrong Network
-                    </NavWarningButton>
+                        <NavWarningButton active={false} >
+                            {t("WrongNetwork")}
+                        </NavWarningButton>
                         :
                         <NavButton active={false} >
                             <svg width={8} height={8} style={{ marginRight: "5px" }} viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -200,16 +203,17 @@ const Navbar = () => {
                 {account ?
                     (chainId && validChains.indexOf(chainId) === -1)
                         ?
-                        <NavButton active={true} onClick={() => addRPC(account, activate, validChains[0])}>
-                            Change to {NameChainMap[validChains[0]] || "ETH"}
+                        <NavButton className="network-label" active={true} onClick={() => addRPC(account, activate, validChains[0])}>
+                            {t("changeTo")} {NameChainMap[validChains[0]] || "ETH"}
                         </NavButton>
                         :
-                        <NavButton active={false} >
+                        <NavButton className="network-label" active={false} >
                             <span style={{ opacity: "0.5", marginRight: "5px" }}>Network: </span> {NameChainMap[chainId]}
+                            {/* {NameChainMap[chainId]} */}
                         </NavButton>
                     :
                     <NavButton active={true} onClick={handleConnect}>
-                        Connect Wallet
+                        {t("connectWallet")}
                     </NavButton>
                 }
 
@@ -220,19 +224,50 @@ const Navbar = () => {
             <NavbarMobileContent open={open}>
 
                 <ul>
-                    <li className="icon-close"><div className="menu-title">MENU</div><svg onClick={() => setOpen(!open)} viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="Page-1" stroke="white" strokeWidth={1} fill="white" fillRule="evenodd"><g id="icon-shape"><polygon id="Combined-Shape" points="10 8.58578644 2.92893219 1.51471863 1.51471863 2.92893219 8.58578644 10 1.51471863 17.0710678 2.92893219 18.4852814 10 11.4142136 17.0710678 18.4852814 18.4852814 17.0710678 11.4142136 10 18.4852814 2.92893219 17.0710678 1.51471863 10 8.58578644" /></g></g></svg></li>
+                    <li className="icon-close"><div className="menu-title">{t("menu")}</div><svg onClick={() => setOpen(!open)} viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="Page-1" stroke="white" strokeWidth={1} fill="white" fillRule="evenodd"><g id="icon-shape"><polygon id="Combined-Shape" points="10 8.58578644 2.92893219 1.51471863 1.51471863 2.92893219 8.58578644 10 1.51471863 17.0710678 2.92893219 18.4852814 10 11.4142136 17.0710678 18.4852814 18.4852814 17.0710678 11.4142136 10 18.4852814 2.92893219 17.0710678 1.51471863 10 8.58578644" /></g></g></svg></li>
+
+                    <li className="nav-item " style={{ marginLeft: "20px" }} >
+                        <LanguageSelector />
+                    </li>
+
                     <li className="nav-item ">
-                        <a className href="/"><div className="nav-title"> APP</div></a>
-                        <ul className="sub-nav">
+                        <a href="/"><div className="nav-title"> APP</div></a>
+                        <ul className="sub-nav" onClick={() => setOpen(false)}>
                             <li className="sub-nav-item">
-                                <a href="/swap" aria-current="page" className="active"> SWAP </a>
+                                <NavLink to="/swap" >{t("swap")} </NavLink>
                             </li>
-                            <li className="sub-nav-item"><a href="/stake-and-yield"> STAKE &amp; YIELD </a></li>
-                            <li className="sub-nav-item"><a href="/vaults"> VAULTS (LEGACY) </a></li>
-                            <li className="sub-nav-item"><a href="/staking"> STAKING (LEGACY) </a></li>
                             <li className="sub-nav-item">
-                                <a href="https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US"> Mobile Android </a>
+                                <NavLink to="/stake-and-yield" > STAKE &amp; YIELD </NavLink>
                             </li>
+                            <li className="sub-nav-item">
+                                <NavLink to="/vaults" > {t("vaultsL")} </NavLink>
+                            </li>
+                            <li className="sub-nav-item">
+                                <NavLink to="/staking" >  {t("stakingL")}</NavLink>
+                            </li>
+                        </ul>
+                    </li>
+                    <li className="nav-item ">
+                        <a href="/"><div className="nav-title"> {t("buyStocks")}</div></a>
+                        <ul className="sub-nav" onClick={() => setOpen(false)}>
+                            <li className="sub-nav-item"> <NavLink to="/synchronizer" >ETH </NavLink> </li>
+                            <li className="sub-nav-item"> <NavLink to="/crosschain/xdai/synchronizer/" >xDAI </NavLink></li>
+                            <li className="sub-nav-item"> <NavLink to="/crosschain/bsc/synchronizer/" >BSC </NavLink></li>
+                        </ul>
+                    </li>
+                    <li className="nav-item ">
+                        <a href="/"><div className="nav-title"> {t("learn")}</div></a>
+                        <ul className="sub-nav" onClick={() => setOpen(false)}>
+                            <li className="sub-nav-item">  <ExternalLink href="https://wiki.deus.finance" textDecoration="none"> {t("deusWiki")} </ExternalLink></li>
+                        </ul>
+                    </li>
+                    <li className="nav-item ">
+                        <a href="/"><div className="nav-title"> {t("tools")}</div></a>
+                        <ul className="sub-nav" onClick={() => setOpen(false)}>
+                            <li className="sub-nav-item">  <ExternalLink href="https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US" textDecoration="none"> DEUS android</ExternalLink></li>
+                            <li className="sub-nav-item">  <ExternalLink href="https://simulate.deus.finance" textDecoration="none"> {t("simulator")}</ExternalLink></li>
+                            <li className="sub-nav-item">  <ExternalLink href="https://chart.deus.finance" textDecoration="none">  {t("tradingview")}</ExternalLink></li>
+                            <li className="sub-nav-item">  <ExternalLink href="https://vote.deus.finance" textDecoration="none"> {t("vote")}</ExternalLink></li>
                         </ul>
                     </li>
 

@@ -21,12 +21,12 @@ const SelectedNetworks = () => {
         else if (currHref.includes("/bsc")) {
             return "BSC"
         }
-        else if (currHref.includes("/heco")) {
-            return "HECO"
-        }
-        else if (currHref.includes("/polygon")) {
-            return "POLYGON"
-        }
+        // else if (currHref.includes("/heco")) {
+        //     return "HECO"
+        // }
+        // else if (currHref.includes("/polygon")) {
+        //     return "POLYGON"
+        // }
         else {
             return "ETH"
         }

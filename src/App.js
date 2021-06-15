@@ -16,7 +16,7 @@ const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
 const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
-const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
+// const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const NotFound = React.lazy(() => import('./components/NotFound'))
@@ -60,11 +60,11 @@ function App() {
                   path="/crosschain/heco/synchronizer"
                   component={SyncHeco}
                 />
-                <Route
+                {/* <Route
                   exact
                   path="/crosschain/polygon/synchronizer"
                   component={SyncMatic}
-                />
+                /> */}
                 <Route exact path="/synchronizer" component={SyncMain} />
                 <Route
                   exact

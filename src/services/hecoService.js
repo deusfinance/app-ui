@@ -10,7 +10,7 @@ export class StockService {
 
         this.husd = "0x0298c2b32eae4da002a15f36fdf7615bea3da047"
         if (chainId === 128) {
-            this.marketMaker = "0x3b62F3820e0B035cc4aD602dECe6d796BC325325";
+            this.marketMaker = "0xe82aa18b107aaf8D3829111C91CD0D133E0773DC";
         } else {
             this.marketMaker = "0xeF0500F9B82E72f045499932F0925C6393A5BD77";
         }
@@ -84,7 +84,7 @@ export class StockService {
 
         const TokenContract = new this.infuraWeb3.eth.Contract(tokenABI, tokenAddress)
         return TokenContract.methods.allowance(account, spender).call().then(balance => {
-            return Web3.utils.fromWei(balance, 'ether');
+            return this._fromWei(balance, "usd")
         })
     }
 
@@ -98,9 +98,9 @@ export class StockService {
         const tokenContract = new metamaskWeb3.eth.Contract(tokenABI, tokenAddress);
         return tokenContract.methods.approve(this.marketMaker, this._getWei(amount))
             .send({ from: this.account })
-            .on('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .on('error', () => listener("error"));
+            .on('transactionHash', (hash) => listener("transactionHash", hash))
+            .once('receipt', (hash) => listener("receipt", hash))
+            .on('error', (hash) => listener("error", hash));
     }
 
 
@@ -138,15 +138,15 @@ export class StockService {
             address.toString(),
             this._getWei(amount),
             info.fee.toString(),
-            [oracles[0].blockNo.toString()],
-            [oracles[0].price],
-            [oracles[0]["signs"]["buy"].v.toString()],
-            [oracles[0]["signs"]["buy"].r.toString()],
-            [oracles[0]["signs"]["buy"].s.toString()])
+            [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
+            [oracles[0].price, oracles[1].price],
+            [oracles[0]["signs"]["buy"].v.toString(), oracles[1]["signs"]["buy"].v.toString()],
+            [oracles[0]["signs"]["buy"].r.toString(), oracles[1]["signs"]["buy"].r.toString()],
+            [oracles[0]["signs"]["buy"].s.toString(), oracles[1]["signs"]["buy"].s.toString()])
             .send({ from: this.account })
             .on('transactionHash', (hash) => listener("transactionHash", hash))
-            .once('receipt', () => listener("receipt"))
-            .on('error', () => listener("error"));
+            .once('receipt', (hash) => listener("receipt", hash))
+            .on('error', (hash) => listener("error", hash));
     }
 
     sell = (address, amount, oracles, listener) => {
@@ -161,15 +161,15 @@ export class StockService {
             address.toString(),
             this._getWei(amount),
             info.fee.toString(),
-            [oracles[0].blockNo.toString()],
-            [oracles[0].price],
-            [oracles[0]["signs"]["sell"].v.toString()],
-            [oracles[0]["signs"]["sell"].r.toString()],
-            [oracles[0]["signs"]["sell"].s.toString()])
+            [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
+            [oracles[0].price, oracles[1].price],
+            [oracles[0]["signs"]["sell"].v.toString(), oracles[1]["signs"]["sell"].v.toString()],
+            [oracles[0]["signs"]["sell"].r.toString(), oracles[1]["signs"]["sell"].r.toString()],
+            [oracles[0]["signs"]["sell"].s.toString(), oracles[1]["signs"]["sell"].s.toString()])
             .send({ from: this.account })
             .on('transactionHash', (hash) => listener("transactionHash", hash))
-            .once('receipt', () => listener("receipt"))
-            .on('error', () => listener("error"));
+            .once('receipt', (hash) => listener("receipt", hash))
+            .on('error', (hash) => listener("error", hash));
     }
 
 

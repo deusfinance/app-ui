@@ -59,6 +59,8 @@
 
 @media screen and (max-width: 1050px) {
     .market-nav-wrap {
+        position: fixed;
+
         z-index: 2;
         background: #000000;
         border-top: 1px solid #1c1c1c;

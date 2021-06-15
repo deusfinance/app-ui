@@ -399,6 +399,8 @@ export const AllStakings = {
         title: "sDAI",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         innerLink: true,
+        isClose: true,
+
         provideLink: "/vaults",
     },
     "sand_deus": {
@@ -406,6 +408,8 @@ export const AllStakings = {
         title: "sDEUS",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         innerLink: true,
+        isClose: true,
+
         provideLink: "/vaults",
     },
     "sand_eth": {
@@ -413,6 +417,8 @@ export const AllStakings = {
         title: "sETH",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         innerLink: true,
+        isClose: true,
+
         provideLink: "/vaults",
     },
     "sand_dea": {
@@ -420,6 +426,8 @@ export const AllStakings = {
         title: "sDEA",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         innerLink: true,
+        isClose: true,
+
         provideLink: "/vaults",
 
     },
@@ -427,7 +435,7 @@ export const AllStakings = {
         name: "sand_wbtc",
         title: "sWBTC",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-
+        isClose: true,
         innerLink: true,
         provideLink: "/vaults",
     },
@@ -435,7 +443,7 @@ export const AllStakings = {
         name: "timetoken",
         title: "TimeToken",
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
-        // isClose: true,
+        isClose: true,
         innerLink: true,
         provideLink: "/vaults",
     },
@@ -445,6 +453,7 @@ export const AllStakings = {
         inner_link: false,
         liqLink: "https://pools.balancer.exchange/#/pool/0x1dc2948b6db34e38291090b825518c1e8346938b/",
         balancer: true,
+        isClose: true,
         info: "DEA (not sealed)    38.78%\n\nsUNI DEUS-DEA       38.78%\nsDEA                7.14% \nsDEUS               7.14% \nsUNI DEA-USDC       4.08% \n sUNI DEUS-ETH       4.08%  ",
 
     },
@@ -455,6 +464,7 @@ export const AllStakings = {
         stakingLink: "0x15Cd5DDB1ca1A2B87B17e4fc728d904A5B43D246",
         liqLink: "https://balancer.com",
         own_pool: 0,
+        isClose: true,
         balancer: true,
         info: "25% DEA\n25% sWBTC\n25% sETH\n25% sDAI",
         claimable_amount: 0,

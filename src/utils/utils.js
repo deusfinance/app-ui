@@ -1,8 +1,10 @@
 
 import { isAddress } from '@ethersproject/address';
 import { Contract } from '@ethersproject/contracts';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 import { toast } from 'react-toastify';
+import { isZero } from '../constant/number';
 
 export const isDesktop = () => {
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -11,8 +13,22 @@ export const isDesktop = () => {
 
 export const formatBalance2 = (balance = null, fixed = 9) => {
     if (!balance) return '0'
-    if (parseFloat(balance) === 0) return 0
+    if (isZero(balance)) return 0
     return parseFloat(balance).toPrecision(fixed).substring(0, fixed)
+}
+
+//only new swap
+export const formatBalance3 = (balance = null, fixed = 5) => {
+
+    if (!balance) return '0'
+    if (isZero(balance)) return 0
+
+    BigNumber.config({ EXPONENTIAL_AT: 30 })
+    const bigBalance = new BigNumber(balance)
+    if (new BigNumber(10).pow(fixed).lte(bigBalance)) {
+        return bigBalance.toFixed(0, BigNumber.ROUND_DOWN)
+    }
+    return bigBalance.toPrecision(fixed, BigNumber.ROUND_DOWN).replace(/\.?0+$/, "")
 }
 
 export const getStayledNumber = (number, space = 9, flag = true) => {
@@ -109,7 +125,7 @@ export const setBackground = (type) => {
 
 
 export const formatAddress = (address) => {
-    return address ? address.substring(0, 6) + "..." + address.substring(address.length - 4, address.length) : 'connectWallet'
+    return address ? address.substring(0, 6) + "..." + address.substring(address.length - 4, address.length) : '0x'
 }
 
 export function dollarPrice(price, fixed = 0) {
@@ -121,8 +137,6 @@ export function dollarPrice(price, fixed = 0) {
 }
 
 export function getLibrary(provider) {
-    // const library = new Web3Provider(provider, 'any')
-    // library.pollingInterval = 15000
     return provider
 }
 
@@ -189,7 +203,7 @@ export const notifSync = (methods = method, payload = null) => (state, tx) => {
             break
         }
         case "receipt": {
-            methods.onSuccess(payload)
+            methods.onSuccess(tx)
             break
         }
         case "error": {

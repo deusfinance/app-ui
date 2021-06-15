@@ -57,7 +57,7 @@ const SyncHeco = () => {
     const { account, chainId } = useWeb3React()
     const syncChainId = 128
     const [web3Class, setWeb3Class] = useState(new StockService(account, syncChainId))
-    const apis = ["https://oracle3.deus.finance/heco/signatures.json",]
+    const apis = ["https://oracle1.deus.finance/heco/signatures.json", "https://oracle3.deus.finance/heco/signatures.json"]
     const { t } = useTranslation()
 
     let transactionType = {}
@@ -322,7 +322,13 @@ const SyncHeco = () => {
                 });
             }
         },
-        onSuccess: () => {
+        onSuccess: (hash) => {
+
+            if (hash) console.log(hash)
+
+            else {
+                console.log("didnt defined");
+            }
             console.log("onSuccess ", transactionType);
             toast.dismiss();
             if (transactionType.action === "approve") {
@@ -335,7 +341,7 @@ const SyncHeco = () => {
 
             if (transactionType.action === "sell" || transactionType.action === "buy") {
                 toast.success(<div>Transaction Successful <br />
-                    {`Swapped ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol}`}</div>, {
+                    <a href={`https://hecoinfo.com/tx/${hash?.transactionHash}`} target="_blank" rel="noopener noreferrer">{`v ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
 
@@ -381,7 +387,7 @@ const SyncHeco = () => {
         const tokenAddress = isLong ? token.long.address : token.short.address
         const makerBuySell = await getBuySell()
 
-        const oracles = xdaiMutileOracleHandler(type, tokenAddress, makerBuySell, 1)
+        const oracles = xdaiMutileOracleHandler(type, tokenAddress, makerBuySell, 2)
 
         try {
             transactionType = { action: "buy", swap: swap, isLong: isLong }
@@ -389,7 +395,7 @@ const SyncHeco = () => {
                 await web3Class.buy(tokenAddress, amount, oracles.result, notifSync(methods))
             else
                 await web3Class.sell(tokenAddress, amount, oracles.result, notifSync(methods))
-            // console.log(data);
+
         } catch (error) {
             console.log("handleSync", error);
         }
@@ -410,11 +416,12 @@ const SyncHeco = () => {
 
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
 
+
         <div className="swap-title">
-            <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
+            <img src={process.env.PUBLIC_URL + "/tokens/husd.svg"} alt="DEUS" />
             <div className="sync-wrap" >
                 <div className="sync" style={{ textTransform: "uppercase" }}>
-                    {t("synchronizer")} <span>HECO</span>
+                    <span>HECO</span>
                 </div>
             </div>
         </div>

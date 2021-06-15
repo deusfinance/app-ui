@@ -415,10 +415,10 @@ const SyncMain = () => {
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
 
         <div className="swap-title">
-            <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
+            <img src={process.env.PUBLIC_URL + "/tokens/eth-logo.svg"} style={{ width: "30px", height: "30px" }} alt="DEUS" />
             <div className="sync-wrap" >
-                <div className="sync" style={{ textTransform: "uppercase" }}>
-                    {t("synchronizer")}
+                <div className="sync" >
+                    <span>ETH</span>
                 </div>
             </div>
         </div>

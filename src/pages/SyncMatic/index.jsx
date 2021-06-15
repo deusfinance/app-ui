@@ -10,22 +10,20 @@ import StockBox from '../../components/Sync/StockBox';
 import _ from "lodash"
 import { toast } from 'react-toastify';
 import { TokenType } from '../../config';
-import { StockService } from '../../services/bscTestService';
-
-import { handleCalcPairPrice, busdTestToken as busdToken, fetcher, emptyToken } from '../../services/stock';
+import { StockService } from '../../services/MaticService';
+import { useTranslation } from 'react-i18next'
+import { handleCalcPairPrice, usdcTokenPolygon, fetcher, emptyToken } from '../../services/stock';
 import { useWeb3React } from '@web3-react/core';
 import SyncCap from '../../components/Sync/SyncCap';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
-
+import useAssetBalances from '../../helper/useAssetBalances';
 import './styles/sync-xdai.scss';
 
+const SyncMatic = () => {
 
-
-const SyncBscTest = () => {
-
-    const [tokens,] = useState([{ ...busdToken, type: TokenType.Main }])
+    const [tokens,] = useState([{ ...usdcTokenPolygon, type: TokenType.Main }])
 
     const [swap, setSwap] = useState(
         {
@@ -53,27 +51,27 @@ const SyncBscTest = () => {
     const [loadingCap, setLoadingCAP] = useState(false);
     const [loadingAllowance, setLoadingAllowance] = useState(false);
     const [subscrible, setSubscrible] = useState(null);
-    const [totalCap, setTotalCap] = useState(0);
     const [remindCap, setRemindCap] = useState(0);
     const [longPrice, setLongPrice] = useState("");
     const [lastInputFocus, setLastInputFocus] = useState(null)
     const { account, chainId } = useWeb3React()
-    const [web3Class, setWeb3Class] = useState(new StockService(account, 97))
-    const apis = [
-        "https://oracle1.deus.finance/bsc/signatures.json",
-    ]
+    const syncChainId = 137
+    const [web3Class, setWeb3Class] = useState(new StockService(account, syncChainId))
+    const apis = ["https://oracle3.deus.finance/polygon/signatures.json"]
+    const { t } = useTranslation()
 
     let transactionType = {}
     useEffect(() => {
         if (account && chainId) {
-            setWeb3Class(new StockService(account, 97))
+            setWeb3Class(new StockService(account, syncChainId))
         }
-        // initialCap()
-    }, [account, chainId])
+        initialCap()
+    }, [account, chainId])//eslint-disable-line
 
-    const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/conducted.json", { cache: "no-cache" }), [])
-    const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/price.json", { cache: "no-cache" }), [])
 
+    const getConducted = useCallback(() => fetcher("https://oracle3.deus.finance/polygon/conducted.json", { cache: "no-cache" }), [])
+
+    const getPrices = useCallback(() => fetcher("https://oracle3.deus.finance/polygon/price.json", { cache: "no-cache" }), [])
     const getBuySell = useCallback(() => {
         let reportMessages = ""
         return Promise.allSettled(
@@ -99,8 +97,10 @@ const SyncBscTest = () => {
 
     const getStocks = useCallback(() => fetcher("https://oracle1.deus.finance/registrar-detail.json", { cache: "no-cache" }), [])
 
+    const balances = useAssetBalances(conducted, syncChainId)
+
     useEffect(() => {
-        handleInitToken("from", { ...busdToken })
+        handleInitToken("from", { ...usdcTokenPolygon })
         setSubscrible(setInterval(() => {
             getPrices().then((res) => {
                 setPrice(res)
@@ -151,14 +151,11 @@ const SyncBscTest = () => {
 
     //eslint-disable-next-line
     const initialCap = useCallback(async () => {
-        if (account && chainId && chainId === 97) {
+        if (account && chainId && chainId === syncChainId) {
             setLoadingCAP(true)
-            web3Class.getTotalCap().then(total => {
-                setTotalCap(total)
-                web3Class.getUsedCap().then(used => {
-                    setRemindCap(parseFloat(used))
-                    setLoadingCAP(false)
-                })
+            web3Class.getUsedCap().then(used => {
+                setRemindCap(parseFloat(used))
+                setLoadingCAP(false)
             })
         }
     }, [account, chainId])//eslint-disable-line
@@ -310,7 +307,7 @@ const SyncBscTest = () => {
             }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    <a href={`https://testnet.bscscan.com/tx//${hash}`} target="_blank" rel="noopener noreferrer">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://explorer.matic.network/tx/${hash}`} target="_blank" rel="noopener noreferrer">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
                     closeOnClick: false,
@@ -325,7 +322,13 @@ const SyncBscTest = () => {
                 });
             }
         },
-        onSuccess: () => {
+        onSuccess: (hash) => {
+
+            if (hash) console.log(hash)
+
+            else {
+                console.log("didnt defined");
+            }
             console.log("onSuccess ", transactionType);
             toast.dismiss();
             if (transactionType.action === "approve") {
@@ -338,7 +341,7 @@ const SyncBscTest = () => {
 
             if (transactionType.action === "sell" || transactionType.action === "buy") {
                 toast.success(<div>Transaction Successful <br />
-                    {`Swapped ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol}`}</div>, {
+                    <a href={`https://explorer.matic.network/tx/${hash?.transactionHash}`} target="_blank" rel="noopener noreferrer">{`v ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
 
@@ -392,7 +395,7 @@ const SyncBscTest = () => {
                 await web3Class.buy(tokenAddress, amount, oracles.result, notifSync(methods))
             else
                 await web3Class.sell(tokenAddress, amount, oracles.result, notifSync(methods))
-            // console.log(data);
+
         } catch (error) {
             console.log("handleSync", error);
         }
@@ -413,18 +416,20 @@ const SyncBscTest = () => {
 
         {!isMobile && <ToastContainer style={{ width: "450px" }} />}
 
+
         <div className="swap-title">
-            <img src={process.env.PUBLIC_URL + "/img/sync-logo.svg"} alt="DEUS" />
+            <img src={process.env.PUBLIC_URL + "/img/ticker/MATIC.png"} style={{ borderRadius: "50%" }} alt="DEUS" />
             <div className="sync-wrap" >
                 <div className="sync" style={{ textTransform: "uppercase" }}>
-                    synchronizer BSC Test
-                        </div>
+                    <span>Polygon</span>
+                </div>
             </div>
         </div>
 
         <SearchAssets
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
+            balances={balances}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}
@@ -455,7 +460,7 @@ const SyncBscTest = () => {
                         <StockBox
                             type="to"
                             token={swap.to}
-                            estimated=" (estimated)"
+                            estimated={` (${t("estimated")})`}
                             isLong={isLong}
                             handleSearchBox={handleSearchBox}
                             handleTokenInputChange={handleTokenInputChange}
@@ -487,7 +492,7 @@ const SyncBscTest = () => {
                         <div style={{ margin: "16px 0" }}></div>
 
                         <SwapStockButton
-                            validChain={97}
+                            validChain={syncChainId}
                             loading={loadingAllowance}
                             handleSwap={handleSwap}
                             from_token={from_token}
@@ -499,7 +504,7 @@ const SyncBscTest = () => {
 
                         <div style={{ margin: "6px 0" }}></div>
                     </div>
-                    {chainId && chainId === 97 && <SyncCap remindedAmount={remindCap} totalAmount={totalCap} />}
+                    {chainId && chainId === syncChainId && <SyncCap remindedAmount={remindCap} />}
                     {/* <TimerTrading /> */}
                 </div>
             </div>
@@ -512,4 +517,4 @@ const SyncBscTest = () => {
     </div >);
 }
 
-export default SyncBscTest;
+export default SyncMatic;

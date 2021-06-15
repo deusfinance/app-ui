@@ -63,7 +63,7 @@ const RouteBox = ({ swapState, tokensMap, chainId }) => {
     const AllTokens = useMemo(() => {
         const tokens = { ...tokensMap }
         const currWeth = chainId === 4 ? WethRinkeby : Weth
-        tokens[currWeth.address] = currWeth
+        tokens[currWeth.address.toLowerCase()] = currWeth
         return tokens
     }, [tokensMap, chainId])
     const currPath = chainId === 4 ? pathTest : path
@@ -74,7 +74,7 @@ const RouteBox = ({ swapState, tokensMap, chainId }) => {
         <WrapTokens>
             {routes &&
                 routes.map((route, index) => {
-                    const token = AllTokens[route]
+                    const token = AllTokens[route.toLowerCase()]
                     if (index === 0)
                         return <RouteToken key={index}>
                             <WrapToken>
@@ -84,7 +84,7 @@ const RouteBox = ({ swapState, tokensMap, chainId }) => {
                     else {
                         return <RouteToken key={index}>
                             <WrapSwapPlace >
-                                {DeusPath[AllTokens[routes[index - 1]].symbol.toLowerCase()] && DeusPath[AllTokens[routes[index - 1]].symbol.toLowerCase()][AllTokens[routes[index]].symbol.toLowerCase()]
+                                {DeusPath[AllTokens[routes[index - 1].toLowerCase()].symbol.toLowerCase()] && DeusPath[AllTokens[routes[index - 1].toLowerCase()].symbol.toLowerCase()][AllTokens[routes[index].toLowerCase()].symbol.toLowerCase()]
                                     ? <PlaceLogo src="img/swap/d-swap.svg" alt="deus swap" />
                                     : <PlaceLogo src="img/swap/uni.svg" alt="uni swap" />
                                 }

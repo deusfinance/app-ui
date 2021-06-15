@@ -47,8 +47,8 @@ export default [
     exact: true,
     children: [
       {
-        id: 'mainnet',
-        text: 'MAINNET',
+        id: 'ETH',
+        text: 'ETH',
         path: '/synchronizer',
         exact: true
       },
@@ -63,7 +63,13 @@ export default [
         text: 'BSC',
         path: '/crosschain/bsc/synchronizer',
         exact: true
-      }
+      },
+      // {
+      //   id: 'heco',
+      //   text: 'HECO',
+      //   path: '/crosschain/heco/synchronizer',
+      //   exact: true
+      // }
     ]
   },
   {
@@ -72,12 +78,12 @@ export default [
     path: '/',
     exact: true,
     children: [
-      {
-        id: 'coinbaseMigrator',
-        text: <span>COINBASE MIGRATOR</span>,
-        path: '/migrator',
-        exact: true
-      },
+      // {
+      //   id: 'coinbaseMigrator',
+      //   text: <span>COINBASE MIGRATOR</span>,
+      //   path: '/migrator',
+      //   exact: true
+      // },
       {
         id: 'bakkt',
         text: 'BAKKT',

@@ -4,27 +4,21 @@ import { bscSynchronizerABI, tokenABI } from '../utils/abis';
 
 export class StockService {
 
-    constructor(account, chainId = 1) {
+    constructor(account, chainId) {
         this.account = account;
-        this.chainId = chainId;
-        this.marketMaker = "0x7a27a7BF25d64FAa090404F94606c580ce8E1D37";
-        this.INFURA_URL = 'wss://mainnet.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+        this.chainId = 137;
+        this.usdc = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
+        this.marketMaker = "0x5e16B021994e3c2536435CA3A45f0dA6536eD315";
     }
 
     makeProvider = () => {
-        if (this.infuraWeb3) return
-        this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
+        if (this.INFURA_URL) return
+        this.INFURA_URL = 'https://rpc-mainnet.maticvigil.com/';
+        this.infuraWeb3 = new Web3(new Web3.providers.HttpProvider(this.INFURA_URL));
     }
 
     TokensMaxDigit = {
-        wbtc: 8,
-        usdt: 6,
         usdc: 6,
-        coinbase: 18,
-        dea: 18,
-        deus: 18,
-        dai: 18,
-        eth: 18,
     }
 
     _getWei(number, token = "eth") {
@@ -32,6 +26,25 @@ export class StockService {
         // let value = typeof number === "string" ? parseFloat(number).toFixed(18) : number.toFixed(18)
         let ans = Web3.utils.toWei(String(number), 'ether');
         ans = ans.substr(0, ans.length - (18 - max));
+        return ans.toString()
+    }
+
+
+    _fromWei(value, token) {
+        let max = this.TokensMaxDigit[token] ? this.TokensMaxDigit[token] : 18
+        let ans;
+        if (typeof value != "string") {
+            ans = value.toString()
+        } else {
+            ans = value;
+        }
+        while (ans.length < max) {
+            ans = "0" + ans;
+        }
+        ans = ans.substr(0, ans.length - max) + "." + ans.substr(ans.length - max);
+        if (ans[0] === ".") {
+            ans = "0" + ans;
+        }
         return ans.toString()
     }
 
@@ -46,7 +59,7 @@ export class StockService {
 
         if (!account) return
 
-        if (tokenAddress !== this.getTokenAddr("dai")) {
+        if (tokenAddress !== this.usdc) {
             console.log("hii");
             return 1000000000000000
         }
@@ -68,18 +81,9 @@ export class StockService {
         const tokenContract = new metamaskWeb3.eth.Contract(tokenABI, tokenAddress);
         return tokenContract.methods.approve(this.marketMaker, this._getWei(amount))
             .send({ from: this.account })
-            .on('transactionHash', () => listener("transactionHash"))
-            .once('receipt', () => listener("receipt"))
-            .on('error', () => listener("error"));
-    }
-
-
-    getEtherBalance(account) {
-        return this.infuraWeb3.eth.getBalance(account).then(balance => {
-            // console.log(balance);
-            // console.log("balance ", balance);
-            return Web3.utils.fromWei(balance, 'ether');
-        })
+            .on('transactionHash', (hash) => listener("transactionHash", hash))
+            .once('receipt', (hash) => listener("receipt", hash))
+            .on('error', (hash) => listener("error", hash));
     }
 
 
@@ -87,14 +91,11 @@ export class StockService {
         this.makeProvider()
         if (!account) return
 
-        if (tokenAddress === this.xdaiTokenAddress)
-            return this.getEtherBalance(account)
-
-        console.log(tokenAddress, account);
-
         const TokenContract = new this.infuraWeb3.eth.Contract(tokenABI, tokenAddress)
         return TokenContract.methods.balanceOf(account).call().then(balance => {
-            console.log(tokenAddress, balance);
+            if (tokenAddress === this.usdc) {
+                return this._fromWei(balance, "usdc")
+            }
             return Web3.utils.fromWei(balance, 'ether');
         })
     }
@@ -104,28 +105,27 @@ export class StockService {
         const metamaskWeb3 = new Web3(Web3.givenProvider);
         const marketMakerContract = new metamaskWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
         const info = oracles[0]
-        // console.log("oracles", oracles);
-        // console.log("conrtact", marketMakerContract);
-        // console.log("wallet ", this.account);
-        // console.log("address ", address);
-        // console.log("amount ", amount);
+        console.log("oracles", oracles);
+        console.log("conrtact", marketMakerContract);
+        console.log("wallet ", this.account);
+        console.log("address ", address);
+        console.log("amount ", amount);
 
-        //, gasPrice: Web3.utils.toWei("1", "Gwei")
         return marketMakerContract.methods.buyFor(
             this.account,
             info.multiplier,
             address.toString(),
             this._getWei(amount),
             info.fee.toString(),
-            [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
-            [oracles[0].price, oracles[1].price],
-            [oracles[0]["signs"]["buy"].v.toString(), oracles[1]["signs"]["buy"].v.toString()],
-            [oracles[0]["signs"]["buy"].r.toString(), oracles[1]["signs"]["buy"].r.toString()],
-            [oracles[0]["signs"]["buy"].s.toString(), oracles[1]["signs"]["buy"].s.toString()])
+            [oracles[0].blockNo.toString()],
+            [oracles[0].price],
+            [oracles[0]["signs"]["buy"].v.toString()],
+            [oracles[0]["signs"]["buy"].r.toString()],
+            [oracles[0]["signs"]["buy"].s.toString()])
             .send({ from: this.account })
             .on('transactionHash', (hash) => listener("transactionHash", hash))
-            .once('receipt', () => listener("receipt"))
-            .on('error', () => listener("error"));
+            .once('receipt', (hash) => listener("receipt", hash))
+            .on('error', (hash) => listener("error", hash));
     }
 
     sell = (address, amount, oracles, listener) => {
@@ -140,22 +140,23 @@ export class StockService {
             address.toString(),
             this._getWei(amount),
             info.fee.toString(),
-            [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
-            [oracles[0].price, oracles[1].price],
-            [oracles[0]["signs"]["sell"].v.toString(), oracles[1]["signs"]["sell"].v.toString()],
-            [oracles[0]["signs"]["sell"].r.toString(), oracles[1]["signs"]["sell"].r.toString()],
-            [oracles[0]["signs"]["sell"].s.toString(), oracles[1]["signs"]["sell"].s.toString()])
+            [oracles[0].blockNo.toString()],
+            [oracles[0].price],
+            [oracles[0]["signs"]["sell"].v.toString()],
+            [oracles[0]["signs"]["sell"].r.toString()],
+            [oracles[0]["signs"]["sell"].s.toString()])
             .send({ from: this.account })
             .on('transactionHash', (hash) => listener("transactionHash", hash))
-            .once('receipt', () => listener("receipt"))
-            .on('error', () => listener("error"));
+            .once('receipt', (hash) => listener("receipt", hash))
+            .on('error', (hash) => listener("error", hash));
     }
 
+
     getUsedCap = async () => {
-        this.makeProvider()
-        const marketMakerContract = new this.infuraWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
+        const metamaskWeb3 = new Web3(Web3.givenProvider);
+        const marketMakerContract = new metamaskWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
         return marketMakerContract.methods.remainingDollarCap().call().then(info => {
-            return Web3.utils.fromWei(info, 'ether');
+            return this._fromWei(info, "usdc")
         })
     }
 }

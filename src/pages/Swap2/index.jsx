@@ -21,6 +21,8 @@ import useChain from '../../helper/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
+import { useLocation } from 'react-router';
+import SelectedNetworks from '../../components/Sync/SelectNetworks';
 
 const Swap2 = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -35,21 +37,70 @@ const Swap2 = () => {
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
 
+    const search = useLocation().search;
+    let inputCurrency = new URLSearchParams(search).get('inputCurrency')
+    let outputCurrency = new URLSearchParams(search).get('outputCurrency')
+
+    inputCurrency = inputCurrency === "ETH" ? "0x" : inputCurrency
+    outputCurrency = outputCurrency === "ETH" ? "0x" : outputCurrency
+
+    if (inputCurrency) inputCurrency = inputCurrency.toLowerCase()
+    if (outputCurrency) outputCurrency = outputCurrency.toLowerCase()
+
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
 
     const tokens = useMemo(() => DefaultTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = token, map), {})
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = { ...token, address: token.address.toLowerCase() }, map), {})
     ), [tokens])
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
 
     const [TokensMap, setTokensMap] = useState(tokenBalances)
 
+    if (inputCurrency && !TokensMap[inputCurrency]) {
+        inputCurrency = null
+    }
+
+    if (outputCurrency && !TokensMap[outputCurrency]) {
+        outputCurrency = null
+    }
+
+    if (outputCurrency && inputCurrency && outputCurrency === inputCurrency) {
+        outputCurrency = null
+    }
+
+    const deaContract = getTokenAddr("dea", chainId).toLowerCase()
+
+    let fromAddress = inputCurrency ? inputCurrency : "0x"
+
+    let toAddress = outputCurrency ? outputCurrency : deaContract
+
+    if (toAddress === fromAddress) {
+        if (fromAddress === "0x") {
+            if (!inputCurrency) {
+                fromAddress = deaContract
+                console.log(fromAddress);
+            }
+            else {
+                toAddress = deaContract
+            }
+        }
+        else if (fromAddress === deaContract) {
+            if (!outputCurrency) {
+                toAddress = "0x"
+            }
+            else {
+                fromAddress = "0x"
+            }
+        }
+    }
+
+
     const [swapState, setSwapState] = useState({
-        from: { ...TokensMap["0x"] },
-        to: { ...TokensMap[getTokenAddr("deus", chainId)] },
+        from: { ...TokensMap[fromAddress] },
+        to: { ...TokensMap[toAddress] },
     })
 
     const [amountIn, setAmountIn] = useState("")
@@ -57,7 +108,6 @@ const Swap2 = () => {
     const [amountOut, setAmountOut] = useState("")
     const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
-
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -65,6 +115,7 @@ const Swap2 = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
+
     }, [chainId, account]);
 
     useEffect(() => {
@@ -95,7 +146,7 @@ const Swap2 = () => {
             }
         }
         //eslint-disable-next-line 
-    }, [allowance]) //isPreApproved ?
+    }, [allowance, isPreApproved]) //isPreApproved ?
 
 
     const showSearchBox = (active = false, type) => {
@@ -111,6 +162,7 @@ const Swap2 = () => {
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
         }
+        console.log(token);
         setSwapState({ ...swapState, [type]: token })
     }
 
@@ -176,7 +228,6 @@ const Swap2 = () => {
             console.error(e)
         }
     }, [onSwap])
-
 
     return (<>
         <SearchBox
@@ -254,6 +305,9 @@ const Swap2 = () => {
 
             <SlippageTelorance slipage={slipage} setSlipage={setSlipage} />
         </MainWrapper>
+        <div className='tut-left-wrap'>
+            <SelectedNetworks />
+        </div>
     </>);
 }
 

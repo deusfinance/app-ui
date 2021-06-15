@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { InputAmount } from '.';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
 import useTokenBalance from '../../../helper/useTokenBalance';
-import { formatBalance2 } from '../../../utils/utils';
+import { formatBalance3 } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';
 import { Type } from '../Text';
@@ -35,8 +35,6 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
     useEffect(() => {
         const getBalance = () => {
             setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
-            // if (TokensMap && TokensMap[currency.address])
-            //     TokensMap[currency.address].balance = getFullDisplayBalance(data, currency?.decimals)
         }
 
         if (currency) {
@@ -66,7 +64,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             </Box>
             <Box>
                 <Type.SM color={'secodery'}>
-                    Balance: {formatBalance2(balance)}
+                    Balance: {formatBalance3(balance)}
                 </Type.SM>
             </Box>
         </Flex>
@@ -75,9 +73,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             justifyContent="space-between"
             alignItems="center"
             mt="5px"
-            style={{
-                cursor: "pointer"
-            }}
+            style={{ cursor: "pointer" }}
         >
             <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
 

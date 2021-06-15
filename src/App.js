@@ -12,13 +12,13 @@ import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
 const Deus = React.lazy(() => import('./components/Deus'))
-const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
 const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
 const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
+const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const NotFound = React.lazy(() => import('./components/NotFound'))
 
 // const Bridge = React.lazy(() => import('./components/Bridge'))
@@ -32,7 +32,6 @@ const NotFound = React.lazy(() => import('./components/NotFound'))
 function App() {
 
   useGoogleAnalytics()
-
 
   return (
     <>

@@ -14,10 +14,13 @@ import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
 import { ApproveTranaction } from '../../utils/explorers';
 import { TransactionState } from '../../utils/constant';
 import { dAmcTestToken } from '../../constant/token';
-import { busdToken, fetcher } from '../../services/stock';
+import { oraclesUrl } from '../../constant/oracles';
 import { useDebounce } from '../../helper/useDebounce';
 import { useWeb3React } from '@web3-react/core';
 import useAssetBalances from '../../helper/useAssetBalances';
+import { RowCenter } from '../../components/App/Row';
+import { sendMessage } from '../../utils/telegramLogger';
+import { useOracleFetch } from '../../utils/SyncUtils';
 
 const MainWrapper = styled.div`
    margin-top: 100px;
@@ -33,14 +36,18 @@ export const NetworkTitle = styled(Base)`
   color: ${({ theme }) => theme.text1};
   background: ${({ theme }) => theme.text1_2};
   border: 1px solid ${({ theme }) => theme.text1};
-  margin-left:10px;
+  /* margin-left:10px; */
   padding:0 8px;
   font-size: 25px;
 `
 
 const Sync2 = () => {
+    const SyncChainId = 56
+    const oracle = oraclesUrl[SyncChainId]
+    const stableCoin = oracle.stableCoin
+    const [fromCurrency, setFromCurrency] = useState(stableCoin)
+
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-    const [fromCurrency, setFromCurrency] = useState(busdToken)
     const [toCurrency, setToCurrency] = useState(dAmcTestToken)
     const [long, setLong] = useState(true)
     const [amountIn, setAmountIn] = useState("")
@@ -54,30 +61,33 @@ const Sync2 = () => {
     const [loading, setLoading] = useState(false);
     const [loadingCap, setLoadingCAP] = useState(false);
 
+
     const [lastInputFocus, setLastInputFocus] = useState(null)
     const { account, chainId } = useWeb3React()
-    const SyncChainId = 56
 
     const changePosition = () => {
         setFromCurrency({ ...toCurrency, amount: "" })
         setToCurrency({ ...fromCurrency, amount: "" })
     }
 
-    const getConducted = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/conducted.json", { cache: "no-cache" }), [])
-    const getPrices = useCallback(() => fetcher("https://oracle1.deus.finance/bsc/price.json", { cache: "no-cache" }), [])
-    const getStocks = useCallback(() => fetcher("https://oracle1.deus.finance/registrar-detail.json", { cache: "no-cache" }), [])
+    const getConducted = useOracleFetch(oracle.conducted)
+    const getPrices = useOracleFetch(oracle.prices)
+    const getStocks = useOracleFetch(oracle.registrar)
+    const getSignatures = useOracleFetch(oracle.signatures)
 
     const balances = useAssetBalances(conducted, SyncChainId)
+
 
 
     const getData = useCallback(() => {
         setLoading(true);
         getConducted().then((res) => {
+            console.log(res[0]);
             setConducted(res)
             getStocks().then((res) => {
-                setStocks(res)
+                setStocks(res[0])
                 getPrices().then((res) => {
-                    setPrice(res)
+                    setPrice(res[0])
                     setLoading(false);
                     console.log("fetching finished");
                 })
@@ -90,8 +100,7 @@ const Sync2 = () => {
     }, [getData]);
 
 
-    //tokens
-    //singniturers
+
     //prices
     //perPrice
     //sync
@@ -100,7 +109,7 @@ const Sync2 = () => {
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
-            { <img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)
     }
 
@@ -112,8 +121,15 @@ const Sync2 = () => {
                 from: { logo: "/tokens/dea.svg", symbol: "dGME", amount: "0.0017165" },
                 chainId: 56,
             })}>
-                <Image src="/img/sync-logo.svg" alt="sync" height="45px" />
-                <NetworkTitle>BSC</NetworkTitle>
+                <div style={{ display: "flex", justifyContent: "flex-start", flexDirection: "column" }}>
+                    <Image src="/img/sync-logo.svg" alt="sync" height="45px" style={{ marginBottom: "10px" }} />
+                    <NetworkTitle>
+                        <RowCenter >
+                            <img src={process.env.PUBLIC_URL + "/img/chains/bsc.png"} style={{ width: "25px", height: "25px", marginRight: "5px" }} alt="DEUS" />
+                            BSC
+                        </RowCenter>
+                    </NetworkTitle>
+                </div>
             </Title>
 
             <SwapWrapper>

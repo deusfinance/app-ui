@@ -1,4 +1,14 @@
-import { Token } from '../sdk/tokens';
+export class Token {
+    constructor(chainId, address, decimals, symbol, name, logo, balance = null) {
+        this.chainId = chainId
+        this.address = address
+        this.decimals = decimals
+        this.symbol = symbol
+        this.name = name
+        this.logo = logo
+        this.balance = balance
+    }
+}
 
 export const xdaiToken = new Token(100, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
 export const wxdaiToken = new Token(100, "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18, "wxDAI", "wxDAI", "/tokens/xdai.svg");

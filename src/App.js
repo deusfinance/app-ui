@@ -6,6 +6,7 @@ import { LoopCircleLoading } from 'react-loadingg'
 import { ToastContainer } from 'react-toastify'
 import { RefreshContextProvider } from './helper/RefreshContex'
 import Announcements from './components/common/Announcements'
+import useGoogleAnalytics from './helper/useGoogleAnalytics'
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
@@ -72,6 +73,7 @@ function App() {
                 />
                 {/* <Route exact path="/dbETH" component={dbETH} /> */}
                 {/* <Route exact path="/bridge" component={Bridge} /> */}
+                <Route exact path="/sync2" component={Sync2} />
                 <Route exact path="/swap2" component={Swap2} />
                 <Redirect exact from="/" to="/swap" />
                 <Route path="/" component={Deus} />

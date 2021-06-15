@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-
 import styled from 'styled-components'
 import { Image } from 'rebass/styled-components';
 import { FlexCenter } from '../../components/App/Container';
@@ -14,13 +13,14 @@ import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
 import { ApproveTranaction } from '../../utils/explorers';
 import { TransactionState } from '../../utils/constant';
 import { dAmcTestToken } from '../../constant/token';
-import { oraclesUrl } from '../../constant/oracles';
+import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../helper/useDebounce';
 import { useWeb3React } from '@web3-react/core';
 import useAssetBalances from '../../helper/useAssetBalances';
 import { RowCenter } from '../../components/App/Row';
 import { sendMessage } from '../../utils/telegramLogger';
 import { useOracleFetch } from '../../utils/SyncUtils';
+
 
 const MainWrapper = styled.div`
    margin-top: 100px;
@@ -43,7 +43,7 @@ export const NetworkTitle = styled(Base)`
 
 const Sync2 = () => {
     const SyncChainId = 56
-    const oracle = oraclesUrl[SyncChainId]
+    const oracle = SyncData[SyncChainId]
     const stableCoin = oracle.stableCoin
     const [fromCurrency, setFromCurrency] = useState(stableCoin)
 
@@ -98,7 +98,6 @@ const Sync2 = () => {
     useEffect(() => {
         getData();
     }, [getData]);
-
 
 
     //prices

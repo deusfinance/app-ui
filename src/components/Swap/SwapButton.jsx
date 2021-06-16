@@ -29,7 +29,7 @@ const SwapButton = ({ approved, token, handleSwap, isMobile }) => {
 
     return (<>
 
-        {showWallets && <Wallets setShow={setShowWallets} />}
+        {showWallets && <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />}
         { account && <>{(token.balance < amount) ? <div className="swap-btn-wrap grad-wrap Insufficient ">
             <div className="swap-btn grad Insufficient">
                 {t("insufficientBalance")}

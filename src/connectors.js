@@ -63,6 +63,6 @@ export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.WalletLink]: walletlink,
-  [ConnectorNames.Frame]: frame,
+  // [ConnectorNames.Frame]: frame, // api keys are missing
   [ConnectorNames.Fortmatic]: fortmatic
 }

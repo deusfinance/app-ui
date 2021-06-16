@@ -46,11 +46,11 @@
         .wallet {
             animation: scale-up 0.5s forwards;
             cursor: pointer;
-            margin: auto;
             margin: 10px auto;
             text-align: center;
             padding: 10px;
-            display: block;
+            display: grid;
+            grid-template-columns: 1fr 6fr 1fr;
             max-width: 350px;
             width: 80%;
             background: linear-gradient(
@@ -66,20 +66,50 @@
                 filter: brightness(1.2);
             }
         }
+
+        .wallet.connected {
+          cursor: default;
+          background: #1c1c1c;
+
+          &:hover {
+            filter: none;
+          }
+        }
     }
 }
 
-.blury {
-    top: 0;
-    left: 0;
-    position: fixed;
-    width: 100vw;
-    z-index: 5;
-    height: 100vh;
-    // filter: blur(5px);
-    background: #000000;
-    opacity: 0.7;
+.wallet.error {
+  display: flex !important;
+  border: 1px solid red !important;
+  justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    cursor: default;
+  }
 }
+
+.wallet-msg {
+  color: red;
+}
+
+.wallet-box {
+  padding: 5px;
+  background: linear-gradient(
+      135deg,
+      rgba(91, 204, 189, 0.14902) 0%,
+      rgba(97, 192, 191, 0.14902) 33.33%,
+      rgba(85, 188, 200, 0.14902) 74.49%,
+      rgba(105, 207, 184, 0.14902) 100%
+  );
+  border: 1px solid rgba(97, 192, 191, 0.25);
+  border-radius: 2px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 
 @keyframes scale-up {
     0% {
@@ -90,4 +120,28 @@
         opacity: 1;
         transform: scale(1);
     }
+}
+
+.Modal {
+  position: absolute;
+  z-index: 9999999999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(200px, 80%, 750px);
+  border-radius: 10px;
+}
+
+*:focus {
+  outline: none;
+}
+
+.Overlay {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
 }

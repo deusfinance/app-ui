@@ -405,7 +405,7 @@ const SyncBscTest = () => {
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
-            { <img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)
     }
 
@@ -429,6 +429,7 @@ const SyncBscTest = () => {
         <SearchAssets
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
+            chainId={56}
             balances={balances}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}

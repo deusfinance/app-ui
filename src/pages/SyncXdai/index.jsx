@@ -428,7 +428,7 @@ const SyncXdai = () => {
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
-            { <img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
             {/* {<div className="description">
                 <p>You are in <span>WRONG</span> network</p>
                 <p>please change your network to <span>xDAI</span> </p>

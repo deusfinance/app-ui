@@ -404,7 +404,7 @@ const SyncHeco = () => {
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
-            { <img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)
     }
 
@@ -430,6 +430,7 @@ const SyncHeco = () => {
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
             balances={balances}
+            chainId={128}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}

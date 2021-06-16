@@ -6,6 +6,7 @@ import { formatEtherscanLink, EtherscanType } from '../../sdk/constant';
 import { useTranslation } from 'react-i18next'
 
 import './styles/search-assets.scss';
+import { getTransactionLink } from '../../utils/explorers';
 
 const SearchAssets = (props) => {
     const [typingTimeout, setTypeout] = useState(0)
@@ -59,7 +60,7 @@ const SearchAssets = (props) => {
         setCurrToken(newTokens)
     }
     return (<>
-        { showSearchBox && <div className="search-box-wrap" style={{ top: "50%", position: "fixed" }}>
+        {showSearchBox && <div className="search-box-wrap" style={{ top: "50%", position: "fixed" }}>
             <div className="search-box">
                 <div className="label">
                     <p> </p>
@@ -87,14 +88,14 @@ const SearchAssets = (props) => {
                                     {token.type !== TokenType.Main ? token.conducted ? <div style={{ display: "flex", flexDirection: "column", direction: "rtl", justifyContent: "end", alignItems: "end" }}>
                                         <div className="balance-wrap">
                                             <p> {balances && balances[token.short?.address] ? balances[token.short?.address] : getStayledNumber(token.short?.balance)}</p> <p style={{ marginLeft: "12px" }}>S</p>
-                                            <CopyToClipboard text={formatEtherscanLink(EtherscanType.Token, chainId, token.short?.address)}
+                                            <CopyToClipboard text={getTransactionLink(chainId, token.short?.address, "token")}
                                                 onCopy={() => console.log("copied")}>
                                                 <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
                                             </CopyToClipboard>
                                         </div>
                                         <div className="balance-wrap">
                                             <p>  {balances && balances[token.long?.address] ? balances[token.long?.address] : getStayledNumber(token.long?.balance)}</p> <p style={{ marginLeft: "12px" }}>L</p>
-                                            <CopyToClipboard text={formatEtherscanLink(EtherscanType.Token, chainId, token.long?.address)}
+                                            <CopyToClipboard text={getTransactionLink(chainId, token.long?.address, "token")}
                                                 onCopy={() => console.log("copied")}>
                                                 <img className="copy-icon" src={process.env.PUBLIC_URL + "/img/copy.svg"} alt="" />
                                             </CopyToClipboard>

@@ -21,7 +21,7 @@ const PriceImpact = ({ minAmountOut, amountOut, amountIn }) => {
     }, [amountOut, minAmountOut])//eslint-disable-line
 
     return (
-        <SmallWrapper>
+        <SmallWrapper mt="0">
             <Type.SM className="title">Price Impact</Type.SM>
             {/* <Type.SM >{(amountOut === "" || amountIn === "") ? "<0.005 %" : ""}</Type.SM> */}
             <Type.SM >{amount < 0.005 ? "<0.005" : amount} %</Type.SM>

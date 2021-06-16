@@ -158,7 +158,6 @@ const Navbar = () => {
                         <li> <NavLink to="/crosschain/xdai/synchronizer/" >xDAI </NavLink></li>
                         <li> <NavLink to="/crosschain/bsc/synchronizer/" >BSC </NavLink></li>
                         <li> <NavLink to="/crosschain/heco/synchronizer/" >HECO </NavLink></li>
-                        <li> <NavLink to="/crosschain/polygon/synchronizer/" >POLYGON </NavLink></li>
                     </SubNavbarContentWrap>
                 </li>
                 <li>
@@ -244,6 +243,7 @@ const Navbar = () => {
                             <li className="sub-nav-item"> <NavLink to="/synchronizer" >ETH </NavLink> </li>
                             <li className="sub-nav-item"> <NavLink to="/crosschain/xdai/synchronizer/" >xDAI </NavLink></li>
                             <li className="sub-nav-item"> <NavLink to="/crosschain/bsc/synchronizer/" >BSC </NavLink></li>
+                            <li> <NavLink to="/crosschain/heco/synchronizer/" >HECO </NavLink></li>
                         </ul>
                     </li>
                     <li className="nav-item ">

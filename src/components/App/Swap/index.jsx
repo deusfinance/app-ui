@@ -35,9 +35,9 @@ export const StyleSwapBase = css`
     margin:auto;
     width:100%;
     max-width:500px;
-    ${({ theme }) => theme.mediaWidth.upToLarge`
+    /* ${({ theme }) => theme.mediaWidth.upToLarge`
         background: ${({ theme }) => theme.bg7};
-    `}
+    `} */
 `
 
 export const StyleTitles = css`
@@ -73,7 +73,8 @@ export const SmallWrapper = styled(FlexCenter)`
     ${StyleTitles}
     justify-content:space-between;
     height:50px;
-    margin-top:-1px; 
+    /* margin-top:${({ mt }) => mt || "-1px"}; */
+    margin-top: -1px;
     padding:0 20px;
 `
 

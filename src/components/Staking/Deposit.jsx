@@ -40,6 +40,7 @@ const Deposit = (props) => {
   }, [owner, chainId, exit, stakeType])
 
   const chooseTypeStake = (e) => {
+    console.log(e.target.value);
     setSelectedStakeType(e.target.value)
   }
 
@@ -82,7 +83,8 @@ const Deposit = (props) => {
       if (stakeAmount === '0' || stakeAmount === '') return
       if (approve || approveClick) {
         let amount = web3.utils.toWei(stakeAmount)
-        let type = selectedStakeType === '0' ? '1' : selectedStakeType
+        // let type = selectedStakeType === '0' ? '1' : selectedStakeType
+        let type = '3'
         sendTransaction(
           StakeAndYieldContract,
           `deposit`,
@@ -104,6 +106,7 @@ const Deposit = (props) => {
     }
     setExitBtn(data)
   }
+  console.log(selectedStakeType);
   return (
     <>
       {/* {lockStakeType && ( */}
@@ -113,23 +116,25 @@ const Deposit = (props) => {
       {/* )} */}
       <div className="deposit-container">
         <ToggleButtons
+          classes="width-unset"
           data={[
-            {
-              title: 'STAKE',
-              value: '1',
-              disabled: false
-            },
+            // {
+            //   title: 'STAKE',
+            //   value: '1',
+            //   disabled: false
+            // },
             {
               title: 'STAKE & YIELD',
               value: '3',
               tooltip: 'Earn double rewards with Yearn Finance ',
               disabled: yieldable ? false : true
             },
-            { title: 'YIELD', value: '2', disabled: yieldable ? false : true }
+            // { title: 'YIELD', value: '2', disabled: yieldable ? false : true }
           ]}
           handleSelectedButton={chooseTypeStake}
           name={`Stake-Yield-${title}`}
-          defaultChecked={selectedStakeType === '0' ? '1' : selectedStakeType}
+          // defaultChecked={selectedStakeType === '0' ? '1' : selectedStakeType}
+          defaultChecked={'3'}
           lockStakeType={lockStakeType}
         />
         {exitable && (
@@ -201,8 +206,8 @@ const Deposit = (props) => {
                 {approve === 0 ? (
                   <div
                     className={`${!approveClick
-                        ? 'approve-btn pointer'
-                        : 'stake-deposit-btn'
+                      ? 'approve-btn pointer'
+                      : 'stake-deposit-btn'
                       } `}
                     onClick={handleApprove}
                   >
@@ -212,8 +217,8 @@ const Deposit = (props) => {
                   approveClick && (
                     <div
                       className={`${!approveClick
-                          ? 'approve-btn pointer'
-                          : 'stake-deposit-btn'
+                        ? 'approve-btn pointer'
+                        : 'stake-deposit-btn'
                         } `}
                       onClick={handleApprove}
                     >

@@ -64,7 +64,7 @@ export const correctChains = [
     },
     {
         url: "/sync2",
-        chains: [ChainMap.BSC, ChainMap.RINKEBY],
+        chains: [ChainMap.BSC, ChainMap.BSC_TESTNET],
         exact: true,
     },
     {

@@ -20,6 +20,8 @@ import useAssetBalances from '../../helper/useAssetBalances';
 import { RowCenter } from '../../components/App/Row';
 import { sendMessage } from '../../utils/telegramLogger';
 import { useOracleFetch } from '../../utils/SyncUtils';
+import { correctChains, getCorrectChains } from '../../constant/correctChain';
+import { useLocation } from 'react-router-dom';
 
 
 const MainWrapper = styled.div`
@@ -42,7 +44,10 @@ export const NetworkTitle = styled(Base)`
 `
 
 const Sync2 = () => {
-    const SyncChainId = 56
+    const location = useLocation()
+    const validChains = getCorrectChains(location.pathname)
+    const SyncChainId = validChains[0]
+
     const oracle = SyncData[SyncChainId]
     const stableCoin = oracle.stableCoin
     const [fromCurrency, setFromCurrency] = useState(stableCoin)
@@ -115,11 +120,7 @@ const Sync2 = () => {
     return (<>
         <SearchBox active={activeSearchBox} setActive={setActiveSearchBox} />
         <MainWrapper>
-            <Title onClick={() => ApproveTranaction(TransactionState.LOADING, {
-                hash: "0xe944437d0c622734341348acc91b31dbe53fca5b23ca5db17d813f9cc2e43f30",
-                from: { logo: "/tokens/dea.svg", symbol: "dGME", amount: "0.0017165" },
-                chainId: 56,
-            })}>
+            <Title>
                 <div style={{ display: "flex", justifyContent: "flex-start", flexDirection: "column" }}>
                     <Image src="/img/sync-logo.svg" alt="sync" height="45px" style={{ marginBottom: "10px" }} />
                     <NetworkTitle>
@@ -158,7 +159,7 @@ const Sync2 = () => {
 
                 <SyncAction
                     fromCurrency={fromCurrency}
-                    validNetworks={[56]}
+                    validNetworks={validChains}
                     isPreApproved={true}
                     mt="20px" />
 

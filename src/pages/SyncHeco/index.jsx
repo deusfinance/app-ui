@@ -418,7 +418,7 @@ const SyncHeco = () => {
 
 
         <div className="swap-title">
-            <img src={process.env.PUBLIC_URL + "/tokens/husd.svg"} alt="DEUS" />
+            <img src={process.env.PUBLIC_URL + "/img/chains/heco.svg"} alt="heco" />
             <div className="sync-wrap" >
                 <div className="sync" style={{ textTransform: "uppercase" }}>
                     <span>HECO</span>

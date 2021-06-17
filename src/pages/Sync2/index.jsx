@@ -87,8 +87,7 @@ const Sync2 = () => {
     const getData = useCallback(() => {
         setLoading(true);
         getConducted().then((res) => {
-            console.log(res[0]);
-            setConducted(res)
+            setConducted(res[0])
             getStocks().then((res) => {
                 setStocks(res[0])
                 getPrices().then((res) => {
@@ -111,6 +110,29 @@ const Sync2 = () => {
     //approve
     //confirmBox
 
+
+    useEffect(() => { //adding chain and type wrap
+        if (conducted && stocks) {
+            console.log(conducted);
+            conducted.tokens.map(async (token) => {
+                if (!stocks[token.id]) {
+                    console.log(token.id, " there isn't in registrar");
+                    return
+                }
+                stocks[token.id].decimals = 18
+                stocks[token.id].conducted = true
+                stocks[token.id].isAsset = true
+                stocks[token.id].long = { address: token.long }
+                stocks[token.id].short = { address: token.short }
+            })
+        }
+        setStocks(stocks)
+
+    }, [conducted, stocks, account])//eslint-disable-line
+
+
+
+
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
@@ -118,7 +140,7 @@ const Sync2 = () => {
     }
 
     return (<>
-        <SearchBox active={activeSearchBox} setActive={setActiveSearchBox} />
+        <SearchBox chainId={SyncChainId} currencies={stocks} active={activeSearchBox} setActive={setActiveSearchBox} />
         <MainWrapper>
             <Title>
                 <div style={{ display: "flex", justifyContent: "flex-start", flexDirection: "column" }}>

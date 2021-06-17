@@ -2,6 +2,7 @@ import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
 import { ExternalLink } from '../App/Link'
 import useWeb3 from '../../helper/useWeb3'
+import { isZero } from '../../constant/number'
 // import { ToastTransaction } from '../../utils/explorers'
 
 const UserInfo = (props) => {
@@ -119,7 +120,7 @@ const UserInfo = (props) => {
             <div className="font-xs mt-2  ">generating yield with this <ExternalLink active={true} href={strategyLink}> Strategy ↗</ExternalLink> </div>
           </div>
 
-          {title !== "BPT" && <div className="flex-between mb-15">
+          {title !== "BPT" && !isZero(balance) && <div className="flex-between mb-15">
             <div className="exit-valuet">
               <p>
                 <span className="blue-color">Exit Vault:</span> {exit ? "activated" : "deactivated"}
@@ -128,9 +129,9 @@ const UserInfo = (props) => {
                 <div className="font-xs mt-2">
                   <p>
                     You burn
-                  <span className="blue-color">{` ${burn.toFixed(
-                    4
-                  )} ${title} per day `}</span>
+                    <span className="blue-color">{` ${burn.toFixed(
+                      4
+                    )} ${title} per day `}</span>
                     {`(fully unlocked at ${fullyUnlock})`}
                   </p>
                 </div>
@@ -151,7 +152,7 @@ const UserInfo = (props) => {
           <div className="sub-description">
             *currently claimable Stake&Yield reward Tokens.
           </div>
-          {title !== "BPT" && (
+          {title !== "BPT" && !isZero(balance) && (
             <>
               {exit && <>
                 <div className="wrap-box mb-15">
@@ -163,12 +164,12 @@ const UserInfo = (props) => {
                   </div>
                   <div className={`wrap-box-gradient pointer wrap-box-gradient pointer`} onClick={handleRedeem}>
                     REEDEM
-                </div>
+                  </div>
                 </div>
 
                 <div className="sub-description">
                   *estimated unstakeable Vault tokens.
-             </div>
+                </div>
               </>}
               <div className="wrap-box mb-15">
                 <div className={`wrap-box-gradient pointer wrap-box-gradient-single`} onClick={handleStopExit}>

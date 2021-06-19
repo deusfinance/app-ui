@@ -2,11 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { getStayledNumber } from '../../utils/utils';
 import { TokenType } from '../../config';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { formatEtherscanLink, EtherscanType } from '../../sdk/constant';
 import { useTranslation } from 'react-i18next'
+import { getTransactionLink } from '../../utils/explorers';
 
 import './styles/search-assets.scss';
-import { getTransactionLink } from '../../utils/explorers';
 
 const SearchAssets = (props) => {
     const [typingTimeout, setTypeout] = useState(0)

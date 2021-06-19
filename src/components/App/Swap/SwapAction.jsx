@@ -24,7 +24,7 @@ const WrapActions = styled.div`
     }
 `
 const ButtonSwap = styled(ButtonSyncActice)`
-  background: ${({ theme }) => theme.grad3};
+  background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
   color: ${({ theme }) => theme.text1_2};
   font-size:${({ fontSize }) => fontSize || "20px"};
 `
@@ -37,18 +37,18 @@ const CycleNumber = styled(FlexCenter)`
 width:20px;
 height:20px;
 border-radius:20px;
-background: ${({ theme, active }) => active ? theme.grad3 : theme.border1};
+background: ${({ theme, bgColor, active }) => active ? bgColor ? theme[bgColor] : theme.grad3 : theme.border1};
 color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1};
 z-index: 0;
 font-size:12px;
 margin:0 -1px;
 `
 const Line = styled.div`
-background: ${({ theme }) => theme.grad3} ;
+background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
 height: 2px;
 width: 50%;
 `
-const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, validNetworks = [4, 1], handleApprove, handleSwap }) => {
+const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, validNetworks = [4, 1], handleApprove, handleSwap, bgColor }) => {
 
     const { account, chainId } = useWeb3React()
 
@@ -77,27 +77,27 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, 
     return (<>
         {isPreApproved ?
             <WrapActions>
-                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap}>SWAP</ButtonSwap>
+                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>SWAP</ButtonSwap>
             </WrapActions> : <>
                 <WrapActions>
                     {!isApproved ? <>
-                        <ButtonSwap active={true} onClick={handleApprove} >
+                        <ButtonSwap bgColor={bgColor} active={true} onClick={handleApprove} >
                             APPROVE
-                        {loading && <img style={{ position: "absolute", top: "0px", right: "0px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
+                            {loading && <img style={{ position: "absolute", top: "0px", right: "0px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
                         <ButtonSyncDeactive>SWAP</ButtonSyncDeactive>
                     </> : <>
                         <ButtonSyncDeactive>APPROVED</ButtonSyncDeactive>
-                        <ButtonSwap active={true} onClick={handleSwap}>
+                        <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
                             SWAP
-                    </ButtonSwap>
+                        </ButtonSwap>
                     </>
                     }
                 </WrapActions>
-                <WrapStep>
-                    <CycleNumber active={true}>1</CycleNumber>
-                    <Line></Line>
-                    <CycleNumber active={isApproved}>2</CycleNumber>
+                <WrapStep bgColor={bgColor}>
+                    <CycleNumber bgColor={bgColor} active={true}>1</CycleNumber>
+                    <Line bgColor={bgColor}></Line>
+                    <CycleNumber bgColor={bgColor} active={isApproved}>2</CycleNumber>
                 </WrapStep>
             </>
         }

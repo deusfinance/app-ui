@@ -58,6 +58,11 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/sealed",
+        chains: [ChainMap.MAINNET],
+        exact: true,
+    },
+    {
         url: "/bridge",
         chains: [ChainMap.RINKEBY, ChainMap.BSC_TESTNET],
     },

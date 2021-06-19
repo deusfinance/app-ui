@@ -3,6 +3,7 @@ import muliSwapAbi from '../config/abi/muliSwapAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import DeusAMMAbi from '../config/abi/DeusAMM.json'
 import UniswapRouterAbi from '../config/abi/uniswapRouterAbi.json'
+import UniswapV2Abi from '../config/abi/UniswapV2Abi.json'
 import MultiCallAbi from '../config/abi/Multicall.json'
 import { MULTICALL_NETWORKS } from '../constant/contracts'
 import { ChainMap } from '../constant/web3'
@@ -31,4 +32,8 @@ export const getERC20Contract = (address, web3) => {
 
 export const getMultiCallContract = (web3, chainId = ChainMap.MAINNET) => {
     return getContract(MultiCallAbi, MULTICALL_NETWORKS[chainId], web3)
+}
+
+export const getUniswapV2Contract = (address, web3) => {
+    return getContract(UniswapV2Abi, address, web3)
 }

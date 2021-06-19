@@ -1,5 +1,7 @@
 import { Token } from '../sdk/tokens';
 
+export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
+
 export const xdaiToken = new Token(100, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
 export const wxdaiToken = new Token(100, "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18, "wxDAI", "wxDAI", "/tokens/xdai.svg");
 
@@ -40,9 +42,14 @@ export const NativeTokens = [
     { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, }
 ]
 
-
-
 export const DefaultTokens = [...NativeTokens, ...MainTokens, ...TestTokens]
+
+export const SealedTokens = [
+    { logo: "/tokens/suni.svg", symbol: "sUniDD", address: "0x2EdE9CB92a6dE0916889E5936B1aAd0e99ddf242", decimals: 18, chainId: 1 },
+    { logo: "/tokens/suni.svg", symbol: "sUniDU", address: "0xB7b52c3523Af9c237817a49D17E656283cC59678", decimals: 18, chainId: 1 },
+    { logo: "/tokens/suni.svg", symbol: "sUniDE", address: "0x670431fCdAf39280deE488C6D8277B9865E22d08", decimals: 18, chainId: 1 },
+    { logo: "/tokens/suni.svg", symbol: "BPT", address: "0x1Dc2948B6dB34E38291090B825518C1E8346938B", decimals: 18, chainId: 1 },
+]
 
 export const DeusPath = {
     "deus": {

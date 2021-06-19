@@ -1,29 +1,29 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
-import { MainWrapper, SwapWrapper, SwapArrow } from '../../components/App/Swap';
+import { MainWrapper, SwapWrapper, SwapArrow, SwapTitle } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
-// import RouteBox from '../../components/App/Swap/RouteBox';
 import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
 import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
-// import PriceImpact from '../../components/App/Swap/PriceImpact';
 import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
 import { useApprove } from '../../helper/useApprove';
-import { useAllowance } from '../../helper/useAllowance';
+import { useSealedAllowance } from '../../helper/useAllowance';
 import { useSwap } from '../../helper/useSwap';
-import { DefaultTokens } from '../../constant/token';
-import { useGetAmountsOut } from '../../helper/useGetAmountsOut';
+import { SealedTokens, sdeaToken } from '../../constant/token';
+import { useSealedGetAmountsOut } from '../../helper/useGetAmountsOut';
 import useChain from '../../helper/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
+// import RouteBox from '../../components/App/Swap/RouteBox';
+// import PriceImpact from '../../components/App/Swap/PriceImpact';
 // import SelectedNetworks from '../../components/Sync/SelectNetworks';
-import { NavButton } from '../../components/App/Navbar';
+// import { NavButton } from '../../components/App/Navbar';
 
 const Sealed = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -40,17 +40,12 @@ const Sealed = () => {
 
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
-    let outputCurrency = new URLSearchParams(search).get('outputCurrency')
-
-    inputCurrency = inputCurrency === "ETH" ? "0x" : inputCurrency
-    outputCurrency = outputCurrency === "ETH" ? "0x" : outputCurrency
 
     if (inputCurrency) inputCurrency = inputCurrency.toLowerCase()
-    if (outputCurrency) outputCurrency = outputCurrency.toLowerCase()
 
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
 
-    const tokens = useMemo(() => DefaultTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
+    const tokens = useMemo(() => SealedTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = { ...token, address: token.address.toLowerCase() }, map), {})
@@ -64,51 +59,21 @@ const Sealed = () => {
         inputCurrency = null
     }
 
-    if (outputCurrency && !TokensMap[outputCurrency]) {
-        outputCurrency = null
-    }
+    const sdeaContract = getTokenAddr("sand_dea", chainId).toLowerCase()
+    const sUniDD = getTokenAddr("sand_deus_dea", chainId).toLowerCase()
 
-    if (outputCurrency && inputCurrency && outputCurrency === inputCurrency) {
-        outputCurrency = null
-    }
-
-    const deaContract = getTokenAddr("dea", chainId).toLowerCase()
-
-    let fromAddress = inputCurrency ? inputCurrency : "0x"
-
-    let toAddress = outputCurrency ? outputCurrency : deaContract
-
-    if (toAddress === fromAddress) {
-        if (fromAddress === "0x") {
-            if (!inputCurrency) {
-                fromAddress = deaContract
-                console.log(fromAddress);
-            }
-            else {
-                toAddress = deaContract
-            }
-        }
-        else if (fromAddress === deaContract) {
-            if (!outputCurrency) {
-                toAddress = "0x"
-            }
-            else {
-                fromAddress = "0x"
-            }
-        }
-    }
-
+    let fromAddress = inputCurrency ? inputCurrency : sUniDD
 
     const [swapState, setSwapState] = useState({
         from: { ...TokensMap[fromAddress] },
-        to: { ...TokensMap[toAddress] },
+        to: sdeaToken,
     })
 
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
     const [minAmountOut, setMinAmountOut] = useState("")
-    const allowance = useAllowance(swapState.from, contractAddress, chainId)
+    const allowance = useSealedAllowance(swapState.from, contractAddress, chainId)
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -167,8 +132,8 @@ const Sealed = () => {
         setSwapState({ ...swapState, [type]: token })
     }
 
-    const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
-    const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
+    const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
+    const { getAmountsOut: getMinAmountOut } = useSealedGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId)
 
@@ -242,7 +207,7 @@ const Sealed = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            <NavButton active={false} m="auto">sUNI Migrator</NavButton>
+            <SwapTitle active={false} bgColor="grad4" m="auto">SEALED SWAP</SwapTitle>
             <SwapWrapper>
                 <TokenBox
                     type="from"
@@ -254,11 +219,7 @@ const Sealed = () => {
                     TokensMap={TokensMap}
                     fastUpdate={fastUpdate}
                 />
-                <SwapArrow onClick={() => {
-                    setSwapState({ from: swapState.to, to: swapState.from })
-                    setAmountIn(amountOut)
-                    setAmountOut("")
-                }}>
+                <SwapArrow >
                     <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
                 </SwapArrow>
 
@@ -267,7 +228,7 @@ const Sealed = () => {
                     title="To (estimated)"
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
-                    setActive={showSearchBox}
+                    setActive={null}
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}

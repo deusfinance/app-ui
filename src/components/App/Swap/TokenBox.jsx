@@ -21,10 +21,11 @@ const Wrapper = styled.div`
     border-radius: ${({ borderRadius }) => borderRadius || "15px"};
 `
 const TokenInfo = styled(Flex)`
-align-items:center;
-&:hover{
-  filter:brightness(0.8)  
-}
+    align-items:center;
+    cursor:${({ active }) => active ? "pointer" : "default"};
+    &:hover{
+        filter:${({ active }) => active && "brightness(0.8)"};
+    }
 `
 
 const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate }) => {
@@ -73,7 +74,6 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             justifyContent="space-between"
             alignItems="center"
             mt="5px"
-            style={{ cursor: "pointer" }}
         >
             <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
 
@@ -82,14 +82,14 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
                 MAX
             </ButtonMax>}
 
-            <TokenInfo onClick={() => setActive(true, type)}>
+            <TokenInfo onClick={setActive ? () => setActive(true, type) : undefined} active={setActive ? true : false}>
                 <CurrencyLogo
                     style={{ verticalAlign: "middle" }}
                     currency={currency}
                     size={"25px"}
                 />
                 <Type.LG color="text1" ml="7px" mr="9px">{currency?.symbol}</Type.LG>
-                <Image src="/img/select.svg" size="10px" />
+                {setActive && <Image src="/img/select.svg" size="10px" />}
             </TokenInfo>
         </Flex>
 

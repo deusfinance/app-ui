@@ -29,11 +29,25 @@ export const bpt2uni = async (tokenOut, poolAmountIn, minAmountsOut, path, web3,
 	}
 }
 
-export const bpt2sdea = async (tokenOut, poolAmountIn, minAmountOut, web3, chainId) => {
+export const bpt2sdea = async (
+	poolAmountIn,
+	balancerMinAmountsOut,
+	DDMinAmountsOut,
+	sUniDDMinAmountsOut,
+	sUniDEMinAmountsOut,
+	sUniDUMinAmountsOut, web3, chainId
+) => {
 	try {
 		await getSealedSwapperContract(web3, chainId)
 			.methods
-			.bpt2sdea(tokenOut, poolAmountIn, minAmountOut)
+			.bpt2sdea(
+				poolAmountIn,
+				balancerMinAmountsOut,
+				DDMinAmountsOut,
+				sUniDDMinAmountsOut,
+				sUniDEMinAmountsOut,
+				sUniDUMinAmountsOut
+			)
 			.call()
 	} catch (error) {
 		console.log(error);
@@ -67,17 +81,6 @@ export const sUniDE2sdea = async (sUniDEAmount, minAmountOut, web3, chainId) => 
 		await getSealedSwapperContract(web3, chainId)
 			.methods
 			.sUniDE2sdea(sUniDEAmount, minAmountOut)
-			.call()
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-export const withdraw = async (token, amount, to, web3, chainId) => {
-	try {
-		await getSealedSwapperContract(web3, chainId)
-			.methods
-			.withdraw(token, amount, to)
 			.call()
 	} catch (error) {
 		console.log(error);

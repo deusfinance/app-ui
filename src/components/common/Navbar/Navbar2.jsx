@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { getCorrectChains } from '../../../constant/correctChain';
 import { NameChainMap } from '../../../constant/web3';
 import { NavLink, useLocation } from 'react-router-dom';
-
 import Wallets from './Wallets';
 import { addRPC } from '../../../services/addRPC';
 

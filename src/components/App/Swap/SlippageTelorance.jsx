@@ -23,7 +23,7 @@ export const Option = styled(Base)`
   height:25px;
 
   color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1};
-  background: ${({ theme, active }) => active ? theme.grad3 : theme.text1_2};
+  background: ${({ theme, bgColor, active }) => active ? bgColor ? theme[bgColor] : theme.grad3 : theme.text1_2};
   border: ${({ active }) => active || "1px"} solid ${({ theme }) => theme.text1};
   margin:1px;
   margin-right:5px;
@@ -32,7 +32,7 @@ export const Option = styled(Base)`
   transition:all 0s ;
   cursor:${({ active }) => active ? "default" : "pointer"};
   &:hover{
-    background : ${({ active, theme }) => active ? theme.grad3 : "#5f5f5f"};
+    background : ${({ active, bgColor, theme }) => active ? bgColor ? theme[bgColor] : theme.grad3 : "#5f5f5f"};
   }
 `
 
@@ -62,7 +62,7 @@ const InputSlippage = styled.input.attrs(
 
 `
 const defaultAmounts = [0.1, 0.5, 1]
-const SlippageTelorance = ({ slipage, setSlipage }) => {
+const SlippageTelorance = ({ slipage, setSlipage, bgColor }) => {
     const [customActive, setCustomActive] = useState(false)
 
     const handleMinSlipage = () => {
@@ -86,7 +86,7 @@ const SlippageTelorance = ({ slipage, setSlipage }) => {
         <Type.SM className="title">Slippage Telorance</Type.SM>
         <div style={{ display: "inline-block" }} height="25px">
             {defaultAmounts.map(amount => {
-                return <Option key={amount} active={amount === slipage && !customActive} onClick={() => {
+                return <Option key={amount} active={amount === slipage && !customActive} bgColor={bgColor} onClick={() => {
                     setCustomActive(false)
                     setSlipage(amount)
                 }}>{amount}%</Option>
@@ -98,7 +98,7 @@ const SlippageTelorance = ({ slipage, setSlipage }) => {
                     onBlur={handleMinSlipage}
                     onChange={(e) => handleCustomChange(e)}
                 />
-                 %
+                %
             </CustomOption>
         </div>
     </Wrapper >);

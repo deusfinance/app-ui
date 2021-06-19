@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
-import { MainWrapper, SwapTitle, SwapWrapper, SwapArrow } from '../../components/App/Swap';
+import { MainWrapper, SwapWrapper, SwapArrow } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
-import RouteBox from '../../components/App/Swap/RouteBox';
+// import RouteBox from '../../components/App/Swap/RouteBox';
 import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
 import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
-import PriceImpact from '../../components/App/Swap/PriceImpact';
+// import PriceImpact from '../../components/App/Swap/PriceImpact';
 import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
@@ -22,9 +22,10 @@ import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
-import SelectedNetworks from '../../components/Sync/SelectNetworks';
+// import SelectedNetworks from '../../components/Sync/SelectNetworks';
+import { NavButton } from '../../components/App/Navbar';
 
-const Swap2 = () => {
+const Sealed = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -128,7 +129,6 @@ const Swap2 = () => {
     }, [tokenBalances])
 
     useEffect(() => {
-        console.log(allowance.toString());
         if (isPreApproved == null) {
             if (allowance.toString() === "-1") {
                 setIsPreApproved(null) //doNothing
@@ -242,9 +242,7 @@ const Swap2 = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            <SwapTitle className="title" >
-                SWAP
-            </SwapTitle>
+            <NavButton active={false} m="auto">sUNI Migrator</NavButton>
             <SwapWrapper>
                 <TokenBox
                     type="from"
@@ -278,6 +276,7 @@ const Swap2 = () => {
                 <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
                 <SwapAction
+                    bgColor="grad4"
                     isPreApproved={isPreApproved}
                     validNetworks={[1, 4]}
                     isApproved={isApproved}
@@ -292,24 +291,19 @@ const Swap2 = () => {
 
             </SwapWrapper>
 
-            <PriceImpact
+            {/* <PriceImpact
                 minAmountOut={minAmountOut}
                 amountIn={debouncedAmountIn}
                 amountOut={amountOut}
-            />
+            /> */}
 
-            <RouteBox
-                swapState={swapState}
-                chainId={chainId}
-                tokensMap={tokensMap}
-            />
 
-            <SlippageTelorance slipage={slipage} setSlipage={setSlipage} />
+            <SlippageTelorance slipage={slipage} setSlipage={setSlipage} bgColor="grad4" />
         </MainWrapper>
-        <div className='tut-left-wrap'>
+        {/* <div className='tut-left-wrap'>
             <SelectedNetworks />
-        </div>
+        </div> */}
     </>);
 }
 
-export default Swap2;
+export default Sealed;

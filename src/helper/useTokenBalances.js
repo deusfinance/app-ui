@@ -33,8 +33,10 @@ const useTokenBalances = (tokensMap, validChainId) => {
                 tokensMap[address].balance = getFullDisplayBalance(balance, tokensMap[address]?.decimals)
 
             }
-            const ethBalance = await web3.eth.getBalance(account)
-            tokensMap["0x"].balance = getFullDisplayBalance(ethBalance, tokensMap["0x"]?.decimals)
+            if (tokensMap["0x"]) {
+                const ethBalance = await web3.eth.getBalance(account)
+                tokensMap["0x"].balance = getFullDisplayBalance(ethBalance, tokensMap["0x"]?.decimals)
+            }
             setBalances(tokensMap)
         }
 

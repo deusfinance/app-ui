@@ -1,16 +1,92 @@
 // just for testing
 // You can write getSealedSwapperContract funtion in contractHelpers, like other contracts
-let getSealedSwapperContract = () => {}
-
+// import { getSealedSwapperContract} from "./contractHelpers"
+import { ethers } from "ethers"
+import { TransactionState } from "../utils/constant"
+import { SwapTranaction } from "../utils/explorers"
+import { getToWei } from "./formatBalance"
+import { isZero } from "../constant/number"
 import {
 	// getSealedSwapperContract,
 	getUniswapV2Contract,
 	getERC20Contract,
 	getUniswapRouterContract,
-	getBalancerPoolTokenContract
+	getBalancerPoolTokenContract,
+	getDeusAutomaticMarketMakerContract,
 } from "./contractHelpers"
 
 import addresses from '../constant/addresses.json';
+
+let getSealedSwapperContract = () => { }
+
+export const getSealedAmountsOut = async (fromCurrency, amountIn, account, chainId, web3) => {
+	const amountInWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
+
+	if (fromCurrency.symbol === "BPT") {
+	}
+	else if (fromCurrency.symbol === "sUniDD") {
+		return sUniDDOutGivenIn(amountInWei, web3, chainId)
+	}
+	else if (fromCurrency.symbol === "sUniDE") {
+		return sUniDEOutGivenIn(amountInWei, web3, chainId)
+	}
+	else if (fromCurrency.symbol === "sUniDU") {
+		return sUniDUOutGivenIn(amountInWei, web3, chainId)
+	}
+}
+
+
+
+export const sealedSwap = async (fromCurrency, toCurrency, amountIn, amountOut, minAmountOut, account, chainId, web3) => {
+	let hash = null
+	const amountInWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
+	const minAmountOutWei = getToWei(minAmountOut, toCurrency.decimals).toFixed(0)
+
+	if (amountIn === "" || isZero(amountInWei) || amountOut === "" || isZero(minAmountOutWei)) return { status: false }
+
+	const swapFunc = swapFuncMaker(fromCurrency, amountInWei, minAmountOutWei, chainId, web3)
+	let sendArgs = { from: account }
+
+	return swapFunc
+		.send(sendArgs)
+		.once('transactionHash', (tx) => {
+			hash = tx
+			SwapTranaction(TransactionState.LOADING, {
+				hash,
+				from: { ...fromCurrency, amount: amountIn },
+				to: { ...toCurrency, amount: amountOut },
+				chainId: chainId,
+			})
+		})
+		.once('receipt', () => SwapTranaction(TransactionState.SUCCESS, {
+			hash,
+			from: { ...fromCurrency, amount: amountIn },
+			to: { ...toCurrency, amount: amountOut },
+			chainId: chainId,
+		}))
+		.once('error', () => SwapTranaction(TransactionState.FAILED, {
+			hash,
+			from: { ...fromCurrency, amount: amountIn },
+			to: { ...toCurrency, amount: amountOut },
+			chainId: chainId,
+		}))
+}
+
+
+export const swapFuncMaker = async (fromCurrency, amountInWei, minAmountOutWei, chainId, web3) => {
+
+	if (fromCurrency.symbol === "BPT") {
+	}
+	else if (fromCurrency.symbol === "sUniDD") {
+		return sUniDD2sdea(amountInWei, minAmountOutWei, web3, chainId)
+	}
+	else if (fromCurrency.symbol === "sUniDE") {
+		return sUniDE2sdea(amountInWei, minAmountOutWei, web3, chainId)
+	}
+	else if (fromCurrency.symbol === "sUniDU") {
+		return sUniDU2sdea(amountInWei, minAmountOutWei, web3, chainId)
+	}
+}
 
 
 export const bpt2sdea = async (

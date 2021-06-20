@@ -412,9 +412,7 @@ class MainSwap extends Component {
         const priceImpactResult = (toAmount === "" || fromAmount === "") ? 0 : ((1 - (toAmount / ((fromAmount / 0.1) * minPerTo))) * 100).toFixed(3)
         return (<div className="deus-swap-wrap">
 
-            {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-
-
+            {/* {!isMobile && <ToastContainer style={{ width: "450px" }} />} */}
 
             <Title web3={web3} claimable_amount={claimable_amount} />
 

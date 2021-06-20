@@ -415,8 +415,6 @@ const SyncBscTest = () => {
 
         <div style={{ margin: "64px 0" }}></div>
 
-        {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-
         <div className="swap-title">
             <img src={process.env.PUBLIC_URL + "/img/chains/bsc.png"} style={{ width: "30px", height: "30px" }} alt="DEUS" />
             <div className="sync-wrap" >

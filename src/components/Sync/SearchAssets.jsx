@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { getStayledNumber } from '../../utils/utils';
 import { TokenType } from '../../config';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { formatEtherscanLink, EtherscanType } from '../../sdk/constant';
 import { useTranslation } from 'react-i18next'
 
 import './styles/search-assets.scss';

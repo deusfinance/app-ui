@@ -142,9 +142,9 @@ export class StockService {
             info.fee.toString(),
             [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
             [oracles[0].price, oracles[1].price],
-            [oracles[0]["signs"]["buy"].v.toString(), oracles[1]["signs"]["buy"].v.toString()],
-            [oracles[0]["signs"]["buy"].r.toString(), oracles[1]["signs"]["buy"].r.toString()],
-            [oracles[0]["signs"]["buy"].s.toString(), oracles[1]["signs"]["buy"].s.toString()])
+            [oracles[0]["signs"]["sell"].v.toString(), oracles[1]["signs"]["sell"].v.toString()],
+            [oracles[0]["signs"]["sell"].r.toString(), oracles[1]["signs"]["sell"].r.toString()],
+            [oracles[0]["signs"]["sell"].s.toString(), oracles[1]["signs"]["sell"].s.toString()])
             .send({ from: this.account })
             .on('transactionHash', (hash) => listener("transactionHash", hash))
             .once('receipt', (hash) => listener("receipt", hash))

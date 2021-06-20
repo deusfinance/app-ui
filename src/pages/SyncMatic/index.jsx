@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect, useCallback } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { notifSync } from '../../utils/utils';
 import TokenMarket from '../../components/Sync/TokenMarket';
 import SwapStockButton from '../../components/Sync/SwapStockButton';

@@ -6,7 +6,8 @@ import {
 	// getSealedSwapperContract,
 	getUniswapV2Contract,
 	getERC20Contract,
-	getUniswapRouterContract
+	getUniswapRouterContract,
+	getBalancerPoolTokenContract
 } from "./contractHelpers"
 
 import addresses from '../constant/addresses.json';
@@ -128,7 +129,7 @@ export const sUniDEOutGivenIn = (sUniDEAmount, web3, chainId) => {
 
 	let deusReserve, wethReserve, deusMinAmountOut, wethMinAmountOut;
 
-	[deusReserve, wethReserve] = contract.methods.getReserves().all();
+	[deusReserve, wethReserve] = contract.methods.getReserves().call();
 
 	[deusMinAmountOut, wethMinAmountOut] = minAmountsCalculator(sUniDEAmount, totalSupply, deusReserve, wethReserve)
 
@@ -137,4 +138,29 @@ export const sUniDEOutGivenIn = (sUniDEAmount, web3, chainId) => {
 	const deaAmount2 = calculatePurchaseReturn(wethMinAmountOut, web3, chainId)
 
 	return deaAmount1 + deaAmount2
+}
+
+
+export const bptOutGivenIn = (bptAmount, web3, chainId) => {
+	let deaAmount = 0
+
+	const contract = getBalancerPoolTokenContract('0x1Dc2948B6dB34E38291090B825518C1E8346938B', web3)
+	const totalSupply = contract.methods.totalSupply().call();
+
+	deaAmount = (bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.dea).call()
+	deaAmount += (bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_dea[1]).call()
+	deaAmount += sUniDDOutGivenIn(
+		(bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_deus_dea).call()
+	);
+	deaAmount += sUniDUOutGivenIn(
+		(bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_dea_usdc).call()
+	);
+	deaAmount += sUniDEOutGivenIn(
+		(bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_deus_eth).call()
+	);
+	deaAmount += getUniswapRouterContract(web3, chainId).methods.getAmountsOut(
+		(bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_deus).call(), deus2deaPath
+	).call()
+
+	return deaAmount
 }

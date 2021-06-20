@@ -24,7 +24,7 @@ import { ExternalLink } from '../../App/Link';
 
 const Navbar = () => {
 
-    const { chainId, account, activate } = useWeb3React()
+    const { chainId, account, activate, deactivate } = useWeb3React()
     const location = useLocation()
     const [showWallets, setShowWallets] = useState(false)
     const [open, setOpen] = useState(false)
@@ -57,12 +57,11 @@ const Navbar = () => {
     }, [])
 
     const handleConnect = async () => {
-        setShowWallets(true)
+      setShowWallets(true)
     }
     const validChains = getCorrectChains(location.pathname)
-
     return (<>
-        {showWallets && <Wallets setShow={setShowWallets} />}
+        <Wallets showWallets={showWallets} setShowWallets={setShowWallets}/>
         <NavbarWrap>
             <NavbarSideWrap className="deus-logo">
                 <svg width={137} height={31} viewBox="0 0 137 31" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -183,7 +182,7 @@ const Navbar = () => {
                             {t("WrongNetwork")}
                         </NavWarningButton>
                         :
-                        <NavButton active={false} >
+                        <NavButton active={false} onClick={handleConnect} >
                             <svg width={8} height={8} style={{ marginRight: "5px" }} viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx={4} cy={4} r={4} fill="#00E376" />
                             </svg>

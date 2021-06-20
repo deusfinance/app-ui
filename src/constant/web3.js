@@ -25,5 +25,5 @@ export const NameChainMap = {
     128: "HECO",
     256: "HECOT",
     97: "BSCT",
-    137: "MATIC",
+    137: "POLYGON",
 }

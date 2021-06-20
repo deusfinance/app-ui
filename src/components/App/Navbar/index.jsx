@@ -154,7 +154,7 @@ export const NavbarContentWrap = styled.ul`
     justify-content: center;
     position: absolute;
     height: 100%;
-    z-index: 2;
+    /* z-index: 2; */
     left:0;
     right:0;
     margin:auto;

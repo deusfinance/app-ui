@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
 import TokenBox from '../../components/Swap/TokenBox';
 import SearchBox from '../../components/Swap/SearchBox';

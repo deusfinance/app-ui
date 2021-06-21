@@ -10,7 +10,6 @@ import { Base } from '../../components/App/Button';
 import LongShort from '../../components/App/Synchronizer/LongShort';
 import PriceBox from '../../components/App/Synchronizer/PriceBox';
 import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
-import { dAmcTestToken } from '../../constant/token';
 import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../helper/useDebounce';
 import { useWeb3React } from '@web3-react/core';
@@ -20,6 +19,7 @@ import { useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
 
+// import { dAmcTestToken } from '../../constant/token';
 // import { sendMessage } from '../../utils/telegramLogger';
 // import { ApproveTranaction } from '../../utils/explorers';
 // import { TransactionState } from '../../utils/constant';
@@ -56,7 +56,7 @@ const Sync2 = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
 
-    const [toCurrency, setToCurrency] = useState(dAmcTestToken)
+    const [toCurrency, setToCurrency] = useState()
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
@@ -113,7 +113,15 @@ const Sync2 = () => {
     //confirmBox
 
     useEffect(() => {
-
+        if (fromCurrency?.long) {
+            fromCurrency.address = isLong ? fromCurrency.long.address : fromCurrency.short.address
+            setFromCurrency({ ...fromCurrency })
+        }
+        if (toCurrency?.long) {
+            console.log(toCurrency);
+            toCurrency.address = isLong ? toCurrency.long.address : toCurrency.short.address
+            setToCurrency({ ...toCurrency })
+        }
     }, [isLong])
 
 
@@ -143,8 +151,6 @@ const Sync2 = () => {
     }
 
 
-
-
     const setectToken = (token, type) => {
         token.address = isLong ? token.long.address : token.short.address
         type === "to" ? setFromCurrency(token) : setToCurrency(token)
@@ -166,6 +172,7 @@ const Sync2 = () => {
             currencies={stocks}
             active={activeSearchBox}
             selectToken={setectToken}
+            balances={balances}
             setActive={setActiveSearchBox} />
 
         <MainWrapper>

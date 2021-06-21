@@ -11,7 +11,6 @@ export const ChainMap = {
     HECO_TESTNET: 256,
     MATIC: 137,
     MATIC_TESTNET: 0,
-
 }
 
 export const NameChainMap = {

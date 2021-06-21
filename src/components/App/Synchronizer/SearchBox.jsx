@@ -115,7 +115,7 @@ export const Copy = styled.img`
 `
 
 
-const SearchBox = ({ currencies, currencies1, currency2, selectToken, chainId, active, setActive }) => {
+const SearchBox = ({ currencies, escapedType, selectToken, chainId, active, setActive }) => {
   console.log(currencies);
   const Output = useMemo(() => {
     console.log("cooomes");
@@ -134,7 +134,7 @@ const SearchBox = ({ currencies, currencies1, currency2, selectToken, chainId, a
       <Line my="5px"></Line>
       <TokensWrap>
         {Object.values(currencies).filter(c => c.conducted).map((currency, id) => {
-          return <TokenRow key={id} onClick={selectToken(currency)}>
+          return <TokenRow key={id} onClick={() => selectToken(currency, escapedType)}>
             <TokenWrap>
               <TokenLogo >
                 <StyledLogo size="37px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />

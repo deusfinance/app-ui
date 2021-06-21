@@ -10,18 +10,19 @@ import { Base } from '../../components/App/Button';
 import LongShort from '../../components/App/Synchronizer/LongShort';
 import PriceBox from '../../components/App/Synchronizer/PriceBox';
 import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
-import { ApproveTranaction } from '../../utils/explorers';
-import { TransactionState } from '../../utils/constant';
 import { dAmcTestToken } from '../../constant/token';
 import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../helper/useDebounce';
 import { useWeb3React } from '@web3-react/core';
 import useAssetBalances from '../../helper/useAssetBalances';
 import { RowCenter } from '../../components/App/Row';
-import { sendMessage } from '../../utils/telegramLogger';
 import { useOracleFetch } from '../../utils/SyncUtils';
-import { correctChains, getCorrectChains } from '../../constant/correctChain';
+import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
+
+// import { sendMessage } from '../../utils/telegramLogger';
+// import { ApproveTranaction } from '../../utils/explorers';
+// import { TransactionState } from '../../utils/constant';
 
 
 const MainWrapper = styled.div`
@@ -38,7 +39,6 @@ export const NetworkTitle = styled(Base)`
   color: ${({ theme }) => theme.text1};
   background: ${({ theme }) => theme.text1_2};
   border: 1px solid ${({ theme }) => theme.text1};
-  /* margin-left:10px; */
   padding:0 8px;
   font-size: 25px;
 `
@@ -51,10 +51,12 @@ const Sync2 = () => {
     const oracle = SyncData[SyncChainId]
     const stableCoin = oracle.stableCoin
     const [fromCurrency, setFromCurrency] = useState(stableCoin)
+    const [isLong, setLong] = useState(true)
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
+    const [escapedType, setEscapedType] = useState("from")
+
     const [toCurrency, setToCurrency] = useState(dAmcTestToken)
-    const [long, setLong] = useState(true)
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
@@ -62,7 +64,7 @@ const Sync2 = () => {
     const [conducted, setConducted] = useState(null)
     const [prices, setPrice] = useState(null)
     const [fromPerTo, setFromPerTo] = useState(true)
-    const [searchBoxType, setSearchBoxType] = useState("from")
+
     const [loading, setLoading] = useState(false);
     const [loadingCap, setLoadingCAP] = useState(false);
 
@@ -78,8 +80,8 @@ const Sync2 = () => {
     const getConducted = useOracleFetch(oracle.conducted)
     const getPrices = useOracleFetch(oracle.prices)
     const getStocks = useOracleFetch(oracle.registrar)
-    const getSignatures = useOracleFetch(oracle.signatures)
 
+    const getSignatures = useOracleFetch(oracle.signatures)
     const balances = useAssetBalances(conducted, SyncChainId)
 
 
@@ -110,6 +112,10 @@ const Sync2 = () => {
     //approve
     //confirmBox
 
+    useEffect(() => {
+
+    }, [isLong])
+
 
     useEffect(() => { //adding chain and type wrap
         if (conducted && stocks) {
@@ -131,7 +137,20 @@ const Sync2 = () => {
     }, [conducted, stocks, account])//eslint-disable-line
 
 
+    const showSearchBox = (active = false, type) => {
+        setEscapedType(type)
+        setActiveSearchBox(active)
+    }
 
+
+
+
+    const setectToken = (token, type) => {
+        token.address = isLong ? token.long.address : token.short.address
+        type === "to" ? setFromCurrency(token) : setToCurrency(token)
+        type === "to" ? setToCurrency(stableCoin) : setFromCurrency(stableCoin)
+        setActiveSearchBox(false)
+    }
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
@@ -140,7 +159,15 @@ const Sync2 = () => {
     }
 
     return (<>
-        <SearchBox chainId={SyncChainId} currencies={stocks} active={activeSearchBox} setActive={setActiveSearchBox} />
+
+        <SearchBox
+            chainId={SyncChainId}
+            escapedType={escapedType}
+            currencies={stocks}
+            active={activeSearchBox}
+            selectToken={setectToken}
+            setActive={setActiveSearchBox} />
+
         <MainWrapper>
             <Title>
                 <div style={{ display: "flex", justifyContent: "flex-start", flexDirection: "column" }}>
@@ -157,7 +184,7 @@ const Sync2 = () => {
             <SwapWrapper>
                 <TokenBox
                     type="from"
-                    setActive={setActiveSearchBox}
+                    setActive={showSearchBox}
                     hasMax={true}
                     inputAmount={amountIn}
                     setInputAmount={setAmountIn}
@@ -173,10 +200,11 @@ const Sync2 = () => {
                     title="To (estimated)"
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
-                    setActive={setActiveSearchBox}
+                    setActive={showSearchBox}
                     currency={toCurrency}
                 />
-                <LongShort setLong={setLong} isLong={long} />
+                <LongShort setLong={setLong} isLong={isLong} />
+
                 <PriceBox />
 
                 <SyncAction

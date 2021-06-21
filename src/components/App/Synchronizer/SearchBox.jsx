@@ -23,7 +23,7 @@ const fadein = keyframes`
 
 const Wrapper = styled.div`
   background: ${({ theme }) => theme.bg5};
-  width: 50vw;
+  width: 90vw;
   max-width: 500px;
   border-radius: 10px;
   padding: 20px;
@@ -62,7 +62,7 @@ margin:${({ my }) => my} 0;
   `
 
 const TokenRow = styled(RowBetween)`
-padding:0 20px;
+padding:0 15px;
     :hover{
         cursor:pointer;
         background : #292929
@@ -109,13 +109,14 @@ const InputAmount = styled.input.attrs({
 
 `
 export const Copy = styled.img`
+margin-left:7px;
 &:hover{
   transform:scale(1.1);
 }
 `
 
 
-const SearchBox = ({ currencies, escapedType, selectToken, chainId, active, setActive }) => {
+const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, active, setActive }) => {
   console.log(currencies);
   const Output = useMemo(() => {
     console.log("cooomes");
@@ -137,28 +138,30 @@ const SearchBox = ({ currencies, escapedType, selectToken, chainId, active, setA
           return <TokenRow key={id} onClick={() => selectToken(currency, escapedType)}>
             <TokenWrap>
               <TokenLogo >
-                <StyledLogo size="37px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
+                <StyledLogo size="37px" bgColor="#ffffff" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
               </TokenLogo>
               <Flex style={{ flexDirection: "column", marginLeft: "15px" }}>
-                <Type.XL fontWeight="300">{currency?.symbol}</Type.XL>
-                <Type.MD style={{ marginTop: "3px" }}  >{currency?.name}</Type.MD>
+                <Type.LG fontWeight="300">{currency?.symbol}</Type.LG>
+                <Type.SM style={{ marginTop: "3px", maxWidth: "80%" }}  >{currency?.name}</Type.SM>
               </Flex>
 
             </TokenWrap>
             <Flex style={{ flexDirection: "column", justifyContent: "center", marginLeft: "15px" }}>
-              <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || "0.00000000 L"}
+              <RowBetween>
+                <Type.MD style={{ marginLeft: "10px", opacity: "0.75" }} >{balances && balances[currency.long?.address] ? balances[currency.long?.address] : "0.00000000"}  S
+                </Type.MD>
                 <CopyToClipboard text={getTransactionLink(chainId, currency.long?.address, "token")}
                   onCopy={() => console.log("copied")}>
                   <Copy src="/img/copy2.svg" />
                 </CopyToClipboard>
-              </Type.LG>
-              <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || "0.00000000 S"}
+              </RowBetween>
+              <Type.MD style={{ marginLeft: "10px", opacity: "0.75" }} >{balances && balances[currency.short?.address] ? balances[currency.short?.address] : "0.00000000"} L
 
                 <CopyToClipboard text={getTransactionLink(chainId, currency.short?.address, "token")}
                   onCopy={() => console.log("copied")}>
                   <Copy src="/img/copy2.svg" />
                 </CopyToClipboard>
-              </Type.LG>
+              </Type.MD>
             </Flex>
 
           </TokenRow>

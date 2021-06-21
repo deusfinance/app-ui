@@ -6,18 +6,12 @@ import UniswapRouterAbi from '../config/abi/uniswapRouterAbi.json'
 import UniswapV2Abi from '../config/abi/UniswapV2Abi.json'
 import MultiCallAbi from '../config/abi/Multicall.json'
 import BalancerPoolTokenAbi from '../config/abi/BalancerPoolTokenAbi.json'
-import {
-    MULTICALL_NETWORKS
-} from '../constant/contracts'
-import {
-    ChainMap
-} from '../constant/web3'
-import {
-    getContractAddr
-} from '../utils/contracts'
+import { MULTICALL_NETWORKS } from '../constant/contracts'
+import { ChainMap } from '../constant/web3'
+import { getContractAddr } from '../utils/contracts'
 
 const getContract = (abi, address, web3) => {
-    const _web3 = web3 ? ? web3NoAccount
+    const _web3 = web3 ?? web3NoAccount
     return new _web3.eth.Contract(abi, address)
 }
 

@@ -1,7 +1,6 @@
 // just for testing
 // You can write getSealedSwapperContract funtion in contractHelpers, like other contracts
 // import { getSealedSwapperContract} from "./contractHelpers"
-import { ethers } from "ethers"
 import { TransactionState } from "../utils/constant"
 import { SwapTranaction } from "../utils/explorers"
 import { getToWei } from "./formatBalance"
@@ -9,7 +8,6 @@ import { isZero } from "../constant/number"
 import {
 	// getSealedSwapperContract,
 	getUniswapV2Contract,
-	getERC20Contract,
 	getUniswapRouterContract,
 	getBalancerPoolTokenContract,
 	getDeusAutomaticMarketMakerContract,
@@ -76,6 +74,7 @@ export const sealedSwap = async (fromCurrency, toCurrency, amountIn, amountOut, 
 export const swapFuncMaker = async (fromCurrency, amountInWei, minAmountOutWei, chainId, web3) => {
 
 	if (fromCurrency.symbol === "BPT") {
+		//return bpt2sdea(poolAmountIn, balancerMinAmountsOut, minAmountOut, web3, chainId)
 	}
 	else if (fromCurrency.symbol === "sUniDD") {
 		return sUniDD2sdea(amountInWei, minAmountOutWei, web3, chainId)
@@ -92,10 +91,8 @@ export const swapFuncMaker = async (fromCurrency, amountInWei, minAmountOutWei, 
 export const bpt2sdea = async (
 	poolAmountIn,
 	balancerMinAmountsOut,
-	DDMinAmountsOut,
-	sUniDDMinAmountsOut,
-	sUniDEMinAmountsOut,
-	sUniDUMinAmountsOut, web3, chainId
+	minAmountOut,
+	web3, chainId
 ) => {
 	try {
 		await getSealedSwapperContract(web3, chainId)
@@ -103,10 +100,7 @@ export const bpt2sdea = async (
 			.bpt2sdea(
 				poolAmountIn,
 				balancerMinAmountsOut,
-				DDMinAmountsOut,
-				sUniDDMinAmountsOut,
-				sUniDEMinAmountsOut,
-				sUniDUMinAmountsOut
+				minAmountOut
 			)
 			.call()
 	} catch (error) {

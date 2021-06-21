@@ -59,7 +59,7 @@ const Wallets = ({ showWallets, setShowWallets }) => {
       setDisplayErrorBox(true)
       resetWalletConnector()
     }
-  }, [error])
+  }, [error])// eslint-disable-line
 
   // function showModal() {
   //   setShowWallets(true)

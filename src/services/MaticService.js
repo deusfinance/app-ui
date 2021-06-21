@@ -13,7 +13,7 @@ export class StockService {
 
     makeProvider = () => {
         if (this.INFURA_URL) return
-        this.INFURA_URL = 'https://rpc-mainnet.maticvigil.com/';
+        this.INFURA_URL = 'https://rpc-mainnet.matic.quiknode.pro';
         this.infuraWeb3 = new Web3(new Web3.providers.HttpProvider(this.INFURA_URL));
     }
 

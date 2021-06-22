@@ -74,7 +74,7 @@ export const sealedSwap = async (fromCurrency, toCurrency, amountIn, amountOut, 
 export const swapFuncMaker = async (fromCurrency, amountInWei, minAmountOutWei, chainId, web3) => {
 
 	if (fromCurrency.symbol === "BPT") {
-		//return bpt2sdea(poolAmountIn, balancerMinAmountsOut, minAmountOut, web3, chainId)
+		return bpt2sdea(poolAmountIn, balancerMinAmountsOut, minAmountOut, web3, chainId)
 	}
 	else if (fromCurrency.symbol === "sUniDD") {
 		return sUniDD2sdea(amountInWei, minAmountOutWei, web3, chainId)
@@ -119,11 +119,11 @@ export const sUniDD2sdea = async (sUniDDAmount, minAmountOut, web3, chainId) => 
 	}
 }
 
-export const sUniDU2sdea = async (sUniDUAmount, minAmountsOut, web3, chainId) => {
+export const sUniDU2sdea = async (sUniDUAmount, minAmountOut, web3, chainId) => {
 	try {
 		await getSealedSwapperContract(web3, chainId)
 			.methods
-			.sUniDU2sdea(sUniDUAmount, minAmountsOut)
+			.sUniDU2sdea(sUniDUAmount, minAmountOut)
 			.call()
 	} catch (error) {
 		console.log(error);
@@ -162,12 +162,13 @@ const deus2deaPath = [0x3b62F3820e0B035cc4aD602dECe6d796BC325325, 0x80aB141F324C
 export const sUniDDOutGivenIn = (sUniDDAmount, web3, chainId) => {
 	const contract = getUniswapV2Contract(addresses.token.deus_dea, web3);;
 	let totalSupply = contract.methods.totalSupply().call();
+	let ratio = await getSealedSwapperContract(web3, chainId).methods.DDRatio().call() / 1e18;
 
 	let deusReserve, deaReserve, deusMinAmountOut, deaMinAmountOut;
 
 	[deusReserve, deaReserve] = contract.methods.getReserves().all();
 
-	[deusMinAmountOut, deaMinAmountOut] = minAmountsCalculator(sUniDDAmount, totalSupply, deusReserve, deaReserve)
+	[deusMinAmountOut, deaMinAmountOut] = minAmountsCalculator(sUniDDAmount * ratio, totalSupply, deusReserve, deaReserve)
 
 	let deaAmount = getUniswapRouterContract(web3, chainId).methods.getAmountsOut(deusMinAmountOut, deus2deaPath).call()
 
@@ -178,17 +179,20 @@ export const sUniDDOutGivenIn = (sUniDDAmount, web3, chainId) => {
 export const sUniDUOutGivenIn = (sUniDUAmount, web3, chainId) => {
 	const contract = getUniswapV2Contract(addresses.token.dea_usdc, web3);;
 	let totalSupply = contract.methods.totalSupply().call();
+	let ratio = getSealedSwapperContract(web3, chainId).methods.DURatio().call() / 1e18;
 
 	let deaReserve, usdcReserve, deaMinAmountOut, usdcMinAmountOut;
 
 	[deaReserve, usdcReserve] = contract.methods.getReserves().all();
 
-	[deaMinAmountOut, usdcMinAmountOut] = minAmountsCalculator(sUniDUAmount, totalSupply, deaReserve, usdcReserve)
+	[deaMinAmountOut, usdcMinAmountOut] = minAmountsCalculator(sUniDUAmount / 1e5 * ratio, totalSupply, deaReserve, usdcReserve)
 
 	const usdc2wethPath = [0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2];
 	const ethAmount = getUniswapRouterContract(web3, chainId).methods.getAmountsOut(usdcMinAmountOut, usdc2wethPath).call()
 
-	const deaAmount = calculatePurchaseReturn(ethAmount, web3, chainId);
+	const deusAmount = calculatePurchaseReturn(ethAmount, web3, chainId);
+
+	const deaAmount = getUniswapRouterContract(web3, chainId).methods.getAmountsOut(deusAmount, deus2deaPath).call()
 
 	return deaMinAmountOut + deaAmount
 }
@@ -196,18 +200,19 @@ export const sUniDUOutGivenIn = (sUniDUAmount, web3, chainId) => {
 export const sUniDEOutGivenIn = (sUniDEAmount, web3, chainId) => {
 	const contract = getUniswapV2Contract(addresses.token.deus_eth, web3);;
 	let totalSupply = contract.methods.totalSupply().call();
+	let ratio = getSealedSwapperContract(web3, chainId).methods.DERatio().call() / 1e18;
 
 	let deusReserve, wethReserve, deusMinAmountOut, wethMinAmountOut;
 
+
 	[deusReserve, wethReserve] = contract.methods.getReserves().call();
 
-	[deusMinAmountOut, wethMinAmountOut] = minAmountsCalculator(sUniDEAmount, totalSupply, deusReserve, wethReserve)
+	[deusMinAmountOut, wethMinAmountOut] = minAmountsCalculator(sUniDEAmount * ratio, totalSupply, deusReserve, wethReserve)
 
-	const deaAmount1 = getUniswapRouterContract(web3, chainId).methods.getAmountsOut(deusMinAmountOut, deus2deaPath).call()
+	const deusAmount = calculatePurchaseReturn(wethMinAmountOut, web3, chainId)
+	const deaAmount = getUniswapRouterContract(web3, chainId).methods.getAmountsOut(deusAmount + deusMinAmountOut, deus2deaPath).call();
 
-	const deaAmount2 = calculatePurchaseReturn(wethMinAmountOut, web3, chainId)
-
-	return deaAmount1 + deaAmount2
+	return deaAmount
 }
 
 
@@ -216,6 +221,8 @@ export const bptOutGivenIn = (bptAmount, web3, chainId) => {
 
 	const contract = getBalancerPoolTokenContract('0x1Dc2948B6dB34E38291090B825518C1E8346938B', web3)
 	const totalSupply = contract.methods.totalSupply().call();
+
+	let deusRatio = getSealedSwapperContract(web3, chainId).methods.deusRatio().call() / 1e18;
 
 	deaAmount = (bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.dea).call()
 	deaAmount += (bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_dea[1]).call()
@@ -229,8 +236,8 @@ export const bptOutGivenIn = (bptAmount, web3, chainId) => {
 		(bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_deus_eth).call()
 	);
 	deaAmount += getUniswapRouterContract(web3, chainId).methods.getAmountsOut(
-		(bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_deus).call(), deus2deaPath
+		(bptAmount / totalSupply) * contract.methods.getBalance(addresses.token.sand_deus).call() * deusRatio, deus2deaPath
 	).call()
 
-	return deaAmount
+	return deaAmount;
 }

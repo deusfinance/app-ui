@@ -59,7 +59,7 @@ const Sealed = () => {
         inputCurrency = null
     }
 
-    const sdeaContract = getTokenAddr("sand_dea", chainId).toLowerCase()
+    // const sdeaContract = getTokenAddr("sand_dea", chainId).toLowerCase()
     const sUniDD = getTokenAddr("sand_deus_dea", chainId).toLowerCase()
 
     let fromAddress = inputCurrency ? inputCurrency : sUniDD
@@ -72,7 +72,6 @@ const Sealed = () => {
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
-    const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useSealedAllowance(swapState.from, contractAddress, chainId)
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
@@ -133,7 +132,7 @@ const Sealed = () => {
     }
 
     const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
-    const { getAmountsOut: getMinAmountOut } = useSealedGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
+    // const { getAmountsOut: getMinAmountOut } = useSealedGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId)
 
@@ -149,16 +148,16 @@ const Sealed = () => {
         //eslint-disable-next-line
     }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
 
-    useEffect(() => {
-        const get = async () => {
-            const amount = await getMinAmountOut()
-            console.log("min swap ", amount);
-            setMinAmountOut(fromWei(amount, swapState.to.decimals))
-        }
-        get()
+    // useEffect(() => {
+    //     const get = async () => {
+    //         const amount = await getMinAmountOut()
+    //         console.log("min swap ", amount);
+    //         setMinAmountOut(fromWei(amount, swapState.to.decimals))
+    //     }
+    //     get()
 
-        //eslint-disable-next-line
-    }, [getMinAmountOut])//replace multiple useState variables with useReducer
+    //     //eslint-disable-next-line
+    // }, [getMinAmountOut])//replace multiple useState variables with useReducer
 
 
 

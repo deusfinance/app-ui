@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
-import { MainWrapper, SwapWrapper, SwapArrow, SwapTitle } from '../../components/App/Swap';
+import { MainWrapper, SwapWrapper, SwapTitle } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
 import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
 import SwapAction from '../../components/App/Swap/SwapAction';
@@ -11,19 +11,15 @@ import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
 import { useApprove } from '../../helper/useApprove';
-import { useSealedAllowance } from '../../helper/useAllowance';
-import { useSwap } from '../../helper/useSwap';
+import { useSealedAllowance } from '../../helper/useSealed';
+import { useSwap } from '../../helper/useSealed';
 import { SealedTokens, sdeaToken } from '../../constant/token';
-import { useSealedGetAmountsOut } from '../../helper/useGetAmountsOut';
+import { useSealedGetAmountsOut } from '../../helper/useSealed';
 import useChain from '../../helper/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
-// import RouteBox from '../../components/App/Swap/RouteBox';
-// import PriceImpact from '../../components/App/Swap/PriceImpact';
-// import SelectedNetworks from '../../components/Sync/SelectNetworks';
-// import { NavButton } from '../../components/App/Navbar';
 
 const Sealed = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -73,6 +69,7 @@ const Sealed = () => {
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
     const allowance = useSealedAllowance(swapState.from, contractAddress, chainId)
+
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -80,12 +77,11 @@ const Sealed = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-
     }, [chainId, account]);
 
     useEffect(() => {
         setIsPreApproved(null)
-        setIsApproved(false)
+        setIsApproved(null)
     }, [swapState.from])
 
     useEffect(() => {
@@ -99,8 +95,6 @@ const Sealed = () => {
             } else {
                 if (allowance.gt(0)) {
                     setIsPreApproved(true)
-                    // TokensMap[swapState.from.address].allowance = allowance
-                    // setTokensMap(TokensMap)
                 } else {
                     setIsPreApproved(false)
                 }
@@ -111,7 +105,7 @@ const Sealed = () => {
             }
         }
         //eslint-disable-next-line 
-    }, [allowance]) //isPreApproved ?
+    }, [allowance, isPreApproved]) //isPreApproved ?
 
 
     const showSearchBox = (active = false, type) => {
@@ -127,19 +121,17 @@ const Sealed = () => {
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
         }
-        console.log(token);
         setSwapState({ ...swapState, [type]: token })
     }
 
     const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
-    // const { getAmountsOut: getMinAmountOut } = useSealedGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId)
 
     useEffect(() => {
         const get = async () => {
             const amount = await getAmountsOut()
-            console.log("swap ", amount);
+            // console.log("swap ", amount);
             if (amountIn === "") setAmountOut("")
             else setAmountOut(fromWei(amount, swapState.to.decimals))
         }
@@ -147,17 +139,6 @@ const Sealed = () => {
 
         //eslint-disable-next-line
     }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
-
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const amount = await getMinAmountOut()
-    //         console.log("min swap ", amount);
-    //         setMinAmountOut(fromWei(amount, swapState.to.decimals))
-    //     }
-    //     get()
-
-    //     //eslint-disable-next-line
-    // }, [getMinAmountOut])//replace multiple useState variables with useReducer
 
 
 
@@ -218,9 +199,8 @@ const Sealed = () => {
                     TokensMap={TokensMap}
                     fastUpdate={fastUpdate}
                 />
-                <SwapArrow >
-                    <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
-                </SwapArrow>
+
+                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
                 <TokenBox
                     type="to"

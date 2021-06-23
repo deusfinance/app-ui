@@ -5,7 +5,7 @@ import DeusAMMAbi from '../config/abi/DeusAMM.json'
 import UniswapRouterAbi from '../config/abi/uniswapRouterAbi.json'
 import UniswapV2Abi from '../config/abi/UniswapV2Abi.json'
 import MultiCallAbi from '../config/abi/Multicall.json'
-import BalancerPoolTokenAbi from '../config/abi/BalancerPoolTokenAbi.json'
+import SealedSwapperAbi from '../config/abi/SealedSwapperAbi.json'
 import { MULTICALL_NETWORKS } from '../constant/contracts'
 import { ChainMap } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
@@ -39,6 +39,6 @@ export const getUniswapV2Contract = (address, web3) => {
     return getContract(UniswapV2Abi, address, web3)
 }
 
-export const getBalancerPoolTokenContract = (address, web3) => {
-    return getContract(BalancerPoolTokenAbi, address, web3)
+export const getSealedSwapperContract = (address, web3) => {
+    return getContract(SealedSwapperAbi, address, web3)
 }

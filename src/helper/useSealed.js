@@ -38,7 +38,7 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, 
             console.log(e);
             return false
         }
-    }, [account, chainId, validChainId, fromCurrency, toCurrency, amountIn, amountOut, minAmountOut, web3])
+    }, [account, chainId, validChainId, fromCurrency, toCurrency, amountIn, amountOut, minAmountOut, payload, web3])
 
     return { onSwap: handleSwap }
 }

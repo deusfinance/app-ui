@@ -16,9 +16,8 @@ import BalancerPoolTokenAbi from '../config/abi/BalancerPoolTokenAbi.json'
 import addresses from '../constant/addresses.json';
 import BigNumber from "bignumber.js"
 import multicall from "./multicall"
+import { SEALED_ADDRESS } from "../constant/contracts"
 
-
-const sealedAddress = "0x09aa2eb99b93579c0467a402bc4b8b3c1fb85f69"
 
 
 export const getSealedAmountsOut = async (fromCurrency, amountIn, chainId, web3) => {
@@ -50,7 +49,7 @@ export const swap = async (fromCurrency, toCurrency, amountIn, amountOut, minAmo
 	const minAmountOutWei = getToWei(minAmountOut, toCurrency.decimals).toFixed(0)
 
 	if (amountIn === "" || isZero(amountInWei) || amountOut === "" || isZero(minAmountOutWei)) return { status: false }
-	let sealedContract = getSealedSwapperContract(sealedAddress, web3)
+	let sealedContract = getSealedSwapperContract(SEALED_ADDRESS, web3)
 	const swapFunc = swapFuncMaker(fromCurrency, amountInWei, minAmountOutWei, sealedContract, bptPayload)
 	let sendArgs = { from: account }
 
@@ -144,7 +143,7 @@ export const sUniDDOutGivenIn = async (sUniDDAmount, web3, chainId) => {
 	const contract = getUniswapV2Contract(addresses.token.deus_dea["1"], web3);
 	let totalSupply = await contract.methods.totalSupply().call();
 
-	let ratio = await getSealedSwapperContract(sealedAddress, web3).methods.DDRatio().call()
+	let ratio = await getSealedSwapperContract(SEALED_ADDRESS, web3).methods.DDRatio().call()
 	ratio = fromWei(ratio, 18)
 
 	const { "0": deusReserve, "1": deaReserve } = await contract.methods.getReserves().call();
@@ -159,7 +158,7 @@ export const sUniDUOutGivenIn = async (sUniDUAmount, web3, chainId) => {
 	const contract = getUniswapV2Contract(addresses.token.dea_usdc["1"], web3);
 	let totalSupply = await contract.methods.totalSupply().call();
 
-	let ratio = await getSealedSwapperContract(sealedAddress, web3).methods.DURatio().call()
+	let ratio = await getSealedSwapperContract(SEALED_ADDRESS, web3).methods.DURatio().call()
 	ratio = fromWei(ratio, 18)
 
 	const { "0": deaReserve, "1": usdcReserve } = await contract.methods.getReserves().call();
@@ -182,7 +181,7 @@ export const sUniDEOutGivenIn = async (sUniDEAmount, web3, chainId) => {
 	let totalSupply = await contract.methods.totalSupply().call();
 	// let ratio = getSealedSwapperContract(web3, chainId).methods.DERatio().call() / 1e18;
 
-	let ratio = await getSealedSwapperContract(sealedAddress, web3).methods.DERatio().call()
+	let ratio = await getSealedSwapperContract(SEALED_ADDRESS, web3).methods.DERatio().call()
 	ratio = fromWei(ratio, 18)
 
 	const { "0": deusReserve, "1": wethReserve } = await contract.methods.getReserves().call();
@@ -242,7 +241,10 @@ export const bptOutGivenIn = async (bptAmount, web3, chainId) => {
 	] = await multicall(web3, BalancerPoolTokenAbi, calls, chainId)
 
 	// let deusRatio = getSealedSwapperContract(web3, chainId).methods.deusRatio().call() / 1e18;
-	const deusRatio = 0.9
+	// const deusRatio = 0.9
+
+	let deusRatio = await getSealedSwapperContract(SEALED_ADDRESS, web3).methods.deusRatio().call()
+	deusRatio = fromWei(deusRatio, 18)
 
 	const bptPerTotalSupply = new BigNumber(bptAmount).div(totalSupply)
 	const sUniDDAmount = new BigNumber(bptPerTotalSupply).times(rest[0]).toFixed(0)
@@ -254,7 +256,7 @@ export const bptOutGivenIn = async (bptAmount, web3, chainId) => {
 
 
 	let deaAmount = balancerDeaAmount
-	deaAmount = new BigNumber(sDeusAmount).plus(deaAmount)
+	deaAmount = new BigNumber(sDeaAmount).plus(deaAmount)
 	deaAmount = new BigNumber(await sUniDDOutGivenIn(sUniDDAmount)).plus(deaAmount)
 	deaAmount = new BigNumber(await sUniDUOutGivenIn(sUniDUAmount)).plus(deaAmount)
 	deaAmount = new BigNumber(await sUniDEOutGivenIn(sUniDEAmount)).plus(deaAmount)
@@ -264,5 +266,6 @@ export const bptOutGivenIn = async (bptAmount, web3, chainId) => {
 	deaAmount = new BigNumber(uniAmount[1]).plus(deaAmount).toFixed(0)
 
 
-	return [sUniDDAmount, sUniDUAmount, sUniDEAmount, sDeusAmount, sDeaAmount, balancerDeaAmount, deaAmount];
+	return [0, 0, 0, 0, 0, 0, deaAmount];
+	// return [sUniDDAmount, sUniDEAmount, balancerDeaAmount, sUniDUAmount, sDeusAmount, sDeaAmount, deaAmount];
 }

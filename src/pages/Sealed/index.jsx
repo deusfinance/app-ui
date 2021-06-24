@@ -23,6 +23,7 @@ import { useLocation } from 'react-router';
 
 const Sealed = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
+    const [bptPayload, setBptPayload] = useState([])
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
@@ -124,16 +125,18 @@ const Sealed = () => {
         setSwapState({ ...swapState, [type]: token })
     }
 
-    const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
+    const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, debouncedAmountIn, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId, bptPayload)
 
     useEffect(() => {
         const get = async () => {
-            const amount = await getAmountsOut()
-            // console.log("swap ", amount);
+            const result = await getAmountsOut()
+            if (result.payload) {
+                setBptPayload(result.payload)
+            }
             if (amountIn === "") setAmountOut("")
-            else setAmountOut(fromWei(amount, swapState.to.decimals))
+            else setAmountOut(fromWei(result.amountOut, swapState.to.decimals))
         }
         get()
 

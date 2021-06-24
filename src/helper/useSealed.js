@@ -7,14 +7,18 @@ import BigNumber from 'bignumber.js'
 import useRefresh from "./useRefresh";
 import { useERC20 } from './useContract'
 import { getSealedAmountsOut } from './sealedHelper'
-import { isZero } from '../constant/number'
+import { isZero, ZERO } from '../constant/number'
 
 
-export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId) => {
+export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId, bptPayload) => {
     const { account, chainId } = useWeb3React()
 
     const web3 = useWeb3()
     const minAmountOut = new BigNumber(amountOut).multipliedBy((100 - Number(slipage)) / 100).toFixed(toCurrency.decimals, 1)
+    let payload = []
+    for (let i = 0; i < bptPayload.length; i++) {
+        payload[i] = new BigNumber(bptPayload[i]).multipliedBy((100 - Number(slipage)) / 100).toFixed(toCurrency.decimals, 1)
+    }
     const handleSwap = useCallback(async () => {
         try {
             if (validChainId && chainId !== validChainId) return false
@@ -24,6 +28,7 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, 
                 amountIn,
                 amountOut,
                 minAmountOut,
+                payload,
                 account,
                 chainId,
                 web3,
@@ -48,7 +53,7 @@ export const useSealedAllowance = (currency, contractAddress, validChainId) => {
     useEffect(() => {
         const fetchAllowance = async () => {
             console.log();
-            // if (validChainId && chainId !== validChainId) setAllowance(ZERO)
+            if (validChainId && chainId !== validChainId) setAllowance(ZERO)
             if (contract === null || currency.symbol !== "BPT") setAllowance(ethers.constants.MaxUint256)
             else {
                 const res = await contract.methods.allowance(account, contractAddress).call()
@@ -63,7 +68,7 @@ export const useSealedAllowance = (currency, contractAddress, validChainId) => {
     return allowance
 }
 
-export const useSealedGetAmountsOut = (fromCurrency, toCurrency, amountIn, validChainId) => {
+export const useSealedGetAmountsOut = (fromCurrency, amountIn, validChainId) => {
     const { chainId } = useWeb3React()
     const web3 = useWeb3()
     const { fastRefresh } = useRefresh()

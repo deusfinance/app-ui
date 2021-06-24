@@ -26,29 +26,32 @@ export const getSealedAmountsOut = async (fromCurrency, amountIn, chainId, web3)
 
 	if (fromCurrency.symbol === "BPT") {
 		const sdeaAmount = await bptOutGivenIn(amountInWei, web3, chainId)
-		return sdeaAmount[sdeaAmount.length - 1]
+		return { amountOut: sdeaAmount[sdeaAmount.length - 1], payload: sdeaAmount.slice(0, -1) }
 	}
 	else if (fromCurrency.symbol === "sUniDD") {
-		return await sUniDDOutGivenIn(amountInWei, web3, chainId)
+		const amountOut = await sUniDDOutGivenIn(amountInWei, web3, chainId)
+		return { amountOut: amountOut }
 	}
 	else if (fromCurrency.symbol === "sUniDE") {
-		return sUniDEOutGivenIn(amountInWei, web3, chainId)
+		const amountOut = await sUniDEOutGivenIn(amountInWei, web3, chainId)
+		return { amountOut: amountOut }
 	}
 	else if (fromCurrency.symbol === "sUniDU") {
-		return sUniDUOutGivenIn(amountInWei, web3, chainId)
+		const amountOut = await sUniDUOutGivenIn(amountInWei, web3, chainId)
+		return { amountOut: amountOut }
 	}
 }
 
 
 
-export const swap = async (fromCurrency, toCurrency, amountIn, amountOut, minAmountOut, account, chainId, web3) => {
+export const swap = async (fromCurrency, toCurrency, amountIn, amountOut, minAmountOut, bptPayload, account, chainId, web3) => {
 	let hash = null
 	const amountInWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
 	const minAmountOutWei = getToWei(minAmountOut, toCurrency.decimals).toFixed(0)
 
 	if (amountIn === "" || isZero(amountInWei) || amountOut === "" || isZero(minAmountOutWei)) return { status: false }
 	let sealedContract = getSealedSwapperContract(sealedAddress, web3)
-	const swapFunc = swapFuncMaker(fromCurrency, amountInWei, minAmountOutWei, sealedContract, 0)
+	const swapFunc = swapFuncMaker(fromCurrency, amountInWei, minAmountOutWei, sealedContract, bptPayload)
 	let sendArgs = { from: account }
 
 	return swapFunc

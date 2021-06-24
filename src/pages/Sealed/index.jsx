@@ -16,10 +16,11 @@ import { useSwap } from '../../helper/useSealed';
 import { SealedTokens, sdeaToken } from '../../constant/token';
 import { useSealedGetAmountsOut } from '../../helper/useSealed';
 import useChain from '../../helper/useChain';
-import { getContractAddr, getTokenAddr } from '../../utils/contracts';
+import { getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
+import { SEALED_ADDRESS } from '../../constant/contracts';
 
 const Sealed = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -40,7 +41,6 @@ const Sealed = () => {
 
     if (inputCurrency) inputCurrency = inputCurrency.toLowerCase()
 
-    const contractAddress = getContractAddr("multi_swap_contract", chainId)
 
     const tokens = useMemo(() => SealedTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
@@ -69,7 +69,7 @@ const Sealed = () => {
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
-    let allowance = useSealedAllowance(swapState.from, contractAddress, chainId)
+    let allowance = useSealedAllowance(swapState.from, SEALED_ADDRESS, chainId)
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -126,7 +126,7 @@ const Sealed = () => {
     }
 
     const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, debouncedAmountIn, chainId)
-    const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
+    const { onApprove } = useApprove(swapState.from, SEALED_ADDRESS, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId, bptPayload)
 
     useEffect(() => {

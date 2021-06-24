@@ -83,6 +83,7 @@ export const swap = async (fromCurrency, toCurrency, amountIn, amountOut, minAmo
 export const swapFuncMaker = (fromCurrency, amountInWei, minAmountOutWei, sealedContract, balancerMinAmountsOut) => {
 
 	if (fromCurrency.symbol === "BPT") {
+		console.log(amountInWei, balancerMinAmountsOut, minAmountOutWei);
 		return bpt2sdea(amountInWei, balancerMinAmountsOut, minAmountOutWei, sealedContract)
 	}
 	else if (fromCurrency.symbol === "sUniDD") {
@@ -96,18 +97,10 @@ export const swapFuncMaker = (fromCurrency, amountInWei, minAmountOutWei, sealed
 	}
 }
 
-export const bpt2sdea = async (poolAmountIn, balancerMinAmountsOut, minAmountOut, sealedContract) => {
-	try {
-		await sealedContract
-			.methods
-			.bpt2sdea(
-				poolAmountIn,
-				balancerMinAmountsOut,
-				minAmountOut
-			)
-	} catch (error) {
-		console.log(error);
-	}
+export const bpt2sdea = (poolAmountIn, balancerMinAmountsOut, minAmountOut, sealedContract) => {
+	return sealedContract
+		.methods
+		.bpt2sdea(poolAmountIn, balancerMinAmountsOut, minAmountOut)
 }
 
 export const sUniDD2sdea = (sUniDDAmount, minAmountOut, sealedContract) => {
@@ -117,7 +110,6 @@ export const sUniDD2sdea = (sUniDDAmount, minAmountOut, sealedContract) => {
 }
 
 export const sUniDU2sdea = (sUniDUAmount, minAmountOut, sealedContract) => {
-	console.log(sUniDUAmount.toString(), minAmountOut.toString());
 	return sealedContract
 		.methods
 		.sUniDU2sdea(sUniDUAmount, minAmountOut)

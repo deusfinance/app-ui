@@ -69,8 +69,7 @@ const Sealed = () => {
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
-    const allowance = useSealedAllowance(swapState.from, contractAddress, chainId)
-
+    let allowance = useSealedAllowance(swapState.from, contractAddress, chainId)
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -90,6 +89,7 @@ const Sealed = () => {
     }, [tokenBalances])
 
     useEffect(() => {
+        console.log(isPreApproved, allowance.toString());
         if (isPreApproved == null) {
             if (allowance.toString() === "-1") {
                 setIsPreApproved(null) //doNothing

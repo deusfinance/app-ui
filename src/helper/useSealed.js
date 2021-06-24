@@ -17,7 +17,7 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, 
     const minAmountOut = new BigNumber(amountOut).multipliedBy((100 - Number(slipage)) / 100).toFixed(toCurrency.decimals, 1)
     let payload = []
     for (let i = 0; i < bptPayload.length; i++) {
-        payload[i] = new BigNumber(bptPayload[i]).multipliedBy((100 - Number(slipage)) / 100).toFixed(toCurrency.decimals, 1)
+        payload[i] = new BigNumber(bptPayload[i]).multipliedBy((100 - Number(slipage)) / 100).toFixed(0, 1)
     }
     const handleSwap = useCallback(async () => {
         try {
@@ -52,7 +52,6 @@ export const useSealedAllowance = (currency, contractAddress, validChainId) => {
 
     useEffect(() => {
         const fetchAllowance = async () => {
-            console.log();
             if (validChainId && chainId !== validChainId) setAllowance(ZERO)
             if (contract === null || currency.symbol !== "BPT") setAllowance(ethers.constants.MaxUint256)
             else {
@@ -61,9 +60,11 @@ export const useSealedAllowance = (currency, contractAddress, validChainId) => {
             }
         }
         if (account && tokenAddress) {
+            setAllowance(new BigNumber(-1))
             fetchAllowance()
         }
     }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh])
+
 
     return allowance
 }

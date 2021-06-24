@@ -11,6 +11,7 @@ const errors = {
     WrongNetwork: "WRONG NETWORK",
     EMPTY: "ENTER AN AMOUNT",
     INSUFFICIENT: "INSUFFICIENT BALANCE",
+    LOADING: "LOADING...",
 }
 
 const WrapActions = styled.div`
@@ -55,8 +56,9 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, 
     const checkError = () => {
         if (!account) return errors.NotConnected
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
-        if (amountIn === "" || amountOut === "" || isZero(amountIn)) return errors.EMPTY
+        if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
         if (isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
+        if (isNaN(amountOut)) return errors.LOADING
         return null;
     }
 
@@ -83,7 +85,7 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, 
                     {!isApproved ? <>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleApprove} >
                             APPROVE
-                            {loading && <img style={{ position: "absolute", top: "0px", right: "0px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
+                            {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
                         <ButtonSyncDeactive>SWAP</ButtonSyncDeactive>
                     </> : <>

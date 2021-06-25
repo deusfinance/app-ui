@@ -63,6 +63,11 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/muon",
+        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        exact: true,
+    },
+    {
         url: "/bridge",
         chains: [ChainMap.RINKEBY, ChainMap.BSC_TESTNET],
     },

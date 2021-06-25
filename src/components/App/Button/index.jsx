@@ -53,8 +53,8 @@ const ButtonSync = styled(Base).attrs({
 export const ButtonSyncDeactive = styled(ButtonSync)`
     box-shadow: none;
     font-family:"Monument Grotesk Semi";
-    background: ${({ theme }) => theme.sync_dactive};
-    color: #8d8d8d;
+    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.sync_dactive};
+    color: ${({ theme, color }) => color ? theme[color] : "#8d8d8d"};
     cursor: default;
 `
 

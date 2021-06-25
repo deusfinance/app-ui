@@ -24,7 +24,7 @@ export const SwapTitle = styled(FlexCenter)`
     border-radius: 15px 1px;
     font-size:25px;
     color:#000;
-    background:${({ theme, bgColor }) => bgColor ? theme.[bgColor] : theme.grad3}
+    background:${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3}
 `
 
 export const StyleSwapBase = css`

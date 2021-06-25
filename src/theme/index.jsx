@@ -29,6 +29,7 @@ export function colors(darkMode) {
     text1_2: darkMode ? black : white,
     text2: darkMode ? "#c6c6c6" : black,
 
+
     //border
     border1: darkMode ? "#1C1C1C" : "#c6c6c6",
     border2: darkMode ? "#101010" : "#c6c6c6",
@@ -41,6 +42,9 @@ export function colors(darkMode) {
     bg5: darkMode ? "#171717" : "#d4d3d3",
     bg6: darkMode ? "#111111" : "#d4d3d3",
     bg7: darkMode ? "#272727" : "#d4d3d3",
+    bg8: darkMode ? "#E7E8EA" : "#F6F6F6",
+    bg_muon: darkMode ? "#F6F6F6" : "#F6F6F6",
+    bg_blue: "#5F5CFE",
     bg_warning: darkMode ? "rgba(255, 85, 85, 0.2)" : "#d4d3d3",
 
     sync_active: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)' : "linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)",

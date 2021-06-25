@@ -21,9 +21,6 @@ export const getSealedAmountsOut = async (fromCurrency, amountIn, chainId, web3)
 		case "sUniDE":
 			method = "getSUniDE2SDeaAmount"
 			break;
-		case "sUniDU":
-			method = "getSUniDU2SDeaAmount"
-			break;
 		default:
 			method = "getSUniDD2SDeaAmount"
 	}

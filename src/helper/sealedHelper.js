@@ -4,6 +4,8 @@ import { getToWei } from "./formatBalance"
 import { isZero } from "../constant/number"
 import { getSealedSwapperContract } from "./contractHelpers"
 import { SEALED_ADDRESS } from "../constant/contracts"
+import { isArray, isObject } from "lodash"
+import BigNumber from "bignumber.js"
 
 export const getSealedAmountsOut = async (fromCurrency, amountIn, chainId, web3) => {
 
@@ -13,7 +15,7 @@ export const getSealedAmountsOut = async (fromCurrency, amountIn, chainId, web3)
 	let method = ""
 	switch (symbol) {
 		case "BPT":
-			method = "getBpt2SDeaAmount"
+			method = "estimateBpt2SDeaAmount"
 			break;
 		case "sUniDU":
 			method = "getSUniDU2SDeaAmount"
@@ -28,8 +30,10 @@ export const getSealedAmountsOut = async (fromCurrency, amountIn, chainId, web3)
 	const result = await getSealedSwapperContract(SEALED_ADDRESS, web3)
 		.methods[method](amountInWei).call()
 
-	if (result.length > 1)
-		return { amountOut: result[1], payload: result[0] }
+
+	if (isObject(result)) {
+		return { amountOut: new BigNumber(result["1"]).times(0.995).toFixed(0, BigNumber.ROUND_DOWN), payload: result["0"] }
+	}
 	return { amountOut: result }
 }
 

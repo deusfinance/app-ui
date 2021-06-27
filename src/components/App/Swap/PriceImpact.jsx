@@ -22,7 +22,7 @@ const PriceImpact = ({ minAmountOut, amountOut, amountIn }) => {
 
     return (
         <SmallWrapper mt="0">
-            <Type.SM className="title">Price Impact</Type.SM>
+            <Type.SM className="inner-title">Price Impact</Type.SM>
             {/* <Type.SM >{(amountOut === "" || amountIn === "") ? "<0.005 %" : ""}</Type.SM> */}
             <Type.SM >{amount < 0.005 ? "<0.005" : amount} %</Type.SM>
         </SmallWrapper>

@@ -230,6 +230,9 @@ const Navbar = () => {
                                 <NavLink to="/stake-and-yield" > STAKE &amp; YIELD </NavLink>
                             </li>
                             <li className="sub-nav-item">
+                                <NavLink to="/sealed-swap"> SEALED SWAP </NavLink>
+                            </li>
+                            <li className="sub-nav-item">
                                 <NavLink to="/vaults" > {t("vaultsL")} </NavLink>
                             </li>
                             <li className="sub-nav-item">

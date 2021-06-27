@@ -74,7 +74,7 @@ function App() {
                 {/* <Route exact path="/dbETH" component={dbETH} /> */}
                 {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/swap2" component={Swap2} />
-                <Route exact path="/sealed" component={Sealed} />
+                <Route exact path="/sealed-swap" component={Sealed} />
                 <Redirect exact from="/" to="/swap" />
                 <Route path="/" component={Deus} />
                 <Redirect to="not-found" />

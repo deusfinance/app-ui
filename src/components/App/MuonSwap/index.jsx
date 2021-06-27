@@ -13,7 +13,7 @@ export const InputAmount = styled.input.attrs({
     outline-style: none;
     width: ${({ width }) => width || "0px"};
     font-size: ${({ fontSize }) => fontSize || "25px"};
-     color: ${({ theme }) => theme.text1_2};
+    color: ${({ theme }) => theme.text1_2};
     background: transparent;
 
 `
@@ -33,7 +33,7 @@ export const StyleSwapBase = css`
 
 export const StyleTitles = css`
     font-family:"Monument Grotesk Semi";
-   .title{
+   .inner-title{
         opacity:0.75;
     }
 `
@@ -62,6 +62,7 @@ margin-top:30px;
 export const SmallWrapper = styled(FlexCenter)`
     ${StyleSwapBase}
     ${StyleTitles}
+    color: ${({ theme }) => theme.text1_2};
     justify-content:space-between;
     height:50px;
     /* margin-top:${({ mt }) => mt || "-1px"}; */

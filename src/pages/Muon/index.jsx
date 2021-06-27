@@ -20,6 +20,7 @@ import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import { SEALED_ADDRESS } from '../../constant/contracts';
+import RemainingCap from '../../components/App/MuonSwap/RemainingCap';
 
 const Muon = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -189,7 +190,6 @@ const Muon = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            {/* <SwapTitle active={false} bgColor="grad4" m="auto">SEALED SWAP</SwapTitle> */}
             <Image src="/img/swap/deus-muon.svg" my="15px" />
 
             <SwapWrapper>
@@ -234,6 +234,7 @@ const Muon = () => {
                 />
 
             </SwapWrapper>
+            <RemainingCap remindedAmount={1200} />
 
 
 

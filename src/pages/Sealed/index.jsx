@@ -220,7 +220,7 @@ const Sealed = () => {
                 <SwapAction
                     bgColor="grad4"
                     isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
+                    validNetworks={[1]}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}

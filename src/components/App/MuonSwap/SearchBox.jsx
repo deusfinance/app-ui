@@ -21,7 +21,8 @@ const fadein = keyframes`
 
 
 const Wrapper = styled.div`
-  background: ${({ theme }) => theme.bg5};
+  background: ${({ theme }) => theme.bg8};
+  color: ${({ theme }) => theme.text1_2};
   width: 50vw;
   max-width: 500px;
   border-radius: 10px;
@@ -51,7 +52,7 @@ const StyledClose = styled(X)`
   `
 const Line = styled.div`
 height: 1px;
-background: rgba(255, 255, 255, 0.15);
+background: rgba(0, 0, 0, 0.15);
 margin:${({ my }) => my} 0;
   `
 
@@ -59,7 +60,7 @@ const TokenRow = styled(RowBetween)`
 padding:0 20px;
     :hover{
         cursor:pointer;
-        background : #292929
+        background : #bebebe
     }
 `
 const TokensWrap = styled.div`
@@ -76,10 +77,10 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disbaleLoa
     <Wrapper>
       <RowBetween fontWeight="300" >
         <Type.LG  >Select a Token</Type.LG>
-        <StyledClose stroke="white" onClick={() => setActive(false)} />
+        <StyledClose stroke="black" onClick={() => setActive(false)} />
       </RowBetween>
-      <Line my="20px"></Line>
-      <RowBetween mt="5px" opacity="0.5">
+      {/* <Line my="20px"></Line> */}
+      <RowBetween mt="25px" opacity="0.5">
         <Type.MD >Token</Type.MD>
         <Type.MD >Balance</Type.MD>
       </RowBetween>

@@ -83,7 +83,7 @@ const SlippageTelorance = ({ slipage, setSlipage, bgColor }) => {
     }
 
     return (<Wrapper>
-        <Type.SM className="title">Slippage Telorance</Type.SM>
+        <Type.SM className="inner-title">Slippage Telorance</Type.SM>
         <div style={{ display: "inline-block" }} height="25px">
             {defaultAmounts.map(amount => {
                 return <Option key={amount} active={amount === slipage && !customActive} bgColor={bgColor} onClick={() => {

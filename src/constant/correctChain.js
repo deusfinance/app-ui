@@ -58,7 +58,7 @@ export const correctChains = [
         exact: true,
     },
     {
-        url: "/sealed",
+        url: "/sealed-swap",
         chains: [ChainMap.MAINNET],
         exact: true,
     },

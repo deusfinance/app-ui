@@ -164,6 +164,7 @@ const Navbar = () => {
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" alt="polygon" />
                     <SubNavbarContentWrap>
                         <li><NavLink to="/stake-and-yield"> STAKE & YIELD </NavLink></li>
+                        <li><NavLink to="/sealed-swap"> SEALED SWAP </NavLink></li>
                         <li><NavLink to="/vaults" exact>  {t("vaultsL")} </NavLink></li>
                         <li><NavLink to="/staking" > {t("stakingL")} </NavLink></li>
                     </SubNavbarContentWrap>
@@ -227,6 +228,9 @@ const Navbar = () => {
                             </li>
                             <li className="sub-nav-item">
                                 <NavLink to="/stake-and-yield" > STAKE &amp; YIELD </NavLink>
+                            </li>
+                            <li className="sub-nav-item">
+                                <NavLink to="/sealed-swap"> SEALED SWAP </NavLink>
                             </li>
                             <li className="sub-nav-item">
                                 <NavLink to="/vaults" > {t("vaultsL")} </NavLink>

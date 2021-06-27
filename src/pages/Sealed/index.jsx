@@ -89,7 +89,6 @@ const Sealed = () => {
     }, [tokenBalances])
 
     useEffect(() => {
-        console.log(isPreApproved, allowance.toString());
         if (isPreApproved == null) {
             if (allowance.toString() === "-1") {
                 setIsPreApproved(null) //doNothing

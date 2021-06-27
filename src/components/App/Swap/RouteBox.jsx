@@ -70,7 +70,7 @@ const RouteBox = ({ swapState, tokensMap, chainId }) => {
     const routes = currPath[fromSymbol][toSymbol]
 
     return (<Wrapper>
-        <Type.SM className="title" >Route</Type.SM>
+        <Type.SM className="inner-title" >Route</Type.SM>
         <WrapTokens>
             {routes &&
                 routes.map((route, index) => {

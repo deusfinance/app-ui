@@ -28,7 +28,7 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate, setFouceType }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
@@ -75,7 +75,10 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             alignItems="center"
             mt="5px"
         >
-            <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
+            <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+                setInputAmount(e.currentTarget.value)
+                setFouceType(type)
+            }} />
 
             {hasMax && !onMax && <ButtonMax width={"40px"}
                 style={{ color: "#000000", borderColor: "#000000" }}

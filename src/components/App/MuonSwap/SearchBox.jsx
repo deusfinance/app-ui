@@ -64,12 +64,13 @@ padding:0 20px;
     }
 `
 const TokensWrap = styled.div`
-    /* padding:25px 0; */
+    height:calc(100% - 75px);
+    overflow-y: auto;
+    overflow-x: hidden;
     margin:0 -20px;
 `
 const TokenWrap = styled(FlexCenter)`
     margin:7.5px 0;
-  
 `
 
 const SearchBox = ({ currencies, swapState, escapedType, changeToken, disbaleLoading = true, account, active, setActive }) => {

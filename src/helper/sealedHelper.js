@@ -4,7 +4,7 @@ import { getToWei } from "./formatBalance"
 import { isZero } from "../constant/number"
 import { getSealedSwapperContract } from "./contractHelpers"
 import { SEALED_ADDRESS } from "../constant/contracts"
-import { isArray, isObject } from "lodash"
+import { isObject } from "lodash"
 import BigNumber from "bignumber.js"
 
 export const getSealedAmountsOut = async (fromCurrency, amountIn, chainId, web3) => {

@@ -11,6 +11,7 @@ const errors = {
     WrongNetwork: "WRONG NETWORK",
     EMPTY: "ENTER AN AMOUNT",
     INSUFFICIENT: "INSUFFICIENT BALANCE",
+    MAX_ALLOCATION: "INSUFFICIENT ALLOCATION",
     LOADING: "LOADING...",
 }
 
@@ -39,7 +40,7 @@ width:20px;
 height:20px;
 border-radius:20px;
 background: ${({ theme, bgColor, active }) => active ? bgColor ? theme[bgColor] : theme.grad3 : theme.border1};
-color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1};
+color: ${({ theme, active }) => active ? theme.text1 : theme.text1};
 z-index: 0;
 font-size:12px;
 margin:0 -1px;
@@ -49,7 +50,7 @@ background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
 height: 2px;
 width: 50%;
 `
-const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, validNetworks = [4, 1], handleApprove, handleSwap, bgColor }) => {
+const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapState, TokensMap, isApproved, loading, validNetworks = [4, 1], handleApprove, handleSwap, allocation, bgColor }) => {
 
     const { account, chainId } = useWeb3React()
 
@@ -58,6 +59,7 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, 
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
         if (isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
+        if (isGt(amountInDollar, allocation)) return errors.MAX_ALLOCATION
         if (isNaN(amountOut)) return errors.LOADING
         return null;
     }

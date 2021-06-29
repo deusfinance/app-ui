@@ -23,7 +23,7 @@ const useTokenBalance = (tokenAddress, fastUpdate = null) => {
             setBalance(new BigNumber(walletBalance))
         }
 
-        if (account) {
+        if (account && tokenAddress) {
             fetchBalance()
         } else {
             setBalance("")

@@ -1,12 +1,11 @@
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
-import { ethers } from "ethers";
 import { swap } from './sealedHelper'
 import useWeb3 from './useWeb3'
 import BigNumber from 'bignumber.js'
 import useRefresh from "./useRefresh";
-import { useERC20 } from './useContract'
 import { getToWei } from "./formatBalance";
+import { getPrices } from "./muonHelper";
 
 export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId = 1) => {
     const { account, chainId } = useWeb3React()
@@ -39,31 +38,19 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, 
     return { onSwap: handleSwap }
 }
 
-export const useAllocation = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId = 1) => {
-    const { account, chainId } = useWeb3React()
-    const web3 = useWeb3()
-    const { fastRefresh } = useRefresh()
+export const usePrices = () => {
+    const { slowRefresh } = useRefresh()
+    const [prices, setPrices] = useState(null)
 
-    const getAllocation = useCallback(async () => {
-        try {
-            if (validChainId && chainId !== validChainId) return false
-            const tx = await swap(
-                fromCurrency,
-                toCurrency,
-                amountIn,
-                amountOut,
-                account,
-                chainId,
-                web3,
-            )
-            return tx
-        } catch (e) {
-            console.log(e);
-            return false
+    useEffect(() => {
+        const get = async () => {
+            const p = await getPrices()
+            setPrices(p)
         }
-    }, [account, chainId, validChainId, fromCurrency, toCurrency, amountIn, amountOut, web3, fastRefresh])
+        get()
+    }, [slowRefresh])
 
-    return { getAllocation: getAllocation }
+    return prices
 }
 
 

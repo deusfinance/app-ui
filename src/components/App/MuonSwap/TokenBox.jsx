@@ -1,9 +1,9 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import BigNumber from 'bignumber.js';
+import React, { useEffect, useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { InputAmount } from '.';
+import { isZero } from '../../../constant/number';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
 import useTokenBalance from '../../../helper/useTokenBalance';
 import { formatBalance3 } from '../../../utils/utils';
@@ -28,7 +28,7 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate, setFouceType }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate, setFouceType, price, allocation }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
@@ -51,7 +51,6 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             setOnMax(false)
         }
     }, [inputAmount, balance])
-
 
     return (<Wrapper>
         <Flex
@@ -80,9 +79,18 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
                 setFouceType(type)
             }} />
 
-            {hasMax && !onMax && <ButtonMax width={"40px"}
+            {hasMax && !onMax && !isZero(balance) && <ButtonMax width={"40px"}
+                active={true}
                 style={{ color: "#000000", borderColor: "#000000" }}
-                onClick={() => setInputAmount(balance)}>
+                onClick={() => {
+                    if (isZero(allocation))
+                        setInputAmount(balance)
+                    else {
+                        const balanceInDollar = new BigNumber(balance).times(price)
+                        const maxBalance = balanceInDollar.gt(allocation) ? new BigNumber(allocation).div(price).toFixed(currency?.decimals, BigNumber.ROUND_DOWN) : balance
+                        setInputAmount(maxBalance)
+                    }
+                }}>
                 MAX
             </ButtonMax>}
 

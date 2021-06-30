@@ -5,6 +5,7 @@ import DeusAMMAbi from '../config/abi/DeusAMM.json'
 import UniswapRouterAbi from '../config/abi/uniswapRouterAbi.json'
 import UniswapV2Abi from '../config/abi/UniswapV2Abi.json'
 import MultiCallAbi from '../config/abi/Multicall.json'
+import MuonPresaleAbi from '../config/abi/MuonPresale.json'
 import SealedSwapperAbi from '../config/abi/SealedSwapperAbi.json'
 import { MULTICALL_NETWORKS } from '../constant/contracts'
 import { ChainMap } from '../constant/web3'
@@ -41,4 +42,8 @@ export const getUniswapV2Contract = (address, web3) => {
 
 export const getSealedSwapperContract = (address, web3) => {
     return getContract(SealedSwapperAbi, address, web3)
+}
+
+export const getMuonContract = (web3, chainId = ChainMap.RINKEBY) => {
+    return getContract(MuonPresaleAbi, getContractAddr("muon_presale", chainId), web3)
 }

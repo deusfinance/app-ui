@@ -24,9 +24,7 @@ const useTokenBalances = (tokensMap, validChainId) => {
                     params: [account],
                 }
             })
-            // console.log(calls);
-            const result = await multicall(web3, ERC20Abi, calls)
-            // console.log(result);
+            const result = await multicall(web3, ERC20Abi, calls, chainId)//TODO chainId
             for (let i = 0; i < result.length; i++) {
                 const balance = result[i];
                 const address = calls[i].address

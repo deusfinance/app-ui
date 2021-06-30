@@ -160,8 +160,6 @@ const Muon = () => {
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, fromSymbol, debouncedAmountIn, chainId)
 
-
-
     useEffect(() => {
         if (maxAllocation && usedAmount)
             setAllocation(maxAllocation - usedAmount)

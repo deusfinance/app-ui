@@ -75,11 +75,11 @@ export const getSign = async (tokenName, amount, forAddress) => {
 }
 
 export const getAllocation = async () => {
-    return fetcher("https://app.deus.finance/muon-presale.json")
+    return fetcher("https://app.deus.finance/muon-presale.json", { cache: "no-cache" })
 }
 
 export const getPrices = () => {
-    return fetcher("https://app.deus.finance/prices.json")
+    return fetcher("https://app.deus.finance/prices.json", { cache: "no-cache" })
 }
 
 

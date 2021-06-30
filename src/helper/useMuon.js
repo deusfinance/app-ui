@@ -1,39 +1,54 @@
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
-import { swap } from './sealedHelper'
 import useWeb3 from './useWeb3'
 import BigNumber from 'bignumber.js'
 import useRefresh from "./useRefresh";
 import { getToWei } from "./formatBalance";
-import { getPrices } from "./muonHelper";
+import { deposit, getPrices, getSign, getUsedAmount } from "./muonHelper";
 
-export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId = 1) => {
-    const { account, chainId } = useWeb3React()
-    const { fastRefresh } = useRefresh()
+
+export const useUsedAmount = () => {
+    const { account } = useWeb3React()
     const web3 = useWeb3()
-    const minAmountOut = new BigNumber(amountOut).multipliedBy((100 - Number(slipage)) / 100).toFixed(toCurrency.decimals, 1)
-    let payload = []
+    const { fastRefresh } = useRefresh()
+
+    const [used, setUsed] = useState(null)
+    useEffect(() => {
+        const get = async () => {
+            const res = await getUsedAmount(account, web3)
+            setUsed(res)
+        }
+        if (account)
+            get()
+    }, [web3, account, fastRefresh])
+
+    return used
+}
+
+export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, validChainId = 1) => {
+    const { account, chainId } = useWeb3React()
+    const web3 = useWeb3()
     const handleSwap = useCallback(async () => {
         try {
             if (validChainId && chainId !== validChainId) return false
-            return false
-            const tx = await swap(
-                fromCurrency,
-                toCurrency,
-                amountIn,
-                amountOut,
-                minAmountOut,
-                payload,
+            const muonOutput = await getSign(fromSymbol, getToWei(amount, fromCurrency.decimals), account)
+            const { result } = muonOutput
+
+            const tx = await deposit(
+                fromCurrency, toCurrency, amountIn, amountOut,
+                result.data.result,
+                result.cid,
+                result.signatures,
                 account,
-                chainId,
-                web3,
+                validChainId,
+                web3
             )
             return tx
         } catch (e) {
             console.log(e);
             return false
         }
-    }, [account, chainId, validChainId, fromCurrency, toCurrency, amountIn, amountOut, minAmountOut, payload, web3])
+    }, [fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, web3])
 
     return { onSwap: handleSwap }
 }

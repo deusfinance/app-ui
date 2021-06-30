@@ -64,8 +64,6 @@ export const useSealedAllowance = (currency, contractAddress, validChainId = 1) 
             fetchAllowance()
         }
     }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh])
-
-
     return allowance
 }
 

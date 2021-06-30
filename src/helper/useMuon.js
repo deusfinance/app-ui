@@ -8,7 +8,7 @@ import { deposit, getPrices, getSign, getUsedAmount } from "./muonHelper";
 import { ToastTransaction } from "../utils/explorers";
 
 
-export const useUsedAmount = () => {
+export const useUsedAmount = (validChainId = 1) => {
     const { account } = useWeb3React()
     const web3 = useWeb3()
     const { fastRefresh } = useRefresh()
@@ -16,7 +16,8 @@ export const useUsedAmount = () => {
     const [used, setUsed] = useState(null)
     useEffect(() => {
         const get = async () => {
-            const res = await getUsedAmount(account, web3)
+            const res = await getUsedAmount(account, validChainId, web3)
+            console.log(res);
             setUsed(res)
         }
         if (account)
@@ -78,14 +79,14 @@ export const usePrices = () => {
 
 export const useAmountsOut = (from, debouncedAmountIn, type, chainId, price = 20) => {
     const getAmountsOut = useCallback(() => {
-        return new BigNumber(price).times(debouncedAmountIn).div(0.95).times(1e18)
+        return new BigNumber(price).times(debouncedAmountIn).div(0.095).times(1e18)
     }, [debouncedAmountIn, price])
     return { getAmountsOut }
 }
 
 export const useAmountsIn = (from, debouncedAmountOut, type, chainId, price = 20) => {
     const getAmountsIn = useCallback(async () => {
-        return getToWei(new BigNumber(0.95).times(debouncedAmountOut).div(price), from.decimals)
+        return getToWei(new BigNumber(0.095).times(debouncedAmountOut).div(price), from.decimals)
     }, [from, debouncedAmountOut, price])
     return { getAmountsIn }
 }

@@ -44,6 +44,6 @@ export const getSealedSwapperContract = (address, web3) => {
     return getContract(SealedSwapperAbi, address, web3)
 }
 
-export const getMuonContract = (web3, chainId = ChainMap.RINKEBY) => {
+export const getMuonContract = (web3, chainId = ChainMap.MAINNET) => {
     return getContract(MuonPresaleAbi, getContractAddr("muon_presale", chainId), web3)
 }

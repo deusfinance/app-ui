@@ -1,11 +1,15 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Announce from './Announce';
 
 const Announcements = () => {
 
     const messages = [
-
+        {
+            key: "muon-presale",
+            text: <span>EXCLUSIVE: Presale of <span style={{ color: "#fff" }}>$MUON</span> for DEUS long term supporters/stakers.<Link to="/muon-presale" style={{ color: "#0099ff", textDecoration: "underline", marginLeft: "10px" }} >{`click here ↗`}</Link>
+            </span>
+        }
     ]
 
     return (<>

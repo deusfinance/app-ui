@@ -7,7 +7,7 @@ import { Type } from '../Text';
 
 const RemainingCap = ({ remindedAmount = 0 }) => {
     return (<SmallWrapper>
-        <ExternalLink href="https://wiki.deus.finance">
+        <ExternalLink href="https://medium.com/deus-finance/exclusive-muon-presale-for-deus-community-everything-you-need-to-know-bccd76ef2b00">
             <u><Type.SM className="title">Your Presale Allocation ↗</Type.SM></u>
         </ExternalLink>
 

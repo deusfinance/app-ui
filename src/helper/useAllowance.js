@@ -25,9 +25,10 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
             }
         }
         if (account && tokenAddress) {
+            setAllowance(new BigNumber(-1))
             fetchAllowance()
         }
-    }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency.allowance, fastRefresh])
+    }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh])
 
     return allowance
 }

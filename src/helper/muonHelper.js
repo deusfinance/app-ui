@@ -1,6 +1,7 @@
 import { TransactionState } from "../utils/constant"
 import { SwapTranaction } from "../utils/explorers"
 import { getMuonContract } from "./contractHelpers"
+import { fromWei } from "./formatBalance"
 
 export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, result, cid, sigs, account, chainId, web3) => {
 
@@ -45,13 +46,16 @@ export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, res
 
 
 
-export const getUsedAmount = async (account, web3) => {
-    const muonContract = getMuonContract(web3)//TODO chainId
-    return muonContract.methods.balances(account).call()
+export const getUsedAmount = async (account, chainId, web3) => {
+    const muonContract = getMuonContract(web3, chainId)//TODO chainId
+
+    const amount = await muonContract.methods.balances(account).call()
+
+    return fromWei(amount, 18)
 }
 
 export const getSign = async (tokenName, amount, forAddress) => {
-    const baseUrl = "http://104.131.177.195:8080/v1"
+    const baseUrl = "https://node1.muon.net/v1"
     const payload = `?app=presale&method=deposit&params[token]=${tokenName}&params[amount]=${amount}&params[forAddress]=${forAddress}`
     return fetcher(baseUrl + payload)
     // const data = {

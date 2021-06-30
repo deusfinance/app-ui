@@ -25,7 +25,6 @@ import { isZero } from '../../constant/number';
 
 const Muon = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-    const contractAddress = getContractAddr("muon_presale", 4)
 
     const [invert, setInvert] = useState(false)
     const [maxAllocation, setMaxAllocation] = useState(0)
@@ -58,7 +57,7 @@ const Muon = () => {
     }
 
     const chainId = useChain(validNetworks)
-
+    const contractAddress = getContractAddr("muon_presale", chainId)
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
 
@@ -82,7 +81,7 @@ const Muon = () => {
 
     let DEA = getTokenAddr("dea", chainId).toLowerCase()
     if (chainId === 4)
-        DEA = "0xb9b5ffc3e1404e3bb7352e656316d6c5ce6940a1"
+        DEA = "0x"
 
     let fromAddress = inputCurrency ? inputCurrency : DEA
 
@@ -95,7 +94,7 @@ const Muon = () => {
     const [amountOut, setAmountOut] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const debouncedAmountOut = useDebounce(amountOut, 500);
-    const usedAmount = useUsedAmount()
+    const usedAmount = useUsedAmount(chainId)
     let allowance = useAllowance(swapState.from, contractAddress, chainId)
 
     useEffect(() => {
@@ -115,11 +114,11 @@ const Muon = () => {
         setIsApproved(null)
     }, [chainId, account]);
 
-
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-    }, [swapState.from])
+    }, [swapState.from]);
+
 
     useEffect(() => {
         setTokensMap(tokenBalances)

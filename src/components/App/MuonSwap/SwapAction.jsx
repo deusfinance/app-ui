@@ -59,7 +59,7 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapSt
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
         if (isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
-        // if (isGt(amountInDollar, allocation)) return errors.MAX_ALLOCATION
+        if (isGt(amountInDollar, allocation)) return errors.MAX_ALLOCATION
         if (isNaN(amountOut)) return errors.LOADING
         return null;
     }

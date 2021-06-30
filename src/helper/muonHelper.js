@@ -1,27 +1,24 @@
-// export const deposit = async () => {
+import { TransactionState } from "../utils/constant"
+import { SwapTranaction } from "../utils/explorers"
+import { getMuonContract } from "./contractHelpers"
 
-// }
+export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, result, cid, sigs, account, chainId, web3) => {
 
-
-export const getAmoutsOut = () => {
-
-}
-
-export const getAmoutsIn = () => {
-
-}
-
-/* export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, minAmountOut, bptPayload, account, chainId, web3) => {
-    let hash = null
-    const amountInWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
-    const minAmountOutWei = getToWei(minAmountOut, toCurrency.decimals).toFixed(0)
-
-    if (amountIn === "" || isZero(amountInWei) || amountOut === "" || isZero(minAmountOutWei)) return { status: false }
-    let sealedContract = getSealedSwapperContract(SEALED_ADDRESS, web3)
-    const swapFunc = swapFuncMaker(fromCurrency, amountInWei, minAmountOutWei, sealedContract, bptPayload)
+    const muonContract = getMuonContract(web3)//TODO chainId
     let sendArgs = { from: account }
-    if (fromCurrency.symbol === "ETH") sendArgs["value"] = amountInWei
-    return swapFunc
+    if (fromCurrency.symbol === "ETH") sendArgs["value"] = result.amount
+    let hash = null
+    return muonContract
+        .methods
+        .deposit(
+            result.token,
+            result.tokenPrice,
+            result.amount,
+            result.time,
+            result.forAddress,
+            result.addressMaxCap,
+            `0x${cid.substr(1)}`,
+            sigs.map(s => s.signature))
         .send(sendArgs)
         .once('transactionHash', (tx) => {
             hash = tx
@@ -44,13 +41,14 @@ export const getAmoutsIn = () => {
             to: { ...toCurrency, amount: amountOut },
             chainId: chainId,
         }))
-} */
-export const swapFuncMaker = (fromCurrency, amountInWei, minAmountOutWei, sealedContract, balancerMinAmountsOut) => {
-    return () => 1
 }
 
-//https://app.deus.finance/prices.json
 
+
+export const getUsedAmount = async (account, web3) => {
+    const muonContract = getMuonContract(web3)//TODO chainId
+    return muonContract.methods.balances(account).call()
+}
 
 export const getSign = async (tokenName, amount, forAddress) => {
     const baseUrl = "http://104.131.177.195:8080/v1"

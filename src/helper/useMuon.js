@@ -48,7 +48,7 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, fromSymbo
             console.log(e);
             return false
         }
-    }, [fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, web3])
+    }, [fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, account, chainId, validChainId, web3])
 
     return { onSwap: handleSwap }
 }
@@ -72,13 +72,13 @@ export const usePrices = () => {
 export const useAmountsOut = (from, debouncedAmountIn, type, chainId, price = 20) => {
     const getAmountsOut = useCallback(() => {
         return new BigNumber(price).times(debouncedAmountIn).div(0.95).times(1e18)
-    }, [from, debouncedAmountIn, chainId, price, type])
+    }, [debouncedAmountIn, price])
     return { getAmountsOut }
 }
 
 export const useAmountsIn = (from, debouncedAmountOut, type, chainId, price = 20) => {
     const getAmountsIn = useCallback(async () => {
         return getToWei(new BigNumber(0.95).times(debouncedAmountOut).div(price), from.decimals)
-    }, [from, debouncedAmountOut, chainId, price])
+    }, [from, debouncedAmountOut, price])
     return { getAmountsIn }
 }

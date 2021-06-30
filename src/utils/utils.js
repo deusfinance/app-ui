@@ -25,7 +25,7 @@ export const formatBalance3 = (balance = null, fixed = 5) => {
 
     BigNumber.config({ EXPONENTIAL_AT: 30 })
     const bigBalance = new BigNumber(balance)
-    if (new BigNumber(10).pow(fixed).lte(bigBalance)) {
+    if (new BigNumber(10).pow(fixed - 1).lte(bigBalance)) {
         return bigBalance.toFixed(0, BigNumber.ROUND_DOWN)
     }
     return bigBalance.toPrecision(fixed, BigNumber.ROUND_DOWN).replace(/\.?0+$/, "")

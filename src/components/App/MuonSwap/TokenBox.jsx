@@ -91,7 +91,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
                             estimation = 0.995
                         }
                         const balanceInDollar = new BigNumber(balance).times(price).times(estimation)
-                        const maxBalance = balanceInDollar.gt(allocation) ? new BigNumber(allocation).div(price).toFixed(currency?.decimals, BigNumber.ROUND_DOWN) : balance
+                        const maxBalance = balanceInDollar.gt(allocation) ? new BigNumber(allocation).times(estimation).div(price).toFixed(currency?.decimals, BigNumber.ROUND_DOWN) : balance
                         setInputAmount(maxBalance)
                     }
                 }}>

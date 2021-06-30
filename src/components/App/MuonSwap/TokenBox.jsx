@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { InputAmount } from '.';
-import { isZero } from '../../../constant/number';
+import { isGt, isZero } from '../../../constant/number';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
 import useTokenBalance from '../../../helper/useTokenBalance';
 import { formatBalance3 } from '../../../utils/utils';
@@ -83,10 +83,14 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
                 active={true}
                 style={{ color: "#000000", borderColor: "#000000" }}
                 onClick={() => {
-                    if (isZero(allocation))
+                    if (!isGt(allocation, 0))
                         setInputAmount(balance)
                     else {
-                        const balanceInDollar = new BigNumber(balance).times(price)
+                        let estimation = 1;
+                        if (price !== 1) {
+                            estimation = 0.995
+                        }
+                        const balanceInDollar = new BigNumber(balance).times(price).times(estimation)
                         const maxBalance = balanceInDollar.gt(allocation) ? new BigNumber(allocation).div(price).toFixed(currency?.decimals, BigNumber.ROUND_DOWN) : balance
                         setInputAmount(maxBalance)
                     }

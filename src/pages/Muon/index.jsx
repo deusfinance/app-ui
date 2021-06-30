@@ -15,7 +15,7 @@ import { usePrices, useSwap, useUsedAmount } from '../../helper/useMuon';
 import { MuonPreSaleTokens, muonToken } from '../../constant/token';
 import { useAmountsOut, useAmountsIn } from '../../helper/useMuon';
 import useChain from '../../helper/useChain';
-import { getContractAddr } from '../../utils/contracts';
+import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
@@ -38,7 +38,7 @@ const Muon = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [4]
+    const validNetworks = [1, 4]
     const prices = usePrices()
 
     let SymbolMap = {
@@ -80,8 +80,9 @@ const Muon = () => {
         inputCurrency = null
     }
 
-    // const DEA = getTokenAddr("dea", chainId).toLowerCase()
-    const DEA = "0xb9b5ffc3e1404e3bb7352e656316d6c5ce6940a1"
+    let DEA = getTokenAddr("dea", chainId).toLowerCase()
+    if (chainId === 4)
+        DEA = "0xb9b5ffc3e1404e3bb7352e656316d6c5ce6940a1"
 
     let fromAddress = inputCurrency ? inputCurrency : DEA
 
@@ -104,10 +105,16 @@ const Muon = () => {
             if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
     }, [amountIn, debouncedAmountIn, debouncedAmountOut, fouceType, amountOut]);
 
+
+    useEffect(() => {
+        document.addEventListener("keydown", escFunction, false);
+    }, [])
+
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
     }, [chainId, account]);
+
 
     useEffect(() => {
         setIsPreApproved(null)
@@ -154,7 +161,7 @@ const Muon = () => {
     }
 
     const fromSymbol = SymbolMap[swapState.from.symbol]
-    const fromPrice = prices ? prices[fromSymbol].price : 0
+    const fromPrice = prices && prices[fromSymbol] ? prices[fromSymbol].price : 0
     const { getAmountsOut } = useAmountsOut(swapState.from, debouncedAmountIn, fouceType, chainId, fromPrice)
     const { getAmountsIn } = useAmountsIn(swapState.from, debouncedAmountOut, fouceType, chainId, fromPrice)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
@@ -252,8 +259,24 @@ const Muon = () => {
         }
     }, [onSwap])
 
+    useEffect(() => {
+        const blurPop = "blured"
+        if (!activeSearchBox) {
+            document.getElementById("blur-pop").classList.remove(blurPop)
+        } else {
+            document.getElementById("blur-pop").classList.add(blurPop)
+        }
+    }, [activeSearchBox])
+
+
+    const escFunction = (event) => {
+        if (event.keyCode === 27) {
+            setActiveSearchBox(false)
+        }
+    }
 
     return (<>
+
         <SearchBox
             account={account}
             currencies={TokensMap}

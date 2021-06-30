@@ -8,6 +8,8 @@ import { StyledLogo } from '../Currency';
 import { FlexCenter } from '../Container';
 import { formatBalance3 } from '../../../utils/utils';
 import { isZero } from '../../../constant/number';
+import OutsideClickHandler from 'react-outside-click-handler';
+
 
 const fadein = keyframes`
   from {
@@ -38,7 +40,7 @@ const Wrapper = styled.div`
   transform: translateY(-50%);
   padding-bottom:20px;
   top:calc(50%);
-  z-index: 2;
+  z-index: 5;
   margin:auto;
   ${({ theme }) => theme.mediaWidth.upToSmall`
       width: 95vw;
@@ -75,35 +77,40 @@ const TokenWrap = styled(FlexCenter)`
 
 const SearchBox = ({ currencies, swapState, escapedType, changeToken, disbaleLoading = true, account, active, setActive }) => {
   return (active &&
-    <Wrapper>
-      <RowBetween fontWeight="300" >
-        <Type.LG  >Select a Token</Type.LG>
-        <StyledClose stroke="black" onClick={() => setActive(false)} />
-      </RowBetween>
-      {/* <Line my="20px"></Line> */}
-      <RowBetween mt="25px" opacity="0.5">
-        <Type.MD >Token</Type.MD>
-        <Type.MD >Balance</Type.MD>
-      </RowBetween>
-      <Line my="5px"></Line>
-      <TokensWrap>
-        {Object.keys(currencies)
-          .filter(address => currencies[address].symbol !== swapState[escapedType].symbol)
-          .map((address, id) => (
-            <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
-              <TokenWrap>
-                <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
-                <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
-              </TokenWrap>
-              {!account || disbaleLoading || currencies[address].balance || isZero(currencies[address].balance)
-                ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[address]?.balance) || 0}</Type.LG>
-                : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
-              }
-            </TokenRow>
-          ))}
+    <OutsideClickHandler
+      onOutsideClick={() => {
+        setActive(false)
+      }}>
+      <Wrapper>
+        <RowBetween fontWeight="300" >
+          <Type.LG  >Select a Token</Type.LG>
+          <StyledClose stroke="black" onClick={() => setActive(false)} />
+        </RowBetween>
+        {/* <Line my="20px"></Line> */}
+        <RowBetween mt="25px" opacity="0.5">
+          <Type.MD >Token</Type.MD>
+          <Type.MD >Balance</Type.MD>
+        </RowBetween>
+        <Line my="5px"></Line>
+        <TokensWrap>
+          {Object.keys(currencies)
+            .filter(address => currencies[address].symbol !== swapState[escapedType].symbol)
+            .map((address, id) => (
+              <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
+                <TokenWrap>
+                  <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
+                  <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
+                </TokenWrap>
+                {!account || disbaleLoading || currencies[address].balance || isZero(currencies[address].balance)
+                  ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[address]?.balance) || 0}</Type.LG>
+                  : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
+                }
+              </TokenRow>
+            ))}
 
-      </TokensWrap>
-    </Wrapper>
+        </TokensWrap>
+      </Wrapper>
+    </OutsideClickHandler>
   );
 }
 

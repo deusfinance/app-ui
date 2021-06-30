@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import useRefresh from "./useRefresh";
 import { getToWei } from "./formatBalance";
 import { deposit, getPrices, getSign, getUsedAmount } from "./muonHelper";
+import { ToastTransaction } from "../utils/explorers";
 
 
 export const useUsedAmount = () => {
@@ -31,9 +32,15 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, fromSymbo
     const handleSwap = useCallback(async () => {
         try {
             if (validChainId && chainId !== validChainId) return false
+            console.log(amount);
+            console.log(getToWei(amount, fromCurrency.decimals).toFixed(0));
             const muonOutput = await getSign(fromSymbol, getToWei(amount, fromCurrency.decimals), account)
+            if (!muonOutput.success) {
+                ToastTransaction("warn", "MUONIZE FAILED", muonOutput.error, { autoClose: true })
+                return
+            }
             const { result } = muonOutput
-
+            console.log(result);
             const tx = await deposit(
                 fromCurrency, toCurrency, amountIn, amountOut,
                 result.data.result,

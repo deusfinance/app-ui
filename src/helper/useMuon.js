@@ -17,7 +17,6 @@ export const useUsedAmount = (validChainId = 1) => {
     useEffect(() => {
         const get = async () => {
             const res = await getUsedAmount(account, validChainId, web3)
-            console.log(res);
             setUsed(res)
         }
         if (account)

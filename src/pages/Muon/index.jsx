@@ -1,78 +1,113 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
-import { MainWrapper, SwapWrapper, SwapTitle } from '../../components/App/Swap';
-import TokenBox from '../../components/App/Swap/TokenBox';
-import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
-import SwapAction from '../../components/App/Swap/SwapAction';
-import SearchBox from '../../components/App/Swap/SearchBox';
-import RateBox from '../../components/App/Swap/RateBox';
+import { MainWrapper, SwapWrapper } from '../../components/App/MuonSwap';
+import TokenBox from '../../components/App/MuonSwap/TokenBox';
+import SwapAction from '../../components/App/MuonSwap/SwapAction';
+import SearchBox from '../../components/App/MuonSwap/SearchBox';
+import RateBox from '../../components/App/MuonSwap/RateBox';
 import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
 import { useApprove } from '../../helper/useApprove';
-import { useSealedAllowance } from '../../helper/useSealed';
-import { useSwap } from '../../helper/useSealed';
-import { SealedTokens, sdeaToken } from '../../constant/token';
-import { useSealedGetAmountsOut } from '../../helper/useSealed';
+import { useAllowance } from '../../helper/useAllowance';
+import { usePrices, useSwap, useUsedAmount } from '../../helper/useMuon';
+import { MuonPreSaleTokens, muonToken } from '../../constant/token';
+import { useAmountsOut, useAmountsIn } from '../../helper/useMuon';
 import useChain from '../../helper/useChain';
-import { getTokenAddr } from '../../utils/contracts';
+import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
-import { SEALED_ADDRESS } from '../../constant/contracts';
+import RemainingCap from '../../components/App/MuonSwap/RemainingCap';
+import { getAllocation, } from '../../helper/muonHelper';
+import { isZero } from '../../constant/number';
 
-const Sealed = () => {
+const Muon = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-    const [bptPayload, setBptPayload] = useState([])
+
     const [invert, setInvert] = useState(false)
+    const [maxAllocation, setMaxAllocation] = useState(0)
+    const [allocation, setAllocation] = useState(0)
+
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [slipage, setSlipage] = useState(0.5)
+    const [fouceType, setFouceType] = useState("from")
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
     const validNetworks = [1, 4]
-    const chainId = useChain(validNetworks)
+    const prices = usePrices()
 
+    let SymbolMap = {
+        "DEA": "dea",
+        "DEUS": "deus",
+        "ETH": "eth",
+        "USDC": "usdc",
+        "DAI": "dai",
+        "wBTC": "wbtc",
+        "sDEA": "sdea",
+        "sDEUS": "sdeus",
+        "sUniDE": "sUniDE",
+        "sUniDD": "sUniDD",
+        "sUniDU": "sUniDU",
+        "BPT": "bpt",
+        "TEST": "test",
+    }
+
+    const chainId = useChain(validNetworks)
+    const contractAddress = getContractAddr("muon_presale", chainId)
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
 
     if (inputCurrency) inputCurrency = inputCurrency.toLowerCase()
 
-
-    const tokens = useMemo(() => SealedTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
+    const tokens = useMemo(() => MuonPreSaleTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = { ...token, address: token.address.toLowerCase() }, map), {})
     ), [tokens])
 
+
+
     const tokenBalances = useTokenBalances(tokensMap, chainId)
 
-    const [TokensMap, setTokensMap] = useState(tokenBalances)
+    const [TokensMap, setTokensMap] = useState(tokensMap)
 
     if (inputCurrency && !TokensMap[inputCurrency]) {
         inputCurrency = null
     }
 
-    // const sdeaContract = getTokenAddr("sand_dea", chainId).toLowerCase()
-    const sUniDD = getTokenAddr("sand_deus_dea", chainId).toLowerCase()
+    let DEA = getTokenAddr("dea", chainId).toLowerCase()
+    if (chainId === 4)
+        DEA = "0x"
 
-    let fromAddress = inputCurrency ? inputCurrency : sUniDD
+    let fromAddress = inputCurrency ? inputCurrency : DEA
 
     const [swapState, setSwapState] = useState({
         from: { ...TokensMap[fromAddress] },
-        to: sdeaToken,
+        to: muonToken,
     })
 
     const [amountIn, setAmountIn] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
-    let allowance = useSealedAllowance(swapState.from, SEALED_ADDRESS, chainId)
+    const debouncedAmountIn = useDebounce(amountIn, 500);
+    const debouncedAmountOut = useDebounce(amountOut, 500);
+    const usedAmount = useUsedAmount(chainId)
+    let allowance = useAllowance(swapState.from, contractAddress, chainId)
+
     useEffect(() => {
-        if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
-    }, [amountIn, debouncedAmountIn]);
+        if (fouceType === "from") {
+            if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
+        } else
+            if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
+    }, [amountIn, debouncedAmountIn, debouncedAmountOut, fouceType, amountOut]);
+
+
+    useEffect(() => {
+        document.addEventListener("keydown", escFunction, false);
+    }, [])
 
     useEffect(() => {
         setIsPreApproved(null)
@@ -82,7 +117,8 @@ const Sealed = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-    }, [swapState.from])
+    }, [swapState.from]);
+
 
     useEffect(() => {
         setTokensMap(tokenBalances)
@@ -117,30 +153,72 @@ const Sealed = () => {
         setActiveSearchBox(false)
         setAmountIn("")
         const vsType = getSwapVsType(type)
-
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
         }
         setSwapState({ ...swapState, [type]: token })
     }
 
-    const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, debouncedAmountIn, chainId)
-    const { onApprove } = useApprove(swapState.from, SEALED_ADDRESS, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId, bptPayload)
+    const fromSymbol = SymbolMap[swapState.from.symbol]
+    const fromPrice = prices && prices[fromSymbol] ? prices[fromSymbol].price : 0
+    const { getAmountsOut } = useAmountsOut(swapState.from, debouncedAmountIn, fouceType, chainId, fromPrice)
+    const { getAmountsIn } = useAmountsIn(swapState.from, debouncedAmountOut, fouceType, chainId, fromPrice)
+    const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, fromSymbol, debouncedAmountIn, chainId)
+
+    useEffect(() => {
+        if (maxAllocation && usedAmount)
+            setAllocation(maxAllocation - usedAmount)
+    }, [usedAmount, maxAllocation])
+
+
+    useEffect(() => {
+        const gets = async () => {
+            try {
+                const allocations = await getAllocation()
+                const userAllocationAmount = allocations[account]
+                if (userAllocationAmount) {
+                    setMaxAllocation(userAllocationAmount)
+                } else {
+                    setMaxAllocation(0)
+                }
+                // const key = Object.keys(allocations).find(key => key.toLowerCase() === defaultWallet.toLowerCase())
+                // if (key)
+                //     setMaxAllocation(allocations[key])
+                // else
+                //     setAllocation(0)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        if (account) {
+            gets()
+        }
+    }, [account])
 
     useEffect(() => {
         const get = async () => {
-            const result = await getAmountsOut()
-            if (result.payload) {
-                setBptPayload(result.payload)
-            }
-            if (amountIn === "") setAmountOut("")
-            else setAmountOut(fromWei(result.amountOut, swapState.to.decimals))
+            const result = getAmountsOut()
+            if (!result) return
+            if (amountIn === "" || isZero(amountIn)) setAmountOut("")
+            else setAmountOut(fromWei(result, swapState.to.decimals))
         }
-        get()
-
+        if (getAmountsOut && fouceType === "from")
+            get()
         //eslint-disable-next-line
     }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
+
+    useEffect(() => {
+        const get = async () => {
+            const result = await getAmountsIn()
+            if (!result) return
+            if (amountOut === "" || isZero(amountOut)) setAmountIn("")
+            else setAmountIn(fromWei(result, swapState.from.decimals))
+        }
+        if (getAmountsIn && fouceType === "to")
+            get()
+        //eslint-disable-next-line
+    }, [getAmountsIn, amountOut])//replace multiple useState variables with useReducer
 
 
 
@@ -164,6 +242,9 @@ const Sealed = () => {
 
     const handleSwap = useCallback(async () => {
         try {
+            // const muonNode = await handleGetSign(debouncedAmountIn)
+            // console.log(muonNode);
+
             const tx = await onSwap()
             if (tx.status) {
                 console.log("swap did");
@@ -177,7 +258,24 @@ const Sealed = () => {
         }
     }, [onSwap])
 
+    useEffect(() => {
+        const blurPop = "blured"
+        if (!activeSearchBox) {
+            document.getElementById("blur-pop").classList.remove(blurPop)
+        } else {
+            document.getElementById("blur-pop").classList.add(blurPop)
+        }
+    }, [activeSearchBox])
+
+
+    const escFunction = (event) => {
+        if (event.keyCode === 27) {
+            setActiveSearchBox(false)
+        }
+    }
+
     return (<>
+
         <SearchBox
             account={account}
             currencies={TokensMap}
@@ -187,9 +285,10 @@ const Sealed = () => {
             disbaleLoading={false}
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
-
         <MainWrapper>
-            <SwapTitle active={false} bgColor="grad4" m="auto">SEALED SWAP</SwapTitle>
+
+            <Image src="/img/swap/deus-muon.svg" my="15px" />
+
             <SwapWrapper>
                 <TokenBox
                     type="from"
@@ -199,10 +298,13 @@ const Sealed = () => {
                     setActive={showSearchBox}
                     currency={swapState.from}
                     TokensMap={TokensMap}
+                    setFouceType={setFouceType}
+                    allocation={allocation}
+                    price={fromPrice}
                     fastUpdate={fastUpdate}
                 />
 
-                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+                <Image src="/img/swap/single-arrow-black.svg" size="20px" my="15px" />
 
                 <TokenBox
                     type="to"
@@ -210,6 +312,7 @@ const Sealed = () => {
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
                     setActive={null}
+                    setFouceType={setFouceType}
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}
@@ -218,9 +321,9 @@ const Sealed = () => {
                 <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
                 <SwapAction
-                    bgColor="grad4"
+                    bgColor="bg_blue"
                     isPreApproved={isPreApproved}
-                    validNetworks={[1]}
+                    validNetworks={[1, 4]}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}
@@ -228,19 +331,16 @@ const Sealed = () => {
                     TokensMap={TokensMap}
                     swapState={swapState}
                     amountIn={amountIn}
+                    amountInDollar={amountIn * fromPrice}
+                    allocation={allocation}
                     amountOut={amountOut}
                 />
 
             </SwapWrapper>
-
-            {/* <PriceImpact
-                minAmountOut={minAmountOut}
-                amountIn={debouncedAmountIn}
-                amountOut={amountOut}
-            /> */}
+            <RemainingCap remindedAmount={allocation} />
 
 
-            <SlippageTelorance slipage={slipage} setSlipage={setSlipage} bgColor="grad4" />
+
         </MainWrapper>
         {/* <div className='tut-left-wrap'>
             <SelectedNetworks />
@@ -248,4 +348,4 @@ const Sealed = () => {
     </>);
 }
 
-export default Sealed;
+export default Muon;

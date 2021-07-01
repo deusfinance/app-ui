@@ -17,6 +17,9 @@ const useTokenBalances = (tokensMap, validChainId) => {
     useEffect(() => {
 
         const fetchBalances = async () => {
+
+            if (validChainId !== chainId) return
+
             const calls = Object.keys(tokensMap).filter((address) => isAddress(address)).map((address) => {
                 return {
                     address: address,
@@ -24,9 +27,8 @@ const useTokenBalances = (tokensMap, validChainId) => {
                     params: [account],
                 }
             })
-            // console.log(calls);
-            const result = await multicall(web3, ERC20Abi, calls)
-            // console.log(result);
+
+            const result = await multicall(web3, ERC20Abi, calls, validChainId)//TODO chainId
             for (let i = 0; i < result.length; i++) {
                 const balance = result[i];
                 const address = calls[i].address
@@ -43,10 +45,11 @@ const useTokenBalances = (tokensMap, validChainId) => {
         if (account) {
             fetchBalances()
         }
-    }, [account, tokensMap, chainId, validChainId, fastRefresh, web3])
+    }, [account, tokensMap, validChainId, chainId, fastRefresh, web3])
 
     return balances
 }
+
 
 
 export default useTokenBalances

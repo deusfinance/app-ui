@@ -223,8 +223,7 @@ export const SubNavbarContentWrap = styled.ul`
             }
         }
         .active{
-            color:#ffffff;
-            background:#0a0a0acf;
+            color :rgb(0, 153, 255);
         }
     }
     position: absolute;

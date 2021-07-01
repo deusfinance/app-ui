@@ -160,9 +160,10 @@ const Navbar = () => {
                     </SubNavbarContentWrap>
                 </li>
                 <li>
-                    <NavLink to="/stake-and-yield"> {t("staking")}</NavLink>
+                    <NavLink to="/stake-and-yield"> {t("app")}</NavLink>
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" alt="polygon" />
                     <SubNavbarContentWrap>
+                        <li><NavLink to="/muon-presale"> MUON PRESALE </NavLink></li>
                         <li><NavLink to="/stake-and-yield"> STAKE & YIELD </NavLink></li>
                         <li><NavLink to="/sealed-swap"> SEALED SWAP </NavLink></li>
                         <li><NavLink to="/vaults" exact>  {t("vaultsL")} </NavLink></li>
@@ -225,6 +226,9 @@ const Navbar = () => {
                         <ul className="sub-nav" onClick={() => setOpen(false)}>
                             <li className="sub-nav-item">
                                 <NavLink to="/swap" >{t("swap")} </NavLink>
+                            </li>
+                            <li className="sub-nav-item">
+                                <NavLink to="/muon-presale"> MUON PRESALE </NavLink>
                             </li>
                             <li className="sub-nav-item">
                                 <NavLink to="/stake-and-yield" > STAKE &amp; YIELD </NavLink>

@@ -15,6 +15,7 @@ const Deus = React.lazy(() => import('./components/Deus'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const Sealed = React.lazy(() => import('./pages/Sealed'))
+const Muon = React.lazy(() => import('./pages/Muon'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
 const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
@@ -75,6 +76,7 @@ function App() {
                 {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/swap2" component={Swap2} />
                 <Route exact path="/sealed-swap" component={Sealed} />
+                <Route exact path="/muon-presale" component={Muon} />
                 <Redirect exact from="/" to="/swap" />
                 <Route path="/" component={Deus} />
                 <Redirect to="not-found" />

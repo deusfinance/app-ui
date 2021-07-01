@@ -3,7 +3,8 @@ import { useWeb3React } from '@web3-react/core'
 
 const useChain = (defaultChains = []) => {
     const { chainId } = useWeb3React()
-    const [validChain, setValidChain] = useState(defaultChains[0])
+    const isChain = defaultChains.indexOf(chainId) !== -1
+    const [validChain, setValidChain] = useState(isChain ? chainId : defaultChains[0])
     useEffect(() => {
         if (!chainId) setValidChain(defaultChains[0])
         else {

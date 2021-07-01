@@ -10,7 +10,7 @@ import { getSealedAmountsOut } from './sealedHelper'
 import { isZero, ZERO } from '../constant/number'
 
 
-export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId, bptPayload) => {
+export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId = 1, bptPayload) => {
     const { account, chainId } = useWeb3React()
 
     const web3 = useWeb3()
@@ -43,7 +43,7 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, 
     return { onSwap: handleSwap }
 }
 
-export const useSealedAllowance = (currency, contractAddress, validChainId) => {
+export const useSealedAllowance = (currency, contractAddress, validChainId = 1) => {
     const [allowance, setAllowance] = useState(new BigNumber(-1))
     const { account, chainId } = useWeb3React()
     const { fastRefresh } = useRefresh()
@@ -64,12 +64,10 @@ export const useSealedAllowance = (currency, contractAddress, validChainId) => {
             fetchAllowance()
         }
     }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh])
-
-
     return allowance
 }
 
-export const useSealedGetAmountsOut = (fromCurrency, amountIn, validChainId) => {
+export const useSealedGetAmountsOut = (fromCurrency, amountIn, validChainId = 1) => {
     const { chainId } = useWeb3React()
     const web3 = useWeb3()
     const { fastRefresh } = useRefresh()

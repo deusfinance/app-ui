@@ -76,14 +76,14 @@ export const usePrices = () => {
 }
 
 
-export const useAmountsOut = (from, debouncedAmountIn, type, chainId, price = 20) => {
+export const useAmountsOut = (debouncedAmountIn, price = 0) => {
     const getAmountsOut = useCallback(() => {
         return new BigNumber(price).times(debouncedAmountIn).div(0.095).times(1e18)
     }, [debouncedAmountIn, price])
     return { getAmountsOut }
 }
 
-export const useAmountsIn = (from, debouncedAmountOut, type, chainId, price = 20) => {
+export const useAmountsIn = (from, debouncedAmountOut, price = 100000000) => {
     const getAmountsIn = useCallback(async () => {
         return getToWei(new BigNumber(0.095).times(debouncedAmountOut).div(price), from.decimals)
     }, [from, debouncedAmountOut, price])

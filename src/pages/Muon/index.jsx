@@ -20,16 +20,14 @@ import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import RemainingCap from '../../components/App/MuonSwap/RemainingCap';
-import { getAllocation, } from '../../helper/muonHelper';
+import { getAllocation, SymbolMap, } from '../../helper/muonHelper';
 import { isZero } from '../../constant/number';
 
 const Muon = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-
     const [invert, setInvert] = useState(false)
     const [maxAllocation, setMaxAllocation] = useState(0)
     const [allocation, setAllocation] = useState(0)
-
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
     const [fouceType, setFouceType] = useState("from")
@@ -39,23 +37,6 @@ const Muon = () => {
     const { account } = useWeb3React()
     const validNetworks = [1, 4]
     const prices = usePrices()
-
-    let SymbolMap = {
-        "DEA": "dea",
-        "DEUS": "deus",
-        "ETH": "eth",
-        "USDC": "usdc",
-        "DAI": "dai",
-        "wBTC": "wbtc",
-        "sDEA": "sdea",
-        "sDEUS": "sdeus",
-        "sUniDE": "sUniDE",
-        "sUniDD": "sUniDD",
-        "sUniDU": "sUniDU",
-        "BPT": "bpt",
-        "TEST": "test",
-    }
-
     const chainId = useChain(validNetworks)
     const contractAddress = getContractAddr("muon_presale", chainId)
     const search = useLocation().search;
@@ -69,10 +50,7 @@ const Muon = () => {
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = { ...token, address: token.address.toLowerCase() }, map), {})
     ), [tokens])
 
-
-
     const tokenBalances = useTokenBalances(tokensMap, chainId)
-
     const [TokensMap, setTokensMap] = useState(tokensMap)
 
     if (inputCurrency && !TokensMap[inputCurrency]) {
@@ -104,7 +82,6 @@ const Muon = () => {
             if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
     }, [amountIn, debouncedAmountIn, debouncedAmountOut, fouceType, amountOut]);
 
-
     useEffect(() => {
         document.addEventListener("keydown", escFunction, false);
     }, [])
@@ -112,13 +89,7 @@ const Muon = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-    }, [chainId, account]);
-
-    useEffect(() => {
-        setIsPreApproved(null)
-        setIsApproved(null)
-    }, [swapState.from]);
-
+    }, [chainId, account, swapState.from]);
 
     useEffect(() => {
         setTokensMap(tokenBalances)
@@ -161,8 +132,8 @@ const Muon = () => {
 
     const fromSymbol = SymbolMap[swapState.from.symbol]
     const fromPrice = prices && prices[fromSymbol] ? prices[fromSymbol].price : 0
-    const { getAmountsOut } = useAmountsOut(swapState.from, debouncedAmountIn, fouceType, chainId, fromPrice)
-    const { getAmountsIn } = useAmountsIn(swapState.from, debouncedAmountOut, fouceType, chainId, fromPrice)
+    const { getAmountsOut } = useAmountsOut(debouncedAmountIn, fromPrice)
+    const { getAmountsIn } = useAmountsIn(swapState.from, debouncedAmountOut, fromPrice)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, fromSymbol, debouncedAmountIn, chainId)
 
@@ -182,11 +153,6 @@ const Muon = () => {
                 } else {
                     setMaxAllocation(0)
                 }
-                // const key = Object.keys(allocations).find(key => key.toLowerCase() === defaultWallet.toLowerCase())
-                // if (key)
-                //     setMaxAllocation(allocations[key])
-                // else
-                //     setAllocation(0)
             } catch (error) {
                 console.log(error);
             }
@@ -205,8 +171,7 @@ const Muon = () => {
         }
         if (getAmountsOut && fouceType === "from")
             get()
-        //eslint-disable-next-line
-    }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
+    }, [getAmountsOut, amountIn, fouceType, swapState.to])//replace multiple useState variables with useReducer
 
     useEffect(() => {
         const get = async () => {
@@ -242,9 +207,6 @@ const Muon = () => {
 
     const handleSwap = useCallback(async () => {
         try {
-            // const muonNode = await handleGetSign(debouncedAmountIn)
-            // console.log(muonNode);
-
             const tx = await onSwap()
             if (tx.status) {
                 console.log("swap did");

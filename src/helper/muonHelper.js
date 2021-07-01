@@ -44,6 +44,21 @@ export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, res
         }))
 }
 
+export const SymbolMap = {
+    "DEA": "dea",
+    "DEUS": "deus",
+    "ETH": "eth",
+    "USDC": "usdc",
+    "DAI": "dai",
+    "wBTC": "wbtc",
+    "sDEA": "sdea",
+    "sDEUS": "sdeus",
+    "sUniDE": "sUniDE",
+    "sUniDD": "sUniDD",
+    "sUniDU": "sUniDU",
+    "BPT": "bpt",
+    "TEST": "test",
+}
 
 
 export const getUsedAmount = async (account, chainId, web3) => {

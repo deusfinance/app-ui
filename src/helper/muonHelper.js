@@ -58,20 +58,6 @@ export const getSign = async (tokenName, amount, forAddress) => {
     const baseUrl = "https://node1.muon.net/v1"
     const payload = `?app=presale&method=deposit&params[token]=${tokenName}&params[amount]=${amount}&params[forAddress]=${forAddress}`
     return fetcher(baseUrl + payload)
-    // const data = {
-    //     "app": "presale",
-    //     "method": "deposit",
-    //     "params": {
-    //         "token": tokenName,
-    //         "amount": amount,
-    //         "forAddress": forAddress
-    //     }
-    // }
-
-    // return fetcher(baseUrl, {
-    //     method: 'POST',
-    //     body: JSON.stringify(data)
-    // })
 }
 
 export const getAllocation = async () => {

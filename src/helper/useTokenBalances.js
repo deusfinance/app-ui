@@ -45,7 +45,7 @@ const useTokenBalances = (tokensMap, validChainId) => {
         if (account) {
             fetchBalances()
         }
-    }, [account, tokensMap, validChainId, fastRefresh, web3])
+    }, [account, tokensMap, validChainId, chainId, fastRefresh, web3])
 
     return balances
 }

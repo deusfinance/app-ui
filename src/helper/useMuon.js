@@ -22,7 +22,7 @@ export const useUsedAmount = (validChainId = 1) => {
         }
         if (account)
             get()
-    }, [web3, account, fastRefresh])
+    }, [web3, account, validChainId, fastRefresh])
 
     return used
 }

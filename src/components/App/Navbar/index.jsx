@@ -197,6 +197,7 @@ export const NavbarContentWrap = styled.ul`
 
     }
 `
+
 export const SubNavbarContentWrap = styled.ul`
     display:  none;
     padding:12px 0 12px 0px;
@@ -205,7 +206,6 @@ export const SubNavbarContentWrap = styled.ul`
     list-style: none;
     width: 200px;
     >li{
- 
         display:block;
         white-space: nowrap;
         color:${({ theme }) => theme.text1_2};
@@ -217,9 +217,8 @@ export const SubNavbarContentWrap = styled.ul`
             padding-left: 18px;
         }
         &:hover{
-            background:#0a0a0acf;
             a{
-                color:#ffffff;
+            color :rgb(0, 153, 255);
             }
         }
         .active{

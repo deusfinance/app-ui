@@ -36,7 +36,7 @@ const ExitModal = (props) => {
       onRequestClose={hide}
       shouldCloseOnOverlayClick={true}
     >
-      <div className="close" onClick={hide}>
+      <div className="close-modal" onClick={hide}>
         &times;
       </div>
       <div className="modal-content">

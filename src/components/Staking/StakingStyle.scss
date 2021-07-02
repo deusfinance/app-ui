@@ -1,92 +1,108 @@
+.opacity-0 {
+    opacity: 0;
+}
+.p-50 {
+    padding: 50px;
+}
+
+.flex-space-evenly {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+.flex-align-center {
+    display: flex;
+    align-items: center;
+}
+.mb-15 {
+    margin-bottom: 15px;
+}
+.white-color {
+    color: white !important;
+}
+.opacity-5 {
+    opacity: 0.5;
+}
+.opacity-25 {
+    opacity: 0.25;
+}
+.opacity-75 {
+    opacity: 0.75;
+}
+.float-right {
+    float: right;
+}
+.width-402 {
+    width: 402px !important;
+}
+.width-300 {
+    width: 300px !important;
+}
+.width-202 {
+    width: 202px !important;
+}
+.width-415 {
+    max-width: 415px !important;
+    width: 100%;
+}
+
+.mt-4 {
+    margin-top: 4px !important;
+}
+.mt-2 {
+    margin-top: 2px;
+}
+
+.mt-20 {
+    margin-top: 20px !important;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.font-sm {
+    font-size: 12.5px;
+}
+
+.font-xs {
+    font-size: 10px;
+}
+
+.border-radius-6 {
+    border-radius: 6px !important;
+}
+.text-center {
+    text-align: center;
+}
+
+.close-modal {
+    color: white;
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .container-staking {
     font-family: "Monument Grotesk Semi";
     padding: 5px;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
-    .opacity-0 {
-        opacity: 0;
-    }
-    .p-50 {
-        padding: 50px;
-    }
-    .width-unset > ul.tab {
-        width: unset;
-    }
-    .flex-space-evenly {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-    }
-    .flex-between {
-        display: flex;
-        justify-content: space-between;
-    }
-    .flex-align-center {
-        display: flex;
-        align-items: center;
-    }
-    .mb-15 {
-        margin-bottom: 15px;
-    }
-    .white-color {
-        color: white !important;
-    }
-    .opacity-5 {
-        opacity: 0.5;
-    }
-    .opacity-25 {
-        opacity: 0.25;
-    }
-    .opacity-75 {
-        opacity: 0.75;
-    }
-    .float-right {
-        float: right;
-    }
-    .width-402 {
-        width: 402px !important;
-    }
-    .width-300 {
-        width: 300px !important;
-    }
-    .width-202 {
-        width: 202px !important;
-    }
-    .width-415 {
-        max-width: 415px !important;
-        width: 100%;
-    }
 
-    .mt-4 {
-        margin-top: 4px !important;
-    }
-    .mt-2 {
-        margin-top: 2px;
-    }
-
-    .mt-20 {
-        margin-top: 20px !important;
-    }
-
-    .mb-20 {
-        margin-bottom: 20px;
-    }
-
-    .font-sm {
-        font-size: 12.5px;
-    }
-
-    .font-xs {
-        font-size: 10px;
-    }
-
-    .border-radius-6 {
-        border-radius: 6px !important;
-    }
-    .text-center {
-        text-align: center;
-    }
     /* TVL Box */
     /* .tvl-container {
   position: absolute;
@@ -311,7 +327,9 @@
     .expand-btn-open {
         transform: rotate(180deg);
     }
-
+    .width-unset > ul.tab {
+        width: unset;
+    }
     /* .stake-btn {
   width: 150px;
   height: 35px;
@@ -760,53 +778,7 @@
     .deposit-container > * {
         margin-bottom: 10px;
     }
-    .btn-yes {
-        height: 40px;
-        background: rgba(0, 209, 108, 0.2);
-        border: 1px solid #00d16c;
-        border-radius: 6px;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 18px;
-        line-height: 24px;
-        /* identical to box height */
-        max-width: 200px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        justify-content: center;
 
-        color: #00d16c;
-    }
-    .desc-btn-yes {
-        color: #00d16c !important;
-        opacity: 1 !important;
-    }
-    .desc-btn-no {
-        color: #ff5555 !important;
-        opacity: 1 !important;
-    }
-    .btn-no {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 18px;
-        line-height: 24px;
-        /* identical to box height */
-        max-width: 200px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        justify-content: center;
-
-        color: #ff5555;
-        height: 40px;
-        border: 1px solid #ff5555;
-
-        background: rgba(255, 85, 85, 0.2);
-        border-radius: 6px;
-    }
     .vault-exit {
         background: #0d0d0d;
         border: 1px solid rgba(0, 209, 108, 0.5);
@@ -1218,16 +1190,67 @@
     .tooltip:hover .tooltip-text {
         visibility: visible;
     }
-    .modal-content {
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: "Monument Grotesk";
+    font-weight: 300;
+    align-items: center;
+    text-align: justify;
+    flex-direction: column;
+    position: relative;
+
+    .btn-yes {
+        height: 40px;
+        background: rgba(0, 209, 108, 0.2);
+        border: 1px solid #00d16c;
+        border-radius: 6px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 24px;
+        /* identical to box height */
+        max-width: 200px;
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        font-family: "Monument Grotesk";
-        font-weight: 300;
         align-items: center;
-        text-align: justify;
-        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+
+        color: #00d16c;
     }
+    .desc-btn-yes {
+        color: #00d16c !important;
+        opacity: 1 !important;
+    }
+    .desc-btn-no {
+        color: #ff5555 !important;
+        opacity: 1 !important;
+    }
+    .btn-no {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 24px;
+        /* identical to box height */
+        max-width: 200px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+
+        color: #ff5555;
+        height: 40px;
+        border: 1px solid #ff5555;
+
+        background: rgba(255, 85, 85, 0.2);
+        border-radius: 6px;
+    }
+
     .exit-modal-title {
         font-family: "Monument Grotesk";
         font-style: normal;
@@ -1239,21 +1262,7 @@
         color: #ffffff;
         margin-bottom: 30px;
     }
-    .close {
-        color: white;
-        position: absolute;
-        top: 3px;
-        right: 10px;
-        font-size: 28px;
-        font-weight: bold;
-    }
 
-    .close:hover,
-    .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
     .exit-modal-content {
         max-width: 435px;
         width: 100%;

@@ -103,45 +103,6 @@
     width: 100%;
     margin: 0 auto;
 
-    /* TVL Box */
-    /* .tvl-container {
-  position: absolute;
-  width: 400px;
-  height: 35px;
-  right: 3px;
-  top: 80px;
-
-  background: linear-gradient(
-    135deg,
-    rgba(91, 204, 189, 0.14902) 0%,
-    rgba(97, 192, 191, 0.14902) 33.33%,
-    rgba(85, 188, 200, 0.14902) 74.49%,
-    rgba(105, 207, 184, 0.14902) 100%
-  );
-  border: 1px solid rgba(97, 192, 191, 0.25);
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.tvl-container div {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-
-  text-align: center;
-
-  color: #ffffff;
-}
-.tvl-child-border {
-  width: 0px;
-  height: 35px;
-
-  border: 1px solid #234645;
-} */
-
     /* Description */
 
     .staking-desc {
@@ -160,7 +121,7 @@
     .staking-desc .explainer {
         background: linear-gradient(90deg, #0779e4 -0.01%, #1dd3bd 93.42%);
         font-size: 14px;
-        -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
@@ -178,11 +139,8 @@
         font-weight: normal;
         font-size: 30px;
         line-height: 42px;
-        /* identical to box height */
-
         text-align: center;
         text-transform: uppercase;
-
         color: #ffffff;
     }
     .uppercase {
@@ -542,7 +500,7 @@
         bottom: 0;
         border-radius: 6px;
         background: linear-gradient(90deg, #08a4f5 -0.01%, #2bede3 93.42%);
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: destination-out;
         mask-composite: exclude;
     }
@@ -586,7 +544,7 @@
         bottom: 0;
         border-radius: 0px 6px 6px 0px;
         background: linear-gradient(90deg, #08a4f5 -0.01%, #2bede3 93.42%);
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: destination-out;
         mask-composite: exclude;
     }
@@ -601,7 +559,7 @@
         bottom: 0;
         border-radius: 6px;
         background: linear-gradient(90deg, #08a4f5 -0.01%, #2bede3 93.42%);
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: destination-out;
         mask-composite: exclude;
     }
@@ -623,8 +581,8 @@
         bottom: 0;
         border-radius: 6px 0px 0px 6px;
         background: linear-gradient(90deg, #08a4f5 -0.01%, #2bede3 93.42%);
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: destination-out;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: destination-out;
         mask-composite: exclude;
     }
     .exit-valuet {

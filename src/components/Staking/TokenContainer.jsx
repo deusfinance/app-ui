@@ -130,7 +130,6 @@ const TokenContainer = (props) => {
         const EXIT_PERIOD = 75 * 24 * 3600
         let result = await StakeAndYieldContract.methods.userInfo(owner).call()
         let users = await StakeAndYieldContract.methods.users(owner).call()
-        // newContract.rewardPerToken(2) * user.balance
         let rewardPerToken = Number(web3.utils.fromWei(result.numbers[8], 'ether'))
         if (Number(result.numbers[1]) === 0) {
           stillOld = true
@@ -143,7 +142,6 @@ const TokenContainer = (props) => {
           users = await StakeAndYieldOldContract.methods.users(owner).call()
         }
         let { numbers, exit, stakedTokenAddress } = result
-        // const users = await StakeAndYieldContract.methods.users(owner).call()
         const { exitStartTime } = users
 
         let fullyUnlock = Number(exitStartTime) + EXIT_PERIOD
@@ -178,11 +176,12 @@ const TokenContainer = (props) => {
         let earned = Number(web3.utils.fromWei(numbers[9], 'ether'))
         let exitBalance = 0
         const currtimestamp = Math.floor(Date.now() / 1000)
+        const startAutoEncreaseTime = currtimestamp - 1625258000
+        console.log(startAutoEncreaseTime);
 
         if (stillOld) {
           const portion = (currtimestamp - exitStartTime) / EXIT_PERIOD
           if (stakeType !== '1') {
-            // web3.utils.toBN(balance).mul(web3.utils.toBN(rewardPerToken)).toString(10)
             claim = new BigNumber(balance).times(rewardPerToken).toFixed(5)
             earned = claim
           }

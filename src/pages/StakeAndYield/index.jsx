@@ -1,12 +1,10 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-
-import '../../components/Staking/StakingStyle.scss'
-
 import ToggleButtons from '../../components/Staking/ToggleButtons'
 import TokenContainer from '../../components/Staking/TokenContainer'
 import tokens from '../../components/Staking/Data'
 import { ExternalLink } from '../../components/App/Link'
+import '../../components/Staking/StakingStyle.scss'
 
 const Staking = () => {
   const { account, chainId } = useWeb3React()

@@ -176,8 +176,8 @@ const TokenContainer = (props) => {
         let earned = Number(web3.utils.fromWei(numbers[9], 'ether'))
         let exitBalance = 0
         const currtimestamp = Math.floor(Date.now() / 1000)
-        const startAutoEncreaseTime = currtimestamp - 1625258000
-        console.log(startAutoEncreaseTime);
+        // const startAutoEncreaseTime = currtimestamp - 1625258000
+        // console.log(startAutoEncreaseTime);
 
         if (stillOld) {
           const portion = (currtimestamp - exitStartTime) / EXIT_PERIOD
@@ -235,8 +235,8 @@ const TokenContainer = (props) => {
           maxRedeem = web3.utils.fromWei(deaBalance, 'ether')
         }
 
-        console.log(tokenName, maxRedeem);
-        console.log(controller);
+        // console.log(tokenName, maxRedeem);
+        // console.log(controller);
 
         let stakeTypeName = ''
         let strategyLink = ''

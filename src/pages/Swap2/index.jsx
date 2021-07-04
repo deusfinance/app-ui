@@ -108,9 +108,18 @@ const Swap2 = () => {
     const [amountOut, setAmountOut] = useState("")
     const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
+
+
+
+
+
+
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
+
+
+
 
     useEffect(() => {
         setIsPreApproved(null)

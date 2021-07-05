@@ -97,7 +97,6 @@ const Swap2 = () => {
         }
     }
 
-
     const [swapState, setSwapState] = useState({
         from: { ...TokensMap[fromAddress] },
         to: { ...TokensMap[toAddress] },
@@ -109,17 +108,9 @@ const Swap2 = () => {
     const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
 
-
-
-
-
-
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
-
-
-
 
     useEffect(() => {
         setIsPreApproved(null)
@@ -144,8 +135,6 @@ const Swap2 = () => {
             } else {
                 if (allowance.gt(0)) {
                     setIsPreApproved(true)
-                    // TokensMap[swapState.from.address].allowance = allowance
-                    // setTokensMap(TokensMap)
                 } else {
                     setIsPreApproved(false)
                 }

@@ -18,12 +18,12 @@ import { RowCenter } from '../../components/App/Row';
 import { useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
+import { useSync, useAmountsIn, useAmountsOut } from '../../helper/useSync';
 
 // import { dAmcTestToken } from '../../constant/token';
 // import { sendMessage } from '../../utils/telegramLogger';
 // import { ApproveTranaction } from '../../utils/explorers';
 // import { TransactionState } from '../../utils/constant';
-
 
 const MainWrapper = styled.div`
    margin-top: 100px;
@@ -144,12 +144,10 @@ const Sync2 = () => {
 
     }, [conducted, stocks, account])//eslint-disable-line
 
-
     const showSearchBox = (active = false, type) => {
         setEscapedType(type)
         setActiveSearchBox(active)
     }
-
 
     const setectToken = (token, type) => {
         token.address = isLong ? token.long.address : token.short.address
@@ -157,6 +155,34 @@ const Sync2 = () => {
         type === "to" ? setToCurrency(stableCoin) : setFromCurrency(stableCoin)
         setActiveSearchBox(false)
     }
+
+
+    const fromPrice = prices && prices[fromSymbol] ? prices[fromSymbol].price : 0
+    const { getAmountsOut } = useAmountsOut(debouncedAmountIn, fromPrice)
+    const { getAmountsIn } = useAmountsIn(swapState.from, debouncedAmountOut, fromPrice)
+
+    useEffect(() => {
+        const get = async () => {
+            const result = getAmountsOut()
+            if (!result) return
+            if (amountIn === "" || isZero(amountIn)) setAmountOut("")
+            else setAmountOut(fromWei(result, swapState.to.decimals))
+        }
+        if (getAmountsOut && fouceType === "from")
+            get()
+    }, [getAmountsOut, amountIn, fouceType, swapState.to])//replace multiple useState variables with useReducer
+
+    useEffect(() => {
+        const get = async () => {
+            const result = await getAmountsIn()
+            if (!result) return
+            if (amountOut === "" || isZero(amountOut)) setAmountIn("")
+            else setAmountIn(fromWei(result, swapState.from.decimals))
+        }
+        if (getAmountsIn && fouceType === "to")
+            get()
+        //eslint-disable-next-line
+    }, [getAmountsIn, amountOut])//replace multiple useState variables with useReducer
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">

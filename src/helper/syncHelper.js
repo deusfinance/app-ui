@@ -1,6 +1,7 @@
 import { isZero } from "../constant/number"
 import { getSynchronizerContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
+import { TransactionState } from "../utils/constant"
 import { ApproveTranaction, SwapTranaction } from "../utils/explorers"
 import { ethers } from "ethers"
 

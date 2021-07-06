@@ -118,7 +118,7 @@ const Navbar = () => {
                     <img className="polygon" src="/img/navbar/polygon.png" width="13px" alt="polygon" />
                     <SubNavbarContentWrap>
                         <li>
-                            <ExternalLink href="https://t.me/deusfinance_news" textDecoration="none">Announcment Channel</ExternalLink>
+                            <ExternalLink href="https://t.me/deusfinance_news" textDecoration="none">Announcement Channel</ExternalLink>
                         </li>
                         <li>
                             <ExternalLink href="https://t.me/deusfinance" textDecoration="none">Community Channel</ExternalLink>

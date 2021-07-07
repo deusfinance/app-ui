@@ -1,152 +1,151 @@
-import React from 'react'
-
-export default [
+export const defaultNavbar = [
   {
-    id: 'app',
+    id: "app",
     text: 'APP',
-    path: '/',
-    exact: true,
+    children: [{
+      id: 'Muon Presale'.toUpperCase(),
+      text: 'muon presale',
+      path: '/muon-presale',
+      exact: true
+    },
+    {
+      id: 'Stake And Yeild'.toUpperCase(),
+      text: 'STAKE & YIELD',
+      path: '/stake-and-yield',
+      exact: true
+    },
+    {
+      id: 'sealed Swap'.toUpperCase(),
+      text: 'sealed swap',
+      path: '/sealed-swap',
+      exact: true
+    },
+    {
+      id: 'vaultsL',
+      text: 'VAULTS (LEGACY)',
+      path: '/vaults',
+      exact: true
+    },
+    {
+      id: 'STAKING (LEGACY)',
+      text: 'STAKING (LEGACY)',
+      path: '/staking',
+    }
+    ]
+  },
+  {
+    id: 'synthetics',
+    text: 'SYNTHETICS',
+    children: [{
+      id: 'ETH',
+      text: 'ETH',
+      path: '/synchronizer',
+      exact: true
+    },
+    {
+      id: 'xDai',
+      text: 'xDAI',
+      path: '/crosschain/xdai/synchronizer',
+      exact: true
+    },
+    {
+      id: 'bsc',
+      text: 'BSC',
+      path: '/crosschain/bsc/synchronizer',
+      exact: true
+    },
+    {
+      id: 'heco',
+      text: 'HECO',
+      path: '/crosschain/heco/synchronizer',
+      exact: true
+    },
+    ]
+  },
+  {
+    id: 'tools',
+    text: 'TOOLS',
     children: [
       {
-        id: 'mobileApp',
-        text: 'Mobile Android',
+        id: 'DEUS android',
+        text: 'DEUS android',
         path: 'https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US',
-        out: true,
-        exact: true
       },
       {
-        id: 'swap',
-        text: 'SWAP',
-        path: '/swap',
-        exact: true
+        id: 'simulator',
+        text: 'DEUS simulator',
+        path: 'https://simulate.deus.finance',
       },
       {
-        id: 'stakeAndYield',
-        text: 'STAKE & YIELD (NEW)',
-        path: '/stake-and-yield',
-        exact: true
+        id: 'tradingview',
+        text: 'DEUS tradingview',
+        path: 'https://chart.deus.finance',
       },
       {
-        id: 'vaultsL',
-        text: 'LEGACY VAULTS (OLD)',
-        path: '/vaults',
-        exact: true
-      },
-      {
-        id: 'staking',
-        text: 'LEGACY STAKING (OLD)',
-        path: '/staking',
-        exact: false
-      }
-    ]
-  },
-  {
-    id: 'buyStocks',
-    text: <span>BUY&thinsp;Stocks</span>,
-    path: '/',
-    exact: true,
-    children: [
-      {
-        id: 'ETH',
-        text: 'ETH',
-        path: '/synchronizer',
-        exact: true
-      },
-      {
-        id: 'xDai',
-        text: 'xDAI',
-        path: '/crosschain/xdai/synchronizer',
-        exact: true
-      },
-      {
-        id: 'bsc',
-        text: 'BSC',
-        path: '/crosschain/bsc/synchronizer',
-        exact: true
-      },
-      // {
-      //   id: 'heco',
-      //   text: 'HECO',
-      //   path: '/crosschain/heco/synchronizer',
-      //   exact: true
-      // }
-    ]
-  },
-  {
-    id: 'futures',
-    text: 'FUTURES',
-    path: '/',
-    exact: true,
-    children: [
-      // {
-      //   id: 'coinbaseMigrator',
-      //   text: <span>COINBASE MIGRATOR</span>,
-      //   path: '/migrator',
-      //   exact: true
-      // },
-      {
-        id: 'bakkt',
-        text: 'BAKKT',
-        path: '/bakkt',
-        exact: true
-      },
-      {
-        id: 'musk',
-        text: 'MUSK',
-        path: '/musk',
-        exact: true
+        id: 'vote',
+        text: 'DEUS vote',
+        path: 'https://vote.deus.finance',
       }
     ]
   },
   {
     id: 'learn',
     text: 'LEARN',
-    path: '/',
-    exact: true,
-    children: [
-      {
-        id: 'deusWiki',
-        text: 'DEUS wiki',
-        path: 'https://wiki.deus.finance/docs',
-        out: true,
-        exact: true
-      },
-      // {
-      //   id: 'litepaper',
-      //   text: 'LITEPAPER',
-      //   path: 'https://deus.finance/litepaper.pdf',
-      //   out: true,
-      //   exact: true
-      // }
+    children: [{
+      id: 'deusWiki',
+      text: 'DEUS wiki',
+      path: 'https://wiki.deus.finance/docs',
+    },]
+  },
+  {
+    id: "telegram",
+    image: true,
+    path: "https://t.me/deusfinance",
+    children: [{
+      id: 'Announcement',
+      text: 'Announcement Channel',
+      path: 'https://t.me/deusfinance_news',
+    },
+    {
+      id: 'Community',
+      text: 'Community Channel',
+      path: 'https://t.me/deusfinance',
+    },
     ]
   },
   {
-    id: 'tools',
-    text: 'TOOLS',
-    path: '/',
-    exact: true,
-    children: [
-      {
-        id: 'simulator',
-        text: 'DEUS simulator',
-        path: 'https://simulate.deus.finance',
-        out: true,
-        exact: true
-      },
-      {
-        id: 'tradingview',
-        text: 'DEUS tradingview',
-        path: 'https://chart.deus.finance',
-        out: true,
-        exact: true
-      },
-      {
-        id: 'vote',
-        text: 'DEUS vote',
-        path: 'https://vote.deus.finance',
-        out: true,
-        exact: true
-      }
-    ]
-  }
+    id: "twitter",
+    image: true,
+    path: "https://twitter.com/DeusDao"
+  },
+  {
+    id: "discord",
+    image: true,
+    path: "https://discord.com/invite/xfeYT6acha"
+  },
 ]
+
+let tempNav = [...defaultNavbar]
+
+export const desktopNavs = [
+  ...defaultNavbar.slice(0, 2),
+  {
+    id: 'swap',
+    text: 'SWAP',
+    path: '/swap',
+    exact: true,
+  },
+  ...defaultNavbar.slice(2)].reverse()
+
+
+let { children } = defaultNavbar[0]
+defaultNavbar[0] = {
+  ...defaultNavbar[0], children: [{
+    id: 'swap',
+    text: 'SWAP',
+    path: '/swap',
+    exact: true,
+  }, ...children]
+}
+
+export const mobileNavs = defaultNavbar.reverse()

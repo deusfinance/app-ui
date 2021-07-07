@@ -11,7 +11,7 @@ export const NavbarWrap = styled(RowBetween)`
     padding: 0 5px;
     background: ${({ theme }) => theme.bg1};
     .hamb{
-        margin-left:20px;
+        margin-top: 0px;
         display: none;
     }
 
@@ -67,13 +67,12 @@ export const NavbarMobileContent = styled.div`
     overflow-y: auto;
     background: ${({ theme }) => theme.bg1};
     margin-right: ${({ open }) => open ? "0" : "-300px"};
-    z-index:10;
+    z-index: 10;
     > ul{
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         list-style:none;
-
         .icon-close{
             width: 100%;
             height: 55px;
@@ -86,7 +85,44 @@ export const NavbarMobileContent = styled.div`
                 height: 20px;
             }
         }
-        .nav-item{
+        .nav-item-lg{
+            margin-left: 20px;
+        }
+        .nav-item-wrap-img{
+            margin-top: 20px;
+            display: flex;
+            margin-bottom: 0;
+        }
+        .nav-item-img{
+            margin-left: 20px;
+        }
+        .nav-title{
+            opacity: 0.5;
+            cursor: default;
+            display: block;
+            padding: 5px 20px;
+            color: #fff;
+            text-decoration: none;
+            margin-top: 0;
+        }
+        .nav-item-text {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+        .nav-item-box {
+            margin-bottom: 10px;
+            &:hover{
+                background:#0a0a0acf;
+                color:#ffffff;
+            }
+        }
+        .nav-item-ln {
+            display: block;
+            margin-top: 10;
+            padding-bottom: 10px;
+            margin-bottom: -10px;
+        }
+        .nav-item {
             text-align: left;
             display: block;
             font-family: Monument Grotesk;
@@ -121,8 +157,6 @@ export const NavbarMobileContent = styled.div`
     }
 `
 
-
-
 export const NavButton = styled(Base)`
     color:${({ theme }) => theme.text1};
     background: ${({ theme, active }) => active ? "rgba(97, 192, 191, 0.5)" : theme.grad5};
@@ -139,7 +173,9 @@ export const NavWarningButton = styled(NavButton).attrs({
     color: ${({ theme }) => theme.label_warning};
     border: 0.5px solid ${({ theme }) => theme.bg_warning};
 `
+
 export const NavbarSideWrap = styled.div`
+    /* margin-top: 17px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -183,9 +219,17 @@ export const NavbarContentWrap = styled.ul`
             right: 15px;
             top: 46px;
         }
+        .lang-warp{
+               .active{
+                color :#ffffff;
+        }
+        }
+        .active{
+                color :rgb(0, 153, 255);
+        }
         &:hover{
             >a,p,svg{
-                filter:brightness(0.8)
+                filter:brightness(0.8);
             }
             .polygon{
                 display: block;

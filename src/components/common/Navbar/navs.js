@@ -9,7 +9,7 @@ export const defaultNavbar = [
       exact: true
     },
     {
-      id: 'Stake And Yeild'.toUpperCase(),
+      id: 'Stake And YIELD'.toUpperCase(),
       text: 'STAKE & YIELD',
       path: '/stake-and-yield',
       exact: true
@@ -125,7 +125,6 @@ export const defaultNavbar = [
   },
 ]
 
-let tempNav = [...defaultNavbar]
 
 export const desktopNavs = [
   ...defaultNavbar.slice(0, 2),

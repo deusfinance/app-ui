@@ -165,14 +165,12 @@ const Navbar = () => {
                         </li>
 
                         {<div className="nav-item-wrap-img" >
-                            {navsMobile.map((nav, index) => {
+                            {navsMobile.filter(nav => nav.image).map((nav, index) => {
                                 let res = null
-                                if (nav.image) {
-                                    res = <ExternalLink href={nav.path}  >
-                                        <img width='20px' height="20px" src={`/img/navbar/${nav.id}.svg`} alt="" />
-                                    </ExternalLink>
-                                    return <li key={nav.id + index} className="nav-item-img">{res}</li>
-                                }
+                                res = <ExternalLink href={nav.path}  >
+                                    <img width='20px' height="20px" src={`/img/navbar/${nav.id}.svg`} alt="" />
+                                </ExternalLink>
+                                return <li key={nav.id + index} className="nav-item-img">{res}</li>
                             })}
                         </div>}
 

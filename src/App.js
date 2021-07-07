@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Web3ReactManager from './components/App/Web3ReactManager'
-import Navbar from './components/common/Navbar/Navbar2'
+import Navbar from './components/common/Navbar/Navbar'
 import { LoopCircleLoading } from 'react-loadingg'
 import { ToastContainer } from 'react-toastify'
 import { RefreshContextProvider } from './helper/RefreshContex'

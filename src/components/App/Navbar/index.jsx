@@ -225,7 +225,8 @@ export const NavbarContentWrap = styled.ul`
         }
         }
         .active{
-                color :rgb(0, 153, 255);
+                /* color :rgb(0, 153, 255); */
+                color:#b6e693;
         }
         &:hover{
             >a,p,svg{

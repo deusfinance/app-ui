@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
 import { FlexCenter } from '../Container';
 import { WaveLoading } from 'react-loadingg';
 import { useWeb3React } from '@web3-react/core';
 import { isGt, isZero } from '../../../constant/number';
+import Wallets from '../../common/Navbar/Wallets';
 
 const errors = {
     NotConnected: "CONNECT WALLET",
@@ -52,14 +53,28 @@ width: 50%;
 const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, validNetworks = [4, 1], handleApprove, handleSwap, bgColor }) => {
 
     const { account, chainId } = useWeb3React()
+    const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
-        if (!account) return errors.NotConnected
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
         if (isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
         if (isNaN(amountOut)) return errors.LOADING
         return null;
+    }
+
+    useEffect(() => {
+        if (account)
+            setShowWallets(false)
+    }, [account])
+
+    if (!account) {
+        return <WrapActions>
+            {showWallets && <Wallets setShow={setShowWallets} />}
+            <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
+                CONNECT WALLET
+            </ButtonSwap>
+        </WrapActions>
     }
 
     if (checkError()) {

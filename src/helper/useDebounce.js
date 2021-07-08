@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useDebounce(value, delay) {
+export function useDebounce(value, delay, hotValue) {
     // State and setters for debounced value
     const [debouncedValue, setDebouncedValue] = useState(value);
     useEffect(
@@ -19,5 +19,12 @@ export function useDebounce(value, delay) {
         },
         [value, delay] // Only re-call effect if value or delay changes
     );
+
+    useEffect(
+        () => {
+            setDebouncedValue(hotValue);
+        },
+        [hotValue])
+
     return debouncedValue;
 }

@@ -110,10 +110,9 @@ const Swap2 = () => {
         to: { ...TokensMap[toAddress] },
     })
 
-    console.log(swapState);
-
+    const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500);
+    const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
     const [amountOut, setAmountOut] = useState("")
     const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
@@ -125,20 +124,18 @@ const Swap2 = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
+    }, [chainId, account, swapState.from]);
 
-    }, [chainId, account]);
-
-    useEffect(() => {
-        setIsPreApproved(null)
-        setIsApproved(false)
-    }, [swapState.from])
+    // useEffect(() => {
+    //     setIsPreApproved(null)
+    //     setIsApproved(false)
+    // }, [swapState.from])
 
     useEffect(() => {
         setTokensMap(tokenBalances)
     }, [tokenBalances])
 
     useEffect(() => {
-        console.log(allowance.toString());
         if (isPreApproved == null) {
             if (allowance.toString() === "-1") {
                 setIsPreApproved(null) //doNothing
@@ -238,6 +235,8 @@ const Swap2 = () => {
         }
     }, [onSwap])
 
+    console.log(amountIn, debouncedAmountIn);
+
     return (<>
         <SearchBox
             account={account}
@@ -266,6 +265,7 @@ const Swap2 = () => {
                 />
                 <SwapArrow onClick={() => {
                     setSwapState({ from: swapState.to, to: swapState.from })
+                    setHotIn(amountOut)
                     setAmountIn(amountOut)
                     setAmountOut("")
                 }}>

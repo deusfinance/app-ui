@@ -42,8 +42,8 @@ const Swap2 = () => {
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
     let outputCurrency = new URLSearchParams(search).get('outputCurrency')
 
-    inputCurrency = inputCurrency === "ETH" ? "0x" : inputCurrency
-    outputCurrency = outputCurrency === "ETH" ? "0x" : outputCurrency
+    inputCurrency = inputCurrency?.toLowerCase() === "eth" ? "0x" : inputCurrency
+    outputCurrency = outputCurrency?.toLowerCase() === "eth" ? "0x" : outputCurrency
 
     if (inputCurrency) inputCurrency = inputCurrency
     if (outputCurrency) outputCurrency = outputCurrency
@@ -52,6 +52,7 @@ const Swap2 = () => {
 
     const tokens = useMemo(() => DefaultTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
+    const tokensName = tokens.map(token => token.symbol.toLowerCase())
 
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
@@ -62,6 +63,13 @@ const Swap2 = () => {
     const [TokensMap, setTokensMap] = useState(tokenBalances)
 
     // if(isAddress())
+    if (inputCurrency && tokensName.indexOf(inputCurrency.toLowerCase()) !== -1) {
+        inputCurrency = getTokenAddr(inputCurrency.toLowerCase(), chainId)
+    }
+
+    if (outputCurrency && tokensName.indexOf(outputCurrency.toLowerCase()) !== -1) {
+        outputCurrency = getTokenAddr(outputCurrency.toLowerCase(), chainId)
+    }
 
     if (inputCurrency && !TokensMap[inputCurrency]) {
         inputCurrency = null

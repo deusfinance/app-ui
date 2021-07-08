@@ -23,7 +23,6 @@ import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
-import { isAddress } from 'ethers/lib/utils';
 
 const Swap2 = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -44,9 +43,6 @@ const Swap2 = () => {
 
     inputCurrency = inputCurrency?.toLowerCase() === "eth" ? "0x" : inputCurrency
     outputCurrency = outputCurrency?.toLowerCase() === "eth" ? "0x" : outputCurrency
-
-    if (inputCurrency) inputCurrency = inputCurrency
-    if (outputCurrency) outputCurrency = outputCurrency
 
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
 

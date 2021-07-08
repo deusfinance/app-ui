@@ -31,7 +31,7 @@ const useTokenBalances = (tokensMap, validChainId) => {
             const result = await multicall(web3, ERC20Abi, calls, validChainId)//TODO chainId
             for (let i = 0; i < result.length; i++) {
                 const balance = result[i];
-                const address = calls[i].address
+                const address = web3.utils.toChecksumAddress(calls[i].address)
                 tokensMap[address].balance = getFullDisplayBalance(balance, tokensMap[address]?.decimals)
 
             }

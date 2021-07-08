@@ -23,6 +23,7 @@ import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
+import { isAddress } from 'ethers/lib/utils';
 
 const Swap2 = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -44,20 +45,23 @@ const Swap2 = () => {
     inputCurrency = inputCurrency === "ETH" ? "0x" : inputCurrency
     outputCurrency = outputCurrency === "ETH" ? "0x" : outputCurrency
 
-    if (inputCurrency) inputCurrency = inputCurrency.toLowerCase()
-    if (outputCurrency) outputCurrency = outputCurrency.toLowerCase()
+    if (inputCurrency) inputCurrency = inputCurrency
+    if (outputCurrency) outputCurrency = outputCurrency
 
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
 
     const tokens = useMemo(() => DefaultTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
+
     //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = { ...token, address: token.address.toLowerCase() }, map), {})
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
 
     const [TokensMap, setTokensMap] = useState(tokenBalances)
+
+    // if(isAddress())
 
     if (inputCurrency && !TokensMap[inputCurrency]) {
         inputCurrency = null
@@ -71,17 +75,17 @@ const Swap2 = () => {
         outputCurrency = null
     }
 
-    const deaContract = getTokenAddr("dea", chainId).toLowerCase()
+    const deaContract = getTokenAddr("dea", chainId)
 
     let fromAddress = inputCurrency ? inputCurrency : "0x"
 
     let toAddress = outputCurrency ? outputCurrency : deaContract
 
+
     if (toAddress === fromAddress) {
         if (fromAddress === "0x") {
             if (!inputCurrency) {
                 fromAddress = deaContract
-                console.log(fromAddress);
             }
             else {
                 toAddress = deaContract
@@ -101,6 +105,8 @@ const Swap2 = () => {
         from: { ...TokensMap[fromAddress] },
         to: { ...TokensMap[toAddress] },
     })
+
+    console.log(swapState);
 
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);

@@ -1,6 +1,6 @@
 {
   "name": "deus.finance",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "private": true,
   "dependencies": {
     "@ethersproject/providers": "^5.0.17",

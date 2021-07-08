@@ -211,7 +211,6 @@ export const getSwapAmountsOut = async (fromCurrency, toCurrency, amountIn, chai
     }
 
     const uniGetAmountsOut = async (amountIn, path = []) => {
-        console.log(path);
         try {
             const amountsOut = await getUniswapRouterContract(web3, chainId)
                 .methods.getAmountsOut(amountIn, path)

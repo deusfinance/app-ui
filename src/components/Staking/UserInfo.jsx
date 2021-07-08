@@ -3,6 +3,7 @@ import { sendTransaction } from '../../utils/Stakefun'
 import { ExternalLink } from '../App/Link'
 import useWeb3 from '../../helper/useWeb3'
 import { isZero } from '../../constant/number'
+import { formatBalance3 } from '../../utils/utils'
 // import { ToastTransaction } from '../../utils/explorers'
 
 const UserInfo = (props) => {
@@ -142,7 +143,7 @@ const UserInfo = (props) => {
         <div>
           <div className="wrap-box mb-15">
             <div className="wrap-box-gray cursor-default">
-              <div >{`${claim} DEA `}</div>
+              <div >{`${formatBalance3(claim)} DEA `}</div>
               <div className="opacity-5">claimable</div>
             </div>
             <div className="wrap-box-gradient pointer" onClick={handleClaim}>

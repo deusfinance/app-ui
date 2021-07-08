@@ -25,6 +25,12 @@ const Frozen = (props) => {
   const currtimestamp = Math.floor(Date.now() / 1000)
   const web3 = useWeb3()
 
+  let remindedTime = null
+  if (currtimestamp > nextEpochTime) {
+    remindedTime = 0
+  } else {
+    remindedTime = nextEpochTime - currtimestamp
+  }
   const handleUnfreeze = () => {
     if ((withDrawable > 0 || withDrawableExit > 0) && nextEpochTime < currtimestamp) {
       setShow(true)
@@ -88,7 +94,7 @@ const Frozen = (props) => {
             It takes 8 days for the unstaking process to be completed by harvesting rewards from Yearn Finance. DEUS Finance does not control this process.
             <br />
             <br />
-             Two transactions are necessary to withdraw your tokens from the contract: <br />
+            Two transactions are necessary to withdraw your tokens from the contract: <br />
             <br />
             1. Unfreeze <br />
             2. Withdraw (after harvesting) <br />
@@ -120,16 +126,16 @@ const Frozen = (props) => {
                   className="opacity-75 pointer flex-align-center"
                 >
                   MAX
-              </span>
+                </span>
               </div>
               <div className="wrap-box-gradient pointer" onClick={handleUnfreeze}>
                 UNSTAKE + REDEEM
-            </div>
+              </div>
             </div>
             <div className="sub-description">UNSTAKE + REDEEM to redeem VAULT  TOKENS together with your STAKED TOKENS.</div>
           </>
           }
-          {(withDrawable > 0 || withDrawableExit > 0) &&
+          {(withDrawable > 0 || withDrawableExit > 0) && remindedTime > 0 &&
             <>
               <div className="wrap-box ">
                 <DrawableAmount

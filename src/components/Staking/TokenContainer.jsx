@@ -173,6 +173,7 @@ const TokenContainer = (props) => {
         let totalSupplyYield = Number(web3.utils.fromWei(numbers[5], 'ether'))
         let withDrawable = Number(web3.utils.fromWei(numbers[3], 'ether'))
         let withDrawableExit = Number(web3.utils.fromWei(numbers[13], 'ether'))
+        console.log(withDrawable, withDrawableExit);
         let earned = Number(web3.utils.fromWei(numbers[9], 'ether'))
         let exitBalance = 0
         const currtimestamp = Math.floor(Date.now() / 1000)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { getStayledNumber } from '../../utils/utils'
+import { formatBalance3 } from '../../utils/utils'
 
 const DrawableAmount = ({
   withDrawable,
@@ -10,10 +10,10 @@ const DrawableAmount = ({
 }) => {
   return (
     <div className={`wrap-box-gray ${width}`}>
-      <span>{withDrawable > 0 ? `${getStayledNumber(withDrawable)} ${title}` : ''}</span>
+      <span>{withDrawable > 0 ? `${formatBalance3(withDrawable, 3)} ${title}` : ''}</span>
       <span>{withDrawable > 0 && withDrawableExit > 0 ? '+' : ''}</span>
       <span>
-        {withDrawableExit > 0 ? `${getStayledNumber(withDrawableExit)} ${titleExit}` : ''}
+        {withDrawableExit > 0 ? `${formatBalance3(withDrawableExit, 3)} ${titleExit}` : ''}
       </span>
     </div>
   )

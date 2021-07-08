@@ -355,6 +355,7 @@
         justify-content: flex-end;
         align-items: center;
         width: 100%;
+        white-space: nowrap;
     }
     .wrap-box > * {
         font-style: normal;
@@ -515,7 +516,7 @@
     .wrap-box-fluid {
         position: relative;
         padding: 8px 0;
-        width: 160px;
+        width: 250px;
         height: 35px;
         text-align: center;
         border-radius: 6px;
@@ -1423,6 +1424,22 @@
 
 @media screen and (max-width: 576px) {
     .container-staking {
+        .userInfo-container {
+            padding-left: 0;
+        }
+        .wrap-box {
+            flex-direction: column;
+            white-space: nowrap;
+            > div {
+                width: 100%;
+                border-radius: 6px;
+                margin-top: 10px;
+            }
+        }
+        .wrap-box-gradient::before,
+        wrap-box-fluid::before {
+            border-radius: 6px;
+        }
         .expand-container {
             flex-direction: column;
             margin: 0 auto;

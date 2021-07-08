@@ -180,7 +180,7 @@ const Swap2 = () => {
     useEffect(() => {
         const get = async () => {
             const amount = await getAmountsOut()
-            console.log("swap ", amount);
+            // console.log("swap ", amount);
             if (amountIn === "") setAmountOut("")
             else setAmountOut(fromWei(amount, swapState.to.decimals))
         }
@@ -192,7 +192,7 @@ const Swap2 = () => {
     useEffect(() => {
         const get = async () => {
             const amount = await getMinAmountOut()
-            console.log("min swap ", amount);
+            // console.log("min swap ", amount);
             setMinAmountOut(fromWei(amount, swapState.to.decimals))
         }
         get()
@@ -235,8 +235,6 @@ const Swap2 = () => {
         }
     }, [onSwap])
 
-    console.log(amountIn, debouncedAmountIn);
-
     return (<>
         <SearchBox
             account={account}
@@ -264,9 +262,9 @@ const Swap2 = () => {
                     fastUpdate={fastUpdate}
                 />
                 <SwapArrow onClick={() => {
-                    setSwapState({ from: swapState.to, to: swapState.from })
-                    setHotIn(amountOut)
                     setAmountIn(amountOut)
+                    setHotIn(amountOut)
+                    setSwapState({ from: swapState.to, to: swapState.from })
                     setAmountOut("")
                 }}>
                     <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />

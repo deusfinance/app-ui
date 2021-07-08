@@ -46,8 +46,6 @@ export const NavbarWrap = styled(RowBetween)`
             display: block;
         }
      }
-
-        
 `
 
 export const NavbarMobileContent = styled.div`

@@ -210,7 +210,6 @@ const Navbar = () => {
                 </NavbarMobileContent>
             </OutsideClickHandler>
 
-
             <NavbarSideWrap >
                 {account && <>
                     {chainId && validChains.indexOf(chainId) === -1 ?

@@ -70,7 +70,7 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, 
 
     if (!account) {
         return <WrapActions>
-            {showWallets && <Wallets setShow={setShowWallets} />}
+            <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
             <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
                 CONNECT WALLET
             </ButtonSwap>

@@ -96,7 +96,7 @@ const SwapStockButton = ({ loading, under_maintenance, from_token, to_token, han
     }
 
     return (<>
-        {!account && showWallets && <Wallets setShow={setShowWallets} />}
+        {!account && <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />}
         {account ? <div className=" grad-wrap swap-btn-wrap stock-swap-btn" onClick={handleSwap}>
             <div className="swap-btn grad" style={{ background: "none" }} >
                 {getAllowances() ? `SYNC ${from_token.type === TokenType.Main ? `(${t("buy")})` : `(${t("sell")})`} ` : t("approve")}

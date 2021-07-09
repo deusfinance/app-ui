@@ -51,17 +51,30 @@ width: 50%;
 const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrency, mt }) => {
 
     const { account, chainId } = useWeb3React()
+    const [showWallets, setShowWallets] = useState(false)
+
     const checkError = () => {
-        if (!account) return errors.NotConnected
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         return null;
     }
-    // useEffect(() => {
-    // }, [])
+
+
+
+    if (!account) {
+        return <WrapActions>
+            <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
+            <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
+                CONNECT WALLET
+            </ButtonSwap>
+        </WrapActions>
+    }
+
 
     if (checkError()) {
         return <ButtonSyncDeactive mt={mt}>{checkError()}</ButtonSyncDeactive>
     }
+
+
 
 
     return (<>
@@ -69,7 +82,6 @@ const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrenc
             <WrapActions mt={mt}>
                 <ButtonSwap active={true} >
                     APPROVE
-                 {/* <Loader></Loader> */}
                 </ButtonSwap>
                 <ButtonSyncDeactive>SYNC (BUY)</ButtonSyncDeactive>
             </WrapActions>

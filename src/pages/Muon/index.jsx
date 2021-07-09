@@ -41,9 +41,6 @@ const Muon = () => {
     const contractAddress = getContractAddr("muon_presale", chainId)
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
-
-    if (inputCurrency) inputCurrency = inputCurrency
-
     const tokens = useMemo(() => MuonPreSaleTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     //eslint-disable-next-line

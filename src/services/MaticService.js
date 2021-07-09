@@ -13,7 +13,7 @@ export class StockService {
 
     makeProvider = () => {
         if (this.INFURA_URL) return
-        this.INFURA_URL = 'https://rpc-mainnet.maticvigil.com/';
+        this.INFURA_URL = 'https://rpc-mainnet.matic.quiknode.pro';
         this.infuraWeb3 = new Web3(new Web3.providers.HttpProvider(this.INFURA_URL));
     }
 
@@ -117,11 +117,11 @@ export class StockService {
             address.toString(),
             this._getWei(amount),
             info.fee.toString(),
-            [oracles[0].blockNo.toString()],
-            [oracles[0].price],
-            [oracles[0]["signs"]["buy"].v.toString()],
-            [oracles[0]["signs"]["buy"].r.toString()],
-            [oracles[0]["signs"]["buy"].s.toString()])
+            [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
+            [oracles[0].price, oracles[1].price],
+            [oracles[0]["signs"]["buy"].v.toString(), oracles[1]["signs"]["buy"].v.toString()],
+            [oracles[0]["signs"]["buy"].r.toString(), oracles[1]["signs"]["buy"].r.toString()],
+            [oracles[0]["signs"]["buy"].s.toString(), oracles[1]["signs"]["buy"].s.toString()])
             .send({ from: this.account })
             .on('transactionHash', (hash) => listener("transactionHash", hash))
             .once('receipt', (hash) => listener("receipt", hash))
@@ -140,11 +140,11 @@ export class StockService {
             address.toString(),
             this._getWei(amount),
             info.fee.toString(),
-            [oracles[0].blockNo.toString()],
-            [oracles[0].price],
-            [oracles[0]["signs"]["sell"].v.toString()],
-            [oracles[0]["signs"]["sell"].r.toString()],
-            [oracles[0]["signs"]["sell"].s.toString()])
+            [oracles[0].blockNo.toString(), oracles[1].blockNo.toString()],
+            [oracles[0].price, oracles[1].price],
+            [oracles[0]["signs"]["sell"].v.toString(), oracles[1]["signs"]["sell"].v.toString()],
+            [oracles[0]["signs"]["sell"].r.toString(), oracles[1]["signs"]["sell"].r.toString()],
+            [oracles[0]["signs"]["sell"].s.toString(), oracles[1]["signs"]["sell"].s.toString()])
             .send({ from: this.account })
             .on('transactionHash', (hash) => listener("transactionHash", hash))
             .once('receipt', (hash) => listener("receipt", hash))

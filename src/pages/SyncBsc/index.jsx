@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect, useCallback } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { notifSync } from '../../utils/utils';
 import TokenMarket from '../../components/Sync/TokenMarket';
 import SwapStockButton from '../../components/Sync/SwapStockButton';
@@ -414,8 +413,6 @@ const SyncBscTest = () => {
     return (<div className="deus-swap-wrap" style={{ paddingTop: 0, overflowX: "hidden" }}>
 
         <div style={{ margin: "64px 0" }}></div>
-
-        {!isMobile && <ToastContainer style={{ width: "450px" }} />}
 
         <div className="swap-title">
             <img src={process.env.PUBLIC_URL + "/img/chains/bsc.png"} style={{ width: "30px", height: "30px" }} alt="DEUS" />

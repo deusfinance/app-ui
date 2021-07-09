@@ -8,6 +8,11 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/swap2",
+        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        exact: true,
+    },
+    {
         url: "/crosschain/xdai",
         chains: [ChainMap.XDAI],
     },

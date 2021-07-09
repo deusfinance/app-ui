@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect, useCallback } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { notifSync } from '../../utils/utils';
 import TokenMarket from '../../components/Sync/TokenMarket';
 import SwapStockButton from '../../components/Sync/SwapStockButton';
@@ -57,7 +56,7 @@ const SyncMatic = () => {
     const { account, chainId } = useWeb3React()
     const syncChainId = 137
     const [web3Class, setWeb3Class] = useState(new StockService(account, syncChainId))
-    const apis = ["https://oracle3.deus.finance/polygon/signatures.json"]
+    const apis = ["https://oracle1.deus.finance/polygon/signatures.json", "https://oracle3.deus.finance/polygon/signatures.json"]
     const { t } = useTranslation()
 
     let transactionType = {}
@@ -387,7 +386,7 @@ const SyncMatic = () => {
         const tokenAddress = isLong ? token.long.address : token.short.address
         const makerBuySell = await getBuySell()
 
-        const oracles = xdaiMutileOracleHandler(type, tokenAddress, makerBuySell, 1)
+        const oracles = xdaiMutileOracleHandler(type, tokenAddress, makerBuySell, 2)
 
         try {
             transactionType = { action: "buy", swap: swap, isLong: isLong }
@@ -404,7 +403,7 @@ const SyncMatic = () => {
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
-            { <img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)
     }
 
@@ -413,9 +412,6 @@ const SyncMatic = () => {
     return (<div className="deus-swap-wrap" style={{ paddingTop: 0, overflowX: "hidden" }}>
 
         <div style={{ margin: "64px 0" }}></div>
-
-        {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-
 
         <div className="swap-title">
             <img src={process.env.PUBLIC_URL + "/img/ticker/MATIC.png"} style={{ borderRadius: "50%" }} alt="DEUS" />

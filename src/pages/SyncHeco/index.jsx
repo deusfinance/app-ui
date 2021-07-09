@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect, useCallback } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { notifSync } from '../../utils/utils';
 import TokenMarket from '../../components/Sync/TokenMarket';
 import SwapStockButton from '../../components/Sync/SwapStockButton';
@@ -414,8 +413,7 @@ const SyncHeco = () => {
 
         <div style={{ margin: "64px 0" }}></div>
 
-        {!isMobile && <ToastContainer style={{ width: "450px" }} />}
-
+        {/* {!isMobile && <ToastContainer style={{ width: "450px" }} />} */}
 
         <div className="swap-title">
             <img src={process.env.PUBLIC_URL + "/img/chains/heco.svg"} alt="heco" />

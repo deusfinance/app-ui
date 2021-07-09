@@ -60,6 +60,12 @@ export const defaultNavbar = [
       path: '/crosschain/heco/synchronizer',
       exact: true
     },
+    {
+      id: 'polygon',
+      text: 'POLYGON',
+      path: '/crosschain/polygon/synchronizer',
+      exact: true
+    },
     ]
   },
   {

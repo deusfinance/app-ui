@@ -126,7 +126,7 @@ const SelectedNetworks = () => {
                 </svg>
                 ,
                 title: t("bridgeTokens"),
-                link: "https://www.binance.org/en/",
+                link: "https://wallet.matic.network",
             },
         ],
 

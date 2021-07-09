@@ -16,6 +16,7 @@ const EXPLORER_PREFIXES = {
   100: 'mainnet',
   97: 'testnet.',
   128: '',
+  137: '',
   256: 'testnet.',
 }
 
@@ -68,6 +69,25 @@ function getBscscanLink(chainId, data, type) {
     }
   }
 }
+
+function getPolygonScan(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[137]
+    }polygonscan.com`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
+
 function getHechoInfo(chainId, data, type) {
   const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[128]
     }hecoinfo.com`
@@ -103,6 +123,9 @@ export function getTransactionLink(chainId, data, type) {
     case 256:
     case 128: {
       return getHechoInfo(chainId, data, type)
+    }
+    case 137: {
+      return getPolygonScan(chainId, data, type)
     }
     default: {
       return getEtherscanLink(chainId, data, type)

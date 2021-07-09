@@ -42,12 +42,12 @@ const Muon = () => {
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
 
-    if (inputCurrency) inputCurrency = inputCurrency.toLowerCase()
+    if (inputCurrency) inputCurrency = inputCurrency
 
     const tokens = useMemo(() => MuonPreSaleTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = { ...token, address: token.address.toLowerCase() }, map), {})
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
@@ -57,7 +57,7 @@ const Muon = () => {
         inputCurrency = null
     }
 
-    let DEA = getTokenAddr("dea", chainId).toLowerCase()
+    let DEA = getTokenAddr("dea", chainId)
     if (chainId === 4)
         DEA = "0x"
 

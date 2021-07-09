@@ -306,7 +306,7 @@ const SyncMatic = () => {
             }
             if (transactionType.action !== "approve")
                 toast.info(<div>Transaction Pending <br />
-                    <a href={`https://explorer.matic.network/tx/${hash}`} target="_blank" rel="noopener noreferrer">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://polygonscan.com/tx/${hash}`} target="_blank" rel="noopener noreferrer">{`Swap ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
                     closeOnClick: false,
@@ -340,7 +340,7 @@ const SyncMatic = () => {
 
             if (transactionType.action === "sell" || transactionType.action === "buy") {
                 toast.success(<div>Transaction Successful <br />
-                    <a href={`https://explorer.matic.network/tx/${hash?.transactionHash}`} target="_blank" rel="noopener noreferrer">{`v ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
+                    <a href={`https://polygonscan.com/tx/${hash?.transactionHash}`} target="_blank" rel="noopener noreferrer">{`v ${swap.from.amount} ${swap.from.symbol} for ~${swap.to.amount} ${swap.to.symbol} ↗ `}</a></div>, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
 
@@ -426,6 +426,7 @@ const SyncMatic = () => {
             searchBoxType={searchBoxType}
             nAllStocks={stocks}
             balances={balances}
+            chainId={syncChainId}
             showSearchBox={showSearchBox}
             choosedToken={swap[searchBoxType].name}
             handleSearchBox={handleSearchBox}

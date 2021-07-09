@@ -15,6 +15,8 @@ export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracle
 
     const syncFunc = syncFuncMaker(fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type = "buy", account, chainId, web3)
     let sendArgs = { from: account }
+    if (fromCurrency.address === "0x") sendArgs["value"] = result.amountInWei
+
     return syncFunc
         .send(sendArgs)
         .once('transactionHash', (tx) => {

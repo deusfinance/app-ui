@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStayledNumber } from '../../utils/utils';
+import { formatBalance3 } from '../../utils/utils';
 import { TokenType } from '../../config';
 import { useTranslation } from 'react-i18next'
 import './styles/stock-box.scss';
@@ -31,7 +31,7 @@ const StockBox = (props) => {
                 <div className="balance">
                     <span>{t("balance")}:</span>
                     {/* <span>{getStayledNumber(token.balance)}</span> */}
-                    <span> {getStayledNumber(getBalance())}</span>
+                    <span> {formatBalance3(getBalance())}</span>
                 </div>
             </div>
             <div className="bottom">

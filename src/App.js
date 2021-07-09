@@ -22,6 +22,7 @@ const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const NotFound = React.lazy(() => import('./components/NotFound'))
+
 // const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 // const Bridge = React.lazy(() => import('./components/Bridge'))
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));

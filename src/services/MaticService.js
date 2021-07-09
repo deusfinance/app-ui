@@ -1,6 +1,7 @@
 import Web3 from 'web3'
 import addrs from './addresses.json'
 import { bscSynchronizerABI, tokenABI } from '../utils/abis';
+import { random } from 'lodash';
 
 export class StockService {
 
@@ -13,7 +14,12 @@ export class StockService {
 
     makeProvider = () => {
         if (this.INFURA_URL) return
-        this.INFURA_URL = 'https://rpc-mainnet.matic.quiknode.pro';
+        const RPC_URL = ["https://rpc-mainnet.matic.network", "https://rpc-mainnet.maticvigil.com",
+            "https://rpc-mainnet.matic.quiknode.pro"]
+
+        const randomIndex = random(0, RPC_URL.length - 1)
+        this.INFURA_URL = RPC_URL[randomIndex];
+
         this.infuraWeb3 = new Web3(new Web3.providers.HttpProvider(this.INFURA_URL));
     }
 

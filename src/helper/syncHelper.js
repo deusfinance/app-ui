@@ -6,7 +6,7 @@ import { ApproveTranaction, SwapTranaction } from "../utils/explorers"
 import { ethers } from "ethers"
 
 
-export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracles, account, chainId, web3) => {
+export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracles, type, account, chainId, web3) => {
     let hash = null
     const amountInWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
     const amountOutWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
@@ -40,7 +40,25 @@ export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracle
         }))
 }
 
-const syncFuncMaker = (fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type = "buy", account, chainId, web3) => {
+
+const syncFuncMaker = (fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type = "buy", requiredSignitures = 2, account, chainId, web3) => {
+    const currCurrency = type === "buy" ? toCurrency : fromCurrency
+    const amount = type === "buy" ? amountOutWei : amountInWei
+    const data = oracles.slice(0, requiredSignitures)
+    return getSynchronizerContract(web3, chainId)
+        .methods[type + "For"](
+            account, oracles[0].multiplier,
+            currCurrency.address,
+            amount, oracles[0].fee.toString(),
+            data.map(oracle => oracle.blockNo.toString()),
+            data.map(oracle => oracle.price),
+            data.map(oracle => oracle["signs"][type].v.toString()),
+            data.map(oracle => oracle["signs"][type].r.toString()),
+            data.map(oracle => oracle["signs"][type].s.toString())
+        )
+}
+
+const syncFuncMakerOld = (fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type = "buy", account, chainId, web3) => {
     const currCurrency = type === "buy" ? toCurrency : fromCurrency
     const amount = type === "buy" ? amountOutWei : amountInWei
     return getSynchronizerContract(web3, chainId)

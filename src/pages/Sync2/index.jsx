@@ -15,11 +15,12 @@ import { useDebounce } from '../../helper/useDebounce';
 import { useWeb3React } from '@web3-react/core';
 import useAssetBalances from '../../helper/useAssetBalances';
 import { RowCenter } from '../../components/App/Row';
-import { useOracleFetch } from '../../utils/SyncUtils';
+import { useFreshOracleFetch, useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
 import { useSync, useAmountsIn, useAmountsOut } from '../../helper/useSync';
-
+import { isZero } from '../../constant/number';
+import { fromWei } from '../../helper/formatBalance';
 // import { dAmcTestToken } from '../../constant/token';
 // import { sendMessage } from '../../utils/telegramLogger';
 // import { ApproveTranaction } from '../../utils/explorers';
@@ -50,8 +51,9 @@ const Sync2 = () => {
 
     const oracle = SyncData[SyncChainId]
     const stableCoin = oracle.stableCoin
-    const [fromCurrency, setFromCurrency] = useState(stableCoin)
+    const [fromCurrency, setFromCurrency] = useState({ ...stableCoin, stable: true })
     const [isLong, setLong] = useState(true)
+    const [position, setPosition] = useState("buy")
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
@@ -60,6 +62,7 @@ const Sync2 = () => {
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
+    const debouncedAmountOut = useDebounce(amountOut, 500);
     const [stocks, setStocks] = useState(null)
     const [conducted, setConducted] = useState(null)
     const [prices, setPrice] = useState(null)
@@ -69,7 +72,7 @@ const Sync2 = () => {
     const [loadingCap, setLoadingCAP] = useState(false);
 
 
-    const [lastInputFocus, setLastInputFocus] = useState(null)
+    const [fouceType, setFouceType] = useState("from")
     const { account, chainId } = useWeb3React()
 
     const changePosition = () => {
@@ -84,6 +87,14 @@ const Sync2 = () => {
     const getSignatures = useOracleFetch(oracle.signatures)
     const balances = useAssetBalances(conducted, SyncChainId)
 
+    // const freshPrice = useFreshOracleFetch(oracle.prices)
+
+    useEffect(() => {
+        if (fouceType === "from") {
+            if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
+        } else
+            if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
+    }, [amountIn, debouncedAmountIn, debouncedAmountOut, fouceType, amountOut]);
 
 
     const getData = useCallback(() => {
@@ -106,6 +117,14 @@ const Sync2 = () => {
     }, [getData]);
 
 
+    // useEffect(() => {
+    //     if (freshPrice) {
+    //         freshPrice().then((res) => {
+    //             setPrice(res[0])
+    //         })
+    //     }
+    // }, [freshPrice])
+
     //prices
     //perPrice
     //sync
@@ -113,21 +132,35 @@ const Sync2 = () => {
     //confirmBox
 
     useEffect(() => {
-        if (fromCurrency?.long) {
-            fromCurrency.address = isLong ? fromCurrency.long.address : fromCurrency.short.address
-            setFromCurrency({ ...fromCurrency })
+        if (fromCurrency && toCurrency) {
+            console.log(fromCurrency);
+            if (position === "buy") {
+                toCurrency.address = isLong ? toCurrency.long.address : toCurrency.short.address
+                setToCurrency({ ...toCurrency })
+            } else {
+                fromCurrency.address = isLong ? fromCurrency.long.address : fromCurrency.short.address
+                setFromCurrency({ ...fromCurrency })
+            }
+            console.log(fromCurrency);
         }
-        if (toCurrency?.long) {
-            console.log(toCurrency);
-            toCurrency.address = isLong ? toCurrency.long.address : toCurrency.short.address
-            setToCurrency({ ...toCurrency })
-        }
-    }, [isLong])
+    }, [isLong, position])
 
+
+    useEffect(() => {
+        if (fromCurrency && toCurrency) {
+            console.log(fromCurrency);
+            if (fromCurrency?.stable) {
+                setPosition("buy")
+            }
+            if (toCurrency?.stable) {
+                setPosition("sell")
+            }
+            console.log(position);
+        }
+    }, [fromCurrency?.symbol, toCurrency?.symbol])
 
     useEffect(() => { //adding chain and type wrap
         if (conducted && stocks) {
-            console.log(conducted);
             conducted.tokens.map(async (token) => {
                 if (!stocks[token.id]) {
                     console.log(token.id, " there isn't in registrar");
@@ -156,33 +189,35 @@ const Sync2 = () => {
         setActiveSearchBox(false)
     }
 
-
-    const fromPrice = prices && prices[fromSymbol] ? prices[fromSymbol].price : 0
-    const { getAmountsOut } = useAmountsOut(debouncedAmountIn, fromPrice)
-    const { getAmountsIn } = useAmountsIn(swapState.from, debouncedAmountOut, fromPrice)
+    const targetCurrancy = position === "buy" ? toCurrency : fromCurrency
+    const choosedAsset = prices && targetCurrancy && prices[targetCurrancy.symbol] ? prices[targetCurrancy.symbol] : 0
+    const assetInfo = isLong ? choosedAsset["Long"] : choosedAsset["Short"]
+    const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
+    const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)
 
     useEffect(() => {
         const get = async () => {
             const result = getAmountsOut()
             if (!result) return
             if (amountIn === "" || isZero(amountIn)) setAmountOut("")
-            else setAmountOut(fromWei(result, swapState.to.decimals))
+            else setAmountOut(fromWei(result, toCurrency.decimals))
         }
         if (getAmountsOut && fouceType === "from")
             get()
-    }, [getAmountsOut, amountIn, fouceType, swapState.to])//replace multiple useState variables with useReducer
+    }, [getAmountsOut, amountIn, fouceType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
+
 
     useEffect(() => {
         const get = async () => {
             const result = await getAmountsIn()
             if (!result) return
             if (amountOut === "" || isZero(amountOut)) setAmountIn("")
-            else setAmountIn(fromWei(result, swapState.from.decimals))
+            else setAmountIn(fromWei(result, fromCurrency.decimals))
         }
         if (getAmountsIn && fouceType === "to")
             get()
         //eslint-disable-next-line
-    }, [getAmountsIn, amountOut])//replace multiple useState variables with useReducer
+    }, [getAmountsIn, amountOut, fouceType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
@@ -221,6 +256,7 @@ const Sync2 = () => {
                     hasMax={true}
                     inputAmount={amountIn}
                     setInputAmount={setAmountIn}
+                    setFouceType={setFouceType}
                     currency={fromCurrency}
                 />
 
@@ -234,6 +270,7 @@ const Sync2 = () => {
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
                     setActive={showSearchBox}
+                    setFouceType={setFouceType}
                     currency={toCurrency}
                 />
                 <LongShort setLong={setLong} isLong={isLong} />

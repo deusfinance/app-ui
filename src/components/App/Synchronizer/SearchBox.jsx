@@ -117,7 +117,6 @@ margin-left:7px;
 
 
 const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, active, setActive }) => {
-  console.log(currencies);
   const Output = useMemo(() => {
     console.log("cooomes");
     return currencies && <Wrapper>

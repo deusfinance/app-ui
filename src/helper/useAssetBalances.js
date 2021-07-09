@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import useWeb3 from "./useWeb3"
 import ERC20Abi from '../config/abi/ERC20Abi.json'
-import { getBalanceNumber } from './formatBalance';
+import { getFullDisplayBalance } from './formatBalance';
 import multicall from './multicall'
 import { concat } from 'lodash'
+import { formatBalance3 } from '../utils/utils';
+import useRefresh from './useRefresh';
 
 const useAssetBalances = (conducted, validChainId) => {
     const [balances, setBalances] = useState(null)
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
-    // const { slowRefresh } = useRefresh()
+    const { slowRefresh } = useRefresh()
 
     useEffect(() => {
 
@@ -29,13 +31,14 @@ const useAssetBalances = (conducted, validChainId) => {
                     }]
             })
 
+
             if (calls) {
                 const concatCalls = concat(...calls)
                 let balanceMap = {}
                 const result = await multicall(web3, ERC20Abi, concatCalls, chainId)
                 for (let i = 0; i < result.length; i++) {
-                    const balance = getBalanceNumber(result[i], 18)
-                    balanceMap[concatCalls[i].address] = balance
+                    const balance = getFullDisplayBalance(result[i], 18)
+                    balanceMap[concatCalls[i].address] = formatBalance3(balance)
                 }
                 setBalances(balanceMap)
             }
@@ -45,7 +48,7 @@ const useAssetBalances = (conducted, validChainId) => {
             fetchBalances()
             console.log("useTokenBalances");
         }
-    }, [account, conducted, chainId, validChainId, web3])
+    }, [account, conducted, chainId, validChainId, web3, slowRefresh])
 
     return balances
 }

@@ -35,7 +35,7 @@ const UserInfo = (props) => {
         [],
         owner,
         chainId,
-        `Claim ${claim} ${title}`
+        `Claim ${claim} DEA`
       )
     } catch (error) {
       console.log('Error happend in Claim', error)

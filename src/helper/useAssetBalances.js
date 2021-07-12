@@ -46,7 +46,6 @@ const useAssetBalances = (conducted, validChainId) => {
 
         if (account && validChainId === chainId) {
             fetchBalances()
-            console.log("useTokenBalances");
         }
     }, [account, conducted, chainId, validChainId, web3, slowRefresh])
 

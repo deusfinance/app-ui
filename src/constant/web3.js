@@ -76,7 +76,7 @@ export const NetworksData = {
         rpcUrls: ["https://bsc-dataseed1.binance.org"],
         blockExplorerUrls: ["https://bscscan.com"],
     },
-    [[ChainMap.BSC]]: {
+    [ChainMap.BSC_TESTNET]: {
         chainId: "0x61",
         chainName: "Binance Smart Chain Testnet",
         nativeCurrency: {

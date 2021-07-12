@@ -38,7 +38,7 @@ const useAssetBalances = (conducted, validChainId) => {
                 const result = await multicall(web3, ERC20Abi, concatCalls, chainId)
                 for (let i = 0; i < result.length; i++) {
                     const balance = getFullDisplayBalance(result[i], 18)
-                    balanceMap[concatCalls[i].address] = formatBalance3(balance)
+                    balanceMap[web3.utils.toChecksumAddress(concatCalls[i].address)] = formatBalance3(balance)
                 }
                 setBalances(balanceMap)
             }

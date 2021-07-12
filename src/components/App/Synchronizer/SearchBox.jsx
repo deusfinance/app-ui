@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styled, { keyframes } from 'styled-components'
 import { Flex } from 'rebass/styled-components'
 import { Type } from '../../App/Text';
-import { RowBetween } from '../../App/Row';
+import { RowBetween, RowFlat } from '../../App/Row';
 import CircleToken from '../../../assets/images/circle-token.svg'
 import { X } from 'react-feather'
 import { StyledLogo } from '../Currency';
@@ -10,7 +10,6 @@ import { FlexCenter } from '../Container';
 import FilterBox from './FilterBox';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getTransactionLink } from '../../../utils/explorers';
-
 const fadein = keyframes`
   from {
     opacity:0;
@@ -71,7 +70,7 @@ padding:0 15px;
 const TokensWrap = styled.div`
     /* padding:25px 0; */
     overflow-y: auto;
-    height: calc(100% - 225px);
+    height: calc(100% - 200px);
     margin:0 -20px;
     &::-webkit-scrollbar-thumb {
         border-radius: 10px;
@@ -118,7 +117,6 @@ margin-left:7px;
 
 const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, active, setActive }) => {
   const Output = useMemo(() => {
-    console.log("cooomes");
     return currencies && <Wrapper>
       <RowBetween fontWeight="300" >
         <Type.LG  >Select an asset</Type.LG>
@@ -141,26 +139,28 @@ const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, ac
               </TokenLogo>
               <Flex style={{ flexDirection: "column", marginLeft: "15px" }}>
                 <Type.LG fontWeight="300">{currency?.symbol}</Type.LG>
-                <Type.SM style={{ marginTop: "3px", maxWidth: "80%" }}  >{currency?.name}</Type.SM>
+                <Type.SM style={{ marginTop: "3px", maxWidth: "150px" }}  >{currency?.name}</Type.SM>
               </Flex>
-
             </TokenWrap>
+
             <Flex style={{ flexDirection: "column", justifyContent: "center", marginLeft: "15px" }}>
-              <RowBetween>
-                <Type.MD style={{ marginLeft: "10px", opacity: "0.75" }} >{balances && balances[currency.long?.address] ? balances[currency.long?.address] : "0.00000000"}  S
+              <RowFlat>
+                <Type.MD style={{ marginLeft: "10px", opacity: "0.75" }} >{balances && balances[currency.long?.address] ? balances[currency.long?.address] : "0.00000000"} S
                 </Type.MD>
                 <CopyToClipboard text={getTransactionLink(chainId, currency.long?.address, "token")}
                   onCopy={() => console.log("copied")}>
                   <Copy src="/img/copy2.svg" />
                 </CopyToClipboard>
-              </RowBetween>
-              <Type.MD style={{ marginLeft: "10px", opacity: "0.75" }} >{balances && balances[currency.short?.address] ? balances[currency.short?.address] : "0.00000000"} L
+              </RowFlat>
+              <RowFlat>
+                <Type.MD style={{ marginLeft: "10px", opacity: "0.75" }} >{balances && balances[currency.short?.address] ? balances[currency.short?.address] : "0.00000000"} L
+                  <CopyToClipboard text={getTransactionLink(chainId, currency.short?.address, "token")}
+                    onCopy={() => console.log("copied")}>
+                    <Copy src="/img/copy2.svg" />
+                  </CopyToClipboard>
+                </Type.MD>
+              </RowFlat>
 
-                <CopyToClipboard text={getTransactionLink(chainId, currency.short?.address, "token")}
-                  onCopy={() => console.log("copied")}>
-                  <Copy src="/img/copy2.svg" />
-                </CopyToClipboard>
-              </Type.MD>
             </Flex>
 
           </TokenRow>
@@ -168,7 +168,7 @@ const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, ac
 
       </TokensWrap>
     </Wrapper>
-  }, [currencies])
+  }, [currencies, balances])
 
   return (active && Output);
 }

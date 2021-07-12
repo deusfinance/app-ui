@@ -1,10 +1,10 @@
 import { useWeb3React } from '@web3-react/core';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
+import Wallets from '../../common/Navbar/Wallets';
 import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
 import { FlexCenter } from '../Container';
 // import Loader from '../Loader';
-
 
 
 const errors = {
@@ -58,12 +58,10 @@ const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrenc
         return null;
     }
 
-
-
     if (!account) {
         return <WrapActions>
             <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
-            <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
+            <ButtonSwap active={true} onClick={() => setShowWallets(true)}>
                 CONNECT WALLET
             </ButtonSwap>
         </WrapActions>
@@ -73,9 +71,6 @@ const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrenc
     if (checkError()) {
         return <ButtonSyncDeactive mt={mt}>{checkError()}</ButtonSyncDeactive>
     }
-
-
-
 
     return (<>
         {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} > SYNC</ButtonSwap> </WrapActions> : <>

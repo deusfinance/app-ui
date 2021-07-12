@@ -68,7 +68,7 @@ const Sync2 = () => {
     const [prices, setPrice] = useState(null)
     const [fromPerTo, setFromPerTo] = useState(true)
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [loadingCap, setLoadingCAP] = useState(false);
 
 
@@ -86,7 +86,7 @@ const Sync2 = () => {
 
     const getSignatures = useOracleFetch(oracle.signatures)
     const balances = useAssetBalances(conducted, SyncChainId)
-
+    // console.log(balances);
     // const freshPrice = useFreshOracleFetch(oracle.prices)
 
     useEffect(() => {
@@ -133,7 +133,6 @@ const Sync2 = () => {
 
     useEffect(() => {
         if (fromCurrency && toCurrency) {
-            console.log(fromCurrency);
             if (position === "buy") {
                 toCurrency.address = isLong ? toCurrency.long.address : toCurrency.short.address
                 setToCurrency({ ...toCurrency })
@@ -141,7 +140,7 @@ const Sync2 = () => {
                 fromCurrency.address = isLong ? fromCurrency.long.address : fromCurrency.short.address
                 setFromCurrency({ ...fromCurrency })
             }
-            console.log(fromCurrency);
+            console.log("comes here", fromCurrency);
         }
     }, [isLong, position])
 
@@ -183,9 +182,16 @@ const Sync2 = () => {
     }
 
     const setectToken = (token, type) => {
+        console.log(token, type);
         token.address = isLong ? token.long.address : token.short.address
-        type === "to" ? setFromCurrency(token) : setToCurrency(token)
-        type === "to" ? setToCurrency(stableCoin) : setFromCurrency(stableCoin)
+        if (type === "to") {
+            setFromCurrency(token)
+            setToCurrency(stableCoin)
+        }
+        if (type === "from") {
+            setToCurrency(token)
+            setFromCurrency(stableCoin)
+        }
         setActiveSearchBox(false)
     }
 
@@ -253,6 +259,7 @@ const Sync2 = () => {
                 <TokenBox
                     type="from"
                     setActive={showSearchBox}
+                    TokensMap={balances}
                     hasMax={true}
                     inputAmount={amountIn}
                     setInputAmount={setAmountIn}
@@ -268,11 +275,13 @@ const Sync2 = () => {
                     type="to"
                     title="To (estimated)"
                     inputAmount={amountOut}
+                    TokensMap={balances}
                     setInputAmount={setAmountOut}
                     setActive={showSearchBox}
                     setFouceType={setFouceType}
                     currency={toCurrency}
                 />
+
                 <LongShort setLong={setLong} isLong={isLong} />
 
                 <PriceBox />

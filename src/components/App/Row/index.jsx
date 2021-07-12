@@ -23,6 +23,8 @@ export const RowCenter = styled(Row)`
 export const RowFlat = styled.div`
   display: flex;
   align-items: flex-end;
+  justify-content: flex-end;
+
 `
 
 export const AutoRow = styled(Row)`

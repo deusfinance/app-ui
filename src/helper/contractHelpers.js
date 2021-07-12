@@ -7,9 +7,11 @@ import UniswapV2Abi from '../config/abi/UniswapV2Abi.json'
 import MultiCallAbi from '../config/abi/Multicall.json'
 import MuonPresaleAbi from '../config/abi/MuonPresale.json'
 import SealedSwapperAbi from '../config/abi/SealedSwapperAbi.json'
+import SyncAbi from '../config/abi/Sync.json'
 import { MULTICALL_NETWORKS } from '../constant/contracts'
 import { ChainMap } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
+import { SyncData } from '../constant/synchronizer'
 
 const getContract = (abi, address, web3) => {
     const _web3 = web3 ?? web3NoAccount
@@ -18,6 +20,10 @@ const getContract = (abi, address, web3) => {
 
 export const getMultiSwapContract = (web3, chainId = ChainMap.MAINNET) => {
     return getContract(muliSwapAbi, getContractAddr("multi_swap_contract", chainId), web3)
+}
+
+export const getSynchronizerContract = (web3, chainId = ChainMap.MAINNET) => {
+    return getContract(SyncAbi, SyncData[chainId].contract, web3)
 }
 
 export const getDeusAutomaticMarketMakerContract = (web3, chainId = ChainMap.MAINNET) => {

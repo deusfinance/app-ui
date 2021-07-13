@@ -169,7 +169,7 @@ const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, ac
 
       </TokensWrap>
     </Wrapper>
-  }, [currencies, balances])
+  }, [currencies, chainId, escapedType, balances])
 
   return (active && Output);
 }

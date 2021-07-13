@@ -147,7 +147,6 @@ const Sync2 = () => {
 
     useEffect(() => {
         if (fromCurrency && toCurrency) {
-            console.log(fromCurrency);
             if (fromCurrency?.stable) {
                 setPosition("buy")
             }
@@ -182,7 +181,6 @@ const Sync2 = () => {
     }
 
     const setectToken = (token, type) => {
-        console.log(token, type);
         token.address = isLong ? token.long.address : token.short.address
         if (type === "to") {
             setFromCurrency(token)
@@ -200,6 +198,7 @@ const Sync2 = () => {
     const assetInfo = isLong ? choosedAsset["Long"] : choosedAsset["Short"]
     const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
     const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)
+    const { onSync } = useSync(fromCurrency, toCurrency, amountIn, amountOut, getSignatures, position, SyncChainId)
 
     useEffect(() => {
         const get = async () => {
@@ -287,6 +286,7 @@ const Sync2 = () => {
                 <PriceBox />
 
                 <SyncAction
+                    handlSync={onSync}
                     fromCurrency={fromCurrency}
                     validNetworks={validChains}
                     isPreApproved={true}

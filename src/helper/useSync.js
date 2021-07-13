@@ -33,27 +33,24 @@ export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, getSignat
             console.log(e);
             return false
         }
-    }, [account, chainId, validChainId, fromCurrency, toCurrency, amountIn, amountOut, getSignatures, web3])
+    }, [account, chainId, validChainId, fromCurrency, toCurrency, amountIn, type, amountOut, getSignatures, web3])
     return { onSync: handleSync }
 }
 
-export const useAmountsOut = (from, to, debouncedAmountIn, assetInfo, stablePrice = 1) => {
-    const assetPrice = assetInfo?.price
-    const fee = assetInfo?.fee
+export const useAmountsOut = (from, to, debouncedAmountIn, assetInfo) => {
+    const { fromPrice, toPrice, fee } = assetInfo
     const getAmountsOut = useCallback(() => {
-        if (!assetInfo || isZero(assetPrice)) return ""
-        return getToWei(new BigNumber(stablePrice).times(debouncedAmountIn).times(1 - fee).div(assetPrice), to.decimals)
+        if (!fromPrice || isZero(toPrice)) return ""
+        return getToWei(new BigNumber(fromPrice).times(debouncedAmountIn).times(1 - fee).div(toPrice), to.decimals)
     }, [to, from, debouncedAmountIn, assetInfo])
     return { getAmountsOut }
 }
 
-export const useAmountsIn = (from, to, debouncedAmountOut, assetInfo, stablePrice = 1) => {
-    const assetPrice = assetInfo?.price
-    const fee = assetInfo?.fee
+export const useAmountsIn = (from, to, debouncedAmountOut, assetInfo) => {
+    const { fromPrice, toPrice, fee } = assetInfo
     const getAmountsIn = useCallback(async () => {
-        if (!assetInfo || isZero(assetPrice)) return ""
-        return getToWei(new BigNumber(assetPrice).times(debouncedAmountOut).div(stablePrice).times(1 + fee), to.decimals)
-
+        if (!fromPrice || isZero(toPrice)) return ""
+        return getToWei(new BigNumber(toPrice).times(debouncedAmountOut).div(fromPrice).times(1 + fee), to.decimals)
     }, [to, from, debouncedAmountOut, assetInfo])
     return { getAmountsIn }
 }

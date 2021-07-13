@@ -6,14 +6,14 @@ import { ApproveTranaction, SwapTranaction } from "../utils/explorers"
 import { ethers } from "ethers"
 
 
-export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracles, type, account, chainId, web3) => {
+export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracles, type, requiredSignitures, account, chainId, web3) => {
     let hash = null
     const amountInWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
     const amountOutWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
 
     if (amountIn === "" || isZero(amountInWei) || amountOut === "" || isZero(amountOutWei)) return { status: false }
 
-    const syncFunc = syncFuncMaker(fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type = "buy", account, chainId, web3)
+    const syncFunc = syncFuncMaker(fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type = "buy", requiredSignitures, account, chainId, web3)
     let sendArgs = { from: account }
     if (fromCurrency.address === "0x") sendArgs["value"] = amountInWei
 
@@ -47,6 +47,7 @@ const syncFuncMaker = (fromCurrency, toCurrency, amountInWei, amountOutWei, orac
     const currCurrency = type === "buy" ? toCurrency : fromCurrency
     const amount = type === "buy" ? amountOutWei : amountInWei
     const data = oracles.slice(0, requiredSignitures)
+    console.log(chainId);
     return getSynchronizerContract(web3, chainId)
         .methods[type + "For"](
             account, oracles[0].multiplier,

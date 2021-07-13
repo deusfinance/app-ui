@@ -48,7 +48,7 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrency, mt }) => {
+const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrency, handlSync = undefined, mt }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
@@ -73,7 +73,7 @@ const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrenc
     }
 
     return (<>
-        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} > SYNC</ButtonSwap> </WrapActions> : <>
+        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap onClick={() => handlSync()} active={true} > SYNC</ButtonSwap> </WrapActions> : <>
             <WrapActions mt={mt}>
                 <ButtonSwap active={true} >
                     APPROVE

@@ -5,19 +5,25 @@ import useWeb3 from './useWeb3'
 import { isZero } from '../constant/number'
 import BigNumber from 'bignumber.js'
 import { getToWei } from './formatBalance'
-export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, oracles, validChainId) => {
+export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, getSignatures, type, validChainId) => {
     const { account, chainId } = useWeb3React()
 
     const web3 = useWeb3()
     const handleSync = useCallback(async () => {
         try {
             if (validChainId && chainId !== validChainId) return false
+            const chooseCurrency = type === "sell" ? fromCurrency : toCurrency
+            const signitures = await getSignatures()
+            const oracles = signitures.map(signiture => signiture[chooseCurrency.address])
+            const requiredSignitures = 2
             const tx = await sync(
                 fromCurrency,
                 toCurrency,
                 amountIn,
                 amountOut,
                 oracles,
+                type,
+                requiredSignitures,
                 account,
                 chainId,
                 web3,
@@ -27,7 +33,7 @@ export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, oracles, 
             console.log(e);
             return false
         }
-    }, [account, chainId, validChainId, fromCurrency, toCurrency, amountIn, amountOut, web3])
+    }, [account, chainId, validChainId, fromCurrency, toCurrency, amountIn, amountOut, getSignatures, web3])
     return { onSync: handleSync }
 }
 

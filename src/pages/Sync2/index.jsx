@@ -50,7 +50,8 @@ const Sync2 = () => {
     const SyncChainId = validChains[0]
 
     const oracle = SyncData[SyncChainId]
-    const stableCoin = oracle.stableCoin
+    const { stableCoin: stableToken } = oracle
+    const stableCoin = { ...stableToken, stable: true }
     const [fromCurrency, setFromCurrency] = useState({ ...stableCoin, stable: true })
     const [isLong, setLong] = useState(true)
     const [position, setPosition] = useState("buy")
@@ -71,22 +72,15 @@ const Sync2 = () => {
     const [loading, setLoading] = useState(true);
     const [loadingCap, setLoadingCAP] = useState(false);
 
-
     const [fouceType, setFouceType] = useState("from")
     const { account, chainId } = useWeb3React()
-
-    const changePosition = () => {
-        setFromCurrency({ ...toCurrency, amount: "" })
-        setToCurrency({ ...fromCurrency, amount: "" })
-    }
 
     const getConducted = useOracleFetch(oracle.conducted)
     const getPrices = useOracleFetch(oracle.prices)
     const getStocks = useOracleFetch(oracle.registrar)
-
     const getSignatures = useOracleFetch(oracle.signatures)
     const balances = useAssetBalances(conducted, SyncChainId)
-    // console.log(balances);
+
     // const freshPrice = useFreshOracleFetch(oracle.prices)
 
     useEffect(() => {
@@ -95,6 +89,14 @@ const Sync2 = () => {
         } else
             if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
     }, [amountIn, debouncedAmountIn, debouncedAmountOut, fouceType, amountOut]);
+
+
+
+    const changePosition = () => {
+        setFromCurrency({ ...toCurrency, amount: "" })
+        setToCurrency({ ...fromCurrency, amount: "" })
+    }
+
 
 
     const getData = useCallback(() => {
@@ -140,22 +142,20 @@ const Sync2 = () => {
                 fromCurrency.address = isLong ? fromCurrency.long.address : fromCurrency.short.address
                 setFromCurrency({ ...fromCurrency })
             }
-            console.log("comes here", fromCurrency);
         }
     }, [isLong, position])
 
 
     useEffect(() => {
         if (fromCurrency && toCurrency) {
-            if (fromCurrency?.stable) {
+            if (fromCurrency.stable) {
                 setPosition("buy")
             }
-            if (toCurrency?.stable) {
+            if (toCurrency.stable) {
                 setPosition("sell")
             }
-            console.log(position);
         }
-    }, [fromCurrency?.symbol, toCurrency?.symbol])
+    }, [fromCurrency, toCurrency])
 
     useEffect(() => { //adding chain and type wrap
         if (conducted && stocks) {
@@ -176,17 +176,19 @@ const Sync2 = () => {
     }, [conducted, stocks, account])//eslint-disable-line
 
     const showSearchBox = (active = false, type) => {
+        console.log(type);
         setEscapedType(type)
         setActiveSearchBox(active)
     }
 
     const setectToken = (token, type) => {
         token.address = isLong ? token.long.address : token.short.address
-        if (type === "to") {
+        console.log(type);
+        if (type === "from") {
             setFromCurrency(token)
             setToCurrency(stableCoin)
         }
-        if (type === "from") {
+        if (type === "to") {
             setToCurrency(token)
             setFromCurrency(stableCoin)
         }
@@ -195,7 +197,19 @@ const Sync2 = () => {
 
     const targetCurrancy = position === "buy" ? toCurrency : fromCurrency
     const choosedAsset = prices && targetCurrancy && prices[targetCurrancy.symbol] ? prices[targetCurrancy.symbol] : 0
-    const assetInfo = isLong ? choosedAsset["Long"] : choosedAsset["Short"]
+    const assetPrice = isLong ? choosedAsset["Long"] : choosedAsset["Short"]
+    let assetInfo = { fromPrice: null, toPrice: null, fee: 0 }
+    if (assetPrice)
+        if (position === "buy") {
+            assetInfo.fromPrice = 1
+            assetInfo.toPrice = assetPrice.price
+            assetInfo.fee = assetPrice.fee
+        } else {
+            assetInfo.fromPrice = assetPrice.price
+            assetInfo.fee = assetPrice.fee
+            assetInfo.toPrice = 1
+        }
+
     const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
     const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)
     const { onSync } = useSync(fromCurrency, toCurrency, amountIn, amountOut, getSignatures, position, SyncChainId)

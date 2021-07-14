@@ -20,7 +20,8 @@ import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
 import { useSync, useAmountsIn, useAmountsOut } from '../../helper/useSync';
 import { isZero } from '../../constant/number';
-import { fromWei } from '../../helper/formatBalance';
+import { fromWei, RoundNumber } from '../../helper/formatBalance';
+
 // import { dAmcTestToken } from '../../constant/token';
 // import { sendMessage } from '../../utils/telegramLogger';
 // import { ApproveTranaction } from '../../utils/explorers';
@@ -219,7 +220,7 @@ const Sync2 = () => {
             const result = getAmountsOut()
             if (!result) return
             if (amountIn === "" || isZero(amountIn)) setAmountOut("")
-            else setAmountOut(fromWei(result, toCurrency.decimals))
+            else setAmountOut(RoundNumber(fromWei(result, toCurrency.decimals), toCurrency.decimals))
         }
         if (getAmountsOut && fouceType === "from")
             get()

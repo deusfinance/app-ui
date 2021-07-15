@@ -159,12 +159,13 @@ const TokenContainer = (props) => {
 
         approve = Number(web3.utils.fromWei(approve, 'ether'))
 
-        let apy =
-          (Number(web3.utils.fromWei(numbers[7], 'ether')) +
-            Number(web3.utils.fromWei(numbers[8], 'ether'))) *
-          100
+        // let apy =
+        //   (Number(web3.utils.fromWei(numbers[7], 'ether')) +
+        //     Number(web3.utils.fromWei(numbers[8], 'ether'))) *
+        //   100
+        let apy = 10
 
-        apy = apy <= 0.5 ? 10 : apy
+        // apy = apy <= 0.5 ? 10 : apy
 
         let stakeType = numbers[1]
         let claim = web3.utils.fromWei(numbers[9], 'ether')

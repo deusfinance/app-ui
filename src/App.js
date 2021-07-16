@@ -22,15 +22,7 @@ const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const NotFound = React.lazy(() => import('./components/NotFound'))
-
-// const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
-// const Bridge = React.lazy(() => import('./components/Bridge'))
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));
-// const Sync = React.lazy(() => import('./pages/Sync'));
-// const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
-// const dbETH = React.lazy(() => import('./pages/dbETH'))
-
-
 
 function App() {
 
@@ -74,15 +66,12 @@ function App() {
                   path="/stake-and-yield"
                   component={StakeAndYield}
                 />
-                {/* <Route exact path="/dbETH" component={dbETH} /> */}
-                {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/sync2" component={Sync2} />
                 <Route exact path="/swap2" component={Swap2} />
                 <Route exact path="/sealed-swap" component={Sealed} />
                 <Route exact path="/muon-presale" component={Muon} />
                 <Redirect exact from="/" to="/swap" />
                 <Route path="/" component={Deus} />
-                {/* <Route exact path="/test-style" component={Test} /> */}
                 <Redirect to="not-found" />
               </Switch>
             </div>

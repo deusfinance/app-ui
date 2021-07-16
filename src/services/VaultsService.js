@@ -7,7 +7,7 @@ export class VaultsService {
     constructor(account, chainId = 1) {
         this.account = account;
         this.chainId = 1;
-        this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/cf6ea736e00b4ee4bc43dfdb68f51093';
+        this.INFURA_URL = 'wss://' + this.getNetworkName() + '.infura.io/ws/v3/' + process.env.REACT_APP_INFURA_KEY;
         this.infuraWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.INFURA_URL));
         this.AutomaticMarketMakerContract = new this.infuraWeb3.eth.Contract(abis["amm"], this.getAddr("amm"));
     }

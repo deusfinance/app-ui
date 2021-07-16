@@ -46,7 +46,6 @@ const handleRatio = (amountIn, amountOut, invert) => {
 
 
 const RateBox = ({ currencies, marketPrice, amountIn, amountOut, invert }) => {
-    // const mp = isNumber(marketPrice) ? marketPrice : ""
     const mp = marketPrice
     return (<Wrapper>
         <Type.XS>Market Price @ {mp}</Type.XS>

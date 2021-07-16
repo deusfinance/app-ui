@@ -31,7 +31,7 @@ const customStyles = {
     maxHeight: '600px',
     maxWidth: '500px',
     width: '95vw',
-    background: '#2D2F35',
+    background: 'transparent',
     border: '1px solid #000000',
     borderRadius: '10px',
     paddingBottom: '20px',

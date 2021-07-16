@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components'
 import { FlexCenter } from '../Container';
 import { Type } from '../Text';
+import BigNumber from 'bignumber.js';
+import { isNumber } from 'lodash';
 
 
 const Wrapper = styled.div`
@@ -21,11 +23,35 @@ const SwapArrow = styled(FlexCenter)`
     }
 `
 
-const PriceBox = () => {
+
+const handleName = (state, invert) => {
+    const { from, to } = state
+    if (invert) return `${to.symbol} per ${from.symbol}`
+    return ` ${from.symbol} per ${to.symbol}`
+}
+
+
+const handleRatio = (amountIn, amountOut, invert) => {
+    if (!amountIn || !amountOut || isNaN(amountIn) || isNaN(amountOut)) return ""
+    if (parseFloat(amountIn) <= 0 || parseFloat(amountOut) <= 0) return ''
+    const amountInBig = new BigNumber(amountIn)
+    const amountOutBig = new BigNumber(amountOut)
+    if (invert) {
+        const invertRatio = amountOutBig.div(amountInBig, 10).toFixed(6, 0)
+        return `${invertRatio}`
+    }
+    const ratio = amountInBig.div(amountOutBig, 10).toFixed(6, 0)
+    return `${ratio}`
+}
+
+
+const RateBox = ({ currencies, marketPrice, amountIn, amountOut, invert }) => {
+    // const mp = isNumber(marketPrice) ? marketPrice : ""
+    const mp = marketPrice
     return (<Wrapper>
-        <Type.XS>Market Price @ 660.98</Type.XS>
+        <Type.XS>Market Price @ {mp}</Type.XS>
         <FlexCenter style={{ justifyContent: "left", marginTop: "5px" }}>
-            <Type.XS>660.98 xDAI per dTSLA</Type.XS>
+            <Type.XS>{handleRatio(amountIn, amountOut, invert)} {handleName(currencies, invert)}  </Type.XS>
             <SwapArrow style={{ marginLeft: "5px" }} >
                 <svg width={15} height={15} viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx={5} cy={5} r={5} fill="white" fillOpacity="0.75" />
@@ -38,4 +64,4 @@ const PriceBox = () => {
     </Wrapper>);
 }
 
-export default PriceBox;
+export default RateBox;

@@ -13,8 +13,6 @@ const Wrapper = styled.div`
     font-family:"Monument Grotesk Semi";
 
 `
-
-
 const SwapArrow = styled(FlexCenter)`
     display:inline-flex;
     cursor:pointer;

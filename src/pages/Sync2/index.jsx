@@ -8,7 +8,7 @@ import SyncAction from '../../components/App/Synchronizer/SyncAction';
 import SearchBox from '../../components/App/Synchronizer/SearchBox';
 import { Base } from '../../components/App/Button';
 import LongShort from '../../components/App/Synchronizer/LongShort';
-import PriceBox from '../../components/App/Synchronizer/PriceBox';
+import RateBox from '../../components/App/Synchronizer/RateBox';
 import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
 import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../helper/useDebounce';
@@ -54,6 +54,7 @@ const Sync2 = () => {
     const { stableCoin: stableToken } = oracle
     const stableCoin = { ...stableToken, stable: true }
     const [fromCurrency, setFromCurrency] = useState({ ...stableCoin, stable: true })
+    const [invert, setInvert] = useState(false)
     const [isLong, setLong] = useState(true)
     const [position, setPosition] = useState("buy")
 
@@ -298,7 +299,12 @@ const Sync2 = () => {
 
                 <LongShort setLong={setLong} isLong={isLong} />
 
-                <PriceBox />
+                <RateBox
+                    currencies={{ from: fromCurrency, to: toCurrency || { symbol: "dAsset" } }}
+                    marketPrice={choosedAsset["Long"]?.price || "CLOSED"}
+                    amountIn={amountIn}
+                    amountOut={amountOut}
+                    invert={invert} />
 
                 <SyncAction
                     handlSync={onSync}

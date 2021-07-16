@@ -21,6 +21,7 @@ import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import { SEALED_ADDRESS } from '../../constant/contracts';
+import { isNumber } from 'lodash';
 
 const Sealed = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -39,13 +40,13 @@ const Sealed = () => {
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
 
-    if (inputCurrency) inputCurrency = inputCurrency.toLowerCase()
+    if (inputCurrency) inputCurrency = inputCurrency
 
 
     const tokens = useMemo(() => SealedTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address.toLowerCase()] = { ...token, address: token.address.toLowerCase() }, map), {})
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
@@ -56,8 +57,7 @@ const Sealed = () => {
         inputCurrency = null
     }
 
-    // const sdeaContract = getTokenAddr("sand_dea", chainId).toLowerCase()
-    const sUniDD = getTokenAddr("sand_deus_dea", chainId).toLowerCase()
+    const sUniDD = getTokenAddr("sand_deus_dea", chainId)
 
     let fromAddress = inputCurrency ? inputCurrency : sUniDD
 
@@ -137,7 +137,8 @@ const Sealed = () => {
             if (amountIn === "") setAmountOut("")
             else setAmountOut(fromWei(result.amountOut, swapState.to.decimals))
         }
-        get()
+        if (amountIn !== "")
+            get()
 
         //eslint-disable-next-line
     }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer

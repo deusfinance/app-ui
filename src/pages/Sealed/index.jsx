@@ -21,7 +21,6 @@ import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import { SEALED_ADDRESS } from '../../constant/contracts';
-import { isNumber } from 'lodash';
 
 const Sealed = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -39,9 +38,6 @@ const Sealed = () => {
 
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
-
-    if (inputCurrency) inputCurrency = inputCurrency
-
 
     const tokens = useMemo(() => SealedTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 

@@ -138,11 +138,12 @@ const Sync2 = () => {
     useEffect(() => {
         if (fromCurrency && toCurrency) {
             if (position === "buy") {
-                toCurrency.address = isLong ? toCurrency.long.address : toCurrency.short.address
-                setToCurrency({ ...toCurrency })
+                const currency = isLong ? { ...toCurrency, address: toCurrency.long.address, symbol: toCurrency.long_symbol } : { ...toCurrency, address: toCurrency.short.address, symbol: toCurrency.short_symbol }
+                setToCurrency({ ...currency })
             } else {
-                fromCurrency.address = isLong ? fromCurrency.long.address : fromCurrency.short.address
-                setFromCurrency({ ...fromCurrency })
+                const currency = isLong ? { ...fromCurrency, address: fromCurrency.long.address, symbol: fromCurrency.long_symbol } : { ...fromCurrency, address: fromCurrency.short.address, symbol: fromCurrency.short_symbol }
+                // fromCurrency.address = isLong ? fromCurrency.long.address : fromCurrency.short.address
+                setFromCurrency({ ...currency })
             }
         }
     }, [isLong, position])
@@ -178,14 +179,13 @@ const Sync2 = () => {
     }, [conducted, stocks, account])//eslint-disable-line
 
     const showSearchBox = (active = false, type) => {
-        console.log(type);
         setEscapedType(type)
         setActiveSearchBox(active)
     }
 
     const setectToken = (token, type) => {
         token.address = isLong ? token.long.address : token.short.address
-        console.log(type);
+        token.symbol = isLong ? token.long_symbol : token.short_symbol
         if (type === "from") {
             setFromCurrency(token)
             setToCurrency(stableCoin)
@@ -198,7 +198,8 @@ const Sync2 = () => {
     }
 
     const targetCurrancy = position === "buy" ? toCurrency : fromCurrency
-    const choosedAsset = prices && targetCurrancy && prices[targetCurrancy.symbol] ? prices[targetCurrancy.symbol] : 0
+    const priceSymbol = targetCurrancy && targetCurrancy.long_symbol.substring(1)
+    const choosedAsset = prices && targetCurrancy && prices[priceSymbol] ? prices[priceSymbol] : 0
     const assetPrice = isLong ? choosedAsset["Long"] : choosedAsset["Short"]
     let assetInfo = { fromPrice: null, toPrice: null, fee: 0 }
     if (assetPrice)
@@ -304,6 +305,7 @@ const Sync2 = () => {
                     marketPrice={choosedAsset["Long"]?.price || "CLOSED"}
                     amountIn={amountIn}
                     amountOut={amountOut}
+                    setInvert={setInvert}
                     invert={invert} />
 
                 <SyncAction

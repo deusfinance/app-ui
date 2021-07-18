@@ -1,10 +1,45 @@
-import { useCallback } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { sync } from './syncHelper'
 import useWeb3 from './useWeb3'
 import { isZero } from '../constant/number'
 import BigNumber from 'bignumber.js'
 import { getToWei } from './formatBalance'
+import { useWeb3React } from "@web3-react/core"
+import { useEffect, useState, useCallback } from "react"
+import useRefresh from "./useRefresh";
+import { useERC20 } from './useContract'
+import { ethers } from "ethers";
+import { ZERO } from "../constant/number";
+import { SyncData } from '../constant/synchronizer'
+
+export const useAllowance = (currency, contractAddress, validChainId) => {
+    const [allowance, setAllowance] = useState(new BigNumber(-1))
+    const { account, chainId } = useWeb3React()
+    const { fastRefresh } = useRefresh()
+    const { address: tokenAddress } = currency
+    const contract = useERC20(tokenAddress)
+    const SyncConfig = SyncData[validChainId]
+
+    useEffect(() => {
+        const fetchAllowance = async () => {
+            if (currency.stable && !SyncConfig.isStableApprovable) setAllowance(ethers.constants.MaxUint256)
+            if (!currency.stable && !SyncConfig.isAssetApprovable) setAllowance(ethers.constants.MaxUint256)
+            if (contract === null) setAllowance(ethers.constants.MaxUint256)
+            if (validChainId && chainId !== validChainId) setAllowance(ZERO)
+            else {
+                const res = await contract.methods.allowance(account, contractAddress).call()
+                setAllowance(new BigNumber(res))
+            }
+        }
+        if (account && tokenAddress) {
+            setAllowance(new BigNumber(-1))
+            fetchAllowance()
+        }
+    }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh])
+
+    return allowance
+}
+
+
 export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, getSignatures, type, validChainId) => {
     const { account, chainId } = useWeb3React()
 
@@ -54,3 +89,4 @@ export const useAmountsIn = (from, to, debouncedAmountOut, assetInfo) => {
     }, [to, from, debouncedAmountOut, assetInfo])
     return { getAmountsIn }
 }
+

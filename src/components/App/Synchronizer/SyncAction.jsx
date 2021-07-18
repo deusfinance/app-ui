@@ -1,16 +1,19 @@
 import { useWeb3React } from '@web3-react/core';
 import React, { useState } from 'react';
 import styled from 'styled-components'
+import { isGt, isZero } from '../../../constant/number';
 import Wallets from '../../common/Navbar/Wallets';
 import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
 import { FlexCenter } from '../Container';
+import { WaveLoading } from 'react-loadingg';
+
 // import Loader from '../Loader';
-
-
 const errors = {
     NotConnected: "CONNECT WALLET",
     WrongNetwork: "WRONG NETWORK",
     EMPTY: "ENTER AMOUNT",
+    INSUFFICIENT: "INSUFFICIENT BALANCE",
+    LOADING: "LOADING...",
 }
 
 
@@ -48,13 +51,16 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrency, handlSync = undefined, mt }) => {
+const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency, toCurrency, handlSync = undefined, mt, isApproved, handleApprove, loading, bgColor, amountIn, amountOut }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
+        if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
+        if (TokensMap && isGt(amountIn, TokensMap[fromCurrency.address]?.balance)) return errors.INSUFFICIENT
+        if (isNaN(amountOut)) return errors.LOADING
         return null;
     }
 
@@ -69,23 +75,43 @@ const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrenc
 
 
     if (checkError()) {
-        return <ButtonSyncDeactive mt={mt}>{checkError()}</ButtonSyncDeactive>
+        return <WrapActions>
+            <ButtonSyncDeactive mt={mt} >{checkError()}</ButtonSyncDeactive>
+        </WrapActions>
+    }
+
+    if (isPreApproved == null) {
+        return <WrapActions>
+            <ButtonSyncDeactive>
+                <WaveLoading />
+            </ButtonSyncDeactive>
+        </WrapActions>
     }
 
     return (<>
-        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap onClick={() => handlSync()} active={true} > SYNC</ButtonSwap> </WrapActions> : <>
-            <WrapActions mt={mt}>
-                <ButtonSwap active={true} >
-                    APPROVE
-                </ButtonSwap>
-                <ButtonSyncDeactive>SYNC (BUY)</ButtonSyncDeactive>
-            </WrapActions>
-            <WrapStep>
-                <CycleNumber active={true}>1</CycleNumber>
-                <Line></Line>
-                <CycleNumber active={false}>2</CycleNumber>
-            </WrapStep>
-        </>
+        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap onClick={() => handlSync()} active={true} > SYNC</ButtonSwap></WrapActions> :
+            <>
+                <WrapActions mt={mt}>
+                    {!isApproved ? <>
+                        <ButtonSwap bgColor={bgColor} active={true} onClick={handleApprove} >
+                            APPROVE
+                            {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
+                        </ButtonSwap>
+                        <ButtonSyncDeactive>SYNC</ButtonSyncDeactive>
+                    </> : <>
+                        <ButtonSyncDeactive>APPROVED</ButtonSyncDeactive>
+                        <ButtonSwap bgColor={bgColor} active={true} onClick={handlSync}>
+                            SYNC
+                        </ButtonSwap>
+                    </>
+                    }
+                </WrapActions>
+                <WrapStep>
+                    <CycleNumber active={true}>1</CycleNumber>
+                    <Line></Line>
+                    <CycleNumber active={false} active={isApproved}>2</CycleNumber>
+                </WrapStep>
+            </>
         }
     </>);
 }

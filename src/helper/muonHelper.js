@@ -94,3 +94,61 @@ export const fetcher = async function (url, init) {
 }
 
 
+const getTimestamp = () => Math.floor(Date.now() / 1000)
+
+
+
+// const time = getTimestamp()
+// signMsg(msgParams, '0x5629227C1E2542DbC5ACA0cECb7Cd3E02C82AD0a')
+
+export function signMsg(msgParams, amount, time, account, chainId, web3) {
+    if (!account || !chainId) return
+
+    const msgParams = [
+        {
+            type: 'uint256', // Any valid solidity type
+            name: 'time', // Any string label you want
+            value: time // The value to sign
+        },
+        {
+            type: 'address',
+            name: 'forAddress',
+            value: account
+        }
+    ]
+
+
+    web3.sendAsync(
+        {
+            method: 'eth_signTypedData',
+            params: [msgParams, account],
+            from: from
+        },
+        async function (err, result) {
+            if (err) return console.error(err)
+            if (result.error) {
+                return console.error(result.error.message)
+            }
+            const BASE_URL = 'http://node1.muon.net/v1/'
+            let data = {
+                app: 'presale',
+                method: 'deposit',
+                params: {
+                    token: 'ERT',
+                    amount: amount,
+                    forAddress: account,
+                    time,
+                    sign: result.result,
+                    chainId: chainId
+                }
+            }
+            try {
+                const response = await axios.post(BASE_URL, data)
+                console.log(response)
+                setResponse(JSON.stringify(response.data, undefined, 2))
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    )
+}

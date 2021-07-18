@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components'
 import { Image } from 'rebass/styled-components';
+import BigNumber from 'bignumber.js';
 import { FlexCenter } from '../../components/App/Container';
 import { SwapWrapper, SwapArrow, } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
@@ -18,9 +19,11 @@ import { RowCenter } from '../../components/App/Row';
 import { useFreshOracleFetch, useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
-import { useSync, useAmountsIn, useAmountsOut } from '../../helper/useSync';
+import { useSync, useAmountsIn, useAmountsOut, useAllowance } from '../../helper/useSync';
+import { useApprove } from '../../helper/useApprove';
 import { isZero } from '../../constant/number';
 import { fromWei, RoundNumber } from '../../helper/formatBalance';
+import { NameChainMap } from '../../constant/web3';
 
 // import { dAmcTestToken } from '../../constant/token';
 // import { sendMessage } from '../../utils/telegramLogger';
@@ -49,7 +52,9 @@ const Sync2 = () => {
     const location = useLocation()
     const validChains = getCorrectChains(location.pathname)
     const SyncChainId = validChains[0]
-
+    const [isApproved, setIsApproved] = useState(null)
+    const [isPreApproved, setIsPreApproved] = useState(null)
+    const [approveLoading, setApproveLoading] = useState(false)
     const oracle = SyncData[SyncChainId]
     const { stableCoin: stableToken } = oracle
     const stableCoin = { ...stableToken, stable: true }
@@ -83,6 +88,9 @@ const Sync2 = () => {
     const getSignatures = useOracleFetch(oracle.signatures)
     const balances = useAssetBalances(conducted, SyncChainId)
 
+    const allowance = useAllowance(fromCurrency, oracle.contract, SyncChainId)
+
+
     // const freshPrice = useFreshOracleFetch(oracle.prices)
 
     useEffect(() => {
@@ -92,14 +100,34 @@ const Sync2 = () => {
             if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
     }, [amountIn, debouncedAmountIn, debouncedAmountOut, fouceType, amountOut]);
 
+    useEffect(() => {
+        if (isPreApproved == null) {
+            if (allowance.toString() === "-1") {
+                setIsPreApproved(null) //doNothing
+            } else {
+                if (allowance.gt(0)) {
+                    setIsPreApproved(true)
+                } else {
+                    setIsPreApproved(false)
+                }
+            }
+        } else {
+            if (allowance.gt(0)) {
+                setIsApproved(true)
+            }
+        }
+        //eslint-disable-next-line 
+    }, [allowance]) //isPreApproved ?
 
+    useEffect(() => {
+        setIsPreApproved(null)
+        setIsApproved(null)
+    }, [chainId, account, fromCurrency]);
 
     const changePosition = () => {
         setFromCurrency({ ...toCurrency, amount: "" })
         setToCurrency({ ...fromCurrency, amount: "" })
     }
-
-
 
     const getData = useCallback(() => {
         setLoading(true);
@@ -198,7 +226,7 @@ const Sync2 = () => {
     }
 
     const targetCurrancy = position === "buy" ? toCurrency : fromCurrency
-    const priceSymbol = targetCurrancy && targetCurrancy.long_symbol.substring(1)
+    const priceSymbol = targetCurrancy && targetCurrancy.long_symbol?.substring(1)
     const choosedAsset = prices && targetCurrancy && prices[priceSymbol] ? prices[priceSymbol] : 0
     const assetPrice = isLong ? choosedAsset["Long"] : choosedAsset["Short"]
     let assetInfo = { fromPrice: null, toPrice: null, fee: 0 }
@@ -216,6 +244,29 @@ const Sync2 = () => {
     const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
     const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)
     const { onSync } = useSync(fromCurrency, toCurrency, amountIn, amountOut, getSignatures, position, SyncChainId)
+    const { onApprove } = useApprove(fromCurrency, oracle.contract, SyncChainId)
+
+
+
+
+    const handleApprove = useCallback(async () => {
+        try {
+            setApproveLoading(true)
+            const tx = await onApprove()
+            if (tx.status) {
+                setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
+            } else {
+                console.log("Approved Failed");
+            }
+            setApproveLoading(false)
+
+        } catch (e) {
+            setApproveLoading(false)
+            console.error(e)
+        }
+    }, [onApprove])
+
+
 
     useEffect(() => {
         const get = async () => {
@@ -265,7 +316,7 @@ const Sync2 = () => {
                     <NetworkTitle>
                         <RowCenter >
                             <img src={process.env.PUBLIC_URL + "/img/chains/bsc.png"} style={{ width: "25px", height: "25px", marginRight: "5px" }} alt="DEUS" />
-                            BSC
+                            {NameChainMap[SyncChainId]}
                         </RowCenter>
                     </NetworkTitle>
                 </div>
@@ -302,17 +353,23 @@ const Sync2 = () => {
 
                 <RateBox
                     currencies={{ from: fromCurrency, to: toCurrency || { symbol: "dAsset" } }}
-                    marketPrice={choosedAsset["Long"]?.price || "CLOSED"}
+                    marketPrice={choosedAsset["Long"]?.price || "(CLOSED)"}
                     amountIn={amountIn}
                     amountOut={amountOut}
                     setInvert={setInvert}
                     invert={invert} />
 
                 <SyncAction
+                    amountIn={amountIn}
+                    amountOut={amountOut}
                     handlSync={onSync}
+                    TokensMap={balances}
                     fromCurrency={fromCurrency}
                     validNetworks={validChains}
-                    isPreApproved={true}
+                    isPreApproved={isPreApproved}
+                    isApproved={isApproved}
+                    loading={approveLoading}
+                    handleApprove={handleApprove}
                     mt="20px" />
 
             </SwapWrapper>

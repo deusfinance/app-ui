@@ -23,7 +23,7 @@ export const SyncData = {
         stableCoin: new Token(ChainMap.BSC, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg"),
         conducted: ["https://oracle1.deus.finance/bsc/conducted.json"],
         prices: ["https://oracle4.deus.finance/price?"],
-        signatures: ["https://oracle1.deus.finance/bsc/signatures.json", "https://oracle3.deus.finance/bsc/signatures.json"],
+        signatures: ["https://oracle4.deus.finance/signatures?"],
         registrar: [registrarUrl]
     },
 

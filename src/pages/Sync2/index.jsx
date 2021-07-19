@@ -24,7 +24,7 @@ import { useApprove } from '../../helper/useApprove';
 import { isZero } from '../../constant/number';
 import { fromWei, RoundNumber } from '../../helper/formatBalance';
 import { NameChainMap } from '../../constant/web3';
-import { createPriceUrls } from '../../helper/syncHelper'
+import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 
 // import { dAmcTestToken } from '../../constant/token';
 // import { sendMessage } from '../../utils/telegramLogger';
@@ -228,14 +228,17 @@ const Sync2 = () => {
 
     useEffect(() => {
         const getSinglePrice = async () => {
-            let urls = createPriceUrls(oracle.prices, priceSymbol, NameChainMap[SyncChainId])
+            const network = NameChainMap[SyncChainId]
+            const position_type = isLong ? "long" : "short"
+            let priceURLs = createPriceUrls(oracle.prices, priceSymbol, network)
+            let signaturesURLs = createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
             let reportMessages = ""
             return Promise.allSettled(
-                urls.map(api => fetch(api, { cache: "no-cache" }))
+                priceURLs.map(api => fetch(api, { cache: "no-cache" }))
             ).then(function (responses) {
                 responses = responses.filter((result, i) => {
                     if (result?.value?.ok) return true
-                    reportMessages = urls[i] + "\t is down\n"
+                    reportMessages = priceURLs[i] + "\t is down\n"
                     return false
                 })
                 if (reportMessages !== "") {
@@ -275,7 +278,6 @@ const Sync2 = () => {
     const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)
     const { onSync } = useSync(fromCurrency, toCurrency, amountIn, amountOut, getSignatures, position, SyncChainId)
     const { onApprove } = useApprove(fromCurrency, oracle.contract, SyncChainId)
-
 
     const handleApprove = useCallback(async () => {
         try {

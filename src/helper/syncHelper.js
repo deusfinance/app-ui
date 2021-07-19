@@ -50,6 +50,17 @@ export let createPriceUrls = (prices, symbol, network) => {
     return prices.map(api => api + queryString)
 }
 
+export let createSignaturesUrls = (prices, symbol, network, position_type, side) => {
+    let params = {
+        "symbol": symbol.toUpperCase(),
+        "network": network.toLowerCase(),
+        "position_type": position_type.toLowerCase(),
+        "side": side.toLowerCase(),
+    }
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    return prices.map(api => api + queryString)
+}
+
 
 const syncFuncMaker = (fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type = "buy", requiredSignitures = 2, account, chainId, web3) => {
     const currCurrency = type === "buy" ? toCurrency : fromCurrency

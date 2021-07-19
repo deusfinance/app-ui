@@ -24,6 +24,7 @@ import { useApprove } from '../../helper/useApprove';
 import { isZero } from '../../constant/number';
 import { fromWei, RoundNumber } from '../../helper/formatBalance';
 import { NameChainMap } from '../../constant/web3';
+import { createPriceUrls } from '../../helper/syncHelper'
 
 // import { dAmcTestToken } from '../../constant/token';
 // import { sendMessage } from '../../utils/telegramLogger';
@@ -224,22 +225,10 @@ const Sync2 = () => {
 
     const targetCurrency = position === "buy" ? toCurrency : fromCurrency
     const priceSymbol = targetCurrency && targetCurrency.long_symbol?.substring(1)
-    const chosenAsset = prices && targetCurrency && prices[priceSymbol] ? prices[priceSymbol] : 0
-    // let assetPrice = {}
-    // let assetInfo = {}
-
-    const createPriceUrls = (symbol, network) => {
-        let params = {
-            "symbol": symbol.toUpperCase(),
-            "network": network.toLowerCase(),
-        }
-        let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
-        return oracle.prices.map(api => api + queryString)
-    }
 
     useEffect(() => {
         const getSinglePrice = async () => {
-            let urls = createPriceUrls(priceSymbol, NameChainMap[SyncChainId])
+            let urls = createPriceUrls(oracle.prices, priceSymbol, NameChainMap[SyncChainId])
             let reportMessages = ""
             return Promise.allSettled(
                 urls.map(api => fetch(api, { cache: "no-cache" }))
@@ -304,7 +293,6 @@ const Sync2 = () => {
             console.error(e)
         }
     }, [onApprove])
-
 
 
     useEffect(() => {

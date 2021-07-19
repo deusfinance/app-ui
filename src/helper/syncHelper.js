@@ -41,6 +41,15 @@ export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracle
         }))
 }
 
+export let createPriceUrls = (prices, symbol, network) => {
+    let params = {
+        "symbol": symbol.toUpperCase(),
+        "network": network.toLowerCase(),
+    }
+    let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    return prices.map(api => api + queryString)
+}
+
 
 const syncFuncMaker = (fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type = "buy", requiredSignitures = 2, account, chainId, web3) => {
     const currCurrency = type === "buy" ? toCurrency : fromCurrency

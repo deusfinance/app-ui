@@ -5,7 +5,7 @@ import TokenBox from '../../components/App/MuonSwap/TokenBox';
 import SwapAction from '../../components/App/MuonSwap/SwapAction';
 import SearchBox from '../../components/App/MuonSwap/SearchBox';
 import RateBox from '../../components/App/MuonSwap/RateBox';
-import { getSwapVsType } from '../../utils/utils';
+import { getCurrentTimeStamp, getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
@@ -13,7 +13,7 @@ import { useApprove } from '../../helper/useApprove';
 import { useAllowance } from '../../helper/useAllowance';
 import { usePrices, useSwap, useUsedAmount } from '../../helper/useMuon';
 import { MuonPreSaleTokens, muonToken } from '../../constant/token';
-import { useAmountsOut, useAmountsIn } from '../../helper/useMuon';
+import { useAmountsOut, useAmountsIn, signMsg } from '../../helper/useMuon';
 import useChain from '../../helper/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
@@ -127,12 +127,23 @@ const Muon = () => {
         setSwapState({ ...swapState, [type]: token })
     }
 
+    const swapCallback = (tx) => {
+        if (tx.status) {
+            console.log("swap did");
+            setAmountIn("")
+            setFastUpdate(fastUpdate => fastUpdate + 1)
+        } else {
+            console.log("Swap Failed");
+        }
+    }
+
+
     const fromSymbol = SymbolMap[swapState.from.symbol]
     const fromPrice = prices && prices[fromSymbol] ? prices[fromSymbol].price : 0
     const { getAmountsOut } = useAmountsOut(debouncedAmountIn, fromPrice)
     const { getAmountsIn } = useAmountsIn(swapState.from, debouncedAmountOut, fromPrice)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, fromSymbol, debouncedAmountIn, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, fromSymbol, debouncedAmountIn, chainId, swapCallback)
 
     useEffect(() => {
         if (maxAllocation && usedAmount)
@@ -201,17 +212,9 @@ const Muon = () => {
         }
     }, [onApprove])
 
-
     const handleSwap = useCallback(async () => {
         try {
-            const tx = await onSwap()
-            if (tx.status) {
-                console.log("swap did");
-                setAmountIn("")
-                setFastUpdate(fastUpdate => fastUpdate + 1)
-            } else {
-                console.log("Swap Failed");
-            }
+            await onSwap()
         } catch (e) {
             console.error(e)
         }

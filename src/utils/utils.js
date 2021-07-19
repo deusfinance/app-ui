@@ -240,3 +240,4 @@ export const checkLimit = (swap, payload) => {
 }
 
 
+export const getCurrentTimeStamp = () => Math.floor(Date.now() / 1000)

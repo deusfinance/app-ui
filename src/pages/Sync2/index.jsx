@@ -65,6 +65,7 @@ const Sync2 = () => {
     const [position, setPosition] = useState("buy")
     const [assetInfo, setAssetInfo] = useState({})
     const [priceResult, setPriceResult] = useState({})
+    const [signResult, setSignResult] = useState({})
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
@@ -231,7 +232,6 @@ const Sync2 = () => {
             const network = NameChainMap[SyncChainId]
             const position_type = isLong ? "long" : "short"
             let priceURLs = createPriceUrls(oracle.prices, priceSymbol, network)
-            let signaturesURLs = createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
             let reportMessages = ""
             return Promise.allSettled(
                 priceURLs.map(api => fetch(api, { cache: "no-cache" }))
@@ -273,6 +273,49 @@ const Sync2 = () => {
             })
         }
     }, [priceSymbol, NameChainMap[SyncChainId]])
+
+
+    useEffect(() => {
+        const getSingleSignature = async () => {
+            const network = NameChainMap[SyncChainId]
+            const position_type = isLong ? "long" : "short"
+            let signaturesURLs = createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
+            // console.log(signaturesURLs)
+            let reportMessages = ""
+            return Promise.allSettled(
+                signaturesURLs.map(api => fetch(api, { cache: "no-cache" }))
+            ).then(function (responses) {
+                responses = responses.filter((result, i) => {
+                    if (result?.value?.ok) return true
+                    reportMessages = signaturesURLs[i] + "\t is down\n"
+                    return false
+                })
+                if (reportMessages !== "") {
+                    // sendMessage(reportMessages)
+                    reportMessages = ""
+                }
+                return Promise.all(responses.map(function (response) {
+                    return response.value.json();
+                }));
+            }).catch(function (error) {
+                console.log(error);
+            })
+        }
+        if (priceSymbol && NameChainMap[SyncChainId] && isLong && position) {
+            getSingleSignature().then((res) => {
+                setSignResult(res[0])
+                // console.log(signResult)
+                let address = signResult["address"]
+                let block_number = signResult["block_number"]
+                let fee = signResult["fee"]
+                let multiplier = signResult["multiplier"]
+                let price = signResult["price"]
+                let signature = signResult["signature"]
+                let status = signResult["status"]
+                console.log(signature)
+            })
+        }
+    }, [priceSymbol, NameChainMap[SyncChainId], isLong, position])
 
     const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
     const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)

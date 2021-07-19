@@ -13,6 +13,7 @@ export const StyledLogo = styled.img`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: ${({ size }) => size};
+  background-color:${({ bgColor }) => bgColor && bgColor};
 `
 
 

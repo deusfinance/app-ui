@@ -28,14 +28,14 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFouceType, fastUpdate }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
 
     useEffect(() => {
         const getBalance = () => {
-            setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
+            setBalance(data ? getFullDisplayBalance(data, currency.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
         }
 
         if (currency) {
@@ -75,7 +75,10 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             alignItems="center"
             mt="5px"
         >
-            <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
+            <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+                setInputAmount(e.currentTarget.value)
+                if (setFouceType) setFouceType(type)
+            }} />
 
             {hasMax && !onMax && <ButtonMax width={"40px"}
                 onClick={() => setInputAmount(balance)}>

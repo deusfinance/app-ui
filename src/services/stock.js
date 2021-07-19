@@ -29,18 +29,6 @@ export const fetcher = async function (url, init) {
     }
 }
 
-// bigDiv = (from, to) => {
-//     const fromBig = new BigNumber(from)
-//     const toBig = new BigNumber(to)
-//     return fromBig.div(toBig).toString()
-// }
-
-// bigMultiply = (from, to) => {
-//     const fromBig = new BigNumber(from)
-//     const toBig = new BigNumber(to)
-//     return fromBig.mul(toBig).toString()
-// }
-
 export const handleGetAmountsOut = (from, to, amount, isLong, priceStocks, setLongPrice) => {
     if (to.type !== TokenType.Main) {
         const p = isLong ? priceStocks[to.id].Long : priceStocks[to.id].Short

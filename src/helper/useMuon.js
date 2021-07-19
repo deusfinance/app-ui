@@ -126,15 +126,20 @@ export const signMsg = async (fromCurrency, toCurrency, amountIn, amountOut, fro
                 const muonOutput = output.data
                 console.log(output);
                 console.log(muonOutput);
+
                 if (!muonOutput.success) {
-                    ToastTransaction("warn", "MUONIZE FAILED", muonOutput.error, { autoClose: true })
+                    ToastTransaction("warn", "MUONIZE FAILED", muonOutput.error.message, { autoClose: true })
                     return
                 }
 
                 const { result } = muonOutput
+                console.log(result);
 
                 const tx = await deposit(
-                    fromCurrency, toCurrency, amountIn, amountOut,
+                    fromCurrency,
+                    toCurrency,
+                    amountIn,
+                    amountOut,
                     result.data.result,
                     result.cid,
                     result.signatures,

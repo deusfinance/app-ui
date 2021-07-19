@@ -62,6 +62,8 @@ const Sync2 = () => {
     const [invert, setInvert] = useState(false)
     const [isLong, setLong] = useState(true)
     const [position, setPosition] = useState("buy")
+    const [assetInfo, setAssetInfo] = useState({})
+    const [priceResult, setPriceResult] = useState({})
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
@@ -89,7 +91,6 @@ const Sync2 = () => {
     const balances = useAssetBalances(conducted, SyncChainId)
 
     const allowance = useAllowance(fromCurrency, oracle.contract, SyncChainId)
-
 
     // const freshPrice = useFreshOracleFetch(oracle.prices)
 
@@ -135,11 +136,7 @@ const Sync2 = () => {
             setConducted(res[0])
             getStocks().then((res) => {
                 setStocks(res[0])
-                getPrices().then((res) => {
-                    setPrice(res[0])
-                    setLoading(false);
-                    console.log("fetching finished");
-                })
+                setLoading(false);
             })
         })
     }, [getStocks, getConducted, getPrices]);
@@ -225,28 +222,70 @@ const Sync2 = () => {
         setActiveSearchBox(false)
     }
 
-    const targetCurrancy = position === "buy" ? toCurrency : fromCurrency
-    const priceSymbol = targetCurrancy && targetCurrancy.long_symbol?.substring(1)
-    const choosedAsset = prices && targetCurrancy && prices[priceSymbol] ? prices[priceSymbol] : 0
-    const assetPrice = isLong ? choosedAsset["Long"] : choosedAsset["Short"]
-    let assetInfo = { fromPrice: null, toPrice: null, fee: 0 }
-    if (assetPrice)
-        if (position === "buy") {
-            assetInfo.fromPrice = 1
-            assetInfo.toPrice = assetPrice.price
-            assetInfo.fee = assetPrice.fee
-        } else {
-            assetInfo.fromPrice = assetPrice.price
-            assetInfo.fee = assetPrice.fee
-            assetInfo.toPrice = 1
+    const targetCurrency = position === "buy" ? toCurrency : fromCurrency
+    const priceSymbol = targetCurrency && targetCurrency.long_symbol?.substring(1)
+    const chosenAsset = prices && targetCurrency && prices[priceSymbol] ? prices[priceSymbol] : 0
+    // let assetPrice = {}
+    // let assetInfo = {}
+
+    const createPriceUrls = (symbol, network) => {
+        let params = {
+            "symbol": symbol.toUpperCase(),
+            "network": network.toLowerCase(),
         }
+        let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+        return oracle.prices.map(api => api + queryString)
+    }
+
+    useEffect(() => {
+        const getSinglePrice = async () => {
+            let urls = createPriceUrls(priceSymbol, NameChainMap[SyncChainId])
+            let reportMessages = ""
+            return Promise.allSettled(
+                urls.map(api => fetch(api, { cache: "no-cache" }))
+            ).then(function (responses) {
+                responses = responses.filter((result, i) => {
+                    if (result?.value?.ok) return true
+                    reportMessages = urls[i] + "\t is down\n"
+                    return false
+                })
+                if (reportMessages !== "") {
+                    // sendMessage(reportMessages)
+                    reportMessages = ""
+                }
+                return Promise.all(responses.map(function (response) {
+                    return response.value.json();
+                }));
+            }).catch(function (error) {
+                console.log(error);
+            })
+        }
+        if (priceSymbol && NameChainMap[SyncChainId]) {
+            getSinglePrice().then((res) => {
+                setPriceResult(res[0])
+                const price = priceResult["status"] == "open" ? priceResult["long_price"] : priceResult["short_price"]
+                const assetPrice = { price: price, fee: 0.01 }
+                setAssetInfo({ fromPrice: null, toPrice: null, fee: 0 })
+                if (price){
+                    if (position === "buy") {
+                        assetInfo.fromPrice = 1
+                        assetInfo.toPrice = assetPrice.price
+                        assetInfo.fee = assetPrice.fee
+                    } else {
+                        assetInfo.fromPrice = assetPrice.price
+                        assetInfo.fee = assetPrice.fee
+                        assetInfo.toPrice = 1
+                    }
+                    setAssetInfo(assetInfo)
+                }
+            })
+        }
+    }, [priceSymbol, NameChainMap[SyncChainId]])
 
     const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
     const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)
     const { onSync } = useSync(fromCurrency, toCurrency, amountIn, amountOut, getSignatures, position, SyncChainId)
     const { onApprove } = useApprove(fromCurrency, oracle.contract, SyncChainId)
-
-
 
 
     const handleApprove = useCallback(async () => {
@@ -353,7 +392,7 @@ const Sync2 = () => {
 
                 <RateBox
                     currencies={{ from: fromCurrency, to: toCurrency || { symbol: "dAsset" } }}
-                    marketPrice={choosedAsset["Long"]?.price || "(CLOSED)"}
+                    marketPrice={ priceResult["status"] == "open" ? priceResult["long_price"] : "(CLOSED)" }
                     amountIn={amountIn}
                     amountOut={amountOut}
                     setInvert={setInvert}

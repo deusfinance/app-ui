@@ -44,12 +44,9 @@ const Muon = () => {
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
     const tokens = useMemo(() => MuonPreSaleTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
-    console.log(tokens);
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
-
-    console.log(tokensMap);
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
     const [TokensMap, setTokensMap] = useState(tokensMap)

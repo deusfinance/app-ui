@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { fees } from './data'
 
 const Fees = () => {
     return (
-        <div className="instruction2">
-            {fees.map((fee, index) => {
-                return <>
-                    <div className="fee">
-                        <span className="fee-title" key={index}> {fee.name} </span>
-                        <span className="fee-price" key={index}> {fee.value} </span>
+        useMemo(() => {
+            return <div className="instruction2">
+                {fees.map((fee, index) => {
+                    return <div className="fee" key={index}>
+                        <span className="fee-title" > {fee.name} </span>
+                        <span className="fee-price" > {fee.value} </span>
                     </div>
-                </>
-            })}
-        </div>
+                })}
+            </div>
+        }, [fees])
     )
 }
 

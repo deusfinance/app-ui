@@ -74,7 +74,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             alignItems="center"
             mt="5px"
         >
-            <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+            <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
                 setInputAmount(e.currentTarget.value)
                 setFouceType(type)
             }} />

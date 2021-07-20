@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
-import { MainWrapper, SwapTitle, SwapWrapper, SwapArrow } from '../../components/App/Swap';
+import { MainWrapper, SwapWrapper, SwapArrow } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
-import RouteBox from '../../components/App/Swap/RouteBox';
-import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
 import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
-import PriceImpact from '../../components/App/Swap/PriceImpact';
+import SwapCard from '../../components/App/Swap/SwapCard';
 import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
@@ -23,6 +21,7 @@ import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
+import { Type } from '../../components/App/Text';
 
 const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -161,6 +160,7 @@ const Dei = () => {
     }
 
     const changeToken = (token, type) => {
+
         setActiveSearchBox(false)
         setAmountIn("")
         const vsType = getSwapVsType(type)
@@ -247,10 +247,8 @@ const Dei = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            <SwapTitle className="title" >
-                Mint
-            </SwapTitle>
-            <SwapWrapper>
+            <Type.XL fontWeight="300">Mint</Type.XL>
+            <SwapWrapper style={{ marginTop: "25px" }}>
                 <TokenBox
                     type="from"
                     hasMax={true}
@@ -284,6 +282,8 @@ const Dei = () => {
                 <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
                 <SwapAction
+                    bgColor={"grad_dei"}
+                    text="MINT"
                     isPreApproved={isPreApproved}
                     validNetworks={[1, 4]}
                     isApproved={isApproved}
@@ -297,20 +297,8 @@ const Dei = () => {
                 />
 
             </SwapWrapper>
+            <SwapCard title="Minting Fee" value="0.3%" />
 
-            <PriceImpact
-                minAmountOut={minAmountOut}
-                amountIn={debouncedAmountIn}
-                amountOut={amountOut}
-            />
-
-            <RouteBox
-                swapState={swapState}
-                chainId={chainId}
-                tokensMap={tokensMap}
-            />
-
-            <SlippageTelorance slipage={slipage} setSlipage={setSlipage} />
         </MainWrapper>
         <div className='tut-left-wrap'>
             <SelectedNetworks />

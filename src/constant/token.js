@@ -51,6 +51,8 @@ export const SealedTokens = [
     { logo: "/tokens/suni2.svg", symbol: "sUniDU", address: "0xB7b52c3523Af9c237817a49D17E656283cC59678", decimals: 18, chainId: 1 },
     { logo: "/tokens/suni2.svg", symbol: "sUniDE", address: "0x670431fCdAf39280deE488C6D8277B9865E22d08", decimals: 18, chainId: 1 },
     { logo: "/tokens/bpt.svg", symbol: "BPT", address: "0x1Dc2948B6dB34E38291090B825518C1E8346938B", decimals: 18, chainId: 1 },
+    { logo: "/tokens/usdc.svg", symbol: "ERT", address: "0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6", decimals: 18, chainId: 97 },
+
 ]
 
 export const MuonPreSaleTokens = [

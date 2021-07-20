@@ -4,8 +4,8 @@ import { getMuonContract } from "./contractHelpers"
 import { fromWei } from "./formatBalance"
 
 export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, result, cid, sigs, account, chainId, web3) => {
-
-    const muonContract = getMuonContract(web3)//TODO chainId
+    // console.log(result);
+    const muonContract = getMuonContract(web3, chainId)//TODO chainId
     let sendArgs = { from: account }
     if (fromCurrency.symbol === "ETH") sendArgs["value"] = result.amount
     let hash = null
@@ -58,6 +58,7 @@ export const SymbolMap = {
     "sUniDU": "sUniDU",
     "BPT": "bpt",
     "TEST": "test",
+    "ERT": "ert",
 }
 
 

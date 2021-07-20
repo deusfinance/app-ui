@@ -1,6 +1,6 @@
 const urls = [{
     name: 'Mint',
-    link: '/mint'
+    link: '/dei'
   },
   {
     name: 'Redeem',

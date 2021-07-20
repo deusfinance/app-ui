@@ -23,6 +23,9 @@ import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
+import Stages from '../../components/App/Dei/Stages'
+import Fees from '../../components/App/Dei/Fees'
+import '../../components/App/Dei/Classes.css'
 
 const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -313,7 +316,9 @@ const Dei = () => {
             <SlippageTelorance slipage={slipage} setSlipage={setSlipage} />
         </MainWrapper>
         <div className='tut-left-wrap'>
-            <SelectedNetworks />
+            {/* <SelectedNetworks /> */}
+            <Stages />
+            <Fees />
         </div>
     </>);
 }

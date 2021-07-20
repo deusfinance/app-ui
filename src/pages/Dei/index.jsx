@@ -163,7 +163,6 @@ const Dei = () => {
     }
 
     const changeToken = (token, type) => {
-
         setActiveSearchBox(false)
         setAmountIn("")
         const vsType = getSwapVsType(type)

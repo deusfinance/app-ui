@@ -301,7 +301,9 @@ const Dei = () => {
 
         </MainWrapper>
         <div className='tut-left-wrap'>
-            <SelectedNetworks />
+            {/* <SelectedNetworks /> */}
+            <Stages />
+            <Fees />
         </div>
     </>);
 }

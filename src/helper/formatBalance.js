@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { isZero } from "../constant/number";
 
 export const getBalanceNumber = (balance, decimals = 18) => {
     const displayBalance = new BigNumber(balance).dividedBy(new BigNumber(10).pow(decimals))
@@ -19,6 +20,12 @@ export const getToWei = (amount, decimals = 18) => {
 
 export const getFullDisplayBalance = (balance, decimals = 18) => {
     return new BigNumber(balance).dividedBy(new BigNumber(10).pow(decimals)).toFixed()
+}
+
+export const RemoveTrailingZero = (number = null, fixed = 5) => {
+    if (!number) return '0'
+    if (isZero(number)) return 0
+    return BigNumber(number).toFixed(fixed, BigNumber.ROUND_DOWN).replace(/\.?0+$/, "")
 }
 
 export const formatNumber = (number, minPrecision = 2, maxPrecision = 2) => {

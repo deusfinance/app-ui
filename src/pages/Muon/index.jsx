@@ -8,7 +8,7 @@ import RateBox from '../../components/App/MuonSwap/RateBox';
 import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
-import { fromWei } from '../../helper/formatBalance';
+import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
 import { useApprove } from '../../helper/useApprove';
 import { useAllowance } from '../../helper/useAllowance';
 import { usePrices, useSwap, useUsedAmount } from '../../helper/useMuon';
@@ -44,10 +44,12 @@ const Muon = () => {
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
     const tokens = useMemo(() => MuonPreSaleTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
-
+    console.log(tokens);
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
+
+    console.log(tokensMap);
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
     const [TokensMap, setTokensMap] = useState(tokensMap)
@@ -180,7 +182,7 @@ const Muon = () => {
             const result = getAmountsOut()
             if (!result) return
             if (amountIn === "" || isZero(amountIn)) setAmountOut("")
-            else setAmountOut(fromWei(result, swapState.to.decimals))
+            else setAmountOut(RemoveTrailingZero(fromWei(result, swapState.to.decimals), swapState.to.decimals))
         }
         if (getAmountsOut && fouceType === "from")
             get()
@@ -191,7 +193,7 @@ const Muon = () => {
             const result = await getAmountsIn()
             if (!result) return
             if (amountOut === "" || isZero(amountOut)) setAmountIn("")
-            else setAmountIn(fromWei(result, swapState.from.decimals))
+            else setAmountIn(RemoveTrailingZero(fromWei(result, swapState.from.decimals), swapState.from.decimals))
         }
         if (getAmountsIn && fouceType === "to")
             get()

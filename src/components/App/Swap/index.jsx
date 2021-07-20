@@ -77,5 +77,3 @@ export const SmallWrapper = styled(FlexCenter)`
     margin-top: -1px;
     padding:0 20px;
 `
-
-

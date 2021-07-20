@@ -22,6 +22,7 @@ import { useLocation } from 'react-router';
 import RemainingCap from '../../components/App/MuonSwap/RemainingCap';
 import { getAllocation, SymbolMap, } from '../../helper/muonHelper';
 import { isZero } from '../../constant/number';
+import { getCorrectChains } from '../../constant/correctChain';
 
 const Muon = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -35,7 +36,8 @@ const Muon = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
+    const location = useLocation()
+    const validNetworks = getCorrectChains(location.pathname)
     const prices = usePrices()
     const chainId = useChain(validNetworks)
     const contractAddress = getContractAddr("muon_presale", chainId)
@@ -57,6 +59,9 @@ const Muon = () => {
     let DEA = getTokenAddr("dea", chainId)
     if (chainId === 4)
         DEA = "0x"
+    if (chainId === 97) {
+        DEA = "0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6"
+    }
 
     let fromAddress = inputCurrency ? inputCurrency : DEA
 
@@ -285,7 +290,7 @@ const Muon = () => {
                 <SwapAction
                     bgColor="bg_blue"
                     isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
+                    validNetworks={validNetworks}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}

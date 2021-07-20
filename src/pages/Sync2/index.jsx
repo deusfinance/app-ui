@@ -89,7 +89,7 @@ const Sync2 = () => {
     const getConducted = useOracleFetch(oracle.conducted)
     const getPrices = useOracleFetch(oracle.prices)
     const getStocks = useOracleFetch(oracle.registrar)
-    const getSignatures = useOracleFetch(oracle.signatures)
+    // const getSignatures = useOracleFetch(oracle.signatures)
     const balances = useAssetBalances(conducted, SyncChainId)
 
     const allowance = useAllowance(fromCurrency, oracle.contract, SyncChainId)
@@ -274,47 +274,30 @@ const Sync2 = () => {
         }
     }, [priceSymbol, NameChainMap[SyncChainId]])
 
-
-    useEffect(() => {
-        const getSingleSignature = async () => {
-            const network = NameChainMap[SyncChainId]
-            const position_type = isLong ? "long" : "short"
-            let signaturesURLs = createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
-            // console.log(signaturesURLs)
-            let reportMessages = ""
-            return Promise.allSettled(
-                signaturesURLs.map(api => fetch(api, { cache: "no-cache" }))
-            ).then(function (responses) {
-                responses = responses.filter((result, i) => {
-                    if (result?.value?.ok) return true
-                    reportMessages = signaturesURLs[i] + "\t is down\n"
-                    return false
-                })
-                if (reportMessages !== "") {
-                    // sendMessage(reportMessages)
-                    reportMessages = ""
-                }
-                return Promise.all(responses.map(function (response) {
-                    return response.value.json();
-                }));
-            }).catch(function (error) {
-                console.log(error);
+    const getSignatures = useCallback(async () => {
+        if (!priceSymbol || !NameChainMap[SyncChainId] || !isLong || !position) return
+        const network = NameChainMap[SyncChainId]
+        const position_type = isLong ? "long" : "short"
+        let signaturesURLs = createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
+        let reportMessages = ""
+        return Promise.allSettled(
+            signaturesURLs.map(api => fetch(api, { cache: "no-cache" }))
+        ).then(function (responses) {
+            responses = responses.filter((result, i) => {
+                if (result?.value?.ok) return true
+                reportMessages = signaturesURLs[i] + "\t is down\n"
+                return false
             })
-        }
-        if (priceSymbol && NameChainMap[SyncChainId] && isLong && position) {
-            getSingleSignature().then((res) => {
-                setSignResult(res[0])
-                // console.log(signResult)
-                let address = signResult["address"]
-                let block_number = signResult["block_number"]
-                let fee = signResult["fee"]
-                let multiplier = signResult["multiplier"]
-                let price = signResult["price"]
-                let signature = signResult["signature"]
-                let status = signResult["status"]
-                console.log(signature)
-            })
-        }
+            if (reportMessages !== "") {
+                // sendMessage(reportMessages)
+                reportMessages = ""
+            }
+            return Promise.all(responses.map(function (response) {
+                return response.value.json();
+            }));
+        }).catch(function (error) {
+            console.log(error);
+        })
     }, [priceSymbol, NameChainMap[SyncChainId], isLong, position])
 
     const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)

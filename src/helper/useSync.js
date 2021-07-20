@@ -48,9 +48,10 @@ export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, getSignat
         try {
             if (validChainId && chainId !== validChainId) return false
             const chooseCurrency = type === "sell" ? fromCurrency : toCurrency
-            const signitures = await getSignatures()
-            const oracles = signitures.map(signiture => signiture[chooseCurrency.address])
-            const requiredSignitures = 2
+            const oracles = await getSignatures()
+            // console.log(oracles)
+            // const oracles = Signature.map(Signature => Signature[chooseCurrency.address])
+            const requiredSignature = 2
             const tx = await sync(
                 fromCurrency,
                 toCurrency,
@@ -58,7 +59,7 @@ export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, getSignat
                 amountOut,
                 oracles,
                 type,
-                requiredSignitures,
+                requiredSignature,
                 account,
                 chainId,
                 web3,

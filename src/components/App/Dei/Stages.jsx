@@ -85,8 +85,7 @@ const Stages = () => {
 
                 <BottomTextDiv>
                     If you need more help visit the{' '}
-                    <WikiLink href="#" target="_blank"> wiki </WikiLink>
-                    .
+                    <WikiLink href="#" target="_blank">wiki</WikiLink>.
                 </BottomTextDiv>
             </MainWrapper>
         }, [urls])

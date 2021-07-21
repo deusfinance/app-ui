@@ -77,7 +77,8 @@ const Dei = () => {
     // const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     // ), [tokens])
 
-    const tokenBalances = useTokenBalances(tokensMap, chainId)
+    // const tokenBalances = useTokenBalances(tokensMap, chainId)
+    const tokenBalances = tokensMap
 
     const [TokensMap, setTokensMap] = useState(tokenBalances)
 
@@ -156,9 +157,9 @@ const Dei = () => {
     //     setIsApproved(false)
     // }, [swapState.from])
 
-    useEffect(() => {
-        setTokensMap(tokenBalances)
-    }, [tokenBalances])
+    // useEffect(() => { //TODO balances
+    //     setTokensMap(tokenBalances)
+    // }, [tokenBalances])
 
     useEffect(() => {
         if (isPreApproved == null) {
@@ -284,7 +285,7 @@ const Dei = () => {
 
         <MainWrapper>
             <Type.XL fontWeight="300">Mint</Type.XL>
-            <SwapWrapper style={{ marginTop: "25px",  }}>
+            <SwapWrapper style={{ marginTop: "25px", }}>
                 <TokenBox
                     type="from"
                     hasMax={true}
@@ -299,7 +300,7 @@ const Dei = () => {
                 {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
 
                 {isPair && <TokenBox
-                    mt = {"-21px"}
+                    mt={"-21px"}
                     type="from"
                     hasMax={true}
                     inputAmount={amountInPair}

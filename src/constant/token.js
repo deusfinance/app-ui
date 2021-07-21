@@ -8,6 +8,9 @@ export const wxdaiToken = new Token(100, "0xe91d153e0b41518a2ce8dd3d7944fa863463
 
 export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 
+export const deiToken = new Token(1, "0x6B175474E89094C44Da98b954EedeAC495271d0F", 18, "DEI", "DEI", "/img/Dei_logo.svg");
+
+
 export const busdTestToken = new Token(97, "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 export const bnbTestToken = new Token(97, null, 18, "BNB", "BNB", "/tokens/busd.svg");
 export const dgmeTestToken = new Token(97, "0xf923835cf23370a90784eb794f5b0098833015f1", 18, "dGME", "GameStop Corp. Long DEUS Sync V1", "/img/ticker/GME.png");
@@ -58,6 +61,13 @@ export const MuonPreSaleTokens = [
     sdeaToken,
     { logo: "/tokens/sdea.svg", symbol: "sDEUS", address: "0xc586AeA83A96d57764A431B9F4e2E84844075a01", decimals: 18, chainId: 1 },
     ...SealedTokens,
+]
+
+export const DEITokens = [
+    ...NativeTokens,
+    { logo: "/tokens/usdc.svg", symbol: "USDC", address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", decimals: 6, chainId: 1 },
+    { logo: "/tokens/deus.svg", symbol: "DEA", address: "0x3b62F3820e0B035cc4aD602dECe6d796BC325325", decimals: 18, chainId: 1, pairID: 1 },
+    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x3b62F3820e0B035cc4aD602dECe6d796BC325325", decimals: 18, chainId: 1, pairID: 1 },
 ]
 
 export const DeusPath = {

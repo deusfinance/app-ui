@@ -13,7 +13,7 @@ import { fromWei } from '../../helper/formatBalance';
 import { useApprove } from '../../helper/useApprove';
 import { useAllowance } from '../../helper/useAllowance';
 import { useSwap } from '../../helper/useSwap';
-import { DefaultTokens } from '../../constant/token';
+import { DEITokens, deiToken } from '../../constant/token';
 import { useGetAmountsOut } from '../../helper/useGetAmountsOut';
 import useChain from '../../helper/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
@@ -30,7 +30,7 @@ const Dei = () => {
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [slipage, setSlipage] = useState(0.5)
+    const [slipage, setSlipage] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -47,7 +47,7 @@ const Dei = () => {
 
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
 
-    const tokens = useMemo(() => DefaultTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
+    const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     const tokensName = tokens.map(token => token.symbol.toLowerCase())
 
@@ -108,7 +108,7 @@ const Dei = () => {
 
     const [swapState, setSwapState] = useState({
         from: { ...TokensMap[fromAddress] },
-        to: { ...TokensMap[toAddress] },
+        to: deiToken,
     })
 
     const [hotIn, setHotIn] = useState("")
@@ -260,21 +260,15 @@ const Dei = () => {
                     TokensMap={TokensMap}
                     fastUpdate={fastUpdate}
                 />
-                <SwapArrow onClick={() => {
-                    setAmountIn(amountOut)
-                    setHotIn(amountOut)
-                    setSwapState({ from: swapState.to, to: swapState.from })
-                    setAmountOut("")
-                }}>
-                    <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
-                </SwapArrow>
+
+                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
                 <TokenBox
                     type="to"
                     title="To (estimated)"
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
-                    setActive={showSearchBox}
+                    setActive={null}
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}

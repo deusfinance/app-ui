@@ -13,6 +13,7 @@ const MainWrapper = styled.div`
     font-weight: normal;
     font-size: 15px;
     line-height: 20px;
+    margin-bottom: 18px;
     padding-top: 0;
     padding-bottom: 0;
     font-weight: 300;

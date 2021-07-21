@@ -38,6 +38,7 @@ const Dei = () => {
     const { account } = useWeb3React()
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
+    const [isPair, setIsPair] = useState(false)
 
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
@@ -61,11 +62,8 @@ const Dei = () => {
     for (let i = 0; i < tokens.length; i++) {
         const currToken = tokens[i]
         const { address, pairID } = currToken
-        if (tokensMap[address]) {
-            tokensMap[address + pairID] = currToken
-        } else {
-            tokensMap[address] = currToken
-        }
+        if (tokensMap[address]) tokensMap[address + pairID] = currToken
+        else tokensMap[address] = currToken
     }
 
     // const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
@@ -129,10 +127,12 @@ const Dei = () => {
 
     const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
+    const [amountInPair, setAmountInPair] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
     const [amountOut, setAmountOut] = useState("")
     const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
+    const [pairToken, setPairToken] = useState({})
 
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
@@ -185,7 +185,18 @@ const Dei = () => {
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
         }
-        console.log(token);
+        console.log("token", token)
+        if (token.pairID) {
+            setIsPair(true)
+            let secondToken = DEITokens.filter(currToken => {
+                return currToken.pairID === token.pairID && currToken.address !== token.address
+            })[0]
+            console.log("secondToken", secondToken)
+            setPairToken(secondToken)
+            setSwapState({ ...swapState, [type]: token })
+            return
+        }
+        setIsPair(false)
         setSwapState({ ...swapState, [type]: token })
     }
 
@@ -259,7 +270,7 @@ const Dei = () => {
             swapState={swapState}
             escapedType={escapedType}
             changeToken={changeToken}
-            disbaleLoading={false}
+            disableLoading={false}
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
 
@@ -276,6 +287,19 @@ const Dei = () => {
                     TokensMap={TokensMap}
                     fastUpdate={fastUpdate}
                 />
+
+                {isPair && <span> Plus </span>}
+
+                {isPair && <TokenBox
+                    type="from"
+                    hasMax={true}
+                    inputAmount={amountInPair}
+                    setInputAmount={setAmountInPair}
+                    setActive={showSearchBox}
+                    currency={pairToken}
+                    TokensMap={TokensMap}
+                    fastUpdate={fastUpdate}
+                />}
 
                 <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
@@ -314,7 +338,8 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             {/* <SelectedNetworks /> */}
             <LinkBox />
-            <CostBox2 />
+            <CostBox />
+            {/* <CostBox2 /> */}
         </div>
     </>);
 }

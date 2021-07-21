@@ -20,7 +20,7 @@ export function colors(darkMode) {
 
     //main
     primary: darkMode ? "#0779e4" : black,
-    secodery: darkMode ? "#c6c6c6" : black,
+    secondary: darkMode ? "#c6c6c6" : black,
     success: darkMode ? "#00AA00" : black,
     warning: darkMode ? "#FF5555" : black,
 

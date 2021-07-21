@@ -10,8 +10,8 @@ export const Type = {
     Primary(props) {
         return <TextWrapper color={'primary'} {...props} />
     },
-    Secodery(props) {
-        return <TextWrapper color={'secodery'} {...props} />
+    Secondary(props) {
+        return <TextWrapper color={'secondary'} {...props} />
     },
     Warning(props) {
         return <TextWrapper color={'warning'} {...props} />

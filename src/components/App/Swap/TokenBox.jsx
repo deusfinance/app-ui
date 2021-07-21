@@ -59,12 +59,12 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             justifyContent={"space-between"}
         >
             <Box>
-                <Type.SM color={'secodery'}>
+                <Type.SM color={'secondary'}>
                     {title || "From"}
                 </Type.SM>
             </Box>
             <Box>
-                <Type.SM color={'secodery'}>
+                <Type.SM color={'secondary'}>
                     Balance: {formatBalance3(balance)}
                 </Type.SM>
             </Box>

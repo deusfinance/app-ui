@@ -50,9 +50,9 @@ const Test = () => {
             primary text
         </Type.Primary>
 
-        <Type.Secodery fontSize={25}>
-            secodery text
-        </Type.Secodery>
+        <Type.Secondary fontSize={25}>
+            secondary text
+        </Type.Secondary>
 
         <Type.Success fontSize={25}>
             success text
@@ -127,7 +127,7 @@ const Test = () => {
             SYNCHRONIZER XDAI
         </Type.XXL>
 
-        <Type.SM color={'secodery'}>
+        <Type.SM color={'secondary'}>
             Balance: 0
         </Type.SM>
 

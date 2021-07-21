@@ -3,7 +3,7 @@ import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapWrapper, SwapArrow } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
 import SwapAction from '../../components/App/Swap/SwapAction';
-import SearchBox from '../../components/App/Swap/SearchBox';
+import SearchBox from '../../components/App/Dei/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
 import SwapCard from '../../components/App/Swap/SwapCard';
 import { getSwapVsType } from '../../utils/utils';
@@ -189,33 +189,33 @@ const Dei = () => {
         setSwapState({ ...swapState, [type]: token })
     }
 
-    const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
-    const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
+    // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
+    // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId)
 
-    useEffect(() => {
-        const get = async () => {
-            const amount = await getAmountsOut()
-            // console.log("swap ", amount);
-            if (amountIn === "") setAmountOut("")
-            else setAmountOut(fromWei(amount, swapState.to.decimals))
-        }
-        get()
+    // useEffect(() => {
+    //     const get = async () => {
+    //         const amount = await getAmountsOut()
+    //         // console.log("swap ", amount);
+    //         if (amountIn === "") setAmountOut("")
+    //         else setAmountOut(fromWei(amount, swapState.to.decimals))
+    //     }
+    //     get()
 
-        //eslint-disable-next-line
-    }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
+    //     //eslint-disable-next-line
+    // }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
 
-    useEffect(() => {
-        const get = async () => {
-            const amount = await getMinAmountOut()
-            // console.log("min swap ", amount);
-            setMinAmountOut(fromWei(amount, swapState.to.decimals))
-        }
-        get()
+    // useEffect(() => {
+    //     const get = async () => {
+    //         const amount = await getMinAmountOut()
+    //         // console.log("min swap ", amount);
+    //         setMinAmountOut(fromWei(amount, swapState.to.decimals))
+    //     }
+    //     get()
 
-        //eslint-disable-next-line
-    }, [getMinAmountOut])//replace multiple useState variables with useReducer
+    //     //eslint-disable-next-line
+    // }, [getMinAmountOut])//replace multiple useState variables with useReducer
 
 
 

@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import React from 'react';
 import styled from 'styled-components'
-import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
+import { ButtonSyncDeactive, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
 // import Loader from '../Loader';
 
@@ -24,7 +24,7 @@ const WrapActions = styled.div`
         margin:0px 5px;
     }
 `
-const ButtonSwap = styled(ButtonSyncActice)`
+const ButtonSwap = styled(ButtonSyncActive)`
   background: ${({ theme }) => theme.grad1};
   color: ${({ theme }) => theme.text1};
   font-size:25px;

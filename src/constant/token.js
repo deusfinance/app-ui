@@ -66,8 +66,9 @@ export const MuonPreSaleTokens = [
 export const DEITokens = [
     ...NativeTokens,
     { logo: "/tokens/usdc.svg", symbol: "USDC", address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", decimals: 6, chainId: 1 },
-    { logo: "/tokens/deus.svg", symbol: "DEA", address: "0x3b62F3820e0B035cc4aD602dECe6d796BC325325", decimals: 18, chainId: 1, pairID: 1 },
-    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x3b62F3820e0B035cc4aD602dECe6d796BC325325", decimals: 18, chainId: 1, pairID: 1 },
+    { logo: "/tokens/dea.svg", symbol: "DEA", address: "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778", decimals: 18, chainId: 1 },
+    { logo: "/tokens/dea.svg", symbol: "DEA P", address: "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778", decimals: 18, chainId: 1, pairID: 1 },
+    { logo: "/tokens/deus.svg", symbol: "DEUS P", address: "0x3b62F3820e0B035cc4aD602dECe6d796BC325325", decimals: 18, chainId: 1, pairID: 1 },
 ]
 
 export const DeusPath = {

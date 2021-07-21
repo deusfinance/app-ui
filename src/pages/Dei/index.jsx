@@ -53,8 +53,23 @@ const Dei = () => {
     const tokensName = tokens.map(token => token.symbol.toLowerCase())
 
     //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
-    ), [tokens])
+    const tokensMap = {}
+    // tokens.forEach(token => {
+
+    // });
+
+    for (let i = 0; i < tokens.length; i++) {
+        const currToken = tokens[i]
+        const { address, pairID } = currToken
+        if (tokensMap[address]) {
+            tokensMap[address + pairID] = currToken
+        } else {
+            tokensMap[address] = currToken
+        }
+    }
+
+    // const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
+    // ), [tokens])
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
 

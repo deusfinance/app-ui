@@ -15,9 +15,10 @@ const MainWrapper = styled.div`
     font-size: 15px;
     line-height: 20px;
     margin-bottom: 18px;
+    font-weight: 300;
 `
 
-const Flex_div = styled.div`
+const FlexDiv = styled.div`
     display: flex;
 `
 
@@ -64,14 +65,14 @@ const EachUrl = styled.span`
     }
 `
 
-const Stages = () => {
+const LinkBox = () => {
     return (
         useMemo(() => {
             return <MainWrapper>
-                <Flex_div>
+                <FlexDiv>
                     <TitleImage src={"/img/Dei_logo.svg"} alt="Dei_logo" />
                     <TitleText > DEI Stable Coin </TitleText>
-                </Flex_div>
+                </FlexDiv>
 
                 <Line />
 
@@ -85,11 +86,11 @@ const Stages = () => {
 
                 <BottomTextDiv>
                     If you need more help visit the{' '}
-                    <WikiLink href="#" target="_blank">wiki</WikiLink>.
+                    <WikiLink href="https://wiki.deus.finance/docs/" target="_blank">wiki</WikiLink>.
                 </BottomTextDiv>
             </MainWrapper>
-        }, [urls])
+        }, [])
     )
 }
 
-export default Stages
+export default LinkBox

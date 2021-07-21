@@ -20,9 +20,10 @@ import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../helper/useTokenBalances';
 import { useDebounce } from '../../helper/useDebounce';
 import { useLocation } from 'react-router';
-import SelectedNetworks from '../../components/Sync/SelectNetworks';
-import Stages from '../../components/App/Dei/Stages'
-import Fees from '../../components/App/Dei/Fees'
+// import SelectedNetworks from '../../components/Sync/SelectNetworks';
+import LinkBox from '../../components/App/Dei/LinkBox'
+import CostBox from '../../components/App/Dei/CostBox'
+import CostBox2 from '../../components/App/Dei/CostBox2'
 import { Type } from '../../components/App/Text';
 
 const Dei = () => {
@@ -293,12 +294,12 @@ const Dei = () => {
 
             </SwapWrapper>
             <SwapCard title="Minting Fee" value="0.3%" />
-
         </MainWrapper>
+
         <div className='tut-left-wrap'>
             {/* <SelectedNetworks /> */}
-            <Stages />
-            <Fees />
+            <LinkBox />
+            <CostBox2 />
         </div>
     </>);
 }

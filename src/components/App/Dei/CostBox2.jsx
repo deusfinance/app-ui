@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { fees } from './data'
+import { costs2 as costs } from './data'
 import styled from 'styled-components'
 
 const MainWrapper = styled.div`
@@ -15,6 +15,7 @@ const MainWrapper = styled.div`
     line-height: 20px;
     padding-top: 0;
     padding-bottom: 0;
+    font-weight: 300;
 `
 
 const FeeWrapper = styled.div`
@@ -28,23 +29,28 @@ const FeeTitle = styled.span`
     color: #0DB0F4;
 `
 
+const CostPriceTitle = styled.span`
+    opacity: 0.5;
+`
+
 const FeePrice = styled.span`
     display: block;
 `
 
-const Fees = () => {
+const CostBox2 = () => {
     return (
         useMemo(() => {
             return <MainWrapper>
-                {fees.map((fee, index) => {
+                {costs.map((cost, index) => {
                     return <FeeWrapper key={index}>
-                        <FeeTitle> {fee.name} </FeeTitle>
-                        <FeePrice> {fee.value} </FeePrice>
+                        <FeeTitle> {cost.name} </FeeTitle>
+                        <FeePrice> <CostPriceTitle> {cost.title1} </CostPriceTitle> <span> {cost.value1} </span> </FeePrice>
+                        {cost.isTwoWay && <FeePrice> <CostPriceTitle> {cost.title2} </CostPriceTitle> <span> {cost.value2} </span> </FeePrice>}
                     </FeeWrapper>
                 })}
             </MainWrapper>
-        }, [fees])
+        }, [])
     )
 }
 
-export default Fees
+export default CostBox2

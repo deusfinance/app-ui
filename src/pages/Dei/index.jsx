@@ -25,6 +25,14 @@ import LinkBox from '../../components/App/Dei/LinkBox'
 import CostBox from '../../components/App/Dei/CostBox'
 import CostBox2 from '../../components/App/Dei/CostBox2'
 import { Type } from '../../components/App/Text';
+import styled from 'styled-components';
+
+const PlusImg = styled.img`
+    z-index: 10000;
+    position: relative;
+    text-align: center;
+    margin-top: -20px;
+`
 
 const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -276,7 +284,7 @@ const Dei = () => {
 
         <MainWrapper>
             <Type.XL fontWeight="300">Mint</Type.XL>
-            <SwapWrapper style={{ marginTop: "25px" }}>
+            <SwapWrapper style={{ marginTop: "25px",  }}>
                 <TokenBox
                     type="from"
                     hasMax={true}
@@ -288,9 +296,10 @@ const Dei = () => {
                     fastUpdate={fastUpdate}
                 />
 
-                {isPair && <span> Plus </span>}
+                {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
 
                 {isPair && <TokenBox
+                    mt = {"-21px"}
                     type="from"
                     hasMax={true}
                     inputAmount={amountInPair}

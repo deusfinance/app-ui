@@ -15,6 +15,7 @@ const Wrapper = styled.div`
     position: relative;
     height: ${({ height }) => (height || "90px")};
     width: ${({ width }) => (width || "100%")};
+    margin-top: ${({ mt }) => (mt && mt)};
     background: ${({ theme }) => theme.border1};
     border: 2px solid #000000;
     padding:0 15px;
@@ -28,7 +29,7 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate, mt }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
@@ -53,7 +54,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
     }, [inputAmount, balance])
 
 
-    return (<Wrapper>
+    return (<Wrapper mt={mt}>
         <Flex
             p="10px 0"
             justifyContent={"space-between"}

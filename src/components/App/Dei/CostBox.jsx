@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { costs2 as costs } from './data'
+import { costs as costs } from './data'
 import styled from 'styled-components'
 
 const MainWrapper = styled.div`
@@ -13,6 +13,7 @@ const MainWrapper = styled.div`
     font-weight: normal;
     font-size: 15px;
     line-height: 20px;
+    margin-bottom: 18px;
     padding-top: 0;
     padding-bottom: 0;
     font-weight: 300;

@@ -28,7 +28,7 @@ import { Type } from '../../components/App/Text';
 import styled from 'styled-components';
 
 const PlusImg = styled.img`
-    z-index: 10000;
+    z-index: 1;
     position: relative;
     text-align: center;
     margin-top: -20px;

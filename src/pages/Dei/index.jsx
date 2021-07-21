@@ -32,6 +32,12 @@ const PlusImg = styled.img`
     position: relative;
     text-align: center;
     margin-top: -20px;
+
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        margin-bottom: 5px;
+        width: 23px;
+        height: 23px;
+    `}
 `
 
 const Dei = () => {

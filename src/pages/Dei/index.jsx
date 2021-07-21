@@ -23,7 +23,6 @@ import { useLocation } from 'react-router';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import Stages from '../../components/App/Dei/Stages'
 import Fees from '../../components/App/Dei/Fees'
-import '../../components/App/Dei/Classes.css'
 import { Type } from '../../components/App/Text';
 
 const Dei = () => {
@@ -163,7 +162,6 @@ const Dei = () => {
     }
 
     const changeToken = (token, type) => {
-
         setActiveSearchBox(false)
         setAmountIn("")
         const vsType = getSwapVsType(type)

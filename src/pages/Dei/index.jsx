@@ -24,6 +24,7 @@ import { useLocation } from 'react-router';
 import LinkBox from '../../components/App/Dei/LinkBox'
 import CostBox from '../../components/App/Dei/CostBox'
 import CostBox2 from '../../components/App/Dei/CostBox2'
+import RedeemedToken from '../../components/App/Dei/RedeemedToken'
 import { Type } from '../../components/App/Text';
 import styled from 'styled-components';
 
@@ -349,6 +350,10 @@ const Dei = () => {
 
             </SwapWrapper>
             <SwapCard title="Minting Fee" value="0.3%" />
+
+            <RedeemedToken 
+                title="Redeemed Token ready for claim"
+            />
         </MainWrapper>
 
         <div className='tut-left-wrap'>

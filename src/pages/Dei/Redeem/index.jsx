@@ -25,6 +25,7 @@ import CostBox from '../../../components/App/Dei/CostBox'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
+import { isZero } from '../../../constant/number';
 
 const PlusImg = styled.img`
     z-index: 1;
@@ -52,7 +53,7 @@ const Dei = () => {
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
-    const [isRedeemed, setIsRedeemed] = useState(true)
+    const [redeemAmount, setRedeemAmount] = useState(0)
 
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
@@ -82,9 +83,9 @@ const Dei = () => {
                 const tt = DEITokens[j]
                 if (tt.pairID && t.pairID === tt.pairID) {
                     j++
-                } else {
-                    break
+                    continue
                 }
+                break
             }
             pairedTokens.push(DEITokens.slice(i, j))
             i = j
@@ -92,6 +93,8 @@ const Dei = () => {
             pairedTokens.push([DEITokens[i]])
         }
     }
+
+
 
     for (let i = 0; i < tokens.length; i++) {
         const currToken = tokens[i]
@@ -129,23 +132,22 @@ const Dei = () => {
         outputCurrency = null
     }
 
-    const deaContract = getTokenAddr("dea", chainId)
-
+    const deusContract = getTokenAddr("dea", chainId) + "1"
     let fromAddress = inputCurrency ? inputCurrency : "0x"
 
-    let toAddress = outputCurrency ? outputCurrency : deaContract
+    let toAddress = outputCurrency ? outputCurrency : deusContract
 
 
     if (toAddress === fromAddress) {
         if (fromAddress === "0x") {
             if (!inputCurrency) {
-                fromAddress = deaContract
+                fromAddress = deusContract
             }
             else {
-                toAddress = deaContract
+                toAddress = deusContract
             }
         }
-        else if (fromAddress === deaContract) {
+        else if (fromAddress === deusContract) {
             if (!outputCurrency) {
                 toAddress = "0x"
             }
@@ -157,7 +159,7 @@ const Dei = () => {
 
     const [swapState, setSwapState] = useState({
         from: deiToken,
-        to: { ...TokensMap[fromAddress] },
+        to: { ...TokensMap[deusContract] },
     })
 
     const [hotIn, setHotIn] = useState("")
@@ -188,6 +190,20 @@ const Dei = () => {
     // }, [tokenBalances])
 
     useEffect(() => {
+        const token = swapState.to
+        const type = "to"
+        if (swapState?.to?.pairID) {
+            setIsPair(true)
+            let secondToken = DEITokens.filter(currToken => {
+                return currToken.pairID === token.pairID && currToken.address !== token.address
+            })[0]
+            setPairToken(secondToken)
+            setSwapState({ ...swapState, [type]: token })
+        }
+    }, [swapState.to])
+
+
+    useEffect(() => {
         if (isPreApproved == null) {
             if (allowance.toString() === "-1") {
                 setIsPreApproved(null) //doNothing
@@ -207,33 +223,6 @@ const Dei = () => {
     }, [allowance]) //isPreApproved ?
 
 
-    const showSearchBox = (active = false, type) => {
-        setEscapedType(type)
-        setActiveSearchBox(active)
-    }
-
-    const changeToken = (token, type) => {
-        setActiveSearchBox(false)
-        setAmountIn("")
-        const vsType = getSwapVsType(type)
-
-        if (swapState[vsType].symbol === token.symbol) {
-            return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
-        }
-        console.log("token", token)
-        if (token.pairID) {
-            setIsPair(true)
-            let secondToken = DEITokens.filter(currToken => {
-                return currToken.pairID === token.pairID && currToken.address !== token.address
-            })[0]
-            console.log("secondToken", secondToken)
-            setPairToken(secondToken)
-            setSwapState({ ...swapState, [type]: token })
-            return
-        }
-        setIsPair(false)
-        setSwapState({ ...swapState, [type]: token })
-    }
 
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
@@ -298,16 +287,6 @@ const Dei = () => {
     }, [onSwap])
 
     return (<>
-        <SearchBox
-            account={account}
-            pairedTokens={pairedTokens}
-            currencies={TokensMap}
-            swapState={swapState}
-            escapedType={escapedType}
-            changeToken={changeToken}
-            disableLoading={false}
-            active={activeSearchBox}
-            setActive={setActiveSearchBox} />
 
         <MainWrapper>
             <Type.XL fontWeight="300">Redeem</Type.XL>
@@ -330,7 +309,7 @@ const Dei = () => {
                     title="To (estimated)"
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
-                    setActive={showSearchBox}
+                    setActive={null}
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}
@@ -344,7 +323,7 @@ const Dei = () => {
                     title="To (estimated)"
                     inputAmount={amountInPair}
                     setInputAmount={setAmountInPair}
-                    setActive={showSearchBox}
+                    setActive={null}
                     currency={pairToken}
                     TokensMap={TokensMap}
                     fastUpdate={fastUpdate}
@@ -354,7 +333,7 @@ const Dei = () => {
 
                 <SwapAction
                     bgColor={"grad_dei"}
-                    text="MINT"
+                    text="REDEEM"
                     isPreApproved={isPreApproved}
                     validNetworks={[1, 4]}
                     isApproved={isApproved}
@@ -368,12 +347,12 @@ const Dei = () => {
                 />
 
             </SwapWrapper>
-            
+
             <SwapCard title="Minting Fee" value="0.3%" />
 
-            {isRedeemed && <RedeemedToken
+            {isZero(redeemAmount) && <RedeemedToken
                 title="Redeemed Token ready for claim"
-                currencies={[swapState.to, swapState.from]}
+                currencies={[swapState.to, pairToken]}
             />}
 
         </MainWrapper>

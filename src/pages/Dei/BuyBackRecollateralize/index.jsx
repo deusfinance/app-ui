@@ -39,7 +39,14 @@ const PlusImg = styled.img`
     `}
 `
 
-const TopWrap = styled.div``
+const TopWrap = styled.div`
+    display: flex;
+    flex-direction: row;
+
+    ${({ theme }) => theme.mediaWidth.upToLarge`
+        flex-direction: column;
+  `}
+`
 
 const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)

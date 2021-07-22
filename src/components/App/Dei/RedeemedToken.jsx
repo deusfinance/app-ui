@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components'
 import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
-import { Flex, Button as RebassButton, Text } from 'rebass/styled-components';
-import { Base, ButtonSyncDeactive } from '../Button/index'
+import { Flex, Text } from 'rebass/styled-components';
+import { Base } from '../Button/index'
 
 const SmallWrapper = styled.div`
     padding:0 20px;

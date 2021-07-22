@@ -24,6 +24,7 @@ import { useLocation } from 'react-router';
 import LinkBox from '../../components/App/Dei/LinkBox'
 import CostBox from '../../components/App/Dei/CostBox'
 import CostBox2 from '../../components/App/Dei/CostBox2'
+import RedeemedToken from '../../components/App/Dei/RedeemedToken'
 import { Type } from '../../components/App/Text';
 import styled from 'styled-components';
 
@@ -32,6 +33,12 @@ const PlusImg = styled.img`
     position: relative;
     text-align: center;
     margin-top: -20px;
+
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        margin-bottom: 5px;
+        width: 23px;
+        height: 23px;
+    `}
 `
 
 const Dei = () => {
@@ -363,6 +370,11 @@ const Dei = () => {
 
             </SwapWrapper>
             <SwapCard title="Minting Fee" value="0.3%" />
+
+            <RedeemedToken
+                title="Redeemed Token ready for claim"
+                currencies={[swapState.from, swapState.to]}
+            />
         </MainWrapper>
 
         <div className='tut-left-wrap'>

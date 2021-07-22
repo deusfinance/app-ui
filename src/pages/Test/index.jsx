@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { ButtonMax, ButtonSyncDeactive, ButtonSyncActice } from '../../components/App/Button/index';
+import { ButtonMax, ButtonSyncDeactive, ButtonSyncActive } from '../../components/App/Button/index';
 import CurrencyLogo from '../../components/App/Currency';
 import { ButtonConnectWallet, NavTextBoxSecondery, NavTextBoxWarning } from '../../components/App/Navbar';
 import { InputAmount, TokenInfo } from '../../components/App/Swap';
@@ -94,16 +94,16 @@ const Test = () => {
             SELECT AN ASSET
         </ButtonSyncDeactive>
 
-        <ButtonSyncActice>
+        <ButtonSyncActive>
             SYNC
-        </ButtonSyncActice>
+        </ButtonSyncActive>
 
-        <ButtonSyncActice style={{ display: "flex" }}>
+        <ButtonSyncActive style={{ display: "flex" }}>
             <span>SYNC</span>
             <Loader style={{ position: "absolute", right: "10px" }}
                 size="25px"
             />
-        </ButtonSyncActice>
+        </ButtonSyncActive>
 
         <NavTextBoxSecondery>
             0x00c0...0F91

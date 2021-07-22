@@ -58,7 +58,7 @@ export const ButtonSyncDeactive = styled(ButtonSync)`
     cursor: default;
 `
 
-export const ButtonSyncActice = styled(ButtonSync)`
+export const ButtonSyncActive = styled(ButtonSync)`
   background: ${({ theme }) => theme.sync_active};
   /* box-shadow: 0px 2px 4px rgb(100 100 100 / 50%); */
   font-size: 25px;

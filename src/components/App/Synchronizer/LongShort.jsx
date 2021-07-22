@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { ButtonSyncActice } from '../Button';
+import { ButtonSyncActive } from '../Button';
 
 const WrapActions = styled.div`
     margin-top:20px;
@@ -12,7 +12,7 @@ const WrapActions = styled.div`
         margin:0px 5px;
     }
 `
-const ButtonSelect = styled(ButtonSyncActice)`
+const ButtonSelect = styled(ButtonSyncActive)`
   background: ${({ theme, active }) => active ? theme.grad1 : theme.sync_dactive};
   color: ${({ theme }) => theme.text1};
   font-size:20px;

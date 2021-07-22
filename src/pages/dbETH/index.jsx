@@ -27,7 +27,7 @@ const DbETHMigrator = () => {
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [slipage, setSlipage] = useState(0.5)
+    const [slippage, setSlippage] = useState(0.5)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -117,7 +117,7 @@ const DbETHMigrator = () => {
     const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
 
     useEffect(() => {
         const get = async () => {
@@ -252,7 +252,7 @@ const DbETHMigrator = () => {
                 tokensMap={tokensMap}
             />
 
-            <SlippageTolerance slipage={slipage} setSlipage={setSlipage} />
+            <SlippageTolerance slippage={slippage} setSlippage={setSlippage} />
         </MainWrapper>
     </>);
 }

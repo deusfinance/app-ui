@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { costs } from './data'
+import { costs_v2 as costs } from './data'
 import styled from 'styled-components'
 
 const MainWrapper = styled.div`
@@ -34,7 +34,7 @@ const FeePrice = styled.span`
     display: block;
 `
 
-const CostBox = () => {
+const CostBox_v2 = () => {
     return (
         useMemo(() => {
             return <MainWrapper>
@@ -49,4 +49,4 @@ const CostBox = () => {
     )
 }
 
-export default CostBox
+export default CostBox_v2

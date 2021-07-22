@@ -23,7 +23,7 @@ const Slippage = ({ slippage, setSlippage }) => {
 
     return (<div className="slippage">
         <div className="item">
-            <div className="item-title">{t("slipage")}</div>
+            <div className="item-title">{t("slippage")}</div>
 
             <div className="buttons-wrap">
                 {amounts.map((amount, i) => {

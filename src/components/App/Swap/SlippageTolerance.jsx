@@ -62,12 +62,12 @@ const InputSlippage = styled.input.attrs(
 
 `
 const defaultAmounts = [0.1, 0.5, 1]
-const SlippageTolerance = ({ slipage, setSlipage, bgColor }) => {
+const SlippageTolerance = ({ slippage, setSlippage, bgColor }) => {
     const [customActive, setCustomActive] = useState(false)
 
-    const handleMinSlipage = () => {
-        if (slipage < 0.1) {
-            setSlipage(0.1)
+    const handleMinslippage = () => {
+        if (slippage < 0.1) {
+            setSlippage(0.1)
             setCustomActive(false)
         }
     }
@@ -75,10 +75,10 @@ const SlippageTolerance = ({ slipage, setSlipage, bgColor }) => {
     const handleCustomChange = (e) => {
         if (e.currentTarget.value !== "") {
             setCustomActive(true)
-            setSlipage(parseFloat(e.currentTarget.value))
+            setSlippage(parseFloat(e.currentTarget.value))
         } else {
             setCustomActive(false)
-            setSlipage(0.5)
+            setSlippage(0.5)
         }
     }
 
@@ -86,16 +86,16 @@ const SlippageTolerance = ({ slipage, setSlipage, bgColor }) => {
         <Type.SM className="inner-title">Slippage Telorance</Type.SM>
         <div style={{ display: "inline-block" }} height="25px">
             {defaultAmounts.map(amount => {
-                return <Option key={amount} active={amount === slipage && !customActive} bgColor={bgColor} onClick={() => {
+                return <Option key={amount} active={amount === slippage && !customActive} bgColor={bgColor} onClick={() => {
                     setCustomActive(false)
-                    setSlipage(amount)
+                    setSlippage(amount)
                 }}>{amount}%</Option>
             })}
             <CustomOption active={customActive}  >
                 <InputSlippage
-                    placeholder={slipage.toFixed(1)}
-                    value={customActive ? slipage : ""}
-                    onBlur={handleMinSlipage}
+                    placeholder={slippage.toFixed(1)}
+                    value={customActive ? slippage : ""}
+                    onBlur={handleMinslippage}
                     onChange={(e) => handleCustomChange(e)}
                 />
                 %

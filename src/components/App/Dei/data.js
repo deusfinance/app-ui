@@ -1,14 +1,14 @@
 const urls = [{
     name: 'Mint',
-    link: '/dei'
+    link: '/dei/mint'
   },
   {
     name: 'Redeem',
-    link: '/Redeem'
+    link: '/dei/Redeem'
   },
   {
     name: 'Buyback & Recollateralize',
-    link: '/Buyback'
+    link: '/dei/buyBackRecollateralize'
   },
 ]
 

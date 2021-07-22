@@ -83,7 +83,7 @@ function App() {
                 <Route exact path="/swap2" component={Swap2} />
                 <Route exact path="/dei/mint" component={DeiMint} />
                 <Route exact path="/dei/redeem" component={DeiRedeem} />
-                <Route exact path="/dei/buyBackRecollateralize" component={DeiBuyBackRecollateralize} />
+                <Route exact path="/dei/buyback-recollat" component={DeiBuyBackRecollateralize} />
                 <Route exact path="/sealed-swap" component={Sealed} />
                 <Route exact path="/muon-presale" component={Muon} />
                 <Redirect exact from="/" to="/swap" />

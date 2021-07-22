@@ -67,6 +67,26 @@ const Dei = () => {
 
     // });
 
+    const pairedTokens = []
+    for (let i = 0; i < DEITokens.length; i++) {
+        const t = DEITokens[i]
+        if (t.pairID) {
+            let j = i + 1
+            for (; j < DEITokens.length; j++) {
+                const tt = DEITokens[j]
+                if (tt.pairID && t.pairID === tt.pairID) {
+                    j++
+                } else {
+                    break
+                }
+            }
+            pairedTokens.push(DEITokens.slice(i, j))
+            i = j
+        } else {
+            pairedTokens.push([DEITokens[i]])
+        }
+    }
+
     for (let i = 0; i < tokens.length; i++) {
         const currToken = tokens[i]
         const { address, pairID } = currToken
@@ -256,7 +276,6 @@ const Dei = () => {
         }
     }, [onApprove])
 
-
     const handleSwap = useCallback(async () => {
         try {
             const tx = await onSwap()
@@ -275,6 +294,7 @@ const Dei = () => {
     return (<>
         <SearchBox
             account={account}
+            pairedTokens={pairedTokens}
             currencies={TokensMap}
             swapState={swapState}
             escapedType={escapedType}

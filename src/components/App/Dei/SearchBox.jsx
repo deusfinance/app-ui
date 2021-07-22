@@ -1,14 +1,10 @@
-import React from 'react';
+import React, { useMemo, Children } from 'react';
 import ReactModal from 'react-modal'
 import styled from 'styled-components'
 import { Type } from '../../App/Text';
 import { RowBetween } from '../../App/Row';
-import CircleToken from '../../../assets/images/circle-token.svg'
 import { X } from 'react-feather'
-import { StyledLogo } from '../Currency';
-import { FlexCenter } from '../Container';
-import { formatBalance3 } from '../../../utils/utils';
-import { isZero } from '../../../constant/number';
+import TokensRow from './TokensRow';
 
 if (typeof window !== 'undefined') {
   ReactModal.setAppElement('body')
@@ -74,26 +70,14 @@ background: rgba(255, 255, 255, 0.15);
 margin:${({ my }) => my} 0;
 `
 
-const TokenRow = styled(RowBetween)`
-padding:0 20px;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-     padding:0 10px;
-  `}
-    :hover{
-        cursor:pointer;
-        background : #292929;
-    }
-`
 const TokensWrap = styled.div`
     margin:0 -20px;
 `
-const TokenWrap = styled(FlexCenter)`
-    margin:7.5px 0;
-`
 
-const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoading = true, account, active, setActive }) => {
 
-  return (active &&
+const SearchBox = ({ currencies, pairedTokens, swapState, escapedType, changeToken, disableLoading = true, account, active, setActive }) => {
+
+  return (useMemo(() => active &&
     <ReactModal
       isOpen={active}
       style={customStyles}
@@ -113,25 +97,10 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoa
         </RowBetween>
         <Line my="5px"></Line>
         <TokensWrap>
-          {Object.keys(currencies)
-            .filter(address => currencies[address].symbol !== swapState[escapedType].symbol && (!swapState[escapedType].pairID || (swapState[escapedType].pairID && currencies[address].pairID !== swapState[escapedType].pairID)))
-            .map((address, id) => {
-              const addressBalance = address.length > 42 ? address.substring(0, 42) : address.length < 10 ? "0x" : address
-              return <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
-                <TokenWrap>
-                  <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
-                  <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
-                </TokenWrap>
-                {!account || disableLoading || currencies[addressBalance].balance || isZero(currencies[addressBalance].balance)
-                  ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[addressBalance]?.balance) || 0}</Type.LG>
-                  : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
-                }
-              </TokenRow>
-            })}
+          {Children.toArray(pairedTokens.map(tokens => (<TokensRow tokens={tokens} currencies={currencies} account={account} disableLoading={disableLoading} handleClick={() => changeToken(tokens[0], escapedType)} />)))}
         </TokensWrap>
       </Wrapper>
-    </ReactModal>
-  );
+    </ReactModal >, [active, currencies, pairedTokens, swapState, escapedType, changeToken, disableLoading, account, active, setActive]));
 }
 
 export default SearchBox;

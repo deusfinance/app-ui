@@ -221,13 +221,11 @@ const Dei = () => {
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
         }
-        console.log("token", token)
         if (token.pairID) {
             setIsPair(true)
             let secondToken = DEITokens.filter(currToken => {
                 return currToken.pairID === token.pairID && currToken.address !== token.address
             })[0]
-            console.log("secondToken", secondToken)
             setPairToken(secondToken)
             setSwapState({ ...swapState, [type]: token })
             return

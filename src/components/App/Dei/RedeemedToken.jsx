@@ -51,11 +51,11 @@ const StyledLogo = styled.img`
 `
 
 function CurrencyLogo({
-    symbol,
-    logo,
-    size = '25px',
-    }) {
-    return <StyledLogo size={size} src={logo || DefaultLogo} alt={`${symbol ?? 'token'} logo`} />
+  symbol,
+  logo,
+  size = '25px',
+}) {
+  return <StyledLogo size={size} src={logo || DefaultLogo} alt={`${symbol ?? 'token'} logo`} />
 }
 
 const Base = styled(RebassButton)`
@@ -88,10 +88,10 @@ const Base = styled(RebassButton)`
 `
 
 const ButtonSync = styled(Base).attrs({
-    width: "100%",
-    height: "36px",
-    borderRadius: "10px",
-    marginBottom: "20px",
+  width: "100%",
+  height: "36px",
+  borderRadius: "10px",
+  marginBottom: "20px",
 })`
   font-size:20px;
 `
@@ -119,22 +119,22 @@ const ButtonSwap = styled(ButtonSyncActive)`
 `
 
 const RedeemedToken = ({ title, currencies }) => {
-    return (
-        <SmallWrapper>
-            <MyText> {title} </MyText>
-            {currencies.map(({ symbol, logo, index }) => {
-                return <TokenInfo key={index+logo}>
-                    <CurrencyLogo symbol={symbol} logo={logo} />
-                    <TextWrapper color="text1" ml="7px" mr="9px">{symbol}</TextWrapper>
+  return (
+    <SmallWrapper>
+      <MyText> {title} </MyText>
+      {currencies.map(({ symbol, logo, index }) => {
+        return <TokenInfo key={index + logo}>
+          <CurrencyLogo symbol={symbol} logo={logo} />
+          <TextWrapper color="text1" ml="7px" mr="9px">{symbol}</TextWrapper>
 
-                    <NumberWrapper color="text1" ml="7px" mr="9px"> 344,342.23244 </NumberWrapper>
-                </TokenInfo>
-            })}
-        
-            <ButtonSwap active={true} onClick={null}> CLAIM ALL </ButtonSwap>
+          <NumberWrapper color="text1" ml="7px" mr="9px"> 344,342.23244 </NumberWrapper>
+        </TokenInfo>
+      })}
 
-        </SmallWrapper>
-    );
+      <ButtonSwap active={true} bgColor={"grad_dei"} onClick={null}> CLAIM ALL </ButtonSwap>
+
+    </SmallWrapper>
+  );
 }
 
 export default RedeemedToken

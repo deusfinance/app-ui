@@ -50,7 +50,7 @@ export const SwapArrow = styled(FlexCenter)`
     display:inline-flex;
     cursor:pointer;
     &:hover{
-        filter:brightness(0.8)
+        filter:brightness(0.8);
     }
 `
 export const MainWrapper = styled.div`

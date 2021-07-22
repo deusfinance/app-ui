@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
-import { MainWrapper, SwapWrapper, SwapArrow } from '../../../components/App/Swap';
+import { SwapWrapper, SwapArrow } from '../../../components/App/Swap';
 import TokenBox from '../../../components/App/Swap/TokenBox';
 import SwapAction from '../../../components/App/Swap/SwapAction';
 import SearchBox from '../../../components/App/Dei/SearchBox';
@@ -41,11 +41,24 @@ const PlusImg = styled.img`
 
 const TopWrap = styled.div`
     display: flex;
+    justify-content: center;
     flex-direction: row;
-
-    ${({ theme }) => theme.mediaWidth.upToLarge`
+    ${({ theme }) => theme.mediaWidth.upToExtraLarge`
         flex-direction: column;
-  `}
+    `}
+`
+
+const FakeWrapper = styled.div`
+    flex: 0.75;
+`
+
+const MainWrapper = styled.div`
+    flex: 1;
+    padding-top: 60px;
+    padding-bottom: 30px;
+    text-align:center;
+    /* max-width: 100%; */
+    /* margin:auto; */
 `
 
 const Dei = () => {
@@ -77,9 +90,6 @@ const Dei = () => {
 
     //eslint-disable-next-line
     const tokensMap = {}
-    // tokens.forEach(token => {
-
-    // });
 
     const pairedTokens = []
     for (let i = 0; i < DEITokens.length; i++) {
@@ -316,6 +326,8 @@ const Dei = () => {
             setActive={setActiveSearchBox} />
 
         <TopWrap>
+            <FakeWrapper></FakeWrapper>
+
             <MainWrapper>
                 <Type.XL fontWeight="300">Buyback</Type.XL>
                 <SwapWrapper style={{ marginTop: "25px", }}>
@@ -443,6 +455,7 @@ const Dei = () => {
                 <SwapCard title="Minting Fee" value="0.3%" />
 
             </MainWrapper>
+            <FakeWrapper></FakeWrapper>
         </TopWrap>
 
         <div className='tut-left-wrap'>

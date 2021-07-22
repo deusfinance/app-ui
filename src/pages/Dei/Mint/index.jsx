@@ -20,10 +20,8 @@ import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
 import useTokenBalances from '../../../helper/useTokenBalances';
 import { useDebounce } from '../../../helper/useDebounce';
 import { useLocation } from 'react-router';
-// import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import LinkBox from '../../../components/App/Dei/LinkBox'
-import CostBox from '../../../components/App/Dei/CostBox'
-import CostBox2 from '../../../components/App/Dei/CostBox2'
+import CostBox_v2 from '../../../components/App/Dei/CostBox_v2'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
@@ -46,6 +44,7 @@ const Dei = () => {
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
+    const [slippage, setSlippage] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -238,7 +237,7 @@ const Dei = () => {
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, 0, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
 
     // useEffect(() => {
     //     const get = async () => {
@@ -370,18 +369,11 @@ const Dei = () => {
             </SwapWrapper>
 
             <SwapCard title="Minting Fee" value="0.3%" />
-
-            <RedeemedToken
-                title="Redeemed Token ready for claim"
-                currencies={[swapState.from, swapState.to]}
-            />
         </MainWrapper>
 
         <div className='tut-left-wrap'>
-            {/* <SelectedNetworks /> */}
             <LinkBox />
-            <CostBox />
-            {/* <CostBox2 /> */}
+            <CostBox_v2 />
         </div>
     </>);
 }

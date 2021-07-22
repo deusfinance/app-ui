@@ -59,7 +59,6 @@ export const MainWrapper = styled.div`
    text-align:center;
    max-width: 95%;
    margin:auto;
-
 `
 export const SwapWrapper = styled.div`
 ${StyleSwapBase}

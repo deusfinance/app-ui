@@ -14,7 +14,10 @@ import './assets/styles/base.scss'
 const Deus = React.lazy(() => import('./components/Deus'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
-const Dei = React.lazy(() => import('./pages/Dei'))
+const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
+const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
+const DeiBuyBackRecollateralize = React.lazy(() => import('./pages/Dei/BuyBackRecollateralize'))
+
 const Sealed = React.lazy(() => import('./pages/Sealed'))
 const Muon = React.lazy(() => import('./pages/Muon'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
@@ -78,7 +81,9 @@ function App() {
                 {/* <Route exact path="/dbETH" component={dbETH} /> */}
                 {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/swap2" component={Swap2} />
-                <Route exact path="/dei" component={Dei} />
+                <Route exact path="/dei/mint" component={DeiMint} />
+                <Route exact path="/dei/redeem" component={DeiRedeem} />
+                <Route exact path="/dei/buyBackRecollateralize" component={DeiBuyBackRecollateralize} />
                 <Route exact path="/sealed-swap" component={Sealed} />
                 <Route exact path="/muon-presale" component={Muon} />
                 <Redirect exact from="/" to="/swap" />

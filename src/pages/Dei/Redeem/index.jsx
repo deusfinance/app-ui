@@ -20,10 +20,8 @@ import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
 import useTokenBalances from '../../../helper/useTokenBalances';
 import { useDebounce } from '../../../helper/useDebounce';
 import { useLocation } from 'react-router';
-// import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import CostBox from '../../../components/App/Dei/CostBox'
-import CostBox2 from '../../../components/App/Dei/CostBox2'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
@@ -46,6 +44,7 @@ const Dei = () => {
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
+    const [slippage, setSlippage] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -53,6 +52,7 @@ const Dei = () => {
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
+    const [isRedeemed, setIsRedeemed] = useState(true)
 
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
@@ -156,8 +156,8 @@ const Dei = () => {
     }
 
     const [swapState, setSwapState] = useState({
-        from: { ...TokensMap[fromAddress] },
-        to: deiToken,
+        from: deiToken,
+        to: { ...TokensMap[fromAddress] },
     })
 
     const [hotIn, setHotIn] = useState("")
@@ -238,7 +238,7 @@ const Dei = () => {
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, 0, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
 
     // useEffect(() => {
     //     const get = async () => {
@@ -310,32 +310,18 @@ const Dei = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            <Type.XL fontWeight="300">Mint</Type.XL>
+            <Type.XL fontWeight="300">Redeem</Type.XL>
             <SwapWrapper style={{ marginTop: "25px", }}>
                 <TokenBox
                     type="from"
-                    hasMax={true}
                     inputAmount={amountIn}
+                    hasMax={true}
                     setInputAmount={setAmountIn}
-                    setActive={showSearchBox}
+                    setActive={null}
                     currency={swapState.from}
                     TokensMap={TokensMap}
                     fastUpdate={fastUpdate}
                 />
-
-                {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
-
-                {isPair && <TokenBox
-                    mt={"-21px"}
-                    type="from"
-                    hasMax={true}
-                    inputAmount={amountInPair}
-                    setInputAmount={setAmountInPair}
-                    setActive={showSearchBox}
-                    currency={pairToken}
-                    TokensMap={TokensMap}
-                    fastUpdate={fastUpdate}
-                />}
 
                 <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
@@ -344,11 +330,25 @@ const Dei = () => {
                     title="To (estimated)"
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
-                    setActive={null}
+                    setActive={showSearchBox}
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}
                 />
+
+                {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+
+                {isPair && <TokenBox
+                    mt={"-21px"}
+                    type="to"
+                    title="To (estimated)"
+                    inputAmount={amountInPair}
+                    setInputAmount={setAmountInPair}
+                    setActive={showSearchBox}
+                    currency={pairToken}
+                    TokensMap={TokensMap}
+                    fastUpdate={fastUpdate}
+                />}
 
                 <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
@@ -368,20 +368,19 @@ const Dei = () => {
                 />
 
             </SwapWrapper>
-
+            
             <SwapCard title="Minting Fee" value="0.3%" />
 
-            <RedeemedToken
+            {isRedeemed && <RedeemedToken
                 title="Redeemed Token ready for claim"
-                currencies={[swapState.from, swapState.to]}
-            />
+                currencies={[swapState.to, swapState.from]}
+            />}
+
         </MainWrapper>
 
         <div className='tut-left-wrap'>
-            {/* <SelectedNetworks /> */}
             <LinkBox />
             <CostBox />
-            {/* <CostBox2 /> */}
         </div>
     </>);
 }

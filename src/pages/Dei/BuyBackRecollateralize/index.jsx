@@ -20,9 +20,7 @@ import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
 import useTokenBalances from '../../../helper/useTokenBalances';
 import { useDebounce } from '../../../helper/useDebounce';
 import { useLocation } from 'react-router';
-// import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import LinkBox from '../../../components/App/Dei/LinkBox'
-import CostBox from '../../../components/App/Dei/CostBox'
 import CostBox2 from '../../../components/App/Dei/CostBox2'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
@@ -41,11 +39,14 @@ const PlusImg = styled.img`
     `}
 `
 
+const TopWrap = styled.div``
+
 const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
+    const [slippage, setSlippage] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -238,7 +239,7 @@ const Dei = () => {
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, 0, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
 
     // useEffect(() => {
     //     const get = async () => {
@@ -309,79 +310,139 @@ const Dei = () => {
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
 
-        <MainWrapper>
-            <Type.XL fontWeight="300">Mint</Type.XL>
-            <SwapWrapper style={{ marginTop: "25px", }}>
-                <TokenBox
-                    type="from"
-                    hasMax={true}
-                    inputAmount={amountIn}
-                    setInputAmount={setAmountIn}
-                    setActive={showSearchBox}
-                    currency={swapState.from}
-                    TokensMap={TokensMap}
-                    fastUpdate={fastUpdate}
-                />
+        <TopWrap>
+            <MainWrapper>
+                <Type.XL fontWeight="300">Buyback</Type.XL>
+                <SwapWrapper style={{ marginTop: "25px", }}>
+                    <TokenBox
+                        type="from"
+                        hasMax={true}
+                        inputAmount={amountIn}
+                        setInputAmount={setAmountIn}
+                        setActive={showSearchBox}
+                        currency={swapState.from}
+                        TokensMap={TokensMap}
+                        fastUpdate={fastUpdate}
+                    />
 
-                {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+                    {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
 
-                {isPair && <TokenBox
-                    mt={"-21px"}
-                    type="from"
-                    hasMax={true}
-                    inputAmount={amountInPair}
-                    setInputAmount={setAmountInPair}
-                    setActive={showSearchBox}
-                    currency={pairToken}
-                    TokensMap={TokensMap}
-                    fastUpdate={fastUpdate}
-                />}
+                    {isPair && <TokenBox
+                        mt={"-21px"}
+                        type="from"
+                        hasMax={true}
+                        inputAmount={amountInPair}
+                        setInputAmount={setAmountInPair}
+                        setActive={showSearchBox}
+                        currency={pairToken}
+                        TokensMap={TokensMap}
+                        fastUpdate={fastUpdate}
+                    />}
 
-                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+                    <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-                <TokenBox
-                    type="to"
-                    title="To (estimated)"
-                    inputAmount={amountOut}
-                    setInputAmount={setAmountOut}
-                    setActive={null}
-                    TokensMap={TokensMap}
-                    currency={swapState.to}
-                    fastUpdate={fastUpdate}
-                />
+                    <TokenBox
+                        type="to"
+                        title="To (estimated)"
+                        inputAmount={amountOut}
+                        setInputAmount={setAmountOut}
+                        setActive={null}
+                        TokensMap={TokensMap}
+                        currency={swapState.to}
+                        fastUpdate={fastUpdate}
+                    />
 
-                <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
-                <SwapAction
-                    bgColor={"grad_dei"}
-                    text="MINT"
-                    isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
-                    isApproved={isApproved}
-                    loading={approveLoading}
-                    handleApprove={handleApprove}
-                    handleSwap={handleSwap}
-                    TokensMap={TokensMap}
-                    swapState={swapState}
-                    amountIn={amountIn}
-                    amountOut={amountOut}
-                />
+                    <SwapAction
+                        bgColor={"grad_dei"}
+                        text="MINT"
+                        isPreApproved={isPreApproved}
+                        validNetworks={[1, 4]}
+                        isApproved={isApproved}
+                        loading={approveLoading}
+                        handleApprove={handleApprove}
+                        handleSwap={handleSwap}
+                        TokensMap={TokensMap}
+                        swapState={swapState}
+                        amountIn={amountIn}
+                        amountOut={amountOut}
+                    />
 
-            </SwapWrapper>
+                </SwapWrapper>
 
-            <SwapCard title="Minting Fee" value="0.3%" />
+                <SwapCard title="Minting Fee" value="0.3%" />
 
-            <RedeemedToken
-                title="Redeemed Token ready for claim"
-                currencies={[swapState.from, swapState.to]}
-            />
-        </MainWrapper>
+            </MainWrapper>
+
+            <MainWrapper>
+                <Type.XL fontWeight="300">Recollateralize</Type.XL>
+                <SwapWrapper style={{ marginTop: "25px", }}>
+                    <TokenBox
+                        type="from"
+                        hasMax={true}
+                        inputAmount={amountIn}
+                        setInputAmount={setAmountIn}
+                        setActive={showSearchBox}
+                        currency={swapState.from}
+                        TokensMap={TokensMap}
+                        fastUpdate={fastUpdate}
+                    />
+
+                    {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+
+                    {isPair && <TokenBox
+                        mt={"-21px"}
+                        type="from"
+                        hasMax={true}
+                        inputAmount={amountInPair}
+                        setInputAmount={setAmountInPair}
+                        setActive={showSearchBox}
+                        currency={pairToken}
+                        TokensMap={TokensMap}
+                        fastUpdate={fastUpdate}
+                    />}
+
+                    <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+
+                    <TokenBox
+                        type="to"
+                        title="To (estimated)"
+                        inputAmount={amountOut}
+                        setInputAmount={setAmountOut}
+                        setActive={null}
+                        TokensMap={TokensMap}
+                        currency={swapState.to}
+                        fastUpdate={fastUpdate}
+                    />
+
+                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+
+                    <SwapAction
+                        bgColor={"grad_dei"}
+                        text="MINT"
+                        isPreApproved={isPreApproved}
+                        validNetworks={[1, 4]}
+                        isApproved={isApproved}
+                        loading={approveLoading}
+                        handleApprove={handleApprove}
+                        handleSwap={handleSwap}
+                        TokensMap={TokensMap}
+                        swapState={swapState}
+                        amountIn={amountIn}
+                        amountOut={amountOut}
+                    />
+
+                </SwapWrapper>
+
+                <SwapCard title="Minting Fee" value="0.3%" />
+
+            </MainWrapper>
+        </TopWrap>
 
         <div className='tut-left-wrap'>
-            {/* <SelectedNetworks /> */}
             <LinkBox />
-            <CostBox />
-            {/* <CostBox2 /> */}
+            <CostBox2 />
         </div>
     </>);
 }

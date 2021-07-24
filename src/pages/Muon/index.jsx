@@ -8,7 +8,7 @@ import RateBox from '../../components/App/MuonSwap/RateBox';
 import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
-import { fromWei } from '../../helper/formatBalance';
+import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
 import { useApprove } from '../../helper/useApprove';
 import { useAllowance } from '../../helper/useAllowance';
 import { usePrices, useSwap, useUsedAmount } from '../../helper/useMuon';
@@ -22,6 +22,8 @@ import { useLocation } from 'react-router';
 import RemainingCap from '../../components/App/MuonSwap/RemainingCap';
 import { getAllocation, SymbolMap, } from '../../helper/muonHelper';
 import { isZero } from '../../constant/number';
+import { getCorrectChains } from '../../constant/correctChain';
+import SelectedNetworks from '../../components/Sync/SelectNetworks';
 
 const Muon = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -35,14 +37,14 @@ const Muon = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
+    const location = useLocation()
+    const validNetworks = getCorrectChains(location.pathname)
     const prices = usePrices()
     const chainId = useChain(validNetworks)
     const contractAddress = getContractAddr("muon_presale", chainId)
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
     const tokens = useMemo(() => MuonPreSaleTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
-
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
@@ -55,8 +57,11 @@ const Muon = () => {
     }
 
     let DEA = getTokenAddr("dea", chainId)
-    if (chainId === 4)
+    if (chainId !== 1)
         DEA = "0x"
+    // if (chainId === 97) {
+    // DEA = "0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6"
+    // }
 
     let fromAddress = inputCurrency ? inputCurrency : DEA
 
@@ -175,7 +180,7 @@ const Muon = () => {
             const result = getAmountsOut()
             if (!result) return
             if (amountIn === "" || isZero(amountIn)) setAmountOut("")
-            else setAmountOut(fromWei(result, swapState.to.decimals))
+            else setAmountOut(RemoveTrailingZero(fromWei(result, swapState.to.decimals), swapState.to.decimals))
         }
         if (getAmountsOut && fouceType === "from")
             get()
@@ -186,7 +191,7 @@ const Muon = () => {
             const result = await getAmountsIn()
             if (!result) return
             if (amountOut === "" || isZero(amountOut)) setAmountIn("")
-            else setAmountIn(fromWei(result, swapState.from.decimals))
+            else setAmountIn(RemoveTrailingZero(fromWei(result, swapState.from.decimals), swapState.from.decimals))
         }
         if (getAmountsIn && fouceType === "to")
             get()
@@ -285,7 +290,7 @@ const Muon = () => {
                 <SwapAction
                     bgColor="bg_blue"
                     isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
+                    validNetworks={validNetworks}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}
@@ -304,9 +309,9 @@ const Muon = () => {
 
 
         </MainWrapper>
-        {/* <div className='tut-left-wrap'>
+        <div className='tut-left-wrap'>
             <SelectedNetworks />
-        </div> */}
+        </div>
     </>);
 }
 

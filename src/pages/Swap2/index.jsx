@@ -3,7 +3,7 @@ import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapTitle, SwapWrapper, SwapArrow } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
 import RouteBox from '../../components/App/Swap/RouteBox';
-import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
+import SlippageTolerance from '../../components/App/Swap/SlippageTolerance';
 import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
@@ -29,12 +29,12 @@ const Swap2 = () => {
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [slipage, setSlipage] = useState(0.5)
+    const [slippage, setSlippage] = useState(0.5)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
+    const validNetworks = [1]
     const chainId = useChain(validNetworks)
 
     const search = useLocation().search;
@@ -175,7 +175,7 @@ const Swap2 = () => {
     const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
 
     useEffect(() => {
         const get = async () => {
@@ -285,7 +285,7 @@ const Swap2 = () => {
 
                 <SwapAction
                     isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
+                    validNetworks={[1]}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}
@@ -310,7 +310,7 @@ const Swap2 = () => {
                 tokensMap={tokensMap}
             />
 
-            <SlippageTelorance slipage={slipage} setSlipage={setSlipage} />
+            <SlippageTolerance slippage={slippage} setSlippage={setSlippage} />
         </MainWrapper>
         <div className='tut-left-wrap'>
             <SelectedNetworks />

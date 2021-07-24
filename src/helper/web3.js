@@ -9,5 +9,10 @@ const getWeb3NoAccount = () => {
     return web3NoAccount
 }
 
+export const getWeb3CrossChainNoAccount = (chainId) => {
+    const httpProvider = new Web3.providers.HttpProvider(getNodeUrl(chainId), { timeout: 10000 })
+    return new Web3(httpProvider)
+}
+
 export { getWeb3NoAccount }
 export default web3NoAccount

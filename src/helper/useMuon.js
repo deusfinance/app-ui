@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
-import useWeb3 from './useWeb3'
+import useWeb3, { useCrossWeb3 } from './useWeb3'
 import BigNumber from 'bignumber.js'
 import useRefresh from "./useRefresh";
 import { getToWei } from "./formatBalance";
@@ -8,21 +8,27 @@ import { deposit, getPrices, getUsedAmount } from "./muonHelper";
 import { ToastTransaction } from "../utils/explorers";
 import axios from "axios";
 import { getCurrentTimeStamp } from "../utils/utils";
+import { ChainMap } from "../constant/web3";
 
 export const useUsedAmount = (validChainId = 1) => {
     const { account } = useWeb3React()
-    const web3 = useWeb3()
+    const bscWeb3 = useCrossWeb3(ChainMap.BSC)
+    const xdaiWeb3 = useCrossWeb3(ChainMap.XDAI)
+    const ethWeb3 = useCrossWeb3(ChainMap.MAINNET)
     const { fastRefresh } = useRefresh()
 
     const [used, setUsed] = useState(null)
     useEffect(() => {
         const get = async () => {
-            const res = await getUsedAmount(account, validChainId, web3)
-            setUsed(res)
+            const resEth = await getUsedAmount(account, ChainMap.MAINNET, ethWeb3)
+            const resBsc = await getUsedAmount(account, ChainMap.BSC, bscWeb3)
+            const resXdai = await getUsedAmount(account, ChainMap.XDAI, xdaiWeb3)
+            const sumUsed = new BigNumber(resEth).plus(resBsc).plus(resXdai).toFixed(2)
+            setUsed(sumUsed)
         }
         if (account)
             get()
-    }, [web3, account, validChainId, fastRefresh])
+    }, [ethWeb3, bscWeb3, xdaiWeb3, account, validChainId, fastRefresh])
 
     return used
 }
@@ -36,9 +42,7 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, fromSymbo
             if (validChainId && chainId !== validChainId) return false
             // console.log(amount);
             // console.log(getToWei(amount, fromCurrency.decimals).toFixed(0));
-
             // const muonOutput = await getSign(fromSymbol, getToWei(amount, fromCurrency.decimals), account)
-
             const time = getCurrentTimeStamp()
             await signMsg(fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, time, account, chainId, validChainId, web3, callback)
 

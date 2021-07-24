@@ -68,8 +68,8 @@ export const correctChains = [
         exact: true,
     },
     {
-        url: "/muon",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        url: "/muon-presale",
+        chains: [ChainMap.MAINNET, ChainMap.BSC_TESTNET, ChainMap.BSC, ChainMap.XDAI, ChainMap.RINKEBY],
         exact: true,
     },
     {
@@ -91,4 +91,5 @@ export function getCorrectChains(path) {
             return correctChains[i].chains
         }
     }
+    return [ChainMap.MAINNET]
 }

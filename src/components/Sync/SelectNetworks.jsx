@@ -37,7 +37,6 @@ const SelectedNetworks = () => {
 
     const actionMenu = {
         "ETH": [
-
             {
                 img: <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 5.3C0 1.82061 1.82061 0 5.3 0H14V8.7C14 12.1794 12.1794 14 8.7 14H0V5.3Z" fill="white" />
@@ -53,7 +52,7 @@ const SelectedNetworks = () => {
                 link: "/synchronizer"
             },
             {
-                path: "/tokens/muon.svg",
+                path: "/tokens/muon-invert.svg",
                 title: t("MUON PRESALE"),
                 link: "/muon-presale"
             },
@@ -80,7 +79,7 @@ const SelectedNetworks = () => {
                 link: "https://bridge.xdaichain.com/",
             },
             {
-                path: "/tokens/muon.svg",
+                path: "/tokens/muon-invert.svg",
                 title: t("MUON PRESALE"),
                 link: "/crosschain/xdai/muon-presale"
             },
@@ -97,7 +96,7 @@ const SelectedNetworks = () => {
                 link: "https://www.binance.org/en/bridge",
             },
             {
-                path: "/tokens/muon.svg",
+                path: "/tokens/muon-invert.svg",
                 title: t("MUON PRESALE"),
                 link: "/crosschain/bsc/muon-presale"
             },
@@ -113,7 +112,6 @@ const SelectedNetworks = () => {
                 title: t("bridgeTokens"),
                 link: "https://www.huobi.com/en-us/exchange/",
             },
-
         ],
         "POLYGON": [
             {

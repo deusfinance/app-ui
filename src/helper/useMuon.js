@@ -12,9 +12,8 @@ import { ChainMap } from "../constant/web3";
 
 export const useUsedAmount = (validChainId = 1) => {
     const { account } = useWeb3React()
-    // const web3 = useWeb3()
-    // const xdai = useCrossWeb3()
-    const bscWeb3 = useCrossWeb3(ChainMap.BSC_TESTNET)
+    const bscWeb3 = useCrossWeb3(ChainMap.BSC)
+    const xdaiWeb3 = useCrossWeb3(ChainMap.XDAI)
     const ethWeb3 = useCrossWeb3(ChainMap.MAINNET)
     const { fastRefresh } = useRefresh()
 
@@ -22,8 +21,9 @@ export const useUsedAmount = (validChainId = 1) => {
     useEffect(() => {
         const get = async () => {
             const resEth = await getUsedAmount(account, ChainMap.MAINNET, ethWeb3)
-            const resBsc = await getUsedAmount(account, ChainMap.BSC_TESTNET, bscWeb3)
-            const sumUsed = new BigNumber(resEth).plus(resBsc).toFixed(2)
+            const resBsc = await getUsedAmount(account, ChainMap.BSC, bscWeb3)
+            const resXdai = await getUsedAmount(account, ChainMap.XDAI, xdaiWeb3)
+            const sumUsed = new BigNumber(resEth).plus(resBsc).plus(resXdai).toFixed(2)
             setUsed(sumUsed)
         }
         if (account)
@@ -42,9 +42,7 @@ export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, fromSymbo
             if (validChainId && chainId !== validChainId) return false
             // console.log(amount);
             // console.log(getToWei(amount, fromCurrency.decimals).toFixed(0));
-
             // const muonOutput = await getSign(fromSymbol, getToWei(amount, fromCurrency.decimals), account)
-
             const time = getCurrentTimeStamp()
             await signMsg(fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, time, account, chainId, validChainId, web3, callback)
 

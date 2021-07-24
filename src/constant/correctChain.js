@@ -91,4 +91,5 @@ export function getCorrectChains(path) {
             return correctChains[i].chains
         }
     }
+    return [ChainMap.MAINNET]
 }

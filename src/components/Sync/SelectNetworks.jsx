@@ -79,6 +79,11 @@ const SelectedNetworks = () => {
                 title: t("bridgeTokens"),
                 link: "https://bridge.xdaichain.com/",
             },
+            {
+                path: "/tokens/muon.svg",
+                title: t("MUON PRESALE"),
+                link: "/crosschain/xdai/muon-presale"
+            },
         ],
         "BSC": [
             {
@@ -90,6 +95,11 @@ const SelectedNetworks = () => {
                 path: "/img/bridge.svg",
                 title: t("bridgeTokens"),
                 link: "https://www.binance.org/en/bridge",
+            },
+            {
+                path: "/tokens/muon.svg",
+                title: t("MUON PRESALE"),
+                link: "/crosschain/bsc/muon-presale"
             },
         ],
         "HECO": [
@@ -103,6 +113,7 @@ const SelectedNetworks = () => {
                 title: t("bridgeTokens"),
                 link: "https://www.huobi.com/en-us/exchange/",
             },
+
         ],
         "POLYGON": [
             {

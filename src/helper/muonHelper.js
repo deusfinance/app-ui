@@ -15,7 +15,7 @@ export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, res
         result.forAddress,
         result.addressMaxCap,
         `0x${cid.substr(1)}`,
-        signs.map(s => signs[0].signature));
+        signs.map(s => s.signature));
     let hash = null
     return muonContract
         .methods
@@ -27,7 +27,7 @@ export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, res
             result.forAddress,
             result.addressMaxCap,
             `0x${cid.substr(1)}`,
-            signs.map(s => signs[0].signature))
+            signs.map(s => s.signature))
         .send(sendArgs)
         .once('transactionHash', (tx) => {
             hash = tx

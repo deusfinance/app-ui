@@ -7,7 +7,7 @@ export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, res
     // console.log(result);
     const muonContract = getMuonContract(web3, chainId)//TODO chainId
     let sendArgs = { from: account }
-    if (fromCurrency.symbol === "ETH") sendArgs["value"] = result.amount
+    if (fromCurrency.address === "0x") sendArgs["value"] = result.amount
     let hash = null
     return muonContract
         .methods
@@ -57,6 +57,9 @@ export const SymbolMap = {
     "sUniDD": "sUniDD",
     "sUniDU": "sUniDU",
     "BPT": "bpt",
+    "BNB": "bnb",
+    "BUSD": "busd",
+    "xDAI": "xdai",
     "TEST": "test",
     "ERT": "ert",
 }

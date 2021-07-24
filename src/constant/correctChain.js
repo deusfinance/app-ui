@@ -69,7 +69,7 @@ export const correctChains = [
     },
     {
         url: "/muon-presale",
-        chains: [ChainMap.MAINNET, ChainMap.BSC_TESTNET, ChainMap.RINKEBY],
+        chains: [ChainMap.MAINNET, ChainMap.BSC_TESTNET, ChainMap.BSC, ChainMap.XDAI, ChainMap.RINKEBY],
         exact: true,
     },
     {

@@ -79,6 +79,7 @@ function App() {
                 <Route exact path="/swap2" component={Swap2} />
                 <Route exact path="/sealed-swap" component={Sealed} />
                 <Route exact path="/muon-presale" component={Muon} />
+                <Route path="/crosschain/:id/muon-presale" component={Muon} />
                 <Redirect exact from="/" to="/swap" />
                 <Route path="/" component={Deus} />
                 <Redirect to="not-found" />

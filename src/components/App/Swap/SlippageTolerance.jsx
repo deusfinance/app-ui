@@ -62,7 +62,7 @@ const InputSlippage = styled.input.attrs(
 
 `
 const defaultAmounts = [0.1, 0.5, 1]
-const SlippageTelorance = ({ slipage, setSlipage, bgColor }) => {
+const SlippageTolerance = ({ slipage, setSlipage, bgColor }) => {
     const [customActive, setCustomActive] = useState(false)
 
     const handleMinSlipage = () => {
@@ -104,4 +104,4 @@ const SlippageTelorance = ({ slipage, setSlipage, bgColor }) => {
     </Wrapper >);
 }
 
-export default SlippageTelorance;
+export default SlippageTolerance;

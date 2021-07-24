@@ -3,7 +3,7 @@ import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapTitle, SwapWrapper, SwapArrow } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
 import RouteBox from '../../components/App/Swap/RouteBox';
-import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
+import SlippageTolerance from '../../components/App/Swap/SlippageTolerance';
 import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
@@ -310,7 +310,7 @@ const Swap2 = () => {
                 tokensMap={tokensMap}
             />
 
-            <SlippageTelorance slipage={slipage} setSlipage={setSlipage} />
+            <SlippageTolerance slipage={slipage} setSlipage={setSlipage} />
         </MainWrapper>
         <div className='tut-left-wrap'>
             <SelectedNetworks />

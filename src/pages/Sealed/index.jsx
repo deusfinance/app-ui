@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapWrapper, SwapTitle } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
-import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
+import SlippageTolerance from '../../components/App/Swap/SlippageTolerance';
 import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
@@ -237,7 +237,7 @@ const Sealed = () => {
             /> */}
 
 
-            <SlippageTelorance slipage={slipage} setSlipage={setSlipage} bgColor="grad4" />
+            <SlippageTolerance slipage={slipage} setSlipage={setSlipage} bgColor="grad4" />
         </MainWrapper>
         {/* <div className='tut-left-wrap'>
             <SelectedNetworks />

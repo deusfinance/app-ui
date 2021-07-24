@@ -1,13 +1,21 @@
 import { TransactionState } from "../utils/constant"
-import { SwapTranaction } from "../utils/explorers"
+import { SwapTransaction } from "../utils/explorers"
 import { getMuonContract } from "./contractHelpers"
 import { fromWei } from "./formatBalance"
 
-export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, result, cid, sigs, account, chainId, web3) => {
+export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, result, cid, signs, account, chainId, web3) => {
     // console.log(result);
     const muonContract = getMuonContract(web3, chainId)//TODO chainId
     let sendArgs = { from: account }
     if (fromCurrency.address === "0x") sendArgs["value"] = result.amount
+    console.log(result.token,
+        result.tokenPrice,
+        result.amount,
+        result.time,
+        result.forAddress,
+        result.addressMaxCap,
+        `0x${cid.substr(1)}`,
+        signs.map(s => signs[0].signature));
     let hash = null
     return muonContract
         .methods
@@ -19,24 +27,24 @@ export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, res
             result.forAddress,
             result.addressMaxCap,
             `0x${cid.substr(1)}`,
-            sigs.map(s => s.signature))
+            signs.map(s => signs[0].signature))
         .send(sendArgs)
         .once('transactionHash', (tx) => {
             hash = tx
-            SwapTranaction(TransactionState.LOADING, {
+            SwapTransaction(TransactionState.LOADING, {
                 hash,
                 from: { ...fromCurrency, amount: amountIn },
                 to: { ...toCurrency, amount: amountOut },
                 chainId: chainId,
             })
         })
-        .once('receipt', () => SwapTranaction(TransactionState.SUCCESS, {
+        .once('receipt', () => SwapTransaction(TransactionState.SUCCESS, {
             hash,
             from: { ...fromCurrency, amount: amountIn },
             to: { ...toCurrency, amount: amountOut },
             chainId: chainId,
         }))
-        .once('error', () => SwapTranaction(TransactionState.FAILED, {
+        .once('error', () => SwapTransaction(TransactionState.FAILED, {
             hash,
             from: { ...fromCurrency, amount: amountIn },
             to: { ...toCurrency, amount: amountOut },

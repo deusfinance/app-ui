@@ -28,7 +28,7 @@ export const useUsedAmount = (validChainId = 1) => {
         }
         if (account)
             get()
-    }, [ethWeb3, bscWeb3, account, validChainId, fastRefresh])
+    }, [ethWeb3, bscWeb3, xdaiWeb3, account, validChainId, fastRefresh])
 
     return used
 }

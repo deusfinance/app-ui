@@ -68,8 +68,18 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/crosschain/bsc/muon-presale",
+        chains: [ChainMap.BSC_TESTNET, ChainMap.BSC],
+        exact: true,
+    },
+    {
+        url: "/crosschain/xdai/muon-presale",
+        chains: [ChainMap.XDAI],
+        exact: true,
+    },
+    {
         url: "/muon-presale",
-        chains: [ChainMap.MAINNET, ChainMap.BSC_TESTNET, ChainMap.BSC, ChainMap.XDAI, ChainMap.RINKEBY],
+        chains: [ChainMap.MAINNET],
         exact: true,
     },
     {

@@ -23,6 +23,7 @@ import RemainingCap from '../../components/App/MuonSwap/RemainingCap';
 import { getAllocation, SymbolMap, } from '../../helper/muonHelper';
 import { isZero } from '../../constant/number';
 import { getCorrectChains } from '../../constant/correctChain';
+import SelectedNetworks from '../../components/Sync/SelectNetworks';
 
 const Muon = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -308,9 +309,9 @@ const Muon = () => {
 
 
         </MainWrapper>
-        {/* <div className='tut-left-wrap'>
+        <div className='tut-left-wrap'>
             <SelectedNetworks />
-        </div> */}
+        </div>
     </>);
 }
 

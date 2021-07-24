@@ -34,7 +34,7 @@ const Swap2 = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
+    const validNetworks = [1]
     const chainId = useChain(validNetworks)
 
     const search = useLocation().search;
@@ -285,7 +285,7 @@ const Swap2 = () => {
 
                 <SwapAction
                     isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
+                    validNetworks={[1]}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}

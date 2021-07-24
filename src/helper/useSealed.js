@@ -10,14 +10,14 @@ import { getSealedAmountsOut } from './sealedHelper'
 import { isZero, ZERO } from '../constant/number'
 
 
-export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId = 1, bptPayload) => {
+export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slippage, validChainId = 1, bptPayload) => {
     const { account, chainId } = useWeb3React()
 
     const web3 = useWeb3()
-    const minAmountOut = new BigNumber(amountOut).multipliedBy((100 - Number(slipage)) / 100).toFixed(toCurrency.decimals, 1)
+    const minAmountOut = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(toCurrency.decimals, 1)
     let payload = []
     for (let i = 0; i < bptPayload.length; i++) {
-        payload[i] = new BigNumber(bptPayload[i]).multipliedBy((100 - Number(slipage)) / 100).toFixed(0, 1)
+        payload[i] = new BigNumber(bptPayload[i]).multipliedBy((100 - Number(slippage)) / 100).toFixed(0, 1)
     }
     const handleSwap = useCallback(async () => {
         try {

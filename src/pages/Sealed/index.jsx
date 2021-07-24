@@ -28,7 +28,7 @@ const Sealed = () => {
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [slipage, setSlipage] = useState(0.5)
+    const [slippage, setSlippage] = useState(0.5)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -122,7 +122,7 @@ const Sealed = () => {
 
     const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, debouncedAmountIn, chainId)
     const { onApprove } = useApprove(swapState.from, SEALED_ADDRESS, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId, bptPayload)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId, bptPayload)
 
     useEffect(() => {
         const get = async () => {
@@ -237,7 +237,7 @@ const Sealed = () => {
             /> */}
 
 
-            <SlippageTolerance slipage={slipage} setSlipage={setSlipage} bgColor="grad4" />
+            <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor="grad4" />
         </MainWrapper>
         {/* <div className='tut-left-wrap'>
             <SelectedNetworks />

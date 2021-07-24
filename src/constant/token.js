@@ -23,7 +23,6 @@ export const WethRinkeby = { logo: "/tokens/eth-logo.svg", symbol: "ETH", decima
 export const Weth = { logo: "/tokens/eth-logo.svg", symbol: "ETH", decimals: 18, address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", chainId: 1 }
 
 export const MainTokens = [
-    { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, },
     { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x3b62F3820e0B035cc4aD602dECe6d796BC325325", decimals: 18, chainId: 1 },
     { logo: "/tokens/dea.svg", symbol: "DEA", address: "0x80aB141F324C3d6F2b18b030f1C4E95d4d658778", decimals: 18, chainId: 1 },
     { logo: "/tokens/usdc.svg", symbol: "USDC", address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", decimals: 6, chainId: 1 },
@@ -56,7 +55,11 @@ export const SealedTokens = [
 ]
 
 export const MuonPreSaleTokens = [
-    ...DefaultTokens,
+    { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, chainId: 1 },
+    { logo: "/tokens/bnb.svg", symbol: "BNB", address: "0x", decimals: 18, chainId: 56 },
+    { logo: "/tokens/busd.svg", symbol: "BUSD", address: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", decimals: 18, chainId: 56 },
+    { logo: "/tokens/xdai.svg", symbol: "xDAI", address: "0x", decimals: 18, chainId: 100 },
+    ...MainTokens,
     sdeaToken,
     { logo: "/tokens/sdea.svg", symbol: "sDEUS", address: "0xc586AeA83A96d57764A431B9F4e2E84844075a01", decimals: 18, chainId: 1 },
     ...SealedTokens,

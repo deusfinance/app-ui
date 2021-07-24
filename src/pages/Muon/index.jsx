@@ -56,11 +56,11 @@ const Muon = () => {
     }
 
     let DEA = getTokenAddr("dea", chainId)
-    if (chainId === 4)
+    if (chainId !== 1)
         DEA = "0x"
-    if (chainId === 97) {
-        DEA = "0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6"
-    }
+    // if (chainId === 97) {
+    // DEA = "0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6"
+    // }
 
     let fromAddress = inputCurrency ? inputCurrency : DEA
 

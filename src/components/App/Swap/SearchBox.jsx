@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ReactModal from 'react-modal'
 import styled from 'styled-components'
 import { Type } from '../../App/Text';
@@ -128,7 +128,7 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoa
 
       </TokensWrap>
     </Wrapper>
-  </ReactModal>, [active, currencies, swapState, escapedType, changeToken, escapedType, disableLoading, account, setActive ])
+  </ReactModal>, [active, currencies, swapState, changeToken, escapedType, disableLoading, account, setActive ])
   );
 }
 

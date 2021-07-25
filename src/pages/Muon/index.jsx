@@ -244,7 +244,7 @@ const Muon = () => {
             swapState={swapState}
             escapedType={escapedType}
             changeToken={changeToken}
-            disbaleLoading={false}
+            disableLoading={false}
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
         <MainWrapper>

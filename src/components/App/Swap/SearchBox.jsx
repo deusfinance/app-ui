@@ -91,46 +91,44 @@ const TokenWrap = styled(FlexCenter)`
     margin:7.5px 0;
 `
 
-const SearchBox = ({ currencies, swapState, escapedType, changeToken, disbaleLoading = true, account, active, setActive }) => {
+const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoading = true, account, active, setActive }) => {
+  return (useMemo(() => active && <ReactModal
+    isOpen={active}
+    style={customStyles}
+    closeTimeoutMS={200}
+    onRequestClose={() => setActive(false)}
+    shouldCloseOnOverlayClick={true}
+  >
+    <Wrapper>
+      <RowBetween fontWeight="300" >
+        <Type.LG>Select a Token</Type.LG>
+        <StyledClose stroke="white" onClick={() => setActive(false)} />
+      </RowBetween>
+      <Line my="20px"></Line>
+      <RowBetween mt="5px" opacity="0.5">
+        <Type.MD>Token</Type.MD>
+        <Type.MD>Balance</Type.MD>
+      </RowBetween>
+      <Line my="5px"></Line>
+      <TokensWrap>
+        {Object.keys(currencies)
+          .filter(address => currencies[address].symbol !== swapState[escapedType].symbol)
+          .map((address, id) => (
+            <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
+              <TokenWrap>
+                <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
+                <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
+              </TokenWrap>
+              {!account || disableLoading || currencies[address].balance || isZero(currencies[address].balance)
+                ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[address]?.balance) || 0}</Type.LG>
+                : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
+              }
+            </TokenRow>
+          ))}
 
-  return (active &&
-    <ReactModal
-      isOpen={active}
-      style={customStyles}
-      closeTimeoutMS={200}
-      onRequestClose={() => setActive(false)}
-      shouldCloseOnOverlayClick={true}
-    >
-      <Wrapper>
-        <RowBetween fontWeight="300" >
-          <Type.LG  >Select a Token</Type.LG>
-          <StyledClose stroke="white" onClick={() => setActive(false)} />
-        </RowBetween>
-        <Line my="20px"></Line>
-        <RowBetween mt="5px" opacity="0.5">
-          <Type.MD >Token</Type.MD>
-          <Type.MD >Balance</Type.MD>
-        </RowBetween>
-        <Line my="5px"></Line>
-        <TokensWrap>
-          {Object.keys(currencies)
-            .filter(address => currencies[address].symbol !== swapState[escapedType].symbol)
-            .map((address, id) => (
-              <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
-                <TokenWrap>
-                  <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
-                  <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
-                </TokenWrap>
-                {!account || disbaleLoading || currencies[address].balance || isZero(currencies[address].balance)
-                  ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[address]?.balance) || 0}</Type.LG>
-                  : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
-                }
-              </TokenRow>
-            ))}
-
-        </TokensWrap>
-      </Wrapper>
-    </ReactModal>
+      </TokensWrap>
+    </Wrapper>
+  </ReactModal>, [active, currencies, swapState, escapedType, changeToken, escapedType, disableLoading, account, setActive ])
   );
 }
 

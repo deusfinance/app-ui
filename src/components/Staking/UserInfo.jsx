@@ -47,7 +47,7 @@ const UserInfo = (props) => {
       if (exitBalance === '0' || exitBalance === '') return
 
       // if (Number(maxRedeem) < Number(exitBalance)) {
-      //   ToastTransaction("warn", "Reedem Faild", "You could not reedem your token at the moment!")
+      //   ToastTransaction("warn", "redeem Faild", "You could not redeem your token at the moment!")
       //   return
       // }
 
@@ -164,7 +164,7 @@ const UserInfo = (props) => {
                     </div>
                   </div>
                   <div className={`wrap-box-gradient pointer wrap-box-gradient pointer`} onClick={handleRedeem}>
-                    REEDEM
+                    REDEEM
                   </div>
                 </div>
 

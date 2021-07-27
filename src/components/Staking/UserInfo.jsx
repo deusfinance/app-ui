@@ -47,7 +47,7 @@ const UserInfo = (props) => {
       if (exitBalance === '0' || exitBalance === '') return
 
       // if (Number(maxRedeem) < Number(exitBalance)) {
-      //   ToastTransaction("warn", "redeem Faild", "You could not redeem your token at the moment!")
+      //   ToastTransaction("warn", "Redeem Faild", "You could not redeem your token at the moment!")
       //   return
       // }
 

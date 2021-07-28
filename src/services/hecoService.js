@@ -3,7 +3,6 @@ import addrs from './addresses.json'
 import { bscSynchronizerABI, tokenABI } from '../utils/abis';
 
 export class StockService {
-
     constructor(account, chainId = 256) {
         this.account = account;
         this.chainId = chainId;
@@ -126,7 +125,7 @@ export class StockService {
         const marketMakerContract = new metamaskWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
         const info = oracles[0]
         console.log("oracles", oracles);
-        console.log("conrtact", marketMakerContract);
+        console.log("contract", marketMakerContract);
         console.log("wallet ", this.account);
         console.log("address ", address);
         console.log("amount ", amount);

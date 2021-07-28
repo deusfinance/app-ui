@@ -21,7 +21,7 @@ import useTokenBalances from '../../../helper/useTokenBalances';
 import { useDebounce } from '../../../helper/useDebounce';
 import { useLocation } from 'react-router';
 import LinkBox from '../../../components/App/Dei/LinkBox'
-import CostBox_v2 from '../../../components/App/Dei/CostBox_v2'
+import CostBoxV2 from '../../../components/App/Dei/CostBox_v2'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
@@ -61,18 +61,12 @@ const Dei = () => {
     outputCurrency = outputCurrency?.toLowerCase() === "eth" ? "0x" : outputCurrency
 
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
-
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     const tokensName = tokens.map(token => token.symbol.toLowerCase())
-
-    //eslint-disable-next-line
     const tokensMap = {}
-    // tokens.forEach(token => {
-
-    // });
-
     const pairedTokens = []
+
     for (let i = 0; i < DEITokens.length; i++) {
         const t = DEITokens[i]
         if (t.pairID) {
@@ -131,9 +125,7 @@ const Dei = () => {
     const deaContract = getTokenAddr("dea", chainId)
 
     let fromAddress = inputCurrency ? inputCurrency : "0x"
-
     let toAddress = outputCurrency ? outputCurrency : deaContract
-
 
     if (toAddress === fromAddress) {
         if (fromAddress === "0x") {
@@ -154,8 +146,9 @@ const Dei = () => {
         }
     }
 
+    let primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
     const [swapState, setSwapState] = useState({
-        from: { ...TokensMap[fromAddress] },
+        from: primaryToken,
         to: deiToken,
     })
 
@@ -371,7 +364,7 @@ const Dei = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBox_v2 />
+            <CostBoxV2 />
         </div>
     </>);
 }

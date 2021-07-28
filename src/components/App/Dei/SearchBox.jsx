@@ -100,7 +100,7 @@ const SearchBox = ({ currencies, pairedTokens, swapState, escapedType, changeTok
           {Children.toArray(pairedTokens.map(tokens => (<TokensRow tokens={tokens} currencies={currencies} account={account} disableLoading={disableLoading} handleClick={() => changeToken(tokens[0], escapedType)} />)))}
         </TokensWrap>
       </Wrapper>
-    </ReactModal >, [active, currencies, pairedTokens, swapState, escapedType, changeToken, disableLoading, account, active, setActive]));
+    </ReactModal >, [active, currencies, pairedTokens, escapedType, changeToken, disableLoading, account, setActive]));
 }
 
 export default SearchBox;

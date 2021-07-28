@@ -46,7 +46,7 @@ const TokensRow = ({ tokens, currencies, account, handleClick, disableLoading })
                             : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
                         }
                     </TokenRow>
-                    {isPlus && < img src="/img/dei/plus.svg" style={{ position: "absolute", marginTop: "-25px", paddingLeft: "22px" }} />}
+                    {isPlus && < img src="/img/dei/plus.svg" style={{ position: "absolute", marginTop: "-21px", paddingLeft: "27px", width: "53px" }} alt="plus" />}
                 </>
             }))}
         </TokenRowContainer>

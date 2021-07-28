@@ -200,7 +200,7 @@ const Dei = () => {
             setPairToken(secondToken)
             setSwapState({ ...swapState, [type]: token })
         }
-    }, [swapState.to])
+    }, [swapState])
 
 
     useEffect(() => {

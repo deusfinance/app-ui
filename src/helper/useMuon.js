@@ -85,26 +85,152 @@ export const useAmountsIn = (from, debouncedAmountOut, price = 100000000) => {
     return { getAmountsIn }
 }
 
+
+
+
+
 export const signMsg = async (fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, time, account, chainId, validChainId = 1, web3, callback) => {
 
-    const msgParams = [
+    // const msgParams = [
+    //     {
+    //         type: 'uint256', // Any valid solidity type
+    //         name: 'time', // Any string label you want
+    //         value: time // The value to sign
+    //     },
+    //     {
+    //         type: 'address',
+    //         name: 'forAddress',
+    //         value: account
+    //     }
+    // ]
+
+
+    // const example = {
+    //     types: {
+    //         EIP712Domain: [
+    //         ],
+    //         RelayRequest: [
+    //             {
+    //                 type: 'uint256', // Any valid solidity type
+    //                 name: 'time', // Any string label you want
+    //                 value: time // The value to sign
+    //             },
+    //             {
+    //                 type: 'address',
+    //                 name: 'forAddress',
+    //                 value: account
+    //             },
+    //         ],
+    //     },
+    //     domain: { },
+    //     primaryType: "RelayRequest",
+    //     message: {
+    //         time: time,
+    //         forAddress: account,
+    //     },
+    // };
+    // const example = {
+    //     types: {
+    //         EIP712Domain: [
+    //         ],
+    //         RelayRequest: [
+    //             {
+    //                 type: 'uint256', // Any valid solidity type
+    //                 name: 'time', // Any string label you want
+    //                 value: time // The value to sign
+    //             },
+    //             {
+    //                 type: 'address',
+    //                 name: 'forAddress',
+    //                 value: account
+    //             },
+    //         ],
+    //     },
+    //     domain: {},
+    //     primaryType: "RelayRequest",
+    //     message: {
+    //         time: time,
+    //         forAddress: account,
+    //     },
+    // };
+    // const msgParams = [
+    //     {
+    //         type: 'string',
+    //         name: 'message',
+    //         value: 'Hi, Alice!'
+    //     },
+    //     {
+    //         "type": "address",
+    //         "name": "forAddress",
+    //         "value": account
+    //     }
+    // ]
+    // console.log(msgParams);
+
+    // signMsg(msgParams, issuerAddress).then(value => {
+    //     // thisClaim.signature.type = 'eth_signTypedData',
+    //     //     thisClaim.signature.creator = issuerAddress,
+    //     //     thisClaim.signature.signatureValue = value.result
+    //     // resolve(thisClaim)
+    // })
+
+
+    // const typedData = [{
+    //     type: 'string',
+    //     name: 'message',
+    //     value: 'Hi, Alice!'
+    // }]
+
+    // const msgParams2 = [
+    //     account, // Required
+    //     typedData, // Required
+    // ];
+
+
+    let domain = [
+        { name: "name", type: "string" },
+    ]
+
+    let domainData = {
+        name: "PreSale",
+    }
+
+    let messageType = [
         {
-            type: 'uint256', // Any valid solidity type
-            name: 'time', // Any string label you want
-            value: time // The value to sign
+            type: 'uint256',
+            name: 'time',
         },
         {
             type: 'address',
             name: 'forAddress',
-            value: account
         }
     ]
+
+    let messageData = {
+        time: time,
+        forAddress: account
+    }
+
+    let eip712TypedData = {
+        types: {
+            EIP712Domain: domain,
+            Message: messageType
+        },
+        domain: domainData,
+        primaryType: "Message",
+        message: messageData
+    }
+
+    let dataToSign = JSON.stringify(eip712TypedData)
+
 
     web3.currentProvider.sendAsync(
         {
             from: account,
-            method: 'eth_signTypedData',
-            params: [msgParams, account],
+            id: time,
+            jsonrpc: "2.0",
+            method: 'eth_signTypedData_v4',
+            params: [account, dataToSign]
         },
         async function (err, result) {
             if (err) return console.error(err)
@@ -160,3 +286,39 @@ export const signMsg = async (fromCurrency, toCurrency, amountIn, amountOut, fro
         }
     )
 }
+
+
+function doSignTypedData(method, msgParams, from, web3) {
+    return new Promise(resolve => {
+        web3.currentProvider.sendAsync({ method: 'eth_signTypedData', params: [msgParams, from], from: from }, (error, result) => {
+            if (error) {
+                console.error(error);
+                resolve(error);
+            } else if (result.error) {
+                console.error(result.error.message);
+                resolve(result.error.message);
+            } else {
+                console.log("Signature: " + result.result);
+                resolve(result.result);
+            }
+        });
+    });
+}
+
+
+function signMsg2(msgParams, from, web3) {
+    return new Promise(function (resolve, reject) {
+        web3.currentProvider.sendAsync({
+            method: 'eth_signTypedData',
+            params: [msgParams, from],
+            from: from
+        }, function (err, result) {
+            if (err) reject(console.error(err))
+            if (result.error) {
+                reject(console.error(result.error.message))
+            }
+            resolve(result)
+        })
+    })
+}
+

@@ -68,12 +68,7 @@ const Dei = () => {
 
     const tokensName = tokens.map(token => token.symbol.toLowerCase())
 
-    //eslint-disable-next-line
     const tokensMap = {}
-    // tokens.forEach(token => {
-
-    // });
-
     const pairedTokens = []
     for (let i = 0; i < DEITokens.length; i++) {
         const t = DEITokens[i]
@@ -157,9 +152,10 @@ const Dei = () => {
         }
     }
 
+    let secondaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
     const [swapState, setSwapState] = useState({
         from: deiToken,
-        to: { ...TokensMap[deusContract] },
+        to: secondaryToken,
     })
 
     const [hotIn, setHotIn] = useState("")
@@ -221,7 +217,6 @@ const Dei = () => {
         }
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
-
 
 
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
@@ -287,7 +282,6 @@ const Dei = () => {
     }, [onSwap])
 
     return (<>
-
         <MainWrapper>
             <Type.XL fontWeight="300">Redeem</Type.XL>
             <SwapWrapper style={{ marginTop: "25px", }}>
@@ -315,9 +309,9 @@ const Dei = () => {
                     fastUpdate={fastUpdate}
                 />
 
-                {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+                {<PlusImg src="/img/dei/plus.svg" alt="plus" />}
 
-                {isPair && <TokenBox
+                {<TokenBox
                     mt={"-21px"}
                     type="to"
                     title="To (estimated)"

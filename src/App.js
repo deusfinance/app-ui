@@ -81,6 +81,7 @@ function App() {
                 {/* <Route exact path="/dbETH" component={dbETH} /> */}
                 {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/swap2" component={Swap2} />
+                <Redirect exact from="/dei" to="/dei/mint" />
                 <Route exact path="/dei/mint" component={DeiMint} />
                 <Route exact path="/dei/redeem" component={DeiRedeem} />
                 <Route exact path="/dei/buyback-recollat" component={DeiBuyBackRecollateralize} />

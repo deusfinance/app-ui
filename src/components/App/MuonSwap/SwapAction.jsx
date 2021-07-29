@@ -51,7 +51,7 @@ background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
 height: 2px;
 width: 50%;
 `
-const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapState, TokensMap, isApproved, loading, validNetworks = [4, 1], handleApprove, handleSwap, allocation, bgColor }) => {
+const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapState, TokensMap, isApproved, loading, swapLoading, validNetworks = [4, 1], handleApprove, handleSwap, allocation, bgColor }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
@@ -97,7 +97,10 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapSt
     return (<>
         {isPreApproved ?
             <WrapActions>
-                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>MUONIZE ME</ButtonSwap>
+                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>
+                    MUONIZE ME
+                    {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
+                </ButtonSwap>
             </WrapActions> : <>
                 <WrapActions>
                     {!isApproved ? <>
@@ -110,6 +113,7 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapSt
                         <ButtonSyncDeactive bgColor="bg8" color='text1_2'>APPROVED</ButtonSyncDeactive>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
                             MUONIZE ME
+                            {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
                     </>
                     }

@@ -91,7 +91,7 @@ const TokenWrap = styled(FlexCenter)`
     margin:7.5px 0;
 `
 
-const SearchBox = ({ currencies, swapState, escapedType, changeToken, disbaleLoading = true, account, active, setActive }) => {
+const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoading = true, account, active, setActive }) => {
 
   return (active &&
     <ReactModal
@@ -121,7 +121,7 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disbaleLoa
                   <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
                   <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
                 </TokenWrap>
-                {!account || disbaleLoading || currencies[address].balance || isZero(currencies[address].balance)
+                {!account || disableLoading || currencies[address].balance || isZero(currencies[address].balance)
                   ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[address]?.balance) || 0}</Type.LG>
                   : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
                 }

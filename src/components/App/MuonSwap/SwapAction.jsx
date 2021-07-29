@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
-import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
+import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
 import { WaveLoading } from 'react-loadingg';
 import { useWeb3React } from '@web3-react/core';
@@ -26,7 +26,7 @@ const WrapActions = styled.div`
         margin:0px 5px;
     }
 `
-const ButtonSwap = styled(ButtonSyncActice)`
+const ButtonSwap = styled(ButtonSyncActive)`
   background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
   color: ${({ theme }) => theme.text1};
   font-size:${({ fontSize }) => fontSize || "20px"};
@@ -82,15 +82,15 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapSt
     }
     if (checkError()) {
         return <WrapActions>
-            <ButtonSyncDeactive bgColor="bg8" color='text1_2' >{checkError()}</ButtonSyncDeactive>
+            <ButtonSyncDeactivated bgColor="bg8" color='text1_2' >{checkError()}</ButtonSyncDeactivated>
         </WrapActions>
     }
 
     if (isPreApproved == null) {
         return <WrapActions>
-            <ButtonSyncDeactive>
+            <ButtonSyncDeactivated>
                 <WaveLoading />
-            </ButtonSyncDeactive>
+            </ButtonSyncDeactivated>
         </WrapActions>
     }
 
@@ -108,9 +108,9 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapSt
                             APPROVE
                             {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
-                        <ButtonSyncDeactive bgColor="bg8" color='text1_2'>MUONIZE ME</ButtonSyncDeactive>
+                        <ButtonSyncDeactivated bgColor="bg8" color='text1_2'>MUONIZE ME</ButtonSyncDeactivated>
                     </> : <>
-                        <ButtonSyncDeactive bgColor="bg8" color='text1_2'>APPROVED</ButtonSyncDeactive>
+                        <ButtonSyncDeactivated bgColor="bg8" color='text1_2'>APPROVED</ButtonSyncDeactivated>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
                             MUONIZE ME
                             {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}

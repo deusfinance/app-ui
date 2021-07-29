@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
-import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
+import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
 import { WaveLoading } from 'react-loadingg';
 import { useWeb3React } from '@web3-react/core';
@@ -25,7 +25,7 @@ const WrapActions = styled.div`
         margin:0px 5px;
     }
 `
-const ButtonSwap = styled(ButtonSyncActice)`
+const ButtonSwap = styled(ButtonSyncActive)`
   background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
   color: ${({ theme }) => theme.text1_2};
   font-size:${({ fontSize }) => fontSize || "20px"};
@@ -79,15 +79,15 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, 
 
     if (checkError()) {
         return <WrapActions>
-            <ButtonSyncDeactive >{checkError()}</ButtonSyncDeactive>
+            <ButtonSyncDeactivated >{checkError()}</ButtonSyncDeactivated>
         </WrapActions>
     }
 
     if (isPreApproved == null) {
         return <WrapActions>
-            <ButtonSyncDeactive>
+            <ButtonSyncDeactivated>
                 <WaveLoading />
-            </ButtonSyncDeactive>
+            </ButtonSyncDeactivated>
         </WrapActions>
     }
 
@@ -102,9 +102,9 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, swapState, TokensMap, 
                             APPROVE
                             {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
-                        <ButtonSyncDeactive>SWAP</ButtonSyncDeactive>
+                        <ButtonSyncDeactivated>SWAP</ButtonSyncDeactivated>
                     </> : <>
-                        <ButtonSyncDeactive>APPROVED</ButtonSyncDeactive>
+                        <ButtonSyncDeactivated>APPROVED</ButtonSyncDeactivated>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
                             SWAP
                         </ButtonSwap>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
 import { ExternalLink } from '../App/Link'
-import useWeb3 from '../../helper/useWeb3'
+import useWeb3 from '../../hooks/useWeb3'
 import { isZero } from '../../constant/number'
 import { formatBalance3 } from '../../utils/utils'
 // import { ToastTransaction } from '../../utils/explorers'

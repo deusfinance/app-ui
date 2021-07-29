@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import {
     getDeusAutomaticMarketMakerContract,
     getERC20Contract
-} from './contractHelpers'
+} from '../helper/contractHelpers'
 import useWeb3 from './useWeb3'
 
 

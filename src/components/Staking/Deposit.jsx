@@ -4,7 +4,7 @@ import ToggleButtons from './ToggleButtons'
 import { sendTransaction } from '../../utils/Stakefun'
 import { injected } from '../../connectors'
 import { getTransactionLink } from '../../utils/explorers'
-import useWeb3 from '../../helper/useWeb3'
+import useWeb3 from '../../hooks/useWeb3'
 import ExitModal from './ExitModal'
 import { validChains } from './Data'
 

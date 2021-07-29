@@ -4,7 +4,7 @@ import { injected } from '../../connectors'
 import { getTransactionLink } from '../../utils/explorers'
 import { sendTransaction } from '../../utils/Stakefun'
 import addresses from '../../services/addresses.json'
-import useWeb3 from '../../helper/useWeb3'
+import useWeb3 from '../../hooks/useWeb3'
 import { validChains } from './Data'
 
 const Mint = (props) => {
@@ -200,8 +200,8 @@ const Mint = (props) => {
                     {allowance === 0 ? (
                       <div
                         className={`${!approveClick
-                            ? 'approve-btn pointer'
-                            : 'stake-deposit-btn'
+                          ? 'approve-btn pointer'
+                          : 'stake-deposit-btn'
                           } `}
                         onClick={handleApprove}
                       >
@@ -211,8 +211,8 @@ const Mint = (props) => {
                       approveClick && (
                         <div
                           className={`${!approveClick
-                              ? 'approve-btn pointer'
-                              : 'stake-deposit-btn'
+                            ? 'approve-btn pointer'
+                            : 'stake-deposit-btn'
                             } `}
                           onClick={handleApprove}
                         >
@@ -222,8 +222,8 @@ const Mint = (props) => {
                     )}
                     <div
                       className={`${allowance !== 0
-                          ? 'approve-btn pointer'
-                          : 'stake-deposit-btn'
+                        ? 'approve-btn pointer'
+                        : 'stake-deposit-btn'
                         } `}
                       onClick={handleMint}
                     >

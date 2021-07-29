@@ -1,4 +1,4 @@
-import web3NoAccount from './web3'
+import web3NoAccount from '../hooks/web3'
 import muliSwapAbi from '../config/abi/muliSwapAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import DeusAMMAbi from '../config/abi/DeusAMM.json'

@@ -4,8 +4,8 @@ import useWeb3 from "./useWeb3"
 import { isAddress } from "@ethersproject/address"
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 
-import { getFullDisplayBalance } from './formatBalance';
-import multicall from './multicall'
+import { getFullDisplayBalance } from '../helper/formatBalance';
+import multicall from '../helper/multicall'
 import useRefresh from './useRefresh'
 
 const useTokenBalances = (tokensMap, validChainId) => {

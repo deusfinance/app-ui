@@ -3,8 +3,8 @@ import { useWeb3React } from '@web3-react/core'
 import useWeb3, { useCrossWeb3 } from './useWeb3'
 import BigNumber from 'bignumber.js'
 import useRefresh from "./useRefresh";
-import { getToWei } from "./formatBalance";
-import { buyMuon, getPrices, getUsedAmount } from "./muonHelper";
+import { getToWei } from "../helper/formatBalance";
+import { buyMuon, getPrices, getUsedAmount } from "../helper/muonHelper";
 import { getCurrentTimeStamp } from "../utils/utils";
 import { ChainMap } from "../constant/web3";
 

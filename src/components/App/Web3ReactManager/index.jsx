@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useEagerConnect, useInactiveListener } from '../../../hooks'
+import { useEagerConnect, useInactiveListener } from '../../../hooks/web3'
 
 export default function Web3ReactManager({ children }) {
     const context = useWeb3React()

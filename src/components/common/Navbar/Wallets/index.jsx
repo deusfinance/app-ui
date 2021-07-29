@@ -4,8 +4,7 @@ import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError, UserRejectedRequestError as UserRejectedRequestErrorInjected } from '@web3-react/injected-connector'
 import { WalletConnectConnector, UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector'
 import { connectorsByName } from '../../../../connectors';
-import { useInactiveListener, useEagerConnect } from "../../../../hooks";
-
+import { useEagerConnect, useInactiveListener } from '../../../../hooks/web3';
 import './wallets.scss'
 
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)

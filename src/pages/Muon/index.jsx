@@ -32,7 +32,7 @@ const Muon = () => {
     const [allocation, setAllocation] = useState(0)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [fouceType, setFouceType] = useState("from")
+    const [fouceType, setFocusType] = useState("from")
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -265,7 +265,7 @@ const Muon = () => {
                     setActive={showSearchBox}
                     currency={swapState.from}
                     TokensMap={TokensMap}
-                    setFouceType={setFouceType}
+                    setFocusType={setFocusType}
                     allocation={allocation}
                     price={fromPrice}
                     fastUpdate={fastUpdate}
@@ -279,7 +279,7 @@ const Muon = () => {
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
                     setActive={null}
-                    setFouceType={setFouceType}
+                    setFocusType={setFocusType}
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}

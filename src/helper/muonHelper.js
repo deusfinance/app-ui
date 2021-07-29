@@ -167,7 +167,8 @@ export const buyMuon = async (fromCurrency, toCurrency, amountIn, amountOut, fro
         console.log(muonOutput);
 
         if (!muonOutput.success) {
-            ToastTransaction("warn", "MUONIZE FAILED", muonOutput.error.message, { autoClose: true })
+            const errorMessage = muonOutput.error.message ? muonOutput.error.message : muonOutput.error ? muonOutput.error : ""
+            ToastTransaction("warn", "MUONIZE FAILED", errorMessage, { autoClose: true })
             return
         }
 

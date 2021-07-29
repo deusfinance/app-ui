@@ -1,11 +1,11 @@
+import axios from "axios"
 import { TransactionState } from "../utils/constant"
-import { SwapTransaction } from "../utils/explorers"
+import { SwapTransaction, ToastTransaction } from "../utils/explorers"
 import { getMuonContract } from "./contractHelpers"
-import { fromWei } from "./formatBalance"
+import { fromWei, getToWei } from "./formatBalance"
 
 export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, result, cid, signs, account, chainId, web3) => {
-    // console.log(result);
-    const muonContract = getMuonContract(web3, chainId)//TODO chainId
+    const muonContract = getMuonContract(web3, chainId)
     let sendArgs = { from: account }
     if (fromCurrency.address === "0x") sendArgs["value"] = result.amount
     console.log(result.token,
@@ -105,8 +105,93 @@ export const fetcher = async function (url, init) {
     }
 }
 
+function doSignTypedData(time, dataToSign, account, web3) {
+    return new Promise(resolve => {
+        web3.currentProvider.sendAsync({
+            from: account,
+            id: time,
+            jsonrpc: "2.0",
+            method: 'eth_signTypedData_v4',
+            params: [account, dataToSign]
+        }, (error, result) => {
+            if (error) {
+                console.error(error);
+                resolve(error);
+            } else if (result.error) {
+                console.error(result.error.message);
+                resolve(result.error.message);
+            } else {
+                console.log("Signature: " + result.result);
+                resolve(result.result);
+            }
+        });
+    });
+}
 
+export const signMsg = async (time, account, web3) => {
 
-// const time = getTimestamp()
-// signMsg(msgParams, '0x5629227C1E2542DbC5ACA0cECb7Cd3E02C82AD0a')
+    let eip712TypedData = {
+        types: {
+            EIP712Domain: [{ name: "name", type: "string" }],
+            Message: [{ type: 'uint256', name: 'time' }, { type: 'address', name: 'forAddress' }]
+        },
+        domain: { name: "MUON Presale" },
+        primaryType: "Message",
+        message: { time: time, forAddress: account }
+    }
+    let dataToSign = JSON.stringify(eip712TypedData)
+    return doSignTypedData(time, dataToSign, account, web3)
+}
+
+export const buyMuon = async (fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, time, account, chainId, validChainId = 1, web3, callback) => {
+
+    const signature = await signMsg(time, account, web3)
+
+    const BASE_URL = 'https://node1.muon.net/v1/'
+    let data = {
+        app: 'presale',
+        method: 'deposit',
+        params: {
+            token: fromSymbol,
+            amount: getToWei(amount, fromCurrency.decimals),
+            forAddress: account,
+            time,
+            sign: signature,
+            chainId: chainId
+        }
+    }
+    try {
+        const output = await axios.post(BASE_URL, data)
+        const muonOutput = output.data
+        console.log(output);
+        console.log(muonOutput);
+
+        if (!muonOutput.success) {
+            ToastTransaction("warn", "MUONIZE FAILED", muonOutput.error.message, { autoClose: true })
+            return
+        }
+
+        const { result } = muonOutput
+        console.log(result);
+
+        const tx = await deposit(
+            fromCurrency,
+            toCurrency,
+            amountIn,
+            amountOut,
+            result.data.result,
+            result.cid,
+            result.signatures,
+            account,
+            validChainId,
+            web3
+        )
+        callback(tx)
+    } catch (error) {
+        callback({ status: false })
+
+        console.log(error)
+    }
+}
+
 

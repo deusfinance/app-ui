@@ -147,9 +147,10 @@ export const buyMuon = async (fromCurrency, toCurrency, amountIn, amountOut, fro
 
     const signature = await signMsg(time, account, web3)
 
-    if (!signature)
+    if (!signature) {
         ToastTransaction("warn", "Failed to sign", "", { autoClose: true })
-
+        return
+    }
     const BASE_URL = 'https://node1.muon.net/v1/'
     let data = {
         app: 'presale',

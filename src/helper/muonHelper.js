@@ -116,10 +116,10 @@ function doSignTypedData(time, dataToSign, account, web3) {
         }, (error, result) => {
             if (error) {
                 console.error(error);
-                resolve(error);
+                resolve(false);
             } else if (result.error) {
                 console.error(result.error.message);
-                resolve(result.error.message);
+                resolve(false);
             } else {
                 console.log("Signature: " + result.result);
                 resolve(result.result);
@@ -146,6 +146,9 @@ export const signMsg = async (time, account, web3) => {
 export const buyMuon = async (fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, time, account, chainId, validChainId = 1, web3, callback) => {
 
     const signature = await signMsg(time, account, web3)
+
+    if (!signature)
+        ToastTransaction("warn", "Failed to sign", errorMessage, { autoClose: true })
 
     const BASE_URL = 'https://node1.muon.net/v1/'
     let data = {

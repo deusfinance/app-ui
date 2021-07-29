@@ -10,15 +10,15 @@ import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
-import { useApprove } from '../../helper/useApprove';
-import { useSealedAllowance } from '../../helper/useSealed';
-import { useSwap } from '../../helper/useSealed';
+import { useApprove } from '../../hooks/useApprove';
+import { useSealedAllowance } from '../../hooks/useSealed';
+import { useSwap } from '../../hooks/useSealed';
 import { SealedTokens, sdeaToken } from '../../constant/token';
-import { useSealedGetAmountsOut } from '../../helper/useSealed';
-import useChain from '../../helper/useChain';
+import { useSealedGetAmountsOut } from '../../hooks/useSealed';
+import useChain from '../../hooks/useChain';
 import { getTokenAddr } from '../../utils/contracts';
-import useTokenBalances from '../../helper/useTokenBalances';
-import { useDebounce } from '../../helper/useDebounce';
+import useTokenBalances from '../../hooks/useTokenBalances';
+import { useDebounce } from '../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import { SEALED_ADDRESS } from '../../constant/contracts';
 
@@ -181,7 +181,7 @@ const Sealed = () => {
             swapState={swapState}
             escapedType={escapedType}
             changeToken={changeToken}
-            disbaleLoading={false}
+            disableLoading={false}
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
 

@@ -5,7 +5,7 @@ import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { InputAmount } from '.';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
-import useTokenBalance from '../../../helper/useTokenBalance';
+import useTokenBalance from '../../../hooks/useTokenBalance';
 import { formatBalance3 } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';

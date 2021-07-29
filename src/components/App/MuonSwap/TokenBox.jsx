@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { InputAmount } from '.';
 import { isGt, isZero } from '../../../constant/number';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
-import useTokenBalance from '../../../helper/useTokenBalance';
+import useTokenBalance from '../../../hooks/useTokenBalance';
 import { formatBalance3 } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';
@@ -28,7 +28,7 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate, setFouceType, price, allocation }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate, setFocusType, price, allocation }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
@@ -76,7 +76,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
         >
             <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
                 setInputAmount(e.currentTarget.value)
-                setFouceType(type)
+                setFocusType(type)
             }} />
 
             {hasMax && !onMax && !isZero(balance) && <ButtonMax width={"40px"}

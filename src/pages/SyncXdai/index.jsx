@@ -18,7 +18,7 @@ import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
 import './styles/sync-xdai.scss';
 import { useTranslation } from 'react-i18next'
-import useAssetBalances from '../../helper/useAssetBalances';
+import useAssetBalances from '../../hooks/useAssetBalances';
 
 
 

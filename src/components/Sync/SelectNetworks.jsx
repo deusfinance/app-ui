@@ -142,7 +142,7 @@ const SelectedNetworks = () => {
                 actionMenu[chain].map((item, index) => {
                     const activeClass = currHref === item.link ? "active" : ""
                     const itemElm = <> <div className="names">
-                        {item.path ? <img src={item.path} style={{ width: "15px", marginRight: "8px" }} /> : item.img}
+                        {item.path ? <img src={item.path} style={{ width: "15px", marginRight: "8px" }} alt={item.title} /> : item.img}
                         <p>{item.title}</p>
                     </div>
                         <p>({chain})</p>

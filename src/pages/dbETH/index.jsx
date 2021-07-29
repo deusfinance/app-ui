@@ -12,15 +12,15 @@ import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
-import { useApprove } from '../../helper/useApprove';
-import { useAllowance } from '../../helper/useAllowance';
-import { useSwap } from '../../helper/useSwap';
+import { useApprove } from '../../hooks/useApprove';
+import { useAllowance } from '../../hooks/useAllowance';
+import { useSwap } from '../../hooks/useSwap';
 import { DefaultTokens } from '../../constant/token';
-import { useGetAmountsOut } from '../../helper/useGetAmountsOut';
-import useChain from '../../helper/useChain';
+import { useGetAmountsOut } from '../../hooks/useGetAmountsOut';
+import useChain from '../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
-import useTokenBalances from '../../helper/useTokenBalances';
-import { useDebounce } from '../../helper/useDebounce';
+import useTokenBalances from '../../hooks/useTokenBalances';
+import { useDebounce } from '../../hooks/useDebounce';
 
 const DbETHMigrator = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -185,7 +185,7 @@ const DbETHMigrator = () => {
             swapState={swapState}
             escapedType={escapedType}
             changeToken={changeToken}
-            disbaleLoading={false}
+            disableLoading={false}
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
 

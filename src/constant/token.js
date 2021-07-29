@@ -1,4 +1,4 @@
-import { Token } from '../sdk/tokens';
+import { Token } from '../utils/classes';
 
 export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
 export const muonToken = new Token(1, null, 18, "MUON", "MUON", "/tokens/muon.svg");

@@ -9,15 +9,15 @@ import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
-import { useApprove } from '../../helper/useApprove';
-import { useAllowance } from '../../helper/useAllowance';
-import { usePrices, useSwap, useUsedAmount } from '../../helper/useMuon';
+import { useApprove } from '../../hooks/useApprove';
+import { useAllowance } from '../../hooks/useAllowance';
+import { usePrices, useSwap, useUsedAmount } from '../../hooks/useMuon';
 import { MuonPreSaleTokens, muonToken } from '../../constant/token';
-import { useAmountsOut, useAmountsIn } from '../../helper/useMuon';
-import useChain from '../../helper/useChain';
+import { useAmountsOut, useAmountsIn } from '../../hooks/useMuon';
+import useChain from '../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
-import useTokenBalances from '../../helper/useTokenBalances';
-import { useDebounce } from '../../helper/useDebounce';
+import useTokenBalances from '../../hooks/useTokenBalances';
+import { useDebounce } from '../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import RemainingCap from '../../components/App/MuonSwap/RemainingCap';
 import { getAllocation, SymbolMap, } from '../../helper/muonHelper';
@@ -32,10 +32,11 @@ const Muon = () => {
     const [allocation, setAllocation] = useState(0)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [fouceType, setFouceType] = useState("from")
+    const [focusType, setFocusType] = useState("from")
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
+    const [swapLoading, setSwapLoading] = useState(false)
     const { account } = useWeb3React()
     const location = useLocation()
     const validNetworks = getCorrectChains(location.pathname)
@@ -57,8 +58,8 @@ const Muon = () => {
     }
 
     let DEA = getTokenAddr("dea", chainId)
-    if (chainId !== 1)
-        DEA = "0x"
+    // if (chainId !== 1)
+    DEA = "0x"
     // if (chainId === 97) {
     // DEA = "0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6"
     // }
@@ -78,11 +79,11 @@ const Muon = () => {
     let allowance = useAllowance(swapState.from, contractAddress, chainId)
 
     useEffect(() => {
-        if (fouceType === "from") {
+        if (focusType === "from") {
             if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
         } else
             if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
-    }, [amountIn, debouncedAmountIn, debouncedAmountOut, fouceType, amountOut]);
+    }, [amountIn, debouncedAmountIn, debouncedAmountOut, focusType, amountOut]);
 
     useEffect(() => {
         document.addEventListener("keydown", escFunction, false);
@@ -182,9 +183,9 @@ const Muon = () => {
             if (amountIn === "" || isZero(amountIn)) setAmountOut("")
             else setAmountOut(RemoveTrailingZero(fromWei(result, swapState.to.decimals), swapState.to.decimals))
         }
-        if (getAmountsOut && fouceType === "from")
+        if (getAmountsOut && focusType === "from")
             get()
-    }, [getAmountsOut, amountIn, fouceType, swapState.to])//replace multiple useState variables with useReducer
+    }, [getAmountsOut, amountIn, focusType, swapState.to])//replace multiple useState variables with useReducer
 
     useEffect(() => {
         const get = async () => {
@@ -193,7 +194,7 @@ const Muon = () => {
             if (amountOut === "" || isZero(amountOut)) setAmountIn("")
             else setAmountIn(RemoveTrailingZero(fromWei(result, swapState.from.decimals), swapState.from.decimals))
         }
-        if (getAmountsIn && fouceType === "to")
+        if (getAmountsIn && focusType === "to")
             get()
         //eslint-disable-next-line
     }, [getAmountsIn, amountOut])//replace multiple useState variables with useReducer
@@ -218,10 +219,13 @@ const Muon = () => {
     }, [onApprove])
 
     const handleSwap = useCallback(async () => {
+        setSwapLoading(true)
         try {
             await onSwap()
+            setSwapLoading(false)
         } catch (e) {
             console.error(e)
+            setSwapLoading(false)
         }
     }, [onSwap])
 
@@ -249,7 +253,7 @@ const Muon = () => {
             swapState={swapState}
             escapedType={escapedType}
             changeToken={changeToken}
-            disbaleLoading={false}
+            disableLoading={false}
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
         <MainWrapper>
@@ -265,7 +269,7 @@ const Muon = () => {
                     setActive={showSearchBox}
                     currency={swapState.from}
                     TokensMap={TokensMap}
-                    setFouceType={setFouceType}
+                    setFocusType={setFocusType}
                     allocation={allocation}
                     price={fromPrice}
                     fastUpdate={fastUpdate}
@@ -279,7 +283,7 @@ const Muon = () => {
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
                     setActive={null}
-                    setFouceType={setFouceType}
+                    setFocusType={setFocusType}
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}
@@ -293,6 +297,7 @@ const Muon = () => {
                     validNetworks={validNetworks}
                     isApproved={isApproved}
                     loading={approveLoading}
+                    swapLoading={swapLoading}
                     handleApprove={handleApprove}
                     handleSwap={handleSwap}
                     TokensMap={TokensMap}

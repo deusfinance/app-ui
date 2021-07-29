@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import getNodeUrl from './getRpcUrl'
+import getNodeUrl from '../helper/getRpcUrl'
 
 const RPC_URL = getNodeUrl()
 const httpProvider = new Web3.providers.HttpProvider(RPC_URL, { timeout: 10000 })

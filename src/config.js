@@ -1,16 +1,4 @@
 export const contractEndpoint = "https://etherscan.io/address"
-export const dappLinkMetamask = "https://metamask.app.link/dapp/deus.finance/"
-export const dappLinkTrustWallet = "https://metamask.app.link/dapp/deus.finance/"
-
-export const deusChains = {
-    1: "ETH",
-    4: "Rinkbey",
-    100: "xDAI",
-    56: "BSC",
-    97: "BSC-Test",
-    256: "HECO",
-}
-
 
 
 export const TokenType = {

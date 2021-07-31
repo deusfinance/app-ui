@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import useRefresh from "../helper/useRefresh";
+import useRefresh from "../hooks/useRefresh";
 import { sendMessage } from "./telegramLogger";
 
 export const fetcher = async function (url, init) {

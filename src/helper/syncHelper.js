@@ -2,7 +2,7 @@ import { isZero } from "../constant/number"
 import { getSynchronizerContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { TransactionState } from "../utils/constant"
-import { SwapTranaction } from "../utils/explorers"
+import { SwapTransaction } from "../utils/explorers"
 
 
 export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracles, type = "buy", requiredSignature, account, chainId, web3) => {
@@ -20,20 +20,20 @@ export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracle
         .send(sendArgs)
         .once('transactionHash', (tx) => {
             hash = tx
-            SwapTranaction(TransactionState.LOADING, {
+            SwapTransaction(TransactionState.LOADING, {
                 hash,
                 from: { ...fromCurrency, amount: amountIn },
                 to: { ...toCurrency, amount: amountOut },
                 chainId: chainId,
             })
         })
-        .once('receipt', () => SwapTranaction(TransactionState.SUCCESS, {
+        .once('receipt', () => SwapTransaction(TransactionState.SUCCESS, {
             hash,
             from: { ...fromCurrency, amount: amountIn },
             to: { ...toCurrency, amount: amountOut },
             chainId: chainId,
         }))
-        .once('error', () => SwapTranaction(TransactionState.FAILED, {
+        .once('error', () => SwapTransaction(TransactionState.FAILED, {
             hash,
             from: { ...fromCurrency, amount: amountIn },
             to: { ...toCurrency, amount: amountOut },

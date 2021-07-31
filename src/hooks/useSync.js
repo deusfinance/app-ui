@@ -1,8 +1,8 @@
-import { sync } from './syncHelper'
+import { sync } from '../helper/syncHelper'
 import useWeb3 from './useWeb3'
 import { isZero } from '../constant/number'
 import BigNumber from 'bignumber.js'
-import { getToWei } from './formatBalance'
+import { getToWei } from '../helper/formatBalance'
 import { useWeb3React } from "@web3-react/core"
 import { useEffect, useState, useCallback } from "react"
 import useRefresh from "./useRefresh";

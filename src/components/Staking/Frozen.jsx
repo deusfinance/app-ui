@@ -2,7 +2,7 @@ import React from 'react'
 import { sendTransaction } from '../../utils/Stakefun'
 import DrawableAmount from './DrawableAmount'
 import WaitingTime from './WaitingTime'
-import useWeb3 from '../../helper/useWeb3'
+import useWeb3 from '../../hooks/useWeb3'
 import WithdrawModal from './WithdrawModal'
 
 const Frozen = (props) => {

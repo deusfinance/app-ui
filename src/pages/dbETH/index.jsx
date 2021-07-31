@@ -21,10 +21,8 @@ import useChain from '../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../hooks/useTokenBalances';
 import { useDebounce } from '../../hooks/useDebounce';
-import { useLocation } from 'react-router';
-import SelectedNetworks from '../../components/Sync/SelectNetworks';
 
-const Swap2 = () => {
+const DbETHMigrator = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -34,85 +32,28 @@ const Swap2 = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1]
+    const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
-
-    const search = useLocation().search;
-    let inputCurrency = new URLSearchParams(search).get('inputCurrency')
-    let outputCurrency = new URLSearchParams(search).get('outputCurrency')
-
-    inputCurrency = inputCurrency?.toLowerCase() === "eth" ? "0x" : inputCurrency
-    outputCurrency = outputCurrency?.toLowerCase() === "eth" ? "0x" : outputCurrency
 
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
 
     const tokens = useMemo(() => DefaultTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
-    const tokensName = tokens.map(token => token.symbol.toLowerCase())
-
     //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = token, map), {})
     ), [tokens])
 
     const tokenBalances = useTokenBalances(tokensMap, chainId)
 
     const [TokensMap, setTokensMap] = useState(tokenBalances)
 
-    // if(isAddress())
-    if (inputCurrency && tokensName.indexOf(inputCurrency.toLowerCase()) !== -1) {
-        inputCurrency = getTokenAddr(inputCurrency.toLowerCase(), chainId)
-    }
-
-    if (outputCurrency && tokensName.indexOf(outputCurrency.toLowerCase()) !== -1) {
-        outputCurrency = getTokenAddr(outputCurrency.toLowerCase(), chainId)
-    }
-
-    if (inputCurrency && !TokensMap[inputCurrency]) {
-        inputCurrency = null
-    }
-
-    if (outputCurrency && !TokensMap[outputCurrency]) {
-        outputCurrency = null
-    }
-
-    if (outputCurrency && inputCurrency && outputCurrency === inputCurrency) {
-        outputCurrency = null
-    }
-
-    const deaContract = getTokenAddr("dea", chainId)
-
-    let fromAddress = inputCurrency ? inputCurrency : "0x"
-
-    let toAddress = outputCurrency ? outputCurrency : deaContract
-
-
-    if (toAddress === fromAddress) {
-        if (fromAddress === "0x") {
-            if (!inputCurrency) {
-                fromAddress = deaContract
-            }
-            else {
-                toAddress = deaContract
-            }
-        }
-        else if (fromAddress === deaContract) {
-            if (!outputCurrency) {
-                toAddress = "0x"
-            }
-            else {
-                fromAddress = "0x"
-            }
-        }
-    }
-
     const [swapState, setSwapState] = useState({
-        from: { ...TokensMap[fromAddress] },
-        to: { ...TokensMap[toAddress] },
+        from: { ...TokensMap["0x"] },
+        to: { ...TokensMap[getTokenAddr("deus", chainId)] },
     })
 
-    const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
+    const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
     const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
@@ -124,12 +65,12 @@ const Swap2 = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-    }, [chainId, account, swapState.from]);
+    }, [chainId, account]);
 
-    // useEffect(() => {
-    //     setIsPreApproved(null)
-    //     setIsApproved(false)
-    // }, [swapState.from])
+    useEffect(() => {
+        setIsPreApproved(null)
+        setIsApproved(false)
+    }, [swapState.from])
 
     useEffect(() => {
         setTokensMap(tokenBalances)
@@ -142,6 +83,8 @@ const Swap2 = () => {
             } else {
                 if (allowance.gt(0)) {
                     setIsPreApproved(true)
+                    // TokensMap[swapState.from.address].allowance = allowance
+                    // setTokensMap(TokensMap)
                 } else {
                     setIsPreApproved(false)
                 }
@@ -168,7 +111,6 @@ const Swap2 = () => {
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
         }
-        console.log(token);
         setSwapState({ ...swapState, [type]: token })
     }
 
@@ -180,7 +122,7 @@ const Swap2 = () => {
     useEffect(() => {
         const get = async () => {
             const amount = await getAmountsOut()
-            // console.log("swap ", amount);
+            console.log("swap ", amount);
             if (amountIn === "") setAmountOut("")
             else setAmountOut(fromWei(amount, swapState.to.decimals))
         }
@@ -192,7 +134,7 @@ const Swap2 = () => {
     useEffect(() => {
         const get = async () => {
             const amount = await getMinAmountOut()
-            // console.log("min swap ", amount);
+            console.log("min swap ", amount);
             setMinAmountOut(fromWei(amount, swapState.to.decimals))
         }
         get()
@@ -235,6 +177,7 @@ const Swap2 = () => {
         }
     }, [onSwap])
 
+
     return (<>
         <SearchBox
             account={account}
@@ -262,9 +205,8 @@ const Swap2 = () => {
                     fastUpdate={fastUpdate}
                 />
                 <SwapArrow onClick={() => {
-                    setAmountIn(amountOut)
-                    setHotIn(amountOut)
                     setSwapState({ from: swapState.to, to: swapState.from })
+                    setAmountIn(amountOut)
                     setAmountOut("")
                 }}>
                     <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
@@ -285,7 +227,7 @@ const Swap2 = () => {
 
                 <SwapAction
                     isPreApproved={isPreApproved}
-                    validNetworks={[1]}
+                    validNetworks={[1, 4]}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}
@@ -312,10 +254,7 @@ const Swap2 = () => {
 
             <SlippageTolerance slippage={slippage} setSlippage={setSlippage} />
         </MainWrapper>
-        <div className='tut-left-wrap'>
-            <SelectedNetworks />
-        </div>
     </>);
 }
 
-export default Swap2;
+export default DbETHMigrator;

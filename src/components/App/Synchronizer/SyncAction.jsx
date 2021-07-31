@@ -1,12 +1,11 @@
 import { useWeb3React } from '@web3-react/core';
 import React, { useState } from 'react';
 import styled from 'styled-components'
-import { isGt, isZero } from '../../../constant/number';
-import Wallets from '../../common/Navbar/Wallets';
-import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
+import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
 import { WaveLoading } from 'react-loadingg';
-
+import { isZero, isGt } from '../../../constant/number';
+import Wallets from '../../common/Navbar/Wallets';
 // import Loader from '../Loader';
 const errors = {
     NotConnected: "CONNECT WALLET",
@@ -27,7 +26,7 @@ const WrapActions = styled.div`
         margin:0px 5px;
     }
 `
-const ButtonSwap = styled(ButtonSyncActice)`
+const ButtonSwap = styled(ButtonSyncActive)`
   background: ${({ theme }) => theme.grad1};
   color: ${({ theme }) => theme.text1};
   font-size:25px;
@@ -75,43 +74,31 @@ const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency
 
 
     if (checkError()) {
-        return <WrapActions>
-            <ButtonSyncDeactive mt={mt} >{checkError()}</ButtonSyncDeactive>
-        </WrapActions>
+        return <ButtonSyncDeactivated mt={mt}>{checkError()}</ButtonSyncDeactivated>
     }
 
     if (isPreApproved == null) {
         return <WrapActions>
-            <ButtonSyncDeactive>
+            <ButtonSyncDeactivated>
                 <WaveLoading />
-            </ButtonSyncDeactive>
+            </ButtonSyncDeactivated>
         </WrapActions>
     }
 
     return (<>
-        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap onClick={() => handlSync()} active={true} > SYNC</ButtonSwap></WrapActions> :
-            <>
-                <WrapActions mt={mt}>
-                    {!isApproved ? <>
-                        <ButtonSwap bgColor={bgColor} active={true} onClick={handleApprove} >
-                            APPROVE
-                            {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
-                        </ButtonSwap>
-                        <ButtonSyncDeactive>SYNC</ButtonSyncDeactive>
-                    </> : <>
-                        <ButtonSyncDeactive>APPROVED</ButtonSyncDeactive>
-                        <ButtonSwap bgColor={bgColor} active={true} onClick={handlSync}>
-                            SYNC
-                        </ButtonSwap>
-                    </>
-                    }
-                </WrapActions>
-                <WrapStep>
-                    <CycleNumber active={true}>1</CycleNumber>
-                    <Line></Line>
-                    <CycleNumber active={false} active={isApproved}>2</CycleNumber>
-                </WrapStep>
-            </>
+        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} > SYNC</ButtonSwap> </WrapActions> : <>
+            <WrapActions mt={mt}>
+                <ButtonSwap active={true} >
+                    APPROVE
+                </ButtonSwap>
+                <ButtonSyncDeactivated>SYNC (BUY)</ButtonSyncDeactivated>
+            </WrapActions>
+            <WrapStep>
+                <CycleNumber active={true}>1</CycleNumber>
+                <Line></Line>
+                <CycleNumber active={false}>2</CycleNumber>
+            </WrapStep>
+        </>
         }
     </>);
 }

@@ -1,23 +1,22 @@
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from "ethers";
-import { swap } from './sealedHelper'
 import useWeb3 from './useWeb3'
 import BigNumber from 'bignumber.js'
 import useRefresh from "./useRefresh";
 import { useERC20 } from './useContract'
-import { getSealedAmountsOut } from './sealedHelper'
+import { getSealedAmountsOut, swap } from '../helper/sealedHelper'
 import { isZero, ZERO } from '../constant/number'
 
 
-export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slipage, validChainId = 1, bptPayload) => {
+export const useSwap = (fromCurrency, toCurrency, amountIn, amountOut, slippage, validChainId = 1, bptPayload) => {
     const { account, chainId } = useWeb3React()
 
     const web3 = useWeb3()
-    const minAmountOut = new BigNumber(amountOut).multipliedBy((100 - Number(slipage)) / 100).toFixed(toCurrency.decimals, 1)
+    const minAmountOut = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(toCurrency.decimals, 1)
     let payload = []
     for (let i = 0; i < bptPayload.length; i++) {
-        payload[i] = new BigNumber(bptPayload[i]).multipliedBy((100 - Number(slipage)) / 100).toFixed(0, 1)
+        payload[i] = new BigNumber(bptPayload[i]).multipliedBy((100 - Number(slippage)) / 100).toFixed(0, 1)
     }
     const handleSwap = useCallback(async () => {
         try {

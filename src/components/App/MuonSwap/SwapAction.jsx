@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
-import { ButtonSyncDeactive, ButtonSyncActice } from '../Button';
+import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
 import { WaveLoading } from 'react-loadingg';
 import { useWeb3React } from '@web3-react/core';
 import { isGt, isZero } from '../../../constant/number';
+import Wallets from '../../common/Navbar/Wallets';
 
 const errors = {
     NotConnected: "CONNECT WALLET",
@@ -25,7 +26,7 @@ const WrapActions = styled.div`
         margin:0px 5px;
     }
 `
-const ButtonSwap = styled(ButtonSyncActice)`
+const ButtonSwap = styled(ButtonSyncActive)`
   background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
   color: ${({ theme }) => theme.text1};
   font-size:${({ fontSize }) => fontSize || "20px"};
@@ -50,9 +51,10 @@ background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
 height: 2px;
 width: 50%;
 `
-const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapState, TokensMap, isApproved, loading, validNetworks = [4, 1], handleApprove, handleSwap, allocation, bgColor }) => {
+const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapState, TokensMap, isApproved, loading, swapLoading, validNetworks = [4, 1], handleApprove, handleSwap, allocation, bgColor }) => {
 
     const { account, chainId } = useWeb3React()
+    const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
         if (!account) return errors.NotConnected
@@ -64,24 +66,41 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapSt
         return null;
     }
 
+
+    useEffect(() => {
+        if (account)
+            setShowWallets(false)
+    }, [account])
+
+    if (!account) {
+        return <WrapActions>
+            <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
+            <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
+                {errors.NotConnected}
+            </ButtonSwap>
+        </WrapActions>
+    }
     if (checkError()) {
         return <WrapActions>
-            <ButtonSyncDeactive bgColor="bg8" color='text1_2' >{checkError()}</ButtonSyncDeactive>
+            <ButtonSyncDeactivated bgColor="bg8" color='text1_2' >{checkError()}</ButtonSyncDeactivated>
         </WrapActions>
     }
 
     if (isPreApproved == null) {
         return <WrapActions>
-            <ButtonSyncDeactive>
+            <ButtonSyncDeactivated>
                 <WaveLoading />
-            </ButtonSyncDeactive>
+            </ButtonSyncDeactivated>
         </WrapActions>
     }
 
     return (<>
         {isPreApproved ?
             <WrapActions>
-                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>MUONIZE ME</ButtonSwap>
+                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>
+                    MUONIZE ME
+                    {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
+                </ButtonSwap>
             </WrapActions> : <>
                 <WrapActions>
                     {!isApproved ? <>
@@ -89,11 +108,12 @@ const SwapAction = ({ isPreApproved, amountIn, amountOut, amountInDollar, swapSt
                             APPROVE
                             {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
-                        <ButtonSyncDeactive bgColor="bg8" color='text1_2'>MUONIZE ME</ButtonSyncDeactive>
+                        <ButtonSyncDeactivated bgColor="bg8" color='text1_2'>MUONIZE ME</ButtonSyncDeactivated>
                     </> : <>
-                        <ButtonSyncDeactive bgColor="bg8" color='text1_2'>APPROVED</ButtonSyncDeactive>
+                        <ButtonSyncDeactivated bgColor="bg8" color='text1_2'>APPROVED</ButtonSyncDeactivated>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
                             MUONIZE ME
+                            {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
                     </>
                     }

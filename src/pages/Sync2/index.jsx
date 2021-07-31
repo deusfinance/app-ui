@@ -12,17 +12,17 @@ import LongShort from '../../components/App/Synchronizer/LongShort';
 import RateBox from '../../components/App/Synchronizer/RateBox';
 import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
 import { SyncData } from '../../constant/synchronizer';
-import { useDebounce } from '../../helper/useDebounce';
+import { useDebounce } from '../../hooks/useDebounce';
 import { useWeb3React } from '@web3-react/core';
-import useAssetBalances from '../../helper/useAssetBalances';
+import useAssetBalances from '../../hooks/useAssetBalances';
 import { RowCenter } from '../../components/App/Row';
 import { useFreshOracleFetch, useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
-import { useSync, useAmountsIn, useAmountsOut, useAllowance } from '../../helper/useSync';
-import { useApprove } from '../../helper/useApprove';
+import { useSync, useAmountsIn, useAmountsOut, useAllowance } from '../../hooks/useSync';
+import { useApprove } from '../../hooks/useApprove';
 import { isZero } from '../../constant/number';
-import { fromWei, RoundNumber } from '../../helper/formatBalance';
+import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
 import { NameChainMap } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 
@@ -258,7 +258,7 @@ const Sync2 = () => {
                 const price = priceResult["status"] == "open" ? priceResult["long_price"] : priceResult["short_price"]
                 const assetPrice = { price: price, fee: 0.01 }
                 setAssetInfo({ fromPrice: null, toPrice: null, fee: 0 })
-                if (price){
+                if (price) {
                     if (position === "buy") {
                         assetInfo.fromPrice = 1
                         assetInfo.toPrice = assetPrice.price
@@ -328,7 +328,7 @@ const Sync2 = () => {
             const result = getAmountsOut()
             if (!result) return
             if (amountIn === "" || isZero(amountIn)) setAmountOut("")
-            else setAmountOut(RoundNumber(fromWei(result, toCurrency.decimals), toCurrency.decimals))
+            else setAmountOut(RemoveTrailingZero(fromWei(result, toCurrency.decimals), toCurrency.decimals))
         }
         if (getAmountsOut && fouceType === "from")
             get()
@@ -408,7 +408,7 @@ const Sync2 = () => {
 
                 <RateBox
                     currencies={{ from: fromCurrency, to: toCurrency || { symbol: "dAsset" } }}
-                    marketPrice={ priceResult["status"] == "open" ? priceResult["long_price"] : "(CLOSED)" }
+                    marketPrice={priceResult["status"] == "open" ? priceResult["long_price"] : "(CLOSED)"}
                     amountIn={amountIn}
                     amountOut={amountOut}
                     setInvert={setInvert}

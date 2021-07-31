@@ -22,20 +22,11 @@ export const getFullDisplayBalance = (balance, decimals = 18) => {
     return new BigNumber(balance).dividedBy(new BigNumber(10).pow(decimals)).toFixed()
 }
 
-export const RoundNumber = (number = null, fixed = 5) => {
-
+export const RemoveTrailingZero = (number = null, fixed = 5) => {
     if (!number) return '0'
     if (isZero(number)) return 0
-
-    BigNumber.config({ EXPONENTIAL_AT: 30 })
-    const bignumber = new BigNumber(number)
-    if (new BigNumber(10).pow(fixed - 1).lte(bignumber)) {
-        return bignumber.toFixed(0, BigNumber.ROUND_DOWN)
-    }
-    return bignumber.toPrecision(fixed, BigNumber.ROUND_DOWN).replace(/\.?0+$/, "")
+    return BigNumber(number).toFixed(fixed, BigNumber.ROUND_DOWN).replace(/\.?0+$/, "")
 }
-
-
 
 export const formatNumber = (number, minPrecision = 2, maxPrecision = 2) => {
     const options = {

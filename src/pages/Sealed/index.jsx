@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapWrapper, SwapTitle } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
-import SlippageTelorance from '../../components/App/Swap/SlippageTelorance';
+import SlippageTolerance from '../../components/App/Swap/SlippageTolerance';
 import SwapAction from '../../components/App/Swap/SwapAction';
 import SearchBox from '../../components/App/Swap/SearchBox';
 import RateBox from '../../components/App/Swap/RateBox';
@@ -10,15 +10,15 @@ import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
-import { useApprove } from '../../helper/useApprove';
-import { useSealedAllowance } from '../../helper/useSealed';
-import { useSwap } from '../../helper/useSealed';
+import { useApprove } from '../../hooks/useApprove';
+import { useSealedAllowance } from '../../hooks/useSealed';
+import { useSwap } from '../../hooks/useSealed';
 import { SealedTokens, sdeaToken } from '../../constant/token';
-import { useSealedGetAmountsOut } from '../../helper/useSealed';
-import useChain from '../../helper/useChain';
+import { useSealedGetAmountsOut } from '../../hooks/useSealed';
+import useChain from '../../hooks/useChain';
 import { getTokenAddr } from '../../utils/contracts';
-import useTokenBalances from '../../helper/useTokenBalances';
-import { useDebounce } from '../../helper/useDebounce';
+import useTokenBalances from '../../hooks/useTokenBalances';
+import { useDebounce } from '../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import { SEALED_ADDRESS } from '../../constant/contracts';
 
@@ -28,7 +28,7 @@ const Sealed = () => {
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [slipage, setSlipage] = useState(0.5)
+    const [slippage, setSlippage] = useState(0.5)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -122,7 +122,7 @@ const Sealed = () => {
 
     const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, debouncedAmountIn, chainId)
     const { onApprove } = useApprove(swapState.from, SEALED_ADDRESS, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slipage, chainId, bptPayload)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId, bptPayload)
 
     useEffect(() => {
         const get = async () => {
@@ -237,7 +237,7 @@ const Sealed = () => {
             /> */}
 
 
-            <SlippageTelorance slipage={slipage} setSlipage={setSlipage} bgColor="grad4" />
+            <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor="grad4" />
         </MainWrapper>
         {/* <div className='tut-left-wrap'>
             <SelectedNetworks />

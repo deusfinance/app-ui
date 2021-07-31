@@ -1,4 +1,5 @@
-import { Token } from './token';
+// import { Token } from './token';
+import { Token } from '../utils/classes';
 import { ChainMap } from './web3';
 
 export const registrarUrl = "https://oracle1.deus.finance/registrar-detail.json"

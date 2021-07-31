@@ -182,7 +182,7 @@ export function ToastTransaction(type, title, data = '', option = {}) {
   }
 }
 
-export function SwapTranaction(type, payload) {
+export function SwapTransaction(type, payload) {
   toast.dismiss()
   switch (type) {
     case TransactionState.LOADING:

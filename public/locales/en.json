@@ -109,7 +109,7 @@
     "per": "per",
     "priceImpact": "Price Impact",
     "route": "Route",
-    "slipage": "Slippage Tolerance",
+    "slippage": "Slippage Tolerance",
     "migrate": "MIGRATE",
     "long": "LONG",
     "short": "SHORT",

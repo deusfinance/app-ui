@@ -17,7 +17,7 @@ import SyncCap from '../../components/Sync/SyncCap';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 import { xdaiMutileOracleHandler } from '../../utils/mutiOracles';
 import { sendMessage } from '../../utils/telegramLogger';
-import useAssetBalances from '../../helper/useAssetBalances';
+import useAssetBalances from '../../hooks/useAssetBalances';
 import './styles/sync-xdai.scss';
 
 const SyncHeco = () => {

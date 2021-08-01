@@ -177,7 +177,7 @@ const Dei = () => {
             setSwapState({ ...swapState, from: primaryToken })
             setIsPair(false)
         }
-    }, [collatRatio]);
+    }, [collatRatio, swapState]);
 
     const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
@@ -226,31 +226,31 @@ const Dei = () => {
     }, [allowance]) //isPreApproved ?
 
 
-    const showSearchBox = (active = false, type) => {
-        setEscapedType(type)
-        setActiveSearchBox(active)
-    }
+    // const showSearchBox = (active = false, type) => {
+    //     setEscapedType(type)
+    //     setActiveSearchBox(active)
+    // }
 
-    const changeToken = (token, type) => {
-        setActiveSearchBox(false)
-        setAmountIn("")
-        const vsType = getSwapVsType(type)
+    // const changeToken = (token, type) => {
+    //     setActiveSearchBox(false)
+    //     setAmountIn("")
+    //     const vsType = getSwapVsType(type)
 
-        if (swapState[vsType].symbol === token.symbol) {
-            return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
-        }
-        if (token.pairID) {
-            setIsPair(true)
-            let secondToken = DEITokens.filter(currToken => {
-                return currToken.pairID === token.pairID && currToken.address !== token.address
-            })[0]
-            setPairToken(secondToken)
-            setSwapState({ ...swapState, [type]: token })
-            return
-        }
-        setIsPair(false)
-        setSwapState({ ...swapState, [type]: token })
-    }
+    //     if (swapState[vsType].symbol === token.symbol) {
+    //         return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
+    //     }
+    //     if (token.pairID) {
+    //         setIsPair(true)
+    //         let secondToken = DEITokens.filter(currToken => {
+    //             return currToken.pairID === token.pairID && currToken.address !== token.address
+    //         })[0]
+    //         setPairToken(secondToken)
+    //         setSwapState({ ...swapState, [type]: token })
+    //         return
+    //     }
+    //     setIsPair(false)
+    //     setSwapState({ ...swapState, [type]: token })
+    // }
 
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)

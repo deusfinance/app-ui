@@ -151,7 +151,8 @@ export const buyMuon = async (fromCurrency, toCurrency, amountIn, amountOut, fro
         ToastTransaction("warn", "Failed to sign", "", { autoClose: true })
         return
     }
-    const BASE_URL = 'https://node1.muon.net/v1/'
+    // const BASE_URL = 'https://node1.muon.net/v1/' //Main
+    const BASE_URL = 'http://node1.muon.net:8080/v1/' //Test
     let data = {
         app: 'presale',
         method: 'deposit',

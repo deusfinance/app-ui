@@ -1,6 +1,6 @@
 import { ethers } from "ethers"
 import { TransactionState } from "../utils/constant"
-import { ApproveTranaction, SwapTransaction } from "../utils/explorers"
+import { ApproveTransaction, SwapTransaction } from "../utils/explorers"
 import { getDeusAutomaticMarketMakerContract, getMultiSwapContract, getUniswapRouterContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import graph from '../constant/path.json'
@@ -17,18 +17,18 @@ export const approve = async (contract, contractAddress, account, payload) => {
         .send({ from: account })
         .once('transactionHash', (tx) => {
             hash = tx
-            ApproveTranaction(TransactionState.LOADING, {
+            ApproveTransaction(TransactionState.LOADING, {
                 hash,
                 from: payload.currency,
                 chainId: payload.chainId,
             })
         })
-        .once('receipt', () => ApproveTranaction(TransactionState.SUCCESS, {
+        .once('receipt', () => ApproveTransaction(TransactionState.SUCCESS, {
             hash,
             from: payload.currency,
             chainId: payload.chainId,
         }))
-        .once('error', () => ApproveTranaction(TransactionState.FAILED, {
+        .once('error', () => ApproveTransaction(TransactionState.FAILED, {
             hash,
             from: payload.currency,
             chainId: payload.chainId,

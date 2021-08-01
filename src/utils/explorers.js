@@ -255,7 +255,7 @@ export function SwapTransaction(type, payload) {
   return
 }
 
-export function ApproveTranaction(type, payload) {
+export function ApproveTransaction(type, payload) {
   toast.dismiss()
   switch (type) {
     case TransactionState.LOADING:

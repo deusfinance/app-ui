@@ -230,7 +230,7 @@ const Navbar = () => {
                 {account ?
                     (chainId && validChains.indexOf(chainId) === -1)
                         ?
-                        <NavButton className="network-label" active={true} onClick={() => addRPC(account, activate, validChains[0])}>
+                        <NavButton className="network-label" active={true} onClick={() => addRPC(account, validChains[0])}>
                             {t("changeTo")} {NameChainMap[validChains[0]] || "ETH"}
                         </NavButton>
                         :

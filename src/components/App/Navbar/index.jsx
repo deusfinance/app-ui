@@ -23,9 +23,6 @@ export const NavbarWrap = styled(RowBetween)`
         .network-label{
             display: none;
         }
-        .deus-logo{
-            max-width:115px;
-        }
         .hamb{
             margin-left:10px;
         }

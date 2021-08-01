@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { ButtonMax, ButtonSyncDeactive, ButtonSyncActive } from '../../components/App/Button/index';
+import { ButtonMax, ButtonSyncDeactivated, ButtonSyncActive } from '../../components/App/Button/index';
 import CurrencyLogo from '../../components/App/Currency';
 import { ButtonConnectWallet, NavTextBoxSecondery, NavTextBoxWarning } from '../../components/App/Navbar';
 import { InputAmount, TokenInfo } from '../../components/App/Swap';
@@ -90,9 +90,9 @@ const Test = () => {
             extra small text
         </Type.XS>
 
-        <ButtonSyncDeactive>
+        <ButtonSyncDeactivated>
             SELECT AN ASSET
-        </ButtonSyncDeactive>
+        </ButtonSyncDeactivated>
 
         <ButtonSyncActive>
             SYNC

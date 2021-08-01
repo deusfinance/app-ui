@@ -5,7 +5,7 @@ import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { InputAmount } from '.';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
-import useTokenBalance from '../../../helper/useTokenBalance';
+import useTokenBalance from '../../../hooks/useTokenBalance';
 import { formatBalance3 } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';
@@ -76,7 +76,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             alignItems="center"
             mt="5px"
         >
-            <InputAmount placeholder="0.0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
+            <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
 
             {hasMax && !onMax && <ButtonMax width={"40px"}
                 onClick={() => setInputAmount(balance)}>

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import useWeb3 from "./useWeb3"
 import ERC20Abi from '../config/abi/ERC20Abi.json'
-import { getFullDisplayBalance } from './formatBalance';
-import multicall from './multicall'
+import { getFullDisplayBalance } from '../helper/formatBalance';
+import multicall from '../helper/multicall'
 import { concat } from 'lodash'
 import { formatBalance3 } from '../utils/utils';
 import useRefresh from './useRefresh';

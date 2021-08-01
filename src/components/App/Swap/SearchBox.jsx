@@ -122,8 +122,8 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoa
                   <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
                   <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
                 </TokenWrap>
-                {!account || disableLoading || currencies[addressBalance].balance || isZero(currencies[addressBalance].balance)
-                  ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[addressBalance]?.balance) || 0}</Type.LG>
+                {!account || disableLoading || currencies[address].balance || isZero(currencies[address].balance)
+                  ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[address]?.balance) || 0}</Type.LG>
                   : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
                 }
               </TokenRow>

@@ -1,4 +1,4 @@
-import { Token } from '../sdk/tokens';
+import { Token } from '../utils/classes';
 import { getStayledNumber } from '../utils/utils';
 import { TokenType } from '../config';
 // import { BigNumber } from 'ethers';

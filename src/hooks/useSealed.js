@@ -1,12 +1,11 @@
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from "ethers";
-import { swap } from './sealedHelper'
 import useWeb3 from './useWeb3'
 import BigNumber from 'bignumber.js'
 import useRefresh from "./useRefresh";
 import { useERC20 } from './useContract'
-import { getSealedAmountsOut } from './sealedHelper'
+import { getSealedAmountsOut, swap } from '../helper/sealedHelper'
 import { isZero, ZERO } from '../constant/number'
 
 

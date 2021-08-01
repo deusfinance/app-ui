@@ -22,7 +22,7 @@ import {
 } from './data'
 import { abi, BridgeABI } from '../../utils/StakingABI'
 import { sendTransaction } from '../../utils/Stakefun'
-import useWeb3 from '../../helper/useWeb3'
+import useWeb3 from '../../hooks/useWeb3'
 import { ethCallContract } from './utils'
 
 const Bridge = () => {

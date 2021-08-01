@@ -1,4 +1,4 @@
-import web3NoAccount from './web3'
+import web3NoAccount from '../hooks/web3'
 import muliSwapAbi from '../config/abi/muliSwapAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import DeusAMMAbi from '../config/abi/DeusAMM.json'
@@ -6,6 +6,7 @@ import UniswapRouterAbi from '../config/abi/uniswapRouterAbi.json'
 import UniswapV2Abi from '../config/abi/UniswapV2Abi.json'
 import MultiCallAbi from '../config/abi/Multicall.json'
 import MuonPresaleAbi from '../config/abi/MuonPresale.json'
+import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleCrossChain.json'
 import SealedSwapperAbi from '../config/abi/SealedSwapperAbi.json'
 import { MULTICALL_NETWORKS } from '../constant/contracts'
 import { ChainMap } from '../constant/web3'
@@ -45,5 +46,8 @@ export const getSealedSwapperContract = (address, web3) => {
 }
 
 export const getMuonContract = (web3, chainId = ChainMap.MAINNET) => {
-    return getContract(MuonPresaleAbi, getContractAddr("muon_presale", chainId), web3)
+    if (chainId === ChainMap.MAINNET)
+        return getContract(MuonPresaleAbi, getContractAddr("muon_presale", chainId), web3)
+    return getContract(MuonPresaleCrossChainAbi, getContractAddr("muon_presale", chainId), web3)
+
 }

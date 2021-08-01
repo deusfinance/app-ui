@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { approve } from './callHelper'
+import { approve } from '../helper/swapHelper'
 import { useERC20 } from './useContract'
 
 export const useApprove = (currency, contractAddress, validChainId) => {

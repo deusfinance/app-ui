@@ -1,6 +1,6 @@
 import React from 'react'
 import TokenBadge from './TokenBadge'
-import useWeb3 from '../../helper/useWeb3'
+import useWeb3 from '../../hooks/useWeb3'
 import { makeContract } from '../../utils/Stakefun'
 import { BridgeABI } from '../../utils/StakingABI'
 import { sendTransaction } from '../../utils/Stakefun'

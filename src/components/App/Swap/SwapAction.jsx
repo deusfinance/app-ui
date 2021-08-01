@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
-import { ButtonSyncDeactive, ButtonSyncActive } from '../Button';
+import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
 import { WaveLoading } from 'react-loadingg';
 import { useWeb3React } from '@web3-react/core';
@@ -79,15 +79,15 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
 
     if (checkError()) {
         return <WrapActions>
-            <ButtonSyncDeactive >{checkError()}</ButtonSyncDeactive>
+            <ButtonSyncDeactivated >{checkError()}</ButtonSyncDeactivated>
         </WrapActions>
     }
 
     if (isPreApproved == null) {
         return <WrapActions>
-            <ButtonSyncDeactive>
+            <ButtonSyncDeactivated>
                 <WaveLoading />
-            </ButtonSyncDeactive>
+            </ButtonSyncDeactivated>
         </WrapActions>
     }
 
@@ -102,9 +102,9 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
                             APPROVE
                             {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
-                        <ButtonSyncDeactive>{text}</ButtonSyncDeactive>
+                        <ButtonSyncDeactivated>SWAP</ButtonSyncDeactivated>
                     </> : <>
-                        <ButtonSyncDeactive>APPROVED</ButtonSyncDeactive>
+                        <ButtonSyncDeactivated>APPROVED</ButtonSyncDeactivated>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
                             {text}
                         </ButtonSwap>

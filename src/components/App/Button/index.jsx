@@ -50,7 +50,7 @@ const ButtonSync = styled(Base).attrs({
   font-size:20px;
 `
 
-export const ButtonSyncDeactive = styled(ButtonSync)`
+export const ButtonSyncDeactivated = styled(ButtonSync)`
     box-shadow: none;
     font-family:"Monument Grotesk Semi";
     background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.sync_dactive};

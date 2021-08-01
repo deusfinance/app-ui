@@ -65,7 +65,7 @@ const defaultAmounts = [0.1, 0.5, 1]
 const SlippageTolerance = ({ slippage, setSlippage, bgColor }) => {
     const [customActive, setCustomActive] = useState(false)
 
-    const handleMinslippage = () => {
+    const handleMinSlippage = () => {
         if (slippage < 0.1) {
             setSlippage(0.1)
             setCustomActive(false)
@@ -95,7 +95,7 @@ const SlippageTolerance = ({ slippage, setSlippage, bgColor }) => {
                 <InputSlippage
                     placeholder={slippage.toFixed(1)}
                     value={customActive ? slippage : ""}
-                    onBlur={handleMinslippage}
+                    onBlur={handleMinSlippage}
                     onChange={(e) => handleCustomChange(e)}
                 />
                 %

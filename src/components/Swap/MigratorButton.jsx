@@ -1,6 +1,6 @@
 import React from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { ButtonSyncDeactive } from '../App/Button';
+import { ButtonSyncDeactivated } from '../App/Button';
 import { useTranslation } from 'react-i18next';
 
 const MigratorButton = ({ approved, token, handleMigrate, isMobile }) => {
@@ -11,17 +11,17 @@ const MigratorButton = ({ approved, token, handleMigrate, isMobile }) => {
     console.log(chainId);
     if (chainId && (chainId !== 1 && chainId !== 4)) {
         return (<>
-            <ButtonSyncDeactive>
+            <ButtonSyncDeactivated>
                 {t("wrongNetwork")}
-            </ButtonSyncDeactive>
+            </ButtonSyncDeactivated>
 
         </>)
     }
 
     return (<>
-        { account && <>{(token.balance < amount) ? <ButtonSyncDeactive style={{ animation: "scale-up 0.3s forwards" }}>
+        {account && <>{(token.balance < amount) ? <ButtonSyncDeactivated style={{ animation: "scale-up 0.3s forwards" }}>
             {t("insufficientBalance")}
-        </ButtonSyncDeactive> :
+        </ButtonSyncDeactivated> :
             <div className="swap-btn-wrap grad-wrap xdai-button" style={{ background: "linear-gradient(90deg, #DFF4FE 0%, #8EB5FF 100%)", animation: "scale-up 0.3s forwards" }} onClick={handleMigrate}>
                 <div className="swap-btn grad" >
                     {approved ? t("migrate") : t("approve")}
@@ -29,9 +29,9 @@ const MigratorButton = ({ approved, token, handleMigrate, isMobile }) => {
             </div>}
         </>}
         {
-            !account && <ButtonSyncDeactive>
+            !account && <ButtonSyncDeactivated>
                 {t("connectWallet")}
-            </ButtonSyncDeactive>
+            </ButtonSyncDeactivated>
         }
     </>);
 }

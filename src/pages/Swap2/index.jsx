@@ -12,15 +12,15 @@ import { getSwapVsType } from '../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
-import { useApprove } from '../../helper/useApprove';
-import { useAllowance } from '../../helper/useAllowance';
-import { useSwap } from '../../helper/useSwap';
+import { useApprove } from '../../hooks/useApprove';
+import { useAllowance } from '../../hooks/useAllowance';
+import { useSwap } from '../../hooks/useSwap';
 import { DefaultTokens } from '../../constant/token';
-import { useGetAmountsOut } from '../../helper/useGetAmountsOut';
-import useChain from '../../helper/useChain';
+import { useGetAmountsOut } from '../../hooks/useGetAmountsOut';
+import useChain from '../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../utils/contracts';
-import useTokenBalances from '../../helper/useTokenBalances';
-import { useDebounce } from '../../helper/useDebounce';
+import useTokenBalances from '../../hooks/useTokenBalances';
+import { useDebounce } from '../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import SelectedNetworks from '../../components/Sync/SelectNetworks';
 
@@ -34,7 +34,7 @@ const Swap2 = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
+    const validNetworks = [1]
     const chainId = useChain(validNetworks)
 
     const search = useLocation().search;
@@ -285,7 +285,7 @@ const Swap2 = () => {
 
                 <SwapAction
                     isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
+                    validNetworks={[1]}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}

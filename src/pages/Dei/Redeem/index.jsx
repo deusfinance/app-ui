@@ -10,15 +10,15 @@ import { getSwapVsType } from '../../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../../helper/formatBalance';
-import { useApprove } from '../../../helper/useApprove';
-import { useAllowance } from '../../../helper/useAllowance';
-import { useSwap } from '../../../helper/useSwap';
+import { useApprove } from '../../../hooks/useApprove';
+import { useAllowance } from '../../../hooks/useAllowance';
+import { useSwap } from '../../../hooks/useSwap';
 import { DEITokens, deiToken } from '../../../constant/token';
-import { useGetAmountsOut } from '../../../helper/useGetAmountsOut';
-import useChain from '../../../helper/useChain';
+import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
+import useChain from '../../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
-import useTokenBalances from '../../../helper/useTokenBalances';
-import { useDebounce } from '../../../helper/useDebounce';
+import useTokenBalances from '../../../hooks/useTokenBalances';
+import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import CostBox from '../../../components/App/Dei/CostBox'
@@ -342,7 +342,7 @@ const Dei = () => {
 
             </SwapWrapper>
 
-            <SwapCard title="Minting Fee" value="0.3%"/>
+            <SwapCard title="Minting Fee" value="0.3%" />
 
             {isZero(redeemAmount) && <RedeemedToken
                 title="Redeemed Token ready for claim"

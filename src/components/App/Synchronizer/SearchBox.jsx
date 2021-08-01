@@ -78,8 +78,8 @@ const TokensWrap = styled.div`
         background-color: #c4c4c4;
     }
     &::-webkit-scrollbar {
-      width: 10px;
-      height: 15px;
+      width: 5px;
+      height: 10px;
       background-color: transparent;
     }
 `

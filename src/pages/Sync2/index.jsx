@@ -254,7 +254,7 @@ const Sync2 = () => {
         if (priceSymbol && NameChainMap[SyncChainId]) {
             getSinglePrice().then((res) => {
                 setPriceResult(res[0])
-                const price = priceResult["status"] == "open" ? priceResult["long_price"] : priceResult["short_price"]
+                const price = priceResult && priceResult["status"] == "open" ? priceResult["long_price"] : priceResult["short_price"]
                 const assetPrice = { price: price, fee: 0.01 }
                 setAssetInfo({ fromPrice: null, toPrice: null, fee: 0 })
                 if (price) {

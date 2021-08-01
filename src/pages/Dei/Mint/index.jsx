@@ -177,7 +177,7 @@ const Dei = () => {
             setSwapState({ ...swapState, from: primaryToken })
             setIsPair(false)
         }
-    }, [collatRatio, swapState]);
+    }, [collatRatio]);
 
     const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")

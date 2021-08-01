@@ -50,7 +50,7 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency, toCurrency, handlSync = undefined, mt, isApproved, handleApprove, loading, bgColor, amountIn, amountOut }) => {
+const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency, toCurrency, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, amountIn, amountOut }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)

@@ -140,13 +140,13 @@ const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, ac
               </TokenLogo>
               <Flex style={{ flexDirection: "column", marginLeft: "15px" }}>
                 <Type.LG fontWeight="300">{currency?.symbol}</Type.LG>
-                <Type.SM style={{ marginTop: "3px", maxWidth: "150px" }}  >{currency?.name}</Type.SM>
+                {/* <Type.SM style={{ marginTop: "3px", maxWidth: "150px" }}  >{currency?.name}</Type.SM> */}
               </Flex>
             </TokenWrap>
 
             <Flex style={{ flexDirection: "column", justifyContent: "center", marginLeft: "15px" }}>
               <RowFlat>
-                <Type.MD style={{ marginLeft: "10px", marginBottom: "3px", opacity: "0.75" }} >{balances && balances[currency.long?.address] ? balances[currency.long?.address] : "0.00000000"} S
+                <Type.MD style={{ marginLeft: "10px", marginBottom: "3px", opacity: "0.75" }} >{balances && balances[currency.long?.address] ? balances[currency.long?.address] : "0"} S
                 </Type.MD>
                 <CopyToClipboard text={getTransactionLink(chainId, currency.long?.address, "token")}
                   onCopy={() => console.log("copied")}>
@@ -154,7 +154,7 @@ const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, ac
                 </CopyToClipboard>
               </RowFlat>
               <RowFlat mt="5px">
-                <Type.MD style={{ marginLeft: "10px", marginTop: "3px", opacity: "0.75" }} >{balances && balances[currency.short?.address] ? balances[currency.short?.address] : "0.00000000"} L
+                <Type.MD style={{ marginLeft: "10px", marginTop: "3px", opacity: "0.75" }} >{balances && balances[currency.short?.address] ? balances[currency.short?.address] : "0"} L
                   <CopyToClipboard text={getTransactionLink(chainId, currency.short?.address, "token")}
                     onCopy={() => console.log("copied")}>
                     <Copy src="/img/copy2.svg" />

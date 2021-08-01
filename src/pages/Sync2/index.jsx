@@ -16,7 +16,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { useWeb3React } from '@web3-react/core';
 import useAssetBalances from '../../hooks/useAssetBalances';
 import { RowCenter } from '../../components/App/Row';
-import { useFreshOracleFetch, useOracleFetch } from '../../utils/SyncUtils';
+import { useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
 import { useSync, useAmountsIn, useAmountsOut, useAllowance } from '../../hooks/useSync';
@@ -28,7 +28,6 @@ import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 
 // import { dAmcTestToken } from '../../constant/token';
 // import { sendMessage } from '../../utils/telegramLogger';
-// import { ApproveTranaction } from '../../utils/explorers';
 // import { TransactionState } from '../../utils/constant';
 
 const MainWrapper = styled.div`
@@ -65,7 +64,7 @@ const Sync2 = () => {
     const [position, setPosition] = useState("buy")
     const [assetInfo, setAssetInfo] = useState({})
     const [priceResult, setPriceResult] = useState({})
-    const [signResult, setSignResult] = useState({})
+    // const [signResult, setSignResult] = useState({})
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
@@ -77,13 +76,13 @@ const Sync2 = () => {
     const debouncedAmountOut = useDebounce(amountOut, 500);
     const [stocks, setStocks] = useState(null)
     const [conducted, setConducted] = useState(null)
-    const [prices, setPrice] = useState(null)
-    const [fromPerTo, setFromPerTo] = useState(true)
+    // const [prices, setPrice] = useState(null)
+    // const [fromPerTo, setFromPerTo] = useState(true)
 
     const [loading, setLoading] = useState(true);
     const [loadingCap, setLoadingCAP] = useState(false);
 
-    const [fouceType, setFouceType] = useState("from")
+    const [focusType, setFocusType] = useState("from")
     const { account, chainId } = useWeb3React()
 
     const getConducted = useOracleFetch(oracle.conducted)
@@ -97,11 +96,11 @@ const Sync2 = () => {
     // const freshPrice = useFreshOracleFetch(oracle.prices)
 
     useEffect(() => {
-        if (fouceType === "from") {
+        if (focusType === "from") {
             if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
         } else
             if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
-    }, [amountIn, debouncedAmountIn, debouncedAmountOut, fouceType, amountOut]);
+    }, [amountIn, debouncedAmountIn, debouncedAmountOut, focusType, amountOut]);
 
     useEffect(() => {
         if (isPreApproved == null) {
@@ -210,7 +209,7 @@ const Sync2 = () => {
         setActiveSearchBox(active)
     }
 
-    const setectToken = (token, type) => {
+    const selectToken = (token, type) => {
         token.address = isLong ? token.long.address : token.short.address
         token.symbol = isLong ? token.long_symbol : token.short_symbol
         if (type === "from") {
@@ -330,9 +329,9 @@ const Sync2 = () => {
             if (amountIn === "" || isZero(amountIn)) setAmountOut("")
             else setAmountOut(RemoveTrailingZero(fromWei(result, toCurrency.decimals), toCurrency.decimals))
         }
-        if (getAmountsOut && fouceType === "from")
+        if (getAmountsOut && focusType === "from")
             get()
-    }, [getAmountsOut, amountIn, fouceType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
+    }, [getAmountsOut, amountIn, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
 
 
     useEffect(() => {
@@ -342,10 +341,10 @@ const Sync2 = () => {
             if (amountOut === "" || isZero(amountOut)) setAmountIn("")
             else setAmountIn(fromWei(result, fromCurrency.decimals))
         }
-        if (getAmountsIn && fouceType === "to")
+        if (getAmountsIn && focusType === "to")
             get()
         //eslint-disable-next-line
-    }, [getAmountsIn, amountOut, fouceType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
+    }, [getAmountsIn, amountOut, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">
@@ -360,7 +359,7 @@ const Sync2 = () => {
             escapedType={escapedType}
             currencies={stocks}
             active={activeSearchBox}
-            selectToken={setectToken}
+            selectToken={selectToken}
             balances={balances}
             setActive={setActiveSearchBox} />
 
@@ -385,7 +384,7 @@ const Sync2 = () => {
                     hasMax={true}
                     inputAmount={amountIn}
                     setInputAmount={setAmountIn}
-                    setFouceType={setFouceType}
+                    setFocusType={setFocusType}
                     currency={fromCurrency}
                 />
 
@@ -400,7 +399,7 @@ const Sync2 = () => {
                     TokensMap={balances}
                     setInputAmount={setAmountOut}
                     setActive={showSearchBox}
-                    setFouceType={setFouceType}
+                    setFocusType={setFocusType}
                     currency={toCurrency}
                 />
 
@@ -408,7 +407,7 @@ const Sync2 = () => {
 
                 <RateBox
                     currencies={{ from: fromCurrency, to: toCurrency || { symbol: "dAsset" } }}
-                    marketPrice={priceResult["status"] == "open" ? priceResult["long_price"] : "(CLOSED)"}
+                    marketPrice={priceResult && priceResult["status"] == "open" ? priceResult["long_price"] : "(CLOSED)"}
                     amountIn={amountIn}
                     amountOut={amountOut}
                     setInvert={setInvert}
@@ -417,7 +416,7 @@ const Sync2 = () => {
                 <SyncAction
                     amountIn={amountIn}
                     amountOut={amountOut}
-                    handlSync={onSync}
+                    handleSync={onSync}
                     TokensMap={balances}
                     fromCurrency={fromCurrency}
                     validNetworks={validChains}

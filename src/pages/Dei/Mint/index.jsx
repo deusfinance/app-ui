@@ -158,25 +158,21 @@ const Dei = () => {
     })
 
     useEffect(() => {
+        let primaryToken = null
+        setIsPair(false)
         if (collatRatio === 100) {
-            let primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
-            setSwapState({ ...swapState, from: primaryToken })
-            setIsPair(false)
-        } else if (collatRatio > 0) {
-            let primaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
-            setSwapState({ ...swapState, from: primaryToken })
-            if (collatRatio !== 100 && primaryToken.pairID) {
-                setIsPair(true)
-                let secondToken = DEITokens.filter(currToken => {
-                    return currToken.pairID === primaryToken.pairID && currToken.address !== primaryToken.address
-                })[0]
-                setPairToken(secondToken)
-            }
+            primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
+        } else if (collatRatio > 0 && collatRatio < 100) {
+            primaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
+            let secondToken = DEITokens.filter(currToken => {
+                return currToken.pairID === primaryToken.pairID && currToken.address !== primaryToken.address
+            })[0]
+            setIsPair(true)
+            setPairToken(secondToken)
         } else if (collatRatio === 0) {
-            let primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
-            setSwapState({ ...swapState, from: primaryToken })
-            setIsPair(false)
+            primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
         }
+        setSwapState({ ...swapState, from: primaryToken })
     }, [collatRatio]);
 
     const [hotIn, setHotIn] = useState("")

@@ -1,7 +1,7 @@
 import { MainWrapper, SwapWrapper, SwapArrow } from '../../../components/App/Swap';
 
 import { DEITokens, deiToken } from '../../../constant/token';
-import CostBoxV2 from '../../../components/App/Dei/CostBox_v2'
+import CostBoxV2 from '../../../components/App/Dei/CostBox_v2';
 
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
@@ -62,6 +62,7 @@ const Dei = () => {
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
+    const [collatRatio, setCollatRatio] = useState(84)
 
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
@@ -75,26 +76,27 @@ const Dei = () => {
 
     const tokensName = tokens.map(token => token.symbol.toLowerCase())
     const tokensMap = {}
-    const pairedTokens = []
+    // const pairedTokens = []
 
-    for (let i = 0; i < DEITokens.length; i++) {
-        const t = DEITokens[i]
-        if (t.pairID) {
-            let j = i + 1
-            for (; j < DEITokens.length; j++) {
-                const tt = DEITokens[j]
-                if (tt.pairID && t.pairID === tt.pairID) {
-                    j++
-                } else {
-                    break
-                }
-            }
-            pairedTokens.push(DEITokens.slice(i, j))
-            i = j
-        } else {
-            pairedTokens.push([DEITokens[i]])
-        }
-    }
+    // for (let i = 0; i < DEITokens.length; i++) {
+    //     const t = DEITokens[i]
+    //     if (t.pairID) {
+    //         let j = i + 1
+    //         for (; j < DEITokens.length; j++) {
+    //             const tt = DEITokens[j]
+    //             if (tt.pairID && t.pairID === tt.pairID) {
+    //                 j++
+    //             } else {
+    //                 break
+    //             }
+    //         }
+    //         pairedTokens.push(DEITokens.slice(i, j))
+    //         i = j
+    //     } else {
+    //         pairedTokens.push([DEITokens[i]])
+    //     }
+    // }
+    // console.log("pairedTokens", pairedTokens);
 
     for (let i = 0; i < tokens.length; i++) {
         const currToken = tokens[i]
@@ -103,15 +105,9 @@ const Dei = () => {
         else tokensMap[address] = currToken
     }
 
-    // const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
-    // ), [tokens])
-
-    // const tokenBalances = useTokenBalances(tokensMap, chainId)
     const tokenBalances = tokensMap
-
     const [TokensMap, setTokensMap] = useState(tokenBalances)
 
-    // if(isAddress())
     if (inputCurrency && tokensName.indexOf(inputCurrency.toLowerCase()) !== -1) {
         inputCurrency = getTokenAddr(inputCurrency.toLowerCase(), chainId)
     }
@@ -156,11 +152,32 @@ const Dei = () => {
         }
     }
 
-    let primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
     const [swapState, setSwapState] = useState({
-        from: primaryToken,
+        from: '',
         to: deiToken,
     })
+
+    useEffect(() => {
+        if (collatRatio === 100) {
+            let primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
+            setSwapState({ ...swapState, from: primaryToken })
+            setIsPair(false)
+        } else if (collatRatio > 0) {
+            let primaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
+            setSwapState({ ...swapState, from: primaryToken })
+            if (collatRatio !== 100 && primaryToken.pairID) {
+                setIsPair(true)
+                let secondToken = DEITokens.filter(currToken => {
+                    return currToken.pairID === primaryToken.pairID && currToken.address !== primaryToken.address
+                })[0]
+                setPairToken(secondToken)
+            }
+        } else if (collatRatio === 0) {
+            let primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
+            setSwapState({ ...swapState, from: primaryToken })
+            setIsPair(false)
+        }
+    }, [collatRatio]);
 
     const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
@@ -298,7 +315,7 @@ const Dei = () => {
     }, [onSwap])
 
     return (<>
-        <SearchBox
+        {/* <SearchBox
             account={account}
             pairedTokens={pairedTokens}
             currencies={TokensMap}
@@ -307,7 +324,7 @@ const Dei = () => {
             changeToken={changeToken}
             disableLoading={false}
             active={activeSearchBox}
-            setActive={setActiveSearchBox} />
+            setActive={setActiveSearchBox} /> */}
 
         <MainWrapper>
             <Type.XL fontWeight="300">Mint</Type.XL>
@@ -317,25 +334,26 @@ const Dei = () => {
                     hasMax={true}
                     inputAmount={amountIn}
                     setInputAmount={setAmountIn}
-                    setActive={showSearchBox}
+                    setActive={null}
                     currency={swapState.from}
                     TokensMap={TokensMap}
                     fastUpdate={fastUpdate}
                 />
 
-                {isPair && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
-
-                {isPair && <TokenBox
-                    mt={"-21px"}
-                    type="from"
-                    hasMax={true}
-                    inputAmount={amountInPair}
-                    setInputAmount={setAmountInPair}
-                    setActive={showSearchBox}
-                    currency={pairToken}
-                    TokensMap={TokensMap}
-                    fastUpdate={fastUpdate}
-                />}
+                {isPair && collatRatio!==100 && collatRatio!==0 && <div>
+                    <PlusImg src="/img/dei/plus.svg" alt="plus" />
+                    <TokenBox
+                        mt={"-21px"}
+                        type="from"
+                        hasMax={true}
+                        inputAmount={amountInPair}
+                        setInputAmount={setAmountInPair}
+                        setActive={null}
+                        currency={pairToken}
+                        TokensMap={TokensMap}
+                        fastUpdate={fastUpdate}
+                    />
+                </div>}
 
                 <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 

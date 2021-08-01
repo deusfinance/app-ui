@@ -1,18 +1,19 @@
-import { ChainMap, NetworksData } from '../constant/web3';
-import { ToastTransaction } from '../utils/explorers';
+import { NetworksData } from '../constant/web3';
 
 export const addRPC = (account, activate, chainId = 100) => {
-    console.log(account, chainId)
-    if (chainId === ChainMap.MAINNET || chainId === ChainMap.RINKEBY) {
-        ToastTransaction("info", "Switch Network", "Please switch your network to ETH chains manually.", { autoClose: true })
-        return
-    }
     if (account && (window.ethereum)) {
+        let req = {
+            method: 'wallet_addEthereumChain',
+            params: [{ ...NetworksData[chainId] }],
+        }
+        if (chainId < 5) {
+            req = {
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: "0x" + chainId }]
+            }
+        }
         window.ethereum
-            .request({
-                method: 'wallet_addEthereumChain',
-                params: [{ ...NetworksData[chainId] }],
-            })
+            .request(req)
             .then((result) => {
                 console.log("success");
             })

@@ -116,7 +116,6 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoa
           {Object.keys(currencies)
             .filter(address => currencies[address].symbol !== swapState[escapedType].symbol && (!swapState[escapedType].pairID || (swapState[escapedType].pairID && currencies[address].pairID !== swapState[escapedType].pairID)))
             .map((address, id) => {
-              const addressBalance = address.length > 42 ? address.substring(0, 42) : address.length < 10 ? "0x" : address
               return <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
                 <TokenWrap>
                   <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
@@ -129,8 +128,8 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoa
               </TokenRow>
             })}
         </TokensWrap>
-      </Wrapper>
-    </ReactModal>
+      </Wrapper >
+    </ReactModal >
   );
 }
 

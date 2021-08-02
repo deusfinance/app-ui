@@ -17,10 +17,11 @@ import { useAllowance } from '../../../hooks/useAllowance';
 import { useSwap } from '../../../hooks/useSwap';
 // import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
-import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
+import { getTokenAddr } from '../../../utils/contracts';
 // import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
+import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 // import SelectedNetworks from '../../../components/Sync/SelectNetworks';
 
 
@@ -48,13 +49,9 @@ const Dei = () => {
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
     const [collatRatio, setCollatRatio] = useState(84)
+    const contractAddress = DEI_POOL_ADDRESS[chainId]
 
-    const search = useLocation().search;
-
-    const contractAddress = getContractAddr("multi_swap_contract", chainId)
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
-
-    const tokensName = tokens.map(token => token.symbol.toLowerCase())
     const tokensMap = {}
 
     for (let i = 0; i < tokens.length; i++) {

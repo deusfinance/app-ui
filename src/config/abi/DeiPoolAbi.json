@@ -1,0 +1,244 @@
+[
+    {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "excess_collateral_dollar_value_d18",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deus_price_usd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "col_price_usd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "DEUS_amount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct DEIPoolLibrary.BuybackDEUS_Params",
+                "name": "params",
+                "type": "tuple"
+            }
+        ],
+        "name": "calcBuyBackDEUS",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "col_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateral_amount_d18",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcMint1t1DEI",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "deus_price_usd",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deus_amount_d18",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcMintAlgorithmicDEI",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "deus_price_usd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "col_price_usd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deus_amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateral_amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "col_ratio",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct DEIPoolLibrary.MintFF_Params",
+                "name": "params",
+                "type": "tuple"
+            }
+        ],
+        "name": "calcMintFractionalDEI",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateral_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "col_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "global_collat_value",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "dei_total_supply",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "global_collateral_ratio",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcRecollateralizeDEIInner",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "col_price_usd",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEI_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcRedeem1t1DEI",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "total_supply",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "global_collateral_ratio",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "global_collat_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "recollateralizeAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    }
+]

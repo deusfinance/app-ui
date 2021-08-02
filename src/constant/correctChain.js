@@ -14,8 +14,7 @@ export const correctChains = [
     },
     {
         url: "/dei",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY, ChainMap.BSC, ChainMap.BSC_TESTNET],
-        exact: true,
+        chains: [ChainMap.RINKEBY],
     },
     {
         url: "/crosschain/xdai",

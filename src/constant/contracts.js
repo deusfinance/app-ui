@@ -15,3 +15,18 @@ export const MULTICALL_NETWORKS = {
 }
 
 export const SEALED_ADDRESS = "0xd8cb412e40447eefc7ddab672f1001c5e039f166"
+
+
+//DEI Contracts
+export const ORACLE_ADDRESS = {
+    4: "0x39a8a48dacAF546b050B54803550520A1FeFCdf2",
+}
+
+export const DEI_POOL_ADDRESS = {
+    4: "0x68643F20d0e6d15061079DbC9604d05CAAf7b070",
+}
+
+export const HUSD_POOL_ADDRESS = {
+    4: "0x6DfD875fbe8F14b6F9e84Ba9821Dd058B774d2Bd",
+}
+

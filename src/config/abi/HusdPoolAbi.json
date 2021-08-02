@@ -1,0 +1,1125 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_dei_contract_address",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deus_contract_address",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_collateral_address",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_trusty_address",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_admin_address",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_pool_ceiling",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_library",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "toggled",
+                "type": "bool"
+            }
+        ],
+        "name": "BuybackToggled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "toggled",
+                "type": "bool"
+            }
+        ],
+        "name": "CollateralPriceToggled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "toggled",
+                "type": "bool"
+            }
+        ],
+        "name": "MintingToggled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "new_ceiling",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "new_bonus_rate",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "new_redemption_delay",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "new_mint_fee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "new_redeem_fee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "new_buyback_fee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "new_recollat_fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "PoolParametersSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "toggled",
+                "type": "bool"
+            }
+        ],
+        "name": "RecollateralizeToggled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "toggled",
+                "type": "bool"
+            }
+        ],
+        "name": "RedeemingToggled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "previousAdminRole",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "newAdminRole",
+                "type": "bytes32"
+            }
+        ],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "DEFAULT_ADMIN_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "HUSD_address",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "TRUSTY_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collat_usd_price",
+                "type": "uint256"
+            }
+        ],
+        "name": "availableExcessCollatDV",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "bonus_rate",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateral_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deus_current_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expireBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "sigs",
+                "type": "bytes[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEUS_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "COLLATERAL_out_min",
+                "type": "uint256"
+            }
+        ],
+        "name": "buyBackDEUS",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "buyBackPaused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "buyback_fee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collat_usd_price",
+                "type": "uint256"
+            }
+        ],
+        "name": "collatDollarBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collateralPricePaused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collectRedemption",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getChainID",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateral_price",
+                "type": "uint256"
+            }
+        ],
+        "name": "getCollateralPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getRoleAdmin",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "grantRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "hasRole",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "lastRedeemed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateral_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEI_out_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateral_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expireBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "sigs",
+                "type": "bytes[]"
+            }
+        ],
+        "name": "mint1t1DEI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "deus_current_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expireBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "sigs",
+                "type": "bytes[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deus_amount_d18",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEI_out_min",
+                "type": "uint256"
+            }
+        ],
+        "name": "mintAlgorithmicDEI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateral_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deus_current_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expireBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "sigs",
+                "type": "bytes[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateral_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deus_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEI_out_min",
+                "type": "uint256"
+            }
+        ],
+        "name": "mintFractionalDEI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "mintPaused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minting_fee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pausedPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pool_ceiling",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "recollat_fee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "collateral_price",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deus_current_price",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expireBlock",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes[]",
+                        "name": "sigs",
+                        "type": "bytes[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateral_amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "DEUS_out_min",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct DEIPool.RecollateralizeDEI",
+                "name": "inputs",
+                "type": "tuple"
+            }
+        ],
+        "name": "recollateralizeDEI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "recollateralizePaused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "DEI_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "COLLATERAL_out_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateral_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expireBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "sigs",
+                "type": "bytes[]"
+            }
+        ],
+        "name": "redeem1t1DEI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "deus_current_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expireBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "sigs",
+                "type": "bytes[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEI_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEUS_out_min",
+                "type": "uint256"
+            }
+        ],
+        "name": "redeemAlgorithmicDEI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "redeemCollateralBalances",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "redeemDEUSBalances",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateral_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deus_current_price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expireBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "sigs",
+                "type": "bytes[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEI_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "DEUS_out_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "COLLATERAL_out_min",
+                "type": "uint256"
+            }
+        ],
+        "name": "redeemFractionalDEI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "redeemPaused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "redemption_delay",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "redemption_fee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "renounceRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "revokeRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "new_ceiling",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "new_bonus_rate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "new_redemption_delay",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "new_mint_fee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "new_redeem_fee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "new_buyback_fee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "new_recollat_fee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPoolParameters",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "toggleBuyBack",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_new_price",
+                "type": "uint256"
+            }
+        ],
+        "name": "toggleCollateralPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "toggleMinting",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "toggleRecollateralize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "toggleRedeeming",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unclaimedPoolCollateral",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unclaimedPoolDEUS",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

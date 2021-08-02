@@ -1,39 +1,27 @@
-import { MainWrapper, SwapWrapper, SwapArrow } from '../../../components/App/Swap';
-
-import { DEITokens, deiToken } from '../../../constant/token';
-import CostBoxV2 from '../../../components/App/Dei/CostBox_v2';
-
-import SearchBox from '../../../components/App/Dei/SearchBox';
-import SwapCard from '../../../components/App/Swap/SwapCard';
-
-import LinkBox from '../../../components/App/Dei/LinkBox'
-import CostBox2 from '../../../components/App/Dei/CostBox2'
-import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
-import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
+import { DEITokens, deiToken } from '../../../constant/token';
+import CostBoxV2 from '../../../components/App/Dei/CostBox_v2';
+import SwapCard from '../../../components/App/Swap/SwapCard';
+import LinkBox from '../../../components/App/Dei/LinkBox'
+import { Type } from '../../../components/App/Text';
 import { Image } from 'rebass/styled-components';
 import TokenBox from '../../../components/App/Swap/TokenBox';
-import RouteBox from '../../../components/App/Swap/RouteBox';
-import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
 import SwapAction from '../../../components/App/Swap/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
-import PriceImpact from '../../../components/App/Swap/PriceImpact';
-import { getSwapVsType } from '../../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
-import { fromWei } from '../../../helper/formatBalance';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
 import { useSwap } from '../../../hooks/useSwap';
-import { DefaultTokens } from '../../../constant/token';
-import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
+// import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
-import useTokenBalances from '../../../hooks/useTokenBalances';
+// import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
-import SelectedNetworks from '../../../components/Sync/SelectNetworks';
+// import SelectedNetworks from '../../../components/Sync/SelectNetworks';
 
 
 const PlusImg = styled.img`
@@ -50,53 +38,24 @@ const PlusImg = styled.img`
 `
 
 const Dei = () => {
-    const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
-    const [escapedType, setEscapedType] = useState("from")
-    const [slippage, setSlippage] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
+    const validNetworks = [4, 1]
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
     const [collatRatio, setCollatRatio] = useState(84)
 
     const search = useLocation().search;
-    let inputCurrency = new URLSearchParams(search).get('inputCurrency')
-    let outputCurrency = new URLSearchParams(search).get('outputCurrency')
-
-    inputCurrency = inputCurrency?.toLowerCase() === "eth" ? "0x" : inputCurrency
-    outputCurrency = outputCurrency?.toLowerCase() === "eth" ? "0x" : outputCurrency
 
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 
     const tokensName = tokens.map(token => token.symbol.toLowerCase())
     const tokensMap = {}
-    // const pairedTokens = []
-
-    // for (let i = 0; i < DEITokens.length; i++) {
-    //     const t = DEITokens[i]
-    //     if (t.pairID) {
-    //         let j = i + 1
-    //         for (; j < DEITokens.length; j++) {
-    //             const tt = DEITokens[j]
-    //             if (tt.pairID && t.pairID === tt.pairID) {
-    //                 j++
-    //             } else {
-    //                 break
-    //             }
-    //         }
-    //         pairedTokens.push(DEITokens.slice(i, j))
-    //         i = j
-    //     } else {
-    //         pairedTokens.push([DEITokens[i]])
-    //     }
-    // }
-    // console.log("pairedTokens", pairedTokens);
 
     for (let i = 0; i < tokens.length; i++) {
         const currToken = tokens[i]
@@ -108,25 +67,8 @@ const Dei = () => {
     const tokenBalances = tokensMap
     const [TokensMap, setTokensMap] = useState(tokenBalances)
 
-    if (inputCurrency && tokensName.indexOf(inputCurrency.toLowerCase()) !== -1) {
-        inputCurrency = getTokenAddr(inputCurrency.toLowerCase(), chainId)
-    }
-
-    if (outputCurrency && tokensName.indexOf(outputCurrency.toLowerCase()) !== -1) {
-        outputCurrency = getTokenAddr(outputCurrency.toLowerCase(), chainId)
-    }
-
-    if (inputCurrency && !TokensMap[inputCurrency]) {
-        inputCurrency = null
-    }
-
-    if (outputCurrency && !TokensMap[outputCurrency]) {
-        outputCurrency = null
-    }
-
-    if (outputCurrency && inputCurrency && outputCurrency === inputCurrency) {
-        outputCurrency = null
-    }
+    let inputCurrency = null
+    let outputCurrency = null
 
     const deaContract = getTokenAddr("dea", chainId)
 
@@ -222,36 +164,11 @@ const Dei = () => {
     }, [allowance]) //isPreApproved ?
 
 
-    // const showSearchBox = (active = false, type) => {
-    //     setEscapedType(type)
-    //     setActiveSearchBox(active)
-    // }
-
-    // const changeToken = (token, type) => {
-    //     setActiveSearchBox(false)
-    //     setAmountIn("")
-    //     const vsType = getSwapVsType(type)
-
-    //     if (swapState[vsType].symbol === token.symbol) {
-    //         return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
-    //     }
-    //     if (token.pairID) {
-    //         setIsPair(true)
-    //         let secondToken = DEITokens.filter(currToken => {
-    //             return currToken.pairID === token.pairID && currToken.address !== token.address
-    //         })[0]
-    //         setPairToken(secondToken)
-    //         setSwapState({ ...swapState, [type]: token })
-    //         return
-    //     }
-    //     setIsPair(false)
-    //     setSwapState({ ...swapState, [type]: token })
-    // }
 
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, 0, chainId)
 
     // useEffect(() => {
     //     const get = async () => {
@@ -311,17 +228,6 @@ const Dei = () => {
     }, [onSwap])
 
     return (<>
-        {/* <SearchBox
-            account={account}
-            pairedTokens={pairedTokens}
-            currencies={TokensMap}
-            swapState={swapState}
-            escapedType={escapedType}
-            changeToken={changeToken}
-            disableLoading={false}
-            active={activeSearchBox}
-            setActive={setActiveSearchBox} /> */}
-
         <MainWrapper>
             <Type.XL fontWeight="300">Mint</Type.XL>
             <SwapWrapper style={{ marginTop: "25px", }}>
@@ -336,7 +242,7 @@ const Dei = () => {
                     fastUpdate={fastUpdate}
                 />
 
-                {isPair && collatRatio!==100 && collatRatio!==0 && <div>
+                {isPair && collatRatio !== 100 && collatRatio !== 0 && <div>
                     <PlusImg src="/img/dei/plus.svg" alt="plus" />
                     <TokenBox
                         mt={"-21px"}
@@ -370,7 +276,7 @@ const Dei = () => {
                     bgColor={"grad_dei"}
                     text="MINT"
                     isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
+                    validNetworks={validNetworks}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}

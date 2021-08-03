@@ -181,22 +181,22 @@ const Dei = () => {
     //     setIsApproved(false)
     // }, [swapState.from])
 
-    // useEffect(() => { //TODO balances
+    // useEffect(() => { TODO: balances
     //     setTokensMap(tokenBalances)
     // }, [tokenBalances])
 
-    useEffect(() => {
-        const token = swapState.to
-        const type = "to"
-        if (swapState?.to?.pairID) {
-            setIsPair(true)
-            let secondToken = DEITokens.filter(currToken => {
-                return currToken.pairID === token.pairID && currToken.address !== token.address
-            })[0]
-            setPairToken(secondToken)
-            setSwapState({ ...swapState, [type]: token })
-        }
-    }, [swapState])
+    // useEffect(() => { FIXME: There is max-depth error here.
+    //     const token = swapState.to
+    //     const type = "to"
+    //     if (swapState?.to?.pairID) {
+    //         setIsPair(true)
+    //         let secondToken = DEITokens.filter(currToken => {
+    //             return currToken.pairID === token.pairID && currToken.address !== token.address
+    //         })[0]
+    //         setPairToken(secondToken)
+    //         setSwapState({ ...swapState, [type]: token })
+    //     }
+    // }, [swapState])
 
 
     useEffect(() => {

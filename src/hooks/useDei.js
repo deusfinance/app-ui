@@ -1,7 +1,7 @@
 import useWeb3 from './useWeb3'
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
-import { getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei } from '../helper/deiHelper'
+import { getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, getPoolCeiling } from '../helper/deiHelper'
 import useRefresh from './useRefresh'
 
 export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, fromSymbol, validChainId = 1, callback) => {
@@ -29,22 +29,38 @@ export const useCollatDollarBalance = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-
     return collatDollar
 }
+
+export const usePoolCeilingBalance = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [poolCeiling, setPoolCeiling] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const pc = await getPoolCeiling(web3, chainId)
+            setPoolCeiling(pc)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return poolCeiling
+}
+
 export const useCollatRatio = () => {
     const web3 = useWeb3()
     const { slowRefresh } = useRefresh()
-    const [collatRatio, setCollatRatio] = useState(-1)
+    const [collatRatio, setCollatRatio] = useState(null)
 
     useEffect(() => {
         const get = async () => {
             const cr = await getCollatRatio(web3)
-            setCollatRatio(cr)
+            setCollatRatio(cr[1])
         }
         get()
     }, [slowRefresh])
-
     return collatRatio
 }
 
@@ -62,7 +78,6 @@ export const useRefreshRatio = () => {
         }
         get()
     }, [slowRefresh])
-
     return refreshRatio
 }
 
@@ -84,7 +99,3 @@ export const useDeiInfo = () => {
 
     return DeiInfo
 }
-
-
-//pool_ceiling
-//

@@ -11,12 +11,6 @@ export const isDesktop = () => {
     return ((typeof window.orientation === "undefined") || (navigator.userAgent.indexOf('IEMobile') === -1)) && !(isMobile);
 };
 
-export const formatBalance2 = (balance = null, fixed = 9) => {
-    if (!balance) return '0'
-    if (isZero(balance)) return 0
-    return parseFloat(balance).toPrecision(fixed).substring(0, fixed)
-}
-
 //only new swap
 export const formatBalance3 = (balance = null, fixed = 5) => {
 
@@ -45,24 +39,6 @@ export const getStayledNumber = (number, space = 9, flag = true) => {
 
 export const getSwapVsType = (t) => t === "from" ? "to" : "from"
 
-export const spaceToSemi = (word) => {
-    const chunk = word.split(" ");
-    if (chunk.length === 1)
-        return chunk
-    return <span>{chunk[0]}&thinsp;{chunk[1]}</span>
-}
-
-export const formatBalance = (number, decimal = 9) => {
-    if (!number) return "0"
-    if (number < 0.00000001) return 0
-
-    let strNumber = number.toString()
-    const indexDot = strNumber.indexOf(".")
-    let totalDecimals = strNumber.length - indexDot
-
-    if (indexDot === -1 || (totalDecimals) <= decimal) return strNumber
-    return strNumber.substring(0, indexDot).concat(strNumber.substring(indexDot, indexDot + decimal))
-}
 
 export const newFormatAmount = (number, decimal = 9) => {
     if (!number) return "0"
@@ -70,7 +46,7 @@ export const newFormatAmount = (number, decimal = 9) => {
     if (parseFloat(number) === 0) return 0
 
     if (parseFloat(number) >= 1) {
-        number = formatBalance(number, decimal)
+        number = formatBalance3(number, decimal)
     }
     for (let i = number.length; i > 0; i--) {
         if (number[i - 1] === "0") {
@@ -86,20 +62,7 @@ export const newFormatAmount = (number, decimal = 9) => {
 }
 
 
-export const fetcher = (library, abi) => (...args) => {
-    const [arg1, arg2, ...params] = args
-    // const library = useWeb3()
-    // it's a contract
-    if (isAddress(arg1)) {
-        const address = arg1
-        const method = arg2
-        const contract = new Contract(address, abi, library.getSigner())
-        return contract[method](...params)
-    }
-    // it's a eth call
-    const method = arg1
-    return library[method](arg2, ...params)
-}
+
 
 export const setBackground = (type) => {
     const elm = document.getElementById("blur-pop")
@@ -241,3 +204,4 @@ export const checkLimit = (swap, payload) => {
 
 
 export const getCurrentTimeStamp = () => Math.floor(Date.now() / 1000)
+

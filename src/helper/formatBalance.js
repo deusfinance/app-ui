@@ -8,12 +8,14 @@ export const getBalanceNumber = (balance, decimals = 18) => {
 
 
 export const fromWei = (amount, decimals = 18) => {
+    if (!amount) return null
     const displayBalance = new BigNumber(amount).dividedBy(new BigNumber(10).pow(decimals))
     return displayBalance.toFixed(decimals, 1)
 }
 
 
 export const getToWei = (amount, decimals = 18) => {
+    if (!amount) return null
     const bn = new BigNumber(amount).multipliedBy(new BigNumber(10).pow(decimals)).toFixed(decimals, 1)
     return new BigNumber(bn)
 }

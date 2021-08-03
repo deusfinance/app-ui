@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TopNotif from './TopNotif';
 import QStake from './Stake/QStake';
-import { getStayledNumber, notify, formatBalance } from '../../utils/utils';
+import { getStayledNumber, notify, formatBalance3 } from '../../utils/utils';
 import { StakeService } from '../../services/StakeService';
 import StakePopup from '../common/Popup/StakePopup';
 import { withRouter } from 'react-router-dom';
@@ -171,7 +171,7 @@ class StakingManager extends Component {
         try {
 
             const data = await web3.getTokenBalance(tokenName)
-            tokensMap[tokenName].balance = formatBalance(data)
+            tokensMap[tokenName].balance = formatBalance3(data)
             this.setState({ tokensMap })
         } catch (error) {
             console.log(error);
@@ -349,7 +349,7 @@ class StakingManager extends Component {
                 </div>}
             />
             {/* <TopNotification text={innnerText} /> */}
-            { currStake && currToken && <StakePopup
+            {currStake && currToken && <StakePopup
                 title={t("stakeToEarn")}
                 close={true}
                 isStakePopup={isStakePopup}
@@ -362,7 +362,7 @@ class StakingManager extends Component {
                 isApproved={approved}
             />}
 
-            { currStake && currToken && <WithdrawPopup
+            {currStake && currToken && <WithdrawPopup
                 title={t("withdraw")}
                 close={true}
                 deposited={stakingsMap[currToken.name].deposited}

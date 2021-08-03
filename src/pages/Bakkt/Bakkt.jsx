@@ -6,7 +6,7 @@ import Title from '../../components/Swap/Title';
 import SwapButton from '../../components/Swap/SwapButton';
 import { ToastContainer } from 'react-toastify';
 import { BakktService } from '../../services/BakktService';
-import { getStayledNumber, notify, formatBalance, checkLimit, setBackground } from '../../utils/utils';
+import { getStayledNumber, notify, formatBalance3, checkLimit, setBackground } from '../../utils/utils';
 import Routes from '../../components/Swap/Routes';
 import Risk from '../../components/Swap/Popups/Risk';
 
@@ -240,7 +240,7 @@ class Bakkt extends Component {
         if (force || !allTokens[tokenName].lastFetchBalance) {
             try {
                 const data = await web3.getTokenBalance(tokenName)
-                const balance = formatBalance(data)
+                const balance = formatBalance3(data)
                 allTokens[tokenName].balance = parseFloat(balance)
                 allTokens[tokenName].lastFetchBalance = true
                 if (tokenName === swap.to.name || tokenName === swap.from.name) {

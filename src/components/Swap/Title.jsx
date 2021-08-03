@@ -1,9 +1,9 @@
 import React from 'react';
-import { notify, formatBalance } from '../../utils/utils';
+import { notify, formatBalance3 } from '../../utils/utils';
 import { useTranslation } from 'react-i18next'
 
 const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, isDEA, isMigrator }) => {
-    const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && formatBalance(claimable_amount) !== 0
+    const isClaimBtn = web3 && claimable_amount && claimable_amount !== "" && claimable_amount !== "0" && formatBalance3(claimable_amount) !== 0
     const isMobile = window.innerWidth < 670
     const { t } = useTranslation()
     // const { chainId } = useWeb3React()
@@ -20,7 +20,7 @@ const Title = ({ claimable_amount, web3, isStock, isSPCx, isCoinbase, isBakkt, i
 
         {isClaimBtn && isMobile && <div className="grad-wrap claimable-btn" onClick={handleClaim}>
             <div className={`grad `}>
-                <div> {formatBalance(claimable_amount)} ETH</div>
+                <div> {formatBalance3(claimable_amount)} ETH</div>
                 <div>{t("claim")}</div>
             </div>
         </div>

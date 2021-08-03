@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getStayledNumber, notify, formatBalance, checkLimit } from '../../utils/utils';
+import { getStayledNumber, notify, formatBalance3, checkLimit } from '../../utils/utils';
 import TokenBox from '../../components/Swap/TokenBox';
 import SearchBox from '../../components/Swap/SearchBox';
 import TokenMarket from '../../components/Swap/TokenMarket';
@@ -261,7 +261,7 @@ class MainSwap extends Component {
 
             try {
                 const data = await web3.getTokenBalance(tokenName)
-                const balance = formatBalance(data)
+                const balance = formatBalance3(data)
                 allTokens[tokenName].balance = balance
                 allTokens[tokenName].lastFetchBalance = true
                 if (tokenName === swap.to.name || tokenName === swap.from.name) {

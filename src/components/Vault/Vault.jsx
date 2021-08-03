@@ -7,7 +7,7 @@ import { vaultsStaking } from '../../config'
 import UnLockPupop from './UnLockPupop';
 import Alert from './Alert/Alert';
 import { VaultsService } from '../../services/VaultsService';
-import { notify, formatBalance, setBackground } from '../../utils/utils';
+import { notify, formatBalance3, setBackground } from '../../utils/utils';
 import { ToastContainer } from 'react-toastify';
 import './vaults.scss'
 import ChainPupop from '../common/Popup/ChainPopup';
@@ -56,7 +56,7 @@ class Vault extends Component {
 
         try {
             const data = await web3.getTokenTotalSupply(tokenName)
-            const balance = formatBalance(data, 3)
+            const balance = formatBalance3(data, 3)
             vaults[tokenName.substring(5)].total = balance
             this.setState({ vaults })
         } catch (error) {

@@ -22,21 +22,8 @@ import { getTokenAddr } from '../../../utils/contracts';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
+import { PlusImg } from '../../../components/App/Dei';
 // import SelectedNetworks from '../../../components/Sync/SelectNetworks';
-
-
-const PlusImg = styled.img`
-    z-index: 1;
-    position: relative;
-    text-align: center;
-    margin-top: -20px;
-
-    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        margin-bottom: 5px;
-        width: 23px;
-        height: 23px;
-    `}
-`
 
 const Dei = () => {
     const [invert, setInvert] = useState(false)

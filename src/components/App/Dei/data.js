@@ -26,23 +26,6 @@ const costs = [{
 },
 ]
 
-const costs_v2 = [{
-  name: 'DEI PRICE',
-  value: '$1.000'
-},
-{
-  name: 'COLLATERAL RATIO',
-  value: '84.00%'
-},
-{
-  name: 'POOL BALANCE / CEILING',
-  value: '21.829M / 41M'
-},
-{
-  name: 'AVAILABLE TO MINT',
-  value: '19.171M'
-},
-]
 
 const costs2 = [{
   name: 'EXCHANGE RATES',
@@ -68,6 +51,5 @@ const costs2 = [{
 export {
   urls,
   costs,
-  costs_v2,
   costs2,
 }

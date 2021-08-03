@@ -1,0 +1,90 @@
+import useWeb3 from './useWeb3'
+import { useEffect, useState, useCallback } from "react"
+import { useWeb3React } from '@web3-react/core'
+import { getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei } from '../helper/deiHelper'
+import useRefresh from './useRefresh'
+
+export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, fromSymbol, validChainId = 1, callback) => {
+    const { account, chainId } = useWeb3React()
+    const web3 = useWeb3()
+
+    const handleSwap = useCallback(async () => {
+    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, account, chainId, fromSymbol, validChainId, callback, web3])
+
+    return { onSwap: handleSwap }
+}
+
+
+export const useCollatDollarBalance = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [collatDollar, setCollatDollar] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const cd = await getCollatDollarBalance(web3, chainId)
+            setCollatDollar(cd)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+
+    return collatDollar
+}
+export const useCollatRatio = () => {
+    const web3 = useWeb3()
+    const { slowRefresh } = useRefresh()
+    const [collatRatio, setCollatRatio] = useState(-1)
+
+    useEffect(() => {
+        const get = async () => {
+            const cr = await getCollatRatio(web3)
+            setCollatRatio(cr)
+        }
+        get()
+    }, [slowRefresh])
+
+    return collatRatio
+}
+
+export const useRefreshRatio = () => {
+    const { slowRefresh } = useRefresh()
+    const [refreshRatio, setRefreshRatio] = useState(null)
+    useEffect(() => {
+        const get = async () => {
+            try {
+                const result = await makeDeiRequest("/refresh-ratio")
+                setRefreshRatio(result)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        get()
+    }, [slowRefresh])
+
+    return refreshRatio
+}
+
+export const useDeiInfo = () => {
+    const { slowRefresh } = useRefresh()
+    const web3 = useWeb3()
+    const [DeiInfo, setDeiInfo] = useState(null)
+    useEffect(() => {
+        const get = async () => {
+            try {
+                const result = await makeDeiRequest("/refresh-ratio")
+                setDeiInfo(result)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        get()
+    }, [slowRefresh])
+
+    return DeiInfo
+}
+
+
+//pool_ceiling
+//

@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react'
-import { costs_v2 as costs } from './data'
 import styled from 'styled-components'
+import { makeCostData } from '../../../helper/deiHelper'
+import { fromWei } from '../../../helper/formatBalance'
+import { useCollatDollarBalance, useRefreshRatio } from '../../../hooks/useDei'
 
 const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
@@ -35,17 +37,24 @@ const FeePrice = styled.span`
 `
 
 const CostBox_v2 = () => {
+
+    const refreshRate = useRefreshRatio()
+    const poolBalance = useCollatDollarBalance()
+    const deiPrice = refreshRate ? refreshRate.dei_price : null
+
+    const costs = makeCostData(fromWei(deiPrice, 6), poolBalance)
+
     return (
         useMemo(() => {
             return <MainWrapper>
                 {costs.map((cost, index) => {
                     return <FeeWrapper key={index}>
                         <FeeTitle> {cost.name} </FeeTitle>
-                        <FeePrice> {cost.value} </FeePrice>
+                        <FeePrice> {cost.value ? cost.value : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />} </FeePrice>
                     </FeeWrapper>
                 })}
             </MainWrapper>
-        }, [])
+        }, [costs])
     )
 }
 

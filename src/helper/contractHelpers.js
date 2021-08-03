@@ -9,8 +9,9 @@ import MuonPresaleAbi from '../config/abi/MuonPresale.json'
 import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleCrossChain.json'
 import SealedSwapperAbi from '../config/abi/SealedSwapperAbi.json'
 import DeiPoolAbi from '../config/abi/DeiPoolAbi.json'
+import DeiAbi from '../config/abi/DEIAbi.json'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
-import { DEI_POOL_ADDRESS, HUSD_POOL_ADDRESS, MULTICALL_NETWORKS } from '../constant/contracts'
+import { DEI_ADDRESS, DEI_POOL_ADDRESS, HUSD_POOL_ADDRESS, MULTICALL_NETWORKS } from '../constant/contracts'
 import { ChainMap } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
 
@@ -55,6 +56,9 @@ export const getMuonContract = (web3, chainId = ChainMap.MAINNET) => {
 
 export const getDeiPoolContract = (web3, chainId = ChainMap.RINKEBY) => {
     return getContract(DeiPoolAbi, DEI_POOL_ADDRESS[chainId], web3)
+}
+export const getDeiContract = (web3, chainId = ChainMap.RINKEBY) => {
+    return getContract(DeiAbi, DEI_ADDRESS[chainId], web3)
 }
 
 export const getHusdPoolContract = (web3, chainId = ChainMap.RINKEBY) => {

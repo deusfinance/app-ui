@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react'
-import { costs } from './data'
 import styled from 'styled-components'
+import { makeCostDataRedeem } from '../../../helper/deiHelper'
+import { fromWei } from '../../../helper/formatBalance'
+import { useCollatDollarBalance, useRefreshRatio, useCollatRatio } from '../../../hooks/useDei'
 
 const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
@@ -35,6 +37,11 @@ const FeePrice = styled.span`
 `
 
 const CostBox = () => {
+    const collatRatio = useCollatRatio()
+    const poolBalance = useCollatDollarBalance()
+
+    const costs = makeCostDataRedeem(collatRatio, null, fromWei(poolBalance))
+
     return (
         useMemo(() => {
             return <MainWrapper>
@@ -45,7 +52,7 @@ const CostBox = () => {
                     </FeeWrapper>
                 })}
             </MainWrapper>
-        }, [])
+        }, [costs])
     )
 }
 

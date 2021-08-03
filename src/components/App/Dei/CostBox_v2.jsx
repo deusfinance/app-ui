@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { makeCostData } from '../../../helper/deiHelper'
 import { fromWei } from '../../../helper/formatBalance'
 import { useCollatDollarBalance, useRefreshRatio } from '../../../hooks/useDei'
+import { formatUnitAmount } from '../../../utils/utils'
 
 const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
@@ -42,7 +43,7 @@ const CostBox_v2 = () => {
     const poolBalance = useCollatDollarBalance()
     const deiPrice = refreshRate ? refreshRate.dei_price : null
 
-    const costs = makeCostData(fromWei(deiPrice, 6), poolBalance)
+    const costs = makeCostData(fromWei(deiPrice, 6), null, formatUnitAmount(poolBalance))
 
     return (
         useMemo(() => {

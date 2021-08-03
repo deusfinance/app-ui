@@ -4,14 +4,25 @@ import { Contract } from '@ethersproject/contracts';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { toast } from 'react-toastify';
-import { isZero } from '../constant/number';
+import { isGt, isZero } from '../constant/number';
+
+export const getSwapVsType = (t) => t === "from" ? "to" : "from"
 
 export const isDesktop = () => {
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     return ((typeof window.orientation === "undefined") || (navigator.userAgent.indexOf('IEMobile') === -1)) && !(isMobile);
 };
 
-//only new swap
+
+export const formatUnitAmount = (amount) => {
+    const bigAmount = new BigNumber(amount)
+    if (bigAmount.gte(1000000)) {
+        return bigAmount.div(1000000).toFixed(2) + "M"
+    } else if (bigAmount.gte(1000)) {
+        return bigAmount.div(1000).toFixed(1) + "K"
+    }
+}
+
 export const formatBalance3 = (balance = null, fixed = 5) => {
 
     if (!balance) return '0'
@@ -25,6 +36,7 @@ export const formatBalance3 = (balance = null, fixed = 5) => {
     return bigBalance.toPrecision(fixed, BigNumber.ROUND_DOWN).replace(/\.?0+$/, "")
 }
 
+//deprecated. should replace with formatBalance3
 export const getStayledNumber = (number, space = 9, flag = true) => {
     if (!number && flag) return "0"
     if (number < 0) return ""
@@ -37,9 +49,8 @@ export const getStayledNumber = (number, space = 9, flag = true) => {
     return strNumber.substring(0, indexDot).concat(strNumber.substring(indexDot, space))
 }
 
-export const getSwapVsType = (t) => t === "from" ? "to" : "from"
 
-
+//deprecated. should replace with formatBalance3
 export const newFormatAmount = (number, decimal = 9) => {
     if (!number) return "0"
     // console.log(number,typeof number);
@@ -60,8 +71,6 @@ export const newFormatAmount = (number, decimal = 9) => {
     }
     return number
 }
-
-
 
 
 export const setBackground = (type) => {

@@ -1,6 +1,5 @@
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
-
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import CostBox2 from '../../../components/App/Dei/CostBox2'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
@@ -31,6 +30,7 @@ import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import SelectedNetworks from '../../../components/Sync/SelectNetworks';
 import { DEITokens } from '../../../constant/token';
+import { useMintingFee } from '../../../hooks/useDei';
 
 const TopWrap = styled.div`
     display: flex;
@@ -53,6 +53,8 @@ const MainWrapper = styled.div`
 `
 
 const Dei = () => {
+    const mintingFee = useMintingFee()
+
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -332,7 +334,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="Minting Fee" value="0.3%" />
+                <SwapCard title="Minting Fee" value={mintingFee} />
 
             </MainWrapper>
 
@@ -382,7 +384,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="Minting Fee" value="0.3%" />
+                <SwapCard title="Minting Fee" value={mintingFee} />
 
             </MainWrapper>
             <FakeWrapper></FakeWrapper>

@@ -85,7 +85,7 @@ export const useMintingFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return mintingFee
+    return mintingFee ? `${mintingFee / 10000} %` : "-"
 }
 
 export const useCollatRatio = () => {

@@ -34,8 +34,7 @@ import { PlusImg } from '../../../components/App/Dei';
 const Dei = () => {
     useDeiUpdate()
     // const collatRatio = useRecoilValue(collatRatioState)
-    const mintingFeeValue = useMintingFee()
-    const mintingFee = mintingFeeValue ? `${mintingFeeValue / 10000} %` : "-"
+    const mintingFee = useMintingFee()
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)

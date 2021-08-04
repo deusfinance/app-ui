@@ -31,8 +31,7 @@ const Dei = () => {
     //Recoil hook 
     useDeiUpdate()
     const collatRatio = useRecoilValue(collatRatioState)
-    const mintingFeeValue = useMintingFee()
-    const mintingFee = mintingFeeValue ? `${mintingFeeValue / 10000} %` : "-"
+    const mintingFee = useMintingFee()
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)

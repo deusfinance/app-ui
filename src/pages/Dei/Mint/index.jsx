@@ -1,8 +1,7 @@
-import styled from 'styled-components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
 import { DEITokens, deiToken } from '../../../constant/token';
-import { CostBoxMint } from '../../../components/App/Dei/CostBoxMint';
+import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { Type } from '../../../components/App/Text';
@@ -300,7 +299,7 @@ const Dei = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBoxMint />
+            <CostBox type={'mint'} />
         </div>
     </>);
 }

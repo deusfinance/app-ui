@@ -17,20 +17,16 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
     return [{
         name: 'DEI PRICE',
         value: dp
-    },
-    {
+    },{
         name: 'COLLATERAL RATIO',
         value: cr
-    },
-    {
+    },{
         name: 'POOL BALANCE / CEILING',
         value: pc
-    },
-    {
+    },{
         name: 'AVAILABLE TO MINT',
         value: av
-    },
-    ]
+    }]
 }
 
 export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
@@ -40,34 +36,27 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
-    },
-    {
+    },{
         name: 'REDEMPTION FEE',
         value: rf
-    },
-    {
+    },{
         name: 'POOL BALANCE',
         value: pb
-    },
-    ]
+    }]
 }
 
-export const makeCostDataBuyBack = () => {
-    const pool = "...."
-
+export const makeCostDataBuyBack = (pool) => {
+    const p = pool ? pool : "-"
     return [{
         name: 'EXCHANGE RATES',
-        isTwoWay: true,
         title1: 'USDC: ',
         value1: '$1.000',
         title2: 'DEI: ',
         value2: '$874.34'
     },{
         name: 'POOL 🌊',
-        isTwoWay: false,
-        value1: pool,
-    },
-    ]
+        value1: p,
+    }]
 }
 
 export const makeDeiRequest = async (path) => {

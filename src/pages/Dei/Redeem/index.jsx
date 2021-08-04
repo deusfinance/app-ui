@@ -3,7 +3,6 @@ import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapWrapper, SwapArrow } from '../../../components/App/Swap';
 import TokenBox from '../../../components/App/Swap/TokenBox';
 import SwapAction from '../../../components/App/Swap/SwapAction';
-import SearchBox from '../../../components/App/Dei/SearchBox';
 import RateBox from '../../../components/App/Swap/RateBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import { getSwapVsType } from '../../../utils/utils';
@@ -21,10 +20,9 @@ import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import LinkBox from '../../../components/App/Dei/LinkBox'
-import { CostBoxRedeem } from '../../../components/App/Dei/CostBoxRedeem'
+import { CostBox } from '../../../components/App/Dei/CostBox'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
-import styled from 'styled-components';
 import { isZero } from '../../../constant/number';
 import { collatRatioState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
@@ -33,7 +31,6 @@ import { PlusImg } from '../../../components/App/Dei';
 
 const Dei = () => {
     useDeiUpdate()
-    // const collatRatio = useRecoilValue(collatRatioState)
     const mintingFee = useMintingFee()
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
@@ -345,7 +342,7 @@ const Dei = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBoxRedeem />
+            <CostBox type={'redeem'} />
         </div>
     </>);
 }

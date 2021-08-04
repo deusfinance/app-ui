@@ -3,9 +3,9 @@ import { makeCostData } from '../../../helper/deiHelper'
 import { useCollatDollarBalance, useRefreshRatio, usePoolCeilingBalance } from '../../../hooks/useDei'
 import { useRecoilValue } from 'recoil';
 import { collatRatioState } from '../../../store/dei';
-import { MainWrapper, FeeWrapper, FeeTitle, FeePrice } from './CostBox'
+import { MainWrapper, FeeWrapper, FeeTitle, FeePrice } from './CostBoxRedeem'
 
-const CostBox_v2 = () => {
+export const CostBoxMint = () => {
     const refreshRate = useRefreshRatio()
     const deiPrice = refreshRate ? refreshRate.dei_price : null
     const collatRatio = useRecoilValue(collatRatioState)
@@ -26,5 +26,3 @@ const CostBox_v2 = () => {
         }, [costs])
     )
 }
-
-export default CostBox_v2

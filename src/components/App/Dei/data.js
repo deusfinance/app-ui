@@ -12,21 +12,6 @@ const urls = [{
 },
 ]
 
-const costs = [{
-  name: 'COLLATERAL RATIO',
-  value: '84.00%'
-},
-{
-  name: 'REDEMPTION FEE',
-  value: '0.55%'
-},
-{
-  name: 'POOL BALANCE',
-  value: '20.24 USDC'
-},
-]
-
-
 const costs2 = [{
   name: 'EXCHANGE RATES',
   isTwoWay: true,
@@ -50,6 +35,5 @@ const costs2 = [{
 
 export {
   urls,
-  costs,
   costs2,
 }

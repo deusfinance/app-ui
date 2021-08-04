@@ -37,7 +37,7 @@ export const FeePrice = styled.span`
     display: block;
 `
 
-const CostBox = () => {
+export const CostBoxRedeem = () => {
     const collatRatio = useRecoilValue(collatRatioState)
     const redemptionFee = useRedemptionFee()
     const poolBalance = useCollatDollarBalance()
@@ -56,5 +56,3 @@ const CostBox = () => {
         }, [costs])
     )
 }
-
-export default CostBox

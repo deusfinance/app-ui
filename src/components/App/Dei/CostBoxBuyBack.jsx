@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react'
 import { costs2 as costs } from './data'
 import styled from 'styled-components'
-import { MainWrapper, FeeWrapper, FeeTitle, FeePrice } from './CostBox'
+import { MainWrapper, FeeWrapper, FeeTitle, FeePrice } from './CostBoxRedeem'
 
 const CostPriceTitle = styled.span`
     opacity: 0.5;
 `
 
-const CostBox2 = () => {
+export const CostBoxBuyBack = () => {
     return (
         useMemo(() => {
             return <MainWrapper>
@@ -22,5 +22,3 @@ const CostBox2 = () => {
         }, [])
     )
 }
-
-export default CostBox2

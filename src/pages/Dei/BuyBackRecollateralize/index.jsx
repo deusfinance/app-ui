@@ -1,7 +1,7 @@
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import LinkBox from '../../../components/App/Dei/LinkBox'
-import CostBox2 from '../../../components/App/Dei/CostBox2'
+import { CostBoxBuyBack } from '../../../components/App/Dei/CostBoxBuyBack'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
@@ -164,7 +164,7 @@ const Dei = () => {
         }
     }
 
-    let recollatPrimaryToken = DEITokens.filter(token => token.symbol === "DEUS P")[0]
+    let recollatPrimaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
     let recollatSecondaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
     const [swapState, setSwapState] = useState({
         from: recollatPrimaryToken,
@@ -392,7 +392,7 @@ const Dei = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBox2 />
+            <CostBoxBuyBack />
         </div>
     </>);
 }

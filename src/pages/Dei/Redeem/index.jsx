@@ -21,7 +21,7 @@ import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
 import LinkBox from '../../../components/App/Dei/LinkBox'
-import CostBox from '../../../components/App/Dei/CostBox'
+import { CostBoxRedeem } from '../../../components/App/Dei/CostBoxRedeem'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
@@ -83,8 +83,6 @@ const Dei = () => {
             pairedTokens.push([DEITokens[i]])
         }
     }
-
-
 
     for (let i = 0; i < tokens.length; i++) {
         const currToken = tokens[i]
@@ -347,7 +345,7 @@ const Dei = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBox />
+            <CostBoxRedeem />
         </div>
     </>);
 }

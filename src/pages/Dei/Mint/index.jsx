@@ -20,12 +20,21 @@ import useChain from '../../../hooks/useChain';
 import { getTokenAddr } from '../../../utils/contracts';
 // import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { useLocation } from 'react-router';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import { PlusImg } from '../../../components/App/Dei';
+import { useDeiUpdate } from '../../../hooks/useDei';
+import { isZero } from '../../../constant/number';
+import { collatRatioState } from '../../../store/dei';
+import { useRecoilValue } from 'recoil';
+
 // import SelectedNetworks from '../../../components/Sync/SelectNetworks';
 
 const Dei = () => {
+    //Recoil hook 
+    useDeiUpdate()
+    const collatRatio = useRecoilValue(collatRatioState)
+
+
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
@@ -35,8 +44,8 @@ const Dei = () => {
     const validNetworks = [4, 1]
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
-    const [collatRatio, setCollatRatio] = useState(84)
     const contractAddress = DEI_POOL_ADDRESS[chainId]
+
 
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
     const tokensMap = {}
@@ -83,24 +92,6 @@ const Dei = () => {
         to: deiToken,
     })
 
-    useEffect(() => {
-        let primaryToken = null
-        setIsPair(false)
-        if (collatRatio === 100) {
-            primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
-        } else if (collatRatio > 0 && collatRatio < 100) {
-            primaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
-            let secondToken = DEITokens.filter(currToken => {
-                return currToken.pairID === primaryToken.pairID && currToken.address !== primaryToken.address
-            })[0]
-            setIsPair(true)
-            setPairToken(secondToken)
-        } else if (collatRatio === 0) {
-            primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
-        }
-        setSwapState({ ...swapState, from: primaryToken })
-    }, [collatRatio]);
-
     const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
     const [amountInPair, setAmountInPair] = useState("")
@@ -118,6 +109,31 @@ const Dei = () => {
         setIsPreApproved(null)
         setIsApproved(null)
     }, [chainId, account, swapState.from]);
+
+
+    useEffect(() => {
+        const changeFromTokens = () => {
+            console.log(collatRatio);
+            let primaryToken = null
+            setIsPair(false)
+            if (collatRatio === 100) {
+                primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
+            } else if (collatRatio > 0 && collatRatio < 100) {
+                primaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
+                let secondToken = DEITokens.filter(currToken => {
+                    return currToken.pairID === primaryToken.pairID && currToken.address !== primaryToken.address
+                })[0]
+                setIsPair(true)
+                setPairToken(secondToken)
+            } else if (isZero(collatRatio)) {
+                primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
+            }
+            setSwapState({ ...swapState, from: primaryToken })
+        }
+        if (collatRatio)
+            changeFromTokens()
+
+    }, [collatRatio]);
 
     // useEffect(() => {
     //     setIsPreApproved(null)
@@ -210,6 +226,15 @@ const Dei = () => {
             console.error(e)
         }
     }, [onSwap])
+
+
+    //loader animation --> needs to fix at the end
+    if (!collatRatio) {
+        return (<div className="loader-wrap">
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+        </div>)
+    }
+
 
     return (<>
         <MainWrapper>

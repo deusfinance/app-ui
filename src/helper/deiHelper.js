@@ -1,27 +1,38 @@
+import BigNumber from "bignumber.js"
 import { ChainMap } from "../constant/web3"
+import { formatUnitAmount } from "../utils/utils"
 import { getDeiContract, getDeiPoolContract, getHusdPoolContract } from "./contractHelpers"
+import { fromWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
 const baseUrl = "https://oracle4.deus.finance/dei"
 
-export const makeCostData = (deiPrice, cr, poolBalance, ceiling) => (
-    [{
+export const dollarDecimals = 6
+
+export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
+    const dp = deiPrice ? `$${new BigNumber(fromWei(deiPrice, dollarDecimals)).toFixed(2)}` : null
+    const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
+    const pc = poolBalance && ceiling ? formatUnitAmount(fromWei(poolBalance, dollarDecimals)) + ' / ' + formatUnitAmount(fromWei(ceiling, dollarDecimals)) : null
+    const av = pc ? formatUnitAmount(fromWei(new BigNumber(poolBalance).minus(ceiling), dollarDecimals)) : null
+
+    return [{
         name: 'DEI PRICE',
-        value: deiPrice ? `$${deiPrice}` : deiPrice
+        value: dp
     },
     {
         name: 'COLLATERAL RATIO',
-        value: cr ? `${cr}%` : cr
+        value: cr
     },
     {
         name: 'POOL BALANCE / CEILING',
-        value: poolBalance && ceiling ? poolBalance + ' / ' + ceiling : null
+        value: pc
     },
     {
         name: 'AVAILABLE TO MINT',
-        value: poolBalance && ceiling ? poolBalance - ceiling : null
+        value: av
     },
-])
+    ]
+}
 
 export const makeCostDataRedeem = (cr, rf, poolBalance) => (
     [{
@@ -36,7 +47,7 @@ export const makeCostDataRedeem = (cr, rf, poolBalance) => (
         name: 'POOL BALANCE',
         value: poolBalance ? `${poolBalance} HUSD` : "-"
     },
-])
+    ])
 
 export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)

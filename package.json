@@ -36,6 +36,7 @@
     "react-scripts": "3.4.3",
     "react-toastify": "^6.0.8",
     "rebass": "^4.0.7",
+    "recoil": "^0.4.0",
     "styled-components": "^4.4.1",
     "web3": "^1.4.0"
   },

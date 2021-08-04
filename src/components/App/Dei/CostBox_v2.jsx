@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { makeCostData } from '../../../helper/deiHelper'
-import { fromWei } from '../../../helper/formatBalance'
 import { useCollatDollarBalance, useRefreshRatio, useCollatRatio, usePoolCeilingBalance } from '../../../hooks/useDei'
+import { useRecoilValue } from 'recoil';
+import { collatRatioState } from '../../../store/dei';
 
 const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
@@ -39,11 +40,10 @@ const FeePrice = styled.span`
 const CostBox_v2 = () => {
     const refreshRate = useRefreshRatio()
     const deiPrice = refreshRate ? refreshRate.dei_price : null
-    const collatRatio = useCollatRatio()
+    const collatRatio = useRecoilValue(collatRatioState)
     const poolBalance = useCollatDollarBalance()
     const poolCeiling = usePoolCeilingBalance()
-
-    const costs = makeCostData(fromWei(deiPrice, 6), collatRatio, fromWei(poolBalance), fromWei(poolCeiling))
+    const costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling)
 
     return (
         useMemo(() => {

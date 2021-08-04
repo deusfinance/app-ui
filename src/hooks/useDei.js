@@ -1,8 +1,12 @@
 import useWeb3 from './useWeb3'
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
-import { getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, getPoolCeiling } from '../helper/deiHelper'
+import { getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, getPoolCeiling, dollarDecimals } from '../helper/deiHelper'
 import useRefresh from './useRefresh'
+import BigNumber from 'bignumber.js'
+import { fromWei } from '../helper/formatBalance'
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { collatRatioState } from '../store/dei'
 
 export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, fromSymbol, validChainId = 1, callback) => {
     const { account, chainId } = useWeb3React()
@@ -52,16 +56,20 @@ export const usePoolCeilingBalance = () => {
 export const useCollatRatio = () => {
     const web3 = useWeb3()
     const { slowRefresh } = useRefresh()
-    const [collatRatio, setCollatRatio] = useState(null)
+    const setCollatRatio = useSetRecoilState(collatRatioState)
 
     useEffect(() => {
         const get = async () => {
             const cr = await getCollatRatio(web3)
-            setCollatRatio(cr[1])
+            setCollatRatio(new BigNumber(fromWei(cr[1], dollarDecimals)).times(100).toNumber())
         }
         get()
     }, [slowRefresh])
-    return collatRatio
+}
+
+
+export const useDeiUpdate = () => {
+    useCollatRatio()
 }
 
 export const useRefreshRatio = () => {

@@ -1,7 +1,8 @@
 import useWeb3 from './useWeb3'
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
-import { getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, getPoolCeiling, dollarDecimals, getRedemptionFee } from '../helper/deiHelper'
+import { getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, 
+    getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee } from '../helper/deiHelper'
 import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei } from '../helper/formatBalance'
@@ -68,6 +69,23 @@ export const useRedemptionFee = () => {
         get()
     }, [slowRefresh, account, chainId])
     return redemptionFee
+}
+
+export const useMintingFee = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [mintingFee, setMintingFee] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const mf = await getMintingFee(web3, chainId)
+            setMintingFee(mf)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return mintingFee
 }
 
 export const useCollatRatio = () => {

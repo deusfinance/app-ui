@@ -28,12 +28,14 @@ import styled from 'styled-components';
 import { isZero } from '../../../constant/number';
 import { collatRatioState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { useDeiUpdate } from '../../../hooks/useDei';
+import { useDeiUpdate, useMintingFee } from '../../../hooks/useDei';
 import { PlusImg } from '../../../components/App/Dei';
 
 const Dei = () => {
     useDeiUpdate()
-    const collatRatio = useRecoilValue(collatRatioState)
+    // const collatRatio = useRecoilValue(collatRatioState)
+    const mintingFeeValue = useMintingFee()
+    const mintingFee = mintingFeeValue ? `${mintingFeeValue / 10000} %` : "-"
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
@@ -335,7 +337,7 @@ const Dei = () => {
 
             </SwapWrapper>
 
-            <SwapCard title="Minting Fee" value="0.3%" />
+            <SwapCard title="Minting Fee" value={mintingFee} />
 
             {isZero(redeemAmount) && <RedeemedToken
                 title="Redeemed Token ready for claim"

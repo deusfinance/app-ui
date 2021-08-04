@@ -94,3 +94,10 @@ export const getCollatRatio = async (web3, chainId = ChainMap.RINKEBY, collat_us
         .dei_info(collat_usd_balance)
         .call()
 }
+
+export const getMintingFee = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .minting_fee()
+        .call()
+}

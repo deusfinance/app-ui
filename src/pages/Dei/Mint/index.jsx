@@ -22,17 +22,17 @@ import { getTokenAddr } from '../../../utils/contracts';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import { PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate } from '../../../hooks/useDei';
+import { useDeiUpdate, useMintingFee } from '../../../hooks/useDei';
 import { isZero } from '../../../constant/number';
 import { collatRatioState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-
-// import SelectedNetworks from '../../../components/Sync/SelectNetworks';
 
 const Dei = () => {
     //Recoil hook 
     useDeiUpdate()
     const collatRatio = useRecoilValue(collatRatioState)
+    const mintingFeeValue = useMintingFee()
+    const mintingFee = mintingFeeValue ? `${mintingFeeValue / 10000} %` : "-"
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -297,7 +297,7 @@ const Dei = () => {
 
             </SwapWrapper>
 
-            <SwapCard title="Minting Fee" value="0.3%" />
+            <SwapCard title="Minting Fee" value={mintingFee} />
         </MainWrapper>
 
         <div className='tut-left-wrap'>

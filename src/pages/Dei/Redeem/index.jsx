@@ -26,21 +26,15 @@ import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
 import { isZero } from '../../../constant/number';
-
-const PlusImg = styled.img`
-    z-index: 1;
-    position: relative;
-    text-align: center;
-    margin-top: -20px;
-
-    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        margin-bottom: 5px;
-        width: 23px;
-        height: 23px;
-    `}
-`
+import { collatRatioState } from '../../../store/dei';
+import { useRecoilValue } from 'recoil';
+import { useDeiUpdate } from '../../../hooks/useDei';
+import { PlusImg } from '../../../components/App/Dei';
 
 const Dei = () => {
+    useDeiUpdate()
+    const collatRatio = useRecoilValue(collatRatioState)
+
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)

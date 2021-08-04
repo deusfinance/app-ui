@@ -14,7 +14,6 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
     const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
     const pc = poolBalance && ceiling ? formatUnitAmount(fromWei(poolBalance, dollarDecimals)) + ' / ' + formatUnitAmount(fromWei(ceiling, dollarDecimals)) : null
     const av = pc ? formatUnitAmount(fromWei(new BigNumber(poolBalance).minus(ceiling), dollarDecimals)) : null
-
     return [{
         name: 'DEI PRICE',
         value: dp
@@ -38,7 +37,6 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : "-"
     const rf = redemptionFee ? `${new BigNumber(redemptionFee).dividedBy(10000).toFixed(2)}%` : "-"
     const pb = poolBalance ? `${formatUnitAmount(fromWei(poolBalance))} HUSD` : "-"
-
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
@@ -51,7 +49,8 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
         name: 'POOL BALANCE',
         value: pb
     },
-    ]}
+    ]
+}
 
 export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)

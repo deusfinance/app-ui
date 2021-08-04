@@ -34,7 +34,6 @@ const Dei = () => {
     useDeiUpdate()
     const collatRatio = useRecoilValue(collatRatioState)
 
-
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)

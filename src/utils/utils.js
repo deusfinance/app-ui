@@ -1,10 +1,7 @@
 
-import { isAddress } from '@ethersproject/address';
-import { Contract } from '@ethersproject/contracts';
 import BigNumber from 'bignumber.js';
-import React from 'react';
 import { toast } from 'react-toastify';
-import { isGt, isZero } from '../constant/number';
+import { isZero } from '../constant/number';
 
 export const getSwapVsType = (t) => t === "from" ? "to" : "from"
 
@@ -14,12 +11,12 @@ export const isDesktop = () => {
 };
 
 
-export const formatUnitAmount = (amount) => {
+export const formatUnitAmount = (amount, fixed = 1) => {
     const bigAmount = new BigNumber(amount)
     if (bigAmount.gte(1000000)) {
-        return bigAmount.div(1000000).toFixed(2) + "M"
+        return bigAmount.div(1000000).toFixed(fixed).replace(/\.?0+$/, "") + "M"
     } else if (bigAmount.gte(1000)) {
-        return bigAmount.div(1000).toFixed(1) + "K"
+        return bigAmount.div(1000).toFixed(fixed).replace(/\.?0+$/, "") + "K"
     }
 }
 

@@ -37,7 +37,7 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
 export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : "-"
     const rf = redemptionFee ? `${new BigNumber(redemptionFee).dividedBy(10000).toFixed(2)}%` : "-"
-    const pb = poolBalance ? `${formatUnitAmount(poolBalance)} HUSD` : "-"
+    const pb = poolBalance ? `${formatUnitAmount(fromWei(poolBalance))} HUSD` : "-"
 
     return [{
         name: 'COLLATERAL RATIO',

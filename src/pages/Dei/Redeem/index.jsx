@@ -185,18 +185,17 @@ const Dei = () => {
     //     setTokensMap(tokenBalances)
     // }, [tokenBalances])
 
-    // useEffect(() => { FIXME: There is max-depth error here.
-    //     const token = swapState.to
-    //     const type = "to"
-    //     if (swapState?.to?.pairID) {
-    //         setIsPair(true)
-    //         let secondToken = DEITokens.filter(currToken => {
-    //             return currToken.pairID === token.pairID && currToken.address !== token.address
-    //         })[0]
-    //         setPairToken(secondToken)
-    //         setSwapState({ ...swapState, [type]: token })
-    //     }
-    // }, [swapState])
+    useEffect(() => {
+        const token = swapState.to
+        setIsPair(false)
+        if (swapState?.to?.pairID) {
+            setIsPair(true)
+            let secondToken = DEITokens.filter(currToken => {
+                return currToken.pairID === token.pairID && currToken.address !== token.address
+            })[0]
+            setPairToken(secondToken)
+        }
+    }, [swapState])
 
 
     useEffect(() => {

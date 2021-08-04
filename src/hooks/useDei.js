@@ -21,7 +21,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
     return { onSwap: handleSwap }
 }
 
-
 export const useCollatDollarBalance = () => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()

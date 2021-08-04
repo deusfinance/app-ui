@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
-import { costs } from './data'
 import styled from 'styled-components'
+import { makeCostDataBuyBack } from '../../../helper/deiHelper'
 import { MainWrapper, FeeWrapper, FeeTitle, FeePrice } from './CostBoxRedeem'
 
 const CostPriceTitle = styled.span`
@@ -8,14 +8,25 @@ const CostPriceTitle = styled.span`
 `
 
 export const CostBoxBuyBack = () => {
+    const costs = makeCostDataBuyBack()
+
     return (
         useMemo(() => {
             return <MainWrapper>
                 {costs.map((cost, index) => {
                     return <FeeWrapper key={index}>
                         <FeeTitle> {cost.name} </FeeTitle>
-                        <FeePrice> <CostPriceTitle> {cost.title1} </CostPriceTitle> <span> {cost.value1} </span> </FeePrice>
-                        {cost.isTwoWay && <FeePrice> <CostPriceTitle> {cost.title2} </CostPriceTitle> <span> {cost.value2} </span> </FeePrice>}
+
+                        <FeePrice> 
+                            <CostPriceTitle> {cost.title1} </CostPriceTitle> 
+                            <span> {cost.value1} </span> 
+                        </FeePrice>
+
+                        {cost.isTwoWay && <FeePrice> 
+                            <CostPriceTitle> {cost.title2} </CostPriceTitle>
+                            <span> {cost.value2} </span> 
+                        </FeePrice>}
+                        
                     </FeeWrapper>
                 })}
             </MainWrapper>

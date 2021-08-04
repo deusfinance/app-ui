@@ -52,6 +52,24 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     ]
 }
 
+export const makeCostDataBuyBack = () => {
+    const pool = "...."
+
+    return [{
+        name: 'EXCHANGE RATES',
+        isTwoWay: true,
+        title1: 'USDC: ',
+        value1: '$1.000',
+        title2: 'DEI: ',
+        value2: '$874.34'
+    },{
+        name: 'POOL 🌊',
+        isTwoWay: false,
+        value1: pool,
+    },
+    ]
+}
+
 export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)
 }

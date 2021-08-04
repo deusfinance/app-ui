@@ -8,7 +8,7 @@ import LinkBox from '../../../components/App/Dei/LinkBox'
 import { Type } from '../../../components/App/Text';
 import { Image } from 'rebass/styled-components';
 import TokenBox from '../../../components/App/Swap/TokenBox';
-import SwapAction from '../../../components/App/Swap/SwapAction';
+import SwapAction from '../../../components/App/Dei/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
@@ -22,7 +22,7 @@ import { getTokenAddr } from '../../../utils/contracts';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import { PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useMintingFee } from '../../../hooks/useDei';
+import { useDeiUpdate, useGetAmountsOut, useMintingFee } from '../../../hooks/useDei';
 import { isZero } from '../../../constant/number';
 import { collatRatioState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
@@ -96,8 +96,9 @@ const Dei = () => {
     const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
     const [amountOut, setAmountOut] = useState("")
     const [minAmountOut, setMinAmountOut] = useState("")
+    const [pairToken, setPairToken] = useState({ address: null })
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
-    const [pairToken, setPairToken] = useState({})
+    const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
@@ -144,17 +145,17 @@ const Dei = () => {
 
     useEffect(() => {
         if (isPreApproved == null) {
-            if (allowance.toString() === "-1") {
+            if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
                 setIsPreApproved(null) //doNothing
             } else {
-                if (allowance.gt(0)) {
+                if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                     setIsPreApproved(true)
                 } else {
                     setIsPreApproved(false)
                 }
             }
         } else {
-            if (allowance.gt(0)) {
+            if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                 setIsApproved(true)
             }
         }
@@ -165,7 +166,14 @@ const Dei = () => {
 
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
-    const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
+    let targetToken = swapState.from
+    useEffect(() => {
+        if (pairToken && allowance.gt(0) && !allowancePairToken.gt(0)) {
+            targetToken = pairToken
+        }
+    }, [swapState, pairToken, allowance, allowancePairToken])
+
+    const { onApprove } = useApprove(targetToken, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, 0, chainId)
 
     // useEffect(() => {
@@ -285,6 +293,7 @@ const Dei = () => {
                     isPreApproved={isPreApproved}
                     validNetworks={validNetworks}
                     isApproved={isApproved}
+                    targetToken={targetToken}
                     loading={approveLoading}
                     handleApprove={handleApprove}
                     handleSwap={handleSwap}

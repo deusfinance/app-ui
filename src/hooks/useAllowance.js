@@ -16,6 +16,7 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
 
     useEffect(() => {
         const fetchAllowance = async () => {
+            if (!tokenAddress) return setAllowance(ZERO)
             if (validChainId && chainId !== validChainId) setAllowance(ZERO)
             if (contract === null) setAllowance(ethers.constants.MaxUint256)
             else if (currency.allowance) { setAllowance(currency.allowance) }

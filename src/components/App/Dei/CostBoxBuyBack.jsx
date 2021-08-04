@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { costs2 as costs } from './data'
+import { costs } from './data'
 import styled from 'styled-components'
 import { MainWrapper, FeeWrapper, FeeTitle, FeePrice } from './CostBoxRedeem'
 

@@ -101,3 +101,17 @@ export const getMintingFee = async (web3, chainId = ChainMap.RINKEBY) => {
         .minting_fee()
         .call()
 }
+
+export const getBuyBackFee = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .buyback_fee()
+        .call()
+}
+
+export const getRecollatFee = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .recollat_fee()
+        .call()
+}

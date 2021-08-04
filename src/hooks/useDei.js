@@ -1,13 +1,15 @@
 import useWeb3 from './useWeb3'
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
-import { getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, 
-    getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee } from '../helper/deiHelper'
 import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei } from '../helper/formatBalance'
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { collatRatioState } from '../store/dei'
+import {
+    getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
+    getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
+    getBuyBackFee } from '../helper/deiHelper'
 
 export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, fromSymbol, validChainId = 1, callback) => {
     const { account, chainId } = useWeb3React()
@@ -86,6 +88,40 @@ export const useMintingFee = () => {
         get()
     }, [slowRefresh, account, chainId])
     return mintingFee ? `${mintingFee / 10000} %` : "-"
+}
+
+export const useBuyBackFee = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [buyBackFee, setBuyBackFee] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const bf = await getBuyBackFee(web3, chainId)
+            setBuyBackFee(bf)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return buyBackFee ? `${buyBackFee / 10000} %` : "-"
+}
+
+export const useRecollatFee = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [recollatFee, setRecollatFee] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const rf = await getRecollatFee(web3, chainId)
+            setRecollatFee(rf)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return recollatFee ? `${recollatFee / 10000} %` : "-"
 }
 
 export const useCollatRatio = () => {

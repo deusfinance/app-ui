@@ -12,18 +12,13 @@ const urls = [{
 },
 ]
 
-const costs2 = [{
+const costs = [{
   name: 'EXCHANGE RATES',
   isTwoWay: true,
   title1: 'USDC: ',
   value1: '$1.000',
   title2: 'DEI: ',
   value2: '$874.34'
-},
-{
-  name: 'SWAP FEE',
-  isTwoWay: false,
-  value1: '0.6%',
 },
 {
   name: 'POOL 🌊',
@@ -35,5 +30,5 @@ const costs2 = [{
 
 export {
   urls,
-  costs2,
+  costs,
 }

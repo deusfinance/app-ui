@@ -28,9 +28,8 @@ import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
 import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
-import SelectedNetworks from '../../../components/Sync/SelectNetworks';
 import { DEITokens } from '../../../constant/token';
-import { useMintingFee } from '../../../hooks/useDei';
+import { useRecollatFee, useBuyBackFee } from '../../../hooks/useDei';
 
 const TopWrap = styled.div`
     display: flex;
@@ -53,7 +52,8 @@ const MainWrapper = styled.div`
 `
 
 const Dei = () => {
-    const mintingFee = useMintingFee()
+    const buyBackFee = useBuyBackFee()
+    const recollatFee = useRecollatFee()
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
@@ -334,7 +334,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="Minting Fee" value={mintingFee} />
+                <SwapCard title="Swap Fee" value={buyBackFee} />
 
             </MainWrapper>
 
@@ -384,7 +384,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="Minting Fee" value={mintingFee} />
+                <SwapCard title="Swap Fee" value={recollatFee} />
 
             </MainWrapper>
             <FakeWrapper></FakeWrapper>

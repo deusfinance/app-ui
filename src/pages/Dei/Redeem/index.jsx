@@ -334,7 +334,7 @@ const Dei = () => {
 
             </SwapWrapper>
 
-            <SwapCard title="Minting Fee" value={mintingFee} />
+            <SwapCard title="Redeem Fee" value={mintingFee} />
 
             {isZero(redeemAmount) && <RedeemedToken
                 title="Redeemed Token ready for claim"

@@ -34,20 +34,24 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
     ]
 }
 
-export const makeCostDataRedeem = (cr, rf, poolBalance) => (
-    [{
+export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
+    const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : "-"
+    const rf = redemptionFee ? `${new BigNumber(redemptionFee).dividedBy(10000).toFixed(2)}%` : "-"
+    const pb = poolBalance ? `${formatUnitAmount(poolBalance)} HUSD` : "-"
+
+    return [{
         name: 'COLLATERAL RATIO',
-        value: cr ? `${cr}%` : "-"
+        value: cr
     },
     {
         name: 'REDEMPTION FEE',
-        value: rf ? `${rf}%` : "-"
+        value: rf
     },
     {
         name: 'POOL BALANCE',
-        value: poolBalance ? `${poolBalance} HUSD` : "-"
+        value: pb
     },
-    ])
+    ]}
 
 export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)
@@ -70,10 +74,18 @@ export const getCollatDollarBalance = async (web3, chainId = ChainMap.RINKEBY, c
         .call()
 }
 
-export const getPoolCeiling = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+export const getPoolCeiling = async (web3, chainId = ChainMap.RINKEBY) => {
     return getHusdPoolContract(web3)
         .methods
         .pool_ceiling()
+        .call()
+}
+
+
+export const getRedemptionFee = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .redemption_fee()
         .call()
 }
 

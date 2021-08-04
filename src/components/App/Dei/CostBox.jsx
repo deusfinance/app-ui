@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { makeCostDataRedeem } from '../../../helper/deiHelper'
-import { fromWei } from '../../../helper/formatBalance'
-import { useCollatDollarBalance, useRefreshRatio, useCollatRatio } from '../../../hooks/useDei'
+import { useCollatDollarBalance, useRedemptionFee } from '../../../hooks/useDei'
+import { useRecoilValue } from 'recoil';
+import { collatRatioState } from '../../../store/dei';
 
-const MainWrapper = styled.div`
+export const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
     width: 100%;
     padding: 20px 25px;
@@ -21,26 +22,26 @@ const MainWrapper = styled.div`
     font-weight: 300;
 `
 
-const FeeWrapper = styled.div`
+export const FeeWrapper = styled.div`
     display: block;
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 15px;
 `
 
-const FeeTitle = styled.span`
+export const FeeTitle = styled.span`
     color: #0DB0F4;
 `
 
-const FeePrice = styled.span`
+export const FeePrice = styled.span`
     display: block;
 `
 
 const CostBox = () => {
-    const collatRatio = useCollatRatio()
+    const collatRatio = useRecoilValue(collatRatioState)
+    const redemptionFee = useRedemptionFee()
     const poolBalance = useCollatDollarBalance()
-
-    const costs = makeCostDataRedeem(collatRatio, null, fromWei(poolBalance))
+    const costs = makeCostDataRedeem(collatRatio, redemptionFee, poolBalance)
 
     return (
         useMemo(() => {

@@ -11,10 +11,24 @@ import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, r
 import {
     getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
-    getBuyBackFee, getHusdPoolData, collatDei, getRedeemDEUSBalances, getRedeemCollateralBalances
+    getBuyBackFee, getHusdPoolData, collatDei, getRedeemDEUSBalances, getRedeemCollateralBalances,
+    getClaimAll,
 } from '../helper/deiHelper'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import multicall from '../helper/multicall'
+
+
+export const useClaimAll = (validChainId = 1) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleClaimAll = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+        const tx = await getClaimAll(account, web3, chainId)
+        return tx
+    }, [account, chainId, web3])
+    return { onClaimAll: handleClaimAll }
+}
 
 
 export const useBalances = () => {

@@ -1,10 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styled from 'styled-components'
 import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
 import { Flex, Text } from 'rebass/styled-components';
 import { Base } from '../Button/index'
 import { useRecoilValue } from 'recoil';
 import { redeemDEUSBalancesState, redeemCollateralBalancesState } from '../../../store/dei'
+import { isGt } from '../../../constant/number';
+import { useClaimAll } from '../../../hooks/useDei';
+import useChain from '../../../hooks/useChain';
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -70,6 +73,14 @@ const ButtonSync = styled(Base).attrs({
   font-size:20px;
 `
 
+const ButtonSyncDeactivated = styled(ButtonSync)`
+    box-shadow: none;
+    font-family:"Monument Grotesk Semi";
+    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.sync_dactive};
+    color: ${({ theme, color }) => color ? theme[color] : "#8d8d8d"};
+    cursor: default;
+`
+
 const ButtonSyncActive = styled(ButtonSync)`
   background: ${({ theme }) => theme.sync_active};
   font-size: 25px;
@@ -84,9 +95,28 @@ const ButtonSwap = styled(ButtonSyncActive)`
   font-size:${({ fontSize }) => fontSize || "15px"};
 `
 
+const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
+
 const RedeemedToken = ({ title, currencies }) => {
-  let price1 = useRecoilValue(redeemDEUSBalancesState)
-  let price2 = useRecoilValue(redeemCollateralBalancesState)
+  let price1 = useRecoilValue(redeemCollateralBalancesState)
+  let price2 = useRecoilValue(redeemDEUSBalancesState)
+
+  const validNetworks = [1, 4]
+  const chainId = useChain(validNetworks)
+  const { onClaimAll } = useClaimAll(chainId)
+
+  const handleClaim = useCallback(async () => {
+    try {
+      const tx = await onClaimAll()
+      if (tx.status) {
+        console.log("claim did");
+      } else {
+        console.log("claim Failed");
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onClaimAll])
 
   return (
     useMemo(() => {
@@ -99,13 +129,14 @@ const RedeemedToken = ({ title, currencies }) => {
             <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
 
             <NumberWrapper color="text1" ml="7px" mr="9px">
-              {index === 0 ? price1 ? price1 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" /> :
-                price2 ? price2 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />}
+              {index === 0 ? price1 ? price1 : IMG : price2 ? price2 : IMG }
             </NumberWrapper>
             
           </TokenInfo>
         })}
-        <ButtonSwap active={true} bgColor={"grad_dei"} onClick={null}> CLAIM ALL </ButtonSwap>
+        {(price1 && price2 && (isGt(price1, 0) || isGt(price2, 0))) ? 
+          <ButtonSwap active={true} bgColor={"grad_dei"} onClick={handleClaim}> CLAIM ALL </ButtonSwap> :
+          <ButtonSyncDeactivated> CLAIM ALL </ButtonSyncDeactivated>}
       </SmallWrapper>
     }, [title, currencies, price1, price2])
   );

@@ -46,7 +46,6 @@ const Dei = () => {
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
     const contractAddress = DEI_POOL_ADDRESS[chainId]
-    const [redeemAmount, setRedeemAmount] = useState(0)
 
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
     const tokensMap = {}
@@ -201,19 +200,6 @@ const Dei = () => {
         }
     }, [onRedeem])
 
-    const handleClaim = useCallback(async () => {
-        try {
-            const tx = await onRedeem()
-            if (tx.status) {
-                console.log("claim did");
-            } else {
-                console.log("claim Failed");
-            }
-        } catch (e) {
-            console.error(e)
-        }
-    }, [onRedeem])
-
     return (<>
         <MainWrapper>
             <Type.XL fontWeight="300">Redeem</Type.XL>
@@ -285,10 +271,10 @@ const Dei = () => {
 
             <SwapCard title="redemption Fee" value={redemptionFee ? `${redemptionFee} %` : ""} />
 
-            {isZero(redeemAmount) && <RedeemedToken
+            <RedeemedToken
                 title="Redeemed Token ready for claim"
                 currencies={[swapState.to, pairToken]}
-            />}
+            />
 
         </MainWrapper>
 

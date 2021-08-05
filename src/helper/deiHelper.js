@@ -125,6 +125,13 @@ export const getRedeemCollateralBalances = async (account, web3, chainId = Chain
         .call()
 }
 
+export const getClaimAll = async (account, web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .collectRedemption()
+        .send({ from: account })
+}
+
 export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
     return getDeiContract(web3, chainId)
         .methods

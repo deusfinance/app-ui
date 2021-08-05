@@ -17,20 +17,16 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
     return [{
         name: 'DEI PRICE',
         value: dp
-    },
-    {
+    },{
         name: 'COLLATERAL RATIO',
         value: cr
-    },
-    {
+    },{
         name: 'POOL BALANCE / CEILING',
         value: pc
-    },
-    {
+    },{
         name: 'AVAILABLE TO MINT',
         value: av
-    },
-    ]
+    }]
 }
 
 export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
@@ -40,16 +36,27 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
-    },
-    {
+    },{
         name: 'REDEMPTION FEE',
         value: rf
-    },
-    {
+    },{
         name: 'POOL BALANCE',
         value: pb
-    },
-    ]
+    }]
+}
+
+export const makeCostDataBuyBack = (pool) => {
+    const p = pool ? pool : "-"
+    return [{
+        name: 'EXCHANGE RATES',
+        title1: 'USDC: ',
+        value1: '$1.000',
+        title2: 'DEI: ',
+        value2: '$874.34'
+    },{
+        name: 'POOL 🌊',
+        value1: p,
+    }]
 }
 
 export const makeDeiRequest = async (path) => {
@@ -99,5 +106,19 @@ export const getMintingFee = async (web3, chainId = ChainMap.RINKEBY) => {
     return getHusdPoolContract(web3)
         .methods
         .minting_fee()
+        .call()
+}
+
+export const getBuyBackFee = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .buyback_fee()
+        .call()
+}
+
+export const getRecollatFee = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .recollat_fee()
         .call()
 }

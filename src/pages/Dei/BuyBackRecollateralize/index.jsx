@@ -1,7 +1,7 @@
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import LinkBox from '../../../components/App/Dei/LinkBox'
-import CostBox2 from '../../../components/App/Dei/CostBox2'
+import { CostBoxBuyBack } from '../../../components/App/Dei/CostBoxBuyBack'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
@@ -28,9 +28,8 @@ import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
 import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useLocation } from 'react-router';
-import SelectedNetworks from '../../../components/Sync/SelectNetworks';
 import { DEITokens } from '../../../constant/token';
-import { useMintingFee } from '../../../hooks/useDei';
+import { useRecollatFee, useBuyBackFee } from '../../../hooks/useDei';
 
 const TopWrap = styled.div`
     display: flex;
@@ -53,7 +52,8 @@ const MainWrapper = styled.div`
 `
 
 const Dei = () => {
-    const mintingFee = useMintingFee()
+    const buyBackFee = useBuyBackFee()
+    const recollatFee = useRecollatFee()
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
@@ -164,7 +164,7 @@ const Dei = () => {
         }
     }
 
-    let recollatPrimaryToken = DEITokens.filter(token => token.symbol === "DEUS P")[0]
+    let recollatPrimaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
     let recollatSecondaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
     const [swapState, setSwapState] = useState({
         from: recollatPrimaryToken,
@@ -334,7 +334,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="Minting Fee" value={mintingFee} />
+                <SwapCard title="Swap Fee" value={buyBackFee} />
 
             </MainWrapper>
 
@@ -384,7 +384,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="Minting Fee" value={mintingFee} />
+                <SwapCard title="Swap Fee" value={recollatFee} />
 
             </MainWrapper>
             <FakeWrapper></FakeWrapper>
@@ -392,7 +392,7 @@ const Dei = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBox2 />
+            <CostBoxBuyBack />
         </div>
     </>);
 }

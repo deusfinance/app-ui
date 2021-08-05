@@ -1,9 +1,11 @@
 import BigNumber from "bignumber.js"
+import { HUSD_POOL_ADDRESS } from "../constant/contracts"
 import { ChainMap } from "../constant/web3"
 import { formatUnitAmount } from "../utils/utils"
 import { getDeiContract, getDeiPoolContract, getHusdPoolContract } from "./contractHelpers"
 import { fromWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
+
 
 const baseUrl = "https://oracle4.deus.finance/dei"
 
@@ -17,13 +19,13 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
     return [{
         name: 'DEI PRICE',
         value: dp
-    },{
+    }, {
         name: 'COLLATERAL RATIO',
         value: cr
-    },{
+    }, {
         name: 'POOL BALANCE / CEILING',
         value: pc
-    },{
+    }, {
         name: 'AVAILABLE TO MINT',
         value: av
     }]
@@ -36,10 +38,10 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
-    },{
+    }, {
         name: 'REDEMPTION FEE',
         value: rf
-    },{
+    }, {
         name: 'POOL BALANCE',
         value: pb
     }]
@@ -53,7 +55,7 @@ export const makeCostDataBuyBack = (pool) => {
         value1: '$1.000',
         title2: 'DEI: ',
         value2: '$874.34'
-    },{
+    }, {
         name: 'POOL 🌊',
         value1: p,
     }]
@@ -63,8 +65,46 @@ export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)
 }
 
-export const mintDei = async (web3) => {
 
+export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+
+    const calls = [
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'collatDollarBalance',
+            params: [collat_usd_balance],
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'pool_ceiling',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'redemption_fee',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'minting_fee',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'buyback_fee',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'recollat_fee',
+        },
+    ]
+    return calls
+}
+
+
+export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
+    console.log(amountIn1, DEI_out_min, collateral_price, expire_block, signature);
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .mint1t1DEI(amountIn1, DEI_out_min, collateral_price, expire_block, [signature])
+        .send({ from: account })
 }
 
 export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
@@ -86,6 +126,8 @@ export const getPoolCeiling = async (web3, chainId = ChainMap.RINKEBY) => {
         .pool_ceiling()
         .call()
 }
+
+
 
 
 export const getRedemptionFee = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {

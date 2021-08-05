@@ -6,14 +6,13 @@ import SwapCard from '../../../components/App/Swap/SwapCard';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { Type } from '../../../components/App/Text';
 import { Image } from 'rebass/styled-components';
-import TokenBox from '../../../components/App/Swap/TokenBox';
+import TokenBox from '../../../components/App/Dei/TokenBox';
 import SwapAction from '../../../components/App/Dei/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
-import { useSwap } from '../../../hooks/useSwap';
 // import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
 import { getTokenAddr } from '../../../utils/contracts';
@@ -21,16 +20,19 @@ import { getTokenAddr } from '../../../utils/contracts';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import { PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useGetAmountsOut, useMintingFee } from '../../../hooks/useDei';
+import { useDeiUpdate, useGetAmountsOut, useMint, useMintingFee } from '../../../hooks/useDei';
 import { isZero } from '../../../constant/number';
-import { collatRatioState } from '../../../store/dei';
+import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
+import { RemoveTrailingZero } from '../../../helper/formatBalance';
 
 const Dei = () => {
     //Recoil hook 
     useDeiUpdate()
     const collatRatio = useRecoilValue(collatRatioState)
-    const mintingFee = useMintingFee()
+    const mintingFee = useRecoilValue(mintingFeeState)
+    const deiPrices = useRecoilValue(deiPricesState)
+    const husdPolldata = useRecoilValue(husdPoolDataState)
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -89,16 +91,15 @@ const Dei = () => {
         to: deiToken,
     })
 
+    const [focusType, setFocusType] = useState("from1")
     const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
     const [amountInPair, setAmountInPair] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
     const [amountOut, setAmountOut] = useState("")
-    const [minAmountOut, setMinAmountOut] = useState("")
     const [pairToken, setPairToken] = useState({ address: null })
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
-
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -108,10 +109,25 @@ const Dei = () => {
         setIsApproved(null)
     }, [chainId, account, swapState.from]);
 
+    useEffect(() => {
+        if (deiPrices) {
+            const { collateral_price, dei_price, deus_price } = deiPrices
+            if (focusType === "from1") {
+                if (isPair) {
+                    const amount = new BigNumber(amountIn).times(collateral_price).times(100 - collatRatio).div(collatRatio).div(deus_price).toFixed(18)
+                    setAmountInPair(amount)
+                }
+                const amount = new BigNumber(amountIn).times(collateral_price).times(100).div(collatRatio).times(1 - (mintingFee / 100)).toFixed(18)
+                setAmountOut(RemoveTrailingZero(amount))
+            }
+        }
+    }, [amountIn, mintingFee, deiPrices]);
+
+
 
     useEffect(() => {
         const changeFromTokens = () => {
-            console.log(collatRatio);
+            // console.log(collatRatio);
             let primaryToken = null
             setIsPair(false)
             if (collatRatio === 100) {
@@ -173,7 +189,7 @@ const Dei = () => {
     }, [swapState, pairToken, allowance, allowancePairToken])
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, 0, chainId)
+    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, chainId)
 
     // useEffect(() => {
     //     const get = async () => {
@@ -219,7 +235,7 @@ const Dei = () => {
 
     const handleSwap = useCallback(async () => {
         try {
-            const tx = await onSwap()
+            const tx = await onMint()
             if (tx.status) {
                 console.log("swap did");
                 setAmountIn("")
@@ -230,7 +246,7 @@ const Dei = () => {
         } catch (e) {
             console.error(e)
         }
-    }, [onSwap])
+    }, [onMint])
 
 
     //loader animation --> needs to fix at the end
@@ -246,6 +262,8 @@ const Dei = () => {
             <SwapWrapper style={{ marginTop: "25px", }}>
                 <TokenBox
                     type="from"
+                    setFocusType={setFocusType}
+                    focusType="from1"
                     hasMax={true}
                     inputAmount={amountIn}
                     setInputAmount={setAmountIn}
@@ -260,6 +278,8 @@ const Dei = () => {
                     <TokenBox
                         mt={"-21px"}
                         type="from"
+                        setFocusType={setFocusType}
+                        focusType="from2"
                         hasMax={true}
                         inputAmount={amountInPair}
                         setInputAmount={setAmountInPair}
@@ -275,6 +295,8 @@ const Dei = () => {
                 <TokenBox
                     type="to"
                     title="To (estimated)"
+                    setFocusType={setFocusType}
+                    focusType="to"
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
                     setActive={null}
@@ -303,7 +325,7 @@ const Dei = () => {
 
             </SwapWrapper>
 
-            <SwapCard title="Minting Fee" value={mintingFee} />
+            <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} />
         </MainWrapper>
 
         <div className='tut-left-wrap'>

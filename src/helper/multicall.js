@@ -18,4 +18,5 @@ const multicall = async (web3, abi, calls, chainId) => {
     return res
 }
 
+export { multicall }
 export default multicall

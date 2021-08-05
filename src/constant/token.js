@@ -69,9 +69,9 @@ export const MuonPreSaleTokens = [
 ]
 
 export const DEITokens = [
-    { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 18, chainId: 4 },
+    { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4 },
     { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x028a8B73b5d9daCc4EE8AF8576123E1f71c64db7", decimals: 18, chainId: 4 },
-    { logo: "/tokens/husd.svg", symbol: "HUSD P", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 18, chainId: 4, pairID: 1 },
+    { logo: "/tokens/husd.svg", symbol: "HUSD P", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4, pairID: 1 },
     { logo: "/tokens/deus.svg", symbol: "DEUS P", address: "0x028a8B73b5d9daCc4EE8AF8576123E1f71c64db7", decimals: 18, chainId: 4, pairID: 1 },
 ]
 

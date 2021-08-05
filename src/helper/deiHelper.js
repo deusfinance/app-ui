@@ -96,7 +96,7 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance =
 
 
 export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
-    console.log(amountIn1, DEI_out_min, collateral_price, expire_block, signature);
+    // console.log(amountIn1, DEI_out_min, collateral_price, expire_block, signature);
     return getHusdPoolContract(web3, chainId)
         .methods
         .mint1t1DEI(amountIn1, DEI_out_min, collateral_price, expire_block, [signature])
@@ -104,11 +104,25 @@ export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, ex
 }
 
 export const collatDei = async (amountIn, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
-    console.log(amountIn, DEI_out_min, collateral_price, expire_block, signature);
+    // console.log(amountIn, DEI_out_min, collateral_price, expire_block, signature);
     return getHusdPoolContract(web3, chainId)
         .methods
         .redeem1t1DEI(amountIn, DEI_out_min, collateral_price, expire_block, [signature])
         .send({ from: account })
+}
+
+export const getRedeemDEUSBalances = async (account, web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .redeemDEUSBalances(account)
+        .call()
+}
+
+export const getRedeemCollateralBalances = async (account, web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .redeemCollateralBalances(account)
+        .call()
 }
 
 export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components'
 import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
 import { Flex, Text } from 'rebass/styled-components';
 import { Base } from '../Button/index'
+import { useRecoilValue } from 'recoil';
+import { redeemDEUSBalancesState, redeemCollateralBalancesState } from '../../../store/dei'
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -83,18 +85,29 @@ const ButtonSwap = styled(ButtonSyncActive)`
 `
 
 const RedeemedToken = ({ title, currencies }) => {
+  let price1 = useRecoilValue(redeemDEUSBalancesState)
+  let price2 = useRecoilValue(redeemCollateralBalancesState)
+
   return (
-    <SmallWrapper>
-      <MyText> {title} </MyText>
-      {currencies.map(({ symbol, logo, index }) => {
-        return <TokenInfo key={index + logo}>
-          <CurrencyLogo symbol={symbol} logo={logo} />
-          <TextWrapper color="text1" ml="7px" mr="9px">{symbol}</TextWrapper>
-          <NumberWrapper color="text1" ml="7px" mr="9px"> 344,342.23244 </NumberWrapper>
-        </TokenInfo>
-      })}
-      <ButtonSwap active={true} bgColor={"grad_dei"} onClick={null}> CLAIM ALL </ButtonSwap>
-    </SmallWrapper>
+    useMemo(() => {
+      return <SmallWrapper>
+        <MyText> {title} </MyText>
+        {currencies.map(({ symbol, logo }, index) => {
+          return <TokenInfo key={index + logo}>
+            <CurrencyLogo symbol={symbol} logo={logo} />
+            
+            <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
+
+            <NumberWrapper color="text1" ml="7px" mr="9px">
+              {index === 0 ? price1 ? price1 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" /> :
+                price2 ? price2 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />}
+            </NumberWrapper>
+            
+          </TokenInfo>
+        })}
+        <ButtonSwap active={true} bgColor={"grad_dei"} onClick={null}> CLAIM ALL </ButtonSwap>
+      </SmallWrapper>
+    }, [title, currencies, price1, price2])
   );
 }
 

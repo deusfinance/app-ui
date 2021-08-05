@@ -25,12 +25,12 @@ import { Type } from '../../../components/App/Text';
 import { isZero } from '../../../constant/number';
 import { redemptionFeeState, collatRatioState, deiPricesState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { useDeiUpdate, useRedeem } from '../../../hooks/useDei';
+import { useDeiUpdateRedeem, useRedeem } from '../../../hooks/useDei';
 import { PlusImg } from '../../../components/App/Dei';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 
 const Dei = () => {
-    useDeiUpdate()
+    useDeiUpdateRedeem()
     const collatRatio = useRecoilValue(collatRatioState)
     const redemptionFee = useRecoilValue(redemptionFeeState)
     const deiPrices = useRecoilValue(deiPricesState)
@@ -195,6 +195,19 @@ const Dei = () => {
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
                 console.log("Swap Failed");
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }, [onRedeem])
+
+    const handleClaim = useCallback(async () => {
+        try {
+            const tx = await onRedeem()
+            if (tx.status) {
+                console.log("claim did");
+            } else {
+                console.log("claim Failed");
             }
         } catch (e) {
             console.error(e)

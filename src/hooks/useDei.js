@@ -5,19 +5,40 @@ import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei, getToWei } from '../helper/formatBalance'
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState } from '../store/dei'
+import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState,
+    redeemDEUSBalancesState, redeemCollateralBalancesState
+} from '../store/dei'
 import {
     getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
-    getBuyBackFee, getHusdPoolData, collatDei
+    getBuyBackFee, getHusdPoolData, collatDei, getRedeemDEUSBalances, getRedeemCollateralBalances
 } from '../helper/deiHelper'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import multicall from '../helper/multicall'
 
 
-export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, collatRatio, validChainId = 1) => {
-    const { account, chainId } = useWeb3React()
+export const useBalances = () => {
     const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { fastRefresh } = useRefresh() // TODO: use veryFastRefresh in the future (3s)
+    const setRedeemDEUSBalances = useSetRecoilState(redeemDEUSBalancesState)
+    const setRedeemCollateralBalances = useSetRecoilState(redeemCollateralBalancesState)
+
+    useEffect(() => {
+        const get = async () => {
+            const DEUSBalance = await getRedeemDEUSBalances(account ,web3, chainId)
+            const collateralBalance = await getRedeemCollateralBalances(account ,web3, chainId)
+            setRedeemDEUSBalances(fromWei(DEUSBalance, 6))
+            setRedeemCollateralBalances(fromWei(collateralBalance, 6))
+        }
+        get()
+    }, [fastRefresh, account, chainId])
+}
+
+export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, collatRatio, validChainId = 1) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
 
     const handleRedeem = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
@@ -41,8 +62,8 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
 }
 
 export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, validChainId = 1) => {
-    const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
 
     const handleMint = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
@@ -68,6 +89,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 export const useHusdPoolData = () => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
+
     const { slowRefresh } = useRefresh()
     const setHusdPoolData = useSetRecoilState(husdPoolDataState)
 
@@ -94,7 +116,6 @@ export const useHusdPoolData = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-
 }
 
 
@@ -200,6 +221,7 @@ export const useRecollatFee = () => {
 
 export const useCollatRatio = () => {
     const web3 = useWeb3()
+
     const { slowRefresh } = useRefresh()
     const setCollatRatio = useSetRecoilState(collatRatioState)
 
@@ -219,6 +241,14 @@ export const useDeiUpdate = () => {
     useMintingFee()
     useRedemptionFee()
     useHusdPoolData()
+}
+
+export const useDeiUpdateRedeem = () => {
+    useCollatRatio()
+    useDeiPrices()
+    useRedemptionFee()
+    useHusdPoolData()
+    useBalances()
 }
 
 export const useRefreshRatio = () => {
@@ -255,8 +285,9 @@ export const useDeiPrices = () => {
 }
 
 export const useDeiInfo = () => {
-    const { slowRefresh } = useRefresh()
     const web3 = useWeb3()
+
+    const { slowRefresh } = useRefresh()
     const [DeiInfo, setDeiInfo] = useState(null)
     useEffect(() => {
         const get = async () => {
@@ -275,8 +306,9 @@ export const useDeiInfo = () => {
 
 
 export const useGetAmountsOut = (from1, from2, amount) => {
-    const { slowRefresh } = useRefresh()
     const web3 = useWeb3()
+
+    const { slowRefresh } = useRefresh()
     const collatRatio = useRecoilValue(collatRatioState)
 
     const [DeiInfo, setDeiInfo] = useState(null)

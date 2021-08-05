@@ -31,3 +31,13 @@ export const husdPoolDataState = atom({
     key: 'husdPoolData',
     default: null,
 });
+
+export const redeemDEUSBalancesState = atom({
+    key: 'redeemDEUSBalances',
+    default: null,
+});
+
+export const redeemCollateralBalancesState = atom({
+    key: 'redeemCollateralBalances',
+    default: null,
+});

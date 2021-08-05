@@ -8,7 +8,6 @@ const CostPriceTitle = styled.span`
 `
 
 export const CostBoxBuyBack = () => {
-
     const costs = makeCostDataBuyBack("....")
 
     return (
@@ -20,12 +19,16 @@ export const CostBoxBuyBack = () => {
 
                         <FeePrice> 
                             <CostPriceTitle> {cost.title1} </CostPriceTitle> 
-                            <span> {cost.value1} </span> 
+                            <span>
+                                {cost.value1 ? cost.value1 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />}
+                            </span>
                         </FeePrice>
 
                         {cost.title2 && cost.value2 && <FeePrice>
                             <CostPriceTitle> {cost.title2} </CostPriceTitle>
-                            <span> {cost.value2} </span> 
+                            <span>
+                                {cost.value2 ? cost.value2 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />}
+                            </span>
                         </FeePrice>}
                         
                     </FeeWrapper>

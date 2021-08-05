@@ -86,7 +86,7 @@ export const useMintingFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return mintingFee ? `${mintingFee / 10000} %` : "-"
+    return mintingFee ? `${mintingFee / 10000} %` : null
 }
 
 export const useBuyBackFee = () => {
@@ -103,7 +103,7 @@ export const useBuyBackFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return buyBackFee ? `${buyBackFee / 10000} %` : "-"
+    return buyBackFee ? `${buyBackFee / 10000} %` : null
 }
 
 export const useRecollatFee = () => {
@@ -120,7 +120,7 @@ export const useRecollatFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return recollatFee ? `${recollatFee / 10000} %` : "-"
+    return recollatFee ? `${recollatFee / 10000} %` : null
 }
 
 export const useCollatRatio = () => {

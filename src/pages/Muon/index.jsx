@@ -246,7 +246,6 @@ const Muon = () => {
     }
 
     return (<>
-
         <SearchBox
             account={account}
             currencies={TokensMap}
@@ -256,6 +255,7 @@ const Muon = () => {
             disableLoading={false}
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
+
         <MainWrapper>
 
             <Image src="/img/swap/deus-muon.svg" my="15px" />
@@ -311,9 +311,8 @@ const Muon = () => {
             </SwapWrapper>
             <RemainingCap remindedAmount={allocation} />
 
-
-
         </MainWrapper>
+
         <div className='tut-left-wrap'>
             <SelectedNetworks />
         </div>

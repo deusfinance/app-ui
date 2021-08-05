@@ -30,9 +30,9 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
 }
 
 export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
-    const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : "-"
-    const rf = redemptionFee ? `${new BigNumber(redemptionFee).dividedBy(10000).toFixed(2)}%` : "-"
-    const pb = poolBalance ? `${formatUnitAmount(fromWei(poolBalance))} HUSD` : "-"
+    const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
+    const rf = redemptionFee ? `${new BigNumber(redemptionFee).dividedBy(10000).toFixed(2)}%` : null
+    const pb = poolBalance ? `${formatUnitAmount(fromWei(poolBalance))} HUSD` : null
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
@@ -46,7 +46,7 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
 }
 
 export const makeCostDataBuyBack = (pool) => {
-    const p = pool ? pool : "-"
+    const p = pool ? pool : null
     return [{
         name: 'EXCHANGE RATES',
         title1: 'USDC: ',

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapWrapper, SwapArrow } from '../../../components/App/Swap';
-import TokenBox from '../../../components/App/Swap/TokenBox';
-import SwapAction from '../../../components/App/Swap/SwapAction';
+import TokenBox from '../../../components/App/Dei/TokenBox';
+import SwapAction from '../../../components/App/Dei/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import { getSwapVsType } from '../../../utils/utils';
@@ -11,33 +11,33 @@ import BigNumber from 'bignumber.js';
 import { fromWei } from '../../../helper/formatBalance';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
-import { useSwap } from '../../../hooks/useSwap';
 import { DEITokens, deiToken } from '../../../constant/token';
 import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
 import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { useLocation } from 'react-router';
+import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import { isZero } from '../../../constant/number';
-import { collatRatioState } from '../../../store/dei';
+import { redemptionFeeState, collatRatioState, deiPricesState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { useDeiUpdate, useMintingFee } from '../../../hooks/useDei';
+import { useDeiUpdate, useRedeem } from '../../../hooks/useDei';
 import { PlusImg } from '../../../components/App/Dei';
+import { RemoveTrailingZero } from '../../../helper/formatBalance';
 
 const Dei = () => {
     useDeiUpdate()
-    const mintingFee = useMintingFee()
+    const collatRatio = useRecoilValue(collatRatioState)
+    const redemptionFee = useRecoilValue(redemptionFeeState)
+    const deiPrices = useRecoilValue(deiPricesState)
 
-    const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [escapedType, setEscapedType] = useState("from")
-    const [slippage, setSlippage] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -45,41 +45,11 @@ const Dei = () => {
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
+    const contractAddress = DEI_POOL_ADDRESS[chainId]
     const [redeemAmount, setRedeemAmount] = useState(0)
 
-    const search = useLocation().search;
-    let inputCurrency = new URLSearchParams(search).get('inputCurrency')
-    let outputCurrency = new URLSearchParams(search).get('outputCurrency')
-
-    inputCurrency = inputCurrency?.toLowerCase() === "eth" ? "0x" : inputCurrency
-    outputCurrency = outputCurrency?.toLowerCase() === "eth" ? "0x" : outputCurrency
-
-    const contractAddress = getContractAddr("multi_swap_contract", chainId)
-
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
-
-    const tokensName = tokens.map(token => token.symbol.toLowerCase())
-
     const tokensMap = {}
-    const pairedTokens = []
-    for (let i = 0; i < DEITokens.length; i++) {
-        const t = DEITokens[i]
-        if (t.pairID) {
-            let j = i + 1
-            for (; j < DEITokens.length; j++) {
-                const tt = DEITokens[j]
-                if (tt.pairID && t.pairID === tt.pairID) {
-                    j++
-                    continue
-                }
-                break
-            }
-            pairedTokens.push(DEITokens.slice(i, j))
-            i = j
-        } else {
-            pairedTokens.push([DEITokens[i]])
-        }
-    }
 
     for (let i = 0; i < tokens.length; i++) {
         const currToken = tokens[i]
@@ -88,59 +58,8 @@ const Dei = () => {
         else tokensMap[address] = currToken
     }
 
-    // const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
-    // ), [tokens])
-
-    // const tokenBalances = useTokenBalances(tokensMap, chainId)
     const tokenBalances = tokensMap
-
     const [TokensMap, setTokensMap] = useState(tokenBalances)
-
-    // if(isAddress())
-    if (inputCurrency && tokensName.indexOf(inputCurrency.toLowerCase()) !== -1) {
-        inputCurrency = getTokenAddr(inputCurrency.toLowerCase(), chainId)
-    }
-
-    if (outputCurrency && tokensName.indexOf(outputCurrency.toLowerCase()) !== -1) {
-        outputCurrency = getTokenAddr(outputCurrency.toLowerCase(), chainId)
-    }
-
-    if (inputCurrency && !TokensMap[inputCurrency]) {
-        inputCurrency = null
-    }
-
-    if (outputCurrency && !TokensMap[outputCurrency]) {
-        outputCurrency = null
-    }
-
-    if (outputCurrency && inputCurrency && outputCurrency === inputCurrency) {
-        outputCurrency = null
-    }
-
-    const deusContract = getTokenAddr("dea", chainId) + "1"
-    let fromAddress = inputCurrency ? inputCurrency : "0x"
-
-    let toAddress = outputCurrency ? outputCurrency : deusContract
-
-
-    if (toAddress === fromAddress) {
-        if (fromAddress === "0x") {
-            if (!inputCurrency) {
-                fromAddress = deusContract
-            }
-            else {
-                toAddress = deusContract
-            }
-        }
-        else if (fromAddress === deusContract) {
-            if (!outputCurrency) {
-                toAddress = "0x"
-            }
-            else {
-                fromAddress = "0x"
-            }
-        }
-    }
 
     let secondaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
     const [swapState, setSwapState] = useState({
@@ -148,12 +67,12 @@ const Dei = () => {
         to: secondaryToken,
     })
 
+    const [focusType, setFocusType] = useState("from1")
     const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
-    const [amountInPair, setAmountInPair] = useState("")
+    const [amountOutPair, setAmountOutPair] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
     const [amountOut, setAmountOut] = useState("")
-    const [minAmountOut, setMinAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const [pairToken, setPairToken] = useState({})
 
@@ -166,12 +85,50 @@ const Dei = () => {
         setIsApproved(null)
     }, [chainId, account, swapState.from]);
 
+
+    useEffect(() => {
+        if (deiPrices) {
+            const { collateral_price, dei_price, deus_price } = deiPrices
+            if (focusType === "from") {
+                // if (isPair) {
+                //     const amount = new BigNumber(amountIn).times(collateral_price).times(100 - collatRatio).div(collatRatio).div(deus_price).toFixed(18)
+                //     setAmountOutPair(amount)
+                // }
+                const amount = new BigNumber(amountIn).times(collateral_price).times(100).div(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18)
+                setAmountOut(RemoveTrailingZero(amount))
+            }
+        }
+    }, [amountIn, redemptionFee, deiPrices]);
+
+    useEffect(() => {
+        const changeToTokens = () => {
+            let primaryToken = null
+            setIsPair(false)
+            if (collatRatio === 100) {
+                primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
+            } else if (collatRatio > 0 && collatRatio < 100) {
+                primaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
+                let secondToken = DEITokens.filter(currToken => {
+                    return currToken.pairID === primaryToken.pairID && currToken.address !== primaryToken.address
+                })[0]
+                setIsPair(true)
+                setPairToken(secondToken)
+            } else if (isZero(collatRatio)) {
+                primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
+            }
+            setSwapState({ ...swapState, to: primaryToken })
+        }
+        if (collatRatio) changeToTokens()
+    }, [collatRatio]);
+
+
     // useEffect(() => {
     //     setIsPreApproved(null)
     //     setIsApproved(false)
     // }, [swapState.from])
 
-    // useEffect(() => { TODO: balances
+    // TODO: balances
+    // useEffect(() => {
     //     setTokensMap(tokenBalances)
     // }, [tokenBalances])
 
@@ -208,34 +165,8 @@ const Dei = () => {
     }, [allowance]) //isPreApproved ?
 
 
-    // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
-    // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
-
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const amount = await getAmountsOut()
-    //         // console.log("swap ", amount);
-    //         if (amountIn === "") setAmountOut("")
-    //         else setAmountOut(fromWei(amount, swapState.to.decimals))
-    //     }
-    //     get()
-
-    //     //eslint-disable-next-line
-    // }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
-
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const amount = await getMinAmountOut()
-    //         // console.log("min swap ", amount);
-    //         setMinAmountOut(fromWei(amount, swapState.to.decimals))
-    //     }
-    //     get()
-
-    //     //eslint-disable-next-line
-    // }, [getMinAmountOut])//replace multiple useState variables with useReducer
-
+    const { onRedeem } = useRedeem(swapState.from, swapState.to, pairToken, amountIn, amountOut, amountOutPair, collatRatio, chainId)
 
 
     const handleApprove = useCallback(async () => {
@@ -257,7 +188,7 @@ const Dei = () => {
 
     const handleSwap = useCallback(async () => {
         try {
-            const tx = await onSwap()
+            const tx = await onRedeem()
             if (tx.status) {
                 console.log("swap did");
                 setAmountIn("")
@@ -268,7 +199,7 @@ const Dei = () => {
         } catch (e) {
             console.error(e)
         }
-    }, [onSwap])
+    }, [onRedeem])
 
     return (<>
         <MainWrapper>
@@ -276,8 +207,10 @@ const Dei = () => {
             <SwapWrapper style={{ marginTop: "25px", }}>
                 <TokenBox
                     type="from"
-                    inputAmount={amountIn}
+                    setFocusType={setFocusType}
+                    focusType="from"
                     hasMax={true}
+                    inputAmount={amountIn}
                     setInputAmount={setAmountIn}
                     setActive={null}
                     currency={swapState.from}
@@ -289,6 +222,8 @@ const Dei = () => {
 
                 <TokenBox
                     type="to"
+                    setFocusType={setFocusType}
+                    focusType="to1"
                     title="To (estimated)"
                     inputAmount={amountOut}
                     setInputAmount={setAmountOut}
@@ -298,19 +233,22 @@ const Dei = () => {
                     fastUpdate={fastUpdate}
                 />
 
-                {<PlusImg src="/img/dei/plus.svg" alt="plus" />}
-
-                {<TokenBox
-                    mt={"-21px"}
-                    type="to"
-                    title="To (estimated)"
-                    inputAmount={amountInPair}
-                    setInputAmount={setAmountInPair}
-                    setActive={null}
-                    currency={pairToken}
-                    TokensMap={TokensMap}
-                    fastUpdate={fastUpdate}
-                />}
+                {isPair && <div>
+                    <PlusImg src="/img/dei/plus.svg" alt="plus" />
+                    <TokenBox
+                        mt={"-21px"}
+                        type="to"
+                        setFocusType={setFocusType}
+                        focusType="to2"
+                        title="To (estimated)"
+                        inputAmount={amountOutPair}
+                        setInputAmount={setAmountOutPair}
+                        setActive={null}
+                        currency={pairToken}
+                        TokensMap={TokensMap}
+                        fastUpdate={fastUpdate}
+                    />
+                </div>}
 
                 <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
@@ -320,6 +258,7 @@ const Dei = () => {
                     isPreApproved={isPreApproved}
                     validNetworks={[1, 4]}
                     isApproved={isApproved}
+                    targetToken={swapState.from}
                     loading={approveLoading}
                     handleApprove={handleApprove}
                     handleSwap={handleSwap}
@@ -331,7 +270,7 @@ const Dei = () => {
 
             </SwapWrapper>
 
-            <SwapCard title="Redeem Fee" value={mintingFee} />
+            <SwapCard title="redemption Fee" value={redemptionFee ? `${redemptionFee} %` : ""} />
 
             {isZero(redeemAmount) && <RedeemedToken
                 title="Redeemed Token ready for claim"

@@ -33,14 +33,10 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
 
 export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const rf = redemptionFee ? `${new BigNumber(redemptionFee).dividedBy(10000).toFixed(2)}%` : null
     const pb = poolBalance ? `${formatUnitAmount(fromWei(poolBalance))} HUSD` : null
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
-    }, {
-        name: 'REDEMPTION FEE',
-        value: rf
     }, {
         name: 'POOL BALANCE',
         value: pb
@@ -104,6 +100,14 @@ export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, ex
     return getHusdPoolContract(web3, chainId)
         .methods
         .mint1t1DEI(amountIn1, DEI_out_min, collateral_price, expire_block, [signature])
+        .send({ from: account })
+}
+
+export const collatDei = async (amountIn, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
+    console.log(amountIn, DEI_out_min, collateral_price, expire_block, signature);
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .redeem1t1DEI(amountIn, DEI_out_min, collateral_price, expire_block, [signature])
         .send({ from: account })
 }
 

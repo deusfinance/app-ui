@@ -27,7 +27,6 @@ import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 
 const Dei = () => {
-    //Recoil hook 
     useDeiUpdate()
     const collatRatio = useRecoilValue(collatRatioState)
     const mintingFee = useRecoilValue(mintingFeeState)
@@ -45,7 +44,6 @@ const Dei = () => {
     const [isPair, setIsPair] = useState(false)
     const contractAddress = DEI_POOL_ADDRESS[chainId]
 
-
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
     const tokensMap = {}
 
@@ -58,33 +56,6 @@ const Dei = () => {
 
     const tokenBalances = tokensMap
     const [TokensMap, setTokensMap] = useState(tokenBalances)
-
-    let inputCurrency = null
-    let outputCurrency = null
-
-    const deaContract = getTokenAddr("dea", chainId)
-
-    let fromAddress = inputCurrency ? inputCurrency : "0x"
-    let toAddress = outputCurrency ? outputCurrency : deaContract
-
-    if (toAddress === fromAddress) {
-        if (fromAddress === "0x") {
-            if (!inputCurrency) {
-                fromAddress = deaContract
-            }
-            else {
-                toAddress = deaContract
-            }
-        }
-        else if (fromAddress === deaContract) {
-            if (!outputCurrency) {
-                toAddress = "0x"
-            }
-            else {
-                fromAddress = "0x"
-            }
-        }
-    }
 
     const [swapState, setSwapState] = useState({
         from: '',
@@ -100,6 +71,7 @@ const Dei = () => {
     const [pairToken, setPairToken] = useState({ address: null })
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
+    
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -124,10 +96,8 @@ const Dei = () => {
     }, [amountIn, mintingFee, deiPrices]);
 
 
-
     useEffect(() => {
         const changeFromTokens = () => {
-            // console.log(collatRatio);
             let primaryToken = null
             setIsPair(false)
             if (collatRatio === 100) {
@@ -144,9 +114,7 @@ const Dei = () => {
             }
             setSwapState({ ...swapState, from: primaryToken })
         }
-        if (collatRatio)
-            changeFromTokens()
-
+        if (collatRatio) changeFromTokens()
     }, [collatRatio]);
 
     // useEffect(() => {
@@ -154,7 +122,8 @@ const Dei = () => {
     //     setIsApproved(false)
     // }, [swapState.from])
 
-    // useEffect(() => { //TODO balances
+    // TODO: balances
+    // useEffect(() => {
     //     setTokensMap(tokenBalances)
     // }, [tokenBalances])
 
@@ -190,31 +159,6 @@ const Dei = () => {
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
     const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, chainId)
-
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const amount = await getAmountsOut()
-    //         // console.log("swap ", amount);
-    //         if (amountIn === "") setAmountOut("")
-    //         else setAmountOut(fromWei(amount, swapState.to.decimals))
-    //     }
-    //     get()
-
-    //     //eslint-disable-next-line
-    // }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
-
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const amount = await getMinAmountOut()
-    //         // console.log("min swap ", amount);
-    //         setMinAmountOut(fromWei(amount, swapState.to.decimals))
-    //     }
-    //     get()
-
-    //     //eslint-disable-next-line
-    // }, [getMinAmountOut])//replace multiple useState variables with useReducer
-
-
 
     const handleApprove = useCallback(async () => {
         try {
@@ -273,7 +217,7 @@ const Dei = () => {
                     fastUpdate={fastUpdate}
                 />
 
-                {isPair && collatRatio !== 100 && collatRatio !== 0 && <div>
+                {isPair && <div>
                     <PlusImg src="/img/dei/plus.svg" alt="plus" />
                     <TokenBox
                         mt={"-21px"}

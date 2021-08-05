@@ -5,16 +5,40 @@ import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei, getToWei } from '../helper/formatBalance'
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState } from '../store/dei'
+import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState } from '../store/dei'
 import {
     getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
-    getBuyBackFee,
-    getHusdPoolData
+    getBuyBackFee, getHusdPoolData, collatDei
 } from '../helper/deiHelper'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import multicall from '../helper/multicall'
 
+
+export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, collatRatio, validChainId = 1) => {
+    const { account, chainId } = useWeb3React()
+    const web3 = useWeb3()
+
+    const handleRedeem = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+        const result = await makeDeiRequest("/redeem-1to1")
+        const { collateral_price, expire_block, signature } = result
+
+        const tx = await collatDei(
+            getToWei(amountIn, fromCurrency.decimals),
+            "0",
+            collateral_price.toString(),
+            expire_block.toString(),
+            signature,
+            account,
+            chainId,
+            web3,
+        )
+        return tx
+    }, [fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, account, chainId, collatRatio, validChainId, web3])
+
+    return { onRedeem: handleRedeem }
+}
 
 export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, validChainId = 1) => {
     const { account, chainId } = useWeb3React()
@@ -113,16 +137,15 @@ export const useRedemptionFee = () => {
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
-    const [redemptionFee, setRedemptionFee] = useState(null)
+    const setRedemptionFee = useSetRecoilState(redemptionFeeState)
 
     useEffect(() => {
         const get = async () => {
             const rf = await getRedemptionFee(web3, chainId)
-            setRedemptionFee(rf)
+            setRedemptionFee(rf / 10000)
         }
         get()
     }, [slowRefresh, account, chainId])
-    return redemptionFee
 }
 
 export const useMintingFee = () => {
@@ -135,7 +158,6 @@ export const useMintingFee = () => {
     useEffect(() => {
         const get = async () => {
             const mf = await getMintingFee(web3, chainId)
-            console.log(mf);
             setMintingFee(mf / 10000)
         }
         get()
@@ -195,6 +217,7 @@ export const useDeiUpdate = () => {
     useCollatRatio()
     useDeiPrices()
     useMintingFee()
+    useRedemptionFee()
     useHusdPoolData()
 }
 

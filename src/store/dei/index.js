@@ -22,6 +22,11 @@ export const mintingFeeState = atom({
     default: null,
 });
 
+export const redemptionFeeState = atom({
+    key: 'redemptionFee',
+    default: null,
+});
+
 export const husdPoolDataState = atom({
     key: 'husdPoolData',
     default: null,

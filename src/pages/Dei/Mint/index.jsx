@@ -31,7 +31,7 @@ const Dei = () => {
     const collatRatio = useRecoilValue(collatRatioState)
     const mintingFee = useRecoilValue(mintingFeeState)
     const deiPrices = useRecoilValue(deiPricesState)
-    const husdPolldata = useRecoilValue(husdPoolDataState)
+    const husdPoolData = useRecoilValue(husdPoolDataState)
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -193,12 +193,12 @@ const Dei = () => {
     }, [onMint])
 
 
-    //loader animation --> needs to fix at the end
-    if (!collatRatio) {
-        return (<div className="loader-wrap">
-            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
-        </div>)
-    }
+    // TODO: loader animation --> needs to fix at the end
+    // if (!collatRatio) {
+    //     return (<div className="loader-wrap">
+    //         {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+    //     </div>)
+    // }
 
     return (<>
         <MainWrapper>

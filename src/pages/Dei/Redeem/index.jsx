@@ -89,11 +89,11 @@ const Dei = () => {
         if (deiPrices) {
             const { collateral_price, dei_price, deus_price } = deiPrices
             if (focusType === "from") {
-                // if (isPair) {
-                //     const amount = new BigNumber(amountIn).times(collateral_price).times(100 - collatRatio).div(collatRatio).div(deus_price).toFixed(18)
-                //     setAmountOutPair(amount)
-                // }
-                const amount = new BigNumber(amountIn).times(collateral_price).times(100).div(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18)
+                if (isPair) {
+                    const amount = new BigNumber(amountIn).times(collateral_price).times(100 - collatRatio).div(collatRatio).div(deus_price).toFixed(18)
+                    setAmountOutPair(amount)
+                }
+                const amount = new BigNumber(amountIn).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18)
                 setAmountOut(RemoveTrailingZero(amount))
             }
         }

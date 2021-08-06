@@ -69,7 +69,7 @@ const ButtonSync = styled(Base).attrs({
   height: "36px",
   borderRadius: "10px",
   marginBottom: "20px",
-})`
+  })`
   font-size:20px;
 `
 
@@ -134,6 +134,7 @@ const RedeemedToken = ({ title, currencies }) => {
             
           </TokenInfo>
         })}
+        
         {(price1 && price2 && (isGt(price1, 0) || isGt(price2, 0))) ? 
           <ButtonSwap active={true} bgColor={"grad_dei"} onClick={handleClaim}> CLAIM ALL </ButtonSwap> :
           <ButtonSyncDeactivated> CLAIM ALL </ButtonSyncDeactivated>}

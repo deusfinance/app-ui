@@ -35,7 +35,7 @@ export const useBalances = () => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
-    const { fastRefresh } = useRefresh() // TODO: use veryFastRefresh in the future (3s)
+    const { rapidRefresh } = useRefresh()
     const setRedeemDEUSBalances = useSetRecoilState(redeemDEUSBalancesState)
     const setRedeemCollateralBalances = useSetRecoilState(redeemCollateralBalancesState)
 
@@ -47,7 +47,7 @@ export const useBalances = () => {
             setRedeemCollateralBalances(fromWei(collateralBalance, 6))
         }
         get()
-    }, [fastRefresh, account, chainId])
+    }, [rapidRefresh, account, chainId])
 }
 
 export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, collatRatio, validChainId = 1) => {

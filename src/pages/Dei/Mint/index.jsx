@@ -12,7 +12,7 @@ import RateBox from '../../../components/App/Swap/RateBox';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
-import { useAllowance } from '../../../hooks/useAllowance';
+import { useAllowance } from '../../../hooks/useDei';
 // import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
 import { getTokenAddr } from '../../../utils/contracts';
@@ -71,7 +71,7 @@ const Dei = () => {
     const [pairToken, setPairToken] = useState({ address: null })
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
-    
+
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -131,31 +131,38 @@ const Dei = () => {
         if (isPreApproved == null) {
             if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
                 setIsPreApproved(null) //doNothing
+                console.log("1");
             } else {
                 if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                     setIsPreApproved(true)
+                    console.log("2");
+
                 } else {
                     setIsPreApproved(false)
+                    console.log("3");
                 }
             }
         } else {
             if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                 setIsApproved(true)
+                console.log("4");
+
             }
         }
         //eslint-disable-next-line 
-    }, [allowance]) //isPreApproved ?
+    }, [allowance, allowancePairToken, isPair]) //isPreApproved ?
 
 
 
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
-    let targetToken = swapState.from
-    useEffect(() => {
+    let targetToken = useMemo(() => {
         if (pairToken && allowance.gt(0) && !allowancePairToken.gt(0)) {
-            targetToken = pairToken
+            return pairToken
         }
-    }, [swapState, pairToken, allowance, allowancePairToken])
+        console.log("Hiii");
+        return swapState.from
+    }, [pairToken, allowance, allowancePairToken, swapState.from])
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
     const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, chainId)
@@ -194,11 +201,11 @@ const Dei = () => {
 
 
     // TODO: loader animation --> needs to fix at the end
-    // if (!collatRatio) {
-    //     return (<div className="loader-wrap">
-    //         {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
-    //     </div>)
-    // }
+    if (!collatRatio) {
+        return (<div className="loader-wrap">
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+        </div>)
+    }
 
     return (<>
         <MainWrapper>
@@ -249,7 +256,7 @@ const Dei = () => {
                     fastUpdate={fastUpdate}
                 />
 
-                <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+                {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}
 
                 <SwapAction
                     bgColor={"grad_dei"}

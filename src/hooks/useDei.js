@@ -5,7 +5,8 @@ import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei, getToWei } from '../helper/formatBalance'
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState,
+import {
+    collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState,
     redeemDEUSBalancesState, redeemCollateralBalancesState
 } from '../store/dei'
 import {
@@ -13,10 +14,14 @@ import {
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
     getBuyBackFee, getHusdPoolData, collatDei, getRedeemDEUSBalances, getRedeemCollateralBalances,
     getClaimAll,
+    mintFractional,
+    mintAlgorithmic,
 } from '../helper/deiHelper'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import multicall from '../helper/multicall'
-
+import { useERC20 } from './useContract'
+import { ethers } from "ethers";
+import { ZERO } from "../constant/number";
 
 export const useClaimAll = (validChainId = 1) => {
     const web3 = useWeb3()
@@ -41,8 +46,8 @@ export const useBalances = () => {
 
     useEffect(() => {
         const get = async () => {
-            const DEUSBalance = await getRedeemDEUSBalances(account ,web3, chainId)
-            const collateralBalance = await getRedeemCollateralBalances(account ,web3, chainId)
+            const DEUSBalance = await getRedeemDEUSBalances(account, web3, chainId)
+            const collateralBalance = await getRedeemCollateralBalances(account, web3, chainId)
             setRedeemDEUSBalances(fromWei(DEUSBalance, 6))
             setRedeemCollateralBalances(fromWei(collateralBalance, 6))
         }
@@ -81,20 +86,62 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
     const handleMint = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        const result = await makeDeiRequest("/mint-1to1")
-        const { collateral_price, expire_block, signature } = result
+        let path = "/mint-algorithmic"
 
-        const tx = await mintDei(
+        if (collatRatio === 100) {
+            path = "/mint-1to1"
+            const result = await makeDeiRequest(path)
+            return await mintDei(
+                getToWei(amountIn1, from1Currency.decimals),
+                "0",
+                result.collateral_price,
+                result.expire_block,
+                result.signature,
+                account,
+                chainId,
+                web3,
+            )
+        } else if (collatRatio > 0) {
+            path = "/mint-fractional"
+            const result = await makeDeiRequest(path)
+            console.log(amountIn1, amountIn2);
+            return await mintFractional(
+                1000000,
+                result.deus_price,
+                result.expire_block,
+                result.signature,
+                getToWei(amountIn1, from1Currency.decimals),
+                getToWei(amountIn2, from2Currency.decimals),
+                "0",
+                account,
+                chainId,
+                web3,
+            )
+        }
+
+        const result = await makeDeiRequest(path)
+        return await mintAlgorithmic(
             getToWei(amountIn1, from1Currency.decimals),
             "0",
-            collateral_price.toString(),
-            expire_block.toString(),
-            signature,
+            result.collateral_price,
+            result.expire_block,
+            result.signature,
             account,
             chainId,
             web3,
         )
-        return tx
+
+        // const tx = await mintDei(
+        //     getToWei(amountIn1, from1Currency.decimals),
+        //     "0",
+        //     result.collateral_price,
+        //     result.expire_block,
+        //     result.signature,
+        //     account,
+        //     chainId,
+        //     web3,
+        // )
+        // return tx
     }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, account, chainId, collatRatio, validChainId, web3])
 
     return { onMint: handleMint }
@@ -339,4 +386,31 @@ export const useGetAmountsOut = (from1, from2, amount) => {
     }, [slowRefresh])
 
     return DeiInfo
+}
+
+
+export const useAllowance = (currency, contractAddress, validChainId) => {
+    const [allowance, setAllowance] = useState(new BigNumber(-1))
+    const { account, chainId } = useWeb3React()
+    const { fastRefresh } = useRefresh()
+    const { address: tokenAddress } = currency
+    const contract = useERC20(tokenAddress)
+
+    useEffect(() => {
+        const fetchAllowance = async () => {
+            if (!tokenAddress) return setAllowance(ZERO)
+            if (validChainId && chainId !== validChainId) setAllowance(ZERO)
+            if (contract === null) setAllowance(ethers.constants.MaxUint256)
+            else if (currency.allowance) { setAllowance(currency.allowance) }
+            else {
+                const res = await contract.methods.allowance(account, contractAddress).call()
+                setAllowance(new BigNumber(res))
+            }
+        }
+        if (account && tokenAddress) {
+            fetchAllowance()
+        }
+    }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh])
+
+    return allowance
 }

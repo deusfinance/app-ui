@@ -96,12 +96,27 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance =
 
 
 export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
-    // console.log(amountIn1, DEI_out_min, collateral_price, expire_block, signature);
     return getHusdPoolContract(web3, chainId)
         .methods
         .mint1t1DEI(amountIn1, DEI_out_min, collateral_price, expire_block, [signature])
         .send({ from: account })
 }
+
+export const mintFractional = async (collateral_price, deus_current_price, expireBlock, signature, collateral_amount, deus_amount, DEI_out_min = "0", account, chainId, web3) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .mintFractionalDEI(collateral_price, deus_current_price, expireBlock, [signature], collateral_amount, deus_amount, DEI_out_min)
+        .send({ from: account })
+}
+
+export const mintAlgorithmic = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .mint1t1DEI(amountIn1, DEI_out_min, collateral_price, expire_block, [signature])
+        .send({ from: account })
+}
+
+
 
 export const collatDei = async (amountIn, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
     // console.log(amountIn, DEI_out_min, collateral_price, expire_block, signature);

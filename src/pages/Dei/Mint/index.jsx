@@ -131,21 +131,17 @@ const Dei = () => {
         if (isPreApproved == null) {
             if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
                 setIsPreApproved(null) //doNothing
-                console.log("1");
             } else {
                 if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                     setIsPreApproved(true)
-                    console.log("2");
 
                 } else {
                     setIsPreApproved(false)
-                    console.log("3");
                 }
             }
         } else {
             if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                 setIsApproved(true)
-                console.log("4");
 
             }
         }
@@ -160,7 +156,6 @@ const Dei = () => {
         if (pairToken && allowance.gt(0) && !allowancePairToken.gt(0)) {
             return pairToken
         }
-        console.log("Hiii");
         return swapState.from
     }, [pairToken, allowance, allowancePairToken, swapState.from])
 

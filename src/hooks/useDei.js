@@ -104,7 +104,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         } else if (collatRatio > 0) {
             path = "/mint-fractional"
             const result = await makeDeiRequest(path)
-            console.log(amountIn1, amountIn2);
             return await mintFractional(
                 1000000,
                 result.deus_price,

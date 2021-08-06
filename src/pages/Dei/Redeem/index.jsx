@@ -90,7 +90,7 @@ const Dei = () => {
             const { collateral_price, dei_price, deus_price } = deiPrices
             if (focusType === "from") {
                 if (isPair) {
-                    const amount = new BigNumber(amountIn).times(collateral_price).times(100 - collatRatio).div(collatRatio).div(deus_price).toFixed(18)
+                    const amount = new BigNumber(amountIn).times(dei_price).times(100 - collatRatio).div(100).div(deus_price).toFixed(18)
                     setAmountOutPair(amount)
                 }
                 const amount = new BigNumber(amountIn).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18)
@@ -189,11 +189,11 @@ const Dei = () => {
         try {
             const tx = await onRedeem()
             if (tx.status) {
-                console.log("swap did");
+                console.log("Redeem did");
                 setAmountIn("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
-                console.log("Swap Failed");
+                console.log("Redeem Failed");
             }
         } catch (e) {
             console.error(e)

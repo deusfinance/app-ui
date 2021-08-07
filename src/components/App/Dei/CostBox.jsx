@@ -51,7 +51,6 @@ export const CostBox = (props) => {
 
     if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling)
     else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, redemptionFee, poolBalance)
-    console.log(costs);
 
     return (
         useMemo(() => {

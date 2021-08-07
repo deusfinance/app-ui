@@ -84,12 +84,17 @@ const Dei = () => {
         if (deiPrices) {
             const { collateral_price, dei_price, deus_price } = deiPrices
             if (focusType === "from") {
-                if (isPair) {
-                    const amount = new BigNumber(amountIn).times(dei_price).times(100 - collatRatio).div(100).div(deus_price).toFixed(18)
-                    setAmountOutPair(amount)
+                if (collatRatio > 0) {
+                    if (isPair) {
+                        const amount = new BigNumber(amountIn).times(100 - collatRatio).div(100).div(deus_price).toFixed(18)
+                        setAmountOutPair(amount)
+                    }
+                    const amount = new BigNumber(amountIn).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18)
+                    setAmountOut(RemoveTrailingZero(amount))
+                } else if (collatRatio === 0) {
+                    const amount = new BigNumber(amountIn).times(100 - collatRatio).div(100).div(deus_price).toFixed(18)
+                    setAmountOut(amount)
                 }
-                const amount = new BigNumber(amountIn).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18)
-                setAmountOut(RemoveTrailingZero(amount))
             }
         }
     }, [amountIn, redemptionFee, deiPrices]);
@@ -268,7 +273,7 @@ const Dei = () => {
 
             <RedeemedToken
                 title="Redeemed Token ready for claim"
-                currencies={[swapState.to, pairToken]}
+                currencies={[secondaryToken, pairToken]}
             />
 
         </MainWrapper>

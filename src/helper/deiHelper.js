@@ -132,10 +132,10 @@ export const redeemFractionalDei = async (collateral_price, deus_price, expire_b
         .send({ from: account })
 }
 
-export const redeemAlgorithmicDei = async (amountIn, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
+export const redeemAlgorithmicDei = async (deus_price, expire_block, signature, amountIn, DEI_out_min = "0", account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .redeemAlgorithmicDEI(amountIn, DEI_out_min, collateral_price, expire_block, [signature])
+        .redeemAlgorithmicDEI(deus_price, expire_block, [signature], amountIn, DEI_out_min)
         .send({ from: account })
 }
 

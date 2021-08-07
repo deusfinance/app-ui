@@ -13,7 +13,7 @@ export const dollarDecimals = 6
 
 export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
     const dp = deiPrice ? `$${new BigNumber(fromWei(deiPrice, dollarDecimals)).toFixed(2)}` : null
-    const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
+    const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
     const pc = poolBalance && ceiling ? formatUnitAmount(fromWei(poolBalance, dollarDecimals)) + ' / ' + formatUnitAmount(fromWei(ceiling, dollarDecimals)) : null
     const av = pc ? formatUnitAmount(fromWei(new BigNumber(poolBalance).minus(ceiling), dollarDecimals)) : null
     return [{
@@ -32,7 +32,7 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
 }
 
 export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
-    const cr = collatRatio ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
+    const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
     const pb = poolBalance ? `${formatUnitAmount(fromWei(poolBalance))} HUSD` : null
     return [{
         name: 'COLLATERAL RATIO',

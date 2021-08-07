@@ -10,7 +10,6 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
 import { DEITokens, deiToken } from '../../../constant/token';
-import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
@@ -113,7 +112,7 @@ const Dei = () => {
             }
             setSwapState({ ...swapState, to: primaryToken })
         }
-        if (collatRatio) changeToTokens()
+        if (collatRatio !== null) changeToTokens()
     }, [collatRatio]);
 
 

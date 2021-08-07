@@ -51,6 +51,7 @@ export const CostBox = (props) => {
 
     if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling)
     else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, redemptionFee, poolBalance)
+    console.log(costs);
 
     return (
         useMemo(() => {
@@ -58,7 +59,7 @@ export const CostBox = (props) => {
                 {costs.map((cost, index) => {
                     return <FeeWrapper key={index}>
                         <FeeTitle> {cost.name} </FeeTitle>
-                        <FeePrice> {cost.value ? cost.value : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />} </FeePrice>
+                        <FeePrice> {cost.value !== null ? cost.value : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />} </FeePrice>
                     </FeeWrapper>
                 })}
             </MainWrapper>

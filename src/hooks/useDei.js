@@ -14,6 +14,7 @@ import {
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
     getBuyBackFee, getHusdPoolData, redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei,
     getRedeemDEUSBalances, getRedeemCollateralBalances, getClaimAll, mintFractional, mintAlgorithmic,
+    getAvailableBuyback
 } from '../helper/deiHelper'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import multicall from '../helper/multicall'
@@ -169,6 +170,50 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
     return { onMint: handleMint }
 }
+
+
+
+export const useAvailableBuyback = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [availableBuyback, setAvailableBuyback] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const bb = await getAvailableBuyback(web3, chainId)
+            setAvailableBuyback(bb)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return availableBuyback
+}
+
+export const useAvailableRecollat = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [availableRecollat, setAvailableRecollat] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getDeiInfo(web3, chainId)
+            let dei_total_supply = res[0]
+            let global_collateral_ratio = res[1]
+            let global_collat_value = res[2]
+
+            let effective_collateral_ratio = (global_collat_value * (1e6)) / dei_total_supply;
+            let available_recollat = global_collateral_ratio * dei_total_supply - (dei_total_supply * effective_collateral_ratio) / (1e6)
+            setAvailableRecollat(available_recollat)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+
+    return availableRecollat
+}
+
 
 export const useHusdPoolData = () => {
     const web3 = useWeb3()

@@ -169,8 +169,6 @@ const Dei = () => {
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
 
-    // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
-    // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
 

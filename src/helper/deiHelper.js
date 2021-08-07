@@ -43,14 +43,23 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     }]
 }
 
-export const makeCostDataBuyBack = (pool) => {
+export const makeCostDataBuyBack = (pool, buyBack, recollateralize) => {
     const p = pool ? pool : null
+    const bb = buyBack ? `${formatUnitAmount(fromWei(buyBack))} HUSD` : null
+    const rc = recollateralize ? `${formatUnitAmount(fromWei(recollateralize))} DEUS` : null
+
     return [{
         name: 'EXCHANGE RATES',
         title1: 'USDC: ',
         value1: '$1.000',
         title2: 'DEI: ',
         value2: '$874.34'
+    }, {
+        name: 'Available value',
+        title1: 'To Buyback: ',
+        value1: bb,
+        title2: 'To Recollateralize: ',
+        value2: rc
     }, {
         name: 'POOL 🌊',
         value1: p,
@@ -166,6 +175,7 @@ export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_ba
     return getDeiContract(web3, chainId)
         .methods
         .dei_info(collat_usd_balance)
+        .call()
 }
 
 export const getCollatDollarBalance = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
@@ -182,7 +192,12 @@ export const getPoolCeiling = async (web3, chainId = ChainMap.RINKEBY) => {
         .call()
 }
 
-
+export const getAvailableBuyback = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .availableExcessCollatDV(collat_usd_balance)
+        .call()
+}
 
 
 export const getRedemptionFee = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {

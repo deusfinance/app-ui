@@ -2,13 +2,17 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { makeCostDataBuyBack } from '../../../helper/deiHelper'
 import { MainWrapper, FeeWrapper, FeeTitle, FeePrice } from './CostBox'
+import { useAvailableBuyback, useAvailableRecollat } from '../../../hooks/useDei'
 
 const CostPriceTitle = styled.span`
-    opacity: 0.5;
+    opacity: 0.55;
 `
 
 export const CostBoxBuyBack = () => {
-    const costs = makeCostDataBuyBack("....")
+    const availableBuyback = useAvailableBuyback()
+    const availableRecollat = useAvailableRecollat()
+
+    let costs = makeCostDataBuyBack("....", availableBuyback, availableRecollat)
 
     return (
         useMemo(() => {
@@ -24,7 +28,7 @@ export const CostBoxBuyBack = () => {
                             </span>
                         </FeePrice>
 
-                        {cost.title2 && cost.value2 && <FeePrice>
+                        {cost.title2 && <FeePrice>
                             <CostPriceTitle> {cost.title2} </CostPriceTitle>
                             <span>
                                 {cost.value2 ? cost.value2 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />}
@@ -34,6 +38,6 @@ export const CostBoxBuyBack = () => {
                     </FeeWrapper>
                 })}
             </MainWrapper>
-        }, [])
+        }, [costs])
     )
 }

@@ -17,6 +17,8 @@ export const formatUnitAmount = (amount, fixed = 1) => {
         return bigAmount.div(1000000).toFixed(fixed).replace(/\.?0+$/, "") + "M"
     } else if (bigAmount.gte(1000)) {
         return bigAmount.div(1000).toFixed(fixed).replace(/\.?0+$/, "") + "K"
+    } if (bigAmount.lt(0)) {
+        return `-${formatUnitAmount(-1 * amount, fixed)}`
     }
 }
 

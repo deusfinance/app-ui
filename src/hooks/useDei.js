@@ -12,10 +12,8 @@ import {
 import {
     getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
-    getBuyBackFee, getHusdPoolData, collatDei, getRedeemDEUSBalances, getRedeemCollateralBalances,
-    getClaimAll,
-    mintFractional,
-    mintAlgorithmic,
+    getBuyBackFee, getHusdPoolData, redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei,
+    getRedeemDEUSBalances, getRedeemCollateralBalances, getClaimAll, mintFractional, mintAlgorithmic,
 } from '../helper/deiHelper'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import multicall from '../helper/multicall'
@@ -48,7 +46,7 @@ export const useBalances = () => {
         const get = async () => {
             const DEUSBalance = await getRedeemDEUSBalances(account, web3, chainId)
             const collateralBalance = await getRedeemCollateralBalances(account, web3, chainId)
-            setRedeemDEUSBalances(fromWei(DEUSBalance, 6))
+            setRedeemDEUSBalances(fromWei(DEUSBalance, 18))
             setRedeemCollateralBalances(fromWei(collateralBalance, 6))
         }
         get()
@@ -61,20 +59,46 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
 
     const handleRedeem = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        const result = await makeDeiRequest("/redeem-1to1")
-        const { collateral_price, expire_block, signature } = result
 
-        const tx = await collatDei(
-            getToWei(amountIn, fromCurrency.decimals),
-            "0",
-            collateral_price.toString(),
-            expire_block.toString(),
-            signature,
-            account,
-            chainId,
-            web3,
-        )
-        return tx
+        if (collatRatio === 100) {
+            const result = await makeDeiRequest("/redeem-1to1")
+            return await redeem1to1Dei(
+                getToWei(amountIn, fromCurrency.decimals),
+                "0",
+                result.collateral_price,
+                result.expire_block,
+                result.signature,
+                account,
+                chainId,
+                web3,
+            )
+        } else if (collatRatio > 0) {
+            const result = await makeDeiRequest("/redeem-fractional")
+            return await redeemFractionalDei(
+                result.collateral_price,
+                result.deus_price,
+                result.expire_block,
+                result.signature,
+                getToWei(amountIn, fromCurrency.decimals),
+                "0",
+                "0",
+                account,
+                chainId,
+                web3,
+            )
+        } else {
+            const result = await makeDeiRequest("/redeem-algorithmic")
+            return await redeemAlgorithmicDei(
+                result.deus_price,
+                result.expire_block,
+                result.signature,
+                getToWei(amountIn, fromCurrency.decimals),
+                "0",
+                account,
+                chainId,
+                web3,
+            )
+        }
     }, [fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, account, chainId, collatRatio, validChainId, web3])
 
     return { onRedeem: handleRedeem }

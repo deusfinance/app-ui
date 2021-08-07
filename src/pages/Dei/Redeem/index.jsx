@@ -5,17 +5,13 @@ import TokenBox from '../../../components/App/Dei/TokenBox';
 import SwapAction from '../../../components/App/Dei/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
-import { getSwapVsType } from '../../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
-import { fromWei } from '../../../helper/formatBalance';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
 import { DEITokens, deiToken } from '../../../constant/token';
 import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
-import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
-import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import LinkBox from '../../../components/App/Dei/LinkBox'

@@ -199,11 +199,8 @@ export const useAvailableRecollat = () => {
 
     useEffect(() => {
         const get = async () => {
-            const res = await getDeiInfo(web3, chainId)
-            let dei_total_supply = res[0]
-            let global_collateral_ratio = res[1]
-            let global_collat_value = res[2]
-
+            const dei_info_result = await getDeiInfo(web3, chainId)
+            let { "0": dei_total_supply, "1": global_collateral_ratio, "2": global_collat_value } = dei_info_result
             let effective_collateral_ratio = (global_collat_value * (1e6)) / dei_total_supply;
             let available_recollat = global_collateral_ratio * dei_total_supply - (dei_total_supply * effective_collateral_ratio) / (1e6)
             setAvailableRecollat(available_recollat)

@@ -5,6 +5,11 @@ import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei, getToWei } from '../helper/formatBalance'
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
+import multicall from '../helper/multicall'
+import { useERC20 } from './useContract'
+import { ethers } from "ethers";
+import { ZERO } from "../constant/number";
 import {
     collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState,
     redeemDEUSBalancesState, redeemCollateralBalancesState
@@ -14,13 +19,44 @@ import {
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
     getBuyBackFee, getHusdPoolData, redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei,
     getRedeemDEUSBalances, getRedeemCollateralBalances, getClaimAll, mintFractional, mintAlgorithmic,
-    getAvailableBuyback
+    getAvailableBuyback, getBuyBackPaused, getRecollateralizePaused
 } from '../helper/deiHelper'
-import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
-import multicall from '../helper/multicall'
-import { useERC20 } from './useContract'
-import { ethers } from "ethers";
-import { ZERO } from "../constant/number";
+
+
+export const useRecollateralizePaused = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [recollateralizePaused, setRecollateralizePaused] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getRecollateralizePaused(web3, chainId)
+            setRecollateralizePaused(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return recollateralizePaused
+}
+
+export const useBuyBackPaused = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [buyBackPaused, setBuyBackPaused] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getBuyBackPaused(web3, chainId)
+            setBuyBackPaused(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return buyBackPaused
+}
+
 
 export const useClaimAll = (validChainId = 1) => {
     const web3 = useWeb3()
@@ -195,7 +231,7 @@ export const useAvailableRecollat = () => {
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
-    const [availableRecollat, setAvailableRecollat] = useState(null)
+    const [availableRecollat, setAvailableRecollat] = useState(null) // TODO: use recoil state
 
     useEffect(() => {
         const get = async () => {

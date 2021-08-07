@@ -45,8 +45,8 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
 
 export const makeCostDataBuyBack = (pool, buyBack, recollateralize) => {
     const p = pool ? pool : null
-    const bb = buyBack ? `${formatUnitAmount(fromWei(buyBack))} HUSD` : null
-    const rc = recollateralize ? `${formatUnitAmount(fromWei(recollateralize))} DEUS` : null
+    const bb = buyBack !== null ? `${formatUnitAmount(fromWei(buyBack))} HUSD` : null
+    const rc = recollateralize !== null  ? `${formatUnitAmount(fromWei(recollateralize))} DEUS` : null
 
     return [{
         name: 'EXCHANGE RATES',
@@ -65,11 +65,6 @@ export const makeCostDataBuyBack = (pool, buyBack, recollateralize) => {
         value1: p,
     }]
 }
-
-export const makeDeiRequest = async (path) => {
-    return fetcher(baseUrl + path)
-}
-
 
 export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
 
@@ -103,6 +98,24 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance =
     return calls
 }
 
+export const makeDeiRequest = async (path) => {
+    return fetcher(baseUrl + path)
+}
+
+
+export const getRecollateralizePaused = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .recollateralizePaused()
+        .call()
+}
+
+export const getBuyBackPaused = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .buyBackPaused()
+        .call()
+}
 
 export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)

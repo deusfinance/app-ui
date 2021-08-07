@@ -1,35 +1,25 @@
-import SearchBox from '../../../components/App/Dei/SearchBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBoxBuyBack } from '../../../components/App/Dei/CostBoxBuyBack'
-import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
 import { SwapTitle, SwapWrapper, SwapArrow } from '../../../components/App/Swap';
 import TokenBox from '../../../components/App/Swap/TokenBox';
-import RouteBox from '../../../components/App/Swap/RouteBox';
-import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
 import SwapAction from '../../../components/App/Swap/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
-import PriceImpact from '../../../components/App/Swap/PriceImpact';
-import { getSwapVsType } from '../../../utils/utils';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
-import { fromWei } from '../../../helper/formatBalance';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
 import { useSwap } from '../../../hooks/useSwap';
-import { DefaultTokens } from '../../../constant/token';
-import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
-import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { useLocation } from 'react-router';
 import { DEITokens } from '../../../constant/token';
-import { useRecollatFee, useBuyBackFee } from '../../../hooks/useDei';
+import { useRecollatFee, useBuyBackFee, useRecollateralizePaused, useBuyBackPaused, 
+    useAvailableBuyback, useAvailableRecollat } from '../../../hooks/useDei';
 
 const TopWrap = styled.div`
     display: flex;
@@ -48,18 +38,24 @@ const MainWrapper = styled.div`
     flex: 1;
     padding-top: 60px;
     padding-bottom: 30px;
-    text-align:center;
+    text-align: center;
+    opacity: ${ ({ deactivated }) => deactivated ? "0.5" : "1" };
+    pointer-events: ${ ({ deactivated }) => deactivated ? "none" : "default" };
 `
+
+const msg = "There is currently no excess value to conduct buybacks."
+const msg2 = "There is currently no excess value to conduct recollateralize."
 
 const Dei = () => {
     const buyBackFee = useBuyBackFee()
     const recollatFee = useRecollatFee()
+    const recollateralizePaused = useRecollateralizePaused();
+    const buyBackPaused = useBuyBackPaused();
+    const availableBuyback = Math.max(useAvailableBuyback(), 0)
+    const availableRecollat = Math.max(useAvailableRecollat(), 0)
 
-    const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
-    const [escapedType, setEscapedType] = useState("from")
-    const [slippage, setSlippage] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -67,18 +63,8 @@ const Dei = () => {
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
 
-    const search = useLocation().search;
-    let inputCurrency = new URLSearchParams(search).get('inputCurrency')
-    let outputCurrency = new URLSearchParams(search).get('outputCurrency')
-
-    inputCurrency = inputCurrency?.toLowerCase() === "eth" ? "0x" : inputCurrency
-    outputCurrency = outputCurrency?.toLowerCase() === "eth" ? "0x" : outputCurrency
-
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
-
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
-
-    const tokensName = tokens.map(token => token.symbol.toLowerCase())
 
     const tokensMap = {}
     const pairedTokens = []
@@ -108,12 +94,7 @@ const Dei = () => {
         else tokensMap[address] = currToken
     }
 
-    // const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
-    // ), [tokens])
-
-    // const tokenBalances = useTokenBalances(tokensMap, chainId)
     const tokenBalances = tokensMap
-
     const [TokensMap, setTokensMap] = useState(tokenBalances)
 
     let recollatPrimaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
@@ -124,17 +105,20 @@ const Dei = () => {
     })
 
     const [hotIn, setHotIn] = useState("")
-    const [amountIn, setAmountIn] = useState("")
-    const [amountInPair, setAmountInPair] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
-    const [amountOut, setAmountOut] = useState("")
-    const [minAmountOut, setMinAmountOut] = useState("")
+    const [amountIn1, setAmountIn1] = useState("")
+    const [amountIn2, setAmountIn2] = useState("")
+    const debouncedAmountIn = useDebounce(amountIn1, 500, hotIn);
+    const [amountOut1, setAmountOut1] = useState("")
+    const [amountOut2, setAmountOut2] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
-    const [pairToken, setPairToken] = useState({})
 
     useEffect(() => {
-        if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
-    }, [amountIn, debouncedAmountIn]);
+        if (amountIn1 === "" || debouncedAmountIn === "") setAmountOut1("")
+    }, [amountIn1, debouncedAmountIn]);
+
+    useEffect(() => {
+        if (amountIn2 === "" || debouncedAmountIn === "") setAmountOut2("")
+    }, [amountIn2, debouncedAmountIn]);
 
     useEffect(() => {
         setIsPreApproved(null)
@@ -170,7 +154,8 @@ const Dei = () => {
     }, [allowance]) //isPreApproved ?
 
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
+    // TODO: make it two: one for 1, one for 2
+    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn1, amountOut1, chainId)
 
 
     const handleApprove = useCallback(async () => {
@@ -195,7 +180,7 @@ const Dei = () => {
             const tx = await onSwap()
             if (tx.status) {
                 console.log("swap did");
-                setAmountIn("")
+                setAmountIn1("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
                 console.log("Swap Failed");
@@ -209,14 +194,14 @@ const Dei = () => {
         <TopWrap>
             <FakeWrapper></FakeWrapper>
 
-            <MainWrapper>
+            <MainWrapper deactivated={buyBackPaused || !availableBuyback}>
                 <Type.XL fontWeight="300">Buyback</Type.XL>
-                <SwapWrapper style={{ marginTop: "25px", }}>
+                <SwapWrapper style={{ marginTop: "25px" }}>
                     <TokenBox
                         type="from"
                         hasMax={true}
-                        inputAmount={amountIn}
-                        setInputAmount={setAmountIn}
+                        inputAmount={amountIn1}
+                        setInputAmount={setAmountIn1}
                         setActive={null}
                         currency={swapState.to}
                         TokensMap={TokensMap}
@@ -228,15 +213,15 @@ const Dei = () => {
                     <TokenBox
                         type="to"
                         title="To (estimated)"
-                        inputAmount={amountOut}
-                        setInputAmount={setAmountOut}
+                        inputAmount={amountOut1}
+                        setInputAmount={setAmountOut1}
                         setActive={null}
                         TokensMap={TokensMap}
                         currency={swapState.from}
                         fastUpdate={fastUpdate}
                     />
 
-                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut1} invert={invert} setInvert={setInvert} />
 
                     <SwapAction
                         bgColor={"grad_dei"}
@@ -249,8 +234,8 @@ const Dei = () => {
                         handleSwap={handleSwap}
                         TokensMap={TokensMap}
                         swapState={swapState}
-                        amountIn={amountIn}
-                        amountOut={amountOut}
+                        amountIn={amountIn1}
+                        amountOut={amountOut1}
                     />
 
                 </SwapWrapper>
@@ -259,14 +244,14 @@ const Dei = () => {
 
             </MainWrapper>
 
-            <MainWrapper>
+            <MainWrapper deactivated={recollateralizePaused || !availableRecollat}>
                 <Type.XL fontWeight="300">Recollateralize</Type.XL>
                 <SwapWrapper style={{ marginTop: "25px", }}>
                     <TokenBox
                         type="from"
                         hasMax={true}
-                        inputAmount={amountIn}
-                        setInputAmount={setAmountIn}
+                        inputAmount={amountIn2}
+                        setInputAmount={setAmountIn2}
                         setActive={null}
                         currency={swapState.from}
                         TokensMap={TokensMap}
@@ -278,15 +263,15 @@ const Dei = () => {
                     <TokenBox
                         type="to"
                         title="To (estimated)"
-                        inputAmount={amountOut}
-                        setInputAmount={setAmountOut}
+                        inputAmount={amountOut2}
+                        setInputAmount={setAmountOut2}
                         setActive={null}
                         TokensMap={TokensMap}
                         currency={swapState.to}
                         fastUpdate={fastUpdate}
                     />
 
-                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut2} invert={invert} setInvert={setInvert} />
 
                     <SwapAction
                         bgColor={"grad_dei"}
@@ -299,8 +284,8 @@ const Dei = () => {
                         handleSwap={handleSwap}
                         TokensMap={TokensMap}
                         swapState={swapState}
-                        amountIn={amountIn}
-                        amountOut={amountOut}
+                        amountIn={amountIn2}
+                        amountOut={amountOut2}
                     />
 
                 </SwapWrapper>

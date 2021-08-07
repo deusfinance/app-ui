@@ -8,10 +8,11 @@ const CostPriceTitle = styled.span`
     opacity: 0.55;
 `
 
-export const CostBoxBuyBack = () => {
-    const availableBuyback = useAvailableBuyback()
-    const availableRecollat = useAvailableRecollat()
+const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
+export const CostBoxBuyBack = () => {
+    let availableBuyback = Math.max(useAvailableBuyback(), 0)
+    let availableRecollat = Math.max(useAvailableRecollat(), 0)
     let costs = makeCostDataBuyBack("....", availableBuyback, availableRecollat)
 
     return (
@@ -23,16 +24,12 @@ export const CostBoxBuyBack = () => {
 
                         <FeePrice> 
                             <CostPriceTitle> {cost.title1} </CostPriceTitle> 
-                            <span>
-                                {cost.value1 ? cost.value1 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />}
-                            </span>
+                            <span> {cost.value1 ? cost.value1 : IMG} </span>
                         </FeePrice>
 
                         {cost.title2 && <FeePrice>
                             <CostPriceTitle> {cost.title2} </CostPriceTitle>
-                            <span>
-                                {cost.value2 ? cost.value2 : <img src="/img/spinner.svg" width="20" height="20" alt="sp" />}
-                            </span>
+                            <span> {cost.value2 ? cost.value2 : IMG} </span>
                         </FeePrice>}
                         
                     </FeeWrapper>

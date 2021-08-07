@@ -8,15 +8,11 @@ import { Type } from '../../../components/App/Text';
 import { Image } from 'rebass/styled-components';
 import TokenBox from '../../../components/App/Dei/TokenBox';
 import SwapAction from '../../../components/App/Dei/SwapAction';
-import RateBox from '../../../components/App/Swap/RateBox';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useDei';
-// import { useGetAmountsOut } from '../../../hooks/useGetAmountsOut';
 import useChain from '../../../hooks/useChain';
-import { getTokenAddr } from '../../../utils/contracts';
-// import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import { PlusImg } from '../../../components/App/Dei';
@@ -122,7 +118,7 @@ const Dei = () => {
     //     setIsApproved(false)
     // }, [swapState.from])
 
-    // TODO: balances
+    // TODO balances
     // useEffect(() => {
     //     setTokensMap(tokenBalances)
     // }, [tokenBalances])

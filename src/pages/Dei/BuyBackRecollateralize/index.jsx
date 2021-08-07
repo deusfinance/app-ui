@@ -18,8 +18,10 @@ import useChain from '../../../hooks/useChain';
 import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEITokens } from '../../../constant/token';
+import { useRecoilValue } from 'recoil';
+import { deiPricesState, availableBuybackState, availableRecollatState } from '../../../store/dei';
 import { useRecollatFee, useBuyBackFee, useRecollateralizePaused, useBuyBackPaused, 
-    useAvailableBuyback, useAvailableRecollat } from '../../../hooks/useDei';
+    useDeiUpdateBuyBack } from '../../../hooks/useDei';
 
 const TopWrap = styled.div`
     display: flex;
@@ -44,15 +46,16 @@ const MainWrapper = styled.div`
 `
 
 const msg = "There is currently no excess value to conduct buybacks."
-const msg2 = "There is currently no excess value to conduct recollateralize."
+const msg2 = "The protocol is properly collateralized."
 
 const Dei = () => {
+    useDeiUpdateBuyBack();
     const buyBackFee = useBuyBackFee()
     const recollatFee = useRecollatFee()
     const recollateralizePaused = useRecollateralizePaused();
     const buyBackPaused = useBuyBackPaused();
-    const availableBuyback = Math.max(useAvailableBuyback(), 0)
-    const availableRecollat = Math.max(useAvailableRecollat(), 0)
+    let availableBuyback = Math.max(useRecoilValue(availableBuybackState), 0)
+    let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -154,7 +157,7 @@ const Dei = () => {
     }, [allowance]) //isPreApproved ?
 
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    // TODO: make it two: one for 1, one for 2
+    // make it two: one for 1, one for 2
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn1, amountOut1, chainId)
 
 

@@ -12,7 +12,7 @@ import { ethers } from "ethers";
 import { ZERO } from "../constant/number";
 import {
     collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState,
-    redeemDEUSBalancesState, redeemCollateralBalancesState
+    redeemDEUSBalancesState, redeemCollateralBalancesState, availableBuybackState, availableRecollatState
 } from '../store/dei'
 import {
     getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
@@ -208,13 +208,12 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 }
 
 
-
 export const useAvailableBuyback = () => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
-    const [availableBuyback, setAvailableBuyback] = useState(null)
+    const setAvailableBuyback = useSetRecoilState(availableBuybackState)
 
     useEffect(() => {
         const get = async () => {
@@ -223,7 +222,6 @@ export const useAvailableBuyback = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return availableBuyback
 }
 
 export const useAvailableRecollat = () => {
@@ -231,7 +229,7 @@ export const useAvailableRecollat = () => {
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
-    const [availableRecollat, setAvailableRecollat] = useState(null) // TODO: use recoil state
+    const setAvailableRecollat = useSetRecoilState(availableRecollatState)
 
     useEffect(() => {
         const get = async () => {
@@ -243,8 +241,6 @@ export const useAvailableRecollat = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-
-    return availableRecollat
 }
 
 
@@ -411,6 +407,12 @@ export const useDeiUpdateRedeem = () => {
     useRedemptionFee()
     useHusdPoolData()
     useBalances()
+}
+
+export const useDeiUpdateBuyBack = () => {
+    useDeiPrices()
+    useAvailableBuyback()
+    useAvailableRecollat()
 }
 
 export const useRefreshRatio = () => {

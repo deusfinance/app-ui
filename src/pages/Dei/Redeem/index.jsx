@@ -126,7 +126,7 @@ const Dei = () => {
     //     setIsApproved(false)
     // }, [swapState.from])
 
-    // TODO: balances
+    // TODO balances
     // useEffect(() => {
     //     setTokensMap(tokenBalances)
     // }, [tokenBalances])

@@ -17,6 +17,16 @@ export const deiPricesState = atom({
     default: null,
 });
 
+export const availableRecollatState = atom({
+    key: 'availableRecollat',
+    default: null,
+});
+
+export const availableBuybackState = atom({
+    key: 'availableBuyback',
+    default: null,
+});
+
 export const mintingFeeState = atom({
     key: 'mintingFee',
     default: null,

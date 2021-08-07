@@ -43,17 +43,18 @@ export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     }]
 }
 
-export const makeCostDataBuyBack = (pool, buyBack, recollateralize) => {
+export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize) => {
+    const dp = deus_price !== null ? `$${new BigNumber(deus_price).toFixed(3)}` : null
     const p = pool ? pool : null
     const bb = buyBack !== null ? `${formatUnitAmount(fromWei(buyBack))} HUSD` : null
     const rc = recollateralize !== null  ? `${formatUnitAmount(fromWei(recollateralize))} DEUS` : null
 
     return [{
         name: 'EXCHANGE RATES',
-        title1: 'USDC: ',
+        title1: 'HUSD: ',
         value1: '$1.000',
-        title2: 'DEI: ',
-        value2: '$874.34'
+        title2: 'DEUS: ',
+        value2: dp
     }, {
         name: 'Available value',
         title1: 'To Buyback: ',

@@ -66,7 +66,6 @@ const Dei = () => {
     const { account } = useWeb3React()
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
-    // const [isPair, setIsPair] = useState(false)
 
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
@@ -116,53 +115,6 @@ const Dei = () => {
     const tokenBalances = tokensMap
 
     const [TokensMap, setTokensMap] = useState(tokenBalances)
-
-    // if(isAddress())
-    if (inputCurrency && tokensName.indexOf(inputCurrency.toLowerCase()) !== -1) {
-        inputCurrency = getTokenAddr(inputCurrency.toLowerCase(), chainId)
-    }
-
-    if (outputCurrency && tokensName.indexOf(outputCurrency.toLowerCase()) !== -1) {
-        outputCurrency = getTokenAddr(outputCurrency.toLowerCase(), chainId)
-    }
-
-    if (inputCurrency && !TokensMap[inputCurrency]) {
-        inputCurrency = null
-    }
-
-    if (outputCurrency && !TokensMap[outputCurrency]) {
-        outputCurrency = null
-    }
-
-    if (outputCurrency && inputCurrency && outputCurrency === inputCurrency) {
-        outputCurrency = null
-    }
-
-    const deaContract = getTokenAddr("dea", chainId)
-
-    let fromAddress = inputCurrency ? inputCurrency : "0x"
-
-    let toAddress = outputCurrency ? outputCurrency : deaContract
-
-
-    if (toAddress === fromAddress) {
-        if (fromAddress === "0x") {
-            if (!inputCurrency) {
-                fromAddress = deaContract
-            }
-            else {
-                toAddress = deaContract
-            }
-        }
-        else if (fromAddress === deaContract) {
-            if (!outputCurrency) {
-                toAddress = "0x"
-            }
-            else {
-                fromAddress = "0x"
-            }
-        }
-    }
 
     let recollatPrimaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
     let recollatSecondaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
@@ -217,39 +169,10 @@ const Dei = () => {
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
 
-
-    const showSearchBox = (active = false, type) => {
-        setEscapedType(type)
-        setActiveSearchBox(active)
-    }
-
     // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
     // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId)
-
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const amount = await getAmountsOut()
-    //         // console.log("swap ", amount);
-    //         if (amountIn === "") setAmountOut("")
-    //         else setAmountOut(fromWei(amount, swapState.to.decimals))
-    //     }
-    //     get()
-
-    //     //eslint-disable-next-line
-    // }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
-
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const amount = await getMinAmountOut()
-    //         // console.log("min swap ", amount);
-    //         setMinAmountOut(fromWei(amount, swapState.to.decimals))
-    //     }
-    //     get()
-
-    //     //eslint-disable-next-line
-    // }, [getMinAmountOut])//replace multiple useState variables with useReducer
 
 
     const handleApprove = useCallback(async () => {

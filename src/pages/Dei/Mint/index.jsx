@@ -54,9 +54,11 @@ const Dei = () => {
         else tokensMap[address] = currToken
     }
 
-    const tokenBalances = tokensMap
-    const [TokensMap, setTokensMap] = useState(tokenBalances)
 
+    // const tokenBalances = tokensMap
+    // const [TokensMap, setTokensMap] = useState(tokenBalances)
+
+    const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
         from: '',
         to: deiToken,

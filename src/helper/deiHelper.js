@@ -109,10 +109,10 @@ export const mintFractional = async (collateral_price, deus_current_price, expir
         .send({ from: account })
 }
 
-export const mintAlgorithmic = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
+export const mintAlgorithmic = async (deus_amount_d18, deus_current_price, DEI_out_min = "0", expire_block, signature, account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .mint1t1DEI(amountIn1, DEI_out_min, collateral_price, expire_block, [signature])
+        .mintAlgorithmicDEI(deus_current_price, expire_block, [signature], deus_amount_d18, DEI_out_min)
         .send({ from: account })
 }
 

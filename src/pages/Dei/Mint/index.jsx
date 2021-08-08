@@ -114,7 +114,7 @@ const Dei = () => {
             }
             setSwapState({ ...swapState, from: primaryToken })
         }
-        if (collatRatio !== null) changeFromTokens()
+        if (collatRatio) changeFromTokens()
     }, [collatRatio]);
 
     // useEffect(() => {
@@ -195,7 +195,8 @@ const Dei = () => {
     }, [onMint])
 
 
-    if (collatRatio === null) {
+    // TODO: loader animation --> needs to fix at the end
+    if (!collatRatio) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)

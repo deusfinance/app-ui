@@ -16,7 +16,7 @@ import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import { PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useGetAmountsOut, useMint, useMintingFee } from '../../../hooks/useDei';
+import { useDeiUpdate, useMintPaused, useMint } from '../../../hooks/useDei';
 import { isZero } from '../../../constant/number';
 import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
@@ -28,6 +28,7 @@ const Dei = () => {
     const mintingFee = useRecoilValue(mintingFeeState)
     const deiPrices = useRecoilValue(deiPricesState)
     const husdPoolData = useRecoilValue(husdPoolDataState)
+    const mintPaused = useMintPaused();
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)

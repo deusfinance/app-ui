@@ -118,6 +118,20 @@ export const getBuyBackPaused = async (web3, chainId = ChainMap.RINKEBY) => {
         .call()
 }
 
+export const getMintPaused = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .mintPaused()
+        .call()
+}
+
+export const getRedeemPaused = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .redeemPaused()
+        .call()
+}
+
 export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods

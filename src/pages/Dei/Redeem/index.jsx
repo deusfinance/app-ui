@@ -20,7 +20,7 @@ import { Type } from '../../../components/App/Text';
 import { isZero } from '../../../constant/number';
 import { redemptionFeeState, collatRatioState, deiPricesState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { useDeiUpdateRedeem, useRedeem } from '../../../hooks/useDei';
+import { useDeiUpdateRedeem, useRedeem, useRedeemPaused } from '../../../hooks/useDei';
 import { PlusImg } from '../../../components/App/Dei';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 
@@ -29,6 +29,7 @@ const Dei = () => {
     const collatRatio = useRecoilValue(collatRatioState)
     const redemptionFee = useRecoilValue(redemptionFeeState)
     const deiPrices = useRecoilValue(deiPricesState)
+    const redeemPaused = useRedeemPaused();
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)

@@ -19,7 +19,7 @@ import {
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
     getBuyBackFee, getHusdPoolData, redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei,
     getRedeemDEUSBalances, getRedeemCollateralBalances, getClaimAll, mintFractional, mintAlgorithmic,
-    getAvailableBuyback, getBuyBackPaused, getRecollateralizePaused
+    getAvailableBuyback, getBuyBackPaused, getRecollateralizePaused, getMintPaused, getRedeemPaused,
 } from '../helper/deiHelper'
 
 
@@ -55,6 +55,40 @@ export const useBuyBackPaused = () => {
         get()
     }, [slowRefresh, account, chainId])
     return buyBackPaused
+}
+
+export const useMintPaused = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [mintPaused, setMintPaused] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getMintPaused(web3, chainId)
+            setMintPaused(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return mintPaused
+}
+
+export const useRedeemPaused = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [redeemPaused, setRedeemPaused] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getRedeemPaused(web3, chainId)
+            setRedeemPaused(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return redeemPaused
 }
 
 

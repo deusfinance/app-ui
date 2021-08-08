@@ -52,8 +52,8 @@ const Dei = () => {
     useDeiUpdateBuyBack();
     const buyBackFee = useBuyBackFee()
     const recollatFee = useRecollatFee()
-    const recollateralizePaused = useRecollateralizePaused();
     const buyBackPaused = useBuyBackPaused();
+    const recollateralizePaused = useRecollateralizePaused();
     let availableBuyback = Math.max(useRecoilValue(availableBuybackState), 0)
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
 

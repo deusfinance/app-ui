@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
 import { SwapWrapper } from '../../../components/App/Swap';
-import TokenBox from '../../../components/App/Swap/TokenBox';
+import TokenBox from '../../../components/App/Dei/TokenBox';
 import SwapAction from '../../../components/App/Swap/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
 import { useWeb3React } from '@web3-react/core';
@@ -61,6 +61,7 @@ const Dei = () => {
     const deiPrices = useRecoilValue(deiPricesState)
     const bonusRate = useBonusRate()
 
+    const [focusType, setFocusType] = useState("from")
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
@@ -132,21 +133,58 @@ const Dei = () => {
         setIsApproved(null)
     }, [chainId, account, swapState.from]);
 
-    useEffect(() => {
-        if (deiPrices) {
-            const { collateral_price, dei_price, deus_price } = deiPrices
-            const amount = new BigNumber(amountIn1).times(deus_price).div(collateral_price).times(1 - (buyBackFee / 1e6)).toFixed(18)
-            setAmountOut1(RemoveTrailingZero(amount))
-        }
-    }, [amountIn1, buyBackFee, deiPrices]);
 
     useEffect(() => {
+        if (focusType === "from") {
+            getAmountsTokens1(amountIn1, null)
+        } if (focusType === "to") {
+            getAmountsTokens1(null, amountOut1)
+        }
+    }, [amountIn1, amountOut1, recollatFee, deiPrices]);
+
+    const getAmountsTokens1 = (in1, out1) => {
         if (deiPrices) {
             const { collateral_price, dei_price, deus_price } = deiPrices
-            const amount = new BigNumber(amountIn2).div(deus_price).times(collateral_price).times(1 - (recollatFee / 1e6)).plus(bonusRate).toFixed(18)
-            setAmountOut2(RemoveTrailingZero(amount))
+
+            let amountIn1 = ""
+            let amountOut1 = ""
+            if (in1) {
+                amountIn1 = in1
+                amountOut1 = RemoveTrailingZero(new BigNumber(in1).times(deus_price).div(collateral_price).times(1 - (buyBackFee / 1e6)).toFixed(18))
+            } if (out1) {
+                amountIn1 = RemoveTrailingZero(new BigNumber(out1).div(deus_price).times(collateral_price).div(1 - (buyBackFee / 1e6)).toFixed(18))
+                amountOut1 = out1
+            }
+            setAmountIn1(amountIn1)
+            setAmountOut1(amountOut1)
         }
-    }, [amountIn2, recollatFee, deiPrices]);
+    }
+
+    useEffect(() => {
+        if (focusType === "from") {
+            getAmountsTokens2(amountIn2, null)
+        } if (focusType === "to") {
+            getAmountsTokens2(null, amountOut2)
+        }
+    }, [amountIn2, amountOut2, recollatFee, deiPrices]);
+
+    const getAmountsTokens2 = (in1, out1) => {
+        if (deiPrices) {
+            const { collateral_price, dei_price, deus_price } = deiPrices
+
+            let amountIn1 = ""
+            let amountOut1 = ""
+            if (in1) {
+                amountIn1 = in1
+                amountOut1 = RemoveTrailingZero(new BigNumber(in1).div(deus_price).times(collateral_price).times(1 - (recollatFee / 1e6)).plus(bonusRate).toFixed(18))
+            } if (out1) {
+                amountIn1 = RemoveTrailingZero(new BigNumber(out1).minus(bonusRate).times(deus_price).div(collateral_price).div(1 - (recollatFee / 1e6)).toFixed(18))
+                amountOut1 = out1
+            }
+            setAmountIn2(amountIn1)
+            setAmountOut2(amountOut1)
+        }
+    }
 
     // useEffect(() => {
     //     setIsPreApproved(null)
@@ -241,6 +279,8 @@ const Dei = () => {
                         <TokenBox
                             type="from"
                             hasMax={true}
+                            setFocusType={setFocusType}
+                            focusType="from"
                             inputAmount={amountIn1}
                             setInputAmount={setAmountIn1}
                             setActive={null}
@@ -254,6 +294,8 @@ const Dei = () => {
                         <TokenBox
                             type="to"
                             title="To (estimated)"
+                            setFocusType={setFocusType}
+                            focusType="to"
                             inputAmount={amountOut1}
                             setInputAmount={setAmountOut1}
                             setActive={null}
@@ -294,6 +336,8 @@ const Dei = () => {
                         <TokenBox
                             type="from"
                             hasMax={true}
+                            setFocusType={setFocusType}
+                            focusType="from"
                             inputAmount={amountIn2}
                             setInputAmount={setAmountIn2}
                             setActive={null}
@@ -307,6 +351,8 @@ const Dei = () => {
                         <TokenBox
                             type="to"
                             title="To (estimated)"
+                            setFocusType={setFocusType}
+                            focusType="to"
                             inputAmount={amountOut2}
                             setInputAmount={setAmountOut2}
                             setActive={null}

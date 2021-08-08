@@ -82,25 +82,41 @@ const Dei = () => {
         setIsApproved(null)
     }, [chainId, account, swapState.from]);
 
-
     useEffect(() => {
+        if (focusType === "from") {
+            getAmountsTokens(amountIn, null, null)
+        } if (focusType === "to1") {
+            getAmountsTokens(null, amountOut, null)
+        } if (focusType === "to2") {
+            getAmountsTokens(null, null, amountOutPair)
+        }
+    }, [amountIn, amountOut, amountOutPair, redemptionFee, deiPrices]);
+
+    const getAmountsTokens = (in1, out1, out2) => {
         if (deiPrices) {
             const { collateral_price, dei_price, deus_price } = deiPrices
-            if (focusType === "from") {
-                if (collatRatio > 0) {
-                    if (isPair) {
-                        const amount = new BigNumber(amountIn).times(100 - collatRatio).div(100).div(deus_price).toFixed(18)
-                        setAmountOutPair(RemoveTrailingZero(amount))
-                    }
-                    const amount = new BigNumber(amountIn).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18)
-                    setAmountOut(RemoveTrailingZero(amount))
-                } else if (collatRatio === 0) {
-                    const amount = new BigNumber(amountIn).times(100 - collatRatio).div(100).div(deus_price).times(1 - (redemptionFee / 100)).toFixed(18)
-                    setAmountOut(RemoveTrailingZero(amount))
-                }
+
+            let amountIn1 = ""
+            let amountOut1 = ""
+            let amountOut2 = ""
+            if (in1) {
+                amountIn1 = in1
+                amountOut1 = RemoveTrailingZero(new BigNumber(amountIn1).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18))
+                amountOut2 = RemoveTrailingZero(new BigNumber(amountIn1).times(100 - collatRatio).div(100).div(deus_price).toFixed(18))
+            } if (out1) {
+                amountIn1 = RemoveTrailingZero(new BigNumber(out1).div(collateral_price).times(100).div(collatRatio).div(1 - (redemptionFee / 100)).toFixed(18))
+                amountOut1 = out1
+                amountOut2 = RemoveTrailingZero(new BigNumber(out1).div(collateral_price).div(collatRatio).div(1 - (redemptionFee / 100)).times(100-collatRatio).div(deus_price).toFixed(18))
+            } if (out2) {
+                amountIn1 = RemoveTrailingZero(new BigNumber(out2).times(100).times(deus_price).div(100-collatRatio).toFixed(18))
+                amountOut1 = RemoveTrailingZero(new BigNumber(out2).times(collateral_price).times(collatRatio).times(1 - (redemptionFee / 100)).div(100-collatRatio).times(deus_price).toFixed(18))
+                amountOut2 = out2
             }
+            setAmountIn(amountIn1)
+            setAmountOut(amountOut1)
+            setAmountOutPair(amountOut2)
         }
-    }, [amountIn, redemptionFee, deiPrices]);
+    }
 
     useEffect(() => {
         const changeToTokens = () => {

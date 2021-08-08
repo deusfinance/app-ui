@@ -57,10 +57,7 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
     const handleRecollat = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
 
-        // TODO:  debug this error
         const result = await makeDeiRequest("/recollat")
-        console.log(fromCurrency.decimals, amountIn, getToWei(amountIn, fromCurrency.decimals))
-
         return await RecollateralizeDEI(
             result.collateral_price,
             result.deus_price,

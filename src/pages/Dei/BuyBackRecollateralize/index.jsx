@@ -24,7 +24,8 @@ import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../Mint'
 import { useRecollateralizePaused, useBuyBackPaused, useDeiUpdateBuyBack } from '../../../hooks/useDei';
 import {
-    availableBuybackState, availableRecollatState, deiPricesState, recollatFeeState, buyBackFeeState } from '../../../store/dei';
+    availableBuybackState, availableRecollatState, deiPricesState, recollatFeeState, 
+    buyBackFeeState } from '../../../store/dei';
 
 const TopWrap = styled.div`
     display: flex;
@@ -133,9 +134,7 @@ const Dei = () => {
     useEffect(() => {
         if (deiPrices) {
             const { collateral_price, dei_price, deus_price } = deiPrices
-            // TODO: add buyBackFee here for amountOut
-            // console.log(buyBackFee / 1000000);
-            const amount = new BigNumber(amountIn1).div(deus_price).times(1).toFixed(18)
+            const amount = new BigNumber(amountIn1).times(deus_price).div(collateral_price).times(1 - (buyBackFee / 1e6)).toFixed(18)
             setAmountOut1(RemoveTrailingZero(amount))
         }
     }, [amountIn1, buyBackFee, deiPrices]);
@@ -143,9 +142,8 @@ const Dei = () => {
     useEffect(() => {
         if (deiPrices) {
             const { collateral_price, dei_price, deus_price } = deiPrices
-            // TODO: add recollatFee here for amountOut
-            // console.log(recollatFee / 1000000);
-            const amount = new BigNumber(amountIn2).div(deus_price).times(1).toFixed(18)
+            const bonus_rate = 0
+            const amount = new BigNumber(amountIn2).div(deus_price).times(collateral_price).times(1 - (recollatFee / 1e6)).plus(bonus_rate).toFixed(18)
             setAmountOut2(RemoveTrailingZero(amount))
         }
     }, [amountIn2, recollatFee, deiPrices]);

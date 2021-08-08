@@ -556,10 +556,7 @@ export const useDeiInfo = () => {
 
 
 export const useGetAmountsOut = (from1, from2, amount) => {
-    const web3 = useWeb3()
-
     const { slowRefresh } = useRefresh()
-    const collatRatio = useRecoilValue(collatRatioState)
 
     const [DeiInfo, setDeiInfo] = useState(null)
     useEffect(() => {

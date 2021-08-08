@@ -66,7 +66,7 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
             result.deus_price,
             result.expire_block,
             result.signature,
-            getToWei(amountIn, fromCurrency.decimals),
+            getToWei(amountIn, fromCurrency.decimals).toString(),
             "0",
             account,
             chainId,

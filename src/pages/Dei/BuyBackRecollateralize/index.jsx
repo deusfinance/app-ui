@@ -22,7 +22,7 @@ import { useRecoilValue } from 'recoil';
 import InfoBox from '../../../components/App/Dei/InfoBox';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../Mint'
-import { useRecollateralizePaused, useBuyBackPaused, useDeiUpdateBuyBack } from '../../../hooks/useDei';
+import { useRecollateralizePaused, useBuyBackPaused, useDeiUpdateBuyBack, useBonusRate } from '../../../hooks/useDei';
 import {
     availableBuybackState, availableRecollatState, deiPricesState, recollatFeeState, 
     buyBackFeeState } from '../../../store/dei';
@@ -59,6 +59,8 @@ const Dei = () => {
     let availableBuyback = Math.max(useRecoilValue(availableBuybackState), 0)
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     const deiPrices = useRecoilValue(deiPricesState)
+    const bonusRate = useBonusRate()
+    // console.log(`bonusRate: ${bonusRate}`);
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -142,8 +144,7 @@ const Dei = () => {
     useEffect(() => {
         if (deiPrices) {
             const { collateral_price, dei_price, deus_price } = deiPrices
-            const bonus_rate = 0
-            const amount = new BigNumber(amountIn2).div(deus_price).times(collateral_price).times(1 - (recollatFee / 1e6)).plus(bonus_rate).toFixed(18)
+            const amount = new BigNumber(amountIn2).div(deus_price).times(collateral_price).times(1 - (recollatFee / 1e6)).plus(bonusRate).toFixed(18)
             setAmountOut2(RemoveTrailingZero(amount))
         }
     }, [amountIn2, recollatFee, deiPrices]);

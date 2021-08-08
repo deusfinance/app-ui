@@ -132,6 +132,15 @@ export const getRedeemPaused = async (web3, chainId = ChainMap.RINKEBY) => {
         .call()
 }
 
+
+
+export const getBonusRate = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .bonus_rate()
+        .call()
+}
+
 export const buyBackDEUS = async (amountIn, collateral_price, deus_price, expire_block, signature, collateral_out_min = "0", account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods

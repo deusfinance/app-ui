@@ -21,7 +21,7 @@ import {
     getBuyBackFee, getHusdPoolData, redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei,
     getRedeemDEUSBalances, getRedeemCollateralBalances, getClaimAll, mintFractional, mintAlgorithmic,
     getAvailableBuyback, getBuyBackPaused, getRecollateralizePaused, getMintPaused, getRedeemPaused,
-    buyBackDEUS, RecollateralizeDEI
+    buyBackDEUS, RecollateralizeDEI, getBonusRate
 } from '../helper/deiHelper'
 
 
@@ -141,6 +141,23 @@ export const useRedeemPaused = () => {
         get()
     }, [slowRefresh, account, chainId])
     return redeemPaused
+}
+
+export const useBonusRate = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [bonusRate, setBonusRate] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getBonusRate(web3, chainId)
+            setBonusRate(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return bonusRate
 }
 
 

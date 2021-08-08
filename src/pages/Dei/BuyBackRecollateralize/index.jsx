@@ -60,7 +60,6 @@ const Dei = () => {
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     const deiPrices = useRecoilValue(deiPricesState)
     const bonusRate = useBonusRate()
-    // console.log(`bonusRate: ${bonusRate}`);
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -181,8 +180,8 @@ const Dei = () => {
         if (availableBuyback !== null) return availableBuyback > 0 ? swapState.from : swapState.to
     }, [availableBuyback])
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onBuyBack } = useBuyBack(swapState.from, swapState.to, amountIn1, amountOut1, chainId)
-    const { onRecollat } = useRecollat(swapState.to, swapState.from, amountIn2, amountOut2, chainId)
+    const { onBuyBack } = useBuyBack(swapState.to, swapState.from, amountIn1, amountOut1, chainId)
+    const { onRecollat } = useRecollat(swapState.from, swapState.to, amountIn2, amountOut2, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -224,7 +223,7 @@ const Dei = () => {
                 setAmountIn2("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
-                console.log("Swap Recollat");
+                console.log("Recollat Recollat");
             }
         } catch (e) {
             console.error(e)
@@ -282,7 +281,7 @@ const Dei = () => {
 
                     </SwapWrapper>
 
-                    <SwapCard title="Swap Fee" value={buyBackFee ? `${buyBackFee / 10000} %` : null} />
+                    <SwapCard title="BuyBack Fee" value={buyBackFee ? `${buyBackFee / 10000} %` : null} />
                 </ContentWrapper>
 
                 {!availableBuyback && <InfoBox title={msg}/>}
@@ -335,7 +334,7 @@ const Dei = () => {
 
                     </SwapWrapper>
 
-                    <SwapCard title="Swap Fee" value={recollatFee ? `${recollatFee / 10000} %` : null} />
+                    <SwapCard title="Recollateralize Fee" value={recollatFee ? `${recollatFee / 10000} %` : null} />
                 </ContentWrapper>
 
                 {!availableRecollat && <InfoBox title={msg2} />}

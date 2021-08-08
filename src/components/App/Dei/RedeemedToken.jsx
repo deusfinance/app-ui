@@ -129,7 +129,7 @@ const RedeemedToken = ({ title, currencies }) => {
             <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
 
             <NumberWrapper color="text1" ml="7px" mr="9px">
-              {index === 0 ? price1 ? price1 : IMG : price2 ? price2 : IMG }
+              {index === 0 ? price1 ? parseFloat(price1).toFixed(3) : IMG : price2 ? parseFloat(price2).toFixed(3) : IMG }
             </NumberWrapper>
             
           </TokenInfo>

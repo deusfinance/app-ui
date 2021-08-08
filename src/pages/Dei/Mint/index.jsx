@@ -17,7 +17,6 @@ import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
 import { PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMintPaused, useMint } from '../../../hooks/useDei';
-import { isZero } from '../../../constant/number';
 import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
@@ -35,8 +34,6 @@ const Dei = () => {
     const deiPrices = useRecoilValue(deiPricesState)
     const husdPoolData = useRecoilValue(husdPoolDataState)
     const mintPaused = useMintPaused();
-
-    const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -85,28 +82,46 @@ const Dei = () => {
     }, [chainId, account, swapState.from]);
 
     useEffect(() => {
+        if (focusType === "from1") {
+            getAmountsTokens(amountIn, null, null)
+        }
+        if (focusType === "from2") {
+            console.log(amountInPair);
+            getAmountsTokens(null, amountInPair, null)
+        }
+        if (focusType === "to") {
+            getAmountsTokens(null, null, amountOut)
+        }
+    }, [amountIn, amountInPair, amountOut, mintingFee, deiPrices]);
+
+    const getAmountsTokens = (in1, in2, out) => {
         if (deiPrices) {
             const { collateral_price, dei_price, deus_price } = deiPrices
-            if (focusType === "from1") {
-                if (isPair) {
-                    const amount = new BigNumber(amountIn).times(collateral_price).times(100 - collatRatio).div(collatRatio).div(deus_price).toFixed(18)
-                    setAmountInPair(amount)
-                }
-                if (collatRatio === 0) {
-                    const amount = new BigNumber(amountIn).times(deus_price).times(1 - (mintingFee / 100)).toFixed(18)
-                    setAmountOut(RemoveTrailingZero(amount))
-                } else {
-                    const amount = new BigNumber(amountIn).times(collateral_price).times(100).div(collatRatio).times(1 - (mintingFee / 100)).toFixed(18)
-                    setAmountOut(RemoveTrailingZero(amount))
-                }
+            const in1Unit = collatRatio === 0 ? deus_price : collateral_price
+
+            const in2Unit = deus_price
+
+            let amountOut = ""
+            let amountIn1 = ""
+            let amountIn2 = ""
+            if (in1) {
+                amountIn1 = in1
+                amountIn2 = (collatRatio > 0 && collatRatio < 100) ? RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).times(100 - collatRatio).div(collatRatio).div(in2Unit), pairToken.decimals) : 0
+                amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
+            } else if (in2) {
+                amountIn2 = in2
+                amountIn1 = RemoveTrailingZero(new BigNumber(amountIn2).times(in2Unit).times(collatRatio).div(100 - collatRatio).div(in1Unit), swapState.from.decimals)
+                amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
+            } if (out) {
+                amountOut = out
+                amountIn1 = RemoveTrailingZero(new BigNumber(out).times(1 + (mintingFee / 100)).times(collatRatio).div(100).div(in1Unit), swapState.from.decimals)
+                amountIn2 = RemoveTrailingZero(new BigNumber(out).times(1 + (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals)
             }
+            setAmountIn(amountIn1)
+            setAmountInPair(amountIn2)
+            setAmountOut(amountOut)
         }
-    }, [amountIn, mintingFee, deiPrices]);
-
-
-    // const getAmountsTokens = (in1, in2, out1, out2) => {
-
-    // }
+    }
 
     useEffect(() => {
         const changeFromTokens = () => {

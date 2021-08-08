@@ -252,7 +252,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             path = "/mint-fractional"
             const result = await makeDeiRequest(path)
             return await mintFractional(
-                1000000,
+                result.collateral_price,
                 result.deus_price,
                 result.expire_block,
                 result.signature,

@@ -92,12 +92,21 @@ const Dei = () => {
                     const amount = new BigNumber(amountIn).times(collateral_price).times(100 - collatRatio).div(collatRatio).div(deus_price).toFixed(18)
                     setAmountInPair(amount)
                 }
-                const amount = new BigNumber(amountIn).times(collateral_price).times(100).div(collatRatio).times(1 - (mintingFee / 100)).toFixed(18)
-                setAmountOut(RemoveTrailingZero(amount))
+                if (collatRatio === 0) {
+                    const amount = new BigNumber(amountIn).times(deus_price).times(1 - (mintingFee / 100)).toFixed(18)
+                    setAmountOut(RemoveTrailingZero(amount))
+                } else {
+                    const amount = new BigNumber(amountIn).times(collateral_price).times(100).div(collatRatio).times(1 - (mintingFee / 100)).toFixed(18)
+                    setAmountOut(RemoveTrailingZero(amount))
+                }
             }
         }
     }, [amountIn, mintingFee, deiPrices]);
 
+
+    // const getAmountsTokens = (in1, in2, out1, out2) => {
+
+    // }
 
     useEffect(() => {
         const changeFromTokens = () => {
@@ -112,12 +121,12 @@ const Dei = () => {
                 })[0]
                 setIsPair(true)
                 setPairToken(secondToken)
-            } else if (isZero(collatRatio)) {
+            } else if (collatRatio === 0) {
                 primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
             }
             setSwapState({ ...swapState, from: primaryToken })
         }
-        if (collatRatio) changeFromTokens()
+        if (collatRatio != null) changeFromTokens()
     }, [collatRatio]);
 
     // useEffect(() => {
@@ -199,7 +208,7 @@ const Dei = () => {
 
 
     // TODO: loader animation --> needs to fix at the end
-    if (!collatRatio) {
+    if (collatRatio === null) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)

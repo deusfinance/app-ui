@@ -23,7 +23,7 @@ import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import styled from 'styled-components';
 
-const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div`
     opacity: ${({ deactivated }) => deactivated ? "0.5" : "1"};
     pointer-events: ${({ deactivated }) => deactivated ? "none" : "default"};
 `

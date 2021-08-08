@@ -37,6 +37,16 @@ export const redemptionFeeState = atom({
     default: null,
 });
 
+export const buyBackFeeState = atom({
+    key: 'buyBackFee',
+    default: null,
+});
+
+export const recollatFeeState = atom({
+    key: 'recollatFee',
+    default: null,
+});
+
 export const husdPoolDataState = atom({
     key: 'husdPoolData',
     default: null,

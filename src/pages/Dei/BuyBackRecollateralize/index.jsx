@@ -21,9 +21,10 @@ import { useBuyBack, useRecollat } from '../../../hooks/useDei';
 import { useRecoilValue } from 'recoil';
 import InfoBox from '../../../components/App/Dei/InfoBox';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
-import { availableBuybackState, availableRecollatState, deiPricesState } from '../../../store/dei';
-import { useRecollatFee, useBuyBackFee, useRecollateralizePaused, useBuyBackPaused, 
-    useDeiUpdateBuyBack } from '../../../hooks/useDei';
+import { ContentWrapper } from '../Mint'
+import { useRecollateralizePaused, useBuyBackPaused, useDeiUpdateBuyBack } from '../../../hooks/useDei';
+import {
+    availableBuybackState, availableRecollatState, deiPricesState, recollatFeeState, buyBackFeeState } from '../../../store/dei';
 
 const TopWrap = styled.div`
     display: flex;
@@ -45,18 +46,13 @@ const MainWrapper = styled.div`
     text-align: center;
 `
 
-const ContentWrapper = styled.div`
-    opacity: ${ ({ deactivated }) => deactivated ? "0.5" : "1"};
-    pointer-events: ${({ deactivated }) => deactivated ? "none" : "default" };
-`
-
 const msg = "There is currently no excess value to conduct buybacks."
 const msg2 = "The protocol is properly collateralized."
 
 const Dei = () => {
     useDeiUpdateBuyBack();
-    const buyBackFee = useBuyBackFee()
-    const recollatFee = useRecollatFee()
+    const buyBackFee = useRecoilValue(buyBackFeeState)
+    const recollatFee = useRecoilValue(recollatFeeState)
     const buyBackPaused = useBuyBackPaused();
     const recollateralizePaused = useRecollateralizePaused();
     let availableBuyback = Math.max(useRecoilValue(availableBuybackState), 0)
@@ -287,7 +283,7 @@ const Dei = () => {
 
                     </SwapWrapper>
 
-                    <SwapCard title="Swap Fee" value={`${buyBackFee / 10000} %`} />
+                    <SwapCard title="Swap Fee" value={buyBackFee ? `${buyBackFee / 10000} %` : null} />
                 </ContentWrapper>
 
                 {!availableBuyback && <InfoBox title={msg}/>}
@@ -340,7 +336,7 @@ const Dei = () => {
 
                     </SwapWrapper>
 
-                    <SwapCard title="Swap Fee" value={`${recollatFee / 10000} %`} />
+                    <SwapCard title="Swap Fee" value={recollatFee ? `${recollatFee / 10000} %` : null} />
                 </ContentWrapper>
 
                 {!availableRecollat && <InfoBox title={msg2} />}

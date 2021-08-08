@@ -24,11 +24,7 @@ import { useDeiUpdateRedeem, useRedeem, useRedeemPaused } from '../../../hooks/u
 import { PlusImg } from '../../../components/App/Dei';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import styled from 'styled-components';
-
-const ContentWrapper = styled.div`
-    opacity: ${({ deactivated }) => deactivated ? "0.5" : "1"};
-    pointer-events: ${({ deactivated }) => deactivated ? "none" : "default"};
-`
+import { ContentWrapper } from '../Mint'
 
 const Dei = () => {
     useDeiUpdateRedeem()

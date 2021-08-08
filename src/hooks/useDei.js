@@ -12,7 +12,8 @@ import { ethers } from "ethers";
 import { ZERO } from "../constant/number";
 import {
     collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState,
-    redeemDEUSBalancesState, redeemCollateralBalancesState, availableBuybackState, availableRecollatState
+    redeemDEUSBalancesState, redeemCollateralBalancesState, availableBuybackState, availableRecollatState,
+    buyBackFeeState, recollatFeeState
 } from '../store/dei'
 import {
     getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
@@ -433,7 +434,7 @@ export const useBuyBackFee = () => {
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
-    const [buyBackFee, setBuyBackFee] = useState(null)
+    const setBuyBackFee = useSetRecoilState(buyBackFeeState)
 
     useEffect(() => {
         const get = async () => {
@@ -442,7 +443,6 @@ export const useBuyBackFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return buyBackFee ? buyBackFee : null
 }
 
 export const useRecollatFee = () => {
@@ -450,7 +450,7 @@ export const useRecollatFee = () => {
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
-    const [recollatFee, setRecollatFee] = useState(null)
+    const setRecollatFee = useSetRecoilState(recollatFeeState)
 
     useEffect(() => {
         const get = async () => {
@@ -459,7 +459,6 @@ export const useRecollatFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return recollatFee ? recollatFee : null
 }
 
 export const useCollatRatio = () => {
@@ -498,6 +497,8 @@ export const useDeiUpdateBuyBack = () => {
     useDeiPrices()
     useAvailableBuyback()
     useAvailableRecollat()
+    useBuyBackFee()
+    useRecollatFee()
 }
 
 export const useRefreshRatio = () => {

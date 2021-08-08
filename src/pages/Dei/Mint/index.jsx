@@ -21,7 +21,6 @@ import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../st
 import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 
-
 const Dei = () => {
     useDeiUpdate()
     const collatRatio = useRecoilValue(collatRatioState)
@@ -46,7 +45,6 @@ const Dei = () => {
         if (tokensMap[address]) tokensMap[address + pairID] = currToken
         else tokensMap[address] = currToken
     }
-
 
     // const tokenBalances = tokensMap
     // const [TokensMap, setTokensMap] = useState(tokenBalances)

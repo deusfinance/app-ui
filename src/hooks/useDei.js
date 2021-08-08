@@ -25,6 +25,7 @@ import {
     buyBackDEUS, RecollateralizeDEI, getBonusRate
 } from '../helper/deiHelper'
 import { ChainMap } from '../constant/web3'
+import { blockNumberState } from '../store/wallet'
 
 
 
@@ -425,7 +426,7 @@ export const useBalances = () => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
-    const { rapidRefresh } = useRefresh()
+    const blockNumber = useRecoilValue(blockNumberState)
     const setRedeemDEUSBalances = useSetRecoilState(redeemDEUSBalancesState)
     const setRedeemCollateralBalances = useSetRecoilState(redeemCollateralBalancesState)
 
@@ -436,8 +437,11 @@ export const useBalances = () => {
             setRedeemDEUSBalances(fromWei(DEUSBalance, 18))
             setRedeemCollateralBalances(fromWei(collateralBalance, 6))
         }
-        get()
-    }, [rapidRefresh, account, chainId])
+        if (blockNumber % 3 === 0) {
+            console.log(blockNumber);
+            get()
+        }
+    }, [blockNumber, account, chainId])
 }
 
 //DEP

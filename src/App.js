@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Web3ReactManager from './components/App/Web3ReactManager'
 import Navbar from './components/common/Navbar/Navbar'
+import Updater from './components/common/Updater'
 import { LoopCircleLoading } from 'react-loadingg'
 import { ToastContainer } from 'react-toastify'
 import { RefreshContextProvider } from './context/RefreshContext'
@@ -45,6 +46,7 @@ function App() {
         <Web3ReactManager>
           <RefreshContextProvider>
             <RecoilRoot>
+              <Updater />
               <Navbar />
               <div id="blur-pop"></div>
               <Announcements />

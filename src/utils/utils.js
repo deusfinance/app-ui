@@ -21,7 +21,8 @@ export const formatUnitAmount = (amount, fixed = 1) => {
         return `-${formatUnitAmount(-1 * amount, fixed)}`
     } else if (bigAmount.eq(0)) {
         return "0"
-    }
+    } else
+        return bigAmount.toFixed(fixed)
 }
 
 export const formatBalance3 = (balance = null, fixed = 5) => {

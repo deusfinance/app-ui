@@ -33,7 +33,7 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
 
 export const makeCostDataRedeem = (collatRatio, redemptionFee, poolBalance) => {
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pb = poolBalance ? `${formatUnitAmount(fromWei(poolBalance))} HUSD` : null
+    const pb = poolBalance !== null ? `${formatUnitAmount(fromWei(poolBalance))} HUSD` : null
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
@@ -132,6 +132,15 @@ export const getRedeemPaused = async (web3, chainId = ChainMap.RINKEBY) => {
         .call()
 }
 
+
+
+export const getBonusRate = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .bonus_rate()
+        .call()
+}
+
 export const buyBackDEUS = async (amountIn, collateral_price, deus_price, expire_block, signature, collateral_out_min = "0", account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
@@ -142,7 +151,7 @@ export const buyBackDEUS = async (amountIn, collateral_price, deus_price, expire
 export const RecollateralizeDEI = async (collateral_price, deus_price, expire_block, signature, amountIn, deus_out_min = "0", account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .RecollateralizeDEI([collateral_price, deus_price, expire_block, [signature], amountIn, deus_out_min])
+        .recollateralizeDEI([collateral_price, deus_price, expire_block, [signature], amountIn, deus_out_min])
         .send({ from: account })
 }
 

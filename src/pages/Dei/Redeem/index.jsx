@@ -90,13 +90,13 @@ const Dei = () => {
                 if (collatRatio > 0) {
                     if (isPair) {
                         const amount = new BigNumber(amountIn).times(100 - collatRatio).div(100).div(deus_price).toFixed(18)
-                        setAmountOutPair(amount)
+                        setAmountOutPair(RemoveTrailingZero(amount))
                     }
                     const amount = new BigNumber(amountIn).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18)
                     setAmountOut(RemoveTrailingZero(amount))
                 } else if (collatRatio === 0) {
-                    const amount = new BigNumber(amountIn).times(100 - collatRatio).div(100).div(deus_price).toFixed(18)
-                    setAmountOut(amount)
+                    const amount = new BigNumber(amountIn).times(100 - collatRatio).div(100).div(deus_price).times(1 - (redemptionFee / 100)).toFixed(18)
+                    setAmountOut(RemoveTrailingZero(amount))
                 }
             }
         }
@@ -273,7 +273,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="redemption Fee" value={redemptionFee ? `${redemptionFee} %` : ""} />
+                <SwapCard title="Redemption Fee" value={redemptionFee ? `${redemptionFee} %` : ""} />
 
                 <RedeemedToken
                     title="Redeemed Token ready for claim"

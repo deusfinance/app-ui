@@ -285,8 +285,8 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         const result = await makeDeiRequest(path)
         return await mintAlgorithmic(
             getToWei(amountIn1, from1Currency.decimals),
+            result.deus_price,
             "0",
-            result.collateral_price,
             result.expire_block,
             result.signature,
             account,
@@ -294,17 +294,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             web3,
         )
 
-        // const tx = await mintDei(
-        //     getToWei(amountIn1, from1Currency.decimals),
-        //     "0",
-        //     result.collateral_price,
-        //     result.expire_block,
-        //     result.signature,
-        //     account,
-        //     chainId,
-        //     web3,
-        // )
-        // return tx
     }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, account, chainId, collatRatio, validChainId, web3])
 
     return { onMint: handleMint }

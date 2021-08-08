@@ -49,6 +49,11 @@ export const recollatFeeState = atom({
 
 export const husdPoolDataState = atom({
     key: 'husdPoolData',
+    default: {},
+});
+
+export const redeemBalances = atom({
+    key: 'redeemBalances',
     default: null,
 });
 

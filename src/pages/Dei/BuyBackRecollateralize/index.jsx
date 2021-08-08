@@ -21,11 +21,9 @@ import { useBuyBack, useRecollat } from '../../../hooks/useDei';
 import { useRecoilValue } from 'recoil';
 import InfoBox from '../../../components/App/Dei/InfoBox';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
-import { ContentWrapper } from '../Mint'
-import { useRecollateralizePaused, useBuyBackPaused, useDeiUpdateBuyBack, useBonusRate } from '../../../hooks/useDei';
-import {
-    availableBuybackState, availableRecollatState, deiPricesState, recollatFeeState, 
-    buyBackFeeState } from '../../../store/dei';
+import { ContentWrapper } from '../../../components/App/Dei';
+import { useDeiUpdateBuyBack } from '../../../hooks/useDei';
+import { availableRecollatState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 
 const TopWrap = styled.div`
     display: flex;
@@ -52,14 +50,27 @@ const msg2 = "The protocol is properly collateralized."
 
 const Dei = () => {
     useDeiUpdateBuyBack();
-    const buyBackFee = useRecoilValue(buyBackFeeState)
-    const recollatFee = useRecoilValue(recollatFeeState)
-    const buyBackPaused = useBuyBackPaused();
-    const recollateralizePaused = useRecollateralizePaused();
-    let availableBuyback = Math.max(useRecoilValue(availableBuybackState), 0)
-    let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     const deiPrices = useRecoilValue(deiPricesState)
-    const bonusRate = useBonusRate()
+    const {
+        bonus_rate: bonusRate,
+        buyback_fee: buyBackFee,
+        recollat_fee: recollatFee,
+        availableExcessCollatDV,
+        buyBackPaused,
+        recollateralizePaused
+    } = useRecoilValue(husdPoolDataState)
+
+    // console.log(availableExcessCollatDV);
+    // const buyBackFee = useRecoilValue(buyBackFeeState)
+    // console.log(buyBackFee);
+    // const recollatFee = useRecoilValue(recollatFeeState)
+    // const buyBackPaused = useBuyBackPaused();
+    // const bonusRate = useBonusRate()
+    // const recollateralizePaused = useRecollateralizePaused();
+    // let availableBuyback = Math.max(useRecoilValue(availableBuybackState), 0)
+
+    let availableBuyback = Math.max(availableExcessCollatDV, 0)
+    let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
 
     const [focusType, setFocusType] = useState("from")
     const [invert, setInvert] = useState(false)
@@ -326,7 +337,7 @@ const Dei = () => {
                     <SwapCard title="BuyBack Fee" value={buyBackFee ? `${buyBackFee / 10000} %` : null} />
                 </ContentWrapper>
 
-                {!availableBuyback && <InfoBox title={msg}/>}
+                {!availableBuyback && <InfoBox title={msg} />}
             </MainWrapper>
 
             <MainWrapper>

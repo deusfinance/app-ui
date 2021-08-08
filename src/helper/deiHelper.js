@@ -47,7 +47,7 @@ export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize) 
     const dp = deus_price !== null ? `$${new BigNumber(deus_price).toFixed(3)}` : null
     const p = pool ? pool : null
     const bb = buyBack !== null ? `${formatUnitAmount(fromWei(buyBack))} HUSD` : null
-    const rc = recollateralize !== null  ? `${formatUnitAmount(fromWei(recollateralize))} DEUS` : null
+    const rc = recollateralize !== null ? `${formatUnitAmount(fromWei(recollateralize))} DEUS` : null
 
     return [{
         name: 'EXCHANGE RATES',
@@ -67,13 +67,18 @@ export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize) 
     }]
 }
 
-export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance, account) => {
 
-    const calls = [
+    return [
         {
             address: HUSD_POOL_ADDRESS[chainId],
             name: 'collatDollarBalance',
             params: [collat_usd_balance],
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'availableExcessCollatDV',
+            params: [collat_usd_balance]
         },
         {
             address: HUSD_POOL_ADDRESS[chainId],
@@ -95,51 +100,41 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance =
             address: HUSD_POOL_ADDRESS[chainId],
             name: 'recollat_fee',
         },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'recollateralizePaused',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'buyBackPaused',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'mintPaused',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'redeemPaused',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'bonus_rate',
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'redeemDEUSBalances',
+            params: [account]
+        },
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
+            name: 'redeemCollateralBalances',
+            params: [account]
+        },
+
     ]
-    return calls
+
 }
 
-export const makeDeiRequest = async (path) => {
-    return fetcher(baseUrl + path)
-}
-
-
-export const getRecollateralizePaused = async (web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3, chainId)
-        .methods
-        .recollateralizePaused()
-        .call()
-}
-
-export const getBuyBackPaused = async (web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3, chainId)
-        .methods
-        .buyBackPaused()
-        .call()
-}
-
-export const getMintPaused = async (web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3, chainId)
-        .methods
-        .mintPaused()
-        .call()
-}
-
-export const getRedeemPaused = async (web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3, chainId)
-        .methods
-        .redeemPaused()
-        .call()
-}
-
-
-
-export const getBonusRate = async (web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3, chainId)
-        .methods
-        .bonus_rate()
-        .call()
-}
 
 export const buyBackDEUS = async (amountIn, collateral_price, deus_price, expire_block, signature, collateral_out_min = "0", account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
@@ -176,8 +171,6 @@ export const mintAlgorithmic = async (deus_amount_d18, deus_current_price, DEI_o
         .send({ from: account })
 }
 
-
-
 export const redeem1to1Dei = async (amountIn, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
@@ -199,22 +192,6 @@ export const redeemAlgorithmicDei = async (deus_price, expire_block, signature, 
         .send({ from: account })
 }
 
-
-
-export const getRedeemDEUSBalances = async (account, web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3, chainId)
-        .methods
-        .redeemDEUSBalances(account)
-        .call()
-}
-
-export const getRedeemCollateralBalances = async (account, web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3, chainId)
-        .methods
-        .redeemCollateralBalances(account)
-        .call()
-}
-
 export const getClaimAll = async (account, web3, chainId = ChainMap.RINKEBY) => {
     return getHusdPoolContract(web3, chainId)
         .methods
@@ -228,36 +205,6 @@ export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_ba
         .dei_info(collat_usd_balance)
         .call()
 }
-
-export const getCollatDollarBalance = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
-    return getHusdPoolContract(web3)
-        .methods
-        .collatDollarBalance(collat_usd_balance)
-        .call()
-}
-
-export const getPoolCeiling = async (web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3)
-        .methods
-        .pool_ceiling()
-        .call()
-}
-
-export const getAvailableBuyback = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
-    return getHusdPoolContract(web3)
-        .methods
-        .availableExcessCollatDV(collat_usd_balance)
-        .call()
-}
-
-
-export const getRedemptionFee = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
-    return getHusdPoolContract(web3)
-        .methods
-        .redemption_fee()
-        .call()
-}
-
 export const getCollatRatio = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
     return getDeiContract(web3, chainId)
         .methods
@@ -265,6 +212,103 @@ export const getCollatRatio = async (web3, chainId = ChainMap.RINKEBY, collat_us
         .call()
 }
 
+//Deprecated
+export const makeDeiRequest = async (path) => {
+    return fetcher(baseUrl + path)
+}
+
+
+//Deprecated
+export const getRecollateralizePaused = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .recollateralizePaused()
+        .call()
+}
+
+//Deprecated
+export const getBuyBackPaused = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .buyBackPaused()
+        .call()
+}
+
+//Deprecated
+export const getMintPaused = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .mintPaused()
+        .call()
+}
+
+//Deprecated
+export const getRedeemPaused = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .redeemPaused()
+        .call()
+}
+
+
+//Deprecated
+export const getBonusRate = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .bonus_rate()
+        .call()
+}
+
+//Deprecated
+export const getRedeemDEUSBalances = async (account, web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .redeemDEUSBalances(account)
+        .call()
+}
+
+//Deprecated
+export const getRedeemCollateralBalances = async (account, web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .redeemCollateralBalances(account)
+        .call()
+}
+
+//Deprecated
+export const getCollatDollarBalance = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .collatDollarBalance(collat_usd_balance)
+        .call()
+}
+
+//Deprecated
+export const getPoolCeiling = async (web3, chainId = ChainMap.RINKEBY) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .pool_ceiling()
+        .call()
+}
+
+//Deprecated
+export const getAvailableBuyback = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .availableExcessCollatDV(collat_usd_balance)
+        .call()
+}
+
+//Deprecated
+export const getRedemptionFee = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+    return getHusdPoolContract(web3)
+        .methods
+        .redemption_fee()
+        .call()
+}
+
+
+//Deprecated
 export const getMintingFee = async (web3, chainId = ChainMap.RINKEBY) => {
     return getHusdPoolContract(web3)
         .methods
@@ -272,6 +316,7 @@ export const getMintingFee = async (web3, chainId = ChainMap.RINKEBY) => {
         .call()
 }
 
+//Deprecated
 export const getBuyBackFee = async (web3, chainId = ChainMap.RINKEBY) => {
     return getHusdPoolContract(web3)
         .methods
@@ -279,6 +324,7 @@ export const getBuyBackFee = async (web3, chainId = ChainMap.RINKEBY) => {
         .call()
 }
 
+//Deprecated
 export const getRecollatFee = async (web3, chainId = ChainMap.RINKEBY) => {
     return getHusdPoolContract(web3)
         .methods

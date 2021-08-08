@@ -15,25 +15,18 @@ import { useAllowance } from '../../../hooks/useDei';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
-import { PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useMintPaused, useMint } from '../../../hooks/useDei';
-import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState } from '../../../store/dei';
+import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
+import { useDeiUpdate, useMint } from '../../../hooks/useDei';
+import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
-import styled from 'styled-components';
 
-export const ContentWrapper = styled.div`
-    opacity: ${({ deactivated }) => deactivated ? "0.5" : "1"};
-    pointer-events: ${({ deactivated }) => deactivated ? "none" : "default"};
-`
 
 const Dei = () => {
     useDeiUpdate()
     const collatRatio = useRecoilValue(collatRatioState)
-    const mintingFee = useRecoilValue(mintingFeeState)
+    const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const deiPrices = useRecoilValue(deiPricesState)
-    const husdPoolData = useRecoilValue(husdPoolDataState)
-    const mintPaused = useMintPaused();
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -65,10 +58,9 @@ const Dei = () => {
     })
 
     const [focusType, setFocusType] = useState("from1")
-    const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
     const [amountInPair, setAmountInPair] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
+    const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
     const [pairToken, setPairToken] = useState({ address: null })
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
@@ -77,11 +69,6 @@ const Dei = () => {
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
-
-    useEffect(() => {
-        setIsPreApproved(null)
-        setIsApproved(null)
-    }, [chainId, account, swapState.from]);
 
     useEffect(() => {
         if (focusType === "from1") {
@@ -96,11 +83,11 @@ const Dei = () => {
         }
     }, [amountIn, amountInPair, amountOut, mintingFee, deiPrices]);
 
+
     const getAmountsTokens = (in1, in2, out) => {
         if (deiPrices) {
-            const { collateral_price, dei_price, deus_price } = deiPrices
+            const { collateral_price, deus_price } = deiPrices
             const in1Unit = collatRatio === 0 ? deus_price : collateral_price
-
             const in2Unit = deus_price
 
             let amountOut = ""
@@ -146,15 +133,11 @@ const Dei = () => {
         if (collatRatio != null) changeFromTokens()
     }, [collatRatio]);
 
-    // useEffect(() => {
-    //     setIsPreApproved(null)
-    //     setIsApproved(false)
-    // }, [swapState.from])
 
-    // TODO balances
-    // useEffect(() => {
-    //     setTokensMap(tokenBalances)
-    // }, [tokenBalances])
+    useEffect(() => {
+        setIsPreApproved(null)
+        setIsApproved(null)
+    }, [chainId, account, swapState.from]);
 
     useEffect(() => {
         if (isPreApproved == null) {
@@ -179,8 +162,6 @@ const Dei = () => {
 
 
 
-    // const { getAmountsOut } = useGetAmountsOut(swapState.from, swapState.to, debouncedAmountIn, chainId)
-    // const { getAmountsOut: getMinAmountOut } = useGetAmountsOut(swapState.from, swapState.to, 0.001, chainId)
     let targetToken = useMemo(() => {
         if (pairToken && allowance.gt(0) && !allowancePairToken.gt(0)) {
             return pairToken
@@ -225,7 +206,7 @@ const Dei = () => {
 
 
     // TODO: loader animation --> needs to fix at the end
-    if (collatRatio === null) {
+    if (collatRatio === null || mintingFee === null) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)

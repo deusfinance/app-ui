@@ -22,6 +22,7 @@ import { useRecoilValue } from 'recoil';
 import { deiPricesState, availableBuybackState, availableRecollatState } from '../../../store/dei';
 import { useRecollatFee, useBuyBackFee, useRecollateralizePaused, useBuyBackPaused, 
     useDeiUpdateBuyBack } from '../../../hooks/useDei';
+import InfoBox from '../../../components/App/Dei/InfoBox';
 
 const TopWrap = styled.div`
     display: flex;
@@ -41,8 +42,11 @@ const MainWrapper = styled.div`
     padding-top: 60px;
     padding-bottom: 30px;
     text-align: center;
-    opacity: ${ ({ deactivated }) => deactivated ? "0.5" : "1" };
-    pointer-events: ${ ({ deactivated }) => deactivated ? "none" : "default" };
+`
+
+const ContentWrapper = styled.div`
+    opacity: ${ ({ deactivated }) => deactivated ? "0.5" : "1"};
+    pointer-events: ${({ deactivated }) => deactivated ? "none" : "default" };
 `
 
 const msg = "There is currently no excess value to conduct buybacks."
@@ -197,104 +201,110 @@ const Dei = () => {
         <TopWrap>
             <FakeWrapper></FakeWrapper>
 
-            <MainWrapper deactivated={buyBackPaused || !availableBuyback}>
-                <Type.XL fontWeight="300">Buyback</Type.XL>
-                <SwapWrapper style={{ marginTop: "25px" }}>
-                    <TokenBox
-                        type="from"
-                        hasMax={true}
-                        inputAmount={amountIn1}
-                        setInputAmount={setAmountIn1}
-                        setActive={null}
-                        currency={swapState.to}
-                        TokensMap={TokensMap}
-                        fastUpdate={fastUpdate}
-                    />
+            <MainWrapper>
+                <ContentWrapper deactivated={buyBackPaused || !availableBuyback}>
+                    <Type.XL fontWeight="300">Buyback</Type.XL>
+                    <SwapWrapper style={{ marginTop: "25px" }}>
+                        <TokenBox
+                            type="from"
+                            hasMax={true}
+                            inputAmount={amountIn1}
+                            setInputAmount={setAmountIn1}
+                            setActive={null}
+                            currency={swapState.to}
+                            TokensMap={TokensMap}
+                            fastUpdate={fastUpdate}
+                        />
 
-                    <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+                        <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-                    <TokenBox
-                        type="to"
-                        title="To (estimated)"
-                        inputAmount={amountOut1}
-                        setInputAmount={setAmountOut1}
-                        setActive={null}
-                        TokensMap={TokensMap}
-                        currency={swapState.from}
-                        fastUpdate={fastUpdate}
-                    />
+                        <TokenBox
+                            type="to"
+                            title="To (estimated)"
+                            inputAmount={amountOut1}
+                            setInputAmount={setAmountOut1}
+                            setActive={null}
+                            TokensMap={TokensMap}
+                            currency={swapState.from}
+                            fastUpdate={fastUpdate}
+                        />
 
-                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut1} invert={invert} setInvert={setInvert} />
+                        <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut1} invert={invert} setInvert={setInvert} />
 
-                    <SwapAction
-                        bgColor={"grad_dei"}
-                        text="MINT"
-                        isPreApproved={isPreApproved}
-                        validNetworks={[1, 4]}
-                        isApproved={isApproved}
-                        loading={approveLoading}
-                        handleApprove={handleApprove}
-                        handleSwap={handleSwap}
-                        TokensMap={TokensMap}
-                        swapState={swapState}
-                        amountIn={amountIn1}
-                        amountOut={amountOut1}
-                    />
+                        <SwapAction
+                            bgColor={"grad_dei"}
+                            text="MINT"
+                            isPreApproved={isPreApproved}
+                            validNetworks={[1, 4]}
+                            isApproved={isApproved}
+                            loading={approveLoading}
+                            handleApprove={handleApprove}
+                            handleSwap={handleSwap}
+                            TokensMap={TokensMap}
+                            swapState={swapState}
+                            amountIn={amountIn1}
+                            amountOut={amountOut1}
+                        />
 
-                </SwapWrapper>
+                    </SwapWrapper>
 
-                <SwapCard title="Swap Fee" value={buyBackFee} />
+                    <SwapCard title="Swap Fee" value={buyBackFee} />
+                </ContentWrapper>
 
+                {!availableBuyback && <InfoBox title={msg}/>}
             </MainWrapper>
 
-            <MainWrapper deactivated={recollateralizePaused || !availableRecollat}>
-                <Type.XL fontWeight="300">Recollateralize</Type.XL>
-                <SwapWrapper style={{ marginTop: "25px", }}>
-                    <TokenBox
-                        type="from"
-                        hasMax={true}
-                        inputAmount={amountIn2}
-                        setInputAmount={setAmountIn2}
-                        setActive={null}
-                        currency={swapState.from}
-                        TokensMap={TokensMap}
-                        fastUpdate={fastUpdate}
-                    />
+            <MainWrapper>
+                <ContentWrapper deactivated={recollateralizePaused || !availableRecollat}>
+                    <Type.XL fontWeight="300">Recollateralize</Type.XL>
+                    <SwapWrapper style={{ marginTop: "25px", }}>
+                        <TokenBox
+                            type="from"
+                            hasMax={true}
+                            inputAmount={amountIn2}
+                            setInputAmount={setAmountIn2}
+                            setActive={null}
+                            currency={swapState.from}
+                            TokensMap={TokensMap}
+                            fastUpdate={fastUpdate}
+                        />
 
-                    <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+                        <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-                    <TokenBox
-                        type="to"
-                        title="To (estimated)"
-                        inputAmount={amountOut2}
-                        setInputAmount={setAmountOut2}
-                        setActive={null}
-                        TokensMap={TokensMap}
-                        currency={swapState.to}
-                        fastUpdate={fastUpdate}
-                    />
+                        <TokenBox
+                            type="to"
+                            title="To (estimated)"
+                            inputAmount={amountOut2}
+                            setInputAmount={setAmountOut2}
+                            setActive={null}
+                            TokensMap={TokensMap}
+                            currency={swapState.to}
+                            fastUpdate={fastUpdate}
+                        />
 
-                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut2} invert={invert} setInvert={setInvert} />
+                        <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut2} invert={invert} setInvert={setInvert} />
 
-                    <SwapAction
-                        bgColor={"grad_dei"}
-                        text="MINT"
-                        isPreApproved={isPreApproved}
-                        validNetworks={[1, 4]}
-                        isApproved={isApproved}
-                        loading={approveLoading}
-                        handleApprove={handleApprove}
-                        handleSwap={handleSwap}
-                        TokensMap={TokensMap}
-                        swapState={swapState}
-                        amountIn={amountIn2}
-                        amountOut={amountOut2}
-                    />
+                        <SwapAction
+                            bgColor={"grad_dei"}
+                            text="MINT"
+                            isPreApproved={isPreApproved}
+                            validNetworks={[1, 4]}
+                            isApproved={isApproved}
+                            loading={approveLoading}
+                            handleApprove={handleApprove}
+                            handleSwap={handleSwap}
+                            TokensMap={TokensMap}
+                            swapState={swapState}
+                            amountIn={amountIn2}
+                            amountOut={amountOut2}
+                        />
 
-                </SwapWrapper>
+                    </SwapWrapper>
 
-                <SwapCard title="Swap Fee" value={recollatFee} />
+                    <SwapCard title="Swap Fee" value={recollatFee} />
+                </ContentWrapper>
 
+                {!availableRecollat && <InfoBox title={msg2} />}
             </MainWrapper>
             <FakeWrapper></FakeWrapper>
         </TopWrap>

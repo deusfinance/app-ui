@@ -23,6 +23,12 @@ import { useRecoilValue } from 'recoil';
 import { useDeiUpdateRedeem, useRedeem, useRedeemPaused } from '../../../hooks/useDei';
 import { PlusImg } from '../../../components/App/Dei';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
+import styled from 'styled-components';
+
+const ContentWrapper = styled.div`
+    opacity: ${({ deactivated }) => deactivated ? "0.5" : "1"};
+    pointer-events: ${({ deactivated }) => deactivated ? "none" : "default"};
+`
 
 const Dei = () => {
     useDeiUpdateRedeem()
@@ -203,80 +209,82 @@ const Dei = () => {
 
     return (<>
         <MainWrapper>
-            <Type.XL fontWeight="300">Redeem</Type.XL>
-            <SwapWrapper style={{ marginTop: "25px", }}>
-                <TokenBox
-                    type="from"
-                    setFocusType={setFocusType}
-                    focusType="from"
-                    hasMax={true}
-                    inputAmount={amountIn}
-                    setInputAmount={setAmountIn}
-                    setActive={null}
-                    currency={swapState.from}
-                    TokensMap={TokensMap}
-                    fastUpdate={fastUpdate}
-                />
-
-                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
-
-                <TokenBox
-                    type="to"
-                    setFocusType={setFocusType}
-                    focusType="to1"
-                    title="To (estimated)"
-                    inputAmount={amountOut}
-                    setInputAmount={setAmountOut}
-                    setActive={null}
-                    TokensMap={TokensMap}
-                    currency={swapState.to}
-                    fastUpdate={fastUpdate}
-                />
-
-                {isPair && <div>
-                    <PlusImg src="/img/dei/plus.svg" alt="plus" />
+            <ContentWrapper deactivated={redeemPaused}>
+                <Type.XL fontWeight="300">Redeem</Type.XL>
+                <SwapWrapper style={{ marginTop: "25px", }}>
                     <TokenBox
-                        mt={"-21px"}
-                        type="to"
+                        type="from"
                         setFocusType={setFocusType}
-                        focusType="to2"
-                        title="To (estimated)"
-                        inputAmount={amountOutPair}
-                        setInputAmount={setAmountOutPair}
+                        focusType="from"
+                        hasMax={true}
+                        inputAmount={amountIn}
+                        setInputAmount={setAmountIn}
                         setActive={null}
-                        currency={pairToken}
+                        currency={swapState.from}
                         TokensMap={TokensMap}
                         fastUpdate={fastUpdate}
                     />
-                </div>}
 
-                <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+                    <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-                <SwapAction
-                    bgColor={"grad_dei"}
-                    text="REDEEM"
-                    isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
-                    isApproved={isApproved}
-                    targetToken={swapState.from}
-                    loading={approveLoading}
-                    handleApprove={handleApprove}
-                    handleSwap={handleSwap}
-                    TokensMap={TokensMap}
-                    swapState={swapState}
-                    amountIn={amountIn}
-                    amountOut={amountOut}
+                    <TokenBox
+                        type="to"
+                        setFocusType={setFocusType}
+                        focusType="to1"
+                        title="To (estimated)"
+                        inputAmount={amountOut}
+                        setInputAmount={setAmountOut}
+                        setActive={null}
+                        TokensMap={TokensMap}
+                        currency={swapState.to}
+                        fastUpdate={fastUpdate}
+                    />
+
+                    {isPair && <div>
+                        <PlusImg src="/img/dei/plus.svg" alt="plus" />
+                        <TokenBox
+                            mt={"-21px"}
+                            type="to"
+                            setFocusType={setFocusType}
+                            focusType="to2"
+                            title="To (estimated)"
+                            inputAmount={amountOutPair}
+                            setInputAmount={setAmountOutPair}
+                            setActive={null}
+                            currency={pairToken}
+                            TokensMap={TokensMap}
+                            fastUpdate={fastUpdate}
+                        />
+                    </div>}
+
+                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+
+                    <SwapAction
+                        bgColor={"grad_dei"}
+                        text="REDEEM"
+                        isPreApproved={isPreApproved}
+                        validNetworks={[1, 4]}
+                        isApproved={isApproved}
+                        targetToken={swapState.from}
+                        loading={approveLoading}
+                        handleApprove={handleApprove}
+                        handleSwap={handleSwap}
+                        TokensMap={TokensMap}
+                        swapState={swapState}
+                        amountIn={amountIn}
+                        amountOut={amountOut}
+                    />
+
+                </SwapWrapper>
+
+                <SwapCard title="redemption Fee" value={redemptionFee ? `${redemptionFee} %` : ""} />
+
+                <RedeemedToken
+                    title="Redeemed Token ready for claim"
+                    currencies={[secondaryToken, pairToken]}
                 />
 
-            </SwapWrapper>
-
-            <SwapCard title="redemption Fee" value={redemptionFee ? `${redemptionFee} %` : ""} />
-
-            <RedeemedToken
-                title="Redeemed Token ready for claim"
-                currencies={[secondaryToken, pairToken]}
-            />
-
+            </ContentWrapper>
         </MainWrapper>
 
         <div className='tut-left-wrap'>

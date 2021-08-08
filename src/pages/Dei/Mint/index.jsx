@@ -21,6 +21,12 @@ import { isZero } from '../../../constant/number';
 import { collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
+import styled from 'styled-components';
+
+const ContentWrapper = styled.div`
+    opacity: ${({ deactivated }) => deactivated ? "0.5" : "1"};
+    pointer-events: ${({ deactivated }) => deactivated ? "none" : "default"};
+`
 
 const Dei = () => {
     useDeiUpdate()
@@ -200,74 +206,76 @@ const Dei = () => {
 
     return (<>
         <MainWrapper>
-            <Type.XL fontWeight="300">Mint</Type.XL>
-            <SwapWrapper style={{ marginTop: "25px", }}>
-                <TokenBox
-                    type="from"
-                    setFocusType={setFocusType}
-                    focusType="from1"
-                    hasMax={true}
-                    inputAmount={amountIn}
-                    setInputAmount={setAmountIn}
-                    setActive={null}
-                    currency={swapState.from}
-                    TokensMap={TokensMap}
-                    fastUpdate={fastUpdate}
-                />
-
-                {isPair && <div>
-                    <PlusImg src="/img/dei/plus.svg" alt="plus" />
+            <ContentWrapper deactivated={mintPaused}>
+                <Type.XL fontWeight="300">Mint</Type.XL>
+                <SwapWrapper style={{ marginTop: "25px", }}>
                     <TokenBox
-                        mt={"-21px"}
                         type="from"
                         setFocusType={setFocusType}
-                        focusType="from2"
+                        focusType="from1"
                         hasMax={true}
-                        inputAmount={amountInPair}
-                        setInputAmount={setAmountInPair}
+                        inputAmount={amountIn}
+                        setInputAmount={setAmountIn}
                         setActive={null}
-                        currency={pairToken}
+                        currency={swapState.from}
                         TokensMap={TokensMap}
                         fastUpdate={fastUpdate}
                     />
-                </div>}
 
-                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+                    {isPair && <div>
+                        <PlusImg src="/img/dei/plus.svg" alt="plus" />
+                        <TokenBox
+                            mt={"-21px"}
+                            type="from"
+                            setFocusType={setFocusType}
+                            focusType="from2"
+                            hasMax={true}
+                            inputAmount={amountInPair}
+                            setInputAmount={setAmountInPair}
+                            setActive={null}
+                            currency={pairToken}
+                            TokensMap={TokensMap}
+                            fastUpdate={fastUpdate}
+                        />
+                    </div>}
 
-                <TokenBox
-                    type="to"
-                    title="To (estimated)"
-                    setFocusType={setFocusType}
-                    focusType="to"
-                    inputAmount={amountOut}
-                    setInputAmount={setAmountOut}
-                    setActive={null}
-                    TokensMap={TokensMap}
-                    currency={swapState.to}
-                    fastUpdate={fastUpdate}
-                />
+                    <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-                {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}
+                    <TokenBox
+                        type="to"
+                        title="To (estimated)"
+                        setFocusType={setFocusType}
+                        focusType="to"
+                        inputAmount={amountOut}
+                        setInputAmount={setAmountOut}
+                        setActive={null}
+                        TokensMap={TokensMap}
+                        currency={swapState.to}
+                        fastUpdate={fastUpdate}
+                    />
 
-                <SwapAction
-                    bgColor={"grad_dei"}
-                    text="MINT"
-                    isPreApproved={isPreApproved}
-                    validNetworks={validNetworks}
-                    isApproved={isApproved}
-                    targetToken={targetToken}
-                    loading={approveLoading}
-                    handleApprove={handleApprove}
-                    handleSwap={handleSwap}
-                    TokensMap={TokensMap}
-                    swapState={swapState}
-                    amountIn={amountIn}
-                    amountOut={amountOut}
-                />
+                    {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}
 
-            </SwapWrapper>
+                    <SwapAction
+                        bgColor={"grad_dei"}
+                        text="MINT"
+                        isPreApproved={isPreApproved}
+                        validNetworks={validNetworks}
+                        isApproved={isApproved}
+                        targetToken={targetToken}
+                        loading={approveLoading}
+                        handleApprove={handleApprove}
+                        handleSwap={handleSwap}
+                        TokensMap={TokensMap}
+                        swapState={swapState}
+                        amountIn={amountIn}
+                        amountOut={amountOut}
+                    />
 
-            <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} />
+                </SwapWrapper>
+
+                <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} />
+            </ContentWrapper>
         </MainWrapper>
 
         <div className='tut-left-wrap'>

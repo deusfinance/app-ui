@@ -5,21 +5,144 @@ import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei, getToWei } from '../helper/formatBalance'
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
+import multicall from '../helper/multicall'
+import { useERC20 } from './useContract'
+import { ethers } from "ethers";
+import { ZERO } from "../constant/number";
 import {
     collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState,
-    redeemDEUSBalancesState, redeemCollateralBalancesState
+    redeemDEUSBalancesState, redeemCollateralBalancesState, availableBuybackState, availableRecollatState,
+    buyBackFeeState, recollatFeeState
 } from '../store/dei'
 import {
     getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
     getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
     getBuyBackFee, getHusdPoolData, redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei,
     getRedeemDEUSBalances, getRedeemCollateralBalances, getClaimAll, mintFractional, mintAlgorithmic,
+    getAvailableBuyback, getBuyBackPaused, getRecollateralizePaused, getMintPaused, getRedeemPaused,
+    buyBackDEUS, RecollateralizeDEI
 } from '../helper/deiHelper'
-import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
-import multicall from '../helper/multicall'
-import { useERC20 } from './useContract'
-import { ethers } from "ethers";
-import { ZERO } from "../constant/number";
+
+
+
+export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validChainId = 1) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleBuyBack = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+
+        const result = await makeDeiRequest("/buyback")
+        return await buyBackDEUS(
+            getToWei(amountIn, fromCurrency.decimals),
+            result.collateral_price,
+            result.deus_price,
+            result.expire_block,
+            result.signature,
+            "0",
+            account,
+            chainId,
+            web3,
+        )
+    }, [fromCurrency, toCurrency, amountIn, amountOut, validChainId, account, chainId, web3])
+
+    return { onBuyBack: handleBuyBack }
+}
+
+export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, validChainId = 1) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleRecollat = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+
+        const result = await makeDeiRequest("/recollat")
+        return await RecollateralizeDEI(
+            result.collateral_price,
+            result.deus_price,
+            result.expire_block,
+            result.signature,
+            getToWei(amountIn, fromCurrency.decimals),
+            "0",
+            account,
+            chainId,
+            web3,
+        )
+    }, [fromCurrency, toCurrency, amountIn, amountOut, validChainId, account, chainId, web3])
+
+    return { onRecollat: handleRecollat }
+}
+
+
+export const useRecollateralizePaused = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [recollateralizePaused, setRecollateralizePaused] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getRecollateralizePaused(web3, chainId)
+            setRecollateralizePaused(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return recollateralizePaused
+}
+
+export const useBuyBackPaused = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [buyBackPaused, setBuyBackPaused] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getBuyBackPaused(web3, chainId)
+            setBuyBackPaused(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return buyBackPaused
+}
+
+export const useMintPaused = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [mintPaused, setMintPaused] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getMintPaused(web3, chainId)
+            setMintPaused(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return mintPaused
+}
+
+export const useRedeemPaused = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const [redeemPaused, setRedeemPaused] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            const res = await getRedeemPaused(web3, chainId)
+            setRedeemPaused(res)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+    return redeemPaused
+}
+
 
 export const useClaimAll = (validChainId = 1) => {
     const web3 = useWeb3()
@@ -159,6 +282,43 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
     return { onMint: handleMint }
 }
 
+
+export const useAvailableBuyback = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const setAvailableBuyback = useSetRecoilState(availableBuybackState)
+
+    useEffect(() => {
+        const get = async () => {
+            const bb = await getAvailableBuyback(web3, chainId)
+            setAvailableBuyback(bb)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+}
+
+export const useAvailableRecollat = () => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const { slowRefresh } = useRefresh()
+    const setAvailableRecollat = useSetRecoilState(availableRecollatState)
+
+    useEffect(() => {
+        const get = async () => {
+            const dei_info_result = await getDeiInfo(web3, chainId)
+            let { "0": dei_total_supply, "1": global_collateral_ratio, "2": global_collat_value } = dei_info_result
+            let effective_collateral_ratio = (global_collat_value * (1e6)) / dei_total_supply;
+            let available_recollat = global_collateral_ratio * dei_total_supply - (dei_total_supply * effective_collateral_ratio) / (1e6)
+            setAvailableRecollat(available_recollat)
+        }
+        get()
+    }, [slowRefresh, account, chainId])
+}
+
+
 export const useHusdPoolData = () => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
@@ -263,7 +423,7 @@ export const useBuyBackFee = () => {
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
-    const [buyBackFee, setBuyBackFee] = useState(null)
+    const setBuyBackFee = useSetRecoilState(buyBackFeeState)
 
     useEffect(() => {
         const get = async () => {
@@ -272,7 +432,6 @@ export const useBuyBackFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return buyBackFee ? `${buyBackFee / 10000} %` : null
 }
 
 export const useRecollatFee = () => {
@@ -280,7 +439,7 @@ export const useRecollatFee = () => {
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
-    const [recollatFee, setRecollatFee] = useState(null)
+    const setRecollatFee = useSetRecoilState(recollatFeeState)
 
     useEffect(() => {
         const get = async () => {
@@ -289,7 +448,6 @@ export const useRecollatFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return recollatFee ? `${recollatFee / 10000} %` : null
 }
 
 export const useCollatRatio = () => {
@@ -322,6 +480,14 @@ export const useDeiUpdateRedeem = () => {
     useRedemptionFee()
     useHusdPoolData()
     useBalances()
+}
+
+export const useDeiUpdateBuyBack = () => {
+    useDeiPrices()
+    useAvailableBuyback()
+    useAvailableRecollat()
+    useBuyBackFee()
+    useRecollatFee()
 }
 
 export const useRefreshRatio = () => {
@@ -379,10 +545,7 @@ export const useDeiInfo = () => {
 
 
 export const useGetAmountsOut = (from1, from2, amount) => {
-    const web3 = useWeb3()
-
     const { slowRefresh } = useRefresh()
-    const collatRatio = useRecoilValue(collatRatioState)
 
     const [DeiInfo, setDeiInfo] = useState(null)
     useEffect(() => {

@@ -5,7 +5,7 @@ import { Type } from '../../../components/App/Text';
 import styled from 'styled-components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
-import { SwapTitle, SwapWrapper, SwapArrow } from '../../../components/App/Swap';
+import { SwapWrapper } from '../../../components/App/Swap';
 import TokenBox from '../../../components/App/Swap/TokenBox';
 import SwapAction from '../../../components/App/Swap/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
@@ -13,16 +13,17 @@ import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
-import { useSwap } from '../../../hooks/useSwap';
 import useChain from '../../../hooks/useChain';
-import { getContractAddr, getTokenAddr } from '../../../utils/contracts';
+import { getContractAddr } from '../../../utils/contracts';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEITokens } from '../../../constant/token';
+import { useBuyBack, useRecollat } from '../../../hooks/useDei';
 import { useRecoilValue } from 'recoil';
-import { deiPricesState, availableBuybackState, availableRecollatState } from '../../../store/dei';
+import InfoBox from '../../../components/App/Dei/InfoBox';
+import { RemoveTrailingZero } from '../../../helper/formatBalance';
+import { availableBuybackState, availableRecollatState, deiPricesState } from '../../../store/dei';
 import { useRecollatFee, useBuyBackFee, useRecollateralizePaused, useBuyBackPaused, 
     useDeiUpdateBuyBack } from '../../../hooks/useDei';
-import InfoBox from '../../../components/App/Dei/InfoBox';
 
 const TopWrap = styled.div`
     display: flex;
@@ -60,6 +61,7 @@ const Dei = () => {
     const recollateralizePaused = useRecollateralizePaused();
     let availableBuyback = Math.max(useRecoilValue(availableBuybackState), 0)
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
+    const deiPrices = useRecoilValue(deiPricesState)
 
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -104,11 +106,11 @@ const Dei = () => {
     const tokenBalances = tokensMap
     const [TokensMap, setTokensMap] = useState(tokenBalances)
 
-    let recollatPrimaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
-    let recollatSecondaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
+    let primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
+    let secondaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
     const [swapState, setSwapState] = useState({
-        from: recollatPrimaryToken,
-        to: recollatSecondaryToken,
+        from: secondaryToken,
+        to: primaryToken,
     })
 
     const [hotIn, setHotIn] = useState("")
@@ -131,6 +133,26 @@ const Dei = () => {
         setIsPreApproved(null)
         setIsApproved(null)
     }, [chainId, account, swapState.from]);
+
+    useEffect(() => {
+        if (deiPrices) {
+            const { collateral_price, dei_price, deus_price } = deiPrices
+            // TODO: add buyBackFee here for amountOut
+            // console.log(buyBackFee / 1000000);
+            const amount = new BigNumber(amountIn1).div(deus_price).times(1).toFixed(18)
+            setAmountOut1(RemoveTrailingZero(amount))
+        }
+    }, [amountIn1, buyBackFee, deiPrices]);
+
+    useEffect(() => {
+        if (deiPrices) {
+            const { collateral_price, dei_price, deus_price } = deiPrices
+            // TODO: add recollatFee here for amountOut
+            // console.log(recollatFee / 1000000);
+            const amount = new BigNumber(amountIn2).div(deus_price).times(1).toFixed(18)
+            setAmountOut2(RemoveTrailingZero(amount))
+        }
+    }, [amountIn2, recollatFee, deiPrices]);
 
     // useEffect(() => {
     //     setIsPreApproved(null)
@@ -160,10 +182,12 @@ const Dei = () => {
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
 
-    const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    // make it two: one for 1, one for 2
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn1, amountOut1, chainId)
-
+    let targetToken = useMemo(() => {
+        if (availableBuyback !== null) return availableBuyback > 0 ? swapState.from : swapState.to
+    }, [availableBuyback])
+    const { onApprove } = useApprove(targetToken, contractAddress, chainId)
+    const { onBuyBack } = useBuyBack(swapState.from, swapState.to, amountIn1, amountOut1, chainId)
+    const { onRecollat } = useRecollat(swapState.to, swapState.from, amountIn2, amountOut2, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -182,20 +206,35 @@ const Dei = () => {
         }
     }, [onApprove])
 
-    const handleSwap = useCallback(async () => {
+    const handleSwap1 = useCallback(async () => {
         try {
-            const tx = await onSwap()
+            const tx = await onBuyBack()
             if (tx.status) {
-                console.log("swap did");
+                console.log("BuyBack did");
                 setAmountIn1("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
-                console.log("Swap Failed");
+                console.log("BuyBack Failed");
             }
         } catch (e) {
             console.error(e)
         }
-    }, [onSwap])
+    }, [onBuyBack])
+
+    const handleSwap2 = useCallback(async () => {
+        try {
+            const tx = await onRecollat()
+            if (tx.status) {
+                console.log("Recollat did");
+                setAmountIn2("")
+                setFastUpdate(fastUpdate => fastUpdate + 1)
+            } else {
+                console.log("Swap Recollat");
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }, [onRecollat])
 
     return (<>
         <TopWrap>
@@ -233,13 +272,13 @@ const Dei = () => {
 
                         <SwapAction
                             bgColor={"grad_dei"}
-                            text="MINT"
+                            text="BUYBACK"
                             isPreApproved={isPreApproved}
                             validNetworks={[1, 4]}
                             isApproved={isApproved}
                             loading={approveLoading}
                             handleApprove={handleApprove}
-                            handleSwap={handleSwap}
+                            handleSwap={handleSwap1}
                             TokensMap={TokensMap}
                             swapState={swapState}
                             amountIn={amountIn1}
@@ -248,7 +287,7 @@ const Dei = () => {
 
                     </SwapWrapper>
 
-                    <SwapCard title="Swap Fee" value={buyBackFee} />
+                    <SwapCard title="Swap Fee" value={`${buyBackFee / 10000} %`} />
                 </ContentWrapper>
 
                 {!availableBuyback && <InfoBox title={msg}/>}
@@ -286,13 +325,13 @@ const Dei = () => {
 
                         <SwapAction
                             bgColor={"grad_dei"}
-                            text="MINT"
+                            text="RECOLLATERALIZE"
                             isPreApproved={isPreApproved}
                             validNetworks={[1, 4]}
                             isApproved={isApproved}
                             loading={approveLoading}
                             handleApprove={handleApprove}
-                            handleSwap={handleSwap}
+                            handleSwap={handleSwap2}
                             TokensMap={TokensMap}
                             swapState={swapState}
                             amountIn={amountIn2}
@@ -301,7 +340,7 @@ const Dei = () => {
 
                     </SwapWrapper>
 
-                    <SwapCard title="Swap Fee" value={recollatFee} />
+                    <SwapCard title="Swap Fee" value={`${recollatFee / 10000} %`} />
                 </ContentWrapper>
 
                 {!availableRecollat && <InfoBox title={msg2} />}

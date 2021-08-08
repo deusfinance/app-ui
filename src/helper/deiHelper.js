@@ -132,6 +132,20 @@ export const getRedeemPaused = async (web3, chainId = ChainMap.RINKEBY) => {
         .call()
 }
 
+export const buyBackDEUS = async (amountIn, collateral_price, deus_price, expire_block, signature, collateral_out_min = "0", account, chainId, web3) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .buyBackDEUS(collateral_price, deus_price, expire_block, [signature], amountIn, collateral_out_min)
+        .send({ from: account })
+}
+
+export const RecollateralizeDEI = async (collateral_price, deus_price, expire_block, signature, amountIn, deus_out_min = "0", account, chainId, web3) => {
+    return getHusdPoolContract(web3, chainId)
+        .methods
+        .RecollateralizeDEI([collateral_price, deus_price, expire_block, [signature], amountIn, deus_out_min])
+        .send({ from: account })
+}
+
 export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods

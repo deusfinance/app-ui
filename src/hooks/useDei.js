@@ -20,7 +20,58 @@ import {
     getBuyBackFee, getHusdPoolData, redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei,
     getRedeemDEUSBalances, getRedeemCollateralBalances, getClaimAll, mintFractional, mintAlgorithmic,
     getAvailableBuyback, getBuyBackPaused, getRecollateralizePaused, getMintPaused, getRedeemPaused,
+    buyBackDEUS, RecollateralizeDEI
 } from '../helper/deiHelper'
+
+
+
+export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validChainId = 1) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleBuyBack = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+
+        const result = await makeDeiRequest("/buyback")
+        return await buyBackDEUS(
+            getToWei(amountIn, fromCurrency.decimals),
+            result.collateral_price,
+            result.deus_price,
+            result.expire_block,
+            result.signature,
+            "0",
+            account,
+            chainId,
+            web3,
+        )
+    }, [fromCurrency, toCurrency, amountIn, amountOut, validChainId, account, chainId, web3])
+
+    return { onBuyBack: handleBuyBack }
+}
+
+export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, validChainId = 1) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleRecollat = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+
+        const result = await makeDeiRequest("/recollat")
+        return await RecollateralizeDEI(
+            result.collateral_price,
+            result.deus_price,
+            result.expire_block,
+            result.signature,
+            getToWei(amountIn, fromCurrency.decimals),
+            "0",
+            account,
+            chainId,
+            web3,
+        )
+    }, [fromCurrency, toCurrency, amountIn, amountOut, validChainId, account, chainId, web3])
+
+    return { onRecollat: handleRecollat }
+}
 
 
 export const useRecollateralizePaused = () => {
@@ -391,7 +442,7 @@ export const useBuyBackFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return buyBackFee ? `${buyBackFee / 10000} %` : null
+    return buyBackFee ? buyBackFee : null
 }
 
 export const useRecollatFee = () => {
@@ -408,7 +459,7 @@ export const useRecollatFee = () => {
         }
         get()
     }, [slowRefresh, account, chainId])
-    return recollatFee ? `${recollatFee / 10000} %` : null
+    return recollatFee ? recollatFee : null
 }
 
 export const useCollatRatio = () => {

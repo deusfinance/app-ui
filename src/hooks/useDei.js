@@ -218,15 +218,15 @@ export const useRedeemBalances = () => {
     useEffect(() => {
         const get = async () => {
             const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(ChainMap.RINKEBY, 1000000, account), chainId)
-            const [
-                redeemDEUSBalances,
-                redeemCollateralBalances,
-            ] = mul
+
+            const redeemDEUSBalances = mul[12];
+            const redeemCollateralBalances = mul[13];
 
             const updateState = {
                 redeemDEUSBalances: fromWei(redeemDEUSBalances, 18),
                 redeemCollateralBalances: fromWei(redeemCollateralBalances, 6),
             }
+            console.log(updateState);
             setRedeemBalances({ ...updateState })
         }
         get()

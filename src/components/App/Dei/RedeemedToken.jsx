@@ -69,7 +69,7 @@ const ButtonSync = styled(Base).attrs({
   height: "36px",
   borderRadius: "10px",
   marginBottom: "20px",
-  })`
+})`
   font-size:20px;
 `
 
@@ -126,21 +126,21 @@ const RedeemedToken = ({ title, currencies }) => {
         {currencies.map(({ symbol, logo }, index) => {
           return <TokenInfo key={index + logo}>
             <CurrencyLogo symbol={symbol} logo={logo} />
-            
+
             <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
 
             <NumberWrapper color="text1" ml="7px" mr="9px">
-              {index === 0 ? price1 ? parseFloat(price1).toFixed(3) : IMG : price2 ? parseFloat(price2).toFixed(3) : IMG }
+              {index === 0 ? price1 ? parseFloat(price1).toFixed(3) : IMG : price2 ? parseFloat(price2).toFixed(3) : IMG}
             </NumberWrapper>
-            
+
           </TokenInfo>
         })}
-        
-        {(price1 && price2 && (isGt(price1, 0) || isGt(price2, 0))) ? 
+
+        {(price1 && price2 && (isGt(price1, 0) || isGt(price2, 0))) ?
           <ButtonSwap active={true} bgColor={"grad_dei"} onClick={handleClaim}> CLAIM ALL </ButtonSwap> :
           <ButtonSyncDeactivated> CLAIM ALL </ButtonSyncDeactivated>}
       </SmallWrapper>
-    }, [title, currencies, price1, price2])
+    }, [title, currencies, price1, price2, handleClaim])
   );
 }
 

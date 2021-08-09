@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image } from 'rebass/styled-components';
-import { MainWrapper, SwapWrapper, SwapArrow } from '../../../components/App/Swap';
+import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
 import TokenBox from '../../../components/App/Dei/TokenBox';
 import SwapAction from '../../../components/App/Dei/SwapAction';
 import RateBox from '../../../components/App/Swap/RateBox';
@@ -52,8 +52,7 @@ const Dei = () => {
         else tokensMap[address] = currToken
     }
 
-    const tokenBalances = tokensMap
-    const [TokensMap, setTokensMap] = useState(tokenBalances)
+    const TokensMap = tokensMap
 
     let secondaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
     const [swapState, setSwapState] = useState({
@@ -62,10 +61,9 @@ const Dei = () => {
     })
 
     const [focusType, setFocusType] = useState("from1")
-    const [hotIn, setHotIn] = useState("")
     const [amountIn, setAmountIn] = useState("")
     const [amountOutPair, setAmountOutPair] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500, hotIn);
+    const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const [pairToken, setPairToken] = useState({})
@@ -87,11 +85,11 @@ const Dei = () => {
         } if (focusType === "to2") {
             getAmountsTokens(null, null, amountOutPair)
         }
-    }, [amountIn, amountOut, amountOutPair, redemptionFee, deiPrices]);
+    }, [amountIn, amountOut, amountOutPair, redemptionFee, focusType, deiPrices]);// eslint-disable-line
 
     const getAmountsTokens = (in1, out1, out2) => {
         if (deiPrices) {
-            const { collateral_price, dei_price, deus_price } = deiPrices
+            const { collateral_price, deus_price } = deiPrices
 
             let amountIn1 = ""
             let amountOut1 = ""
@@ -134,18 +132,7 @@ const Dei = () => {
             setSwapState({ ...swapState, to: primaryToken })
         }
         if (collatRatio !== null) changeToTokens()
-    }, [collatRatio]);
-
-
-    // useEffect(() => {
-    //     setIsPreApproved(null)
-    //     setIsApproved(false)
-    // }, [swapState.from])
-
-    // TODO balances
-    // useEffect(() => {
-    //     setTokensMap(tokenBalances)
-    // }, [tokenBalances])
+    }, [collatRatio]);// eslint-disable-line
 
     useEffect(() => {
         const token = swapState.to
@@ -158,7 +145,6 @@ const Dei = () => {
             setPairToken(secondToken)
         }
     }, [swapState])
-
 
     useEffect(() => {
         if (isPreApproved == null) {
@@ -179,10 +165,8 @@ const Dei = () => {
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
 
-
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onRedeem } = useRedeem(swapState.from, swapState.to, pairToken, amountIn, amountOut, amountOutPair, collatRatio, chainId)
-
 
     const handleApprove = useCallback(async () => {
         try {

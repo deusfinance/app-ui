@@ -79,7 +79,7 @@ const Dei = () => {
         if (focusType === "to") {
             getAmountsTokens(null, null, amountOut)
         }
-    }, [amountIn, amountInPair, amountOut, mintingFee, deiPrices]);
+    }, [amountIn, amountInPair, amountOut, mintingFee, deiPrices]);// eslint-disable-line
 
 
     const getAmountsTokens = (in1, in2, out) => {
@@ -129,7 +129,7 @@ const Dei = () => {
             setSwapState({ ...swapState, from: primaryToken })
         }
         if (collatRatio != null) changeFromTokens()
-    }, [collatRatio]);
+    }, [collatRatio]);// eslint-disable-line
 
 
     useEffect(() => {

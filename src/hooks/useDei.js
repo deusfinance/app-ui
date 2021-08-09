@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei, getToWei } from '../helper/formatBalance'
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import multicall from '../helper/multicall'
 import { useERC20 } from './useContract'
@@ -14,11 +14,12 @@ import {
     collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, redeemBalances
 } from '../store/dei'
 import {
-    getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, dollarDecimals, getBuyBackFee, getHusdPoolData,
+    getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI
 } from '../helper/deiHelper'
 import { ChainMap } from '../constant/web3'
+import { blockNumberState } from '../store/wallet'
 
 
 export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validChainId = 1) => {
@@ -40,7 +41,7 @@ export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validC
             chainId,
             web3,
         )
-    }, [fromCurrency, toCurrency, amountIn, amountOut, validChainId, account, chainId, web3])
+    }, [fromCurrency, amountIn, validChainId, account, chainId, web3])
 
     return { onBuyBack: handleBuyBack }
 }
@@ -64,7 +65,7 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
             chainId,
             web3,
         )
-    }, [fromCurrency, toCurrency, amountIn, amountOut, validChainId, account, chainId, web3])
+    }, [fromCurrency, amountIn, validChainId, account, chainId, web3])
 
     return { onRecollat: handleRecollat }
 }
@@ -77,7 +78,7 @@ export const useClaimAll = (validChainId = 1) => {
         if (validChainId && chainId !== validChainId) return false
         const tx = await getClaimAll(account, web3, chainId)
         return tx
-    }, [account, chainId, web3])
+    }, [account, chainId, validChainId, web3])
     return { onClaimAll: handleClaimAll }
 }
 
@@ -127,7 +128,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
                 web3,
             )
         }
-    }, [fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, account, chainId, collatRatio, validChainId, web3])
+    }, [fromCurrency, amountIn, account, chainId, collatRatio, validChainId, web3])
 
     return { onRedeem: handleRedeem }
 }
@@ -182,7 +183,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             web3,
         )
 
-    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, account, chainId, collatRatio, validChainId, web3])
+    }, [from1Currency, from2Currency, amountIn1, amountIn2, account, chainId, collatRatio, validChainId, web3])
 
     return { onMint: handleMint }
 }
@@ -204,15 +205,14 @@ export const useAvailableRecollat = () => {
             setAvailableRecollat(available_recollat)
         }
         get()
-    }, [slowRefresh, account, chainId])
+    }, [setAvailableRecollat, web3, slowRefresh, account, chainId])
 }
 
 //Add block timer counter effect
 export const useRedeemBalances = () => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
+    const blockNumber = useRecoilValue(blockNumberState)
     const setRedeemBalances = useSetRecoilState(redeemBalances)
 
     useEffect(() => {
@@ -226,11 +226,12 @@ export const useRedeemBalances = () => {
                 redeemDEUSBalances: fromWei(redeemDEUSBalances, 18),
                 redeemCollateralBalances: fromWei(redeemCollateralBalances, 6),
             }
-            console.log(updateState);
             setRedeemBalances({ ...updateState })
         }
-        get()
-    }, [slowRefresh, account, chainId])
+        if (blockNumber % 3 === 0) {
+            get()
+        }
+    }, [blockNumber, setRedeemBalances, web3, account, chainId])
 }
 
 export const useHusdPoolData = () => {
@@ -275,7 +276,7 @@ export const useHusdPoolData = () => {
             setHusdPoolData({ ...updateState })
         }
         get()
-    }, [slowRefresh, account, chainId])
+    }, [setHusdPoolData, slowRefresh, web3, account, chainId])
 }
 
 export const useCollatRatio = () => {
@@ -290,7 +291,7 @@ export const useCollatRatio = () => {
             setCollatRatio(new BigNumber(fromWei(cr[1], dollarDecimals)).times(100).toNumber())
         }
         get()
-    }, [slowRefresh])
+    }, [slowRefresh, web3, setCollatRatio])
 }
 
 export const useDeiUpdate = () => {
@@ -343,12 +344,10 @@ export const useDeiPrices = () => {
             }
         }
         get()
-    }, [slowRefresh])
+    }, [slowRefresh, setRefreshRatio])
 }
 
 export const useDeiInfo = () => {
-    const web3 = useWeb3()
-
     const { slowRefresh } = useRefresh()
     const [DeiInfo, setDeiInfo] = useState(null)
     useEffect(() => {

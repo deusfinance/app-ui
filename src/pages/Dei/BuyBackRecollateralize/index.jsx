@@ -59,19 +59,8 @@ const Dei = () => {
         buyBackPaused,
         recollateralizePaused
     } = useRecoilValue(husdPoolDataState)
-
-    // console.log(availableExcessCollatDV);
-    // const buyBackFee = useRecoilValue(buyBackFeeState)
-    // console.log(buyBackFee);
-    // const recollatFee = useRecoilValue(recollatFeeState)
-    // const buyBackPaused = useBuyBackPaused();
-    // const bonusRate = useBonusRate()
-    // const recollateralizePaused = useRecollateralizePaused();
-    // let availableBuyback = Math.max(useRecoilValue(availableBuybackState), 0)
-
     let availableBuyback = Math.max(availableExcessCollatDV, 0)
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
-
     const [focusType, setFocusType] = useState("from")
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -113,20 +102,13 @@ const Dei = () => {
         else tokensMap[address] = currToken
     }
 
-    const tokenBalances = tokensMap
-    const [TokensMap, setTokensMap] = useState(tokenBalances)
-
+    const TokensMap = tokensMap
     let primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
     let secondaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
-    const [swapState, setSwapState] = useState({
-        from: secondaryToken,
-        to: primaryToken,
-    })
-
-    const [hotIn, setHotIn] = useState("")
+    const swapState = { from: secondaryToken, to: primaryToken }
     const [amountIn1, setAmountIn1] = useState("")
     const [amountIn2, setAmountIn2] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn1, 500, hotIn);
+    const debouncedAmountIn = useDebounce(amountIn1, 500);
     const [amountOut1, setAmountOut1] = useState("")
     const [amountOut2, setAmountOut2] = useState("")
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
@@ -145,17 +127,9 @@ const Dei = () => {
     }, [chainId, account, swapState.from]);
 
 
-    useEffect(() => {
-        if (focusType === "from") {
-            getAmountsTokens1(amountIn1, null)
-        } if (focusType === "to") {
-            getAmountsTokens1(null, amountOut1)
-        }
-    }, [amountIn1, amountOut1, recollatFee, deiPrices]);
-
     const getAmountsTokens1 = (in1, out1) => {
         if (deiPrices) {
-            const { collateral_price, dei_price, deus_price } = deiPrices
+            const { collateral_price, deus_price } = deiPrices
 
             let amountIn1 = ""
             let amountOut1 = ""
@@ -173,15 +147,24 @@ const Dei = () => {
 
     useEffect(() => {
         if (focusType === "from") {
+            getAmountsTokens1(amountIn1, null)
+        } if (focusType === "to") {
+            getAmountsTokens1(null, amountOut1)
+        }
+    }, [amountIn1, amountOut1, focusType, recollatFee, deiPrices]);// eslint-disable-line
+
+
+    useEffect(() => {
+        if (focusType === "from") {
             getAmountsTokens2(amountIn2, null)
         } if (focusType === "to") {
             getAmountsTokens2(null, amountOut2)
         }
-    }, [amountIn2, amountOut2, recollatFee, deiPrices]);
+    }, [amountIn2, amountOut2, recollatFee, deiPrices, focusType]);// eslint-disable-line
 
     const getAmountsTokens2 = (in1, out1) => {
         if (deiPrices) {
-            const { collateral_price, dei_price, deus_price } = deiPrices
+            const { collateral_price, deus_price } = deiPrices
 
             let amountIn1 = ""
             let amountOut1 = ""
@@ -227,7 +210,7 @@ const Dei = () => {
 
     let targetToken = useMemo(() => {
         if (availableBuyback !== null) return availableBuyback > 0 ? swapState.from : swapState.to
-    }, [availableBuyback])
+    }, [availableBuyback, swapState])
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
     const { onBuyBack } = useBuyBack(swapState.to, swapState.from, amountIn1, amountOut1, chainId)
     const { onRecollat } = useRecollat(swapState.from, swapState.to, amountIn2, amountOut2, chainId)

@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js"
 import { HUSD_POOL_ADDRESS } from "../constant/contracts"
 import { ChainMap } from "../constant/web3"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiPoolContract, getHusdPoolContract } from "./contractHelpers"
+import { getDeiContract, getHusdPoolContract } from "./contractHelpers"
 import { fromWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 

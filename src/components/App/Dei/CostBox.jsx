@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { makeCostDataRedeem, makeCostData } from '../../../helper/deiHelper'
-import { useCollatDollarBalance, useRedemptionFee } from '../../../hooks/useDei'
 import { useRecoilValue } from 'recoil';
 import { collatRatioState } from '../../../store/dei';
-import { useRefreshRatio, usePoolCeilingBalance } from '../../../hooks/useDei'
+import { useRefreshRatio } from '../../../hooks/useDei'
+import { husdPoolDataState } from '../../../store/dei'
 
 export const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
@@ -44,13 +44,11 @@ export const CostBox = (props) => {
     const refreshRate = useRefreshRatio()
     const deiPrice = refreshRate ? refreshRate.dei_price : null
     const collatRatio = useRecoilValue(collatRatioState)
-    const poolBalance = useCollatDollarBalance()
-    const poolCeiling = usePoolCeilingBalance()
-    const redemptionFee = useRedemptionFee()
-    let costs =  null
+    const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance } = useRecoilValue(husdPoolDataState)
+    let costs = null
 
     if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling)
-    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, redemptionFee, poolBalance)
+    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance)
 
     return (
         useMemo(() => {

@@ -4,29 +4,21 @@ import { useWeb3React } from '@web3-react/core'
 import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei, getToWei } from '../helper/formatBalance'
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import multicall from '../helper/multicall'
 import { useERC20 } from './useContract'
 import { ethers } from "ethers";
 import { ZERO } from "../constant/number";
 import {
-    collatRatioState, deiPricesState, husdPoolDataState, mintingFeeState, redemptionFeeState,
-    redeemDEUSBalancesState, redeemCollateralBalancesState, availableBuybackState, availableRecollatState,
-    buyBackFeeState, recollatFeeState, redeemBalances
+    collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, redeemBalances
 } from '../store/dei'
-
 import {
-    getCollatDollarBalance, getCollatRatio, makeDeiRequest, mintDei, getDeiInfo,
-    getPoolCeiling, dollarDecimals, getRedemptionFee, getMintingFee, getRecollatFee,
-    getBuyBackFee, getHusdPoolData, redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei,
-    getRedeemDEUSBalances, getRedeemCollateralBalances, getClaimAll, mintFractional, mintAlgorithmic,
-    getAvailableBuyback, getBuyBackPaused, getRecollateralizePaused, getMintPaused, getRedeemPaused,
-    buyBackDEUS, RecollateralizeDEI, getBonusRate
+    getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, dollarDecimals, getBuyBackFee, getHusdPoolData, 
+    redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
+    buyBackDEUS, RecollateralizeDEI
 } from '../helper/deiHelper'
 import { ChainMap } from '../constant/web3'
-import { blockNumberState } from '../store/wallet'
-
 
 
 export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validChainId = 1) => {
@@ -195,21 +187,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
     return { onMint: handleMint }
 }
 
-export const useAvailableBuyback = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const setAvailableBuyback = useSetRecoilState(availableBuybackState)
-
-    useEffect(() => {
-        const get = async () => {
-            const bb = await getAvailableBuyback(web3, chainId)
-            setAvailableBuyback(bb)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-}
 
 export const useAvailableRecollat = () => {
     const web3 = useWeb3()
@@ -281,7 +258,6 @@ export const useHusdPoolData = () => {
                 bonus_rate,
             ] = mul
 
-
             const updateState = {
                 collatDollarBalance: new BigNumber(collatDollarBalance).toNumber(),
                 availableExcessCollatDV: new BigNumber(availableExcessCollatDV).toFixed(0),
@@ -326,17 +302,13 @@ export const useDeiUpdate = () => {
 export const useDeiUpdateRedeem = () => {
     useCollatRatio()
     useDeiPrices()
-    // useRedemptionFee()
     useHusdPoolData()
-    useBalances()
+    useRedeemBalances()
 }
 
 export const useDeiUpdateBuyBack = () => {
     useDeiPrices()
-    useAvailableBuyback()
     useAvailableRecollat()
-    // useBuyBackFee()
-    // useRecollatFee()
     useHusdPoolData()
 
 }
@@ -418,222 +390,4 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
     }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh])
 
     return allowance
-}
-
-
-//DEP
-export const useBalances = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const blockNumber = useRecoilValue(blockNumberState)
-    const setRedeemDEUSBalances = useSetRecoilState(redeemDEUSBalancesState)
-    const setRedeemCollateralBalances = useSetRecoilState(redeemCollateralBalancesState)
-
-    useEffect(() => {
-        const get = async () => {
-            const DEUSBalance = await getRedeemDEUSBalances(account, web3, chainId)
-            const collateralBalance = await getRedeemCollateralBalances(account, web3, chainId)
-            setRedeemDEUSBalances(fromWei(DEUSBalance, 18))
-            setRedeemCollateralBalances(fromWei(collateralBalance, 6))
-        }
-        if (blockNumber % 3 === 0) {
-            console.log(blockNumber);
-            get()
-        }
-    }, [blockNumber, account, chainId])
-}
-
-//DEP
-export const useRecollateralizePaused = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const [recollateralizePaused, setRecollateralizePaused] = useState(null)
-
-    useEffect(() => {
-        const get = async () => {
-            const res = await getRecollateralizePaused(web3, chainId)
-            setRecollateralizePaused(res)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-    return recollateralizePaused
-}
-
-//DEP
-export const useBuyBackPaused = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const [buyBackPaused, setBuyBackPaused] = useState(null)
-
-    useEffect(() => {
-        const get = async () => {
-            const res = await getBuyBackPaused(web3, chainId)
-            setBuyBackPaused(res)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-    return buyBackPaused
-}
-
-//DEP
-export const useMintPaused = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const [mintPaused, setMintPaused] = useState(null)
-
-    useEffect(() => {
-        const get = async () => {
-            const res = await getMintPaused(web3, chainId)
-            setMintPaused(res)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-    return mintPaused
-}
-
-//DEP
-export const useRedeemPaused = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const [redeemPaused, setRedeemPaused] = useState(null)
-
-    useEffect(() => {
-        const get = async () => {
-            const res = await getRedeemPaused(web3, chainId)
-            setRedeemPaused(res)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-    return redeemPaused
-}
-
-//DEP
-export const useBonusRate = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const [bonusRate, setBonusRate] = useState(null)
-
-    useEffect(() => {
-        const get = async () => {
-            const res = await getBonusRate(web3, chainId)
-            setBonusRate(res)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-    return bonusRate
-}
-
-//DEP
-export const useCollatDollarBalance = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const [collatDollar, setCollatDollar] = useState(null)
-
-    useEffect(() => {
-        const get = async () => {
-            const cd = await getCollatDollarBalance(web3, chainId)
-            setCollatDollar(cd)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-    return collatDollar
-}
-
-//DEP
-export const usePoolCeilingBalance = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const [poolCeiling, setPoolCeiling] = useState(null)
-
-    useEffect(() => {
-        const get = async () => {
-            const pc = await getPoolCeiling(web3, chainId)
-            setPoolCeiling(pc)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-    return poolCeiling
-}
-
-//DEP
-export const useRedemptionFee = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const setRedemptionFee = useSetRecoilState(redemptionFeeState)
-
-    useEffect(() => {
-        const get = async () => {
-            const rf = await getRedemptionFee(web3, chainId)
-            setRedemptionFee(rf / 10000)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-}
-
-//DEP
-export const useMintingFee = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const setMintingFee = useSetRecoilState(mintingFeeState)
-
-    useEffect(() => {
-        const get = async () => {
-            const mf = await getMintingFee(web3, chainId)
-            setMintingFee(mf / 10000)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-}
-
-//DEP
-export const useBuyBackFee = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const setBuyBackFee = useSetRecoilState(buyBackFeeState)
-
-    useEffect(() => {
-        const get = async () => {
-            const bf = await getBuyBackFee(web3, chainId)
-            setBuyBackFee(bf)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
-}
-
-//DEP
-export const useRecollatFee = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-
-    const { slowRefresh } = useRefresh()
-    const setRecollatFee = useSetRecoilState(recollatFeeState)
-
-    useEffect(() => {
-        const get = async () => {
-            const rf = await getRecollatFee(web3, chainId)
-            setRecollatFee(rf)
-        }
-        get()
-    }, [slowRefresh, account, chainId])
 }

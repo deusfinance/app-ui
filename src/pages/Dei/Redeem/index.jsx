@@ -31,9 +31,6 @@ const Dei = () => {
     const deiPrices = useRecoilValue(deiPricesState)
     const { redemption_fee: redemptionFee, redeemPaused } = useRecoilValue(husdPoolDataState)
 
-    // const redemptionFee = useRecoilValue(redemptionFeeState)
-    // const redeemPaused = useRedeemPaused();
-
     const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)

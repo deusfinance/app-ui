@@ -9,6 +9,7 @@ export const wxdaiToken = new Token(100, "0xe91d153e0b41518a2ce8dd3d7944fa863463
 export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 
 export const deiToken = new Token(4, "0x7Df10f948083F7eB924dE832c2FB05E2CC363827", 18, "DEI", "DEI", "/img/Dei_logo.svg");
+export const deiHusdLpToken = new Token(4, "0x7Df10f948083F7eB924dE832c2FB05E2CC363827", 18, "DEI", "DEI", "/img/Dei_logo.svg");
 
 
 export const busdTestToken = new Token(97, "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47", 18, "BUSD", "BUSD", "/tokens/busd.svg");

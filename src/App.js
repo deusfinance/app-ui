@@ -16,6 +16,7 @@ const Deus = React.lazy(() => import('./components/Deus'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
+const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
 const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
 const DeiBuyBackRecollateralize = React.lazy(() => import('./pages/Dei/BuyBackRecollateralize'))
 
@@ -85,6 +86,7 @@ function App() {
                   <Route exact path="/swap2" component={Swap2} />
                   <Redirect exact from="/dei" to="/dei/mint" />
                   <Route exact path="/dei/mint" component={DeiMint} />
+                  <Route exact path="/dei/staking" component={DeiStaking} />
                   <Route exact path="/dei/redeem" component={DeiRedeem} />
                   <Route exact path="/dei/buyback-recollat" component={DeiBuyBackRecollateralize} />
                   <Route exact path="/sealed-swap" component={Sealed} />

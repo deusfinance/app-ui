@@ -9,7 +9,7 @@ const Wrapper = styled.div`
     font-family: Monument Grotesk;
     font-weight: 400;
     color: #ffffff;
-    height: 350px;
+    min-height: 350px;
     max-width: 450px;
     width: 100%;
     background: #0d0d0d;
@@ -63,11 +63,11 @@ const Staking = ({ title }) => {
                     <Action style={{ borderRadius: "0  6px 0 0" }}>Stake Here</Action>
                 </ActionContainer>
             </ActionWrap>
-            <Type.XXL mb="4" mt="4">DEI-HUSD</Type.XXL>
+            <Type.XXL mb="4" mt="4">DEI-HUSD-LP</Type.XXL>
             <Type.LG mt="3" mb="3">0.00% APY</Type.LG>
             <Type.MD mt="2" mb="4" >you own 0.01% of the pool</Type.MD>
-            <ClaimButton actionTitle="claim" amount="21.05487" />
-            <ClaimButton actionTitle="withdraw & claim" amount="200.098" />
+            <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount="21.05487" />
+            <ClaimButton actionTitle="withdraw & claim" symbol="DEI-HUSD-LP" amountTitle="deposited" amount="200.098" />
         </Wrapper>
     );
 }

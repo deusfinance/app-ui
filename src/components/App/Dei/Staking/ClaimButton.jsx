@@ -4,14 +4,14 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
     display: flex;
     color:#fff;
-    height: 40px;
+    min-height: 40px;
     background: ${({ theme }) => theme.grad_dei};
     font-size: 13px;
     padding: 1px;
     margin: 16px auto;
     border-radius: 6px;
     overflow: hidden;
-    width: 88%;
+    width: 90%;
 `
 
 const ButtonAction = styled.div`
@@ -20,9 +20,9 @@ const ButtonAction = styled.div`
     overflow: hidden;
     display: flex;
     border-radius: 0 6px 6px 0;
-    flex: 1 1;
+    width: 150px;
     justify-content: center;
-    height: 100%;
+    /* height: 100%; */
     background-color: #111111;
     transition: all 0.25s;
     :hover{
@@ -37,14 +37,14 @@ const Amount = styled.div`
     border-radius: 6px 0 0 6px;
     border-right: 2px solid #242424;
     justify-content: center;
-    height: 100%;
+    /* height: 100%; */
     background-color: #111111;
     transition: all 0.25s;
     cursor: default;
 `
-const ClaimButton = ({ actionTitle, onAction = undefined, amount }) => {
+const ClaimButton = ({ actionTitle, onAction = undefined, symbol, amount, amountTitle }) => {
     return (<Wrapper>
-        <Amount>{amount} DEUS claimable</Amount>
+        <Amount>{amount} {symbol} {amountTitle}</Amount>
         <ButtonAction onClick={onAction}>{actionTitle}</ButtonAction>
     </Wrapper>);
 }

@@ -438,7 +438,6 @@ export const useBalances = () => {
             setRedeemCollateralBalances(fromWei(collateralBalance, 6))
         }
         if (blockNumber % 3 === 0) {
-            console.log(blockNumber);
             get()
         }
     }, [blockNumber, account, chainId])

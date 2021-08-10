@@ -28,6 +28,7 @@ const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const NotFound = React.lazy(() => import('./components/NotFound'))
+const NFT = React.lazy(() => import('./pages/NFT'))
 
 // const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 // const Bridge = React.lazy(() => import('./components/Bridge'))
@@ -91,6 +92,7 @@ function App() {
                   <Route exact path="/dei/buyback-recollat" component={DeiBuyBackRecollateralize} />
                   <Route exact path="/sealed-swap" component={Sealed} />
                   <Route exact path="/muon-presale" component={Muon} />
+                  <Route exact path="/nft" component={NFT} />
                   <Route path="/crosschain/:id/muon-presale" component={Muon} />
                   <Redirect exact from="/" to="/swap" />
                   <Route path="/" component={Deus} />

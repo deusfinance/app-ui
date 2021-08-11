@@ -345,19 +345,6 @@
     },
     {
         "inputs": [],
-        "name": "DEFAULT_ADMIN_ADDRESS",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
         "name": "DEFAULT_ADMIN_ROLE",
         "outputs": [
             {
@@ -559,9 +546,9 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint256[]",
                 "name": "collat_usd_price",
-                "type": "uint256"
+                "type": "uint256[]"
             }
         ],
         "name": "dei_info",
@@ -740,9 +727,9 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint256[]",
                 "name": "collat_usd_price",
-                "type": "uint256"
+                "type": "uint256[]"
             }
         ],
         "name": "globalCollateralValue",
@@ -945,7 +932,7 @@
             },
             {
                 "internalType": "uint256",
-                "name": "expireBlock",
+                "name": "expire_block",
                 "type": "uint256"
             },
             {

@@ -2,20 +2,19 @@ import BigNumber from "bignumber.js"
 import { HUSD_POOL_ADDRESS } from "../constant/contracts"
 import { ChainMap } from "../constant/web3"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getHusdPoolContract } from "./contractHelpers"
-import { fromWei } from "./formatBalance"
+import { getDeiContract, getDeiStakingContract, getHusdPoolContract } from "./contractHelpers"
+import { fromWei, getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
-
 
 const baseUrl = "https://oracle4.deus.finance/dei"
 
 export const dollarDecimals = 6
 
-export const makeCostData = (deiPrice, collatRatio, poolBalance, ceiling) => {
+export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null) => {
     const dp = deiPrice ? `$${new BigNumber(fromWei(deiPrice, dollarDecimals)).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pc = poolBalance && ceiling ? formatUnitAmount(fromWei(poolBalance, dollarDecimals)) + ' / ' + formatUnitAmount(fromWei(ceiling, dollarDecimals)) : null
-    const av = pc ? formatUnitAmount(fromWei(new BigNumber(poolBalance).minus(ceiling), dollarDecimals)) : null
+    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(fromWei(poolBalance, dollarDecimals)) + ' / ' + formatUnitAmount(fromWei(ceiling, dollarDecimals)) : null
+    const av = pc ? formatUnitAmount(fromWei(new BigNumber(ceiling).minus(poolBalance), dollarDecimals)) : null
     return [{
         name: 'DEI PRICE',
         value: dp
@@ -67,8 +66,57 @@ export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize) 
     }]
 }
 
-export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance, account) => {
+export const getStakingData = (conf, account) => {
+    if (!conf) return []
+    return [
+        {
+            address: conf.stakingContract,
+            name: "users",
+            params: [account]
+        },
+        {
+            address: conf.stakingContract,
+            name: "pendingReward",
+            params: [account]
+        }
+    ]
+}
+export const getStakingTokenData = (conf, account) => {
+    return [
+        {
+            address: conf.depositToken.address,
+            name: "allowance",
+            params: [account, conf.stakingContract]
+        },
+        {
+            address: conf.depositToken.address,
+            name: "balanceOf",
+            params: [account]
+        },
+        {
+            address: conf.depositToken.address,
+            name: "balanceOf",
+            params: [conf.stakingContract]
+        }
+    ]
+}
 
+export const DeiDeposit = async (depositedToken, amount, address, account, web3) => {
+    console.log(getToWei(amount, depositedToken.decimals).toFixed(0));
+    return getDeiStakingContract(web3, address)
+        .methods
+        .deposit(getToWei(amount, depositedToken.decimals))
+        .send({ from: account })
+}
+
+export const DeiWithdraw = async (withdrawToken, amount, address, account, web3) => {
+    return getDeiStakingContract(web3, address)
+        .methods
+        .withdraw(getToWei(amount, withdrawToken.decimals))
+        .send({ from: account })
+}
+
+export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance = "10000000", account) => {
     return [
         {
             address: HUSD_POOL_ADDRESS[chainId],
@@ -78,7 +126,7 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance, 
         {
             address: HUSD_POOL_ADDRESS[chainId],
             name: 'availableExcessCollatDV',
-            params: [collat_usd_balance]
+            params: [[collat_usd_balance]]
         },
         {
             address: HUSD_POOL_ADDRESS[chainId],
@@ -135,11 +183,10 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance, 
 
 }
 
-
 export const buyBackDEUS = async (amountIn, collateral_price, deus_price, expire_block, signature, collateral_out_min = "0", account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .buyBackDEUS(collateral_price, deus_price, expire_block, [signature], amountIn, collateral_out_min)
+        .buyBackDEUS(amountIn, collateral_price, deus_price, expire_block, [signature], amountIn)
         .send({ from: account })
 }
 
@@ -150,45 +197,45 @@ export const RecollateralizeDEI = async (collateral_price, deus_price, expire_bl
         .send({ from: account })
 }
 
-export const mintDei = async (amountIn1, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
+export const mintDei = async (collateral_amount, collateral_price, expire_block, signature, account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .mint1t1DEI(amountIn1, DEI_out_min, collateral_price, expire_block, [signature])
+        .mint1t1DEI(collateral_amount, collateral_price, expire_block, [signature])
         .send({ from: account })
 }
 
-export const mintFractional = async (collateral_price, deus_current_price, expireBlock, signature, collateral_amount, deus_amount, DEI_out_min = "0", account, chainId, web3) => {
+export const mintFractional = async (collateral_amount, deus_amount, account, collateral_price, deus_current_price, expireBlock, signature, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .mintFractionalDEI(collateral_price, deus_current_price, expireBlock, [signature], collateral_amount, deus_amount, DEI_out_min)
+        .mintFractionalDEI(collateral_amount, deus_amount, collateral_price, deus_current_price, expireBlock, [signature])
         .send({ from: account })
 }
 
-export const mintAlgorithmic = async (deus_amount_d18, deus_current_price, DEI_out_min = "0", expire_block, signature, account, chainId, web3) => {
+export const mintAlgorithmic = async (deus_amount_d18, deus_current_price, expire_block, signature, account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .mintAlgorithmicDEI(deus_current_price, expire_block, [signature], deus_amount_d18, DEI_out_min)
+        .mintAlgorithmicDEI(deus_amount_d18, deus_current_price, expire_block, [signature])
         .send({ from: account })
 }
 
 export const redeem1to1Dei = async (amountIn, DEI_out_min = "0", collateral_price, expire_block, signature, account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .redeem1t1DEI(amountIn, DEI_out_min, collateral_price, expire_block, [signature])
+        .redeem1t1DEI(amountIn, collateral_price, expire_block, [signature])
         .send({ from: account })
 }
 
 export const redeemFractionalDei = async (collateral_price, deus_price, expire_block, signature, amountIn, DEUS_out_min = "0", COLLATERAL_out_min = "0", account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .redeemFractionalDEI(collateral_price, deus_price, expire_block, [signature], amountIn, DEUS_out_min, COLLATERAL_out_min)
+        .redeemFractionalDEI(amountIn, collateral_price, deus_price, expire_block, [signature])
         .send({ from: account })
 }
 
 export const redeemAlgorithmicDei = async (deus_price, expire_block, signature, amountIn, DEI_out_min = "0", account, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
-        .redeemAlgorithmicDEI(deus_price, expire_block, [signature], amountIn, DEI_out_min)
+        .redeemAlgorithmicDEI(amountIn, deus_price, expire_block, [signature])
         .send({ from: account })
 }
 

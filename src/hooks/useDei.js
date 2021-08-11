@@ -3,9 +3,12 @@ import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
 import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
-import { fromWei, getToWei } from '../helper/formatBalance'
+import { fromWei, getToWei, RemoveTrailingZero } from '../helper/formatBalance'
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
+import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
+import ERC20Abi from '../config/abi/ERC20Abi.json'
+
 import multicall from '../helper/multicall'
 import { useERC20 } from './useContract'
 import { ethers } from "ethers";
@@ -16,11 +19,98 @@ import {
 import {
     getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
-    buyBackDEUS, RecollateralizeDEI
+    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw
 } from '../helper/deiHelper'
 import { ChainMap } from '../constant/web3'
 import { blockNumberState } from '../store/wallet'
+import { formatBalance3 } from '../utils/utils'
 
+
+export const useStakingInfo = (conf) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+    const { fastRefresh } = useRefresh()
+
+    const [res, setRes] = useState(conf)
+
+    useEffect(() => {
+        const get = async () => {
+            const mul = await multicall(web3, StakingDeiAbi, getStakingData(conf, account), chainId)
+            const [
+                users,
+                pendingReward
+            ] = mul
+            const { depositAmount, paidReward } = users
+
+            setRes({
+                ...conf,
+                depositAmount: RemoveTrailingZero(fromWei(depositAmount["_hex"], 18), 18),
+                paidReward: RemoveTrailingZero(fromWei(paidReward["_hex"], 18), 18),
+                pendingReward: formatBalance3(fromWei(pendingReward, 18), 6),
+            })
+        }
+        if (web3 && account) {
+            get()
+        }
+    }, [conf, fastRefresh, web3])
+    return res
+}
+export const useTokenInfo = (conf) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+    const { fastRefresh } = useRefresh()
+
+    const [res, setRes] = useState(conf)
+    useEffect(() => {
+        const get = async () => {
+            const mul = await multicall(web3, ERC20Abi, getStakingTokenData(conf, account), chainId)
+            const [
+                allowance,
+                depositTokenWalletBalance,
+                totalDepositBalance
+            ] = mul
+            // console.log(mul);
+            // console.log(allowance);
+
+            setRes({
+                ...conf,
+                allowance: new BigNumber(allowance),
+                depositTokenWalletBalance: fromWei(depositTokenWalletBalance),
+                totalDepositBalance: fromWei(totalDepositBalance),
+            })
+        }
+        if (web3 && account && conf) {
+            get()
+        }
+    }, [conf, fastRefresh, web3])
+    return res
+}
+
+
+export const useDeposit = (currency, amount, address, validChainId) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleDeposit = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+        console.log("useDeposit ", amount,);
+
+        return await DeiDeposit(currency, amount, address, account, web3)
+    }, [currency, amount, address, validChainId])
+    return { onDeposit: handleDeposit }
+}
+
+export const useWithdraw = (currency, amount, address, validChainId) => {
+    const web3 = useWeb3()
+
+    const { account, chainId } = useWeb3React()
+    const handleWithdraw = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+        console.log("useWithdraw", amount);
+        return await DeiWithdraw(currency, amount, address, account, web3)
+    }, [currency, amount, address, validChainId])
+    return { onWithdraw: handleWithdraw }
+}
 
 export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validChainId = 1) => {
     const web3 = useWeb3()
@@ -146,7 +236,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             const result = await makeDeiRequest(path)
             return await mintDei(
                 getToWei(amountIn1, from1Currency.decimals),
-                "0",
                 result.collateral_price,
                 result.expire_block,
                 result.signature,
@@ -158,13 +247,12 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             path = "/mint-fractional"
             const result = await makeDeiRequest(path)
             return await mintFractional(
+                getToWei(amountIn1, from1Currency.decimals),
+                getToWei(amountIn2, from2Currency.decimals),
                 result.collateral_price,
                 result.deus_price,
                 result.expire_block,
                 result.signature,
-                getToWei(amountIn1, from1Currency.decimals),
-                getToWei(amountIn2, from2Currency.decimals),
-                "0",
                 account,
                 chainId,
                 web3,
@@ -175,7 +263,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         return await mintAlgorithmic(
             getToWei(amountIn1, from1Currency.decimals),
             result.deus_price,
-            "0",
             result.expire_block,
             result.signature,
             account,
@@ -258,7 +345,7 @@ export const useHusdPoolData = () => {
                 redeemPaused,
                 bonus_rate,
             ] = mul
-
+            console.log(new BigNumber(minting_fee).toNumber());
             const updateState = {
                 collatDollarBalance: new BigNumber(collatDollarBalance).toNumber(),
                 availableExcessCollatDV: new BigNumber(availableExcessCollatDV).toFixed(0),

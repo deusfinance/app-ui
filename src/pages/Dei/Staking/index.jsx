@@ -25,6 +25,7 @@ import { PlusImg } from '../../../components/App/Dei';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
 import Staking from '../../../components/App/Dei/Staking/Staking';
+import { StakingConfig } from '../../../components/App/Dei/data';
 
 const Dei = () => {
     useDeiUpdateRedeem()
@@ -138,8 +139,7 @@ const Dei = () => {
     return (<>
         <MainWrapper>
             <Type.XL fontWeight="300" mb="5">Staking</Type.XL>
-
-            <Staking />
+            <Staking config={StakingConfig[0]} />
         </MainWrapper>
 
         <div className='tut-left-wrap'>

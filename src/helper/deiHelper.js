@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js"
 import { HUSD_POOL_ADDRESS } from "../constant/contracts"
 import { ChainMap } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
-import { CustomTranaction } from "../utils/explorers"
+import { CustomTransaction } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
 import { getDeiContract, getDeiStakingContract, getHusdPoolContract } from "./contractHelpers"
 import { fromWei, getToWei } from "./formatBalance"
@@ -192,18 +192,18 @@ export const SendWithToast = (fn, account, chainId, message) => {
         .send({ from: account })
         .once('transactionHash', (tx) => {
             hash = tx
-            CustomTranaction(TransactionState.LOADING, {
+            CustomTransaction(TransactionState.LOADING, {
                 hash,
                 chainId: chainId,
                 message: message,
             })
         })
-        .once('receipt', () => CustomTranaction(TransactionState.SUCCESS, {
+        .once('receipt', () => CustomTransaction(TransactionState.SUCCESS, {
             hash,
             chainId: chainId,
             message: message,
         }))
-        .once('error', () => CustomTranaction(TransactionState.FAILED, {
+        .once('error', () => CustomTransaction(TransactionState.FAILED, {
             hash,
             chainId: chainId,
             message: message,

@@ -329,7 +329,7 @@ export function ApproveTransaction(type, payload) {
 }
 
 //to do
-export function CustomTranaction(type, payload) {
+export function CustomTransaction(type, payload) {
   toast.dismiss()
 
   switch (type) {

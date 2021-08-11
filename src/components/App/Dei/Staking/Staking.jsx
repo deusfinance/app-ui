@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Type } from '../../Text';
 import styled from 'styled-components'
 import ClaimButton from './ClaimButton';
+import Popup from './Popup';
+import { useRecoilValue } from 'recoil';
+import { stakingInfoState } from '../../../../store/dei';
+import { useDeposit, useStakingInfo, useTokenInfo, useWithdraw } from '../../../../hooks/useDei';
+import { isZero } from '../../../../constant/number';
+import BigNumber from 'bignumber.js';
+import { useApprove } from '../../../../hooks/useApprove';
+import { fromWei } from '../../../../helper/formatBalance';
 
 const Wrapper = styled.div`
     display: inline-block;
@@ -52,22 +60,159 @@ const Action = styled.div`
     }
     padding: 2px;
 `
-const Staking = ({ title }) => {
+const Staking = ({ title, config }) => {
+
+    const [isApproved, setIsApproved] = useState(null)
+    const [isPreApproved, setIsPreApproved] = useState(null)
+    const [approveLoading, setApproveLoading] = useState(false)
+    const [depositInput, setDepositInput] = useState("")
+    const [withdrawAmount, setWithdrawAmount] = useState("")
+
+    const [activeWithdraw, setActiveWithdraw] = useState(false)
+    const [activeDeposit, setActiveDeposit] = useState(false)
+    const stakingInfo = useStakingInfo(config)
+    const { depositAmount, paidReward, pendingReward } = stakingInfo
+    const tokens = useTokenInfo(config)
+    const { depositTokenWalletBalance, totalDepositBalance, allowance } = tokens
+
+    useEffect(() => {
+        const check = () => {
+            if (isPreApproved == null) {
+                if (allowance.toString() === "-1") {
+                    setIsPreApproved(null) //doNothing
+                } else {
+                    if (allowance.gt(0)) {
+                        setIsPreApproved(true)
+                    } else {
+                        setIsPreApproved(false)
+                    }
+                }
+            } else {
+                if (allowance.gt(0)) {
+                    setIsApproved(true)
+                }
+            }
+        }
+        //eslint-disable-next-line 
+        if (allowance)
+            check()
+    }, [allowance])
+
+
+    const { onApprove } = useApprove(config.depositToken, config.stakingContract, 4)
+    const { onDeposit } = useDeposit(config.depositToken, depositAmount, config.stakingContract, 4)
+    const { onWithdraw } = useWithdraw(config.depositToken, withdrawAmount, config.stakingContract, 4)
+    const { onWithdraw: onClaim } = useWithdraw(config.depositToken, "0", config.stakingContract, 4)
+
+    const handleApprove = useCallback(async () => {
+        try {
+            setApproveLoading(true)
+            const tx = await onApprove()
+            if (tx.status) {
+                setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
+            } else {
+                console.log("Approved Failed");
+            }
+            setApproveLoading(false)
+
+        } catch (e) {
+            setApproveLoading(false)
+            console.error(e)
+        }
+    }, [onApprove])
+
+    const handleWithdraw = useCallback(async () => {
+        try {
+            const tx = await onWithdraw()
+            if (tx.status) {
+                setWithdrawAmount("")
+            } else {
+                console.log("onWithdraw Failed");
+            }
+        } catch (e) {
+            setWithdrawAmount("")
+            console.error(e)
+        }
+    }, [onWithdraw])
+
+    const handleClaim = useCallback(async () => {
+        try {
+            const tx = await onClaim()
+            if (tx.status) {
+            } else {
+                console.log("onClaim Failed");
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }, [onClaim])
+
+
+    const handleDeposit = useCallback(async () => {
+        try {
+            const tx = await onDeposit()
+            if (tx.status) {
+                setDepositInput("")
+                setActiveDeposit(false)
+            } else {
+                console.log("setDepositAmount Failed");
+            }
+        } catch (e) {
+            setDepositInput("")
+            console.error(e)
+        }
+    }, [onDeposit])
+
+
+    const percent = isZero(totalDepositBalance) ?
+        "0.0" :
+        new BigNumber(depositAmount).div(totalDepositBalance).times(100).toFixed(2)
+
+    //isPreApproved ?
+
     return (
         <Wrapper>
+            <Popup
+                active={activeWithdraw}
+                setActive={setActiveWithdraw}
+                amount={withdrawAmount}
+                setAmount={setWithdrawAmount}
+                title={"Withdraw " + stakingInfo.title}
+                balance={depositAmount || "0"}
+                buttonText="WITHDRAW"
+                isPreApproved={true}
+                isApproved={true}
+                loading={false}
+                handleApprove={undefined}
+                handleAction={handleWithdraw}
+            />
+            <Popup
+                active={activeDeposit}
+                setActive={setActiveDeposit}
+                title={"Stake " + stakingInfo.title}
+                amount={depositInput}
+                setAmount={setDepositInput}
+                balance={depositTokenWalletBalance}
+                buttonText="STAKE"
+                isPreApproved={isPreApproved}
+                isApproved={isApproved}
+                loading={approveLoading}
+                handleApprove={handleApprove}
+                handleAction={handleDeposit}
+            />
             <ActionWrap>
-                <ActionContainer style={{ borderRadius: "6px 0 0 0" }}>
+                <ActionContainer style={{ borderRadius: "6px 0 0 0" }} >
                     <Action style={{ borderRadius: "6px 0 0 0" }}>Mint</Action>
                 </ActionContainer>
                 <ActionContainer style={{ borderRadius: " 0  6px 0 0" }}>
-                    <Action style={{ borderRadius: "0  6px 0 0" }}>Stake Here</Action>
+                    <Action style={{ borderRadius: "0  6px 0 0" }} onClick={() => setActiveDeposit(true)}>Stake Here</Action>
                 </ActionContainer>
             </ActionWrap>
-            <Type.XXL mb="4" mt="4">DEI-HUSD-LP</Type.XXL>
+            <Type.XXL mb="4" mt="4">{stakingInfo.title}</Type.XXL>
             <Type.LG mt="3" mb="3">0.00% APY</Type.LG>
-            <Type.MD mt="2" mb="4" >you own 0.01% of the pool</Type.MD>
-            <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount="21.05487" />
-            <ClaimButton actionTitle="withdraw & claim" symbol="DEI-HUSD-LP" amountTitle="deposited" amount="200.098" />
+            <Type.MD mt="2" mb="4" >you own {percent}% of the pool</Type.MD>
+            <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount={pendingReward} onAction={handleClaim} />
+            <ClaimButton actionTitle="withdraw & claim" symbol="DEI-HUSD-LP" amountTitle="deposited" amount={depositAmount} onAction={() => setActiveWithdraw(true)} />
         </Wrapper>
     );
 }

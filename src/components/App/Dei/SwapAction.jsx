@@ -58,7 +58,7 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
     const checkError = () => {
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
-        if (isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
+        if (swapState && isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
         if (isNaN(amountOut)) return errors.LOADING
         return null;
     }
@@ -99,7 +99,7 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
                 <WrapActions>
                     {!isApproved ? <>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleApprove} >
-                            APPROVE {targetToken.symbol}
+                            APPROVE {targetToken && targetToken.symbol}
                             {loading && <img style={{ position: "absolute", right: "0px" }} alt="sp" src="/img/spinner.svg" width="30" height="30" />}
                         </ButtonSwap>
                         <ButtonSyncDeactivated>SWAP</ButtonSyncDeactivated>

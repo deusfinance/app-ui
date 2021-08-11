@@ -3,13 +3,10 @@ import { Type } from '../../Text';
 import styled from 'styled-components'
 import ClaimButton from './ClaimButton';
 import Popup from './Popup';
-import { useRecoilValue } from 'recoil';
-import { stakingInfoState } from '../../../../store/dei';
 import { useDeposit, useStakingInfo, useTokenInfo, useWithdraw } from '../../../../hooks/useDei';
 import { isZero } from '../../../../constant/number';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../../hooks/useApprove';
-import { fromWei } from '../../../../helper/formatBalance';
 
 const Wrapper = styled.div`
     display: inline-block;
@@ -60,7 +57,7 @@ const Action = styled.div`
     }
     padding: 2px;
 `
-const Staking = ({ title, config }) => {
+const Staking = ({ config }) => {
 
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -71,7 +68,7 @@ const Staking = ({ title, config }) => {
     const [activeWithdraw, setActiveWithdraw] = useState(false)
     const [activeDeposit, setActiveDeposit] = useState(false)
     const stakingInfo = useStakingInfo(config)
-    const { depositAmount, paidReward, pendingReward } = stakingInfo
+    const { depositAmount, pendingReward } = stakingInfo
     const tokens = useTokenInfo(config)
     const { depositTokenWalletBalance, totalDepositBalance, allowance } = tokens
 
@@ -93,9 +90,9 @@ const Staking = ({ title, config }) => {
                 }
             }
         }
-        //eslint-disable-next-line 
         if (allowance)
             check()
+        //eslint-disable-next-line 
     }, [allowance])
 
 

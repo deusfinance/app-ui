@@ -137,6 +137,8 @@ const Dei = () => {
         setIsApproved(null)
     }, [chainId, account, swapState.from]);
 
+
+
     useEffect(() => {
         if (isPreApproved == null) {
             if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
@@ -144,15 +146,14 @@ const Dei = () => {
             } else {
                 if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                     setIsPreApproved(true)
-
-                } else {
+                }
+                else {
                     setIsPreApproved(false)
                 }
             }
         } else {
             if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                 setIsApproved(true)
-
             }
         }
         //eslint-disable-next-line 
@@ -175,9 +176,10 @@ const Dei = () => {
             setApproveLoading(true)
             const tx = await onApprove()
             if (tx.status) {
-                setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
+                console.log("Approved");
             } else {
-                console.log("Approved Failed");
+                console.log("Approve Failed");
+
             }
             setApproveLoading(false)
 

@@ -1,4 +1,4 @@
-import useWeb3 from './useWeb3'
+import useWeb3, { useCrossWeb3 } from './useWeb3'
 import { useEffect, useState, useCallback } from "react"
 import { useWeb3React } from '@web3-react/core'
 import useRefresh from './useRefresh'
@@ -23,63 +23,6 @@ import {
 import { ChainMap } from '../constant/web3'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
-
-export const useStakingInfo = (conf) => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-    const { fastRefresh } = useRefresh()
-    const [res, setRes] = useState(conf)
-
-    useEffect(() => {
-        const get = async () => {
-            const mul = await multicall(web3, StakingDeiAbi, getStakingData(conf, account), chainId)
-            const [
-                users,
-                pendingReward
-            ] = mul
-            const { depositAmount, paidReward } = users
-
-            setRes({
-                ...conf,
-                depositAmount: RemoveTrailingZero(fromWei(depositAmount["_hex"], 18), 18),
-                paidReward: RemoveTrailingZero(fromWei(paidReward["_hex"], 18), 18),
-                pendingReward: formatBalance3(fromWei(pendingReward, 18), 6),
-            })
-        }
-        if (web3 && account) {
-            get()
-        }
-    }, [conf, fastRefresh, web3])
-    return res
-}
-
-export const useTokenInfo = (conf) => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
-    const { fastRefresh } = useRefresh()
-
-    const [res, setRes] = useState(conf)
-    useEffect(() => {
-        const get = async () => {
-            const mul = await multicall(web3, ERC20Abi, getStakingTokenData(conf, account), chainId)
-            const [
-                allowance,
-                depositTokenWalletBalance,
-                totalDepositBalance
-            ] = mul
-            setRes({
-                ...conf,
-                allowance: new BigNumber(allowance),
-                depositTokenWalletBalance: fromWei(depositTokenWalletBalance),
-                totalDepositBalance: fromWei(totalDepositBalance),
-            })
-        }
-        if (web3 && account && conf) {
-            get()
-        }
-    }, [conf, fastRefresh, web3])
-    return res
-}
 
 export const useDeposit = (currency, amount, address, validChainId) => {
     const web3 = useWeb3()
@@ -261,8 +204,68 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
     return { onMint: handleMint }
 }
 
-export const useAvailableRecollat = () => {
-    const web3 = useWeb3()
+
+
+
+export const useStakingInfo = (conf, validChainId) => {
+    const web3 = useCrossWeb3(validChainId)
+    const { account, chainId } = useWeb3React()
+    const { fastRefresh } = useRefresh()
+    const [res, setRes] = useState(conf)
+
+    useEffect(() => {
+        const get = async () => {
+            const mul = await multicall(web3, StakingDeiAbi, getStakingData(conf, account), chainId)
+            const [
+                users,
+                pendingReward
+            ] = mul
+            const { depositAmount, paidReward } = users
+
+            setRes({
+                ...conf,
+                depositAmount: RemoveTrailingZero(fromWei(depositAmount["_hex"], 18), 18),
+                paidReward: RemoveTrailingZero(fromWei(paidReward["_hex"], 18), 18),
+                pendingReward: formatBalance3(fromWei(pendingReward, 18), 6),
+            })
+        }
+        if (web3 && account) {
+            get()
+        }
+    }, [conf, fastRefresh, web3])
+    return res
+}
+
+export const useTokenInfo = (conf, validChainId) => {
+    const web3 = useCrossWeb3(validChainId)
+    const { account, chainId } = useWeb3React()
+    const { fastRefresh } = useRefresh()
+
+    const [res, setRes] = useState(conf)
+    useEffect(() => {
+        const get = async () => {
+            const mul = await multicall(web3, ERC20Abi, getStakingTokenData(conf, account), chainId)
+            const [
+                allowance,
+                depositTokenWalletBalance,
+                totalDepositBalance
+            ] = mul
+            setRes({
+                ...conf,
+                allowance: new BigNumber(allowance),
+                depositTokenWalletBalance: fromWei(depositTokenWalletBalance),
+                totalDepositBalance: fromWei(totalDepositBalance),
+            })
+        }
+        if (web3 && account && conf) {
+            get()
+        }
+    }, [conf, fastRefresh, web3])
+    return res
+}
+
+export const useAvailableRecollat = (validChainId) => {
+    const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
 
     const { slowRefresh } = useRefresh()
@@ -270,7 +273,7 @@ export const useAvailableRecollat = () => {
 
     useEffect(() => {
         const get = async () => {
-            const dei_info_result = await getDeiInfo(web3, chainId)
+            const dei_info_result = await getDeiInfo(web3, validChainId)
             let { "0": dei_total_supply, "1": global_collateral_ratio, "2": global_collat_value } = dei_info_result
             let effective_collateral_ratio = (global_collat_value * (1e6)) / dei_total_supply;
             let available_recollat = global_collateral_ratio * dei_total_supply - (dei_total_supply * effective_collateral_ratio) / (1e6)
@@ -295,8 +298,8 @@ export const useRedemptionDelay = () => {
     return forceRefresh
 }
 
-export const useHusdPoolData = () => {
-    const web3 = useWeb3()
+export const useHusdPoolData = (validChainId) => {
+    const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
     const { slowRefresh } = useRefresh()
     const forceRefresh = useRedemptionDelay()
@@ -304,7 +307,7 @@ export const useHusdPoolData = () => {
 
     useEffect(() => {
         const get = async () => {
-            const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(ChainMap.RINKEBY, collatUsdPrice, account), chainId)
+            const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
 
             const [
                 collatDollarBalance,
@@ -344,12 +347,11 @@ export const useHusdPoolData = () => {
             setHusdPoolData({ ...updateState })
         }
         get()
-    }, [setHusdPoolData, slowRefresh, forceRefresh, web3, account, chainId])
+    }, [setHusdPoolData, slowRefresh, forceRefresh, web3, account, validChainId, chainId])
 }
 
-export const useCollatRatio = () => {
-    const web3 = useWeb3()
-
+export const useCollatRatio = (validChainId) => {
+    const web3 = useCrossWeb3(validChainId)
     const { slowRefresh } = useRefresh()
     const setCollatRatio = useSetRecoilState(collatRatioState)
 
@@ -362,22 +364,22 @@ export const useCollatRatio = () => {
     }, [slowRefresh, web3, setCollatRatio])
 }
 
-export const useDeiUpdate = () => {
-    useCollatRatio()
+export const useDeiUpdate = (validChainId) => {
+    useCollatRatio(validChainId)
     useDeiPrices()
-    useHusdPoolData()
+    useHusdPoolData(validChainId)
 }
 
-export const useDeiUpdateRedeem = () => {
-    useCollatRatio()
+export const useDeiUpdateRedeem = (validChainId) => {
+    useCollatRatio(validChainId)
     useDeiPrices()
-    useHusdPoolData()
+    useHusdPoolData(validChainId)
 }
 
-export const useDeiUpdateBuyBack = () => {
+export const useDeiUpdateBuyBack = (validChainId) => {
     useDeiPrices()
-    useAvailableRecollat()
-    useHusdPoolData()
+    useAvailableRecollat(validChainId)
+    useHusdPoolData(validChainId)
 
 }
 

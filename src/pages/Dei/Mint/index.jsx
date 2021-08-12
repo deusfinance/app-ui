@@ -22,7 +22,9 @@ import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 
 const Dei = () => {
-    useDeiUpdate()
+    const validNetworks = [4]
+    const chainId = useChain(validNetworks)
+    useDeiUpdate(chainId)
     const collatRatio = useRecoilValue(collatRatioState)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const deiPrices = useRecoilValue(deiPricesState)
@@ -32,8 +34,7 @@ const Dei = () => {
     const [approveLoading, setApproveLoading] = useState(false)
     const [swapLoading, setSwapLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [4, 1]
-    const chainId = useChain(validNetworks)
+
     const [isPair, setIsPair] = useState(false)
     const contractAddress = HUSD_POOL_ADDRESS[chainId]
 
@@ -46,9 +47,6 @@ const Dei = () => {
         if (tokensMap[address]) tokensMap[address + pairID] = currToken
         else tokensMap[address] = currToken
     }
-
-    // const tokenBalances = tokensMap
-    // const [TokensMap, setTokensMap] = useState(tokenBalances)
 
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
@@ -207,11 +205,11 @@ const Dei = () => {
 
 
     // TODO: loader animation --> needs to fix at the end
-    if (collatRatio === null || mintingFee === null) {
-        return (<div className="loader-wrap">
-            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
-        </div>)
-    }
+    // if (collatRatio === null || mintingFee === null) {
+    //     return (<div className="loader-wrap">
+    //         {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+    //     </div>)
+    // }
 
     return (<>
         <MainWrapper>

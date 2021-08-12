@@ -49,7 +49,10 @@ const msg = "There is currently no excess value to conduct buybacks."
 const msg2 = "The protocol is properly collateralized."
 
 const Dei = () => {
-    useDeiUpdateBuyBack();
+    const validNetworks = [4]
+    const chainId = useChain(validNetworks)
+    useDeiUpdateBuyBack(chainId);
+
     const deiPrices = useRecoilValue(deiPricesState)
     const {
         bonus_rate: bonusRate,
@@ -59,6 +62,7 @@ const Dei = () => {
         buyBackPaused,
         recollateralizePaused
     } = useRecoilValue(husdPoolDataState)
+
     let availableBuyback = Math.max(availableExcessCollatDV, 0)
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     const [focusType, setFocusType] = useState("from")
@@ -68,9 +72,6 @@ const Dei = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
-    const chainId = useChain(validNetworks)
-
     const contractAddress = getContractAddr("multi_swap_contract", chainId)
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
 

@@ -8,11 +8,12 @@ import Staking from '../../../components/App/Dei/Staking/Staking';
 import { StakingConfig } from '../../../components/App/Dei/data';
 
 const Dei = () => {
-    useDeiUpdateRedeem()
+    useDeiUpdateRedeem(4)
     return (<>
         <MainWrapper>
             <Type.XL fontWeight="300" mb="5">Staking</Type.XL>
             <Staking config={StakingConfig[0]} />
+            <Staking config={StakingConfig[1]} />
         </MainWrapper>
 
         <div className='tut-left-wrap'>

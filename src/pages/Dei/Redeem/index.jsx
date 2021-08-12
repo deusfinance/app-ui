@@ -25,7 +25,10 @@ import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
 
 const Dei = () => {
-    useDeiUpdateRedeem()
+    const validNetworks = [4]
+    const chainId = useChain(validNetworks)
+    useDeiUpdateRedeem(chainId)
+
     const collatRatio = useRecoilValue(collatRatioState)
     const deiPrices = useRecoilValue(deiPricesState)
     const { redemption_fee: redemptionFee, redeemPaused } = useRecoilValue(husdPoolDataState)
@@ -34,8 +37,7 @@ const Dei = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
-    const chainId = useChain(validNetworks)
+
     const [isPair, setIsPair] = useState(false)
     const contractAddress = HUSD_POOL_ADDRESS[chainId]
 

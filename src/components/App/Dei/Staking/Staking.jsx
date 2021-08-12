@@ -19,6 +19,7 @@ const Wrapper = styled.div`
     width: 100%;
     background: #0d0d0d;
     border-radius: 7px;
+    margin: 20px;
     box-shadow: 0px 0px 13px 1px #9be0fb;
 `
 const ActionWrap = styled.div`
@@ -67,9 +68,9 @@ const Staking = ({ config }) => {
 
     const [activeWithdraw, setActiveWithdraw] = useState(false)
     const [activeDeposit, setActiveDeposit] = useState(false)
-    const stakingInfo = useStakingInfo(config)
+    const stakingInfo = useStakingInfo(config, 4)
     const { depositAmount, pendingReward } = stakingInfo
-    const tokens = useTokenInfo(config)
+    const tokens = useTokenInfo(config, 4)
     const { depositTokenWalletBalance, totalDepositBalance, allowance } = tokens
 
     useEffect(() => {
@@ -206,7 +207,7 @@ const Staking = ({ config }) => {
                 </ActionContainer>
             </ActionWrap>
             <Type.XXL mb="4" mt="4">{stakingInfo.title}</Type.XXL>
-            <Type.LG mt="3" mb="3">0.00% APY</Type.LG>
+            <Type.LG mt="3" mb="3">150.00% APY</Type.LG>
             <Type.MD mt="2" mb="4" >you own {percent}% of the pool</Type.MD>
             <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount={pendingReward} onAction={handleClaim} />
             <ClaimButton actionTitle="withdraw & claim" symbol="DEI-HUSD-LP" amountTitle="deposited" amount={depositAmount} onAction={() => setActiveWithdraw(true)} />

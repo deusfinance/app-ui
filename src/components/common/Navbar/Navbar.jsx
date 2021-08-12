@@ -20,6 +20,7 @@ import {
 } from '../../App/Navbar';
 import LanguageSelector from './LanguageSelector';
 import { ExternalLink } from '../../App/Link';
+import useRefresh from '../../../hooks/useRefresh';
 
 
 
@@ -39,6 +40,8 @@ const Navbar = () => {
             setShowWallets(false)
     }, [account])
 
+    const { slowRefresh } = useRefresh()
+
     useEffect(() => {
         const getTVL = async () => {
             const url = "https://app.deus.finance/tvl.json"
@@ -57,7 +60,7 @@ const Navbar = () => {
             }
         }
         getTVL()
-    }, [])
+    }, [slowRefresh])
 
     const handleConnect = async () => {
         setShowWallets(true)

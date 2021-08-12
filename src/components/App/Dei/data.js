@@ -23,6 +23,12 @@ export const StakingConfig = [
     title: "DEI-HUSD-LP",
     depositToken: deiToken,
     withdrawToken: deiToken,
-    stakingContract: "0x3E3Ade0aDd97E6B19129F867E255e5DEebd70cBA"
-  }
+    stakingContract: "0xcb98da981680a65ef5B4f12877A4DEB35b896541"
+  },
+  {
+    title: "DEI-DEUS-LP",
+    depositToken: deiToken,
+    withdrawToken: deiToken,
+    stakingContract: "0xcc4d8FDD8647331A9ab0BA153EA8c929cAc25245"
+  },
 ]

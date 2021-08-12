@@ -3,7 +3,6 @@ import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
 import TokenBox from '../../../components/App/Dei/TokenBox';
 import SwapAction from '../../../components/App/Dei/SwapAction';
-import RateBox from '../../../components/App/Swap/RateBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
@@ -12,7 +11,7 @@ import { useAllowance } from '../../../hooks/useAllowance';
 import { DEITokens, deiToken } from '../../../constant/token';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
+import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
@@ -30,8 +29,6 @@ const Dei = () => {
     const collatRatio = useRecoilValue(collatRatioState)
     const deiPrices = useRecoilValue(deiPricesState)
     const { redemption_fee: redemptionFee, redeemPaused } = useRecoilValue(husdPoolDataState)
-
-    const [invert, setInvert] = useState(false)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -40,7 +37,7 @@ const Dei = () => {
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
     const [isPair, setIsPair] = useState(false)
-    const contractAddress = DEI_POOL_ADDRESS[chainId]
+    const contractAddress = HUSD_POOL_ADDRESS[chainId]
 
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
     const tokensMap = {}
@@ -54,7 +51,7 @@ const Dei = () => {
 
     const TokensMap = tokensMap
 
-    let secondaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
+    let secondaryToken = DEITokens[2]
     const [swapState, setSwapState] = useState({
         from: deiToken,
         to: secondaryToken,
@@ -118,16 +115,14 @@ const Dei = () => {
             let primaryToken = null
             setIsPair(false)
             if (collatRatio === 100) {
-                primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
+                primaryToken = DEITokens[0]
             } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
-                let secondToken = DEITokens.filter(currToken => {
-                    return currToken.pairID === primaryToken.pairID && currToken.address !== primaryToken.address
-                })[0]
+                primaryToken = DEITokens[2]
+                let secondToken = DEITokens[3]
                 setIsPair(true)
                 setPairToken(secondToken)
             } else if (isZero(collatRatio)) {
-                primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
+                primaryToken = DEITokens[1]
             }
             setSwapState({ ...swapState, to: primaryToken })
         }
@@ -249,8 +244,6 @@ const Dei = () => {
                             fastUpdate={fastUpdate}
                         />
                     </div>}
-
-                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
                     <SwapAction
                         bgColor={"grad_dei"}

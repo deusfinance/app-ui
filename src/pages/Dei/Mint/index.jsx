@@ -273,7 +273,7 @@ const Dei = () => {
                         isApproved={isApproved}
                         targetToken={targetToken}
                         loading={approveLoading}
-                        loadingSwap={swapLoading}
+                        swapLoading={swapLoading}
                         handleApprove={handleApprove}
                         handleSwap={handleSwap}
                         TokensMap={TokensMap}

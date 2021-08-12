@@ -16,14 +16,13 @@ import {
     collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, redeemBalances
 } from '../store/dei'
 import {
-    getCollatRatio, makeDeiRequest, mintDei, getDeiInfo, dollarDecimals, getHusdPoolData,
+    makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
-    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast
+    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast, mint1t1DEI
 } from '../helper/deiHelper'
 import { ChainMap } from '../constant/web3'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
-
 
 export const useStakingInfo = (conf) => {
     const web3 = useWeb3()
@@ -68,9 +67,6 @@ export const useTokenInfo = (conf) => {
                 depositTokenWalletBalance,
                 totalDepositBalance
             ] = mul
-            // console.log(mul);
-            // console.log(allowance);
-
             setRes({
                 ...conf,
                 allowance: new BigNumber(allowance),
@@ -116,20 +112,20 @@ export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validC
 
     const handleBuyBack = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-
         const result = await makeDeiRequest("/buyback")
-        return await buyBackDEUS(
+        const fn = buyBackDEUS(
             getToWei(amountIn, fromCurrency.decimals),
-            result.collateral_price,
             result.deus_price,
             result.expire_block,
             result.signature,
-            "0",
+            "1000000",
             account,
             chainId,
             web3,
         )
-    }, [fromCurrency, amountIn, validChainId, account, chainId, web3])
+        return await SendWithToast(fn, account, chainId, `BuyBack ${amountIn} ${fromCurrency.symbol} for ${amountOut} ${toCurrency.symbol}`)
+
+    }, [fromCurrency, toCurrency, amountIn, amountOut, validChainId, account, chainId, web3])
 
     return { onBuyBack: handleBuyBack }
 }
@@ -140,20 +136,22 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
 
     const handleRecollat = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-
         const result = await makeDeiRequest("/recollat")
-        return await RecollateralizeDEI(
+        const fn = RecollateralizeDEI(
             result.collateral_price,
             result.deus_price,
             result.expire_block,
             result.signature,
             getToWei(amountIn, fromCurrency.decimals).toString(),
-            "0",
+            "1000000",
             account,
             chainId,
             web3,
         )
-    }, [fromCurrency, amountIn, validChainId, account, chainId, web3])
+
+        return await SendWithToast(fn, account, chainId, `Recollat ${amountIn} ${fromCurrency.symbol} for ${amountOut} ${toCurrency.symbol}`)
+
+    }, [fromCurrency, toCurrency, amountIn, amountOut, validChainId, account, chainId, web3])
 
     return { onRecollat: handleRecollat }
 }
@@ -176,46 +174,40 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
 
     const handleRedeem = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-
+        let fn = null
         if (collatRatio === 100) {
             const result = await makeDeiRequest("/redeem-1to1")
-            return await redeem1to1Dei(
+            fn = redeem1to1Dei(
                 getToWei(amountIn, fromCurrency.decimals),
-                "0",
                 result.collateral_price,
                 result.expire_block,
                 result.signature,
-                account,
                 chainId,
                 web3,
             )
         } else if (collatRatio > 0) {
             const result = await makeDeiRequest("/redeem-fractional")
-            return await redeemFractionalDei(
+            fn = redeemFractionalDei(
                 result.collateral_price,
                 result.deus_price,
                 result.expire_block,
                 result.signature,
                 getToWei(amountIn, fromCurrency.decimals),
-                "0",
-                "0",
-                account,
                 chainId,
                 web3,
             )
         } else {
             const result = await makeDeiRequest("/redeem-algorithmic")
-            return await redeemAlgorithmicDei(
+            fn = redeemAlgorithmicDei(
                 result.deus_price,
                 result.expire_block,
                 result.signature,
                 getToWei(amountIn, fromCurrency.decimals),
-                "0",
-                account,
                 chainId,
                 web3,
             )
         }
+        return await SendWithToast(fn, account, chainId, `Redeem ${amountIn} ${fromCurrency.symbol}`)
     }, [fromCurrency, amountIn, account, chainId, collatRatio, validChainId, web3])
 
     return { onRedeem: handleRedeem }
@@ -232,12 +224,11 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         if (collatRatio === 100) {
             path = "/mint-1to1"
             const result = await makeDeiRequest(path)
-            fn = mintDei(
+            fn = mint1t1DEI(
                 getToWei(amountIn1, from1Currency.decimals),
                 result.collateral_price,
                 result.expire_block,
                 result.signature,
-                account,
                 chainId,
                 web3,
             )
@@ -251,7 +242,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                 result.deus_price,
                 result.expire_block,
                 result.signature,
-                account,
                 chainId,
                 web3,
             )
@@ -262,7 +252,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                 result.deus_price,
                 result.expire_block,
                 result.signature,
-                account,
                 chainId,
                 web3,
             )
@@ -292,42 +281,32 @@ export const useAvailableRecollat = () => {
     }, [setAvailableRecollat, web3, slowRefresh, account, chainId])
 }
 
-//Add block timer counter effect
-export const useRedeemBalances = () => {
-    const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
+export const useRedemptionDelay = () => {
+    const poolData = useRecoilValue(husdPoolDataState)
+    const { redemption_delay } = poolData
     const blockNumber = useRecoilValue(blockNumberState)
-    const setRedeemBalances = useSetRecoilState(redeemBalances)
+    const [forceRefresh, setForceRefresh] = useState(0)
 
     useEffect(() => {
-        const get = async () => {
-            const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(ChainMap.RINKEBY, 1000000, account), chainId)
-
-            const redeemDEUSBalances = mul[12];
-            const redeemCollateralBalances = mul[13];
-
-            const updateState = {
-                redeemDEUSBalances: fromWei(redeemDEUSBalances, 18),
-                redeemCollateralBalances: fromWei(redeemCollateralBalances, 6),
-            }
-            setRedeemBalances({ ...updateState })
+        if (blockNumber % redemption_delay === 0) {
+            setForceRefresh(forceRefresh + 1)
         }
-        if (blockNumber % 3 === 0) {
-            get()
-        }
-    }, [blockNumber, setRedeemBalances, web3, account, chainId])
+    }, [blockNumber, redemption_delay])
+
+    return forceRefresh
 }
 
 export const useHusdPoolData = () => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
-
     const { slowRefresh } = useRefresh()
+    const forceRefresh = useRedemptionDelay()
     const setHusdPoolData = useSetRecoilState(husdPoolDataState)
 
     useEffect(() => {
         const get = async () => {
             const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(ChainMap.RINKEBY, 1000000, account), chainId)
+
             const [
                 collatDollarBalance,
                 availableExcessCollatDV,
@@ -341,25 +320,32 @@ export const useHusdPoolData = () => {
                 mintPaused,
                 redeemPaused,
                 bonus_rate,
+                redeemDEUSBalances,
+                redeemCollateralBalances,
+                redemption_delay
             ] = mul
+
             const updateState = {
-                collatDollarBalance: new BigNumber(collatDollarBalance).toNumber(),
+                collatDollarBalance: fromWei(collatDollarBalance, 18),
                 availableExcessCollatDV: new BigNumber(availableExcessCollatDV).toFixed(0),
-                pool_ceiling: new BigNumber(pool_ceiling).toNumber(),
+                pool_ceiling: fromWei(pool_ceiling, 6),
                 redemption_fee: new BigNumber(redemption_fee).div(10000).toNumber(),
                 minting_fee: new BigNumber(minting_fee).div(10000).toNumber(),
                 buyback_fee: new BigNumber(buyback_fee).toNumber(),
                 recollat_fee: new BigNumber(recollat_fee).toNumber(),
                 bonus_rate: new BigNumber(bonus_rate).toNumber(),
+                redemption_delay: new BigNumber(redemption_delay).toNumber(),
                 redeemPaused: redeemPaused[0],
                 mintPaused: mintPaused[0],
                 buyBackPaused: buyBackPaused[0],
                 recollateralizePaused: recollateralizePaused[0],
+                redeemDEUSBalances: fromWei(redeemDEUSBalances, 18),
+                redeemCollateralBalances: fromWei(redeemCollateralBalances, 6),
             }
             setHusdPoolData({ ...updateState })
         }
         get()
-    }, [setHusdPoolData, slowRefresh, web3, account, chainId])
+    }, [setHusdPoolData, slowRefresh, forceRefresh, web3, account, chainId])
 }
 
 export const useCollatRatio = () => {
@@ -370,7 +356,7 @@ export const useCollatRatio = () => {
 
     useEffect(() => {
         const get = async () => {
-            const cr = await getCollatRatio(web3)
+            const cr = await getDeiInfo(web3)
             setCollatRatio(new BigNumber(fromWei(cr[1], dollarDecimals)).times(100).toNumber())
         }
         get()
@@ -387,7 +373,6 @@ export const useDeiUpdateRedeem = () => {
     useCollatRatio()
     useDeiPrices()
     useHusdPoolData()
-    useRedeemBalances()
 }
 
 export const useDeiUpdateBuyBack = () => {
@@ -398,7 +383,7 @@ export const useDeiUpdateBuyBack = () => {
 }
 
 export const useDeiPrices = () => {
-    const { fastRefresh } = useRefresh()
+    const { slowRefresh } = useRefresh()
     const setRefreshRatio = useSetRecoilState(deiPricesState)
     useEffect(() => {
         const get = async () => {
@@ -410,7 +395,7 @@ export const useDeiPrices = () => {
             }
         }
         get()
-    }, [fastRefresh, setRefreshRatio])
+    }, [slowRefresh, setRefreshRatio])
 }
 
 export const useAllowance = (currency, contractAddress, validChainId) => {

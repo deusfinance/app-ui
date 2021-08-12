@@ -328,10 +328,8 @@ export function ApproveTransaction(type, payload) {
   return
 }
 
-//to do
-export function CustomTransaction(type, payload) {
+export function CustomTransaction(type, payload, option = { autoClose: true }) {
   toast.dismiss()
-
   switch (type) {
     case TransactionState.LOADING:
       ToastTransaction(
@@ -345,7 +343,8 @@ export function CustomTransaction(type, payload) {
           )}
         >
           {`${payload.message} ↗ `}
-        </ExternalLink>
+        </ExternalLink>,
+        {}
       )
       break
 
@@ -361,23 +360,29 @@ export function CustomTransaction(type, payload) {
           )}
         >
           {`${payload.message}`}
-        </ExternalLink>
+        </ExternalLink>,
+        option
       )
       break
 
     case TransactionState.FAILED:
+      if (!payload.hash) {
+        ToastTransaction('warn', 'Transaction Rejected', "", { autoClose: true })
+        return
+      }
       ToastTransaction(
         'warn',
-        'Transaction Failed'
-        // <ExternalLink
-        //   href={getTransactionLink(
-        //     payload.chainId,
-        //     payload.hash,
-        //     'transaction'
-        //   )}
-        // >
-        //   {`View On Explorer`}
-        // </ExternalLink>
+        'Transaction Failed',
+        <ExternalLink
+          href={getTransactionLink(
+            payload.chainId,
+            payload.hash,
+            'transaction'
+          )}
+        >
+          {`View On Explorer ↗`}
+        </ExternalLink>,
+        option
       )
       break
 
@@ -393,7 +398,8 @@ export function CustomTransaction(type, payload) {
           )}
         >
           {`View On Explorer`}
-        </ExternalLink>
+        </ExternalLink>,
+        option
       )
   }
   return

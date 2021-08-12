@@ -4,7 +4,7 @@ import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
 import { Flex, Text } from 'rebass/styled-components';
 import { Base } from '../Button/index'
 import { useRecoilValue } from 'recoil';
-import { redeemBalances } from '../../../store/dei'
+import { husdPoolDataState, redeemBalances } from '../../../store/dei'
 import { isGt } from '../../../constant/number';
 import { useClaimAll } from '../../../hooks/useDei';
 import useChain from '../../../hooks/useChain';
@@ -98,9 +98,9 @@ const ButtonSwap = styled(ButtonSyncActive)`
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
 const RedeemedToken = ({ title, currencies }) => {
-  let balances = useRecoilValue(redeemBalances)
-  const price1 = balances ? balances["redeemCollateralBalances"] : null
-  const price2 = balances ? balances["redeemDEUSBalances"] : null
+  let poolData = useRecoilValue(husdPoolDataState)
+  const price1 = poolData ? poolData["redeemCollateralBalances"] : null
+  const price2 = poolData ? poolData["redeemDEUSBalances"] : null
 
   const validNetworks = [1, 4]
   const chainId = useChain(validNetworks)

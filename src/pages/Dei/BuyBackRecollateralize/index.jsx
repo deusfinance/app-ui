@@ -255,7 +255,7 @@ const Dei = () => {
                 setAmountIn2("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
-                console.log("Recollat Recollat");
+                console.log("Recollat failed");
             }
         } catch (e) {
             console.error(e)

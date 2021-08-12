@@ -104,7 +104,7 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
                             APPROVE {targetToken && targetToken.symbol}
                             {loading && <img style={{ position: "absolute", right: "0px" }} alt="sp" src="/img/spinner.svg" width="30" height="30" />}
                         </ButtonSwap>
-                        <ButtonSyncDeactivated>SWAP</ButtonSyncDeactivated>
+                        <ButtonSyncDeactivated>{text}</ButtonSyncDeactivated>
                     </> : <>
                         <ButtonSyncDeactivated>APPROVED</ButtonSyncDeactivated>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>

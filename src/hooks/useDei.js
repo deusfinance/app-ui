@@ -30,7 +30,9 @@ export const useDeposit = (currency, amount, address, validChainId) => {
 
     const handleDeposit = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
+        console.log(amount);
         const fn = DeiDeposit(currency, amount, address, web3)
+
         return await SendWithToast(fn, account, chainId, `Stake ${amount} ${currency.symbol}`)
     }, [currency, amount, address, validChainId])
     return { onDeposit: handleDeposit }

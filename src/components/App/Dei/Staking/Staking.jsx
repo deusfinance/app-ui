@@ -96,9 +96,8 @@ const Staking = ({ config }) => {
         //eslint-disable-next-line 
     }, [allowance])
 
-
     const { onApprove } = useApprove(config.depositToken, config.stakingContract, 4)
-    const { onDeposit } = useDeposit(config.depositToken, depositAmount, config.stakingContract, 4)
+    const { onDeposit } = useDeposit(config.depositToken, depositInput, config.stakingContract, 4)
     const { onWithdraw } = useWithdraw(config.depositToken, withdrawAmount, config.stakingContract, 4)
     const { onWithdraw: onClaim } = useWithdraw(config.depositToken, "0", config.stakingContract, 4)
 
@@ -124,6 +123,7 @@ const Staking = ({ config }) => {
             const tx = await onWithdraw()
             if (tx.status) {
                 setWithdrawAmount("")
+                setActiveWithdraw(false)
             } else {
                 console.log("onWithdraw Failed");
             }
@@ -166,8 +166,6 @@ const Staking = ({ config }) => {
         "0.0" :
         new BigNumber(depositAmount).div(totalDepositBalance).times(100).toFixed(2)
 
-    //isPreApproved ?
-
     return (
         <Wrapper>
             <Popup
@@ -208,9 +206,11 @@ const Staking = ({ config }) => {
             </ActionWrap>
             <Type.XXL mb="4" mt="4">{stakingInfo.title}</Type.XXL>
             <Type.LG mt="3" mb="3">150.00% APY</Type.LG>
-            <Type.MD mt="2" mb="4" >you own {percent}% of the pool</Type.MD>
-            <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount={pendingReward} onAction={handleClaim} />
-            <ClaimButton actionTitle="withdraw & claim" symbol="DEI-HUSD-LP" amountTitle="deposited" amount={depositAmount} onAction={() => setActiveWithdraw(true)} />
+            {!isZero(depositAmount) && <>
+                <Type.MD mt="2" mb="4" >you own {percent}% of the pool</Type.MD>
+                <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount={pendingReward} onAction={handleClaim} />
+                <ClaimButton actionTitle="withdraw & claim" symbol="" amountTitle="deposited" amount={depositAmount} onAction={() => setActiveWithdraw(true)} />
+            </>}
         </Wrapper>
     );
 }

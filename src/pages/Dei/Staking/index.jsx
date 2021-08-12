@@ -1,20 +1,41 @@
 import React from 'react';
-import { MainWrapper } from '../../../components/App/Swap';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
 import { Type } from '../../../components/App/Text';
 import { useDeiUpdateRedeem } from '../../../hooks/useDei';
 import Staking from '../../../components/App/Dei/Staking/Staking';
 import { StakingConfig } from '../../../components/App/Dei/data';
+import styled from 'styled-components';
+
+
+const TopWrap = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    ${({ theme }) => theme.mediaWidth.upToLarge`
+        flex-direction: column;
+    `}
+`
+
+const MainWrapper = styled.div`
+    flex: 1;
+    padding-top: 60px;
+    padding-bottom: 30px;
+    text-align: center;
+`
 
 const Dei = () => {
+
     useDeiUpdateRedeem(4)
     return (<>
-        <MainWrapper>
-            <Type.XL fontWeight="300" mb="5">Staking</Type.XL>
-            <Staking config={StakingConfig[0]} />
-            <Staking config={StakingConfig[1]} />
-        </MainWrapper>
+        <TopWrap>
+            <MainWrapper>
+                <Type.XL fontWeight="300" mb="5">Staking</Type.XL>
+                <Staking config={StakingConfig[0]} />
+                <Staking config={StakingConfig[1]} />
+            </MainWrapper>
+        </TopWrap>
 
         <div className='tut-left-wrap'>
             <LinkBox />

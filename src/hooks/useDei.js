@@ -11,14 +11,14 @@ import ERC20Abi from '../config/abi/ERC20Abi.json'
 import multicall from '../helper/multicall'
 import { useERC20 } from './useContract'
 import { ethers } from "ethers";
-import { ZERO } from "../constant/number";
+import { isZero, ZERO } from "../constant/number";
 import {
     collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, redeemBalances
 } from '../store/dei'
 import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
-    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast, mint1t1DEI
+    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast, mint1t1DEI, collatUsdPrice
 } from '../helper/deiHelper'
 import { ChainMap } from '../constant/web3'
 import { blockNumberState } from '../store/wallet'
@@ -87,9 +87,8 @@ export const useDeposit = (currency, amount, address, validChainId) => {
 
     const handleDeposit = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        console.log("useDeposit ", amount,);
-
-        return await DeiDeposit(currency, amount, address, account, web3)
+        const fn = DeiDeposit(currency, amount, address, web3)
+        return await SendWithToast(fn, account, chainId, `Stake ${amount} ${currency.symbol}`)
     }, [currency, amount, address, validChainId])
     return { onDeposit: handleDeposit }
 }
@@ -100,8 +99,9 @@ export const useWithdraw = (currency, amount, address, validChainId) => {
     const { account, chainId } = useWeb3React()
     const handleWithdraw = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        console.log("useWithdraw", amount);
-        return await DeiWithdraw(currency, amount, address, account, web3)
+        const fn = DeiWithdraw(currency, amount, address, web3)
+        const message = isZero(amount) ? `Claim DEUS` : `Withdraw ${amount} ${currency.symbol}`
+        return await SendWithToast(fn, account, chainId, message)
     }, [currency, amount, address, validChainId])
     return { onWithdraw: handleWithdraw }
 }
@@ -109,7 +109,6 @@ export const useWithdraw = (currency, amount, address, validChainId) => {
 export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validChainId = 1) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
-
     const handleBuyBack = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
         const result = await makeDeiRequest("/buyback")
@@ -118,7 +117,7 @@ export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validC
             result.deus_price,
             result.expire_block,
             result.signature,
-            "1000000",
+            collatUsdPrice,
             account,
             chainId,
             web3,
@@ -143,7 +142,7 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
             result.expire_block,
             result.signature,
             getToWei(amountIn, fromCurrency.decimals).toString(),
-            "1000000",
+            collatUsdPrice,
             account,
             chainId,
             web3,
@@ -305,7 +304,7 @@ export const useHusdPoolData = () => {
 
     useEffect(() => {
         const get = async () => {
-            const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(ChainMap.RINKEBY, 1000000, account), chainId)
+            const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(ChainMap.RINKEBY, collatUsdPrice, account), chainId)
 
             const [
                 collatDollarBalance,

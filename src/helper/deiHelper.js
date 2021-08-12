@@ -11,6 +11,7 @@ import { fetcher } from "./muonHelper"
 const baseUrl = "https://oracle4.deus.finance/dei"
 
 export const dollarDecimals = 6
+export const collatUsdPrice = "1000000"
 
 export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
@@ -103,17 +104,17 @@ export const getStakingTokenData = (conf, account) => {
         }
     ]
 }
-export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance = "10000000", account) => {
+export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_price, account) => {
     return [
         {
             address: HUSD_POOL_ADDRESS[chainId],
             name: 'collatDollarBalance',
-            params: [collat_usd_balance],
+            params: [collat_usd_price],
         },
         {
             address: HUSD_POOL_ADDRESS[chainId],
             name: 'availableExcessCollatDV',
-            params: [[collat_usd_balance]]
+            params: [[collat_usd_price]]
         },
         {
             address: HUSD_POOL_ADDRESS[chainId],
@@ -174,8 +175,6 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_balance =
 
 }
 
-
-
 //WRITE FUNCTIONS
 export const SendWithToast = (fn, account, chainId, message) => {
     if (!fn) return
@@ -202,19 +201,17 @@ export const SendWithToast = (fn, account, chainId, message) => {
         }))
 }
 
-export const DeiDeposit = async (depositedToken, amount, address, account, web3) => {
+export const DeiDeposit = (depositedToken, amount, address, web3) => {
     console.log(getToWei(amount, depositedToken.decimals).toFixed(0));
     return getDeiStakingContract(web3, address)
         .methods
         .deposit(getToWei(amount, depositedToken.decimals))
-        .send({ from: account })
 }
 
-export const DeiWithdraw = async (withdrawToken, amount, address, account, web3) => {
+export const DeiWithdraw = (withdrawToken, amount, address, web3) => {
     return getDeiStakingContract(web3, address)
         .methods
         .withdraw(getToWei(amount, withdrawToken.decimals))
-        .send({ from: account })
 }
 
 export const buyBackDEUS = (amountIn, deus_price, expire_block, signature, pool_collateral_price = "0", account, chainId, web3) => {
@@ -274,10 +271,10 @@ export const getClaimAll = async (account, web3, chainId = ChainMap.RINKEBY) => 
 
 
 //READ FUNCTIONS
-export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_balance = 1000000) => {
+export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_price = collatUsdPrice) => {
     return getDeiContract(web3, chainId)
         .methods
-        .dei_info([collat_usd_balance])
+        .dei_info([collat_usd_price])
         .call()
 }
 

@@ -8,29 +8,29 @@ export const defaultNavbar = [
       path: '/muon-presale',
       exact: true
     },
-    {
-      id: 'Stake And YIELD'.toUpperCase(),
-      text: 'STAKE & YIELD',
-      path: '/stake-and-yield',
-      exact: true
-    },
-    {
-      id: 'sealed Swap'.toUpperCase(),
-      text: 'sealed swap',
-      path: '/sealed-swap',
-      exact: true
-    },
-    {
-      id: 'vaultsL',
-      text: 'VAULTS (LEGACY)',
-      path: '/vaults',
-      exact: true
-    },
-    {
-      id: 'STAKING (LEGACY)',
-      text: 'STAKING (LEGACY)',
-      path: '/staking',
-    }
+      // {
+      //   id: 'Stake And YIELD'.toUpperCase(),
+      //   text: 'STAKE & YIELD',
+      //   path: '/stake-and-yield',
+      //   exact: true
+      // },
+      // {
+      //   id: 'sealed Swap'.toUpperCase(),
+      //   text: 'sealed swap',
+      //   path: '/sealed-swap',
+      //   exact: true
+      // },
+      // {
+      //   id: 'vaultsL',
+      //   text: 'VAULTS (LEGACY)',
+      //   path: '/vaults',
+      //   exact: true
+      // },
+      // {
+      //   id: 'STAKING (LEGACY)',
+      //   text: 'STAKING (LEGACY)',
+      //   path: '/staking',
+      // }
     ]
   },
   {
@@ -64,6 +64,35 @@ export const defaultNavbar = [
       id: 'polygon',
       text: 'POLYGON',
       path: '/crosschain/polygon/synchronizer',
+      exact: true
+    },
+    ]
+  },
+  {
+    id: 'STABLE COIN',
+    text: 'STABLE COIN',
+    children: [{
+      id: 'MINT',
+      text: 'ETH',
+      path: '/dei/mint',
+      exact: true
+    },
+    {
+      id: 'STAKING',
+      text: 'xDAI',
+      path: '/dei/staking',
+      exact: true
+    },
+    {
+      id: 'REDEEM',
+      text: 'BSC',
+      path: '/dei/redeem',
+      exact: true
+    },
+    {
+      id: 'BUYBACK & RECOLLAT',
+      text: 'BSC',
+      path: '/dei/buyback-recollat',
       exact: true
     },
     ]
@@ -132,25 +161,5 @@ export const defaultNavbar = [
 ]
 
 
-export const desktopNavs = [
-  ...defaultNavbar.slice(0, 2),
-  {
-    id: 'swap',
-    text: 'SWAP',
-    path: '/swap',
-    exact: true,
-  },
-  ...defaultNavbar.slice(2)].reverse()
-
-
-let { children } = defaultNavbar[0]
-defaultNavbar[0] = {
-  ...defaultNavbar[0], children: [{
-    id: 'swap',
-    text: 'SWAP',
-    path: '/swap',
-    exact: true,
-  }, ...children]
-}
-
+export const desktopNavs = [...defaultNavbar].reverse()
 export const mobileNavs = defaultNavbar.reverse()

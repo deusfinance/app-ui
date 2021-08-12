@@ -95,7 +95,7 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
         {isPreApproved ?
             <WrapActions>
                 <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>{text}
-                    {swapLoading && <img style={{ position: "absolute", right: "0px" }} alt="sp" src="/img/spinner.svg" width="30" height="30" />}
+                    {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="40" height="40" />}
                 </ButtonSwap>
             </WrapActions> : <>
                 <WrapActions>

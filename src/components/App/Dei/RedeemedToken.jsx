@@ -73,14 +73,6 @@ const ButtonSync = styled(Base).attrs({
   font-size:20px;
 `
 
-const ButtonSyncDeactivated = styled(ButtonSync)`
-    box-shadow: none;
-    font-family:"Monument Grotesk Semi";
-    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.sync_dactive};
-    color: ${({ theme, color }) => color ? theme[color] : "#8d8d8d"};
-    cursor: default;
-`
-
 const ButtonSyncActive = styled(ButtonSync)`
   background: ${({ theme }) => theme.sync_active};
   font-size: 25px;

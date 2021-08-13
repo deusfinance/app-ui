@@ -291,11 +291,9 @@ export const useRedemptionDelay = () => {
     const blockNumber = useRecoilValue(blockNumberState)
     const [forceRefresh, setForceRefresh] = useState(0)
 
-    // const increase
-
     useEffect(() => {
         if (blockNumber % redemption_delay === 0) {
-            setForceRefresh(forceRefresh + 1)
+            setForceRefresh(f => f + 1)
         }
     }, [blockNumber, redemption_delay])
 

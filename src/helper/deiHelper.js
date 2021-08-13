@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js"
 import { HUSD_POOL_ADDRESS } from "../constant/contracts"
 import { ChainMap } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
-import { CustomTransaction } from "../utils/explorers"
+import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
 import { getDeiContract, getDeiStakingContract, getHusdPoolContract } from "./contractHelpers"
 import { fromWei, getToWei } from "./formatBalance"
@@ -45,7 +45,7 @@ export const makeCostDataRedeem = (collatRatio, poolBalance) => {
     }]
 }
 
-export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize) => {
+export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize, address, chainId = 4) => {
     const dp = deus_price !== null ? `$${new BigNumber(deus_price).toFixed(3)}` : null
     const p = pool ? pool : null
     const bb = buyBack !== null ? `${formatUnitAmount(fromWei(buyBack))} HUSD` : null
@@ -66,6 +66,8 @@ export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize) 
     }, {
         name: 'POOL 🌊',
         value1: p,
+        isLink: true,
+        path: getTransactionLink(chainId, address)
     }]
 }
 

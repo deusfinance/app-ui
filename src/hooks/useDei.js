@@ -269,7 +269,7 @@ export const useTokenInfo = (conf, validChainId) => {
 
 export const useAvailableRecollat = (validChainId) => {
     const web3 = useCrossWeb3(validChainId)
-    const { account, chainId } = useWeb3React()
+
     const { slowRefresh } = useRefresh()
     const setAvailableRecollat = useSetRecoilState(availableRecollatState)
 
@@ -282,7 +282,7 @@ export const useAvailableRecollat = (validChainId) => {
             setAvailableRecollat(available_recollat)
         }
         get()
-    }, [setAvailableRecollat, slowRefresh, validChainId, web3, account, chainId])
+    }, [setAvailableRecollat, slowRefresh, validChainId, web3])
 }
 
 export const useRedemptionDelay = () => {
@@ -291,15 +291,13 @@ export const useRedemptionDelay = () => {
     const blockNumber = useRecoilValue(blockNumberState)
     const [forceRefresh, setForceRefresh] = useState(0)
 
-    const increase = useCallback(() => {
-        setForceRefresh(forceRefresh + 1)
-    }, [forceRefresh])
+    // const increase
 
     useEffect(() => {
         if (blockNumber % redemption_delay === 0) {
-            increase()
+            setForceRefresh(forceRefresh + 1)
         }
-    }, [blockNumber, increase, redemption_delay])
+    }, [blockNumber, redemption_delay])
 
     return forceRefresh
 }
@@ -313,6 +311,7 @@ export const useHusdPoolData = (validChainId) => {
 
     useEffect(() => {
         const get = async () => {
+
             const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
 
             const [
@@ -328,9 +327,9 @@ export const useHusdPoolData = (validChainId) => {
                 mintPaused,
                 redeemPaused,
                 bonus_rate,
+                redemption_delay,
                 redeemDEUSBalances,
                 redeemCollateralBalances,
-                redemption_delay
             ] = mul
 
             const updateState = {
@@ -347,8 +346,8 @@ export const useHusdPoolData = (validChainId) => {
                 mintPaused: mintPaused[0],
                 buyBackPaused: buyBackPaused[0],
                 recollateralizePaused: recollateralizePaused[0],
-                redeemDEUSBalances: fromWei(redeemDEUSBalances, 18),
-                redeemCollateralBalances: fromWei(redeemCollateralBalances, 6),
+                redeemDEUSBalances: account ? fromWei(redeemDEUSBalances, 18) : "0",
+                redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, 6) : "0",
             }
             setHusdPoolData({ ...updateState })
         }

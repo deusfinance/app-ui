@@ -86,6 +86,7 @@ export const getStakingData = (conf, account) => {
     ]
 }
 export const getStakingTokenData = (conf, account) => {
+    if (!account) return []
     return [
         {
             address: conf.depositToken.address,
@@ -105,7 +106,7 @@ export const getStakingTokenData = (conf, account) => {
     ]
 }
 export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_price, account) => {
-    return [
+    let calls = [
         {
             address: HUSD_POOL_ADDRESS[chainId],
             name: 'collatDollarBalance',
@@ -158,6 +159,13 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_price, ac
         },
         {
             address: HUSD_POOL_ADDRESS[chainId],
+            name: 'redemption_delay',
+        },
+    ]
+    if (account) {
+        calls = [...calls,
+        {
+            address: HUSD_POOL_ADDRESS[chainId],
             name: 'redeemDEUSBalances',
             params: [account]
         },
@@ -165,14 +173,9 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_price, ac
             address: HUSD_POOL_ADDRESS[chainId],
             name: 'redeemCollateralBalances',
             params: [account]
-        },
-        {
-            address: HUSD_POOL_ADDRESS[chainId],
-            name: 'redemption_delay',
-        },
-
-    ]
-
+        }]
+    }
+    return calls
 }
 
 //WRITE FUNCTIONS

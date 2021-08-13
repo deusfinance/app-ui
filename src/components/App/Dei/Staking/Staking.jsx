@@ -7,6 +7,7 @@ import { useDeposit, useStakingInfo, useTokenInfo, useWithdraw } from '../../../
 import { isZero } from '../../../../constant/number';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../../hooks/useApprove';
+import { useWeb3React } from '@web3-react/core';
 
 const Wrapper = styled.div`
     display: inline-block;
@@ -26,6 +27,7 @@ const ActionWrap = styled.div`
     display: flex;
     justify-content: space-between;
     color: #fffefe;
+    margin-bottom: ${({ active }) => !active && "90px"};
 `
 
 const ActionContainer = styled.div`
@@ -59,7 +61,7 @@ const Action = styled.div`
     padding: 2px;
 `
 const Staking = ({ config }) => {
-
+    const { account } = useWeb3React()
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -165,6 +167,7 @@ const Staking = ({ config }) => {
     const percent = isZero(totalDepositBalance) ?
         "0.0" :
         new BigNumber(depositAmount).div(totalDepositBalance).times(100).toFixed(2)
+    const active = !isZero(depositAmount) && account
 
     return (
         <Wrapper>
@@ -196,7 +199,7 @@ const Staking = ({ config }) => {
                 handleApprove={handleApprove}
                 handleAction={handleDeposit}
             />
-            <ActionWrap>
+            <ActionWrap active={active}>
                 <ActionContainer style={{ borderRadius: "6px 0 0 0" }} >
                     <Action style={{ borderRadius: "6px 0 0 0" }}>Mint</Action>
                 </ActionContainer>
@@ -206,12 +209,12 @@ const Staking = ({ config }) => {
             </ActionWrap>
             <Type.XXL mb="4" mt="4">{stakingInfo.title}</Type.XXL>
             <Type.LG mt="3" mb="3">150.00% APY</Type.LG>
-            {!isZero(depositAmount) && <>
+            {active && <>
                 <Type.MD mt="2" mb="4" >you own {percent}% of the pool</Type.MD>
                 <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount={pendingReward} onAction={handleClaim} />
                 <ClaimButton actionTitle="withdraw & claim" symbol="" amountTitle="deposited" amount={depositAmount} onAction={() => setActiveWithdraw(true)} />
             </>}
-        </Wrapper>
+        </Wrapper >
     );
 }
 export default Staking

@@ -46,6 +46,7 @@ const Popup = ({
             background: 'transparent',
             border: '1px solid #000000',
             borderRadius: '10px',
+            padding: 'none',
             paddingBottom: '20px',
             zIndex: 5,
             overflow: "hidden",

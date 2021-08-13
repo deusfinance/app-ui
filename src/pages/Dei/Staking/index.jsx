@@ -8,20 +8,22 @@ import { StakingConfig } from '../../../components/App/Dei/data';
 import styled from 'styled-components';
 
 
-const TopWrap = styled.div`
+const StakingContainer = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: row;
-    flex-wrap: nowrap;
-    ${({ theme }) => theme.mediaWidth.upToLarge`
+    @media screen and (max-width: 1600px) {
         flex-direction: column;
-    `}
+        align-items:center;
+        width: 100%;
+    }
 `
 
 const MainWrapper = styled.div`
-    flex: 1;
+    padding: 10px;
     padding-top: 60px;
     padding-bottom: 30px;
+
     text-align: center;
 `
 
@@ -29,13 +31,13 @@ const Dei = () => {
 
     useDeiUpdateRedeem(4)
     return (<>
-        <TopWrap>
-            <MainWrapper>
-                <Type.XL fontWeight="300" mb="5">Staking</Type.XL>
+        <MainWrapper>
+            <Type.XL fontWeight="300" mb="5">Staking</Type.XL>
+            <StakingContainer>
                 <Staking config={StakingConfig[0]} />
                 <Staking config={StakingConfig[1]} />
-            </MainWrapper>
-        </TopWrap>
+            </StakingContainer>
+        </MainWrapper>
 
         <div className='tut-left-wrap'>
             <LinkBox />

@@ -99,7 +99,7 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
     return { onRecollat: handleRecollat }
 }
 
-export const useClaimAll = (validChainId = 1) => {
+export const useClaimAll = (validChainId = 4) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 

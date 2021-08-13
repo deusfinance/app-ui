@@ -205,13 +205,13 @@ export const DeiDeposit = (depositedToken, amount, address, web3) => {
     console.log(getToWei(amount, depositedToken.decimals).toFixed(0));
     return getDeiStakingContract(web3, address)
         .methods
-        .deposit(getToWei(amount, depositedToken.decimals))
+        .deposit(getToWei(amount, depositedToken.decimals).toFixed(0))
 }
 
 export const DeiWithdraw = (withdrawToken, amount, address, web3) => {
     return getDeiStakingContract(web3, address)
         .methods
-        .withdraw(getToWei(amount, withdrawToken.decimals))
+        .withdraw(getToWei(amount, withdrawToken.decimals).toFixed(0))
 }
 
 export const buyBackDEUS = (amountIn, deus_price, expire_block, signature, pool_collateral_price = "0", account, chainId, web3) => {

@@ -58,7 +58,7 @@ export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validC
         if (validChainId && chainId !== validChainId) return false
         const result = await makeDeiRequest("/buyback")
         const fn = buyBackDEUS(
-            getToWei(amountIn, fromCurrency.decimals),
+            getToWei(amountIn, fromCurrency.decimals).toFixed(0),
             result.deus_price,
             result.expire_block,
             result.signature,
@@ -86,7 +86,7 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
             result.deus_price,
             result.expire_block,
             result.signature,
-            getToWei(amountIn, fromCurrency.decimals).toString(),
+            getToWei(amountIn, fromCurrency.decimals).toFixed(0),
             collatUsdPrice,
             account,
             chainId,
@@ -122,7 +122,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
         if (collatRatio === 100) {
             const result = await makeDeiRequest("/redeem-1to1")
             fn = redeem1to1Dei(
-                getToWei(amountIn, fromCurrency.decimals),
+                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
                 result.collateral_price,
                 result.expire_block,
                 result.signature,
@@ -136,7 +136,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
                 result.deus_price,
                 result.expire_block,
                 result.signature,
-                getToWei(amountIn, fromCurrency.decimals),
+                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
                 chainId,
                 web3,
             )
@@ -146,7 +146,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
                 result.deus_price,
                 result.expire_block,
                 result.signature,
-                getToWei(amountIn, fromCurrency.decimals),
+                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
                 chainId,
                 web3,
             )
@@ -169,7 +169,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             path = "/mint-1to1"
             const result = await makeDeiRequest(path)
             fn = mint1t1DEI(
-                getToWei(amountIn1, from1Currency.decimals),
+                getToWei(amountIn1, from1Currency.decimals).toFixed(0),
                 result.collateral_price,
                 result.expire_block,
                 result.signature,
@@ -179,10 +179,12 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         } else if (collatRatio > 0) {
             path = "/mint-fractional"
             const result = await makeDeiRequest(path)
+            console.log(result.collateral_price);
+            console.log(result.collateral_price);
             fn = mintFractional(
-                getToWei(amountIn1, from1Currency.decimals),
-                getToWei(amountIn2, from2Currency.decimals),
-                result.collateral_price,
+                getToWei(amountIn1, from1Currency.decimals).toFixed(0),
+                getToWei(amountIn2, from2Currency.decimals).toFixed(0),
+                result.collateral_price.toString(),
                 result.deus_price,
                 result.expire_block,
                 result.signature,
@@ -192,7 +194,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         } else {
             const result = await makeDeiRequest(path)
             fn = mintAlgorithmic(
-                getToWei(amountIn1, from1Currency.decimals),
+                getToWei(amountIn1, from1Currency.decimals).toFixed(0),
                 result.deus_price,
                 result.expire_block,
                 result.signature,

@@ -4,7 +4,7 @@ import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
 import { Flex, Text } from 'rebass/styled-components';
 import { Base } from '../Button/index'
 import { useRecoilValue } from 'recoil';
-import { husdPoolDataState, redeemBalances } from '../../../store/dei'
+import { husdPoolDataState } from '../../../store/dei'
 import { isGt } from '../../../constant/number';
 import { useClaimAll } from '../../../hooks/useDei';
 import useChain from '../../../hooks/useChain';

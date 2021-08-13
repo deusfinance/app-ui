@@ -52,7 +52,3 @@ export const husdPoolDataState = atom({
     default: {},
 });
 
-export const redeemBalances = atom({
-    key: 'redeemBalances',
-    default: null,
-});

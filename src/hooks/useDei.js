@@ -13,14 +13,13 @@ import { useERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
 import {
-    collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, redeemBalances
+    collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState
 } from '../store/dei'
 import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast, mint1t1DEI, collatUsdPrice
 } from '../helper/deiHelper'
-import { ChainMap } from '../constant/web3'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 
@@ -34,7 +33,7 @@ export const useDeposit = (currency, amount, address, validChainId) => {
         const fn = DeiDeposit(currency, amount, address, web3)
 
         return await SendWithToast(fn, account, chainId, `Stake ${amount} ${currency.symbol}`)
-    }, [currency, amount, address, validChainId])
+    }, [currency, amount, address, validChainId, chainId, account, web3])
     return { onDeposit: handleDeposit }
 }
 
@@ -47,7 +46,7 @@ export const useWithdraw = (currency, amount, address, validChainId) => {
         const fn = DeiWithdraw(currency, amount, address, web3)
         const message = isZero(amount) ? `Claim DEUS` : `Withdraw ${amount} ${currency.symbol}`
         return await SendWithToast(fn, account, chainId, message)
-    }, [currency, amount, address, validChainId])
+    }, [currency, amount, address, validChainId, chainId, account, web3])
     return { onWithdraw: handleWithdraw }
 }
 
@@ -203,7 +202,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             )
         }
         return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`)
-    }, [from1Currency, from2Currency, amountIn1, amountIn2, amountOut, account, chainId, collatRatio, validChainId, web3])
+    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, account, chainId, collatRatio, validChainId, web3])
 
     return { onMint: handleMint }
 }
@@ -236,7 +235,7 @@ export const useStakingInfo = (conf, validChainId) => {
         if (web3 && account) {
             get()
         }
-    }, [conf, fastRefresh, web3])
+    }, [conf, fastRefresh, account, chainId, web3])
     return res
 }
 
@@ -264,14 +263,13 @@ export const useTokenInfo = (conf, validChainId) => {
         if (web3 && account && conf) {
             get()
         }
-    }, [conf, fastRefresh, web3])
+    }, [conf, fastRefresh, account, chainId, web3])
     return res
 }
 
 export const useAvailableRecollat = (validChainId) => {
     const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
-
     const { slowRefresh } = useRefresh()
     const setAvailableRecollat = useSetRecoilState(availableRecollatState)
 
@@ -284,7 +282,7 @@ export const useAvailableRecollat = (validChainId) => {
             setAvailableRecollat(available_recollat)
         }
         get()
-    }, [setAvailableRecollat, web3, slowRefresh, account, chainId])
+    }, [setAvailableRecollat, slowRefresh, validChainId, web3, account, chainId])
 }
 
 export const useRedemptionDelay = () => {
@@ -293,11 +291,15 @@ export const useRedemptionDelay = () => {
     const blockNumber = useRecoilValue(blockNumberState)
     const [forceRefresh, setForceRefresh] = useState(0)
 
+    const increase = useCallback(() => {
+        setForceRefresh(forceRefresh + 1)
+    }, [forceRefresh])
+
     useEffect(() => {
         if (blockNumber % redemption_delay === 0) {
-            setForceRefresh(forceRefresh + 1)
+            increase()
         }
-    }, [blockNumber, redemption_delay])
+    }, [blockNumber, increase, redemption_delay])
 
     return forceRefresh
 }

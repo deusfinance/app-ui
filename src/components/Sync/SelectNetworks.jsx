@@ -47,16 +47,6 @@ const SelectedNetworks = () => {
                 link: "/swap"
             },
             {
-                path: "/img/synthetics.svg",
-                title: t("synthetics"),
-                link: "/synchronizer"
-            },
-            {
-                path: "/tokens/muon-invert.svg",
-                title: t("MUON PRESALE"),
-                link: "/muon-presale"
-            },
-            {
                 path: "/img/futuresIcon.svg",
                 title: "BAKKT",
                 link: "/bakkt"
@@ -67,66 +57,8 @@ const SelectedNetworks = () => {
                 link: "/musk"
             },
         ],
-        "xDai": [
-            {
-                path: "/img/synthetics.svg",
-                title: t("synthetics"),
-                link: "/crosschain/xdai/synchronizer"
-            },
-            {
-                path: "/img/bridge.svg",
-                title: t("bridgeTokens"),
-                link: "https://bridge.xdaichain.com/",
-            },
-            {
-                path: "/tokens/muon-invert.svg",
-                title: t("MUON PRESALE"),
-                link: "/crosschain/xdai/muon-presale"
-            },
-        ],
-        "BSC": [
-            {
-                path: "/img/synthetics.svg",
-                title: t("synthetics"),
-                link: "/crosschain/bsc/synchronizer"
-            },
-            {
-                path: "/img/bridge.svg",
-                title: t("bridgeTokens"),
-                link: "https://www.binance.org/en/bridge",
-            },
-            {
-                path: "/tokens/muon-invert.svg",
-                title: t("MUON PRESALE"),
-                link: "/crosschain/bsc/muon-presale"
-            },
-        ],
-        "HECO": [
-            {
-                path: "/img/synthetics.svg",
-                title: t("synthetics"),
-                link: "/crosschain/heco/synchronizer"
-            },
-            {
-                path: "/img/bridge.svg",
-                title: t("bridgeTokens"),
-                link: "https://www.huobi.com/en-us/exchange/",
-            },
-        ],
-        "POLYGON": [
-            {
-                title: t("synthetics"),
-                path: "/img/synthetics.svg",
-                link: "/crosschain/polygon/synchronizer"
-            },
-            {
-                path: "/img/bridge.svg",
-                title: t("bridgeTokens"),
-                link: "https://wallet.matic.network",
-            },
-        ],
-
     }
+
     return (<div className="wrap-networks">
         <p >{t("selectNetwork")}</p>
         <select name="networks" id="networks" value={chain} style={{ cursor: "pointer" }} onChange={(e) => setChain(e.currentTarget.value)}>

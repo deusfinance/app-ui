@@ -1,16 +1,18 @@
 import { useWeb3React } from '@web3-react/core';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
 import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
+import { WaveLoading } from 'react-loadingg';
+import { isZero, isGt } from '../../../constant/number';
+import Wallets from '../../common/Navbar/Wallets';
 // import Loader from '../Loader';
-
-
-
 const errors = {
     NotConnected: "CONNECT WALLET",
     WrongNetwork: "WRONG NETWORK",
     EMPTY: "ENTER AMOUNT",
+    INSUFFICIENT: "INSUFFICIENT BALANCE",
+    LOADING: "LOADING...",
 }
 
 
@@ -48,22 +50,23 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrency, mt }) => {
+const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency, toCurrency, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, amountIn, amountOut }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
+        if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
+        if (TokensMap && isGt(amountIn, TokensMap[fromCurrency.address]?.balance)) return errors.INSUFFICIENT
+        if (isNaN(amountOut)) return errors.LOADING
         return null;
     }
-
-
 
     if (!account) {
         return <WrapActions>
             <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
-            <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
+            <ButtonSwap active={true} onClick={() => setShowWallets(true)}>
                 CONNECT WALLET
             </ButtonSwap>
         </WrapActions>
@@ -74,8 +77,13 @@ const SyncAction = ({ isPreApproved, validNetworks = [], fromCurrency, toCurrenc
         return <ButtonSyncDeactivated mt={mt}>{checkError()}</ButtonSyncDeactivated>
     }
 
-
-
+    if (isPreApproved == null) {
+        return <WrapActions>
+            <ButtonSyncDeactivated>
+                <WaveLoading />
+            </ButtonSyncDeactivated>
+        </WrapActions>
+    }
 
     return (<>
         {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} > SYNC</ButtonSwap> </WrapActions> : <>

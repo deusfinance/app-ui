@@ -1,6 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { InputAmount } from '.';
@@ -29,14 +27,14 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate, mt }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFocusType, fastUpdate }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
 
     useEffect(() => {
         const getBalance = () => {
-            setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
+            setBalance(data ? getFullDisplayBalance(data, currency.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
         }
 
         if (currency) {

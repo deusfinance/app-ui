@@ -15,6 +15,7 @@ import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import { DEI_ADDRESS, DEI_POOL_ADDRESS, HUSD_POOL_ADDRESS, MULTICALL_NETWORKS } from '../constant/contracts'
 import { ChainMap } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
+import { SyncData } from '../constant/synchronizer'
 
 const getContract = (abi, address, web3) => {
     const _web3 = web3 ?? web3NoAccount
@@ -23,6 +24,10 @@ const getContract = (abi, address, web3) => {
 
 export const getMultiSwapContract = (web3, chainId = ChainMap.MAINNET) => {
     return getContract(muliSwapAbi, getContractAddr("multi_swap_contract", chainId), web3)
+}
+
+export const getSynchronizerContract = (web3, chainId = ChainMap.MAINNET) => {
+    return getContract(SyncAbi, SyncData[chainId].contract, web3)
 }
 
 export const getDeusAutomaticMarketMakerContract = (web3, chainId = ChainMap.MAINNET) => {

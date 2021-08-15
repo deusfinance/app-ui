@@ -13,7 +13,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
 const Deus = React.lazy(() => import('./components/Deus'))
-const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
 const Sync2 = React.lazy(() => import('./pages/Sync2'));
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
@@ -21,7 +20,6 @@ const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
 const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
 const DeiBuyBackRecollateralize = React.lazy(() => import('./pages/Dei/BuyBackRecollateralize'))
 
-const Sealed = React.lazy(() => import('./pages/Sealed'))
 const Muon = React.lazy(() => import('./pages/Muon'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
 const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
@@ -68,14 +66,9 @@ function App() {
                   component={SyncMatic}
                 />
                 <Route exact path="/synchronizer" component={SyncMain} />
-                <Route
-                  exact
-                  path="/stake-and-yield"
-                  component={StakeAndYield}
-                />
+
                 <Route exact path="/sync2" component={Sync2} />
                 <Route exact path="/swap2" component={Swap2} />
-                <Route exact path="/sealed-swap" component={Sealed} />
                 <Route exact path="/muon-presale" component={Muon} />
                 <Route path="/crosschain/:id/muon-presale" component={Muon} />
                 <Redirect exact from="/" to="/swap" />

@@ -66,7 +66,7 @@ export let createPriceUrls = (prices, symbol, network) => {
     return prices.map(api => api + '?' + queryString)
 }
 
-export let createSignaturesUrls = (prices, symbol, network, position_type, side) => {
+export let createSignaturesUrls = (urls, symbol, network, position_type, side) => {
     let params = {
         "symbol": symbol.toUpperCase(),
         "network": network.toLowerCase(),
@@ -74,5 +74,5 @@ export let createSignaturesUrls = (prices, symbol, network, position_type, side)
         "side": side.toLowerCase(),
     }
     let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
-    return prices.map(api => api + '?' + queryString)
+    return urls.map(api => api + '?' + queryString)
 }

@@ -62,7 +62,7 @@ const Sync2 = () => {
     const [invert, setInvert] = useState(false)
     const [isLong, setLong] = useState(true)
     const [position, setPosition] = useState("buy")
-    const [assetInfo, setAssetInfo] = useState({})
+    const [assetInfo, setAssetInfo] = useState({ fromPrice: null, toPrice: null, fee: 0 })
     const [priceResult, setPriceResult] = useState({})
     // const [signResult, setSignResult] = useState({})
 
@@ -229,7 +229,6 @@ const Sync2 = () => {
     useEffect(() => {
         const getSinglePrice = async () => {
             const network = NameChainMap[SyncChainId]
-            const position_type = isLong ? "long" : "short"
             let priceURLs = createPriceUrls(oracle.prices, priceSymbol, network)
             let reportMessages = ""
             return Promise.allSettled(
@@ -241,7 +240,6 @@ const Sync2 = () => {
                     return false
                 })
                 if (reportMessages !== "") {
-                    // sendMessage(reportMessages)
                     reportMessages = ""
                 }
                 return Promise.all(responses.map(function (response) {
@@ -251,27 +249,38 @@ const Sync2 = () => {
                 console.log(error);
             })
         }
-        if (priceSymbol && NameChainMap[SyncChainId]) {
-            getSinglePrice().then((res) => {
-                setPriceResult(res[0])
-                const price = priceResult && priceResult["status"] == "open" ? priceResult["long_price"] : priceResult["short_price"]
-                const assetPrice = { price: price, fee: 0.01 }
-                setAssetInfo({ fromPrice: null, toPrice: null, fee: 0 })
-                if (price) {
-                    if (position === "buy") {
-                        assetInfo.fromPrice = 1
-                        assetInfo.toPrice = assetPrice.price
-                        assetInfo.fee = assetPrice.fee
-                    } else {
-                        assetInfo.fromPrice = assetPrice.price
-                        assetInfo.fee = assetPrice.fee
-                        assetInfo.toPrice = 1
-                    }
-                    setAssetInfo(assetInfo)
-                }
+
+        if (priceSymbol) {
+            getSinglePrice().then(result => {
+                const first = result[0]
+                setPriceResult({ ...first })
             })
         }
-    }, [priceSymbol, NameChainMap[SyncChainId]])
+
+    }, [priceSymbol])
+
+
+    useEffect(() => {
+        if (priceResult) {
+            const position_type = isLong ? "long_price" : "short_price"
+            const price = priceResult && priceResult["status"] == "open" ? priceResult[position_type] : 0
+            const assetPrice = { price: price, fee: 0.01 }
+            console.log(assetPrice);
+            if (price !== null) {
+                if (position === "buy") {
+                    assetInfo.fromPrice = 1
+                    assetInfo.toPrice = assetPrice.price
+                    assetInfo.fee = assetPrice.fee
+                } else {
+                    assetInfo.fromPrice = assetPrice.price
+                    assetInfo.fee = assetPrice.fee
+                    assetInfo.toPrice = 1
+                }
+                setAssetInfo({ ...assetInfo })
+            }
+
+        }
+    }, [isLong, priceResult])
 
     const getSignatures = useCallback(async () => {
         if (!priceSymbol || !NameChainMap[SyncChainId] || !isLong || !position) return
@@ -322,27 +331,49 @@ const Sync2 = () => {
     }, [onApprove])
 
 
+    const handleSync = useCallback(async () => {
+        console.log("handleSync called");
+
+        try {
+            const tx = await onSync()
+            if (tx.status) {
+                console.log("Sync did");
+
+            } else {
+                console.log("Approved Failed");
+            }
+
+        } catch (e) {
+            console.error(e)
+        }
+    }, [onSync])
+
+
+
+
     useEffect(() => {
         const get = async () => {
             const result = getAmountsOut()
-            if (!result) return
+            if (result === null || !toCurrency) return
             if (amountIn === "" || isZero(amountIn)) setAmountOut("")
             else setAmountOut(RemoveTrailingZero(fromWei(result, toCurrency.decimals), toCurrency.decimals))
         }
-        if (getAmountsOut && focusType === "from")
+        if (getAmountsOut && focusType === "from") {
             get()
-    }, [getAmountsOut, amountIn, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
+        }
 
+    }, [getAmountsOut, amountIn, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
 
     useEffect(() => {
         const get = async () => {
             const result = await getAmountsIn()
-            if (!result) return
+            if (result === null || !fromCurrency) return
             if (amountOut === "" || isZero(amountOut)) setAmountIn("")
-            else setAmountIn(fromWei(result, fromCurrency.decimals))
+            else setAmountIn(RemoveTrailingZero(fromWei(result, fromCurrency.decimals), fromCurrency.decimals))
         }
-        if (getAmountsIn && focusType === "to")
+        if (getAmountsIn && focusType === "to") {
             get()
+        }
         //eslint-disable-next-line
     }, [getAmountsIn, amountOut, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
 
@@ -416,7 +447,7 @@ const Sync2 = () => {
                 <SyncAction
                     amountIn={amountIn}
                     amountOut={amountOut}
-                    handleSync={onSync}
+                    handleSync={handleSync}
                     TokensMap={balances}
                     fromCurrency={fromCurrency}
                     validNetworks={validChains}

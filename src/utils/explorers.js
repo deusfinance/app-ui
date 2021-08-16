@@ -133,6 +133,7 @@ export function getTransactionLink(chainId, data, type) {
   }
 }
 
+
 export function ToastTransaction(type, title, data = '', option = {}) {
   switch (type) {
     case 'success':

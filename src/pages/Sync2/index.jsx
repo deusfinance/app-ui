@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components'
 import { Image } from 'rebass/styled-components';
 import BigNumber from 'bignumber.js';
@@ -25,10 +25,6 @@ import { isZero } from '../../constant/number';
 import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
 import { NameChainMap } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
-
-// import { dAmcTestToken } from '../../constant/token';
-// import { sendMessage } from '../../utils/telegramLogger';
-// import { TransactionState } from '../../utils/constant';
 
 const MainWrapper = styled.div`
    margin-top: 100px;
@@ -64,7 +60,6 @@ const Sync2 = () => {
     const [position, setPosition] = useState("buy")
     const [assetInfo, setAssetInfo] = useState({ fromPrice: null, toPrice: null, fee: 0 })
     const [priceResult, setPriceResult] = useState({})
-    // const [signResult, setSignResult] = useState({})
 
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
@@ -76,9 +71,6 @@ const Sync2 = () => {
     const debouncedAmountOut = useDebounce(amountOut, 500);
     const [stocks, setStocks] = useState(null)
     const [conducted, setConducted] = useState(null)
-    // const [prices, setPrice] = useState(null)
-    // const [fromPerTo, setFromPerTo] = useState(true)
-
     const [loading, setLoading] = useState(true);
     const [loadingCap, setLoadingCAP] = useState(false);
 
@@ -88,12 +80,8 @@ const Sync2 = () => {
     const getConducted = useOracleFetch(oracle.conducted)
     const getPrices = useOracleFetch(oracle.prices)
     const getStocks = useOracleFetch(oracle.registrar)
-    // const getSignatures = useOracleFetch(oracle.signatures)
     const balances = useAssetBalances(conducted, SyncChainId)
-
     const allowance = useAllowance(fromCurrency, oracle.contract, SyncChainId)
-
-    // const freshPrice = useFreshOracleFetch(oracle.prices)
 
     useEffect(() => {
         if (focusType === "from") {
@@ -146,17 +134,6 @@ const Sync2 = () => {
         getData();
     }, [getData]);
 
-
-    // useEffect(() => {
-    //     if (freshPrice) {
-    //         freshPrice().then((res) => {
-    //             setPrice(res[0])
-    //         })
-    //     }
-    // }, [freshPrice])
-
-    //prices
-    //perPrice
     //sync
     //approve
     //confirmBox
@@ -226,38 +203,31 @@ const Sync2 = () => {
     const targetCurrency = position === "buy" ? toCurrency : fromCurrency
     const priceSymbol = targetCurrency && targetCurrency.long_symbol?.substring(1)
 
+    const signaturesRequestUrl = useMemo(() => {
+        if (!priceSymbol || !NameChainMap[SyncChainId] || !isLong || !position) return
+        const network = NameChainMap[SyncChainId]
+        const position_type = isLong ? "long" : "short"
+        return createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
+    }, [priceSymbol, NameChainMap[SyncChainId], isLong, position])
+
+    const priceURLs = useMemo(() => {
+        const network = NameChainMap[SyncChainId]
+        if (!priceSymbol || !NameChainMap[SyncChainId]) return
+        return createPriceUrls(oracle.prices, priceSymbol, network)
+    }, [priceSymbol, SyncChainId])
+
+    const getSignatures = useOracleFetch(signaturesRequestUrl)
+
+    const getSinglePrice = useOracleFetch(priceURLs)
+
+
     useEffect(() => {
-        const getSinglePrice = async () => {
-            const network = NameChainMap[SyncChainId]
-            let priceURLs = createPriceUrls(oracle.prices, priceSymbol, network)
-            let reportMessages = ""
-            return Promise.allSettled(
-                priceURLs.map(api => fetch(api, { cache: "no-cache" }))
-            ).then(function (responses) {
-                responses = responses.filter((result, i) => {
-                    if (result?.value?.ok) return true
-                    reportMessages = priceURLs[i] + "\t is down\n"
-                    return false
-                })
-                if (reportMessages !== "") {
-                    reportMessages = ""
-                }
-                return Promise.all(responses.map(function (response) {
-                    return response.value.json();
-                }));
-            }).catch(function (error) {
-                console.log(error);
-            })
-        }
-
         if (priceSymbol) {
-            getSinglePrice().then(result => {
-                const first = result[0]
-                setPriceResult({ ...first })
+            getSinglePrice().then(prices => {
+                setPriceResult({ ...prices[0] })
             })
         }
-
-    }, [priceSymbol])
+    }, [getSinglePrice])
 
 
     useEffect(() => {
@@ -265,7 +235,6 @@ const Sync2 = () => {
             const position_type = isLong ? "long_price" : "short_price"
             const price = priceResult && priceResult["status"] == "open" ? priceResult[position_type] : 0
             const assetPrice = { price: price, fee: 0.01 }
-            console.log(assetPrice);
             if (price !== null) {
                 if (position === "buy") {
                     assetInfo.fromPrice = 1
@@ -278,78 +247,13 @@ const Sync2 = () => {
                 }
                 setAssetInfo({ ...assetInfo })
             }
-
         }
     }, [isLong, priceResult])
-
-    const getSignatures = useCallback(async () => {
-        if (!priceSymbol || !NameChainMap[SyncChainId] || !isLong || !position) return
-        const network = NameChainMap[SyncChainId]
-        const position_type = isLong ? "long" : "short"
-        let signaturesURLs = createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
-        let reportMessages = ""
-        return Promise.allSettled(
-            signaturesURLs.map(api => fetch(api, { cache: "no-cache" }))
-        ).then(function (responses) {
-            responses = responses.filter((result, i) => {
-                if (result?.value?.ok) return true
-                reportMessages = signaturesURLs[i] + "\t is down\n"
-                return false
-            })
-            if (reportMessages !== "") {
-                // sendMessage(reportMessages)
-                reportMessages = ""
-            }
-            return Promise.all(responses.map(function (response) {
-                return response.value.json();
-            }));
-        }).catch(function (error) {
-            console.log(error);
-        })
-    }, [priceSymbol, NameChainMap[SyncChainId], isLong, position])
 
     const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
     const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)
     const { onSync } = useSync(fromCurrency, toCurrency, amountIn, amountOut, getSignatures, position, SyncChainId)
     const { onApprove } = useApprove(fromCurrency, oracle.contract, SyncChainId)
-
-    const handleApprove = useCallback(async () => {
-        try {
-            setApproveLoading(true)
-            const tx = await onApprove()
-            if (tx.status) {
-                setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
-            } else {
-                console.log("Approved Failed");
-            }
-            setApproveLoading(false)
-
-        } catch (e) {
-            setApproveLoading(false)
-            console.error(e)
-        }
-    }, [onApprove])
-
-
-    const handleSync = useCallback(async () => {
-        console.log("handleSync called");
-
-        try {
-            const tx = await onSync()
-            if (tx.status) {
-                console.log("Sync did");
-
-            } else {
-                console.log("Approved Failed");
-            }
-
-        } catch (e) {
-            console.error(e)
-        }
-    }, [onSync])
-
-
-
 
     useEffect(() => {
         const get = async () => {
@@ -376,6 +280,38 @@ const Sync2 = () => {
         }
         //eslint-disable-next-line
     }, [getAmountsIn, amountOut, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
+
+
+    const handleApprove = useCallback(async () => {
+        try {
+            setApproveLoading(true)
+            const tx = await onApprove()
+            if (tx.status) {
+                setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
+            } else {
+                console.log("Approved Failed");
+            }
+            setApproveLoading(false)
+
+        } catch (e) {
+            setApproveLoading(false)
+            console.error(e)
+        }
+    }, [onApprove])
+
+
+    const handleSync = useCallback(async () => {
+        try {
+            const tx = await onSync()
+            if (tx.status) {
+                console.log("Sync did");
+            } else {
+                console.log("Sync Failed");
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }, [onSync])
 
     if (loading || loadingCap) {
         return (<div className="loader-wrap">

@@ -26,8 +26,7 @@ const TokenInfo = styled(Flex)`
         filter:${({ active }) => active && "brightness(0.8)"};
     }
 `
-
-const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFocusType, fastUpdate }) => {
+const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFocusType = null, fastUpdate }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
@@ -74,7 +73,10 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
             alignItems="center"
             mt="5px"
         >
-            <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
+            <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+                if (setFocusType) { setFocusType(type) }
+                setInputAmount(e.currentTarget.value)
+            }} />
 
             {hasMax && !onMax && <ButtonMax width={"40px"}
                 onClick={() => setInputAmount(balance)}>

@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import useRefresh from "../hooks/useRefresh";
 import { sendMessage } from "./telegramLogger";
 
 export const fetcher = async function (url, init) {
@@ -36,7 +35,6 @@ export const useOracleFetch = (urls = []) => {
 }
 
 export const useFreshOracleFetch = (urls = []) => {
-    const { fastRefresh } = useRefresh()
     return useCallback(() => {
         let reportMessages = ""
         return Promise.allSettled(
@@ -57,5 +55,5 @@ export const useFreshOracleFetch = (urls = []) => {
         }).catch(function (error) {
             console.log(error);
         })
-    }, [urls, fastRefresh])
+    }, [urls])
 }

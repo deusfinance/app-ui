@@ -86,17 +86,20 @@ const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency
     }
 
     return (<>
-        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} > SYNC</ButtonSwap> </WrapActions> : <>
+        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} onClick={handleSync} > SYNC</ButtonSwap> </WrapActions> : <>
             <WrapActions mt={mt}>
-                <ButtonSwap active={true} >
+                <ButtonSwap active={!isApproved} onClick={handleApprove} >
                     APPROVE
                 </ButtonSwap>
-                <ButtonSyncDeactivated>SYNC (BUY)</ButtonSyncDeactivated>
+                {isApproved ?
+                    <ButtonSwap active={true} onClick={handleApprove} >SYNC (BUY)</ButtonSwap> :
+                    <ButtonSyncDeactivated onClick={handleSync}>SYNC (BUY)</ButtonSyncDeactivated>
+                }
             </WrapActions>
             <WrapStep>
                 <CycleNumber active={true}>1</CycleNumber>
                 <Line></Line>
-                <CycleNumber active={false}>2</CycleNumber>
+                <CycleNumber active={isApproved}>2</CycleNumber>
             </WrapStep>
         </>
         }

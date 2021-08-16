@@ -28,7 +28,7 @@ const navsMobile = mobileNavs.slice().reverse();
 
 const Navbar = () => {
 
-    const { chainId, account, activate } = useWeb3React()
+    const { chainId, account } = useWeb3React()
     const location = useLocation()
     const [showWallets, setShowWallets] = useState(false)
     const [open, setOpen] = useState(false)

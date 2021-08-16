@@ -38,45 +38,54 @@ function App() {
       <Suspense fallback={<LoopCircleLoading></LoopCircleLoading>}>
         <Web3ReactManager>
           <RefreshContextProvider>
-            <Navbar />
-            <div id="blur-pop"></div>
-            <Announcements />
-            <div className="app-body">
-              <ToastContainer style={{ maxWidth: '450px', width: "90%" }} />
-              <Switch>
-                <Route exact path="/not-found" component={NotFound} />
-                <Route
-                  exact
-                  path="/crosschain/xdai/synchronizer"
-                  component={SyncXdai}
-                />
-                <Route
-                  exact
-                  path="/crosschain/bsc/synchronizer"
-                  component={SyncBSC}
-                />
-                <Route
-                  exact
-                  path="/crosschain/heco/synchronizer"
-                  component={SyncHeco}
-                />
-                <Route
-                  exact
-                  path="/crosschain/polygon/synchronizer"
-                  component={SyncMatic}
-                />
-                <Route exact path="/synchronizer" component={SyncMain} />
+            <RecoilRoot>
+              <Updater />
+              <Navbar />
+              <div id="blur-pop"></div>
+              <Announcements />
+              <div className="app-body">
+                <ToastContainer style={{ maxWidth: '450px', width: "90%" }} />
+                <Switch>
+                  <Route exact path="/not-found" component={NotFound} />
+                  <Route
+                    exact
+                    path="/crosschain/xdai/synchronizer"
+                    component={SyncXdai}
+                  />
+                  <Route
+                    exact
+                    path="/crosschain/bsc/synchronizer"
+                    component={SyncBSC}
+                  />
+                  <Route
+                    exact
+                    path="/crosschain/heco/synchronizer"
+                    component={SyncHeco}
+                  />
+                  <Route
+                    exact
+                    path="/crosschain/polygon/synchronizer"
+                    component={SyncMatic}
+                  />
+                  <Route exact path="/synchronizer" component={SyncMain} />
 
-                <Route exact path="/sync2" component={Sync2} />
-                <Route exact path="/swap2" component={Swap2} />
-                <Route exact path="/muon-presale" component={Muon} />
-                <Route path="/crosschain/:id/muon-presale" component={Muon} />
-                <Redirect exact from="/" to="/swap" />
-                <Route path="/" component={Deus} />
-                <Redirect to="not-found" />
-              </Switch>
-            </div>
-            {/* <MarketNavbar /> */}
+                  <Redirect exact from="/dei" to="/dei/mint" />
+                  <Route exact path="/dei/mint" component={DeiMint} />
+                  <Route exact path="/dei/staking" component={DeiStaking} />
+                  <Route exact path="/dei/redeem" component={DeiRedeem} />
+                  <Route exact path="/dei/buyback-recollat" component={DeiBuyBackRecollateralize} />
+
+                  <Route exact path="/sync2" component={Sync2} />
+                  <Route exact path="/swap2" component={Swap2} />
+                  <Route exact path="/muon-presale" component={Muon} />
+                  <Route path="/crosschain/:id/muon-presale" component={Muon} />
+                  <Redirect exact from="/" to="/swap" />
+                  <Route path="/" component={Deus} />
+                  <Redirect to="not-found" />
+                </Switch>
+              </div>
+              {/* <MarketNavbar /> */}
+            </RecoilRoot>
           </RefreshContextProvider>
         </Web3ReactManager>
       </Suspense>

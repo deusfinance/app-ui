@@ -17,6 +17,10 @@ export const correctChains = [
         chains: [ChainMap.RINKEBY],
     },
     {
+        url: "/nft",
+        chains: [ChainMap.RINKEBY],
+    },
+    {
         url: "/crosschain/xdai",
         chains: [ChainMap.XDAI],
     },

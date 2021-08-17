@@ -3,18 +3,21 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MainWrapper, SwapWrapper } from "../../components/App/Swap";
 import TokenBox from "../../components/App/NFT/TokenBox";
 import SwapAction from "../../components/App/NFT/SwapAction";
-import { MainTokens } from "../../constant/token";
+import { MainTokens, TestTokens } from "../../constant/token";
 import useChain from "../../hooks/useChain";
 import { useMint } from "../../hooks/useDei";
 import { useApprove } from "../../hooks/useApprove";
 import { useAllowance } from "../../hooks/useDei";
 import { HUSD_POOL_ADDRESS } from "../../constant/contracts";
+import { useWeb3React } from "@web3-react/core";
 
 const NFT = () => {
-  const deaToken = MainTokens[1];
-  const validNetworks = [1];
+  const deaToken = TestTokens[1];
+  const validNetworks = [4];
   const chainId = useChain(validNetworks);
   const contractAddress = HUSD_POOL_ADDRESS[chainId];
+  const allowance = useAllowance(deaToken, contractAddress, chainId);
+  const { account } = useWeb3React();
 
   const [amountIn, setAmountIn] = useState("");
   const [fastUpdate, setFastUpdate] = useState(0);
@@ -24,8 +27,27 @@ const NFT = () => {
   const [approveLoading, setApproveLoading] = useState(false);
   const [swapLoading, setSwapLoading] = useState(false);
 
-    const { onApprove } = useApprove(deaToken, contractAddress, chainId);
-    const { onMint } = useMint();
+  useEffect(() => {
+    if (isPreApproved == null) {
+      if (allowance.toString() === "-1") {
+        setIsPreApproved(null); //doNothing
+      } else {
+        if (allowance.gt(0)) {
+          setIsPreApproved(true);
+        } else {
+          setIsPreApproved(false);
+        }
+      }
+    } else {
+      if (allowance.gt(0)) {
+        setIsApproved(true);
+      }
+    }
+    //eslint-disable-next-line
+  }, [allowance]); //isPreApproved ?
+
+  const { onApprove } = useApprove(deaToken, contractAddress, chainId);
+  const { onMint } = useMint();
 
   const handleApprove = useCallback(async () => {
     try {
@@ -89,14 +111,11 @@ const NFT = () => {
           swapLoading={swapLoading}
           handleApprove={handleApprove}
           handleSwap={handleSwap}
-        //   TokensMap={TokensMap}
-        //   swapState={swapState}
           amountIn={amountIn}
-        //   amountOut={amountOut}
         />
       </SwapWrapper>
     </MainWrapper>
   );
-};
+};;
 
 export default NFT;

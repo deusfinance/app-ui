@@ -14,7 +14,7 @@ import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useDei';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { DEI_POOL_ADDRESS } from '../../../constant/contracts';
+import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
@@ -22,7 +22,9 @@ import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 
 const Dei = () => {
-    useDeiUpdate()
+    const validNetworks = [4]
+    const chainId = useChain(validNetworks)
+    useDeiUpdate(chainId)
     const collatRatio = useRecoilValue(collatRatioState)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const deiPrices = useRecoilValue(deiPricesState)
@@ -30,11 +32,11 @@ const Dei = () => {
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
+    const [swapLoading, setSwapLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [4, 1]
-    const chainId = useChain(validNetworks)
+
     const [isPair, setIsPair] = useState(false)
-    const contractAddress = DEI_POOL_ADDRESS[chainId]
+    const contractAddress = HUSD_POOL_ADDRESS[chainId]
 
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
     const tokensMap = {}
@@ -45,9 +47,6 @@ const Dei = () => {
         if (tokensMap[address]) tokensMap[address + pairID] = currToken
         else tokensMap[address] = currToken
     }
-
-    // const tokenBalances = tokensMap
-    // const [TokensMap, setTokensMap] = useState(tokenBalances)
 
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
@@ -101,8 +100,8 @@ const Dei = () => {
                 amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
             } if (out) {
                 amountOut = out
-                amountIn1 = RemoveTrailingZero(new BigNumber(out).times(1 + (mintingFee / 100)).times(collatRatio).div(100).div(in1Unit), swapState.from.decimals)
-                amountIn2 = RemoveTrailingZero(new BigNumber(out).times(1 + (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals)
+                amountIn1 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(collatRatio).div(100).div(in1Unit), swapState.from.decimals, BigNumber.ROUND_DOWN)
+                amountIn2 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals, BigNumber.ROUND_UP)
             }
             setAmountIn(amountIn1)
             setAmountInPair(amountIn2)
@@ -115,22 +114,19 @@ const Dei = () => {
             let primaryToken = null
             setIsPair(false)
             if (collatRatio === 100) {
-                primaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
+                primaryToken = DEITokens[0]
             } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = DEITokens.filter(token => token.symbol === "HUSD P")[0]
-                let secondToken = DEITokens.filter(currToken => {
-                    return currToken.pairID === primaryToken.pairID && currToken.address !== primaryToken.address
-                })[0]
+                primaryToken = DEITokens[2]
+                let secondToken = DEITokens[3]
                 setIsPair(true)
                 setPairToken(secondToken)
             } else if (collatRatio === 0) {
-                primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
+                primaryToken = DEITokens[1]
             }
             setSwapState({ ...swapState, from: primaryToken })
         }
         if (collatRatio != null) changeFromTokens()
     }, [collatRatio]);// eslint-disable-line
-
 
     useEffect(() => {
         setIsPreApproved(null)
@@ -144,15 +140,14 @@ const Dei = () => {
             } else {
                 if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                     setIsPreApproved(true)
-
-                } else {
+                }
+                else {
                     setIsPreApproved(false)
                 }
             }
         } else {
             if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
                 setIsApproved(true)
-
             }
         }
         //eslint-disable-next-line 
@@ -167,6 +162,7 @@ const Dei = () => {
         return swapState.from
     }, [pairToken, allowance, allowancePairToken, swapState.from])
 
+
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
     const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, chainId)
 
@@ -175,9 +171,10 @@ const Dei = () => {
             setApproveLoading(true)
             const tx = await onApprove()
             if (tx.status) {
-                setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
+                console.log("Approved");
             } else {
-                console.log("Approved Failed");
+                console.log("Approve Failed");
+
             }
             setApproveLoading(false)
 
@@ -188,8 +185,11 @@ const Dei = () => {
     }, [onApprove])
 
     const handleSwap = useCallback(async () => {
+        setSwapLoading(true)
+
         try {
             const tx = await onMint()
+            setSwapLoading(false)
             if (tx.status) {
                 console.log("swap did");
                 setAmountIn("")
@@ -199,16 +199,17 @@ const Dei = () => {
             }
         } catch (e) {
             console.error(e)
+            setSwapLoading(false)
         }
     }, [onMint])
 
 
     // TODO: loader animation --> needs to fix at the end
-    if (collatRatio === null || mintingFee === null) {
-        return (<div className="loader-wrap">
-            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
-        </div>)
-    }
+    // if (collatRatio === null || mintingFee === null) {
+    //     return (<div className="loader-wrap">
+    //         {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+    //     </div>)
+    // }
 
     return (<>
         <MainWrapper>
@@ -270,6 +271,7 @@ const Dei = () => {
                         isApproved={isApproved}
                         targetToken={targetToken}
                         loading={approveLoading}
+                        swapLoading={swapLoading}
                         handleApprove={handleApprove}
                         handleSwap={handleSwap}
                         TokensMap={TokensMap}

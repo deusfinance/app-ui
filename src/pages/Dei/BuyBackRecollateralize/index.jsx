@@ -14,7 +14,6 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
 import useChain from '../../../hooks/useChain';
-import { getContractAddr } from '../../../utils/contracts';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEITokens } from '../../../constant/token';
 import { useBuyBack, useRecollat } from '../../../hooks/useDei';
@@ -24,6 +23,7 @@ import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
 import { useDeiUpdateBuyBack } from '../../../hooks/useDei';
 import { availableRecollatState, deiPricesState, husdPoolDataState } from '../../../store/dei';
+import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
 
 const TopWrap = styled.div`
     display: flex;
@@ -49,7 +49,10 @@ const msg = "There is currently no excess value to conduct buybacks."
 const msg2 = "The protocol is properly collateralized."
 
 const Dei = () => {
-    useDeiUpdateBuyBack();
+    const validNetworks = [4]
+    const chainId = useChain(validNetworks)
+    useDeiUpdateBuyBack(chainId);
+
     const deiPrices = useRecoilValue(deiPricesState)
     const {
         bonus_rate: bonusRate,
@@ -59,6 +62,7 @@ const Dei = () => {
         buyBackPaused,
         recollateralizePaused
     } = useRecoilValue(husdPoolDataState)
+
     let availableBuyback = Math.max(availableExcessCollatDV, 0)
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     const [focusType, setFocusType] = useState("from")
@@ -68,32 +72,10 @@ const Dei = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const validNetworks = [1, 4]
-    const chainId = useChain(validNetworks)
+    const contractAddress = HUSD_POOL_ADDRESS[chainId]
 
-    const contractAddress = getContractAddr("multi_swap_contract", chainId)
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
-
     const tokensMap = {}
-    const pairedTokens = []
-    for (let i = 0; i < DEITokens.length; i++) {
-        const t = DEITokens[i]
-        if (t.pairID) {
-            let j = i + 1
-            for (; j < DEITokens.length; j++) {
-                const tt = DEITokens[j]
-                if (tt.pairID && t.pairID === tt.pairID) {
-                    j++
-                } else {
-                    break
-                }
-            }
-            pairedTokens.push(DEITokens.slice(i, j))
-            i = j
-        } else {
-            pairedTokens.push([DEITokens[i]])
-        }
-    }
 
     for (let i = 0; i < tokens.length; i++) {
         const currToken = tokens[i]
@@ -180,15 +162,6 @@ const Dei = () => {
         }
     }
 
-    // useEffect(() => {
-    //     setIsPreApproved(null)
-    //     setIsApproved(false)
-    // }, [swapState.from])
-
-    // useEffect(() => { //TODO balances
-    //     setTokensMap(tokenBalances)
-    // }, [tokenBalances])
-
     useEffect(() => {
         if (isPreApproved == null) {
             if (allowance.toString() === "-1") {
@@ -211,6 +184,7 @@ const Dei = () => {
     let targetToken = useMemo(() => {
         if (availableBuyback !== null) return availableBuyback > 0 ? swapState.from : swapState.to
     }, [availableBuyback, swapState])
+
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
     const { onBuyBack } = useBuyBack(swapState.to, swapState.from, amountIn1, amountOut1, chainId)
     const { onRecollat } = useRecollat(swapState.from, swapState.to, amountIn2, amountOut2, chainId)
@@ -255,7 +229,7 @@ const Dei = () => {
                 setAmountIn2("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
-                console.log("Recollat Recollat");
+                console.log("Recollat failed");
             }
         } catch (e) {
             console.error(e)

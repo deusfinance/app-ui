@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { CustomTranaction } from './explorers'
+import { CustomTransaction } from './explorers'
 import { TransactionState } from './constant'
 
 // const INFURA_URL =
@@ -26,7 +26,7 @@ const sendTransaction = (
         .send({ from: owner })
         .once('transactionHash', (tx) => {
           hash = tx
-          CustomTranaction(TransactionState.LOADING, {
+          CustomTransaction(TransactionState.LOADING, {
             hash,
             chainId,
             message
@@ -35,7 +35,7 @@ const sendTransaction = (
 
         .once('receipt', ({ transactionHash }) => {
           console.log({ transactionHash })
-          CustomTranaction(TransactionState.SUCCESS, {
+          CustomTransaction(TransactionState.SUCCESS, {
             hash: transactionHash,
             chainId,
             message
@@ -44,7 +44,7 @@ const sendTransaction = (
         })
         .once('error', (error) => {
           console.log('error happend', error)
-          CustomTranaction(TransactionState.FAILED, {
+          CustomTransaction(TransactionState.FAILED, {
             hash,
             chainId
           })

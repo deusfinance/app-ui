@@ -4,7 +4,7 @@ import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
 import { Flex, Text } from 'rebass/styled-components';
 import { Base } from '../Button/index'
 import { useRecoilValue } from 'recoil';
-import { redeemBalances } from '../../../store/dei'
+import { husdPoolDataState } from '../../../store/dei'
 import { isGt } from '../../../constant/number';
 import { useClaimAll } from '../../../hooks/useDei';
 import useChain from '../../../hooks/useChain';
@@ -73,14 +73,6 @@ const ButtonSync = styled(Base).attrs({
   font-size:20px;
 `
 
-const ButtonSyncDeactivated = styled(ButtonSync)`
-    box-shadow: none;
-    font-family:"Monument Grotesk Semi";
-    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.sync_dactive};
-    color: ${({ theme, color }) => color ? theme[color] : "#8d8d8d"};
-    cursor: default;
-`
-
 const ButtonSyncActive = styled(ButtonSync)`
   background: ${({ theme }) => theme.sync_active};
   font-size: 25px;
@@ -98,9 +90,9 @@ const ButtonSwap = styled(ButtonSyncActive)`
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
 const RedeemedToken = ({ title, currencies }) => {
-  let balances = useRecoilValue(redeemBalances)
-  const price1 = balances ? balances["redeemCollateralBalances"] : null
-  const price2 = balances ? balances["redeemDEUSBalances"] : null
+  let poolData = useRecoilValue(husdPoolDataState)
+  const price1 = poolData ? poolData["redeemCollateralBalances"] : null
+  const price2 = poolData ? poolData["redeemDEUSBalances"] : null
 
   const validNetworks = [1, 4]
   const chainId = useChain(validNetworks)
@@ -121,25 +113,25 @@ const RedeemedToken = ({ title, currencies }) => {
 
   return (
     useMemo(() => {
-      return <SmallWrapper>
-        <MyText> {title} </MyText>
-        {currencies.map(({ symbol, logo }, index) => {
-          return <TokenInfo key={index + logo}>
-            <CurrencyLogo symbol={symbol} logo={logo} />
+      return <>
+        {(price1 && price2 && (isGt(price1, 0) || isGt(price2, 0))) && <SmallWrapper>
+          <MyText> {title} </MyText>
+          {currencies.map(({ symbol, logo }, index) => {
+            return <TokenInfo key={index + logo}>
+              <CurrencyLogo symbol={symbol} logo={logo} />
 
-            <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
+              <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
 
-            <NumberWrapper color="text1" ml="7px" mr="9px">
-              {index === 0 ? price1 ? parseFloat(price1).toFixed(3) : IMG : price2 ? parseFloat(price2).toFixed(3) : IMG}
-            </NumberWrapper>
+              <NumberWrapper color="text1" ml="7px" mr="9px">
+                {index === 0 ? price1 ? parseFloat(price1).toFixed(3) : IMG : price2 ? parseFloat(price2).toFixed(3) : IMG}
+              </NumberWrapper>
 
-          </TokenInfo>
-        })}
+            </TokenInfo>
+          })}
 
-        {(price1 && price2 && (isGt(price1, 0) || isGt(price2, 0))) ?
-          <ButtonSwap active={true} bgColor={"grad_dei"} onClick={handleClaim}> CLAIM ALL </ButtonSwap> :
-          <ButtonSyncDeactivated> CLAIM ALL </ButtonSyncDeactivated>}
-      </SmallWrapper>
+          <ButtonSwap active={true} bgColor={"grad_dei"} onClick={handleClaim}> CLAIM ALL </ButtonSwap>
+        </SmallWrapper>}
+      </>
     }, [title, currencies, price1, price2, handleClaim])
   );
 }

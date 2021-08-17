@@ -1,4 +1,4 @@
-import { deiHusdLpToken } from "../../../constant/token"
+import { deiDeusLpToken, deiHusdLpToken } from "../../../constant/token"
 
 export const urls = [{
   name: 'Mint',
@@ -18,10 +18,17 @@ export const urls = [{
 },
 ]
 
-export const StakingInfo = [
+export const StakingConfig = [
   {
-    title: "DEI-HUSD",
-    token: deiHusdLpToken,
-    stakingContract: "0xeC954bBdb8436Dc52e05b965bBECbd795bc6E027"
-  }
+    title: "DEI-HUSD-LP",
+    depositToken: deiHusdLpToken,
+    withdrawToken: deiHusdLpToken,
+    stakingContract: "0xcb98da981680a65ef5B4f12877A4DEB35b896541"
+  },
+  {
+    title: "DEI-DEUS-LP",
+    depositToken: deiDeusLpToken,
+    withdrawToken: deiDeusLpToken,
+    stakingContract: "0xcc4d8FDD8647331A9ab0BA153EA8c929cAc25245"
+  },
 ]

@@ -25,6 +25,11 @@ export const RowFlat = styled.div`
   align-items: flex-end;
 `
 
+export const RowStart = styled.div`
+  display: flex;
+  align-items: flex-start;
+`
+
 export const AutoRow = styled(Row)`
   flex-wrap: wrap;
   margin: ${({ gap }) => gap && `-${gap}`};

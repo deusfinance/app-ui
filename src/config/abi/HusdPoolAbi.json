@@ -271,9 +271,9 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint256[]",
                 "name": "collat_usd_price",
-                "type": "uint256"
+                "type": "uint256[]"
             }
         ],
         "name": "availableExcessCollatDV",
@@ -304,8 +304,13 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "collateral_price",
+                "name": "DEUS_amount",
                 "type": "uint256"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "collateral_price",
+                "type": "uint256[]"
             },
             {
                 "internalType": "uint256",
@@ -321,16 +326,6 @@
                 "internalType": "bytes[]",
                 "name": "sigs",
                 "type": "bytes[]"
-            },
-            {
-                "internalType": "uint256",
-                "name": "DEUS_amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "COLLATERAL_out_min",
-                "type": "uint256"
             }
         ],
         "name": "buyBackDEUS",
@@ -567,11 +562,6 @@
             },
             {
                 "internalType": "uint256",
-                "name": "DEI_out_min",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
                 "name": "collateral_price",
                 "type": "uint256"
             },
@@ -595,6 +585,11 @@
         "inputs": [
             {
                 "internalType": "uint256",
+                "name": "deus_amount_d18",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
                 "name": "deus_current_price",
                 "type": "uint256"
             },
@@ -607,16 +602,6 @@
                 "internalType": "bytes[]",
                 "name": "sigs",
                 "type": "bytes[]"
-            },
-            {
-                "internalType": "uint256",
-                "name": "deus_amount_d18",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "DEI_out_min",
-                "type": "uint256"
             }
         ],
         "name": "mintAlgorithmicDEI",
@@ -626,6 +611,16 @@
     },
     {
         "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateral_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deus_amount",
+                "type": "uint256"
+            },
             {
                 "internalType": "uint256",
                 "name": "collateral_price",
@@ -645,21 +640,6 @@
                 "internalType": "bytes[]",
                 "name": "sigs",
                 "type": "bytes[]"
-            },
-            {
-                "internalType": "uint256",
-                "name": "collateral_amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "deus_amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "DEI_out_min",
-                "type": "uint256"
             }
         ],
         "name": "mintFractionalDEI",
@@ -738,8 +718,18 @@
                 "components": [
                     {
                         "internalType": "uint256",
-                        "name": "collateral_price",
+                        "name": "collateral_amount",
                         "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "pool_collateral_price",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "collateral_price",
+                        "type": "uint256[]"
                     },
                     {
                         "internalType": "uint256",
@@ -755,16 +745,6 @@
                         "internalType": "bytes[]",
                         "name": "sigs",
                         "type": "bytes[]"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "collateral_amount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "DEUS_out_min",
-                        "type": "uint256"
                     }
                 ],
                 "internalType": "struct DEIPool.RecollateralizeDEI",
@@ -799,11 +779,6 @@
             },
             {
                 "internalType": "uint256",
-                "name": "COLLATERAL_out_min",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
                 "name": "collateral_price",
                 "type": "uint256"
             },
@@ -827,6 +802,11 @@
         "inputs": [
             {
                 "internalType": "uint256",
+                "name": "DEI_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
                 "name": "deus_current_price",
                 "type": "uint256"
             },
@@ -839,16 +819,6 @@
                 "internalType": "bytes[]",
                 "name": "sigs",
                 "type": "bytes[]"
-            },
-            {
-                "internalType": "uint256",
-                "name": "DEI_amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "DEUS_out_min",
-                "type": "uint256"
             }
         ],
         "name": "redeemAlgorithmicDEI",
@@ -898,6 +868,11 @@
         "inputs": [
             {
                 "internalType": "uint256",
+                "name": "DEI_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
                 "name": "collateral_price",
                 "type": "uint256"
             },
@@ -915,21 +890,6 @@
                 "internalType": "bytes[]",
                 "name": "sigs",
                 "type": "bytes[]"
-            },
-            {
-                "internalType": "uint256",
-                "name": "DEI_amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "DEUS_out_min",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "COLLATERAL_out_min",
-                "type": "uint256"
             }
         ],
         "name": "redeemFractionalDEI",

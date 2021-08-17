@@ -14,7 +14,7 @@ export const collatRatioPercent = selector({
 
 export const deiPricesState = atom({
     key: 'deiPrices',
-    default: null,
+    default: {},
 });
 
 export const availableRecollatState = atom({
@@ -52,7 +52,3 @@ export const husdPoolDataState = atom({
     default: {},
 });
 
-export const redeemBalances = atom({
-    key: 'redeemBalances',
-    default: null,
-});

@@ -2,8 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { makeCostDataRedeem, makeCostData } from '../../../helper/deiHelper'
 import { useRecoilValue } from 'recoil';
-import { collatRatioState } from '../../../store/dei';
-import { useRefreshRatio } from '../../../hooks/useDei'
+import { collatRatioState, deiPricesState } from '../../../store/dei';
 import { husdPoolDataState } from '../../../store/dei'
 
 export const MainWrapper = styled.div`
@@ -41,8 +40,8 @@ export const FeePrice = styled.span`
 export const CostBox = (props) => {
     const type = props.type
 
-    const refreshRate = useRefreshRatio()
-    const deiPrice = refreshRate ? refreshRate.dei_price : null
+    const deusPrices = useRecoilValue(deiPricesState)
+    const deiPrice = deusPrices ? deusPrices.dei_price : null
     const collatRatio = useRecoilValue(collatRatioState)
     const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance } = useRecoilValue(husdPoolDataState)
     let costs = null

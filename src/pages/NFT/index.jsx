@@ -5,9 +5,9 @@ import TokenBox from "../../components/App/NFT/TokenBox";
 import SwapAction from "../../components/App/NFT/SwapAction";
 import { MainTokens, TestTokens } from "../../constant/token";
 import useChain from "../../hooks/useChain";
-import { useMint } from "../../hooks/useDei";
+import { useSwap } from "../../hooks/useNFT";
 import { useApprove } from "../../hooks/useApprove";
-import { useAllowance } from "../../hooks/useDei";
+import { useAllowance } from "../../hooks/useAllowance";
 import { HUSD_POOL_ADDRESS } from "../../constant/contracts";
 import { useWeb3React } from "@web3-react/core";
 
@@ -47,7 +47,7 @@ const NFT = () => {
   }, [allowance]); //isPreApproved ?
 
   const { onApprove } = useApprove(deaToken, contractAddress, chainId);
-  const { onMint } = useMint();
+  const { onSwap } = useSwap(deaToken, amountIn);
 
   const handleApprove = useCallback(async () => {
     try {
@@ -68,7 +68,7 @@ const NFT = () => {
   const handleSwap = useCallback(async () => {
     setSwapLoading(true);
     try {
-      const tx = await onMint();
+      const tx = await onSwap();
       setSwapLoading(false);
       if (tx.status) {
         console.log("swap did");
@@ -81,7 +81,7 @@ const NFT = () => {
       console.error(e);
       setSwapLoading(false);
     }
-  }, [onMint]);
+  }, [onSwap]);
 
   return (
     <MainWrapper>

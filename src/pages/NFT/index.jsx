@@ -5,7 +5,8 @@ import { Type } from '../../components/App/Text';
 const NFT = () => {
     return (<>
         <MainWrapper>
-            <Type.XL fontWeight="300">NFT</Type.XL>
+            <Type.XL fontWeight="300"> NFT </Type.XL>
+            
         </MainWrapper>
     </>);
 }

@@ -11,6 +11,7 @@ import SealedSwapperAbi from '../config/abi/SealedSwapperAbi.json'
 import DeiPoolAbi from '../config/abi/DeiPoolAbi.json'
 import DeiAbi from '../config/abi/DEIAbi.json'
 import SyncAbi from '../config/abi/Sync.json'
+import XdaiProxyAbi from '../config/abi/XdaiProxyAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import { DEI_ADDRESS, DEI_POOL_ADDRESS, HUSD_POOL_ADDRESS, MULTICALL_NETWORKS } from '../constant/contracts'
@@ -28,6 +29,8 @@ export const getMultiSwapContract = (web3, chainId = ChainMap.MAINNET) => {
 }
 
 export const getSynchronizerContract = (web3, chainId = ChainMap.MAINNET) => {
+    if (chainId === ChainMap.XDAI)
+        return getContract(XdaiProxyAbi, SyncData[chainId].contract, web3)
     return getContract(SyncAbi, SyncData[chainId].contract, web3)
 }
 

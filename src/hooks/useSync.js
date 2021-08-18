@@ -22,9 +22,9 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
     useEffect(() => {
         const fetchAllowance = async () => {
             if (currency.stable && !SyncConfig.isStableApprovable) setAllowance(ethers.constants.MaxUint256)
-            if (!currency.stable && !SyncConfig.isAssetApprovable) setAllowance(ethers.constants.MaxUint256)
-            if (contract === null) setAllowance(ethers.constants.MaxUint256)
-            if (validChainId && chainId !== validChainId) setAllowance(ZERO)
+            else if (!currency.stable && !SyncConfig.isAssetApprovable) setAllowance(ethers.constants.MaxUint256)
+            else if (contract === null) setAllowance(ethers.constants.MaxUint256)
+            else if (validChainId && chainId !== validChainId) setAllowance(ZERO)
             else {
                 const res = await contract.methods.allowance(account, contractAddress).call()
                 setAllowance(new BigNumber(res))
@@ -47,10 +47,8 @@ export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, getSignat
     const handleSync = useCallback(async () => {
         try {
             if (validChainId && chainId !== validChainId) return false
-            // const chooseCurrency = type === "sell" ? fromCurrency : toCurrency
             const oracles = await getSignatures()
             console.log("called handleSync", oracles)
-            // const oracles = Signature.map(Signature => Signature[chooseCurrency.address])
             const requiredSignature = 2
             const tx = await sync(
                 fromCurrency,

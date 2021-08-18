@@ -183,7 +183,7 @@ export function ToastTransaction(type, title, data = '', option = {}) {
   }
 }
 
-export function SwapTransaction(type, payload) {
+export function SwapTransaction(type, payload, option = { autoClose: true }) {
   toast.dismiss()
   switch (type) {
     case TransactionState.LOADING:
@@ -214,8 +214,8 @@ export function SwapTransaction(type, payload) {
           )}
         >
           {`Swapped ${payload.from.amount} ${payload.from.symbol} for ${payload.to.amount} ${payload.to.symbol} ↗ `}
-        </ExternalLink>
-      )
+        </ExternalLink>,
+        option)
       break
 
     case TransactionState.FAILED:
@@ -234,8 +234,8 @@ export function SwapTransaction(type, payload) {
           )}
         >
           {`View On Explorer ↗`}
-        </ExternalLink>
-      )
+        </ExternalLink>,
+        option)
       break
 
     default:
@@ -250,8 +250,8 @@ export function SwapTransaction(type, payload) {
           )}
         >
           {`View On Explorer ↗`}
-        </ExternalLink>
-      )
+        </ExternalLink>,
+        option)
   }
   return
 }

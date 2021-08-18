@@ -13,8 +13,8 @@ const WrapActions = styled.div`
     }
 `
 const ButtonSelect = styled(ButtonSyncActive)`
-  background: ${({ theme, active }) => active ? theme.grad4 : theme.sync_dactive};
-  color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1};
+  background: ${({ theme, active }) => active ? theme.grad1 : theme.sync_dactive};
+  color: ${({ theme }) => theme.text1};
   font-size:20px;
   cursor:pointer;
   &:hover{

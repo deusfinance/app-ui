@@ -7,8 +7,6 @@ import BigNumber from 'bignumber.js';
 
 const Wrapper = styled.div`
     text-align:left;
-    display: flex;
-    justify-content: space-between;
     margin-top:20px;
     margin-left:6px;
     font-family:"Monument Grotesk Semi";
@@ -48,7 +46,7 @@ const RateBox = ({ currencies, marketPrice, amountIn, amountOut, invert, setInve
     const mp = marketPrice
     return (<Wrapper>
         <Type.XS>Market Price @ {mp}</Type.XS>
-        <FlexCenter style={{ justifyContent: "flex-end", }}>
+        <FlexCenter style={{ justifyContent: "left", marginTop: "5px" }}>
             <Type.XS>{handleRatio(amountIn, amountOut, invert)} {handleName(currencies, invert)}  </Type.XS>
             <SwapArrow style={{ marginLeft: "5px" }} onClick={() => setInvert(!invert)}>
                 <svg width={15} height={15} viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">

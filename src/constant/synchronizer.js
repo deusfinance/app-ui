@@ -26,5 +26,16 @@ export const SyncData = {
         signatures: ["https://oracle4.deus.finance/signature", "https://oracle5.deus.finance/signature"],
         registrar: [registrarUrl]
     },
+    [ChainMap.XDAI]: {
+        requiredSignatures: 2,
+        isStableApprovable: false,
+        isAssetApprovable: true,
+        contract: "0x3b62F3820e0B035cc4aD602dECe6d796BC325325",
+        stableCoin: new Token(ChainMap.XDAI, "0x", 18, "xDAI", "xDAI", "/tokens/xdai.svg"),
+        conducted: ["https://oracle1.deus.finance/bsc/conducted.json"],
+        prices: ["https://oracle4.deus.finance/price"],
+        signatures: ["https://oracle4.deus.finance/signature", "https://oracle5.deus.finance/signature"],
+        registrar: [registrarUrl]
+    },
 
 }

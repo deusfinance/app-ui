@@ -14,6 +14,7 @@ import './assets/styles/base.scss'
 
 const Deus = React.lazy(() => import('./components/Deus'))
 const Sync2 = React.lazy(() => import('./pages/Sync2'));
+const Sync3 = React.lazy(() => import('./pages/Sync3'));
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
@@ -76,6 +77,7 @@ function App() {
                   <Route exact path="/dei/buyback-recollat" component={DeiBuyBackRecollateralize} />
 
                   <Route exact path="/sync2" component={Sync2} />
+                  <Route exact path="/sync3" component={Sync3} />
                   <Route exact path="/swap2" component={Swap2} />
                   <Route exact path="/muon-presale" component={Muon} />
                   <Route path="/crosschain/:id/muon-presale" component={Muon} />

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Image } from 'rebass/styled-components';
 import BigNumber from 'bignumber.js';
 import { FlexCenter } from '../../components/App/Container';
-import { SwapArrow, } from '../../components/App/Swap';
+import { SwapWrapper, SwapArrow, } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
 import SyncAction from '../../components/App/Synchronizer/SyncAction';
 import SearchBox from '../../components/App/Synchronizer/SearchBox';
@@ -15,7 +15,7 @@ import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useWeb3React } from '@web3-react/core';
 import useAssetBalances from '../../hooks/useAssetBalances';
-import Row, { RowBetween, RowCenter } from '../../components/App/Row';
+import { RowCenter } from '../../components/App/Row';
 import { useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
@@ -25,42 +25,15 @@ import { isZero } from '../../constant/number';
 import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
 import { NameChainMap } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
-import { Type } from '../../components/App/Text';
-import SelectBox from '../../components/App/Sync/SelectBox';
 
 const MainWrapper = styled.div`
    margin-top: 100px;
    text-align:center;
 `
-
 const Title = styled(FlexCenter)`
     display: inline-flex;
     font-family:"Monument Grotesk Semi";
 `
-
-const TopWrap = styled(FlexCenter)`
-    overflow:hidden;
-    align-items: flex-start;
-    height: 84px;
-    color:#fff;
-    /* background: linear-gradient(269deg,#2ab7ca,#50e3c2); */
-    /* padding: 22px 22px 16px 18px; */
-`
-
-const SwapWrapper = styled.div`
-    background: ${({ theme }) => theme.bg3};
-    border: 1px solid ${({ theme }) => theme.border1};
-    border-radius: 15px;
-    text-align:center;
-    margin:auto;
-    overflow:hidden;
-    width:100%;
-    max-width:500px;
-    border-color:#000;
-    padding:20px 15px;
-    margin-top:30px;
-`
-
 export const NetworkTitle = styled(Base)`
   display:inline-flex;
   height:35px;
@@ -139,7 +112,7 @@ const Sync2 = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-    }, [chainId, account, fromCurrency.symbol]);
+    }, [chainId, account, fromCurrency]);
 
     const changePosition = () => {
         setFromCurrency({ ...toCurrency, amount: "" })
@@ -172,10 +145,12 @@ const Sync2 = () => {
                 setToCurrency({ ...currency })
             } else {
                 const currency = isLong ? { ...fromCurrency, address: fromCurrency.long.address, symbol: fromCurrency.long_symbol } : { ...fromCurrency, address: fromCurrency.short.address, symbol: fromCurrency.short_symbol }
+                // fromCurrency.address = isLong ? fromCurrency.long.address : fromCurrency.short.address
                 setFromCurrency({ ...currency })
             }
         }
     }, [isLong, position])
+
 
     useEffect(() => {
         if (fromCurrency && toCurrency) {
@@ -203,6 +178,7 @@ const Sync2 = () => {
             })
         }
         setStocks(stocks)
+
     }, [conducted, stocks, account])//eslint-disable-line
 
     const showSearchBox = (active = false, type) => {
@@ -228,7 +204,7 @@ const Sync2 = () => {
     const priceSymbol = targetCurrency && targetCurrency.long_symbol?.substring(1)
 
     const signaturesRequestUrl = useMemo(() => {
-        if (!priceSymbol || !NameChainMap[SyncChainId]) return
+        if (!priceSymbol || !NameChainMap[SyncChainId] || !isLong || !position) return
         const network = NameChainMap[SyncChainId]
         const position_type = isLong ? "long" : "short"
         return createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
@@ -316,6 +292,7 @@ const Sync2 = () => {
                 console.log("Approved Failed");
             }
             setApproveLoading(false)
+
         } catch (e) {
             setApproveLoading(false)
             console.error(e)
@@ -331,8 +308,6 @@ const Sync2 = () => {
             } else {
                 console.log("Sync Failed");
             }
-            setAmountIn("")
-            setAmountOut("")
         } catch (e) {
             console.error(e)
         }
@@ -356,8 +331,9 @@ const Sync2 = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            {/* <Title>
+            <Title>
                 <div style={{ display: "flex", justifyContent: "flex-start", flexDirection: "column" }}>
+                    <Image src="/img/sync-logo.svg" alt="sync" height="45px" style={{ marginBottom: "10px" }} />
                     <NetworkTitle>
                         <RowCenter >
                             <img src={process.env.PUBLIC_URL + "/img/chains/bsc.png"} style={{ width: "25px", height: "25px", marginRight: "5px" }} alt="DEUS" />
@@ -365,22 +341,9 @@ const Sync2 = () => {
                         </RowCenter>
                     </NetworkTitle>
                 </div>
-            </Title> */}
+            </Title>
 
             <SwapWrapper>
-                <TopWrap>
-                    <RowBetween >
-                        <Row width={"unset"}>
-                            <Image src="/img/sync-logo.svg" alt="sync" height="35px" style={{ marginRight: "7px" }} />
-                            <Type.XL style={{ color: "#fff" }} >SYNTHETICS</Type.XL>
-                        </Row>
-
-                        <Row alignItems={"center"} justifyContent={"flex-end"} width={"unset"}>
-                            <Type.MD style={{ color: "#fff", marginRight: "5px" }} >NETWORK: </Type.MD>
-                            <SelectBox currRow={"BSC"} />
-                        </Row>
-                    </RowBetween>
-                </TopWrap>
                 <TokenBox
                     type="from"
                     setActive={showSearchBox}
@@ -431,7 +394,7 @@ const Sync2 = () => {
                     mt="20px" />
 
             </SwapWrapper>
-            {/* <RemainingCap /> */}
+            <RemainingCap />
         </MainWrapper >
     </>);
 }

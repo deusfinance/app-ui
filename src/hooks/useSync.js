@@ -21,13 +21,13 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
 
     useEffect(() => {
         const fetchAllowance = async () => {
-            if (currency.stable && !SyncConfig.isStableApprovable) setAllowance(ethers.constants.MaxUint256)
+            if (contract === null) setAllowance(ethers.constants.MaxUint256)
+            else if (currency.stable && !SyncConfig.isStableApprovable) setAllowance(ethers.constants.MaxUint256)
             else if (!currency.stable && !SyncConfig.isAssetApprovable) setAllowance(ethers.constants.MaxUint256)
-            else if (contract === null) setAllowance(ethers.constants.MaxUint256)
             else if (validChainId && chainId !== validChainId) setAllowance(ZERO)
             else {
-                const res = await contract.methods.allowance(account, contractAddress).call()
-                setAllowance(new BigNumber(res))
+                const alow = await contract.methods.allowance(account, contractAddress).call()
+                setAllowance(new BigNumber(alow))
             }
         }
         if (account && tokenAddress) {

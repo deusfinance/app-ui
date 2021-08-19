@@ -75,10 +75,10 @@ export const NetworkTitle = styled(Base)`
 
 const Sync2 = () => {
     const location = useLocation()
+    const { account, chainId } = useWeb3React()
     const validChains = getCorrectChains(location.pathname)
-    const defaultChainId = ChainMap.BSC
-    const [SyncChainId, setSyncChainId] = useState(defaultChainId)
-    // const SyncChainId = useChain(validChains)
+    const currChain = chainId && validChains.indexOf(chainId) !== -1 ? chainId : ChainMap.BSC
+    const [SyncChainId, setSyncChainId] = useState(currChain)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -106,9 +106,7 @@ const Sync2 = () => {
     const [loadingCap, setLoadingCAP] = useState(false);
 
     const [focusType, setFocusType] = useState("from")
-    const { account, chainId } = useWeb3React()
-
-    const getConducted = useOracleFetch(oracle.conducted)
+    const getConducted = useOracleFetch(oracle.conducted, {})
     const getPrices = useOracleFetch(oracle.prices)
     const getStocks = useOracleFetch(oracle.registrar)
     const balances = useCrossAssetBalances(conducted, SyncChainId)
@@ -318,7 +316,7 @@ const Sync2 = () => {
         //eslint-disable-next-line
     }, [getAmountsIn, amountOut, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
 
-
+    // console.log(allowance.toString());
     const handleApprove = useCallback(async () => {
         try {
             setApproveLoading(true)

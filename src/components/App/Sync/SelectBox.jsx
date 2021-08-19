@@ -12,7 +12,7 @@ const SelectBox = ({ currRow, setCurrRow }) => {
                     {currRow}
                 </div>
                 <svg width={9} height={5} viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.5 0.5L4.3 4.3L8.1 0.5" stroke="#4DD9F6" strokeMiterlimit={10} strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M0.5 0.5L4.3 4.3L8.1 0.5" stroke="white" strokeMiterlimit={10} strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
 
             </div>

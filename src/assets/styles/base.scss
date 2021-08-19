@@ -273,8 +273,6 @@ a {
     justify-content: space-between;
     padding: 0 10px;
     align-items: center;
-    // border: 1px solid #4dd9f6;
-    border: 1px solid #0d353a;
     border-radius: 12px;
     width: 100px;
     height: 28px;
@@ -282,13 +280,10 @@ a {
     width: 120px;
     height: 44px;
     border-radius: 12px;
-    // background-color: #268a94;
-    background-color: #082124;
+    background-color: rgba(0,0,0, 0.4);
     &:hover {
-        // box-shadow: 0px 0px 3px 1px #4dd9f6;
-        box-shadow: 0px 0px 3px 1px #0d353a;
+        background-color: rgba(0,0,0, 0.45);
     }
-
     p {
         margin-bottom: 0px;
     }
@@ -316,12 +311,11 @@ a {
             text-align: left;
             padding-left: 10px;
             cursor: pointer;
-            background-color: #268a94;
+            background-color: rgba(0,0,0, 0.8);
             height: 44px;
             line-height: 44px;
-            border: 1px solid rgb(30, 175, 216);
             &:hover {
-                background-color: #1e314e;
+                background-color: black;
             }
         }
     }

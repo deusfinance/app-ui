@@ -50,60 +50,95 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency, toCurrency, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, amountIn, amountOut }) => {
+const SyncAction = ({
+  TokensMap,
+  isPreApproved,
+  validNetworks = [],
+  fromCurrency,
+  toCurrency,
+  handleSync = undefined,
+  mt,
+  isApproved,
+  handleApprove,
+  loading,
+  bgColor,
+  amountIn,
+  amountOut,
+  buyMethodTitle="",
+}) => {
+  const { account, chainId } = useWeb3React();
+  const [showWallets, setShowWallets] = useState(false);
 
-    const { account, chainId } = useWeb3React()
-    const [showWallets, setShowWallets] = useState(false)
+  const checkError = () => {
+    if (chainId && validNetworks.indexOf(chainId) === -1)
+      return errors.WrongNetwork;
+    if (amountIn === "" || isZero(amountIn)) return errors.EMPTY;
+    if (TokensMap && isGt(amountIn, TokensMap[fromCurrency.address]?.balance))
+      return errors.INSUFFICIENT;
+    if (isNaN(amountOut)) return errors.LOADING;
+    return null;
+  };
 
-    const checkError = () => {
-        if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
-        if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
-        if (TokensMap && isGt(amountIn, TokensMap[fromCurrency.address]?.balance)) return errors.INSUFFICIENT
-        if (isNaN(amountOut)) return errors.LOADING
-        return null;
-    }
+  if (!account) {
+    return (
+      <WrapActions>
+        <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
+        <ButtonSwap active={true} onClick={() => setShowWallets(true)}>
+          CONNECT WALLET
+        </ButtonSwap>
+      </WrapActions>
+    );
+  }
 
-    if (!account) {
-        return <WrapActions>
-            <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
-            <ButtonSwap active={true} onClick={() => setShowWallets(true)}>
-                CONNECT WALLET
+  if (checkError()) {
+    return (
+      <ButtonSyncDeactivated mt={mt}>{checkError()}</ButtonSyncDeactivated>
+    );
+  }
+
+  if (isPreApproved == null) {
+    return (
+      <WrapActions>
+        <ButtonSyncDeactivated>
+          <WaveLoading />
+        </ButtonSyncDeactivated>
+      </WrapActions>
+    );
+  }
+
+  return (
+    <>
+      {isPreApproved ? (
+        <WrapActions mt={mt}>
+          <ButtonSwap active={true} onClick={handleSync}>
+            BUY {buyMethodTitle}
+          </ButtonSwap>
+        </WrapActions>
+      ) : (
+        <>
+          <WrapActions mt={mt}>
+            <ButtonSwap active={!isApproved} onClick={handleApprove}>
+              APPROVE
             </ButtonSwap>
-        </WrapActions>
-    }
-
-
-    if (checkError()) {
-        return <ButtonSyncDeactivated mt={mt}>{checkError()}</ButtonSyncDeactivated>
-    }
-
-    if (isPreApproved == null) {
-        return <WrapActions>
-            <ButtonSyncDeactivated>
-                <WaveLoading />
-            </ButtonSyncDeactivated>
-        </WrapActions>
-    }
-
-    return (<>
-        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} onClick={handleSync} > SYNC</ButtonSwap> </WrapActions> : <>
-            <WrapActions mt={mt}>
-                <ButtonSwap active={!isApproved} onClick={handleApprove} >
-                    APPROVE
-                </ButtonSwap>
-                {isApproved ?
-                    <ButtonSwap active={true} onClick={handleApprove} >SYNC (BUY)</ButtonSwap> :
-                    <ButtonSyncDeactivated onClick={handleSync}>SYNC (BUY)</ButtonSyncDeactivated>
-                }
-            </WrapActions>
-            <WrapStep>
-                <CycleNumber active={true}>1</CycleNumber>
-                <Line></Line>
-                <CycleNumber active={isApproved}>2</CycleNumber>
-            </WrapStep>
+            {isApproved ? (
+              <ButtonSwap active={true} onClick={handleApprove}>
+                SYNC (BUY)
+              </ButtonSwap>
+            ) : (
+              <ButtonSyncDeactivated onClick={handleSync}>
+                SYNC (BUY)
+              </ButtonSyncDeactivated>
+            )}
+          </WrapActions>
+          <WrapStep>
+            <CycleNumber active={true}>1</CycleNumber>
+            <Line></Line>
+            <CycleNumber active={isApproved}>2</CycleNumber>
+          </WrapStep>
         </>
-        }
-    </>);
-}
+      )}
+    </>
+  );
+};
 
 export default SyncAction;

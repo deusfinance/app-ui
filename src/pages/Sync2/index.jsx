@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js';
 import { FlexCenter } from '../../components/App/Container';
 import { SwapArrow, } from '../../components/App/Swap';
 import TokenBox from '../../components/App/Swap/TokenBox';
-import SyncAction from '../../components/App/Synchronizer/SyncAction';
+import SyncAction from '../../components/App/Sync/SyncAction';
 import SearchBox from '../../components/App/Synchronizer/SearchBox';
 import { Base } from '../../components/App/Button';
 import LongShort from '../../components/App/Synchronizer/LongShort';
@@ -15,6 +15,7 @@ import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useWeb3React } from '@web3-react/core';
 import useAssetBalances from '../../hooks/useAssetBalances';
+import useCrossAssetBalances from '../../hooks/useCrossAssetBalances';
 import Row, { RowBetween, RowCenter } from '../../components/App/Row';
 import { useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
@@ -23,10 +24,11 @@ import { useSync, useAmountsIn, useAmountsOut, useAllowance } from '../../hooks/
 import { useApprove } from '../../hooks/useApprove';
 import { isZero } from '../../constant/number';
 import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
-import { NameChainMap } from '../../constant/web3';
+import { ChainMap, NameChainMap } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 import { Type } from '../../components/App/Text';
 import SelectBox from '../../components/App/Sync/SelectBox';
+import useChain from '../../hooks/useChain';
 
 const MainWrapper = styled.div`
    margin-top: 100px;
@@ -74,7 +76,9 @@ export const NetworkTitle = styled(Base)`
 const Sync2 = () => {
     const location = useLocation()
     const validChains = getCorrectChains(location.pathname)
-    const SyncChainId = validChains[0]
+    const defaultChainId = ChainMap.BSC
+    const [SyncChainId, setSyncChainId] = useState(defaultChainId)
+    // const SyncChainId = useChain(validChains)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -107,7 +111,7 @@ const Sync2 = () => {
     const getConducted = useOracleFetch(oracle.conducted)
     const getPrices = useOracleFetch(oracle.prices)
     const getStocks = useOracleFetch(oracle.registrar)
-    const balances = useAssetBalances(conducted, SyncChainId)
+    const balances = useCrossAssetBalances(conducted, SyncChainId)
     const allowance = useAllowance(fromCurrency, oracle.contract, SyncChainId)
 
     useEffect(() => {
@@ -116,6 +120,14 @@ const Sync2 = () => {
         } else
             if (amountOut === "" || debouncedAmountOut === "") setAmountIn("")
     }, [amountIn, debouncedAmountIn, debouncedAmountOut, focusType, amountOut]);
+
+
+    useEffect(() => {
+        setFromCurrency({ ...stableCoin, stable: true })
+        setToCurrency(null)
+        setAmountIn("")
+        setAmountOut("")
+    }, [SyncChainId])
 
     useEffect(() => {
         if (isPreApproved == null) {
@@ -149,7 +161,7 @@ const Sync2 = () => {
     const getData = useCallback(() => {
         setLoading(true);
         getConducted().then((res) => {
-            setConducted(res[0])
+            setConducted({ ...res[0], chainId: SyncChainId })
             getStocks().then((res) => {
                 setStocks(res[0])
                 setLoading(false);
@@ -196,6 +208,7 @@ const Sync2 = () => {
                     return
                 }
                 stocks[token.id].decimals = 18
+                stocks[token.id].chainId = SyncChainId
                 stocks[token.id].conducted = true
                 stocks[token.id].isAsset = true
                 stocks[token.id].long = { address: token.long }
@@ -377,7 +390,7 @@ const Sync2 = () => {
 
                         <Row alignItems={"center"} justifyContent={"flex-end"} width={"unset"}>
                             <Type.MD style={{ color: "#fff", marginRight: "5px" }} >NETWORK: </Type.MD>
-                            <SelectBox currRow={"BSC"} />
+                            <SelectBox setCurrRow={setSyncChainId} currRow={SyncChainId} />
                         </Row>
                     </RowBetween>
                 </TopWrap>
@@ -423,7 +436,7 @@ const Sync2 = () => {
                     handleSync={handleSync}
                     TokensMap={balances}
                     fromCurrency={fromCurrency}
-                    validNetworks={validChains}
+                    validNetwork={SyncChainId}
                     isPreApproved={isPreApproved}
                     isApproved={isApproved}
                     loading={approveLoading}

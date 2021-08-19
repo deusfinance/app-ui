@@ -6,6 +6,8 @@ import { FlexCenter } from '../Container';
 import { WaveLoading } from 'react-loadingg';
 import { isZero, isGt } from '../../../constant/number';
 import Wallets from '../../common/Navbar/Wallets';
+import { NameChainMap } from '../../../constant/web3';
+import { addRPC } from '../../../services/addRPC';
 // import Loader from '../Loader';
 const errors = {
     NotConnected: "CONNECT WALLET",
@@ -13,6 +15,7 @@ const errors = {
     EMPTY: "ENTER AMOUNT",
     INSUFFICIENT: "INSUFFICIENT BALANCE",
     LOADING: "LOADING...",
+    EXCEEDS_CAP: "EXCEEDS SYNCHRONIZER CAP",
 }
 
 
@@ -50,13 +53,12 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency, toCurrency, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, amountIn, amountOut }) => {
+const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCurrency, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, amountIn, amountOut }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
-        if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
         if (TokensMap && isGt(amountIn, TokensMap[fromCurrency.address]?.balance)) return errors.INSUFFICIENT
         if (isNaN(amountOut)) return errors.LOADING
@@ -68,6 +70,14 @@ const SyncAction = ({ TokensMap, isPreApproved, validNetworks = [], fromCurrency
             <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
             <ButtonSwap active={true} onClick={() => setShowWallets(true)}>
                 CONNECT WALLET
+            </ButtonSwap>
+        </WrapActions>
+    }
+    if (chainId && chainId !== validNetwork) {
+        return <WrapActions>
+            <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
+            <ButtonSwap active={true} onClick={() => addRPC(account, validNetwork)}>
+                SWITCH TO {NameChainMap[validNetwork]}
             </ButtonSwap>
         </WrapActions>
     }

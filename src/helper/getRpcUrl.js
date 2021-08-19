@@ -8,7 +8,7 @@ export const nodes = {
     4: ["https://rinkeby.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY],
     56: ["https://bsc-dataseed.binance.org", "https://bsc-dataseed1.defibit.io"],
     97: ["https://data-seed-prebsc-1-s1.binance.org:8545", "https://data-seed-prebsc-2-s1.binance.org:8545"],
-    100: ["https://rpc.xdaichain.com"],
+    100: ["https://rpc.xdaichain.com/"],
 }
 
 const getNodeUrl = (chainId = 1) => {

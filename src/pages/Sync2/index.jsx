@@ -56,6 +56,10 @@ const SwapContentWrapper = styled.div`
   padding: 20px 15px;
 `;
 
+const SwapBoxWrapper = styled.div`
+  background-color: #303030;
+`;
+
 const SwapWrapper = styled.div`
   background: ${({ theme }) => theme.bg3};
   border: 1px solid ${({ theme }) => theme.border1};
@@ -480,29 +484,34 @@ const Sync2 = () => {
               mb={"22px"}
             />
 
-            <TokenBox
-              type="from"
-              setActive={showSearchBox}
-              TokensMap={balances}
-              hasMax={true}
-              inputAmount={amountIn}
-              setInputAmount={setAmountIn}
-              setFocusType={setFocusType}
-              currency={fromCurrency}
-            />
-            <SwapArrow onClick={changePosition}>
-              <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
-            </SwapArrow>
-            <TokenBox
-              type="to"
-              title="To (estimated)"
-              inputAmount={amountOut}
-              TokensMap={balances}
-              setInputAmount={setAmountOut}
-              setActive={showSearchBox}
-              setFocusType={setFocusType}
-              currency={toCurrency}
-            />
+            <SwapBoxWrapper>
+              <TokenBox
+                type="from"
+                setActive={showSearchBox}
+                TokensMap={balances}
+                hasMax={true}
+                inputAmount={amountIn}
+                setInputAmount={setAmountIn}
+                setFocusType={setFocusType}
+                currency={fromCurrency}
+              />
+
+              <SwapArrow onClick={changePosition}>
+                <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
+              </SwapArrow>
+
+              <TokenBox
+                type="to"
+                title="To (estimated)"
+                inputAmount={amountOut}
+                TokensMap={balances}
+                setInputAmount={setAmountOut}
+                setActive={showSearchBox}
+                setFocusType={setFocusType}
+                currency={toCurrency}
+              />
+            </SwapBoxWrapper>
+
             <RateBox
               currencies={{
                 from: fromCurrency,

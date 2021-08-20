@@ -1,4 +1,4 @@
-import web3NoAccount from '../hooks/web3'
+import { getWeb3NoAccount } from '../hooks/web3'
 import muliSwapAbi from '../config/abi/muliSwapAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import DeusAMMAbi from '../config/abi/DeusAMM.json'
@@ -19,8 +19,8 @@ import { ChainMap } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
 import { SyncData } from '../constant/synchronizer'
 
-const getContract = (abi, address, web3) => {
-    const _web3 = web3 ?? web3NoAccount
+const getContract = (abi, address, web3, chainId) => {
+    const _web3 = web3 ?? getWeb3NoAccount(chainId)
     return new _web3.eth.Contract(abi, address)
 }
 

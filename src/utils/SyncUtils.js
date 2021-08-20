@@ -10,11 +10,11 @@ export const fetcher = async function (url, init) {
     }
 }
 
-export const useOracleFetch = (urls = []) => {
+export const useOracleFetch = (urls = [], init = { cache: "no-cache" }) => {
     return useCallback(() => {
         let reportMessages = ""
         return Promise.allSettled(
-            urls.map(api => fetch(api, { cache: "no-cache" }))
+            urls.map(api => fetch(api, init))
         ).then(function (responses) {
             responses = responses.filter((result, i) => {
                 if (result?.value?.ok) return true
@@ -22,31 +22,7 @@ export const useOracleFetch = (urls = []) => {
                 return false
             })
             if (reportMessages !== "") {
-                sendMessage(reportMessages)
-                reportMessages = ""
-            }
-            return Promise.all(responses.map(function (response) {
-                return response.value.json();
-            }));
-        }).catch(function (error) {
-            console.log(error);
-        })
-    }, [urls])
-}
-
-export const useFreshOracleFetch = (urls = []) => {
-    return useCallback(() => {
-        let reportMessages = ""
-        return Promise.allSettled(
-            urls.map(api => fetch(api, { cache: "no-cache" }))
-        ).then(function (responses) {
-            responses = responses.filter((result, i) => {
-                if (result?.value?.ok) return true
-                reportMessages = urls[i] + "\t is down\n"
-                return false
-            })
-            if (reportMessages !== "") {
-                sendMessage(reportMessages)
+                // sendMessage(reportMessages) TODO
                 reportMessages = ""
             }
             return Promise.all(responses.map(function (response) {

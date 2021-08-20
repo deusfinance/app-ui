@@ -88,7 +88,7 @@ export const correctChains = [
     },
     {
         url: "/sync2",
-        chains: [ChainMap.BSC, ChainMap.BSC_TESTNET],
+        chains: [ChainMap.BSC, ChainMap.XDAI, ChainMap.HECO, ChainMap.MAINNET, ChainMap.MATIC],
         exact: true,
     },
     {

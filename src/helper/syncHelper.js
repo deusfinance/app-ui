@@ -11,8 +11,17 @@ export const sync = async (fromCurrency, toCurrency, amountIn, amountOut, oracle
     if (amountIn === "" || isZero(amountInWei) || amountOut === "" || isZero(amountOutWei)) return { status: false }
 
     const syncFunc = syncDefaultFuncMaker(fromCurrency, toCurrency, amountInWei, amountOutWei, oracles, type, requiredSignature, account, chainId, web3)
+
     let params = { from: account }
-    if (fromCurrency.address === "0x") params["value"] = amountInWei
+    if (fromCurrency.address === "0x") {
+        try {
+            const maxOracle = maxObj(oracles, "price")
+            params["value"] = await getMaxPrice(maxOracle.price, maxOracle.fee, amountInWei, web3, chainId)
+            params["gasPrice"] = getToWei(1, 9) //currently its only for xdai 
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return SwapWithToast(
         syncFunc,
@@ -71,9 +80,24 @@ export let createSignaturesUrls = (urls, symbol, network, position_type, side) =
     return urls.map(api => api + '?' + queryString)
 }
 
-export const getMaxPrice = async (maxPrice, fee, amountInWei, web3) => {
-    return getSynchronizerContract(web3, 100)
+export const getMaxPrice = async (maxPrice, fee, amountInWei, web3, chainId) => {
+    console.log(maxPrice, fee, amountInWei);
+    return getSynchronizerContract(web3, chainId)
         .methods
         .calculateXdaiAmount(maxPrice, fee, amountInWei)
         .call()
 }
+
+const maxObj = (arr, key) => arr.reduce((a, b) => a[key] >= b[key] ? a : b, {});
+
+// const compareObj = (key) => (a, b) => {
+//     const A = a[key];
+//     const B = b[key];
+//     let comparison = 0;
+//     if (A > B) {
+//         comparison = 1;
+//     } else if (A < B) {
+//         comparison = -1;
+//     }
+//     return comparison;
+// }

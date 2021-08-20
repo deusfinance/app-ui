@@ -406,6 +406,7 @@ const Sync2 = () => {
                     <LongShort
                         setLong={setLong}
                         isLong={isLong}
+                        height={"40px"}
                         mt={"15"}
                         mb={"22px"}
                     />
@@ -425,8 +426,8 @@ const Sync2 = () => {
                         <div
                             style={{ position: "relative" }}>
                             <Image
-                                style={{ position: "absolute", right: "30px", zIndex: 2, top: "-20px", cursor: "pointer" }}
-                                src="/img/change.svg" height="40px"
+                                style={{ position: "absolute", right: "30px", zIndex: 2, top: "-16px", cursor: "pointer" }}
+                                src="/img/change.svg" height="33px"
                                 position={"absolute"}
                                 onClick={changePosition} />
                         </div>

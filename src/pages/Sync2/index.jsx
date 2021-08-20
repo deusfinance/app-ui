@@ -387,9 +387,9 @@ const Sync2 = () => {
                             justifyContent={"flex-end"}
                             width={"unset"}
                         >
-                            <Type.MD style={{ color: "#fff", marginRight: "5px" }}>
+                            {/* <Type.MD style={{ color: "#fff", marginRight: "5px" }}>
                                 NETWORK:{" "}
-                            </Type.MD>
+                            </Type.MD> */}
                             <SelectBox currRow={SyncChainId} setCurrRow={setSyncChainId} />
                         </Row>
                     </RowBetween>

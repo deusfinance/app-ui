@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   transform: translateY(-50%);
   padding-bottom:20px;
   top:calc(50%);
-  z-index: 2;
+  z-index: 3;
   margin:auto;
 `
 const StyledClose = styled(X)`

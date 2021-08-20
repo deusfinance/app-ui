@@ -27,7 +27,7 @@ const SelectBox = ({ currRow, setCurrRow }) => {
             </div>
             <ul className={`${open ? "ul-open" : ""}`}>
                 {rows.filter((row) => row !== currRow).map((row, id) => {
-                    return <li key={id} onClick={() => setCurrRow(row === 'Max' ? 10000 : row)}>
+                    return <li key={id} onClick={() => setCurrRow(row)}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
                             <img src={process.env.PUBLIC_URL + ICONS[row]} style={{ width: "25px", height: "25px", borderRadius: "50%", marginRight: "8px" }} alt="chain" />
                             {NameChainMap[row]}

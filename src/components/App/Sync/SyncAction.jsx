@@ -53,7 +53,7 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCurrency, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, amountIn, amountOut }) => {
+const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCurrency, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, bgDeactivated, amountIn, amountOut }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
@@ -84,12 +84,12 @@ const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCu
 
 
     if (checkError()) {
-        return <ButtonSyncDeactivated mt={mt}>{checkError()}</ButtonSyncDeactivated>
+        return <ButtonSyncDeactivated bgColor={bgDeactivated} mt={mt}>{checkError()}</ButtonSyncDeactivated>
     }
 
     if (isPreApproved == null) {
         return <WrapActions>
-            <ButtonSyncDeactivated>
+            <ButtonSyncDeactivated bgColor={bgDeactivated}>
                 <WaveLoading />
             </ButtonSyncDeactivated>
         </WrapActions>
@@ -103,7 +103,7 @@ const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCu
                 </ButtonSwap>
                 {isApproved ?
                     <ButtonSwap active={true} onClick={handleApprove} >SYNC (BUY)</ButtonSwap> :
-                    <ButtonSyncDeactivated onClick={handleSync}>SYNC (BUY)</ButtonSyncDeactivated>
+                    <ButtonSyncDeactivated bgColor={bgDeactivated} onClick={handleSync}>SYNC (BUY)</ButtonSyncDeactivated>
                 }
             </WrapActions>
             <WrapStep>

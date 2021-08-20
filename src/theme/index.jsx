@@ -43,6 +43,8 @@ export function colors(darkMode) {
     bg6: darkMode ? "#111111" : "#d4d3d3",
     bg7: darkMode ? "#272727" : "#d4d3d3",
     bg8: darkMode ? "#E7E8EA" : "#F6F6F6",
+    bg9: darkMode ? "#1e2427" : black,
+
     bg_muon: darkMode ? "#F6F6F6" : "#F6F6F6",
     bg_blue: "#5F5CFE",
     bg_warning: darkMode ? "rgba(255, 85, 85, 0.2)" : "#d4d3d3",

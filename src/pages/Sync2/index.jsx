@@ -1,47 +1,10 @@
-<<<<<<< HEAD
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import styled from "styled-components";
-import { Image } from "rebass/styled-components";
-import BigNumber from "bignumber.js";
-import { FlexCenter } from "../../components/App/Container";
-import { SwapArrow } from "../../components/App/Swap";
-import TokenBoxTop from "../../components/App/Sync2/TokenBoxTop";
-import TokenBoxBottom from "../../components/App/Sync2/TokenBoxBottom";
-import SyncAction from "../../components/App/Synchronizer/SyncAction";
-import SearchBox from "../../components/App/Synchronizer/SearchBox";
-import { Base } from "../../components/App/Button";
-import LongShort from "../../components/App/Synchronizer/LongShort";
-import RateBox from "../../components/App/Synchronizer/RateBox";
-import RemainingCap from "../../components/App/Synchronizer/RemainingCap";
-import { SyncData } from "../../constant/synchronizer";
-import { useDebounce } from "../../hooks/useDebounce";
-import { useWeb3React } from "@web3-react/core";
-import useAssetBalances from "../../hooks/useAssetBalances";
-import Row, { RowBetween, RowCenter } from "../../components/App/Row";
-import { useOracleFetch } from "../../utils/SyncUtils";
-import { getCorrectChains } from "../../constant/correctChain";
-import { useLocation } from "react-router-dom";
-import {
-  useSync,
-  useAmountsIn,
-  useAmountsOut,
-  useAllowance,
-} from "../../hooks/useSync";
-import { useApprove } from "../../hooks/useApprove";
-import { isZero } from "../../constant/number";
-import { fromWei, RemoveTrailingZero } from "../../helper/formatBalance";
-import { NameChainMap } from "../../constant/web3";
-import { createPriceUrls, createSignaturesUrls } from "../../helper/syncHelper";
-import { Type } from "../../components/App/Text";
-import SelectBox from "../../components/App/Sync/SelectBox";
-=======
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components'
 import { Image } from 'rebass/styled-components';
 import BigNumber from 'bignumber.js';
 import { FlexCenter } from '../../components/App/Container';
-import { SwapArrow, } from '../../components/App/Swap';
-import TokenBox from '../../components/App/Swap/TokenBox';
+import TokenBoxTop from '../../components/App/Sync2/TokenBoxTop';
+import TokenBoxBottom from '../../components/App/Sync2/TokenBoxBottom';
 import SyncAction from '../../components/App/Sync/SyncAction';
 import SearchBox from '../../components/App/Synchronizer/SearchBox';
 import { Base } from '../../components/App/Button';
@@ -52,7 +15,7 @@ import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useWeb3React } from '@web3-react/core';
 import useCrossAssetBalances from '../../hooks/useCrossAssetBalances';
-import Row, { RowBetween, RowCenter } from '../../components/App/Row';
+import Row, { RowBetween } from '../../components/App/Row';
 import { useOracleFetch } from '../../utils/SyncUtils';
 import { getCorrectChains } from '../../constant/correctChain';
 import { useLocation } from 'react-router-dom';
@@ -64,32 +27,22 @@ import { ChainMap, NameChainMap } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 import { Type } from '../../components/App/Text';
 import SelectBox from '../../components/App/Sync/SelectBox';
->>>>>>> 684d151eef89a9b8a3953a5b5780928ed6060d6a
+import { SwapArrow } from '../../components/App/Swap';
 
 const MainWrapper = styled.div`
-  margin-top: 100px;
-  text-align: center;
-`;
+   margin-top: 100px;
+   text-align:center;
+`
 
-const Title = styled(FlexCenter)`
-  display: inline-flex;
-  font-family: "Monument Grotesk Semi";
-`;
+
 
 const TopWrap = styled(FlexCenter)`
-  overflow: hidden;
-  align-items: flex-start;
-  height: 70px;
-  color: #fff;
-  background: ${({ theme }) => theme.grad1};
-  padding: 12px 22px 12px 18px;
-`;
-
-const SwapContentWrapper = styled.div`
-  padding: 20px 15px;
-`;
-
-const SwapBoxWrapper = styled.div``;
+    overflow:hidden;
+    align-items: flex-start;
+    color:#fff;
+    background: ${({ theme }) => theme.grad1};
+    padding: 12px 22px 12px 18px;
+`
 
 const SwapWrapper = styled.div`
   background: rgb(25, 27, 32);
@@ -102,79 +55,24 @@ const SwapWrapper = styled.div`
   max-width: 500px;
   border-color: #000;
   margin-top: 30px;
+`
+const SwapContentWrapper = styled.div`
+  padding: 20px 15px;
 `;
 
+const SwapBoxWrapper = styled.div``;
+
 export const NetworkTitle = styled(Base)`
-  display: inline-flex;
-  height: 35px;
+  display:inline-flex;
+  height:35px;
   color: ${({ theme }) => theme.text1};
   background: ${({ theme }) => theme.text1_2};
   border: 1px solid ${({ theme }) => theme.text1};
-  padding: 0 8px;
+  padding:0 8px;
   font-size: 25px;
-`;
+`
 
 const Sync2 = () => {
-<<<<<<< HEAD
-  const location = useLocation();
-  const validChains = getCorrectChains(location.pathname);
-  const SyncChainId = validChains[0];
-  const [isApproved, setIsApproved] = useState(null);
-  const [isPreApproved, setIsPreApproved] = useState(null);
-  const [approveLoading, setApproveLoading] = useState(false);
-  const oracle = SyncData[SyncChainId];
-  const { stableCoin: stableToken } = oracle;
-  const stableCoin = { ...stableToken, stable: true };
-  const [fromCurrency, setFromCurrency] = useState({
-    ...stableCoin,
-    stable: true,
-  });
-  const [invert, setInvert] = useState(false);
-  const [isLong, setLong] = useState(true);
-  const [position, setPosition] = useState("buy");
-  const [assetInfo, setAssetInfo] = useState({
-    fromPrice: null,
-    toPrice: null,
-    fee: 0,
-  });
-  const [priceResult, setPriceResult] = useState({});
-
-  const [activeSearchBox, setActiveSearchBox] = useState(false);
-  const [escapedType, setEscapedType] = useState("from");
-
-  const [toCurrency, setToCurrency] = useState();
-  const [amountIn, setAmountIn] = useState("");
-  const debouncedAmountIn = useDebounce(amountIn, 500);
-  const [amountOut, setAmountOut] = useState("");
-  const debouncedAmountOut = useDebounce(amountOut, 500);
-  const [stocks, setStocks] = useState(null);
-  const [conducted, setConducted] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [loadingCap, setLoadingCAP] = useState(false);
-
-  const [focusType, setFocusType] = useState("from");
-  const { account, chainId } = useWeb3React();
-
-  const getConducted = useOracleFetch(oracle.conducted);
-  const getPrices = useOracleFetch(oracle.prices);
-  const getStocks = useOracleFetch(oracle.registrar);
-  const balances = useAssetBalances(conducted, SyncChainId);
-  const allowance = useAllowance(fromCurrency, oracle.contract, SyncChainId);
-
-  useEffect(() => {
-    if (focusType === "from") {
-      if (amountIn === "" || debouncedAmountIn === "") setAmountOut("");
-    } else if (amountOut === "" || debouncedAmountOut === "") setAmountIn("");
-  }, [amountIn, debouncedAmountIn, debouncedAmountOut, focusType, amountOut]);
-
-  useEffect(() => {
-    if (isPreApproved == null) {
-      if (allowance.toString() === "-1") {
-        setIsPreApproved(null); //doNothing
-      } else {
-        if (allowance.gt(0)) {
-          setIsPreApproved(true);
-=======
     const location = useLocation()
     const { account, chainId } = useWeb3React()
     const validChains = getCorrectChains(location.pathname)
@@ -239,58 +137,23 @@ const Sync2 = () => {
                     setIsPreApproved(false)
                 }
             }
->>>>>>> 684d151eef89a9b8a3953a5b5780928ed6060d6a
         } else {
-          setIsPreApproved(false);
+            if (allowance.gt(0)) {
+                setIsApproved(true)
+            }
         }
-      }
-    } else {
-      if (allowance.gt(0)) {
-        setIsApproved(true);
-      }
+        //eslint-disable-next-line 
+    }, [allowance]) //isPreApproved ?
+
+    useEffect(() => {
+        setIsPreApproved(null)
+        setIsApproved(null)
+    }, [chainId, account, fromCurrency.symbol]);
+
+    const changePosition = () => {
+        setFromCurrency({ ...toCurrency, amount: "" })
+        setToCurrency({ ...fromCurrency, amount: "" })
     }
-<<<<<<< HEAD
-    //eslint-disable-next-line
-  }, [allowance]); //isPreApproved ?
-
-  useEffect(() => {
-    setIsPreApproved(null);
-    setIsApproved(null);
-  }, [chainId, account, fromCurrency.symbol]);
-
-  const changePosition = () => {
-    setFromCurrency({ ...toCurrency, amount: "" });
-    setToCurrency({ ...fromCurrency, amount: "" });
-  };
-
-  const getData = useCallback(() => {
-    setLoading(true);
-    getConducted().then((res) => {
-      setConducted(res[0]);
-      getStocks().then((res) => {
-        setStocks(res[0]);
-        setLoading(false);
-      });
-    });
-  }, [getStocks, getConducted, getPrices]);
-
-  useEffect(() => {
-    getData();
-  }, [getData]);
-
-  //sync
-  //approve
-  //confirmBox
-
-  useEffect(() => {
-    if (fromCurrency && toCurrency) {
-      if (position === "buy") {
-        const currency = isLong
-          ? {
-              ...toCurrency,
-              address: toCurrency.long.address,
-              symbol: toCurrency.long_symbol,
-=======
 
     const getData = useCallback(() => {
         setLoading(true);
@@ -319,30 +182,15 @@ const Sync2 = () => {
             } else {
                 const currency = isLong ? { ...fromCurrency, address: fromCurrency.long.address, symbol: fromCurrency.long_symbol } : { ...fromCurrency, address: fromCurrency.short.address, symbol: fromCurrency.short_symbol }
                 setFromCurrency({ ...currency })
->>>>>>> 684d151eef89a9b8a3953a5b5780928ed6060d6a
             }
-          : {
-              ...toCurrency,
-              address: toCurrency.short.address,
-              symbol: toCurrency.short_symbol,
-            };
-        setToCurrency({ ...currency });
-      } else {
-        const currency = isLong
-          ? {
-              ...fromCurrency,
-              address: fromCurrency.long.address,
-              symbol: fromCurrency.long_symbol,
+        }
+    }, [isLong, position])
+
+    useEffect(() => {
+        if (fromCurrency && toCurrency) {
+            if (fromCurrency.stable) {
+                setPosition("buy")
             }
-<<<<<<< HEAD
-          : {
-              ...fromCurrency,
-              address: fromCurrency.short.address,
-              symbol: fromCurrency.short_symbol,
-            };
-        setFromCurrency({ ...currency });
-      }
-=======
             if (toCurrency.stable) {
                 setPosition("sell")
             }
@@ -370,112 +218,87 @@ const Sync2 = () => {
     const showSearchBox = (active = false, type) => {
         setEscapedType(type)
         setActiveSearchBox(active)
->>>>>>> 684d151eef89a9b8a3953a5b5780928ed6060d6a
     }
-  }, [isLong, position]);
 
-  useEffect(() => {
-    if (fromCurrency && toCurrency) {
-      if (fromCurrency.stable) {
-        setPosition("buy");
-      }
-      if (toCurrency.stable) {
-        setPosition("sell");
-      }
-    }
-  }, [fromCurrency, toCurrency]);
-
-  useEffect(() => {
-    //adding chain and type wrap
-    if (conducted && stocks) {
-      conducted.tokens.map(async (token) => {
-        if (!stocks[token.id]) {
-          console.log(token.id, " there isn't in registrar");
-          return;
+    const selectToken = (token, type) => {
+        token.address = isLong ? token.long.address : token.short.address
+        token.symbol = isLong ? token.long_symbol : token.short_symbol
+        if (type === "from") {
+            setFromCurrency(token)
+            setToCurrency(stableCoin)
         }
-<<<<<<< HEAD
-        stocks[token.id].decimals = 18;
-        stocks[token.id].conducted = true;
-        stocks[token.id].isAsset = true;
-        stocks[token.id].long = { address: token.long };
-        stocks[token.id].short = { address: token.short };
-      });
+        if (type === "to") {
+            setToCurrency(token)
+            setFromCurrency(stableCoin)
+        }
+        setActiveSearchBox(false)
     }
-    setStocks(stocks);
-  }, [conducted, stocks, account]); //eslint-disable-line
 
-  const showSearchBox = (active = false, type) => {
-    setEscapedType(type);
-    setActiveSearchBox(active);
-  };
+    const targetCurrency = position === "buy" ? toCurrency : fromCurrency
+    const priceSymbol = targetCurrency && targetCurrency.long_symbol?.substring(1)
 
-  const selectToken = (token, type) => {
-    token.address = isLong ? token.long.address : token.short.address;
-    token.symbol = isLong ? token.long_symbol : token.short_symbol;
-    if (type === "from") {
-      setFromCurrency(token);
-      setToCurrency(stableCoin);
-    }
-    if (type === "to") {
-      setToCurrency(token);
-      setFromCurrency(stableCoin);
-    }
-    setActiveSearchBox(false);
-  };
+    const signaturesRequestUrl = useMemo(() => {
+        if (!priceSymbol || !NameChainMap[SyncChainId]) return
+        const network = NameChainMap[SyncChainId]
+        const position_type = isLong ? "long" : "short"
+        return createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
+    }, [priceSymbol, NameChainMap[SyncChainId], isLong, position])
 
-  const targetCurrency = position === "buy" ? toCurrency : fromCurrency;
-  const priceSymbol =
-    targetCurrency && targetCurrency.long_symbol?.substring(1);
+    const priceURLs = useMemo(() => {
+        const network = NameChainMap[SyncChainId]
+        if (!priceSymbol || !NameChainMap[SyncChainId]) return
+        return createPriceUrls(oracle.prices, priceSymbol, network)
+    }, [priceSymbol, SyncChainId])
 
-  const signaturesRequestUrl = useMemo(() => {
-    if (!priceSymbol || !NameChainMap[SyncChainId]) return;
-    const network = NameChainMap[SyncChainId];
-    const position_type = isLong ? "long" : "short";
-    return createSignaturesUrls(
-      oracle.signatures,
-      priceSymbol,
-      network,
-      position_type,
-      position
-    );
-  }, [priceSymbol, NameChainMap[SyncChainId], isLong, position]);
+    const getSignatures = useOracleFetch(signaturesRequestUrl)
 
-  const priceURLs = useMemo(() => {
-    const network = NameChainMap[SyncChainId];
-    if (!priceSymbol || !NameChainMap[SyncChainId]) return;
-    return createPriceUrls(oracle.prices, priceSymbol, network);
-  }, [priceSymbol, SyncChainId]);
+    const getSinglePrice = useOracleFetch(priceURLs)
 
-  const getSignatures = useOracleFetch(signaturesRequestUrl);
 
-  const getSinglePrice = useOracleFetch(priceURLs);
+    useEffect(() => {
+        if (priceSymbol) {
+            getSinglePrice().then(prices => {
+                setPriceResult({ ...prices[0] })
+            })
+        }
+    }, [getSinglePrice])
 
-  useEffect(() => {
-    if (priceSymbol) {
-      getSinglePrice().then((prices) => {
-        setPriceResult({ ...prices[0] });
-      });
-    }
-  }, [getSinglePrice]);
 
-  useEffect(() => {
-    if (priceResult) {
-      const position_type = isLong ? "long_price" : "short_price";
-      const price =
-        priceResult && priceResult["status"] == "open"
-          ? priceResult[position_type]
-          : 0;
-      const assetPrice = { price: price, fee: 0.01 };
-      if (price !== null) {
-        if (position === "buy") {
-          assetInfo.fromPrice = 1;
-          assetInfo.toPrice = assetPrice.price;
-          assetInfo.fee = assetPrice.fee;
-        } else {
-          assetInfo.fromPrice = assetPrice.price;
-          assetInfo.fee = assetPrice.fee;
-          assetInfo.toPrice = 1;
-=======
+    useEffect(() => {
+        if (priceResult) {
+            const position_type = isLong ? "long_price" : "short_price"
+            const price = priceResult && priceResult["status"] == "open" ? priceResult[position_type] : 0
+            const assetPrice = { price: price, fee: 0.01 }
+            if (price !== null) {
+                if (position === "buy") {
+                    assetInfo.fromPrice = 1
+                    assetInfo.toPrice = assetPrice.price
+                    assetInfo.fee = assetPrice.fee
+                } else {
+                    assetInfo.fromPrice = assetPrice.price
+                    assetInfo.fee = assetPrice.fee
+                    assetInfo.toPrice = 1
+                }
+                setAssetInfo({ ...assetInfo })
+            }
+        }
+    }, [isLong, priceResult])
+
+    const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
+    const { getAmountsIn } = useAmountsIn(fromCurrency, toCurrency, debouncedAmountOut, assetInfo)
+    const { onSync } = useSync(fromCurrency, toCurrency, amountIn, amountOut, getSignatures, position, SyncChainId)
+    const { onApprove } = useApprove(fromCurrency, oracle.contract, SyncChainId)
+
+    useEffect(() => {
+        const get = async () => {
+            const result = getAmountsOut()
+            if (result === null || !toCurrency) return
+            if (amountIn === "" || isZero(amountIn)) setAmountOut("")
+            else setAmountOut(RemoveTrailingZero(fromWei(result, toCurrency.decimals), toCurrency.decimals))
+        }
+        if (getAmountsOut && focusType === "from") {
+            get()
+        }
 
     }, [getAmountsOut, amountIn, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
 
@@ -521,132 +344,28 @@ const Sync2 = () => {
             setAmountOut("")
         } catch (e) {
             console.error(e)
->>>>>>> 684d151eef89a9b8a3953a5b5780928ed6060d6a
         }
-        setAssetInfo({ ...assetInfo });
-      }
+    }, [onSync])
+
+    if (loading || loadingCap) {
+        return (<div className="loader-wrap">
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+        </div>)
     }
-  }, [isLong, priceResult]);
 
-  const { getAmountsOut } = useAmountsOut(
-    fromCurrency,
-    toCurrency,
-    debouncedAmountIn,
-    assetInfo
-  );
-  const { getAmountsIn } = useAmountsIn(
-    fromCurrency,
-    toCurrency,
-    debouncedAmountOut,
-    assetInfo
-  );
-  const { onSync } = useSync(
-    fromCurrency,
-    toCurrency,
-    amountIn,
-    amountOut,
-    getSignatures,
-    position,
-    SyncChainId
-  );
-  const { onApprove } = useApprove(fromCurrency, oracle.contract, SyncChainId);
+    return (<>
 
-  useEffect(() => {
-    const get = async () => {
-      const result = getAmountsOut();
-      if (result === null || !toCurrency) return;
-      if (amountIn === "" || isZero(amountIn)) setAmountOut("");
-      else
-        setAmountOut(
-          RemoveTrailingZero(
-            fromWei(result, toCurrency.decimals),
-            toCurrency.decimals
-          )
-        );
-    };
-    if (getAmountsOut && focusType === "from") {
-      get();
-    }
-  }, [getAmountsOut, amountIn, focusType, fromCurrency, toCurrency]); //replace multiple useState variables with useReducer
+        <SearchBox
+            chainId={SyncChainId}
+            escapedType={escapedType}
+            currencies={stocks}
+            active={activeSearchBox}
+            selectToken={selectToken}
+            balances={balances}
+            setActive={setActiveSearchBox} />
 
-  useEffect(() => {
-    const get = async () => {
-      const result = await getAmountsIn();
-      if (result === null || !fromCurrency) return;
-      if (amountOut === "" || isZero(amountOut)) setAmountIn("");
-      else
-        setAmountIn(
-          RemoveTrailingZero(
-            fromWei(result, fromCurrency.decimals),
-            fromCurrency.decimals
-          )
-        );
-    };
-    if (getAmountsIn && focusType === "to") {
-      get();
-    }
-    //eslint-disable-next-line
-  }, [getAmountsIn, amountOut, focusType, fromCurrency, toCurrency]); //replace multiple useState variables with useReducer
-
-  const handleApprove = useCallback(async () => {
-    try {
-      setApproveLoading(true);
-      const tx = await onApprove();
-      if (tx.status) {
-        setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0));
-      } else {
-        console.log("Approved Failed");
-      }
-      setApproveLoading(false);
-    } catch (e) {
-      setApproveLoading(false);
-      console.error(e);
-    }
-  }, [onApprove]);
-
-  const handleSync = useCallback(async () => {
-    try {
-      const tx = await onSync();
-      if (tx.status) {
-        console.log("Sync did");
-      } else {
-        console.log("Sync Failed");
-      }
-      setAmountIn("");
-      setAmountOut("");
-    } catch (e) {
-      console.error(e);
-    }
-  }, [onSync]);
-
-  if (loading || loadingCap) {
-    return (
-      <div className="loader-wrap">
-        {
-          <img
-            className="loader"
-            src={process.env.PUBLIC_URL + "/img/loading.png"}
-            alt="loader"
-          />
-        }
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <SearchBox
-        chainId={SyncChainId}
-        escapedType={escapedType}
-        currencies={stocks}
-        active={activeSearchBox}
-        selectToken={selectToken}
-        balances={balances}
-        setActive={setActiveSearchBox}
-      />
-
-      <MainWrapper>
-        {/* <Title>
+        <MainWrapper>
+            {/* <Title>
                 <div style={{ display: "flex", justifyContent: "flex-start", flexDirection: "column" }}>
                     <NetworkTitle>
                         <RowCenter >
@@ -657,176 +376,109 @@ const Sync2 = () => {
                 </div>
             </Title> */}
 
-<<<<<<< HEAD
-        <SwapWrapper>
-          <TopWrap>
-            <RowBetween>
-              <Row width={"unset"}>
-                <Image
-                  src="/img/synthetics.svg"
-                  alt="sync"
-                  height="35px"
-                  style={{ marginRight: "7px" }}
-                />
-                <Type.XL style={{ color: "#fff" }}>SYNTHETICS</Type.XL>
-              </Row>
-
-              <Row
-                alignItems={"center"}
-                justifyContent={"flex-end"}
-                width={"unset"}
-              >
-                <Type.MD style={{ color: "#fff", marginRight: "5px" }}>
-                  NETWORK:{" "}
-                </Type.MD>
-                <SelectBox currRow={"BSC"} />
-              </Row>
-            </RowBetween>
-          </TopWrap>
-
-          <SwapContentWrapper>
-            <LongShort
-              setLong={setLong}
-              isLong={isLong}
-              mt={"15"}
-              mb={"22px"}
-            />
-
-            <SwapBoxWrapper>
-              <TokenBoxTop
-                type="from"
-                setActive={showSearchBox}
-                TokensMap={balances}
-                hasMax={true}
-                inputAmount={amountIn}
-                setInputAmount={setAmountIn}
-                setFocusType={setFocusType}
-                currency={fromCurrency}
-              />
-
-              {/* <SwapArrow onClick={changePosition}>
-                <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
-              </SwapArrow> */}
-
-              <TokenBoxBottom
-                type="to"
-                title="To (estimated)"
-                inputAmount={amountOut}
-                TokensMap={balances}
-                setInputAmount={setAmountOut}
-                setActive={showSearchBox}
-                setFocusType={setFocusType}
-                currency={toCurrency}
-              />
-            </SwapBoxWrapper>
-
-            <RateBox
-              currencies={{
-                from: fromCurrency,
-                to: toCurrency || { symbol: "dAsset" },
-              }}
-              marketPrice={
-                priceResult && priceResult["status"] == "open"
-                  ? priceResult["long_price"]
-                  : "(CLOSED)"
-              }
-              amountIn={amountIn}
-              amountOut={amountOut}
-              setInvert={setInvert}
-              invert={invert}
-            />
-            <SyncAction
-              buyMethodTitle={isLong ? "LONG" : "SHORT"}
-              amountIn={amountIn}
-              amountOut={amountOut}
-              handleSync={handleSync}
-              TokensMap={balances}
-              fromCurrency={fromCurrency}
-              validNetworks={validChains}
-              isPreApproved={isPreApproved}
-              isApproved={isApproved}
-              loading={approveLoading}
-              handleApprove={handleApprove}
-              mt="20px"
-            />
-          </SwapContentWrapper>
-        </SwapWrapper>
-        {/* <RemainingCap /> */}
-      </MainWrapper>
-    </>
-  );
-};
-
-export default Sync2;
-=======
             <SwapWrapper>
                 <TopWrap>
-                    <RowBetween >
+                    <RowBetween alignItems={"center"}>
                         <Row width={"unset"}>
-                            <Image src="/img/sync-logo.svg" alt="sync" height="35px" style={{ marginRight: "7px" }} />
-                            <Type.XL style={{ color: "#fff" }} >SYNTHETICS</Type.XL>
+                            <Image
+                                src="/img/synthetics.svg"
+                                alt="sync"
+                                height="35px"
+                                style={{ marginRight: "7px" }}
+                            />
+                            <Type.XL style={{ color: "#fff" }}>SYNTHETICS</Type.XL>
                         </Row>
 
-                        <Row alignItems={"center"} justifyContent={"flex-end"} width={"unset"}>
-                            <Type.MD style={{ color: "#fff", marginRight: "5px" }} >NETWORK: </Type.MD>
-                            <SelectBox setCurrRow={setSyncChainId} currRow={SyncChainId} />
+                        <Row
+                            alignItems={"center"}
+                            justifyContent={"flex-end"}
+                            width={"unset"}
+                        >
+                            <Type.MD style={{ color: "#fff", marginRight: "5px" }}>
+                                NETWORK:{" "}
+                            </Type.MD>
+                            <SelectBox currRow={SyncChainId} setCurrRow={setSyncChainId} />
                         </Row>
                     </RowBetween>
                 </TopWrap>
-                <TokenBox
-                    type="from"
-                    setActive={showSearchBox}
-                    TokensMap={balances}
-                    hasMax={true}
-                    inputAmount={amountIn}
-                    setInputAmount={setAmountIn}
-                    setFocusType={setFocusType}
-                    currency={fromCurrency}
-                />
 
-                <SwapArrow onClick={changePosition}>
-                    <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
-                </SwapArrow>
+                <SwapContentWrapper>
+                    <LongShort
+                        setLong={setLong}
+                        isLong={isLong}
+                        mt={"15"}
+                        mb={"22px"}
+                    />
 
-                <TokenBox
-                    type="to"
-                    title="To (estimated)"
-                    inputAmount={amountOut}
-                    TokensMap={balances}
-                    setInputAmount={setAmountOut}
-                    setActive={showSearchBox}
-                    setFocusType={setFocusType}
-                    currency={toCurrency}
-                />
+                    <SwapBoxWrapper>
+                        <TokenBoxTop
+                            type="from"
+                            setActive={showSearchBox}
+                            TokensMap={balances}
+                            hasMax={true}
+                            inputAmount={amountIn}
+                            setInputAmount={setAmountIn}
+                            setFocusType={setFocusType}
+                            currency={fromCurrency}
+                        />
 
-                <LongShort setLong={setLong} isLong={isLong} />
+                        <div
+                            style={{ position: "relative" }}>
+                            <Image
+                                style={{ position: "absolute", right: "30px", zIndex: 2, top: "-20px", cursor: "pointer" }}
+                                src="/img/change.svg" height="40px"
+                                position={"absolute"}
+                                onClick={changePosition} />
+                        </div>
 
-                <RateBox
-                    currencies={{ from: fromCurrency, to: toCurrency || { symbol: "dAsset" } }}
-                    marketPrice={priceResult && priceResult["status"] == "open" ? priceResult["long_price"] : "(CLOSED)"}
-                    amountIn={amountIn}
-                    amountOut={amountOut}
-                    setInvert={setInvert}
-                    invert={invert} />
+                        <TokenBoxBottom
+                            type="to"
+                            title="To (estimated)"
+                            inputAmount={amountOut}
+                            TokensMap={balances}
+                            setInputAmount={setAmountOut}
+                            setActive={showSearchBox}
+                            setFocusType={setFocusType}
+                            currency={toCurrency}
+                        />
+                    </SwapBoxWrapper>
 
-                <SyncAction
-                    amountIn={amountIn}
-                    amountOut={amountOut}
-                    handleSync={handleSync}
-                    TokensMap={balances}
-                    fromCurrency={fromCurrency}
-                    validNetwork={SyncChainId}
-                    isPreApproved={isPreApproved}
-                    isApproved={isApproved}
-                    loading={approveLoading}
-                    handleApprove={handleApprove}
-                    mt="20px" />
-
+                    <RateBox
+                        currencies={{
+                            from: fromCurrency,
+                            to: toCurrency || { symbol: "dAsset" },
+                        }}
+                        marketPrice={
+                            priceResult && priceResult["status"] == "open"
+                                ? priceResult["long_price"]
+                                : "(CLOSED)"
+                        }
+                        amountIn={amountIn}
+                        amountOut={amountOut}
+                        setInvert={setInvert}
+                        invert={invert}
+                    />
+                    <SyncAction
+                        buyMethodTitle={isLong ? "LONG" : "SHORT"}
+                        amountIn={amountIn}
+                        amountOut={amountOut}
+                        handleSync={handleSync}
+                        TokensMap={balances}
+                        fromCurrency={fromCurrency}
+                        validNetwork={SyncChainId}
+                        isPreApproved={isPreApproved}
+                        isApproved={isApproved}
+                        loading={approveLoading}
+                        bgDeactivated={"bg9"}
+                        handleApprove={handleApprove}
+                        mt="20px" />
+                </SwapContentWrapper>
             </SwapWrapper>
             {/* <RemainingCap /> */}
-        </MainWrapper >
+        </MainWrapper>
+
+
     </>);
 }
 
 export default Sync2;
->>>>>>> 684d151eef89a9b8a3953a5b5780928ed6060d6a

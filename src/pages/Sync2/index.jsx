@@ -4,7 +4,8 @@ import { Image } from "rebass/styled-components";
 import BigNumber from "bignumber.js";
 import { FlexCenter } from "../../components/App/Container";
 import { SwapArrow } from "../../components/App/Swap";
-import TokenBox from "../../components/App/Swap/TokenBox";
+import TokenBoxTop from "../../components/App/Sync2/TokenBoxTop";
+import TokenBoxBottom from "../../components/App/Sync2/TokenBoxBottom";
 import SyncAction from "../../components/App/Synchronizer/SyncAction";
 import SearchBox from "../../components/App/Synchronizer/SearchBox";
 import { Base } from "../../components/App/Button";
@@ -56,12 +57,10 @@ const SwapContentWrapper = styled.div`
   padding: 20px 15px;
 `;
 
-const SwapBoxWrapper = styled.div`
-  background-color: #303030;
-`;
+const SwapBoxWrapper = styled.div``;
 
 const SwapWrapper = styled.div`
-  background: ${({ theme }) => theme.bg3};
+  background: rgb(25, 27, 32);
   border: 1px solid ${({ theme }) => theme.border1};
   border-radius: 15px;
   text-align: center;
@@ -485,7 +484,7 @@ const Sync2 = () => {
             />
 
             <SwapBoxWrapper>
-              <TokenBox
+              <TokenBoxTop
                 type="from"
                 setActive={showSearchBox}
                 TokensMap={balances}
@@ -496,11 +495,11 @@ const Sync2 = () => {
                 currency={fromCurrency}
               />
 
-              <SwapArrow onClick={changePosition}>
+              {/* <SwapArrow onClick={changePosition}>
                 <Image src="/img/swap/swap-arrow.svg" size="20px" my="15px" />
-              </SwapArrow>
+              </SwapArrow> */}
 
-              <TokenBox
+              <TokenBoxBottom
                 type="to"
                 title="To (estimated)"
                 inputAmount={amountOut}

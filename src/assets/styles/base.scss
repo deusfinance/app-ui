@@ -280,9 +280,9 @@ a {
     width: 120px;
     height: 44px;
     border-radius: 12px;
-    background-color: rgba(0,0,0, 0.4);
+    background-color: rgba(0, 0, 0, 0.4);
     &:hover {
-        background-color: rgba(0,0,0, 0.45);
+        background-color: rgba(0, 0, 0, 0.45);
     }
     p {
         margin-bottom: 0px;
@@ -311,12 +311,7 @@ a {
             text-align: left;
             padding-left: 10px;
             cursor: pointer;
-<<<<<<< HEAD
-            background-color: rgba(0,0,0, 0.8);
-=======
-            // background-color: #268a94;
-            background-color: #12363a;
->>>>>>> 684d151eef89a9b8a3953a5b5780928ed6060d6a
+            background-color: rgba(0, 0, 0, 0.8);
             height: 44px;
             line-height: 44px;
             &:hover {

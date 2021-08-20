@@ -6,7 +6,7 @@ const SelectBox = ({ currRow, setCurrRow }) => {
     const ICONS = {
         [ChainMap.BSC]: "/img/chains/bsc.png",
         [ChainMap.XDAI]: "/img/chains/xdai.png",
-        [ChainMap.MAINNET]: "/img/chains/eth-logo.svg",
+        [ChainMap.MAINNET]: "/tokens/eth-logo.svg",
         [ChainMap.MATIC]: "/img/ticker/MATIC.png",
         [ChainMap.HECO]: "/img/chains/heco.svg",
     }

@@ -8,12 +8,18 @@ import { isZero, isGt } from '../../../constant/number';
 import Wallets from '../../common/Navbar/Wallets';
 import { NameChainMap } from '../../../constant/web3';
 import { addRPC } from '../../../services/addRPC';
+import { useTranslation } from 'react-i18next';
+import BigNumber from 'bignumber.js';
+
 // import Loader from '../Loader';
 const errors = {
-    NotConnected: "CONNECT WALLET",
-    WrongNetwork: "WRONG NETWORK",
-    EMPTY: "ENTER AMOUNT",
-    INSUFFICIENT: "INSUFFICIENT BALANCE",
+    NotConnected: "ConnectWallet",
+    MARKET_CLOSED: "marketIsClosed",
+    WrongNetwork: "WrongNetwork",
+    EMPTY: "enterAmount",
+    INSUFFICIENT: "insufficientBalance",
+    SELECT_ASSET: "selectAnAsset",
+    UNDER_MAINTENANCE: "underMaintenance",
     LOADING: "LOADING...",
     EXCEEDS_CAP: "EXCEEDS SYNCHRONIZER CAP",
 }
@@ -53,15 +59,32 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCurrency, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, bgDeactivated, amountIn, amountOut }) => {
+const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCurrency, position, isClose, strategy, remindCap = 100000000000000, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, bgDeactivated, amountIn, amountOut }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
+    const { t } = useTranslation()
+
+
+    // if (isClosed)
+    //     errTxt = t("marketIsClosed")
+    // else if ((validChain && chainId && chainId !== validChain)) {
+    //     errTxt = t("wrongNetwork")
+    // } else if (isNaN(amount) || Number(amount) === 0) {
+    //     errTxt = t("enterAmount")
+    // } else if (getBalance() < amount) {
+    //     errTxt = t("insufficientBalance")
+    // } else if (account && remindCap < amount) {
+    //     errTxt = "EXCEEDS SYNCHRONIZER CAP"
+    // }
 
     const checkError = () => {
-        if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
-        if (TokensMap && isGt(amountIn, TokensMap[fromCurrency.address]?.balance)) return errors.INSUFFICIENT
+        if (!toCurrency || !fromCurrency) return t(errors.SELECT_ASSET)
+        if (isClose) return t(errors.MARKET_CLOSED)
+        if (amountIn === "" || isZero(amountIn)) return t(errors.EMPTY)
+        if (TokensMap && isGt(amountIn, TokensMap[fromCurrency.address]?.balance)) return t(errors.INSUFFICIENT)
         if (isNaN(amountOut)) return errors.LOADING
+        // if (remindCap < amountIn) return t(errors.EXCEEDS_CAP)
         return null;
     }
 
@@ -69,7 +92,7 @@ const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCu
         return <WrapActions>
             <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
             <ButtonSwap active={true} onClick={() => setShowWallets(true)}>
-                CONNECT WALLET
+                {t(errors.NotConnected)}
             </ButtonSwap>
         </WrapActions>
     }
@@ -95,15 +118,17 @@ const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCu
         </WrapActions>
     }
 
+    const syncText = <> <span>{position.toUpperCase()}</span><span style={{ marginLeft: "7px" }}>{strategy}</span></>
+
     return (<>
-        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} onClick={handleSync} > SYNC</ButtonSwap> </WrapActions> : <>
+        {isPreApproved ? <WrapActions mt={mt}><ButtonSwap active={true} onClick={handleSync} >{syncText}</ButtonSwap> </WrapActions> : <>
             <WrapActions mt={mt}>
                 <ButtonSwap active={!isApproved} onClick={handleApprove} >
                     APPROVE
                 </ButtonSwap>
                 {isApproved ?
-                    <ButtonSwap active={true} onClick={handleApprove} >SYNC (BUY)</ButtonSwap> :
-                    <ButtonSyncDeactivated bgColor={bgDeactivated} onClick={handleSync}>SYNC (BUY)</ButtonSyncDeactivated>
+                    <ButtonSwap active={true} onClick={handleApprove} >{syncText}</ButtonSwap> :
+                    <ButtonSyncDeactivated bgColor={bgDeactivated} onClick={handleSync}> {syncText} </ButtonSyncDeactivated>
                 }
             </WrapActions>
             <WrapStep>

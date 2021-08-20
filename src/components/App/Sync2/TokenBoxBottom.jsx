@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Flex, Box, Image } from "rebass/styled-components";
 import styled from "styled-components";
+import { isZero } from "../../../constant/number";
 import { getFullDisplayBalance } from "../../../helper/formatBalance";
 import useTokenBalance from "../../../hooks/useTokenBalance";
 import { formatBalance3 } from "../../../utils/utils";
@@ -86,8 +87,8 @@ const TokenBox = ({
         data
           ? getFullDisplayBalance(data, currency.decimals)
           : TokensMap[currency.address]?.balance
-          ? TokensMap[currency.address]?.balance
-          : "0"
+            ? TokensMap[currency.address]?.balance
+            : "0"
       );
     };
 
@@ -141,8 +142,13 @@ const TokenBox = ({
         <Box mt={"14px"}>
           <Type.SM>
             Balance: {formatBalance3(balance)} {currency?.symbol}
-            {hasMax && !onMax && (
-              <ButtonMax onClick={() => setInputAmount(balance)}>
+            {hasMax && !onMax && !isZero(balance) && (
+              <ButtonMax onClick={() => {
+                if (setFocusType) {
+                  setFocusType(type);
+                }
+                setInputAmount(balance)
+              }}>
                 {" "}
                 (MAX)
               </ButtonMax>

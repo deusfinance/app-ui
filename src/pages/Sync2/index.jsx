@@ -27,7 +27,6 @@ import { ChainMap, NameChainMap } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 import { Type } from '../../components/App/Text';
 import SelectBox from '../../components/App/Sync/SelectBox';
-import { SwapArrow } from '../../components/App/Swap';
 
 const MainWrapper = styled.div`
    margin-top: 100px;
@@ -96,7 +95,8 @@ const Sync2 = () => {
 
     const [toCurrency, setToCurrency] = useState()
     const [amountIn, setAmountIn] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500);
+    const [hotValue, setHotValue] = useState("")
+    const debouncedAmountIn = useDebounce(amountIn, 500, hotValue);
     const [amountOut, setAmountOut] = useState("")
     const debouncedAmountOut = useDebounce(amountOut, 500);
     const [stocks, setStocks] = useState(null)
@@ -151,8 +151,12 @@ const Sync2 = () => {
     }, [chainId, account, fromCurrency.symbol]);
 
     const changePosition = () => {
-        setFromCurrency({ ...toCurrency, amount: "" })
-        setToCurrency({ ...fromCurrency, amount: "" })
+        setFromCurrency({ ...toCurrency })
+        setToCurrency({ ...fromCurrency })
+        setHotValue(amountOut)
+        setAmountIn(amountOut)
+        setAmountOut("")
+        setFocusType("from")
     }
 
     const getData = useCallback(() => {
@@ -365,17 +369,6 @@ const Sync2 = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            {/* <Title>
-                <div style={{ display: "flex", justifyContent: "flex-start", flexDirection: "column" }}>
-                    <NetworkTitle>
-                        <RowCenter >
-                            <img src={process.env.PUBLIC_URL + "/img/chains/bsc.png"} style={{ width: "25px", height: "25px", marginRight: "5px" }} alt="DEUS" />
-                            {NameChainMap[SyncChainId]}
-                        </RowCenter>
-                    </NetworkTitle>
-                </div>
-            </Title> */}
-
             <SwapWrapper>
                 <TopWrap>
                     <RowBetween alignItems={"center"}>
@@ -460,12 +453,15 @@ const Sync2 = () => {
                         invert={invert}
                     />
                     <SyncAction
-                        buyMethodTitle={isLong ? "LONG" : "SHORT"}
+                        strategy={isLong ? "LONG" : "SHORT"}
+                        isClose={priceResult ? priceResult["status"] === "open" ? false : true : null}
+                        position={position}
                         amountIn={amountIn}
                         amountOut={amountOut}
                         handleSync={handleSync}
                         TokensMap={balances}
                         fromCurrency={fromCurrency}
+                        toCurrency={toCurrency}
                         validNetwork={SyncChainId}
                         isPreApproved={isPreApproved}
                         isApproved={isApproved}

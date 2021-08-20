@@ -33,10 +33,10 @@ const ButtonSelect = styled.div`
 
 const LongShort = ({ isLong, setLong, mb = "0", mt = "20px" }) => {
   return (<WrapActions mt={mt} mb={mb} >
-    <ButtonSelect active={isLong} bg={"#00ff00"} onClick={() => setLong(true)}>
+    <ButtonSelect active={isLong} bg={"#98ff98"} onClick={() => setLong(true)}>
       LONG
     </ButtonSelect>
-    <ButtonSelect active={!isLong} bg={"#ff0000"} color={"#ffffff"} onClick={() => setLong(false)}>
+    <ButtonSelect active={!isLong} bg={"#ff7a7a"} color={"#ffffff"} onClick={() => setLong(false)}>
       SHORT
     </ButtonSelect>
   </WrapActions>

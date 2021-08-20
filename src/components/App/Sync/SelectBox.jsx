@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChainMap, NameChainMap } from '../../../constant/web3';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 const SelectBox = ({ currRow, setCurrRow }) => {
     const rows = [ChainMap.BSC, ChainMap.XDAI, ChainMap.HECO, ChainMap.MAINNET, ChainMap.MATIC]
@@ -13,7 +14,10 @@ const SelectBox = ({ currRow, setCurrRow }) => {
 
     const [open, setOpen] = useState(false)
 
-    return (
+    return (<OutsideClickHandler
+        onOutsideClick={() => {
+            setOpen(false)
+        }}>
         <div className="select-items" onClick={() => setOpen(!open)}>
             <div className={`select-box ${open ? "select-open" : ""}`}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
@@ -36,7 +40,9 @@ const SelectBox = ({ currRow, setCurrRow }) => {
                 })}
 
             </ul>
-        </div>);
+        </div>
+    </OutsideClickHandler>
+    );
 }
 
 export default SelectBox;

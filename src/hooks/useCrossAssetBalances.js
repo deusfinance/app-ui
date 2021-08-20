@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import useWeb3, { useCrossWeb3 } from "./useWeb3"
+import { useCrossWeb3 } from "./useWeb3"
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import { getFullDisplayBalance } from '../helper/formatBalance';
 import multicall from '../helper/multicall'

@@ -14,7 +14,6 @@ import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
 import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useWeb3React } from '@web3-react/core';
-import useAssetBalances from '../../hooks/useAssetBalances';
 import useCrossAssetBalances from '../../hooks/useCrossAssetBalances';
 import Row, { RowBetween, RowCenter } from '../../components/App/Row';
 import { useOracleFetch } from '../../utils/SyncUtils';
@@ -28,7 +27,6 @@ import { ChainMap, NameChainMap } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 import { Type } from '../../components/App/Text';
 import SelectBox from '../../components/App/Sync/SelectBox';
-import useChain from '../../hooks/useChain';
 
 const MainWrapper = styled.div`
    margin-top: 100px;
@@ -316,7 +314,6 @@ const Sync2 = () => {
         //eslint-disable-next-line
     }, [getAmountsIn, amountOut, focusType, fromCurrency, toCurrency])//replace multiple useState variables with useReducer
 
-    // console.log(allowance.toString());
     const handleApprove = useCallback(async () => {
         try {
             setApproveLoading(true)

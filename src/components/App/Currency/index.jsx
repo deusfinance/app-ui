@@ -23,6 +23,7 @@ export const StyledLogo = styled.img`
 
 export default function CurrencyLogo({
   currency,
+  bgColor,
   size = '24px',
   style
 }) {
@@ -44,5 +45,5 @@ export default function CurrencyLogo({
   //     return <StyledEthereumLogo src={EthereumLogo} size={size} style={style} />
   // }
 
-  return <StyledLogo size={size} src={currency?.logo || DefaultLogo} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return <StyledLogo size={size} src={currency?.logo || DefaultLogo} bgColor={bgColor} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
 }

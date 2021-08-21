@@ -48,10 +48,11 @@ const StyledClose = styled(X)`
 `
 
 const TokenLogo = styled(FlexCenter)`
-background: linear-gradient(90deg, #EA2C62 -0.01%, #0779E4 100.03%);
-padding:3px;
+/* background: linear-gradient(90deg, #EA2C62 -0.01%, #0779E4 100.03%); */
+border:2px solid #8c8c8c;
+padding:2px;
 border-radius:50%;
-filter: drop-shadow(0px 0px 8px #0E77E1);
+filter: drop-shadow(0px 0px 4px #0E77E1);
 `
 
 const Line = styled.div`
@@ -114,7 +115,6 @@ export const Copy = styled.img`
    filter:brightness(1);
 }
 `
-
 
 const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, active, setActive }) => {
   const Output = useMemo(() => {

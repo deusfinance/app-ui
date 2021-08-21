@@ -119,6 +119,7 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
             <CurrencyLogo
               style={{ verticalAlign: "middle" }}
               currency={currency}
+              bgColor="#ffffff"
               size={"25px"}
             />
             <Type.LG color="text1" ml="7px" mr="9px">

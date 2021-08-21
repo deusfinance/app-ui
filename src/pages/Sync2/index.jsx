@@ -33,8 +33,6 @@ const MainWrapper = styled.div`
    text-align:center;
 `
 
-
-
 const TopWrap = styled(FlexCenter)`
     overflow:hidden;
     align-items: flex-start;
@@ -74,8 +72,17 @@ export const NetworkTitle = styled(Base)`
 const Sync2 = () => {
     const location = useLocation()
     const { account, chainId } = useWeb3React()
+    const search = useLocation().search;
+    const queryParams = {
+        network: new URLSearchParams(search).get('network')?.toUpperCase(),
+        symbol: new URLSearchParams(search).get('symbol')?.toUpperCase(),
+        position: new URLSearchParams(search).get('position')?.toUpperCase(),
+        type: new URLSearchParams(search).get('type')?.toUpperCase(),
+    }
+    const tempChain = queryParams.network && ChainMap[queryParams.network] ? ChainMap[queryParams.network] : null
+    const userChain = tempChain ? tempChain : chainId
     const validChains = getCorrectChains(location.pathname)
-    const currChain = chainId && validChains.indexOf(chainId) !== -1 ? chainId : ChainMap.BSC
+    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainMap.BSC
     const [SyncChainId, setSyncChainId] = useState(currChain)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -85,7 +92,7 @@ const Sync2 = () => {
     const stableCoin = { ...stableToken, stable: true }
     const [fromCurrency, setFromCurrency] = useState({ ...stableCoin, stable: true })
     const [invert, setInvert] = useState(false)
-    const [isLong, setLong] = useState(true)
+    const [isLong, setLong] = useState(queryParams.position === "SHORT" ? false : true)
     const [position, setPosition] = useState("buy")
     const [assetInfo, setAssetInfo] = useState({ fromPrice: null, toPrice: null, fee: 0 })
     const [priceResult, setPriceResult] = useState({})
@@ -149,7 +156,7 @@ const Sync2 = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-    }, [chainId, account, fromCurrency.symbol]);
+    }, [userChain, account, fromCurrency.symbol]);
 
     useEffect(() => {
         setSyncChainId(currChain)
@@ -219,6 +226,11 @@ const Sync2 = () => {
                 stocks[token.id].isAsset = true
                 stocks[token.id].long = { address: token.long }
                 stocks[token.id].short = { address: token.short }
+
+                if (queryParams.symbol && stocks[token.id].symbol === queryParams.symbol) {
+                    const userType = queryParams.type === "SELL" ? "from" : "to"
+                    selectToken(stocks[token.id], userType)
+                }
             })
         }
         setStocks(stocks)

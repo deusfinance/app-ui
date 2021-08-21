@@ -69,13 +69,12 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
   const data = useCrossTokenBalance(currency?.address, currency?.chainId, fastUpdate);
   const [balance, setBalance] = useState(wrongNetwork ? "0" : data);
   const { account } = useWeb3React()
-
   useEffect(() => {
     const getBalance = () => {
       setBalance(
         data
           ? getFullDisplayBalance(data, currency.decimals)
-          : TokensMap[currency.address]?.balance
+          : TokensMap && TokensMap[currency.address]?.balance
             ? TokensMap[currency.address]?.balance
             : "0"
       );

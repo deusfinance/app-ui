@@ -75,7 +75,7 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
       setBalance(
         data
           ? getFullDisplayBalance(data, currency.decimals)
-          : TokensMap[currency.address]?.balance
+          : TokensMap && TokensMap[currency.address]?.balance
             ? TokensMap[currency.address]?.balance
             : "0"
       );

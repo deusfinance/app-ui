@@ -184,7 +184,7 @@ const Sync2 = () => {
     //confirmBox
 
     useEffect(() => {
-        if (fromCurrency && toCurrency && fromCurrency.long && toCurrency.long) {
+        if (fromCurrency && toCurrency && (fromCurrency.stable || fromCurrency.long) && (toCurrency.long || toCurrency.stable)) {
             if (position === "buy") {
                 const currency = isLong ? { ...toCurrency, address: toCurrency.long.address, symbol: toCurrency.long_symbol } : { ...toCurrency, address: toCurrency.short.address, symbol: toCurrency.short_symbol }
                 setToCurrency({ ...currency })

@@ -121,6 +121,7 @@ const Sync2 = () => {
 
     useEffect(() => {
         setFromCurrency({ ...stableCoin, stable: true })
+        // setConducted(null)
         setToCurrency(null)
         setAmountIn("")
         setAmountOut("")
@@ -209,7 +210,7 @@ const Sync2 = () => {
                     return
                 }
                 stocks[token.id].decimals = 18
-                stocks[token.id].chainId = SyncChainId
+                stocks[token.id].chainId = conducted?.chainId
                 stocks[token.id].conducted = true
                 stocks[token.id].isAsset = true
                 stocks[token.id].long = { address: token.long }
@@ -351,7 +352,7 @@ const Sync2 = () => {
         }
     }, [onSync])
 
-    if (loading || loadingCap) {
+    if (loading || loadingCap || !conducted || conducted.chainId !== SyncChainId) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)

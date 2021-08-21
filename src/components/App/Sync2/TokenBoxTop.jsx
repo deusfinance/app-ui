@@ -1,8 +1,10 @@
+import { useWeb3React } from "@web3-react/core";
 import React, { useEffect, useState } from "react";
 import { Flex, Box, Image } from "rebass/styled-components";
 import styled from "styled-components";
+import { isZero } from "../../../constant/number";
 import { getFullDisplayBalance } from "../../../helper/formatBalance";
-import useTokenBalance from "../../../hooks/useTokenBalance";
+import useCrossTokenBalance from "../../../hooks/useCrossTokenBalance";
 import { formatBalance3 } from "../../../utils/utils";
 import CurrencyLogo from "../Currency";
 import { Type } from "../Text";
@@ -62,36 +64,23 @@ const InputAmount = styled.input.attrs({
   color: ${({ theme }) => theme.text1};
 `;
 
-const TokenBox = ({
-  hasMax,
-  title,
-  mt,
-  currency,
-  inputAmount = "",
-  setInputAmount,
-  type,
-  setActive,
-  TokensMap,
-  wrongNetwork,
-  setFocusType = null,
-  fastUpdate,
-}) => {
+const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFocusType = null, fastUpdate, }) => {
   const [onMax, setOnMax] = useState(false);
-  const data = useTokenBalance(currency?.address, fastUpdate);
+  const data = useCrossTokenBalance(currency?.address, currency?.chainId, fastUpdate);
   const [balance, setBalance] = useState(wrongNetwork ? "0" : data);
-
+  const { account } = useWeb3React()
   useEffect(() => {
     const getBalance = () => {
       setBalance(
         data
           ? getFullDisplayBalance(data, currency.decimals)
           : TokensMap[currency.address]?.balance
-          ? TokensMap[currency.address]?.balance
-          : "0"
+            ? TokensMap[currency.address]?.balance
+            : "0"
       );
     };
 
-    if (currency) {
+    if (currency && account) {
       getBalance();
     }
   }, [data, currency, wrongNetwork, TokensMap]);
@@ -127,7 +116,7 @@ const TokenBox = ({
         <Box mt={"14px"}>
           <Type.SM>
             Balance: {formatBalance3(balance)} {currency?.symbol}
-            {hasMax && !onMax && (
+            {hasMax && !onMax && !isZero(balance) && (
               <ButtonMax onClick={() => setInputAmount(balance)}>
                 {" "}
                 (MAX)

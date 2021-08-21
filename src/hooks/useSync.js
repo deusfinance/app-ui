@@ -74,7 +74,7 @@ export const useSync = (fromCurrency, toCurrency, amountIn, amountOut, getSignat
 export const useAmountsOut = (from, to, debouncedAmountIn, assetInfo) => {
     const getAmountsOut = useCallback(() => {
         const { fromPrice, toPrice, fee } = assetInfo
-        if (!fromPrice || !toPrice || isZero(toPrice)) return "0"
+        if (!fromPrice || !toPrice || isZero(toPrice) || !from || !to) return "0"
         return getToWei(new BigNumber(fromPrice).times(debouncedAmountIn).times(1 - fee).div(toPrice), to.decimals)
     }, [to, debouncedAmountIn, assetInfo])
     return { getAmountsOut }
@@ -84,7 +84,7 @@ export const useAmountsIn = (from, to, debouncedAmountOut, assetInfo) => {
     const getAmountsIn = useCallback(async () => {
         const { fromPrice, toPrice, fee } = assetInfo
         console.log("called here with ", fromPrice, toPrice);
-        if (!fromPrice || !toPrice || isZero(fromPrice)) return "0"
+        if (!fromPrice || !toPrice || isZero(fromPrice) || !from || !to) return "0"
         return getToWei(new BigNumber(toPrice).times(debouncedAmountOut).div(fromPrice).times(1 + fee), from.decimals)
     }, [from, debouncedAmountOut, assetInfo])
     return { getAmountsIn }

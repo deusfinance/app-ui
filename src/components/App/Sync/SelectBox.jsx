@@ -3,11 +3,11 @@ import { ChainMap, NameChainMap } from '../../../constant/web3';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 const SelectBox = ({ currRow, setCurrRow }) => {
-    const rows = [ChainMap.BSC, ChainMap.XDAI, ChainMap.HECO, ChainMap.MAINNET, ChainMap.MATIC]
+    const rows = [ChainMap.BSC, ChainMap.XDAI, ChainMap.HECO, ChainMap.ETH, ChainMap.MATIC]
     const ICONS = {
         [ChainMap.BSC]: "/img/chains/bsc.png",
         [ChainMap.XDAI]: "/img/chains/xdai.png",
-        [ChainMap.MAINNET]: "/tokens/eth-logo.svg",
+        [ChainMap.ETH]: "/tokens/eth-logo.svg",
         [ChainMap.MATIC]: "/img/ticker/MATIC.png",
         [ChainMap.HECO]: "/img/chains/heco.svg",
     }

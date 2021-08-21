@@ -6,12 +6,12 @@ const signatures = ["https://oracle4.deus.finance/signature", "https://oracle5.d
 const prices = ["https://oracle4.deus.finance/price"]
 
 export const SyncData = {
-    [ChainMap.MAINNET]: {
+    [ChainMap.ETH]: {
         requiredSignatures: 2,
         isStableApprovable: true,
         isAssetApprovable: false,
         contract: "0x7a27a7BF25d64FAa090404F94606c580ce8E1D37",
-        stableCoin: new Token(ChainMap.MAINNET, "0x6B175474E89094C44Da98b954EedeAC495271d0F", 18, "DAI", "DAI", "/tokens/dai.png"),
+        stableCoin: new Token(ChainMap.ETH, "0x6B175474E89094C44Da98b954EedeAC495271d0F", 18, "DAI", "DAI", "/tokens/dai.png"),
         conducted: ["https://oracle1.deus.finance/eth/conducted.json"],
         prices,
         signatures,

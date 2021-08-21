@@ -1,5 +1,5 @@
 export const ChainMap = {
-    MAINNET: 1,
+    ETH: 1,
     ROPSTEN: 2,
     RINKEBY: 4,
     XDAI: 100,
@@ -28,7 +28,7 @@ export const NameChainMap = {
 }
 
 export const NetworksData = {
-    [ChainMap.MAINNET]: {
+    [ChainMap.ETH]: {
         chainId: "0x1",
         chainName: "Ethereum Mainnet",
         nativeCurrency: {

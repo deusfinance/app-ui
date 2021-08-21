@@ -151,6 +151,10 @@ const Sync2 = () => {
         setIsApproved(null)
     }, [chainId, account, fromCurrency.symbol]);
 
+    useEffect(() => {
+        setSyncChainId(currChain)
+    }, [currChain]);
+
     const changePosition = () => {
         setFromCurrency({ ...toCurrency })
         setToCurrency({ ...fromCurrency })
@@ -180,7 +184,7 @@ const Sync2 = () => {
     //confirmBox
 
     useEffect(() => {
-        if (fromCurrency && toCurrency) {
+        if (fromCurrency && toCurrency && fromCurrency.long && toCurrency.long) {
             if (position === "buy") {
                 const currency = isLong ? { ...toCurrency, address: toCurrency.long.address, symbol: toCurrency.long_symbol } : { ...toCurrency, address: toCurrency.short.address, symbol: toCurrency.short_symbol }
                 setToCurrency({ ...currency })
@@ -439,15 +443,9 @@ const Sync2 = () => {
                     </SwapBoxWrapper>
 
                     <RateBox
-                        currencies={{
-                            from: fromCurrency,
-                            to: toCurrency || { symbol: "dAsset" },
-                        }}
-                        marketPrice={
-                            priceResult && priceResult["status"] == "open"
-                                ? priceResult["long_price"]
-                                : "(CLOSED)"
-                        }
+                        show={fromCurrency && toCurrency}
+                        currencies={{ from: fromCurrency, to: toCurrency || { symbol: "dAsset" } }}
+                        marketPrice={priceResult && priceResult["status"] == "open" ? priceResult["long_price"] : "(CLOSED)"}
                         amountIn={amountIn}
                         amountOut={amountOut}
                         setInvert={setInvert}

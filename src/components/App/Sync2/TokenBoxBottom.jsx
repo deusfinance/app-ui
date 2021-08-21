@@ -122,7 +122,7 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
               size={"25px"}
             />
             <Type.LG color="text1" ml="7px" mr="9px">
-              {currency?.symbol}
+              {currency?.symbol || "SELECT"}
             </Type.LG>
             {setActive && <Image src="/img/select.svg" size="10px" />}
           </TokenInfo>

@@ -139,7 +139,7 @@ const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, ac
                 <StyledLogo size="37px" bgColor="#ffffff" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
               </TokenLogo>
               <Flex style={{ flexDirection: "column", marginLeft: "15px" }}>
-                <Type.LG fontWeight="300">{currency?.symbol}</Type.LG>
+                <Type.LG fontWeight="300">{currency?.long_symbol}</Type.LG>
                 {/* <Type.SM style={{ marginTop: "3px", maxWidth: "150px" }}  >{currency?.name}</Type.SM> */}
               </Flex>
             </TokenWrap>

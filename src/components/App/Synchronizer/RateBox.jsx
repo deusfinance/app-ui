@@ -44,10 +44,10 @@ const handleRatio = (amountIn, amountOut, invert) => {
 }
 
 
-const RateBox = ({ currencies, marketPrice, amountIn, amountOut, invert, setInvert }) => {
+const RateBox = ({ show, currencies, marketPrice, amountIn, amountOut, invert, setInvert }) => {
     const mp = marketPrice
     return (<Wrapper>
-        <Type.XS>Market Price @ {mp}</Type.XS>
+        <Type.XS>{show && `Market Price @ ${mp}`}</Type.XS>
         <FlexCenter style={{ justifyContent: "flex-end", }}>
             <Type.XS>{handleRatio(amountIn, amountOut, invert)} {handleName(currencies, invert)}  </Type.XS>
             <SwapArrow style={{ marginLeft: "5px" }} onClick={() => setInvert(!invert)}>

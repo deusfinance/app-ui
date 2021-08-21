@@ -69,6 +69,7 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
   const data = useCrossTokenBalance(currency?.address, currency?.chainId, fastUpdate);
   const [balance, setBalance] = useState(wrongNetwork ? "0" : data);
   const { account } = useWeb3React()
+
   useEffect(() => {
     const getBalance = () => {
       setBalance(
@@ -107,7 +108,7 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
               size={"25px"}
             />
             <Type.LG color="text1" ml="7px" mr="9px">
-              {currency?.symbol}
+              {currency?.symbol || "SELECT"}
             </Type.LG>
             {setActive && <Image src="/img/select.svg" size="10px" />}
           </TokenInfo>

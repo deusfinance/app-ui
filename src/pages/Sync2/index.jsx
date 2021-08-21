@@ -48,7 +48,7 @@ const SwapWrapper = styled.div`
   text-align: center;
   margin: auto;
   overflow: hidden;
-  width: 100%;
+  width: 95%;
   max-width: 500px;
   border-color: #000;
   margin-top: 30px;

@@ -64,7 +64,7 @@ const InputAmount = styled.input.attrs({
   color: ${({ theme }) => theme.text1};
 `;
 
-const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFocusType = null, fastUpdate, }) => {
+const TokenBox = ({ hasMax, setMaxBalance, mt, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFocusType = null, fastUpdate, }) => {
   const [onMax, setOnMax] = useState(false);
   const data = useCrossTokenBalance(currency?.address, currency?.chainId, fastUpdate);
   const [balance, setBalance] = useState(wrongNetwork ? "0" : data);
@@ -72,13 +72,13 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
 
   useEffect(() => {
     const getBalance = () => {
-      setBalance(
-        data
-          ? getFullDisplayBalance(data, currency.decimals)
-          : TokensMap && TokensMap[currency.address]?.balance
-            ? TokensMap[currency.address]?.balance
-            : "0"
-      );
+      const tempBalance = data
+        ? getFullDisplayBalance(data, currency.decimals)
+        : TokensMap && TokensMap[currency.address]?.balance
+          ? TokensMap[currency.address]?.balance
+          : "0"
+      setBalance(tempBalance);
+      setMaxBalance(tempBalance);
     };
 
     if (currency && account) {

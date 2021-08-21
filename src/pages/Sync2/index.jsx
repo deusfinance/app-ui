@@ -109,6 +109,7 @@ const Sync2 = () => {
     const [stocks, setStocks] = useState(null)
     const [conducted, setConducted] = useState(null)
     const [loading, setLoading] = useState(true);
+    const [amountInMaxBalance, setAmountInMaxBalance] = useState(null);
     const [loadingCap, setLoadingCAP] = useState(false);
 
     const [focusType, setFocusType] = useState("from")
@@ -116,6 +117,7 @@ const Sync2 = () => {
     const getPrices = useOracleFetch(oracle.prices)
     const getStocks = useOracleFetch(oracle.registrar)
     const balances = useCrossAssetBalances(conducted, SyncChainId)
+
     const allowance = useAllowance(fromCurrency, oracle.contract, SyncChainId)
 
     useEffect(() => {
@@ -425,6 +427,7 @@ const Sync2 = () => {
                         <TokenBoxTop
                             type="from"
                             setActive={showSearchBox}
+                            setMaxBalance={setAmountInMaxBalance}
                             TokensMap={balances}
                             hasMax={true}
                             inputAmount={amountIn}
@@ -470,7 +473,7 @@ const Sync2 = () => {
                         amountIn={amountIn}
                         amountOut={amountOut}
                         handleSync={handleSync}
-                        TokensMap={balances}
+                        maxBalance={amountInMaxBalance}
                         fromCurrency={fromCurrency}
                         toCurrency={toCurrency}
                         validNetwork={SyncChainId}

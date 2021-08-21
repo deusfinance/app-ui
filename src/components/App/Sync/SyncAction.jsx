@@ -59,7 +59,7 @@ background: ${({ theme }) => theme.grad1} ;
 height: 2px;
 width: 50%;
 `
-const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCurrency, position, isClose, strategy, remindCap = 100000000000000, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, bgDeactivated, amountIn, amountOut }) => {
+const SyncAction = ({ maxBalance, isPreApproved, validNetwork, fromCurrency, toCurrency, position, isClose, strategy, remindCap = 100000000000000, handleSync = undefined, mt, isApproved, handleApprove, loading, bgColor, bgDeactivated, amountIn, amountOut }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
@@ -82,7 +82,7 @@ const SyncAction = ({ TokensMap, isPreApproved, validNetwork, fromCurrency, toCu
         if (!toCurrency || !fromCurrency) return t(errors.SELECT_ASSET)
         if (isClose) return t(errors.MARKET_CLOSED)
         if (amountIn === "" || isZero(amountIn)) return t(errors.EMPTY)
-        if (TokensMap && isGt(amountIn, TokensMap[fromCurrency.address]?.balance)) return t(errors.INSUFFICIENT)
+        if (maxBalance && isGt(amountIn, maxBalance)) return t(errors.INSUFFICIENT)
         if (isNaN(amountOut)) return errors.LOADING
         // if (remindCap < amountIn) return t(errors.EXCEEDS_CAP)
         return null;

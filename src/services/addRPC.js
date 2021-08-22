@@ -1,30 +1,34 @@
 import { NetworksData } from '../constant/web3';
 
-export const addRPC = async (account, chainId) => {
-    console.log("called");
-    console.log(account, chainId, window.ethereum, NetworksData[chainId]);
-    if (!account || !chainId || !window.ethereum || !NetworksData[chainId]) return
+export const addRPC = async (account, chainId, provider) => {
 
-    try {
-        await window.ethereum.request({
+    const web3 = provider?.currentProvider ?? window.ethereum
+    if (!account || !chainId || !web3 || !NetworksData[chainId]) return
+
+    web3
+        .request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: NetworksData[chainId].chainId }],
-        });
-    } catch (switchError) {
-        // This error code indicates that the chain has not been added to MetaMask.
-        if (switchError.code === 4902) {
-            try {
-                return await window.ethereum.request({
-                    method: 'wallet_addEthereumChain',
-                    params: [NetworksData[chainId]],
-                })
-            } catch (addError) {
-                console.log('Something went wrong trying to add a new  network RPC: ')
-                return console.error(addError)
+        })
+        .then((result) => {
+            console.log("Successfully switched");
+        })
+        .catch((switchError) => {
+            if (switchError.code === 4902) {
+                web3
+                    .request({
+                        method: 'wallet_addEthereumChain',
+                        params: [NetworksData[chainId]],
+                    })
+                    .then((result) => {
+                        console.log("Successfully added");
+                    })
+                    .catch((error) => {
+                        console.log('Something went wrong trying to add a new  network RPC: ')
+                        return console.error(error)
+                    })
             }
-        }
-        // handle other "switch" errors
-        console.log('Unknown error occurred when trying to change the network RPC: ')
-        console.error(switchError)
-    }
+            console.log('Unknown error occurred when trying to change the network RPC: ')
+            console.error(switchError)
+        })
 }

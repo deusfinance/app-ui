@@ -21,13 +21,14 @@ import {
 import LanguageSelector from './LanguageSelector';
 import { ExternalLink } from '../../App/Link';
 import useRefresh from '../../../hooks/useRefresh';
+import useWeb3 from '../../../hooks/useWeb3';
 
 
 
 const navsMobile = mobileNavs.slice().reverse();
 
 const Navbar = () => {
-
+    const web3 = useWeb3()
     const { chainId, account } = useWeb3React()
     const location = useLocation()
     const [showWallets, setShowWallets] = useState(false)
@@ -233,7 +234,7 @@ const Navbar = () => {
                 {account ?
                     (chainId && validChains.indexOf(chainId) === -1)
                         ?
-                        <NavButton className="network-label" active={true} onClick={() => addRPC(account, validChains[0])}>
+                        <NavButton className="network-label" active={true} onClick={() => addRPC(account, validChains[0], web3)}>
                             {t("changeTo")} {NameChainMap[validChains[0]] || "ETH"}
                         </NavButton>
                         :

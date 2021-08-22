@@ -37,3 +37,6 @@ export const HUSD_POOL_ADDRESS = {
     4: "0xA732f70840Ccd7f9cbf1aC2d9a523a6f78E49ee7",
 }
 
+export const MIGRATOR_ADDRESS = {
+    4: "0xe261bF947F6519d5E7c4674935BcA354D61B3A50",
+}

@@ -12,7 +12,8 @@ import DeiPoolAbi from '../config/abi/DeiPoolAbi.json'
 import DeiAbi from '../config/abi/DEIAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
-import { DEI_ADDRESS, DEI_POOL_ADDRESS, HUSD_POOL_ADDRESS, MULTICALL_NETWORKS } from '../constant/contracts'
+import lockerAbi from '../config/abi/locker.json'
+import { DEI_ADDRESS, DEI_POOL_ADDRESS, HUSD_POOL_ADDRESS, MULTICALL_NETWORKS, MIGRATOR_ADDRESS } from '../constant/contracts'
 import { ChainMap } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
 
@@ -67,4 +68,7 @@ export const getHusdPoolContract = (web3, chainId = ChainMap.RINKEBY) => {
 }
 export const getDeiStakingContract = (web3, address) => {
     return getContract(StakingDeiAbi, address, web3)
+}
+export const getLockerContract = (web3, chainId = ChainMap.RINKEBY) => {
+    return getContract(lockerAbi, MIGRATOR_ADDRESS[chainId], web3)
 }

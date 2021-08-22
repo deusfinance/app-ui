@@ -1,24 +1,30 @@
 import { NetworksData } from '../constant/web3';
 
-export const addRPC = (account, chainId = 100) => {
-    if (account && (window.ethereum)) {
-        let req = {
-            method: 'wallet_addEthereumChain',
-            params: [{ ...NetworksData[chainId] }],
-        }
-        if (chainId < 5) {
-            req = {
-                method: 'wallet_switchEthereumChain',
-                params: [{ chainId: "0x" + chainId }]
+export const addRPC = async (account, chainId) => {
+    console.log("called");
+    console.log(account, chainId, window.ethereum, NetworksData[chainId]);
+    if (!account || !chainId || !window.ethereum || !NetworksData[chainId]) return
+
+    try {
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: NetworksData[chainId].chainId }],
+        });
+    } catch (switchError) {
+        // This error code indicates that the chain has not been added to MetaMask.
+        if (switchError.code === 4902) {
+            try {
+                return await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [NetworksData[chainId]],
+                })
+            } catch (addError) {
+                console.log('Something went wrong trying to add a new  network RPC: ')
+                return console.error(addError)
             }
         }
-        window.ethereum
-            .request(req)
-            .then((result) => {
-                console.log("success");
-            })
-            .catch((error) => {
-                console.log('We can encrypt anything without the key.');
-            });
+        // handle other "switch" errors
+        console.log('Unknown error occurred when trying to change the network RPC: ')
+        console.error(switchError)
     }
 }

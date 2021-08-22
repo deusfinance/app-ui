@@ -39,7 +39,18 @@ export const NetworksData = {
         rpcUrls: ["https://mainnet.infura.io/v3/undefined"],
         blockExplorerUrls: ["https://etherscan.io/"],
         iconUrls: []
-
+    },
+    [ChainMap.RINKEBY]: {
+        chainId: "0x4",
+        chainName: "Rinkeby Testnet",
+        nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18,
+        },
+        rpcUrls: ["https://rinkeby.infura.io/v3/undefined"],
+        blockExplorerUrls: ["https://rinkeby.etherscan.io/"],
+        iconUrls: []
     },
     [ChainMap.XDAI]: {
         chainId: "0x64",

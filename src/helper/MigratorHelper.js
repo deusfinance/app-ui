@@ -8,8 +8,6 @@ import { getLockerContract } from "./contractHelpers"
 import { fromWei, getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
-export const dollarDecimals = 6
-
 export const getLock = async (fromCurrency, amountIn, account, web3, chainId = ChainMap.RINKEBY) => {
     return getLockerContract(web3, chainId)
         .methods

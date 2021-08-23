@@ -26,7 +26,8 @@ export const useSwap = (fromCurrency, amountIn, validChainId = 1) => {
         const tx = await getLock(
             fromCurrency.address, 
             getToWei(amountIn, fromCurrency.decimals).toFixed(0), 
-            account, web3, chainId)
+            account, 
+            web3, chainId)
         return tx
     }, [fromCurrency, amountIn, validChainId, account, chainId, web3])
 

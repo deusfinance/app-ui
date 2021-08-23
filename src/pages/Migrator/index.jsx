@@ -8,7 +8,7 @@ import useChain from "../../hooks/useChain";
 import { useSwap } from "../../hooks/useMigrator";
 import { useApprove } from "../../hooks/useApprove";
 import { useAllowance } from "../../hooks/useAllowance";
-import { MIGRATOR_ADDRESS } from "../../constant/contracts";
+import { LOCKER_ADDRESS } from "../../constant/contracts";
 import { useWeb3React } from "@web3-react/core";
 // import { DefaultTokens } from '../../constant/token';
 // import useTokenBalances from '../../hooks/useTokenBalances';
@@ -17,7 +17,7 @@ import { useWeb3React } from "@web3-react/core";
 const Migrator = () => {
   const validNetworks = [4];
   const chainId = useChain(validNetworks);
-  const contractAddress = MIGRATOR_ADDRESS[chainId];
+  const contractAddress = LOCKER_ADDRESS[chainId];
   const allowance = useAllowance(MMDToken, contractAddress, chainId);
   const { account } = useWeb3React();
   const [activeSearchBox, setActiveSearchBox] = useState(false)

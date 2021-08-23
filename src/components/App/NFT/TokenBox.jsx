@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWeb3React } from "@web3-react/core";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
@@ -33,17 +34,22 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, s
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
+    const { account } = useWeb3React()
 
     useEffect(() => {
-        const getBalance = () => {
-            setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
-        }
+    const getBalance = () => {
+      const tempBalance = data
+        ? getFullDisplayBalance(data, currency.decimals)
+        : TokensMap && TokensMap[currency.address]?.balance
+          ? TokensMap[currency.address]?.balance
+          : "0"
+      setBalance(tempBalance);
+    };
 
-        if (currency) {
-            getBalance()
-        }
-
-    }, [data, currency, wrongNetwork, TokensMap])
+    if (currency && account) {
+      getBalance();
+    }
+  }, [data, currency, wrongNetwork, TokensMap]);
 
     useEffect(() => {
         if (inputAmount === balance) {

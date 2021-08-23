@@ -93,7 +93,6 @@ const Migrator = () => {
 
   return (<>
     <MainWrapper>
-
       <Type.XL fontWeight="300"> Migrator </Type.XL>
 
       <SwapWrapper style={{ marginTop: "25px" }}>

@@ -28,16 +28,20 @@ export const injected = new InjectedConnector({
 const POLLING_INTERVAL = 15000
 
 //only mainnet (walletconnect only one chain supports)
-export const walletconnect = new WalletConnectConnector({
-  rpc: {
-    1: RPC_URLS[1],
-    56: RPC_URLS[56],
-    100: RPC_URLS[100]
-  },
+export const walletconnect_eth = new WalletConnectConnector({
+  rpc: { 1: RPC_URLS[1] },
   // bridge: 'https://bridge.walletconnect.org',
   // qrcode: true,
   pollingInterval: POLLING_INTERVAL
 })
+
+//bsc
+// export const walletconnect_bsc = new WalletConnectConnector({
+//   rpc: { 56: RPC_URLS[56] },
+//   qrcode: true,
+//   // bridge: 'https://pancakeswap.bridge.walletconnect.org/',
+//   pollingInterval: POLLING_INTERVAL
+// })
 
 export const walletlink = new WalletLinkConnector({
   url: RPC_URLS[1],
@@ -53,9 +57,9 @@ export const frame = new FrameConnector({ supportedChainIds: [1] })
 
 export const ConnectorNames = {
   Injected: 'MetaMask',
-  Network: 'Network',
-  WalletConnect: 'WalletConnect',
-  WalletLink: 'WalletLink',
+  WalletConnect_ETH: 'WalletConnect (ETH)',
+  WalletConnect_BSC: 'WalletConnect (BSC)',
+  WalletLink: 'WalletLink (ETH)',
   Ledger: 'Ledger',
   Trezor: 'Trezor',
   Lattice: 'Lattice',
@@ -65,7 +69,8 @@ export const ConnectorNames = {
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
-  [ConnectorNames.WalletConnect]: walletconnect,
+  [ConnectorNames.WalletConnect_ETH]: walletconnect_eth,
+  // [ConnectorNames.WalletConnect_BSC]: walletconnect_bsc,
   [ConnectorNames.WalletLink]: walletlink,
   // [ConnectorNames.Frame]: frame, // api keys are missing
   [ConnectorNames.Fortmatic]: fortmatic

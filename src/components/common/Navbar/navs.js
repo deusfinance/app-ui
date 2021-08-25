@@ -74,25 +74,25 @@ export const defaultNavbar = [
     children: [{
       id: 'MINT',
       text: 'ETH',
-      path: '/dei/mint',
+      path: '/stable/mint',
       exact: true
     },
     {
       id: 'STAKING',
       text: 'xDAI',
-      path: '/dei/staking',
+      path: '/stable/staking',
       exact: true
     },
     {
       id: 'REDEEM',
       text: 'BSC',
-      path: '/dei/redeem',
+      path: '/stable/redeem',
       exact: true
     },
     {
       id: 'BUYBACK & RECOLLAT',
       text: 'BSC',
-      path: '/dei/buyback-recollat',
+      path: '/stable/buyback-recollat',
       exact: true
     },
     ]

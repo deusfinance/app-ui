@@ -60,7 +60,7 @@ const Action = styled.div`
     }
     padding: 2px;
 `
-const Staking = ({ config }) => {
+const Staking = ({ config, chainId }) => {
     const { account } = useWeb3React()
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -70,9 +70,9 @@ const Staking = ({ config }) => {
 
     const [activeWithdraw, setActiveWithdraw] = useState(false)
     const [activeDeposit, setActiveDeposit] = useState(false)
-    const stakingInfo = useStakingInfo(config, 4)
+    const stakingInfo = useStakingInfo(config, chainId)
     const { depositAmount, pendingReward } = stakingInfo
-    const tokens = useTokenInfo(config, 4)
+    const tokens = useTokenInfo(config, chainId)
     const { depositTokenWalletBalance, totalDepositBalance, allowance } = tokens
 
     useEffect(() => {
@@ -98,10 +98,10 @@ const Staking = ({ config }) => {
         //eslint-disable-next-line 
     }, [allowance])
 
-    const { onApprove } = useApprove(config.depositToken, config.stakingContract, 4)
-    const { onDeposit } = useDeposit(config.depositToken, depositInput, config.stakingContract, 4)
-    const { onWithdraw } = useWithdraw(config.depositToken, withdrawAmount, config.stakingContract, 4)
-    const { onWithdraw: onClaim } = useWithdraw(config.depositToken, "0", config.stakingContract, 4)
+    const { onApprove } = useApprove(config.depositToken, config.stakingContract, chainId)
+    const { onDeposit } = useDeposit(config.depositToken, depositInput, config.stakingContract, chainId)
+    const { onWithdraw } = useWithdraw(config.depositToken, withdrawAmount, config.stakingContract, chainId)
+    const { onWithdraw: onClaim } = useWithdraw(config.depositToken, "0", config.stakingContract, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -167,12 +167,13 @@ const Staking = ({ config }) => {
     const percent = isZero(totalDepositBalance) ?
         "0.0" :
         new BigNumber(depositAmount).div(totalDepositBalance).times(100).toFixed(2)
-    const active = !isZero(depositAmount) && account
+    const active = !isNaN(depositAmount) && !isZero(depositAmount) && account
 
     return (
         <Wrapper>
             <Popup
                 active={activeWithdraw}
+                chainId={chainId}
                 setActive={setActiveWithdraw}
                 amount={withdrawAmount}
                 setAmount={setWithdrawAmount}
@@ -187,6 +188,7 @@ const Staking = ({ config }) => {
             />
             <Popup
                 active={activeDeposit}
+                chainId={chainId}
                 setActive={setActiveDeposit}
                 title={"Stake " + stakingInfo.title}
                 amount={depositInput}

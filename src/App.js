@@ -12,7 +12,7 @@ import { RecoilRoot } from 'recoil';
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
-const Deus = React.lazy(() => import('./components/Deus'))
+// const Deus = React.lazy(() => import('./components/Deus'))
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
@@ -78,16 +78,16 @@ function App() {
                   {/* <Route exact path="/dbETH" component={dbETH} /> */}
                   {/* <Route exact path="/bridge" component={Bridge} /> */}
                   <Route exact path="/swap2" component={Swap2} />
-                  <Redirect exact from="/dei" to="/dei/mint" />
-                  <Route exact path="/dei/mint" component={DeiMint} />
-                  <Route exact path="/dei/staking" component={DeiStaking} />
-                  <Route exact path="/dei/redeem" component={DeiRedeem} />
-                  <Route exact path="/dei/buyback-recollat" component={DeiBuyBackRecollateralize} />
+                  <Redirect exact from="/stable" to="/stable/mint" />
+                  <Route exact path="/stable/mint" component={DeiMint} />
+                  <Route exact path="/stable/staking" component={DeiStaking} />
+                  <Route exact path="/stable/redeem" component={DeiRedeem} />
+                  <Route exact path="/stable/buyback-recollat" component={DeiBuyBackRecollateralize} />
                   <Route exact path="/sealed-swap" component={Sealed} />
                   <Route exact path="/muon-presale" component={Muon} />
                   <Route path="/crosschain/:id/muon-presale" component={Muon} />
-                  <Redirect exact from="/" to="/swap" />
-                  <Route path="/" component={Deus} />
+                  <Redirect exact from="/" to="/stable/mint" />
+                  {/* <Route path="/" component={Deus} /> */}
                   <Redirect to="not-found" />
                 </Switch>
               </div>

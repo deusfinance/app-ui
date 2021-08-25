@@ -10,6 +10,7 @@ import { FlexCenter } from '../../Container';
 import SwapAction from '../SwapAction';
 import { formatBalance3 } from '../../../../utils/utils';
 
+ReactModal.setAppElement("#root")
 
 const Popup = ({
     hasMax = true,
@@ -22,6 +23,7 @@ const Popup = ({
     buttonText,
     isPreApproved,
     isApproved,
+    chainId,
     loading,
     handleApprove,
     handleAction }) => {
@@ -160,6 +162,7 @@ const Popup = ({
                     </ExternalLink>
                     <SwapAction
                         text={buttonText}
+                        validNetworks={[chainId]}
                         isPreApproved={isPreApproved}
                         isApproved={isApproved}
                         loading={loading}
@@ -170,11 +173,9 @@ const Popup = ({
                         amountIn={amount}
                     />
                 </Container>
-
-
             </Wrapper>
         </ReactModal>
-    }, [customStyles, title, hasMax, onMax, active, setActive, amount, balance, handleAction, handleApprove, loading, buttonText, isApproved, isPreApproved, setAmount])
+    }, [customStyles, chainId, title, hasMax, onMax, active, setActive, amount, balance, handleAction, handleApprove, loading, buttonText, isApproved, isPreApproved, setAmount])
     );
 }
 

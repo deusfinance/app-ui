@@ -13,8 +13,8 @@ export const correctChains = [
         exact: true,
     },
     {
-        url: "/dei",
-        chains: [ChainMap.RINKEBY],
+        url: "/stable",
+        chains: [ChainMap.RINKEBY, ChainMap.HECO],
     },
     {
         url: "/crosschain/xdai",

@@ -24,6 +24,9 @@ import { ContentWrapper } from '../../../components/App/Dei';
 import { useDeiUpdateBuyBack } from '../../../hooks/useDei';
 import { availableRecollatState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
+import { useLocation } from 'react-router-dom';
+import { getCorrectChains } from '../../../constant/correctChain';
+
 
 const TopWrap = styled.div`
     display: flex;
@@ -49,7 +52,8 @@ const msg = "There is currently no excess value to conduct buybacks."
 const msg2 = "The protocol is properly collateralized."
 
 const Dei = () => {
-    const validNetworks = [4]
+    const location = useLocation()
+    const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
     useDeiUpdateBuyBack(chainId);
 
@@ -85,8 +89,8 @@ const Dei = () => {
     }
 
     const TokensMap = tokensMap
-    let primaryToken = DEITokens.filter(token => token.symbol === "DEUS")[0]
-    let secondaryToken = DEITokens.filter(token => token.symbol === "HUSD")[0]
+    let primaryToken = tokens.filter(token => token.symbol === "DEUS")[0]
+    let secondaryToken = tokens.filter(token => token.symbol === "HUSD")[0]
     const swapState = { from: secondaryToken, to: primaryToken }
     const [amountIn1, setAmountIn1] = useState("")
     const [amountIn2, setAmountIn2] = useState("")
@@ -278,7 +282,7 @@ const Dei = () => {
                             bgColor={"grad_dei"}
                             text="BUYBACK"
                             isPreApproved={isPreApproved}
-                            validNetworks={[1, 4]}
+                            validNetworks={validNetworks}
                             isApproved={isApproved}
                             loading={approveLoading}
                             handleApprove={handleApprove}
@@ -335,7 +339,7 @@ const Dei = () => {
                             bgColor={"grad_dei"}
                             text="RECOLLATERALIZE"
                             isPreApproved={isPreApproved}
-                            validNetworks={[1, 4]}
+                            validNetworks={validNetworks}
                             isApproved={isApproved}
                             loading={approveLoading}
                             handleApprove={handleApprove}

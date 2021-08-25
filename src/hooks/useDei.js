@@ -156,7 +156,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
     return { onRedeem: handleRedeem }
 }
 
-export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, validChainId = 1) => {
+export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
@@ -360,7 +360,7 @@ export const useCollatRatio = (validChainId) => {
 
     useEffect(() => {
         const get = async () => {
-            const cr = await getDeiInfo(web3)
+            const cr = await getDeiInfo(web3, validChainId)
             setCollatRatio(new BigNumber(fromWei(cr[1], dollarDecimals)).times(100).toNumber())
         }
         get()

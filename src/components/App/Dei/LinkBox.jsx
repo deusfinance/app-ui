@@ -78,18 +78,18 @@ const LinkBox = () => {
 
                 {urls.map((url, index) => {
                     return <EachUrl key={index + "url"}>
-                            <NavLink to={url.link}> {url.name} </NavLink>
-                        </EachUrl>
+                        <NavLink to={url.link}> {url.name} </NavLink>
+                    </EachUrl>
                 })}
 
-                <Line2/>
+                <Line2 />
 
                 <BottomTextDiv>
                     If you need more help visit the{' '}
                     <WikiLink href="https://wiki.deus.finance/docs/" target="_blank">wiki</WikiLink>.
                 </BottomTextDiv>
             </MainWrapper>
-        }, [])
+        })
     )
 }
 

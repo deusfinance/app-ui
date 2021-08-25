@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
-import { DEITokens, deiToken } from '../../../constant/token';
+import { DEITokens, deiToken2 } from '../../../constant/token';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import LinkBox from '../../../components/App/Dei/LinkBox'
@@ -20,9 +20,12 @@ import { useDeiUpdate, useMint } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
+import { useLocation } from 'react-router-dom';
+import { getCorrectChains } from '../../../constant/correctChain';
 
 const Dei = () => {
-    const validNetworks = [4]
+    const location = useLocation()
+    const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
     useDeiUpdate(chainId)
     const collatRatio = useRecoilValue(collatRatioState)
@@ -37,7 +40,6 @@ const Dei = () => {
 
     const [isPair, setIsPair] = useState(false)
     const contractAddress = HUSD_POOL_ADDRESS[chainId]
-
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
     const tokensMap = {}
 
@@ -51,7 +53,7 @@ const Dei = () => {
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
         from: '',
-        to: deiToken,
+        to: deiToken2[chainId],
     })
 
     const [focusType, setFocusType] = useState("from1")
@@ -60,6 +62,10 @@ const Dei = () => {
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
     const [pairToken, setPairToken] = useState({ address: null })
+
+    // const allowance = new BigNumber(1)
+    // const allowancePairToken = new BigNumber(1)
+
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 
@@ -114,14 +120,14 @@ const Dei = () => {
             let primaryToken = null
             setIsPair(false)
             if (collatRatio === 100) {
-                primaryToken = DEITokens[0]
+                primaryToken = tokens[0]
             } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = DEITokens[2]
-                let secondToken = DEITokens[3]
+                primaryToken = tokens[2]
+                let secondToken = tokens[3]
                 setIsPair(true)
                 setPairToken(secondToken)
             } else if (collatRatio === 0) {
-                primaryToken = DEITokens[1]
+                primaryToken = tokens[1]
             }
             setSwapState({ ...swapState, from: primaryToken })
         }

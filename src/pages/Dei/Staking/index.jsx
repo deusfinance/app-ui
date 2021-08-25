@@ -6,6 +6,10 @@ import { useDeiUpdateRedeem } from '../../../hooks/useDei';
 import Staking from '../../../components/App/Dei/Staking/Staking';
 import { StakingConfig } from '../../../components/App/Dei/data';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import { getCorrectChains } from '../../../constant/correctChain';
+import useChain from '../../../hooks/useChain';
+
 
 
 const StakingContainer = styled.div`
@@ -28,14 +32,17 @@ const MainWrapper = styled.div`
 `
 
 const Dei = () => {
+    const location = useLocation()
+    const validNetworks = getCorrectChains(location.pathname)
+    const chainId = useChain(validNetworks)
+    useDeiUpdateRedeem(chainId)
 
-    useDeiUpdateRedeem(4)
     return (<>
         <MainWrapper>
             <Type.XL fontWeight="300" mb="5">Staking</Type.XL>
             <StakingContainer>
-                <Staking config={StakingConfig[0]} />
-                <Staking config={StakingConfig[1]} />
+                <Staking config={StakingConfig[chainId][0]} chainId={chainId} />
+                <Staking config={StakingConfig[chainId][1]} chainId={chainId} />
             </StakingContainer>
         </MainWrapper>
 

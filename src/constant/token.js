@@ -1,4 +1,6 @@
 import { Token } from '../utils/classes';
+import { DEI_ADDRESS } from './contracts';
+import { ChainMap } from './web3';
 
 export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
 export const muonToken = new Token(1, null, 18, "MUON", "MUON", "/tokens/muon.svg");
@@ -8,9 +10,22 @@ export const wxdaiToken = new Token(100, "0xe91d153e0b41518a2ce8dd3d7944fa863463
 
 export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 
+export const deiToken2 = {
+    [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, DEI_ADDRESS[ChainMap.RINKEBY], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
+    [ChainMap.HECO]: new Token(ChainMap.HECO, DEI_ADDRESS[ChainMap.HECO], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
+};
+
 export const deiToken = new Token(4, "0x3974DF053d7759C1B6d8a6164c963AabE2E635Eb", 18, "DEI", "DEI", "/img/Dei_logo.svg");
-export const deiHusdLpToken = new Token(4, "0x8f3906394382a7e30961ACDf217b9FBf242c1B96", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg");
-export const deiDeusLpToken = new Token(4, "0x5e2ce79ca56c5EA39530BBFe8fEd68aFc69e6B4D", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg");
+
+export const deiHusdLpToken = {
+    [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, "0x8f3906394382a7e30961ACDf217b9FBf242c1B96", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
+    [ChainMap.HECO]: new Token(ChainMap.HECO, "0xcd9383b17264D32F690E1192B5967514034b168D", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
+}
+
+export const deiDeusLpToken = {
+    [ChainMap.RINKEBY]: new Token(4, "0x5e2ce79ca56c5EA39530BBFe8fEd68aFc69e6B4D", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+    [ChainMap.HECO]: new Token(ChainMap.HECO, "0xd0B9d3A52fa1dAee082F9ac998b9fB49F6bb7a16", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+}
 
 
 export const busdTestToken = new Token(97, "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47", 18, "BUSD", "BUSD", "/tokens/busd.svg");
@@ -75,6 +90,11 @@ export const DEITokens = [
     { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4 },
     { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4, pairID: 1 },
     { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4, pairID: 1 },
+
+    { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainMap.HECO },
+    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO },
+    { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 6, chainId: ChainMap.HECO, pairID: 1 },
+    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO, pairID: 1 },
 ]
 
 export const DeusPath = {

@@ -8,7 +8,7 @@ import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useAllowance';
-import { DEITokens, deiToken } from '../../../constant/token';
+import { DEITokens, deiToken2 } from '../../../constant/token';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
@@ -23,9 +23,13 @@ import { useDeiUpdateRedeem, useRedeem } from '../../../hooks/useDei';
 import { PlusImg } from '../../../components/App/Dei';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
+import { useLocation } from 'react-router-dom';
+import { getCorrectChains } from '../../../constant/correctChain';
+
 
 const Dei = () => {
-    const validNetworks = [4]
+    const location = useLocation()
+    const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
     useDeiUpdateRedeem(chainId)
 
@@ -53,9 +57,9 @@ const Dei = () => {
 
     const TokensMap = tokensMap
 
-    let secondaryToken = DEITokens[2]
+    let secondaryToken = tokens[2]
     const [swapState, setSwapState] = useState({
-        from: deiToken,
+        from: deiToken2[chainId],
         to: secondaryToken,
     })
 
@@ -117,14 +121,14 @@ const Dei = () => {
             let primaryToken = null
             setIsPair(false)
             if (collatRatio === 100) {
-                primaryToken = DEITokens[0]
+                primaryToken = tokens[0]
             } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = DEITokens[2]
-                let secondToken = DEITokens[3]
+                primaryToken = tokens[2]
+                let secondToken = tokens[3]
                 setIsPair(true)
                 setPairToken(secondToken)
             } else if (isZero(collatRatio)) {
-                primaryToken = DEITokens[1]
+                primaryToken = tokens[1]
             }
             setSwapState({ ...swapState, to: primaryToken })
         }
@@ -136,7 +140,7 @@ const Dei = () => {
         setIsPair(false)
         if (swapState?.to?.pairID) {
             setIsPair(true)
-            let secondToken = DEITokens.filter(currToken => {
+            let secondToken = tokens.filter(currToken => {
                 return currToken.pairID === token.pairID && currToken.address !== token.address
             })[0]
             setPairToken(secondToken)
@@ -251,7 +255,7 @@ const Dei = () => {
                         bgColor={"grad_dei"}
                         text="REDEEM"
                         isPreApproved={isPreApproved}
-                        validNetworks={[1, 4]}
+                        validNetworks={validNetworks}
                         isApproved={isApproved}
                         targetToken={swapState.from}
                         loading={approveLoading}

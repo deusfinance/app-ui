@@ -22,6 +22,7 @@ import {
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
+import { husdToken } from '../constant/token'
 
 export const useDeposit = (currency, amount, address, validChainId) => {
     const web3 = useWeb3()
@@ -167,6 +168,12 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         if (collatRatio === 100) {
             path = "/mint-1to1"
             const result = await makeDeiRequest(path)
+            console.log(getToWei(amountIn1, from1Currency.decimals).toFixed(0),
+                result.collateral_price,
+                result.expire_block,
+                result.signature,
+                chainId,
+                web3);
             fn = mint1t1DEI(
                 getToWei(amountIn1, from1Currency.decimals).toFixed(0),
                 result.collateral_price,
@@ -345,7 +352,7 @@ export const useHusdPoolData = (validChainId) => {
                 buyBackPaused: buyBackPaused[0],
                 recollateralizePaused: recollateralizePaused[0],
                 redeemDEUSBalances: account ? fromWei(redeemDEUSBalances, 18) : "0",
-                redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, 6) : "0",
+                redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, husdToken[validChainId].decimals) : "0",
             }
             setHusdPoolData({ ...updateState })
         }

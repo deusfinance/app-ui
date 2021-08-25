@@ -272,6 +272,7 @@ const Dei = () => {
                 <SwapCard title="Redemption Fee" value={redemptionFee ? `${redemptionFee} %` : ""} />
 
                 <RedeemedToken
+                    chainId={chainId}
                     title="Redeemed Token ready for claim"
                     currencies={[secondaryToken, pairToken]}
                 />

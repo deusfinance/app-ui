@@ -1,5 +1,5 @@
 import { Token } from '../utils/classes';
-import { DEI_ADDRESS } from './contracts';
+import { DEI_ADDRESS, HUSD_ADDRESS } from './contracts';
 import { ChainMap } from './web3';
 
 export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
@@ -13,6 +13,10 @@ export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d
 export const deiToken2 = {
     [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, DEI_ADDRESS[ChainMap.RINKEBY], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
     [ChainMap.HECO]: new Token(ChainMap.HECO, DEI_ADDRESS[ChainMap.HECO], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
+};
+export const husdToken = {
+    [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, HUSD_ADDRESS[ChainMap.RINKEBY], 18, "DEI", "DEI", "/tokens/husd.svg"),
+    [ChainMap.HECO]: new Token(ChainMap.HECO, HUSD_ADDRESS[ChainMap.HECO], 8, "HUSD", "HUSD", "/tokens/husd.svg"),
 };
 
 export const deiToken = new Token(4, "0x3974DF053d7759C1B6d8a6164c963AabE2E635Eb", 18, "DEI", "DEI", "/img/Dei_logo.svg");

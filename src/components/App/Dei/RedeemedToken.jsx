@@ -7,7 +7,6 @@ import { useRecoilValue } from 'recoil';
 import { husdPoolDataState } from '../../../store/dei'
 import { isGt } from '../../../constant/number';
 import { useClaimAll } from '../../../hooks/useDei';
-import useChain from '../../../hooks/useChain';
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -89,13 +88,11 @@ const ButtonSwap = styled(ButtonSyncActive)`
 
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
-const RedeemedToken = ({ title, currencies }) => {
+const RedeemedToken = ({ title, currencies, chainId }) => {
   let poolData = useRecoilValue(husdPoolDataState)
   const price1 = poolData ? poolData["redeemCollateralBalances"] : null
   const price2 = poolData ? poolData["redeemDEUSBalances"] : null
 
-  const validNetworks = [1, 4]
-  const chainId = useChain(validNetworks)
   const { onClaimAll } = useClaimAll(chainId)
 
   const handleClaim = useCallback(async () => {

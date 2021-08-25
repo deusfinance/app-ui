@@ -364,7 +364,7 @@ export const useCollatRatio = (validChainId) => {
             setCollatRatio(new BigNumber(fromWei(cr[1], dollarDecimals)).times(100).toNumber())
         }
         get()
-    }, [slowRefresh, web3, setCollatRatio])
+    }, [slowRefresh, web3, setCollatRatio, validChainId])
 }
 
 export const useDeiUpdate = (validChainId) => {

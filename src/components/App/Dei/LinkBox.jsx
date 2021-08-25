@@ -89,7 +89,7 @@ const LinkBox = () => {
                     <WikiLink href="https://wiki.deus.finance/docs/" target="_blank">wiki</WikiLink>.
                 </BottomTextDiv>
             </MainWrapper>
-        })
+        }, [])
     )
 }
 

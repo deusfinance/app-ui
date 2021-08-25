@@ -145,7 +145,7 @@ const Dei = () => {
             })[0]
             setPairToken(secondToken)
         }
-    }, [swapState])
+    }, [swapState, tokens])
 
     useEffect(() => {
         if (isPreApproved == null) {

@@ -45,7 +45,6 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, s
           : "0"
       setBalance(tempBalance);
     };
-
     if (currency && account) {
       getBalance();
     }

@@ -13,6 +13,11 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/new-migrator",
+        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        exact: true,
+    },
+    {
         url: "/swap2",
         chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
         exact: true,

@@ -11,7 +11,6 @@ import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
 import { useApprove } from '../../hooks/useApprove';
-import { useSealedAllowance, useSealedGetAmountsOut } from '../../hooks/useSealed';
 import { useSwap } from "../../hooks/useMigrator";
 import { SealedTokens, sdeaToken } from '../../constant/token';
 import useChain from '../../hooks/useChain';
@@ -19,7 +18,6 @@ import { getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../hooks/useTokenBalances';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useLocation } from 'react-router';
-import { SEALED_ADDRESS } from '../../constant/contracts';
 import { MMDToken } from "../../constant/token";
 import { LOCKER_ADDRESS } from "../../constant/contracts";
 import { useAllowance } from "../../hooks/useAllowance";
@@ -57,8 +55,8 @@ const Migrator = () => {
         inputCurrency = null
     }
 
-    const sUniDD = getTokenAddr("sand_deus_dea", chainId)
-    let fromAddress = inputCurrency ? inputCurrency : sUniDD
+    // const sUniDD = getTokenAddr("sand_deus_dea", chainId)
+    // let fromAddress = inputCurrency ? inputCurrency : sUniDD
 
     const [swapState, setSwapState] = useState({
         // from: { ...TokensMap[fromAddress] },

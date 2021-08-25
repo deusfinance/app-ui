@@ -27,7 +27,7 @@ export const NameChainMap = {
     137: "POLYGON",
 }
 
-export const NetworksData = {
+export const rpcConfig = {
     [ChainMap.MAINNET]: {
         chainId: "0x1",
         chainName: "Ethereum Mainnet",
@@ -36,10 +36,19 @@ export const NetworksData = {
             symbol: "ETH",
             decimals: 18,
         },
-        rpcUrls: ["https://mainnet.infura.io/v3/undefined"],
+        rpcUrls: ["https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY],
         blockExplorerUrls: ["https://etherscan.io/"],
-        iconUrls: []
-
+    },
+    [ChainMap.RINKEBY]: {
+        chainId: "0x4",
+        chainName: "Rinkeby Testnet",
+        nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18,
+        },
+        rpcUrls: ["https://rinkeby.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY],
+        blockExplorerUrls: ["https://rinkeby.etherscan.io/"],
     },
     [ChainMap.XDAI]: {
         chainId: "0x64",
@@ -51,7 +60,6 @@ export const NetworksData = {
         },
         rpcUrls: ["https://rpc.xdaichain.com/"],
         blockExplorerUrls: ["https://blockscout.com/poa/xdai/"],
-        iconUrls: ["https://app.deus.finance/tokens/xdai.svg"]
     },
     [ChainMap.MATIC]: {
         chainId: "0x89",
@@ -73,7 +81,7 @@ export const NetworksData = {
             symbol: "BNB",
             decimals: 18,
         },
-        rpcUrls: ["https://bsc-dataseed1.binance.org"],
+        rpcUrls: ["https://bsc-dataseed.binance.org", "https://bsc-dataseed1.defibit.io"],
         blockExplorerUrls: ["https://bscscan.com"],
     },
     [ChainMap.BSC_TESTNET]: {
@@ -84,7 +92,7 @@ export const NetworksData = {
             symbol: "BNB",
             decimals: 18,
         },
-        rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545"],
+        rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545", "https://data-seed-prebsc-2-s1.binance.org:8545"],
         blockExplorerUrls: ["https://testnet.bscscan.com"],
     },
     [ChainMap.HECO]: {

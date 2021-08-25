@@ -1,10 +1,10 @@
-import { NetworksData } from '../constant/web3';
+import { rpcConfig } from '../constant/web3';
 
 export const addRPC = (account, activate, chainId = 100) => {
     if (account && (window.ethereum)) {
         let req = {
             method: 'wallet_addEthereumChain',
-            params: [{ ...NetworksData[chainId] }],
+            params: [{ ...rpcConfig[chainId] }],
         }
         if (chainId < 5) {
             req = {

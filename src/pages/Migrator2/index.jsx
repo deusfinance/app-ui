@@ -11,16 +11,18 @@ import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
 import { useApprove } from '../../hooks/useApprove';
-import { useSealedAllowance, useSwap, useSealedGetAmountsOut } from '../../hooks/useSealed';
+import { useSwap } from "../../hooks/useMigrator";
 import { SealedTokens, sdeaToken } from '../../constant/token';
 import useChain from '../../hooks/useChain';
 import { getTokenAddr } from '../../utils/contracts';
 import useTokenBalances from '../../hooks/useTokenBalances';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useLocation } from 'react-router';
-import { SEALED_ADDRESS } from '../../constant/contracts';
+import { MMDToken } from "../../constant/token";
+import { LOCKER_ADDRESS } from "../../constant/contracts";
+import { useAllowance } from "../../hooks/useAllowance";
 
-const Sealed = () => {
+const Migrator = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [bptPayload, setBptPayload] = useState([])
     const [invert, setInvert] = useState(false)
@@ -33,6 +35,8 @@ const Sealed = () => {
     const { account } = useWeb3React()
     const validNetworks = [1, 4]
     const chainId = useChain(validNetworks)
+    const contractAddress = LOCKER_ADDRESS[chainId];
+    const allowance = useAllowance(MMDToken, contractAddress, chainId);
 
     const search = useLocation().search;
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
@@ -51,19 +55,19 @@ const Sealed = () => {
         inputCurrency = null
     }
 
-    const sUniDD = getTokenAddr("sand_deus_dea", chainId)
-
-    let fromAddress = inputCurrency ? inputCurrency : sUniDD
+    // const sUniDD = getTokenAddr("sand_deus_dea", chainId)
+    // let fromAddress = inputCurrency ? inputCurrency : sUniDD
 
     const [swapState, setSwapState] = useState({
-        from: { ...TokensMap[fromAddress] },
+        // from: { ...TokensMap[fromAddress] },
+        from: MMDToken,
         to: sdeaToken,
     })
 
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
-    let allowance = useSealedAllowance(swapState.from, SEALED_ADDRESS, chainId)
+
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -118,24 +122,26 @@ const Sealed = () => {
         setSwapState({ ...swapState, [type]: token })
     }
 
-    const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, debouncedAmountIn, chainId)
-    const { onApprove } = useApprove(swapState.from, SEALED_ADDRESS, chainId)
-    const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId, bptPayload)
+    // const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, debouncedAmountIn, chainId)
+    // const { onApprove } = useApprove(swapState.from, SEALED_ADDRESS, chainId)
+    // const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId, bptPayload)
+    const { onApprove } = useApprove(MMDToken, contractAddress, chainId);
+    const { onSwap } = useSwap(MMDToken, amountIn, chainId);
 
-    useEffect(() => {
-        const get = async () => {
-            const result = await getAmountsOut()
-            if (result.payload) {
-                setBptPayload(result.payload)
-            }
-            if (amountIn === "") setAmountOut("")
-            else setAmountOut(fromWei(result.amountOut, swapState.to.decimals))
-        }
-        if (amountIn !== "")
-            get()
+    // useEffect(() => {
+    //     const get = async () => {
+    //         const result = await getAmountsOut()
+    //         if (result.payload) {
+    //             setBptPayload(result.payload)
+    //         }
+    //         if (amountIn === "") setAmountOut("")
+    //         else setAmountOut(fromWei(result.amountOut, swapState.to.decimals))
+    //     }
+    //     if (amountIn !== "")
+    //         get()
 
-        //eslint-disable-next-line
-    }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
+    //     //eslint-disable-next-line
+    // }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
 
 
 
@@ -184,7 +190,7 @@ const Sealed = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            <SwapTitle active={false} bgColor="grad4" m="auto">SEALED SWAP</SwapTitle>
+            <SwapTitle active={false} bgColor={"grad_dei"} m="auto"> MIGRATOR </SwapTitle>
             <SwapWrapper>
                 <TokenBox
                     type="from"
@@ -197,9 +203,9 @@ const Sealed = () => {
                     fastUpdate={fastUpdate}
                 />
 
-                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+                {/* <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" /> */}
 
-                <TokenBox
+                {/* <TokenBox
                     type="to"
                     title="To (estimated)"
                     inputAmount={amountOut}
@@ -208,14 +214,15 @@ const Sealed = () => {
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}
-                />
+                /> */}
 
-                <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+                {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}
 
                 <SwapAction
-                    bgColor="grad4"
+                    text="LOCK"
+                    bgColor={"grad_dei"}
                     isPreApproved={isPreApproved}
-                    validNetworks={[1]}
+                    validNetworks={[1, 4]}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}
@@ -235,7 +242,7 @@ const Sealed = () => {
             /> */}
 
 
-            <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor="grad4" />
+            <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"}/>
         </MainWrapper>
         {/* <div className='tut-left-wrap'>
             <SelectedNetworks />
@@ -243,4 +250,4 @@ const Sealed = () => {
     </>);
 }
 
-export default Sealed;
+export default Migrator;

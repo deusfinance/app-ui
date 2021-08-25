@@ -37,3 +37,6 @@ export const HUSD_POOL_ADDRESS = {
     4: "0xA732f70840Ccd7f9cbf1aC2d9a523a6f78E49ee7",
 }
 
+export const LOCKER_ADDRESS = {
+    4: "0xA12B1C1E1aFF71976D114aD36Fa0A8D05b9c3193",
+}

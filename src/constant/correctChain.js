@@ -8,12 +8,26 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/migrator",
+        chains: [ChainMap.RINKEBY],
+        exact: true,
+    },
+    {
+        url: "/new-migrator",
+        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        exact: true,
+    },
+    {
         url: "/swap2",
         chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/dei",
+        chains: [ChainMap.RINKEBY],
+    },
+    {
+        url: "/nft",
         chains: [ChainMap.RINKEBY],
     },
     {

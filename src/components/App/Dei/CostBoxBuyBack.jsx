@@ -24,7 +24,7 @@ export const CostBoxBuyBack = () => {
     let deiPrices = useRecoilValue(deiPricesState)
     let deus_price = null
     if (deiPrices) deus_price = deiPrices["deus_price"]
-    let costs = makeCostDataBuyBack(deus_price, truncate(HUSD_POOL_ADDRESS[4]), availableBuyback, availableRecollat, HUSD_POOL_ADDRESS[4], 4)
+    let costs = makeCostDataBuyBack(deus_price, truncate(HUSD_POOL_ADDRESS[128]), availableBuyback, availableRecollat, HUSD_POOL_ADDRESS[128], 128)
 
     return (
         useMemo(() => {

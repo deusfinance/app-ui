@@ -282,11 +282,15 @@ export const useAvailableRecollat = (validChainId) => {
 
     useEffect(() => {
         const get = async () => {
-            const dei_info_result = await getDeiInfo(web3, validChainId)
-            let { "0": dei_total_supply, "1": global_collateral_ratio, "2": global_collat_value } = dei_info_result
-            let effective_collateral_ratio = (global_collat_value * (1e6)) / dei_total_supply;
-            let available_recollat = global_collateral_ratio * dei_total_supply - (dei_total_supply * effective_collateral_ratio) / (1e6)
-            setAvailableRecollat(available_recollat)
+            try {
+                const dei_info_result = await getDeiInfo(web3, validChainId)
+                let { "0": dei_total_supply, "1": global_collateral_ratio, "2": global_collat_value } = dei_info_result
+                let effective_collateral_ratio = (global_collat_value * (1e6)) / dei_total_supply;
+                let available_recollat = global_collateral_ratio * dei_total_supply - (dei_total_supply * effective_collateral_ratio) / (1e6)
+                setAvailableRecollat(available_recollat)
+            } catch (error) {
+                console.log("useAvailableRecollat ", error);
+            }
         }
         get()
     }, [setAvailableRecollat, slowRefresh, validChainId, web3])
@@ -317,44 +321,49 @@ export const useHusdPoolData = (validChainId) => {
     useEffect(() => {
         const get = async () => {
 
-            const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
+            try {
+                const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
 
-            const [
-                collatDollarBalance,
-                availableExcessCollatDV,
-                pool_ceiling,
-                redemption_fee,
-                minting_fee,
-                buyback_fee,
-                recollat_fee,
-                recollateralizePaused,
-                buyBackPaused,
-                mintPaused,
-                redeemPaused,
-                bonus_rate,
-                redemption_delay,
-                redeemDEUSBalances,
-                redeemCollateralBalances,
-            ] = mul
+                const [
+                    collatDollarBalance,
+                    availableExcessCollatDV,
+                    pool_ceiling,
+                    redemption_fee,
+                    minting_fee,
+                    buyback_fee,
+                    recollat_fee,
+                    recollateralizePaused,
+                    buyBackPaused,
+                    mintPaused,
+                    redeemPaused,
+                    bonus_rate,
+                    redemption_delay,
+                    redeemDEUSBalances,
+                    redeemCollateralBalances,
+                ] = mul
 
-            const updateState = {
-                collatDollarBalance: fromWei(collatDollarBalance, 18),
-                availableExcessCollatDV: new BigNumber(availableExcessCollatDV).toFixed(0),
-                pool_ceiling: fromWei(pool_ceiling, 6),
-                redemption_fee: new BigNumber(redemption_fee).div(10000).toNumber(),
-                minting_fee: new BigNumber(minting_fee).div(10000).toNumber(),
-                buyback_fee: new BigNumber(buyback_fee).toNumber(),
-                recollat_fee: new BigNumber(recollat_fee).toNumber(),
-                bonus_rate: new BigNumber(bonus_rate).toNumber(),
-                redemption_delay: new BigNumber(redemption_delay).toNumber(),
-                redeemPaused: redeemPaused[0],
-                mintPaused: mintPaused[0],
-                buyBackPaused: buyBackPaused[0],
-                recollateralizePaused: recollateralizePaused[0],
-                redeemDEUSBalances: account ? fromWei(redeemDEUSBalances, 18) : "0",
-                redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, husdToken[validChainId].decimals) : "0",
+                const updateState = {
+                    collatDollarBalance: fromWei(collatDollarBalance, 18),
+                    availableExcessCollatDV: new BigNumber(availableExcessCollatDV).toFixed(0),
+                    pool_ceiling: fromWei(pool_ceiling, 6),
+                    redemption_fee: new BigNumber(redemption_fee).div(10000).toNumber(),
+                    minting_fee: new BigNumber(minting_fee).div(10000).toNumber(),
+                    buyback_fee: new BigNumber(buyback_fee).toNumber(),
+                    recollat_fee: new BigNumber(recollat_fee).toNumber(),
+                    bonus_rate: new BigNumber(bonus_rate).toNumber(),
+                    redemption_delay: new BigNumber(redemption_delay).toNumber(),
+                    redeemPaused: redeemPaused[0],
+                    mintPaused: mintPaused[0],
+                    buyBackPaused: buyBackPaused[0],
+                    recollateralizePaused: recollateralizePaused[0],
+                    redeemDEUSBalances: account ? fromWei(redeemDEUSBalances, 18) : "0",
+                    redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, husdToken[validChainId].decimals) : "0",
+                }
+                setHusdPoolData({ ...updateState })
+            } catch (error) {
+                console.log("useHusdPoolData ", error);
             }
-            setHusdPoolData({ ...updateState })
+
         }
         get()
     }, [setHusdPoolData, slowRefresh, forceRefresh, web3, account, validChainId, chainId])
@@ -367,8 +376,12 @@ export const useCollatRatio = (validChainId) => {
 
     useEffect(() => {
         const get = async () => {
-            const cr = await getDeiInfo(web3, validChainId)
-            setCollatRatio(new BigNumber(fromWei(cr[1], dollarDecimals)).times(100).toNumber())
+            try {
+                const cr = await getDeiInfo(web3, validChainId)
+                setCollatRatio(new BigNumber(fromWei(cr[1], dollarDecimals)).times(100).toNumber())
+            } catch (error) {
+                console.log("useCollatRatio ", error);
+            }
         }
         get()
     }, [slowRefresh, web3, setCollatRatio, validChainId])
@@ -402,7 +415,7 @@ export const useDeiPrices = () => {
                 const result = await makeDeiRequest("/price")
                 setRefreshRatio(result)
             } catch (error) {
-                console.log(error);
+                console.log("useDeiPrices ", error);
             }
         }
         get()
@@ -423,8 +436,13 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
             if (contract === null) setAllowance(ethers.constants.MaxUint256)
             else if (currency.allowance) { setAllowance(currency.allowance) }
             else {
-                const res = await contract.methods.allowance(account, contractAddress).call()
-                setAllowance(new BigNumber(res))
+                try {
+                    const res = await contract.methods.allowance(account, contractAddress).call()
+                    setAllowance(new BigNumber(res))
+                } catch (error) {
+                    console.log("useAllowance ", error);
+                }
+
             }
         }
         if (account && tokenAddress) {

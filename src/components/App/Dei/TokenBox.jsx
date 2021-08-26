@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
+import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';
 import useTokenBalance from '../../../hooks/useTokenBalance';
 import { formatBalance3 } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
@@ -29,9 +30,9 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, setFocusType, focusType, type, setActive, TokensMap, wrongNetwork, fastUpdate, mt }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, setFocusType, focusType, type, setActive, TokensMap, chainId, wrongNetwork, fastUpdate, mt }) => {
     const [onMax, setOnMax] = useState(false)
-    const data = useTokenBalance(currency?.address, fastUpdate)
+    const data = useCrossTokenBalance(currency?.address, chainId, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
 
     useEffect(() => {

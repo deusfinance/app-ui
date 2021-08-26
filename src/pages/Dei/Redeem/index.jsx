@@ -7,7 +7,6 @@ import SwapCard from '../../../components/App/Swap/SwapCard';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
-import { useAllowance } from '../../../hooks/useAllowance';
 import { DEITokens, deiToken2 } from '../../../constant/token';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
@@ -19,7 +18,7 @@ import { Type } from '../../../components/App/Text';
 import { isZero } from '../../../constant/number';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { useDeiUpdateRedeem, useRedeem } from '../../../hooks/useDei';
+import { useDeiUpdateRedeem, useRedeem, useAllowance } from '../../../hooks/useDei';
 import { PlusImg } from '../../../components/App/Dei';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
@@ -217,6 +216,7 @@ const Dei = () => {
                         currency={swapState.from}
                         TokensMap={TokensMap}
                         fastUpdate={fastUpdate}
+                        chainId={chainId}
                     />
 
                     <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
@@ -232,6 +232,7 @@ const Dei = () => {
                         TokensMap={TokensMap}
                         currency={swapState.to}
                         fastUpdate={fastUpdate}
+                        chainId={chainId}
                     />
 
                     {isPair && <div>
@@ -248,6 +249,7 @@ const Dei = () => {
                             currency={pairToken}
                             TokensMap={TokensMap}
                             fastUpdate={fastUpdate}
+                            chainId={chainId}
                         />
                     </div>}
 

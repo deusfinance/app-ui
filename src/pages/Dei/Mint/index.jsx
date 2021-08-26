@@ -233,6 +233,7 @@ const Dei = () => {
                         currency={swapState.from}
                         TokensMap={TokensMap}
                         fastUpdate={fastUpdate}
+                        chainId={chainId}
                     />
 
                     {isPair && <div>
@@ -249,6 +250,7 @@ const Dei = () => {
                             currency={pairToken}
                             TokensMap={TokensMap}
                             fastUpdate={fastUpdate}
+                            chainId={chainId}
                         />
                     </div>}
 
@@ -265,6 +267,7 @@ const Dei = () => {
                         TokensMap={TokensMap}
                         currency={swapState.to}
                         fastUpdate={fastUpdate}
+                        chainId={chainId}
                     />
 
                     {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}

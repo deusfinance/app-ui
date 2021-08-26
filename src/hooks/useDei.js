@@ -9,7 +9,7 @@ import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import multicall from '../helper/multicall'
-import { useERC20 } from './useContract'
+import { useCrossERC20, useERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
 import {
@@ -425,9 +425,10 @@ export const useDeiPrices = () => {
 export const useAllowance = (currency, contractAddress, validChainId) => {
     const [allowance, setAllowance] = useState(new BigNumber(-1))
     const { account, chainId } = useWeb3React()
+    const web3 = useCrossWeb3(validChainId)
     const { fastRefresh } = useRefresh()
     const { address: tokenAddress } = currency
-    const contract = useERC20(tokenAddress)
+    const contract = useCrossERC20(tokenAddress, web3)
 
     useEffect(() => {
         const fetchAllowance = async () => {

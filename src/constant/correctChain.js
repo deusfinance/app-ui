@@ -100,6 +100,10 @@ export const correctChains = [
         url: "/bridge",
         chains: [ChainMap.RINKEBY, ChainMap.BSC_TESTNET],
     },
+    {
+        url: "/not-found",
+        chains: Object.values(ChainMap),
+    },
 ]
 
 export function getCorrectChains(path) {

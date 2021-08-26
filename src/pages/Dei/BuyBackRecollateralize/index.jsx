@@ -12,7 +12,6 @@ import RateBox from '../../../components/App/Swap/RateBox';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
-import { useAllowance } from '../../../hooks/useAllowance';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { DEITokens } from '../../../constant/token';
@@ -21,7 +20,7 @@ import { useRecoilValue } from 'recoil';
 import InfoBox from '../../../components/App/Dei/InfoBox';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
-import { useDeiUpdateBuyBack } from '../../../hooks/useDei';
+import { useDeiUpdateBuyBack, useAllowance } from '../../../hooks/useDei';
 import { availableRecollatState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
 import { useLocation } from 'react-router-dom';
@@ -259,6 +258,7 @@ const Dei = () => {
                             currency={swapState.to}
                             TokensMap={TokensMap}
                             fastUpdate={fastUpdate}
+                            chainId={chainId}
                         />
 
                         <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
@@ -274,6 +274,7 @@ const Dei = () => {
                             TokensMap={TokensMap}
                             currency={swapState.from}
                             fastUpdate={fastUpdate}
+                            chainId={chainId}
                         />
 
                         <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut1} invert={invert} setInvert={setInvert} />
@@ -316,6 +317,7 @@ const Dei = () => {
                             currency={swapState.from}
                             TokensMap={TokensMap}
                             fastUpdate={fastUpdate}
+                            chainId={chainId}
                         />
 
                         <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
@@ -331,6 +333,7 @@ const Dei = () => {
                             TokensMap={TokensMap}
                             currency={swapState.to}
                             fastUpdate={fastUpdate}
+                            chainId={chainId}
                         />
 
                         <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut2} invert={invert} setInvert={setInvert} />

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import useWeb3, { useCrossWeb3 } from "./useWeb3"
+import { useCrossWeb3 } from "./useWeb3"
 import { isAddress } from "@ethersproject/address"
 import BigNumber from "bignumber.js";
-import { useCrossERC20, useERC20 } from './useContract'
+import { useCrossERC20 } from './useContract'
 import useRefresh from './useRefresh';
 
 const useCrossTokenBalance = (tokenAddress, chainId, fastUpdate = null) => {

@@ -9,7 +9,7 @@ import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import multicall from '../helper/multicall'
-import { useCrossERC20, useERC20 } from './useContract'
+import { useCrossERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
 import {

@@ -100,14 +100,14 @@ const Dei = () => {
             if (in1) {
                 amountIn1 = in1
                 amountOut1 = RemoveTrailingZero(new BigNumber(amountIn1).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18))
-                amountOut2 = RemoveTrailingZero(new BigNumber(amountIn1).times(100 - collatRatio).div(100).div(deus_price).toFixed(18))
+                amountOut2 = RemoveTrailingZero(new BigNumber(amountIn1).times(100 - collatRatio).div(100).div(deus_price).times(1 - (redemptionFee / 100)).toFixed(18))
             } if (out1) {
                 amountIn1 = RemoveTrailingZero(new BigNumber(out1).div(collateral_price).times(100).div(collatRatio).div(1 - (redemptionFee / 100)).toFixed(18))
                 amountOut1 = out1
-                amountOut2 = RemoveTrailingZero(new BigNumber(out1).div(collateral_price).div(collatRatio).div(1 - (redemptionFee / 100)).times(100 - collatRatio).div(deus_price).toFixed(18))
+                amountOut2 = RemoveTrailingZero(new BigNumber(out1).div(collateral_price).div(collatRatio).div(1 - (redemptionFee / 100)).times(100 - collatRatio).div(deus_price).times(1 - (redemptionFee / 100)).toFixed(18))
             } if (out2) {
-                amountIn1 = RemoveTrailingZero(new BigNumber(out2).times(100).times(deus_price).div(100 - collatRatio).toFixed(18))
-                amountOut1 = RemoveTrailingZero(new BigNumber(out2).times(collateral_price).times(collatRatio).times(1 - (redemptionFee / 100)).div(100 - collatRatio).times(deus_price).toFixed(18))
+                amountIn1 = RemoveTrailingZero(new BigNumber(out2).times(100).times(deus_price).div(100 - collatRatio).div(1 - (redemptionFee / 100)).toFixed(18))
+                amountOut1 = RemoveTrailingZero(new BigNumber(out2).times(collateral_price).times(collatRatio).times(1 - (redemptionFee / 100)).div(100 - collatRatio).times(deus_price).div(1 - (redemptionFee / 100)).toFixed(18))
                 amountOut2 = out2
             }
             setAmountIn(amountIn1)

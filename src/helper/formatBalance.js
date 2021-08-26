@@ -11,7 +11,7 @@ export const fromWei = (amount, decimals = 18) => {
     if (amount === 0) return "0"
     if (!amount) return null
     const displayBalance = new BigNumber(amount).dividedBy(new BigNumber(10).pow(decimals))
-    return displayBalance.toFixed(decimals, 1)
+    return displayBalance.toFixed(decimals, BigNumber.ROUND_DOWN)
 }
 
 

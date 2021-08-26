@@ -111,11 +111,6 @@ export class StockService {
         const metamaskWeb3 = new Web3(Web3.givenProvider);
         const marketMakerContract = new metamaskWeb3.eth.Contract(bscSynchronizerABI, this.marketMaker);
         const info = oracles[0]
-        console.log("oracles", oracles);
-        console.log("conrtact", marketMakerContract);
-        console.log("wallet ", this.account);
-        console.log("address ", address);
-        console.log("amount ", amount);
 
         //, gasPrice: Web3.utils.toWei("1", "Gwei")
         return marketMakerContract.methods.buyFor(

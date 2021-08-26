@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled, { keyframes } from 'styled-components'
 import { Flex } from 'rebass/styled-components'
 import { Type } from '../../App/Text';
-import { RowBetween } from '../../App/Row';
+import { RowBetween, RowFlat } from '../../App/Row';
 import CircleToken from '../../../assets/images/circle-token.svg'
 import { X } from 'react-feather'
 import { StyledLogo } from '../Currency';
 import { FlexCenter } from '../Container';
 import FilterBox from './FilterBox';
-
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { getTransactionLink } from '../../../utils/explorers';
 const fadein = keyframes`
   from {
     opacity:0;
@@ -21,7 +22,7 @@ const fadein = keyframes`
 
 const Wrapper = styled.div`
   background: ${({ theme }) => theme.bg5};
-  width: 50vw;
+  width: 90vw;
   max-width: 500px;
   border-radius: 10px;
   padding: 20px;
@@ -36,7 +37,7 @@ const Wrapper = styled.div`
   transform: translateY(-50%);
   padding-bottom:20px;
   top:calc(50%);
-  z-index: 2;
+  z-index: 3;
   margin:auto;
 `
 const StyledClose = styled(X)`
@@ -47,10 +48,11 @@ const StyledClose = styled(X)`
 `
 
 const TokenLogo = styled(FlexCenter)`
-background: linear-gradient(90deg, #EA2C62 -0.01%, #0779E4 100.03%);
-padding:3px;
+/* background: linear-gradient(90deg, #EA2C62 -0.01%, #0779E4 100.03%); */
+border:2px solid #8c8c8c;
+padding:2px;
 border-radius:50%;
-filter: drop-shadow(0px 0px 8px #0E77E1);
+filter: drop-shadow(0px 0px 4px #0E77E1);
 `
 
 const Line = styled.div`
@@ -60,7 +62,7 @@ margin:${({ my }) => my} 0;
   `
 
 const TokenRow = styled(RowBetween)`
-padding:0 20px;
+padding:0 15px;
     :hover{
         cursor:pointer;
         background : #292929
@@ -68,7 +70,19 @@ padding:0 20px;
 `
 const TokensWrap = styled.div`
     /* padding:25px 0; */
+    overflow-y: auto;
+    height: calc(100% - 200px);
     margin:0 -20px;
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+        background-color: #c4c4c4;
+    }
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 10px;
+      background-color: transparent;
+    }
 `
 const TokenWrap = styled(FlexCenter)`
     margin:7.5px 0;
@@ -95,23 +109,16 @@ const InputAmount = styled.input.attrs({
 
 `
 export const Copy = styled.img`
-&:hover{
-  transform:scale(1.1);
+  margin-left:7px;
+  filter:brightness(0.5);
+  &:hover{
+   filter:brightness(1);
 }
 `
 
-const currencies = [
-  { symbol: "TSLA", logo: "/img/ticker/TSLA.png" },
-  { symbol: "GOOGL", logo: "/img/ticker/GOOGL.png" },
-]
-
-
-
-
-
-const SearchBox = ({ currencies1, currency2, active, setActive }) => {
-  return (active &&
-    <Wrapper>
+const SearchBox = ({ currencies, balances, escapedType, selectToken, chainId, active, setActive }) => {
+  const Output = useMemo(() => {
+    return currencies && <Wrapper>
       <RowBetween fontWeight="300" >
         <Type.LG  >Select an asset</Type.LG>
         <StyledClose stroke="white" onClick={() => setActive(false)} />
@@ -125,29 +132,46 @@ const SearchBox = ({ currencies1, currency2, active, setActive }) => {
       </RowBetween>
       <Line my="5px"></Line>
       <TokensWrap>
-        {currencies.map((currency, id) => (
-          <TokenRow key={id}>
+        {Object.values(currencies).filter(c => c.conducted).map((currency, id) => {
+          return <TokenRow key={id} onClick={() => selectToken(currency, escapedType)}>
             <TokenWrap>
               <TokenLogo >
-                <StyledLogo size="37px" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
+                <StyledLogo size="37px" bgColor="#ffffff" src={currency?.logo || CircleToken} alt={currency?.symbol || "token"} />
               </TokenLogo>
               <Flex style={{ flexDirection: "column", marginLeft: "15px" }}>
-                <Type.XL fontWeight="300">{currency?.symbol}</Type.XL>
-                <Type.MD style={{ marginTop: "3px" }}  >{"apple inc"}</Type.MD>
+                <Type.LG fontWeight="300">{currency?.long_symbol}</Type.LG>
+                {/* <Type.SM style={{ marginTop: "3px", maxWidth: "150px" }}  >{currency?.name}</Type.SM> */}
               </Flex>
-
             </TokenWrap>
+
             <Flex style={{ flexDirection: "column", justifyContent: "center", marginLeft: "15px" }}>
-              <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || "0.00000000 L"} <Copy src="/img/copy2.svg" /> </Type.LG>
-              <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{currency?.balance || "0.00000000 S"} <Copy src="/img/copy2.svg" />  </Type.LG>
+              <RowFlat>
+                <Type.MD style={{ marginLeft: "10px", marginBottom: "3px", opacity: "0.75" }} >{balances && balances[currency.long?.address] ? balances[currency.long?.address] : "0"} S
+                </Type.MD>
+                <CopyToClipboard text={getTransactionLink(chainId, currency.long?.address, "token")}
+                  onCopy={() => console.log("copied")}>
+                  <Copy src="/img/copy2.svg" />
+                </CopyToClipboard>
+              </RowFlat>
+              <RowFlat mt="5px">
+                <Type.MD style={{ marginLeft: "10px", marginTop: "3px", opacity: "0.75" }} >{balances && balances[currency.short?.address] ? balances[currency.short?.address] : "0"} L
+                  <CopyToClipboard text={getTransactionLink(chainId, currency.short?.address, "token")}
+                    onCopy={() => console.log("copied")}>
+                    <Copy src="/img/copy2.svg" />
+                  </CopyToClipboard>
+                </Type.MD>
+              </RowFlat>
+
             </Flex>
 
           </TokenRow>
-        ))}
+        })}
 
       </TokensWrap>
     </Wrapper>
-  );
+  }, [currencies, chainId, escapedType, balances, selectToken, setActive])
+
+  return (active && Output);
 }
 
 export default SearchBox;

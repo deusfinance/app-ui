@@ -4,12 +4,12 @@ import { ChainMap } from "./web3";
 export const correctChains = [
     {
         url: "/swap",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/swap2",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
@@ -34,41 +34,41 @@ export const correctChains = [
     },
     {
         url: "/synchronizer",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/stake-and-yield",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/vaults",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/staking",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
     },
     {
         url: "/migrator",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/bakkt",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/musk",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/sealed-swap",
-        chains: [ChainMap.MAINNET],
+        chains: [ChainMap.ETH],
         exact: true,
     },
     {
@@ -83,7 +83,17 @@ export const correctChains = [
     },
     {
         url: "/muon-presale",
-        chains: [ChainMap.MAINNET],
+        chains: [ChainMap.ETH],
+        exact: true,
+    },
+    {
+        url: "/sync2",
+        chains: [ChainMap.BSC, ChainMap.XDAI, ChainMap.HECO, ChainMap.MATIC],
+        exact: true,
+    },
+    {
+        url: "/sync3",
+        chains: [ChainMap.BSC, ChainMap.BSC_TESTNET],
         exact: true,
     },
     {
@@ -93,17 +103,17 @@ export const correctChains = [
 ]
 
 export function getCorrectChains(path) {
-    if (path === "/") return [ChainMap.MAINNET]
+    if (path === "/") return [ChainMap.ETH]
     for (let i = 0; i < correctChains.length; i++) {
         if (path.includes(correctChains[i].url)) {
             if (correctChains[i].exact) {
                 if (correctChains[i].url === path)
                     return correctChains[i].chains
                 else
-                    return [ChainMap.MAINNET]
+                    return [ChainMap.ETH]
             }
             return correctChains[i].chains
         }
     }
-    return [ChainMap.MAINNET]
+    return [ChainMap.ETH]
 }

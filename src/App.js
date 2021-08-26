@@ -12,29 +12,21 @@ import { RecoilRoot } from 'recoil';
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
-// const Deus = React.lazy(() => import('./components/Deus'))
+// const Sync2 = React.lazy(() => import('./pages/Sync2'));
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
 const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
 const DeiBuyBackRecollateralize = React.lazy(() => import('./pages/Dei/BuyBackRecollateralize'))
 
-const Sealed = React.lazy(() => import('./pages/Sealed'))
 const Muon = React.lazy(() => import('./pages/Muon'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
 const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
 const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
 const SyncMain = React.lazy(() => import('./pages/SyncMain'))
 const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
-const NotFound = React.lazy(() => import('./components/NotFound'))
-
-// const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
-// const Bridge = React.lazy(() => import('./components/Bridge'))
+const NotFound = React.lazy(() => import('./pages/Errors'))
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));
-// const Sync = React.lazy(() => import('./pages/Sync'));
-// const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
-// const dbETH = React.lazy(() => import('./pages/dbETH'))
-
 
 function App() {
 
@@ -54,44 +46,24 @@ function App() {
                 <ToastContainer style={{ maxWidth: '450px', width: "90%" }} />
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
-                  <Route
-                    exact
-                    path="/crosschain/xdai/synchronizer"
-                    component={SyncXdai}
-                  />
-                  <Route
-                    exact
-                    path="/crosschain/bsc/synchronizer"
-                    component={SyncBSC}
-                  />
-                  <Route
-                    exact
-                    path="/crosschain/heco/synchronizer"
-                    component={SyncHeco}
-                  />
-                  <Route
-                    exact
-                    path="/crosschain/polygon/synchronizer"
-                    component={SyncMatic}
-                  />
+                  <Route exact path="/crosschain/xdai/synchronizer" component={SyncXdai} />
+                  <Route exact path="/crosschain/bsc/synchronizer" component={SyncBSC} />
+                  <Route exact path="/crosschain/heco/synchronizer" component={SyncHeco} />
+                  <Route exact path="/crosschain/polygon/synchronizer" component={SyncMatic} />
                   <Route exact path="/synchronizer" component={SyncMain} />
-                  {/* <Route exact path="/dbETH" component={dbETH} /> */}
-                  {/* <Route exact path="/bridge" component={Bridge} /> */}
                   <Route exact path="/swap2" component={Swap2} />
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />
                   <Route exact path="/stable/staking" component={DeiStaking} />
                   <Route exact path="/stable/redeem" component={DeiRedeem} />
                   <Route exact path="/stable/buyback-recollat" component={DeiBuyBackRecollateralize} />
-                  <Route exact path="/sealed-swap" component={Sealed} />
                   <Route exact path="/muon-presale" component={Muon} />
                   <Route path="/crosschain/:id/muon-presale" component={Muon} />
+                  {/* <Route exact path="/sync2" component={Sync2} /> */}
                   <Redirect exact from="/" to="/stable/mint" />
-                  {/* <Route path="/" component={Deus} /> */}
                   <Redirect to="not-found" />
                 </Switch>
               </div>
-              {/* <MarketNavbar /> */}
             </RecoilRoot>
           </RefreshContextProvider>
         </Web3ReactManager>

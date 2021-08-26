@@ -2,17 +2,18 @@ import React from 'react';
 import styled from 'styled-components'
 import { FlexCenter } from '../Container';
 import { Type } from '../Text';
+import BigNumber from 'bignumber.js';
 
 
 const Wrapper = styled.div`
     text-align:left;
+    display: flex;
+    justify-content: space-between;
     margin-top:20px;
     margin-left:6px;
     font-family:"Monument Grotesk Semi";
 
 `
-
-
 const SwapArrow = styled(FlexCenter)`
     display:inline-flex;
     cursor:pointer;
@@ -21,12 +22,35 @@ const SwapArrow = styled(FlexCenter)`
     }
 `
 
-const PriceBox = () => {
+
+const handleName = (state, invert) => {
+    const { from, to } = state
+    if (invert) return `${to.symbol} per ${from.symbol}`
+    return ` ${from.symbol} per ${to.symbol}`
+}
+
+
+const handleRatio = (amountIn, amountOut, invert) => {
+    if (!amountIn || !amountOut || isNaN(amountIn) || isNaN(amountOut)) return ""
+    if (parseFloat(amountIn) <= 0 || parseFloat(amountOut) <= 0) return ''
+    const amountInBig = new BigNumber(amountIn)
+    const amountOutBig = new BigNumber(amountOut)
+    if (invert) {
+        const invertRatio = amountOutBig.div(amountInBig, 10).toFixed(6, 0)
+        return `${invertRatio}`
+    }
+    const ratio = amountInBig.div(amountOutBig, 10).toFixed(6, 0)
+    return `${ratio}`
+}
+
+
+const RateBox = ({ show, currencies, marketPrice, amountIn, amountOut, invert, setInvert }) => {
+    const mp = marketPrice
     return (<Wrapper>
-        <Type.XS>Market Price @ 660.98</Type.XS>
-        <FlexCenter style={{ justifyContent: "left", marginTop: "5px" }}>
-            <Type.XS>660.98 xDAI per dTSLA</Type.XS>
-            <SwapArrow style={{ marginLeft: "5px" }} >
+        <Type.XS>{show && `Market Price @ ${mp}`}</Type.XS>
+        <FlexCenter style={{ justifyContent: "flex-end", }}>
+            <Type.XS>{handleRatio(amountIn, amountOut, invert)} {handleName(currencies, invert)}  </Type.XS>
+            <SwapArrow style={{ marginLeft: "5px" }} onClick={() => setInvert(!invert)}>
                 <svg width={15} height={15} viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx={5} cy={5} r={5} fill="white" fillOpacity="0.75" />
                     <path fillRule="evenodd" clipRule="evenodd" d="M2.14258 4.60404V4.05876C2.14258 3.29536 2.77119 2.69555 3.57124 2.69555H6.88575L6.22856 2.06847C6.11427 1.95941 6.11427 1.79583 6.22856 1.68677C6.34286 1.57772 6.5143 1.57772 6.62859 1.68677L7.77152 2.77734C7.80009 2.8046 7.82867 2.83187 7.82867 2.85913C7.85724 2.91366 7.85724 2.99545 7.82867 3.07725C7.80009 3.10451 7.80009 3.13177 7.77152 3.15904L6.62859 4.24961C6.57144 4.30413 6.5143 4.3314 6.42858 4.3314C6.34286 4.3314 6.28571 4.30413 6.22856 4.24961C6.11427 4.14055 6.11427 3.97696 6.22856 3.86791L6.88575 3.24083H3.57124C3.0855 3.24083 2.71404 3.59527 2.71404 4.05876V4.60404C2.71404 4.76763 2.59975 4.87668 2.42831 4.87668C2.25687 4.87668 2.14258 4.76763 2.14258 4.60404Z" fill="black" />
@@ -38,4 +62,4 @@ const PriceBox = () => {
     </Wrapper>);
 }
 
-export default PriceBox;
+export default RateBox;

@@ -12,13 +12,13 @@ export const useUsedAmount = (validChainId = 1) => {
     const { account } = useWeb3React()
     const bscWeb3 = useCrossWeb3(ChainMap.BSC)
     const xdaiWeb3 = useCrossWeb3(ChainMap.XDAI)
-    const ethWeb3 = useCrossWeb3(ChainMap.MAINNET)
+    const ethWeb3 = useCrossWeb3(ChainMap.ETH)
     const { fastRefresh } = useRefresh()
 
     const [used, setUsed] = useState(null)
     useEffect(() => {
         const get = async () => {
-            const resEth = await getUsedAmount(account, ChainMap.MAINNET, ethWeb3)
+            const resEth = await getUsedAmount(account, ChainMap.ETH, ethWeb3)
             const resBsc = await getUsedAmount(account, ChainMap.BSC, bscWeb3)
             const resXdai = await getUsedAmount(account, ChainMap.XDAI, xdaiWeb3)
             const sumUsed = new BigNumber(resEth).plus(resBsc).plus(resXdai).toFixed(2)

@@ -1,8 +1,8 @@
 import { Type } from "../../components/App/Text";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MainWrapper, SwapWrapper } from "../../components/App/Swap";
-import TokenBox from "../../components/App/NFT/TokenBox";
-import SwapAction from "../../components/App/NFT/SwapAction";
+import TokenBox from "../../components/App/Dei/TokenBox";
+import SwapAction from "../../components/App/Dei/SwapAction";
 import { MainTokens, TestTokens } from "../../constant/token";
 import useChain from "../../hooks/useChain";
 import { useSwap } from "../../hooks/useNFT";
@@ -26,6 +26,9 @@ const NFT = () => {
   const [isPreApproved, setIsPreApproved] = useState(null);
   const [approveLoading, setApproveLoading] = useState(false);
   const [swapLoading, setSwapLoading] = useState(false);
+
+  const tokensMap = {}
+  const TokensMap = tokensMap
 
   useEffect(() => {
     if (isPreApproved == null) {
@@ -111,8 +114,13 @@ const NFT = () => {
           swapLoading={swapLoading}
           handleApprove={handleApprove}
           handleSwap={handleSwap}
+          TokensMap={TokensMap}
           amountIn={amountIn}
+          swapState={null}
+          amountIn={amountIn}
+          amountOut={null}
         />
+
       </SwapWrapper>
     </MainWrapper>
   );

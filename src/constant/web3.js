@@ -28,7 +28,7 @@ export const NameChainMap = {
 }
 
 export const rpcConfig = {
-    [ChainMap.MAINNET]: {
+    [ChainMap.ETH]: {
         chainId: "0x1",
         chainName: "Ethereum Mainnet",
         nativeCurrency: {

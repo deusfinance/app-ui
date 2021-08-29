@@ -45,7 +45,6 @@ export const CostBox = (props) => {
     const collatRatio = useRecoilValue(collatRatioState)
     const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance } = useRecoilValue(husdPoolDataState)
     let costs = null
-
     if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling)
     else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance)
 

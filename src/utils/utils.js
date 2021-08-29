@@ -12,7 +12,7 @@ export const isDesktop = () => {
 
 
 export const formatUnitAmount = (amount, fixed = 3) => {
-    const bigAmount = new BigNumber(amount).times(1000000)
+    const bigAmount = new BigNumber(amount)
     if (bigAmount.gte(1000000)) {
         return bigAmount.div(1000000).toFixed(fixed).replace(/\.?0+$/, "") + "M"
     } else if (bigAmount.gte(1000)) {

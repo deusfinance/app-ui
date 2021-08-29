@@ -20,6 +20,7 @@ function truncate(str, n = 10) {
 export const CostBoxBuyBack = () => {
     const { availableExcessCollatDV } = useRecoilValue(husdPoolDataState)
     let availableBuyback = Math.max(availableExcessCollatDV, 0)
+    console.log(availableBuyback);
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     let deiPrices = useRecoilValue(deiPricesState)
     let deus_price = null

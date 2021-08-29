@@ -285,9 +285,8 @@ export const useAvailableRecollat = (validChainId) => {
             try {
                 const dei_info_result = await getDeiInfo(web3, validChainId)
                 let { "0": dei_total_supply, "1": global_collateral_ratio, "2": global_collat_value } = dei_info_result
-                let effective_collateral_ratio = (global_collat_value * (1e6)) / dei_total_supply;
-                let available_recollat = global_collateral_ratio * dei_total_supply - (dei_total_supply * effective_collateral_ratio) / (1e6)
-                setAvailableRecollat(available_recollat)
+                let recollat_possible = fromWei((global_collateral_ratio * dei_total_supply - (global_collat_value * (1e6))) / (1e6), 18);
+                setAvailableRecollat(recollat_possible)
             } catch (error) {
                 console.log("useAvailableRecollat ", error);
             }
@@ -344,7 +343,7 @@ export const useHusdPoolData = (validChainId) => {
 
                 const updateState = {
                     collatDollarBalance: fromWei(collatDollarBalance, 18),
-                    availableExcessCollatDV: new BigNumber(availableExcessCollatDV).toFixed(0),
+                    availableExcessCollatDV: new BigNumber(availableExcessCollatDV).div(1e18).toFixed(),
                     pool_ceiling: fromWei(pool_ceiling, 6),
                     redemption_fee: new BigNumber(redemption_fee).div(10000).toNumber(),
                     minting_fee: new BigNumber(minting_fee).div(10000).toNumber(),

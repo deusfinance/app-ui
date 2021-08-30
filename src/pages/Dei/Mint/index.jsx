@@ -46,28 +46,24 @@ const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
 
     const contractAddress = proxy ? PROXY_MINT_ADDRESS[chainId] : HUSD_POOL_ADDRESS[chainId]
-    const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
+    const tokens = useMemo(() => DEITokens
+        .filter((token) => (!token.chainId || token.chainId === chainId))
+        .filter((token) => (!token.pairID || token.pairID) && ((collatRatio > 0 && collatRatio < 100)))
+        , [chainId, collatRatio])
 
-    const pairedTokens = []
-
-    for (let i = 0; i < DEITokens.length; i++) {
-        const t = DEITokens[i]
-        if (t.pairID) {
-            let j = i + 1
-            for (; j < DEITokens.length; j++) {
-                const tt = DEITokens[j]
-                if (tt.pairID && t.pairID === tt.pairID) {
-                    j++
-                } else {
-                    break
-                }
+    const pairedTokens = useMemo(() => {
+        let pTokens = []
+        for (let i = 0; i < tokens.length; i++) {
+            const t = tokens[i]
+            if (t.pairID) {
+                pTokens.push(tokens.slice(i, i + 2))
+                i++
+            } else {
+                pTokens.push([tokens[i]])
             }
-            pairedTokens.push(DEITokens.slice(i, j))
-            i = j
-        } else {
-            pairedTokens.push([DEITokens[i]])
         }
-    }
+        return pTokens
+    }, [tokens])
 
     const tokensMap = {}
 
@@ -166,10 +162,15 @@ const Dei = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-    }, [chainId, account, swapState.from]);
+    }, [chainId, account, swapState.from, contractAddress]);
 
     useEffect(() => {
         setProxy(isProxyMinter(swapState.from, isPair, collatRatio))
+    }, [swapState.from, isPair, collatRatio])
+
+
+
+    useEffect(() => {
 
         if (isPreApproved == null) {
             if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
@@ -248,6 +249,8 @@ const Dei = () => {
     const changeToken = (token, type) => {
         setActiveSearchBox(false)
         setAmountIn("")
+        setAmountInPair("")
+
         const vsType = getSwapVsType(type)
 
         if (swapState[vsType].symbol === token.symbol) {
@@ -255,9 +258,10 @@ const Dei = () => {
         }
         if (token.pairID) {
             setIsPair(true)
-            let secondToken = DEITokens.filter(currToken => {
+            let secondToken = tokens.filter(currToken => {
                 return currToken.pairID === token.pairID && currToken.address !== token.address
             })[0]
+            console.log(secondToken);
             setPairToken(secondToken)
             setSwapState({ ...swapState, [type]: token })
             return

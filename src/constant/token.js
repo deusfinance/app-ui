@@ -99,6 +99,7 @@ export const DEITokens = [
     { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO },
     { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainMap.HECO, pairID: 1 },
     { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO, pairID: 1 },
+    { logo: "/tokens/ht.png", symbol: "HT", address: "0x", decimals: 18, chainId: ChainMap.HECO },
 ]
 
 export const DeusPath = {

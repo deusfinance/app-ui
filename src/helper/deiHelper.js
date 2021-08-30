@@ -5,7 +5,7 @@ import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
 import { getDeiContract, getDeiStakingContract, getHusdPoolContract } from "./contractHelpers"
-import { fromWei, getToWei } from "./formatBalance"
+import { getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
 const baseUrl = "https://oracle4.deus.finance/dei"
@@ -286,4 +286,12 @@ export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_pr
 
 export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)
+}
+
+export const isProxyMinter = (token, isPair, collatRatio) => {
+    if (!token || !collatRatio) return null
+    if ((collatRatio === 100 && token.symbol === "DEUS" && !isPair) ||
+        (collatRatio === 0 && token.symbol === "HUSD" && !isPair) ||
+        (collatRatio > 0 && collatRatio < 100 && isPair)) return false
+    return true
 }

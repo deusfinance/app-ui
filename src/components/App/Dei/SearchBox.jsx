@@ -75,8 +75,8 @@ const TokensWrap = styled.div`
 `
 
 
-const SearchBox = ({ currencies, pairedTokens, swapState, escapedType, changeToken, disableLoading = true, account, active, setActive }) => {
-
+const SearchBox = ({ currencies, pairedTokens, escapedType, changeToken, disableLoading = true, account, active, setActive }) => {
+  console.log(currencies);
   return (useMemo(() => active &&
     <ReactModal
       isOpen={active}

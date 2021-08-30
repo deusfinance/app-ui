@@ -41,7 +41,7 @@ const TokensRow = ({ tokens, currencies, account, handleClick, disableLoading })
                             <StyledLogo size="40px" src={token?.logo || CircleToken} alt={token?.symbol || "token"} />
                             <Type.LG style={{ marginLeft: "10px" }} >{token?.symbol}</Type.LG>
                         </TokenWrap>
-                        {!account || disableLoading || currencies[addressBalance].balance || isZero(currencies[addressBalance].balance)
+                        {!account || disableLoading || currencies[addressBalance]?.balance || isZero(currencies[addressBalance]?.balance)
                             ? <Type.LG style={{ marginLeft: "10px", opacity: "0.75" }} >{formatBalance3(currencies[addressBalance]?.balance) || 0}</Type.LG>
                             : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
                         }

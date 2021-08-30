@@ -43,12 +43,13 @@ export const DEI_POOL_ADDRESS = {
     [ChainMap.RINKEBY]: "0x7eb413811Dc56CA0BCd79272Da349fbbe2ee920d",
 }
 
-// export const HUSD_POOL_ADDRESS = {
-//     [ChainMap.RINKEBY]: "0x6DfD875fbe8F14b6F9e84Ba9821Dd058B774d2Bd",
-// }
-
 export const HUSD_POOL_ADDRESS = {
     [ChainMap.HECO]: "0x960690BBa6BFB18A5F05bf5399c038156aBa847d",
     [ChainMap.RINKEBY]: "0xA732f70840Ccd7f9cbf1aC2d9a523a6f78E49ee7",
+}
+
+export const PROXY_MINT_ADDRESS = {
+    [ChainMap.HECO]: "0xd25CF1D484CFE0d6DaeaF890D31AcC40b1DAc5f8",
+    [ChainMap.RINKEBY]: null,
 }
 

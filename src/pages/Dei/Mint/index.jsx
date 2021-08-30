@@ -14,7 +14,7 @@ import { useApprove } from '../../../hooks/useApprove';
 import { useAllowance } from '../../../hooks/useDei';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
+import { HUSD_POOL_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
@@ -22,6 +22,9 @@ import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
+import { isProxyMinter } from '../../../helper/deiHelper';
+import { getSwapVsType } from '../../../utils/utils';
+import SearchBox from '../../../components/App/Dei/SearchBox';
 
 const Dei = () => {
     const location = useLocation()
@@ -32,15 +35,40 @@ const Dei = () => {
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const deiPrices = useRecoilValue(deiPricesState)
     const [fastUpdate, setFastUpdate] = useState(0)
+    const [proxy, setProxy] = useState(null)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const [swapLoading, setSwapLoading] = useState(false)
     const { account } = useWeb3React()
-
+    const [escapedType, setEscapedType] = useState("from")
     const [isPair, setIsPair] = useState(false)
-    const contractAddress = HUSD_POOL_ADDRESS[chainId]
+    const [activeSearchBox, setActiveSearchBox] = useState(false)
+
+    const contractAddress = proxy ? PROXY_MINT_ADDRESS[chainId] : HUSD_POOL_ADDRESS[chainId]
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
+
+    const pairedTokens = []
+
+    for (let i = 0; i < DEITokens.length; i++) {
+        const t = DEITokens[i]
+        if (t.pairID) {
+            let j = i + 1
+            for (; j < DEITokens.length; j++) {
+                const tt = DEITokens[j]
+                if (tt.pairID && t.pairID === tt.pairID) {
+                    j++
+                } else {
+                    break
+                }
+            }
+            pairedTokens.push(DEITokens.slice(i, j))
+            i = j
+        } else {
+            pairedTokens.push([DEITokens[i]])
+        }
+    }
+
     const tokensMap = {}
 
     for (let i = 0; i < tokens.length; i++) {
@@ -130,6 +158,7 @@ const Dei = () => {
                 primaryToken = tokens[1]
             }
             setSwapState({ ...swapState, from: primaryToken })
+
         }
         if (collatRatio != null) changeFromTokens()
     }, [collatRatio]);// eslint-disable-line
@@ -140,6 +169,8 @@ const Dei = () => {
     }, [chainId, account, swapState.from]);
 
     useEffect(() => {
+        setProxy(isProxyMinter(swapState.from, isPair, collatRatio))
+
         if (isPreApproved == null) {
             if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
                 setIsPreApproved(null) //doNothing
@@ -209,15 +240,54 @@ const Dei = () => {
         }
     }, [onMint])
 
+    const showSearchBox = (active = false, type) => {
+        setEscapedType(type)
+        setActiveSearchBox(active)
+    }
+
+    const changeToken = (token, type) => {
+        setActiveSearchBox(false)
+        setAmountIn("")
+        const vsType = getSwapVsType(type)
+
+        if (swapState[vsType].symbol === token.symbol) {
+            return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
+        }
+        if (token.pairID) {
+            setIsPair(true)
+            let secondToken = DEITokens.filter(currToken => {
+                return currToken.pairID === token.pairID && currToken.address !== token.address
+            })[0]
+            setPairToken(secondToken)
+            setSwapState({ ...swapState, [type]: token })
+            return
+        }
+        setIsPair(false)
+        setSwapState({ ...swapState, [type]: token })
+    }
 
     // TODO: loader animation --> needs to fix at the end
-    // if (collatRatio === null || mintingFee === null) {
-    //     return (<div className="loader-wrap">
-    //         {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
-    //     </div>)
-    // }
+
+    if (!swapState.from.address || collatRatio === null || mintingFee === null) {
+        return (<div className="loader-wrap">
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+        </div>)
+    }
 
     return (<>
+
+        <SearchBox
+            account={account}
+            pairedTokens={pairedTokens}
+            currencies={TokensMap}
+            swapState={swapState}
+            escapedType={escapedType}
+            changeToken={changeToken}
+            disableLoading={false}
+            active={activeSearchBox}
+            setActive={setActiveSearchBox} />
+
+
         <MainWrapper>
             <ContentWrapper deactivated={mintPaused}>
                 <Type.XL fontWeight="300">Mint</Type.XL>
@@ -229,7 +299,7 @@ const Dei = () => {
                         hasMax={true}
                         inputAmount={amountIn}
                         setInputAmount={setAmountIn}
-                        setActive={null}
+                        setActive={showSearchBox}
                         currency={swapState.from}
                         TokensMap={TokensMap}
                         fastUpdate={fastUpdate}
@@ -291,6 +361,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
+                <SwapCard title="Minter" value={proxy === null ? "..." : proxy ? "Proxy" : "HUSD Pool"} />
                 <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} />
             </ContentWrapper>
         </MainWrapper>

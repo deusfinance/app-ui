@@ -11,20 +11,21 @@ import SwapAction from '../../../components/App/Dei/SwapAction';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
-import { useAllowance } from '../../../hooks/useDei';
+// import { useAllowance } from '../../../hooks/useAllowance';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { HUSD_POOL_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useMint } from '../../../hooks/useDei';
+import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import { isProxyMinter } from '../../../helper/deiHelper';
+import { isProxyMinter, getAmountOutProxy } from '../../../helper/deiHelper';
 import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
+import { useCrossWeb3 } from '../../../hooks/useWeb3';
 
 const Dei = () => {
     const location = useLocation()
@@ -32,12 +33,14 @@ const Dei = () => {
     const chainId = useChain(validNetworks)
     useDeiUpdate(chainId)
     const collatRatio = useRecoilValue(collatRatioState)
+    // const collatRatio = 100
+    const web3 = useCrossWeb3(chainId)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const deiPrices = useRecoilValue(deiPricesState)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [proxy, setProxy] = useState(null)
     const [isApproved, setIsApproved] = useState(null)
-    const [isPreApproved, setIsPreApproved] = useState(null)
+    // const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const [swapLoading, setSwapLoading] = useState(false)
     const { account } = useWeb3React()
@@ -45,10 +48,11 @@ const Dei = () => {
     const [isPair, setIsPair] = useState(false)
     const [activeSearchBox, setActiveSearchBox] = useState(false)
 
-    const contractAddress = proxy ? PROXY_MINT_ADDRESS[chainId] : HUSD_POOL_ADDRESS[chainId]
+    const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : HUSD_POOL_ADDRESS[chainId], [chainId, proxy])
+
     const tokens = useMemo(() => DEITokens
         .filter((token) => (!token.chainId || token.chainId === chainId))
-        .filter((token) => (!token.pairID || token.pairID) && ((collatRatio > 0 && collatRatio < 100)))
+        .filter((token) => !token.pairID || (token.pairID && ((collatRatio > 0 && collatRatio < 100))))
         , [chainId, collatRatio])
 
     const pairedTokens = useMemo(() => {
@@ -67,12 +71,14 @@ const Dei = () => {
 
     const tokensMap = {}
 
-    for (let i = 0; i < tokens.length; i++) {
-        const currToken = tokens[i]
-        const { address, pairID } = currToken
-        if (tokensMap[address]) tokensMap[address + pairID] = currToken
-        else tokensMap[address] = currToken
-    }
+    useEffect(() => {
+        for (let i = 0; i < tokens.length; i++) {
+            const currToken = tokens[i]
+            const { address, pairID } = currToken
+            if (tokensMap[address]) tokensMap[address + pairID] = currToken
+            else tokensMap[address] = currToken
+        }
+    }, [tokens])
 
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
@@ -111,27 +117,34 @@ const Dei = () => {
     }, [amountIn, amountInPair, amountOut, mintingFee, deiPrices]);// eslint-disable-line
 
 
-    const getAmountsTokens = (in1, in2, out) => {
+    const getAmountsTokens = async (in1, in2, out) => {
+
         if (deiPrices) {
             const { collateral_price, deus_price } = deiPrices
+
             const in1Unit = collatRatio === 0 ? deus_price : collateral_price
             const in2Unit = deus_price
 
             let amountOut = ""
             let amountIn1 = ""
             let amountIn2 = ""
-            if (in1) {
+            if (!proxy) {
+                if (in1) {
+                    amountIn1 = in1
+                    amountIn2 = (collatRatio > 0 && collatRatio < 100) ? RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).times(100 - collatRatio).div(collatRatio).div(in2Unit), pairToken.decimals) : 0
+                    amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
+                } else if (in2) {
+                    amountIn2 = in2
+                    amountIn1 = RemoveTrailingZero(new BigNumber(amountIn2).times(in2Unit).times(collatRatio).div(100 - collatRatio).div(in1Unit), swapState.from.decimals)
+                    amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
+                } if (out) {
+                    amountOut = out
+                    amountIn1 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(collatRatio).div(100).div(in1Unit), swapState.from.decimals, BigNumber.ROUND_DOWN)
+                    amountIn2 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals, BigNumber.ROUND_UP)
+                }
+            } else {
                 amountIn1 = in1
-                amountIn2 = (collatRatio > 0 && collatRatio < 100) ? RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).times(100 - collatRatio).div(collatRatio).div(in2Unit), pairToken.decimals) : 0
-                amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
-            } else if (in2) {
-                amountIn2 = in2
-                amountIn1 = RemoveTrailingZero(new BigNumber(amountIn2).times(in2Unit).times(collatRatio).div(100 - collatRatio).div(in1Unit), swapState.from.decimals)
-                amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
-            } if (out) {
-                amountOut = out
-                amountIn1 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(collatRatio).div(100).div(in1Unit), swapState.from.decimals, BigNumber.ROUND_DOWN)
-                amountIn2 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals, BigNumber.ROUND_UP)
+                amountOut = await getAmountOutProxy(swapState.from, amountIn, deus_price, [], web3, chainId)
             }
             setAmountIn(amountIn1)
             setAmountInPair(amountIn2)
@@ -160,9 +173,9 @@ const Dei = () => {
     }, [collatRatio]);// eslint-disable-line
 
     useEffect(() => {
-        setIsPreApproved(null)
+        // setIsPreApproved(null)
         setIsApproved(null)
-    }, [chainId, account, swapState.from, contractAddress]);
+    }, [chainId, account, isPair, swapState.from, contractAddress]);
 
     useEffect(() => {
         setProxy(isProxyMinter(swapState.from, isPair, collatRatio))
@@ -172,24 +185,34 @@ const Dei = () => {
 
     useEffect(() => {
 
-        if (isPreApproved == null) {
-            if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
-                setIsPreApproved(null) //doNothing
-            } else {
-                if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
-                    setIsPreApproved(true)
-                }
-                else {
-                    setIsPreApproved(false)
-                }
-            }
+        if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
+            setIsApproved(true)
+            // console.log("come 1");
         } else {
-            if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
-                setIsApproved(true)
-            }
+            setIsApproved(false)
+            // console.log("come 2");
         }
+
+
+        // if (isPreApproved == null) {
+        //     if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
+        //         setIsPreApproved(null) //doNothing
+        //     } else {
+        //         if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
+        //             setIsPreApproved(true)
+        //         }
+        //         else {
+        //             setIsPreApproved(false)
+        //         }
+        //     }
+        // } else {
+        //     if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
+        //         setIsApproved(true)
+        //     }
+        // }
+
         //eslint-disable-next-line 
-    }, [allowance, allowancePairToken, isPair]) //isPreApproved ?
+    }, [allowance, allowancePairToken, isApproved, proxy, isPair, contractAddress]) //isPreApproved ?
 
 
 
@@ -250,6 +273,10 @@ const Dei = () => {
         setActiveSearchBox(false)
         setAmountIn("")
         setAmountInPair("")
+
+        if (type === "from") {
+            setProxy(isProxyMinter(token, isPair, collatRatio))
+        }
 
         const vsType = getSwapVsType(type)
 
@@ -349,9 +376,9 @@ const Dei = () => {
                     <SwapAction
                         bgColor={"grad_dei"}
                         text="MINT"
-                        isPreApproved={isPreApproved}
-                        validNetworks={validNetworks}
+                        isPreApproved={true}
                         isApproved={isApproved}
+                        validNetworks={validNetworks}
                         targetToken={targetToken}
                         loading={approveLoading}
                         swapLoading={swapLoading}
@@ -361,6 +388,7 @@ const Dei = () => {
                         swapState={swapState}
                         amountIn={amountIn}
                         amountOut={amountOut}
+                        isMint={true}
                     />
 
                 </SwapWrapper>

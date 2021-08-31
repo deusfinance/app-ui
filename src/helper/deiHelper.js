@@ -4,7 +4,7 @@ import { ChainMap } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getHusdPoolContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getHusdPoolContract, getProxyMinterContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
@@ -283,15 +283,34 @@ export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_pr
         .call()
 }
 
+export const getAmountsOutNativeCoinToDei = async (native_amount, deus_price, path = [], web3, chainId = ChainMap.HECO) => {
+    console.log(native_amount, deus_price, path = [], web3);
+    return getProxyMinterContract(web3, chainId)
+        .methods
+        .getAmountsOutNativeCoinToDei(
+            getToWei(native_amount, 18).toFixed(0, BigNumber.ROUND_DOWN),
+            getToWei(deus_price, 6).toFixed(0, BigNumber.ROUND_DOWN),
+            []
+        )
+        .call()
+}
+
 
 export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)
 }
 
 export const isProxyMinter = (token, isPair, collatRatio) => {
-    if (!token || !collatRatio) return null
-    if ((collatRatio === 100 && token.symbol === "DEUS" && !isPair) ||
-        (collatRatio === 0 && token.symbol === "HUSD" && !isPair) ||
+    if (!token || collatRatio === null) return null
+    if ((collatRatio === 100 && token.symbol === "HUSD" && !isPair) ||
+        (collatRatio === 0 && token.symbol === "DEUS" && !isPair) ||
         (collatRatio > 0 && collatRatio < 100 && isPair)) return false
     return true
+}
+
+export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, path, web3, chainId) => {
+    if (!fromCurrency || !amountIn || deus_price === undefined) return ""
+    if (fromCurrency.address === "0x")
+        return getAmountsOutNativeCoinToDei(amountIn, deus_price, path, web3, chainId)
+    return "1.5"
 }

@@ -283,17 +283,16 @@ export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_pr
         .call()
 }
 
-export const getAmountsOutNativeCoinToDei = async (native_amount, deus_price, path = [], web3, chainId = ChainMap.HECO) => {
-    console.log(native_amount, deus_price, path = [], web3);
-    return getProxyMinterContract(web3, chainId)
-        .methods
-        .getAmountsOutNativeCoinToDei(
-            getToWei(native_amount, 18).toFixed(0, BigNumber.ROUND_DOWN),
-            getToWei(deus_price, 6).toFixed(0, BigNumber.ROUND_DOWN),
-            []
-        )
-        .call()
-}
+// export const getAmountsOutNativeCoinToDei = async (native_amount, deus_price, path = [], web3, chainId = ChainMap.HECO) => {
+//     return getProxyMinterContract(web3, chainId)
+//         .methods
+//         .getAmountsOutNativeCoinToDei(
+//             getToWei(native_amount, 18).toFixed(0, BigNumber.ROUND_DOWN),
+//             getToWei(deus_price, 6).toFixed(0, BigNumber.ROUND_DOWN),
+//             ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
+//         )
+//         .call()
+// }
 
 
 export const makeDeiRequest = async (path) => {
@@ -308,9 +307,33 @@ export const isProxyMinter = (token, isPair, collatRatio) => {
     return true
 }
 
-export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, path, web3, chainId) => {
+const mintPath = {
+    HT: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
+    USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
+}
+
+export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3, chainId) => {
     if (!fromCurrency || !amountIn || deus_price === undefined) return ""
-    if (fromCurrency.address === "0x")
-        return getAmountsOutNativeCoinToDei(amountIn, deus_price, path, web3, chainId)
-    return "1.5"
+    const amountInToWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
+    const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
+    let method = ""
+    let params = [amountInToWei, deusPriceWei]
+    const erc20Path = mintPath[fromCurrency.symbol]
+
+    if (fromCurrency.address === "0x") {
+        method = "getAmountsOutNativeCoinToDei"
+        params.push(erc20Path)
+    }
+    else if (fromCurrency.symbol === "HUSD") {
+        method = "getAmountsOutCollateralToDei"
+    }
+    else {
+        method = "getAmountsOutERC20ToDei"
+        if (!erc20Path) {
+            console.error("INVALID PATH with ", fromCurrency)
+            return
+        }
+        params.push(erc20Path)
+    }
+    return getProxyMinterContract(web3, chainId).methods[method](...params).call()
 }

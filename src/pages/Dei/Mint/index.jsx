@@ -19,7 +19,7 @@ import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { RemoveTrailingZero } from '../../../helper/formatBalance';
+import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import { isProxyMinter, getAmountOutProxy } from '../../../helper/deiHelper';
@@ -144,7 +144,8 @@ const Dei = () => {
                 }
             } else {
                 amountIn1 = in1
-                amountOut = await getAmountOutProxy(swapState.from, amountIn, deus_price, [], web3, chainId)
+                const amountOutProxy = await getAmountOutProxy(swapState.from, amountIn, deus_price, web3, chainId)
+                amountOut = amountOutProxy ? fromWei(amountOutProxy, 18) : ""
             }
             setAmountIn(amountIn1)
             setAmountInPair(amountIn2)

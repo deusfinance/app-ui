@@ -394,7 +394,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="Minter" value={proxy === null ? "..." : proxy ? "Proxy" : "HUSD Pool"} />
+                <SwapCard title="Minter Contract" value={proxy === null ? "..." : proxy ? "Proxy" : "HUSD Pool"} />
                 <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} />
             </ContentWrapper>
         </MainWrapper>

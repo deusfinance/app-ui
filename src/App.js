@@ -12,7 +12,7 @@ import { RecoilRoot } from 'recoil';
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
-// const Sync2 = React.lazy(() => import('./pages/Sync2'));
+const Sync2 = React.lazy(() => import('./pages/Sync2'));
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
@@ -59,7 +59,7 @@ function App() {
                   <Route exact path="/stable/buyback-recollat" component={DeiBuyBackRecollateralize} />
                   <Route exact path="/muon-presale" component={Muon} />
                   <Route path="/crosschain/:id/muon-presale" component={Muon} />
-                  {/* <Route exact path="/sync2" component={Sync2} /> */}
+                  <Route exact path="/sync2" component={Sync2} />
                   <Redirect exact from="/" to="/stable/mint" />
                   <Redirect to="not-found" />
                 </Switch>

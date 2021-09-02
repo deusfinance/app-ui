@@ -26,6 +26,7 @@ export const NameChainMap = {
     256: "HECOT",
     97: "BSCT",
     137: "POLYGON",
+    43114: "AVALANCHE"
 }
 
 export const rpcConfig = {

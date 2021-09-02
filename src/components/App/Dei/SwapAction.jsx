@@ -82,9 +82,8 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
             <ButtonSyncDeactivated >{checkError()}</ButtonSyncDeactivated>
         </WrapActions>
     }
-
     return (<>
-        {!isMint && isPreApproved ?
+        {(isMint && isApproved === true) || (!isMint && isPreApproved) ?
             <WrapActions>
                 <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>{text}
                     {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="40" height="40" />}

@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js"
 import { HUSD_POOL_ADDRESS } from "../constant/contracts"
+import { isZero } from "../constant/number"
 import { ChainMap } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
@@ -181,11 +182,13 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_price, ac
 }
 
 //WRITE FUNCTIONS
-export const SendWithToast = (fn, account, chainId, message) => {
+export const SendWithToast = (fn, account, chainId, message, payload) => {
     if (!fn) return
     let hash = null
+    const value = payload.value ? { value: payload.value } : {}
+    const customSend = { from: account, ...value }
     return fn
-        .send({ from: account })
+        .send(customSend)
         .once('transactionHash', (tx) => {
             hash = tx
             CustomTransaction(TransactionState.LOADING, {
@@ -231,6 +234,28 @@ export const RecollateralizeDEI = (collateral_price, deus_price, expire_block, s
         .recollateralizeDEI([amountIn, pool_collateral_price, [collateral_price], deus_price, expire_block, [signature]])
 }
 
+
+//Proxy Mint
+export const nativeCoinToDei = (amountIn, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out = "0", chainId, web3) => {
+    return getProxyMinterContract(web3, chainId)
+        .methods
+        .nativeCoinToDei(collateral_price, deus_price, expire_block, [signature], transferResidual, path, "0")
+}
+
+export const ERC20ToDei = (erc20amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out = "0", chainId, web3) => {
+    return getProxyMinterContract(web3, chainId)
+        .methods
+        .ERC20ToDei(erc20amount, collateral_price, deus_price, expire_block, [signature], transferResidual, path, "0")
+}
+
+export const collateralToDei = (collateral_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out = "0", chainId, web3) => {
+    return getProxyMinterContract(web3, chainId)
+        .methods
+        .collateralToDei(collateral_amount, collateral_price, deus_price, expire_block, [signature], transferResidual, "0")
+}
+
+
+//HUSD MINT
 export const mint1t1DEI = (collateral_amount, collateral_price, expire_block, signature, chainId, web3) => {
     return getHusdPoolContract(web3, chainId)
         .methods
@@ -283,17 +308,6 @@ export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_pr
         .call()
 }
 
-// export const getAmountsOutNativeCoinToDei = async (native_amount, deus_price, path = [], web3, chainId = ChainMap.HECO) => {
-//     return getProxyMinterContract(web3, chainId)
-//         .methods
-//         .getAmountsOutNativeCoinToDei(
-//             getToWei(native_amount, 18).toFixed(0, BigNumber.ROUND_DOWN),
-//             getToWei(deus_price, 6).toFixed(0, BigNumber.ROUND_DOWN),
-//             ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
-//         )
-//         .call()
-// }
-
 
 export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)
@@ -307,13 +321,13 @@ export const isProxyMinter = (token, isPair, collatRatio) => {
     return true
 }
 
-const mintPath = {
+export const mintPath = {
     HT: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
     USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
 }
 
 export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3, chainId) => {
-    if (!fromCurrency || !amountIn || deus_price === undefined) return ""
+    if (!fromCurrency || !amountIn || isZero(amountIn) || deus_price === undefined) return ""
     const amountInToWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
     const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
     let method = ""

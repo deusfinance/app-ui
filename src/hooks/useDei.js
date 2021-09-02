@@ -18,7 +18,7 @@ import {
 import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
-    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast, mint1t1DEI, collatUsdPrice
+    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast, mint1t1DEI, collatUsdPrice, mintPath, ERC20ToDei, nativeCoinToDei, collateralToDei
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
@@ -157,59 +157,121 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
     return { onRedeem: handleRedeem }
 }
 
-export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, validChainId) => {
+export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, proxy, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
+
+
     const handleMint = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
+        if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
+
+        const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
+
         let path = "/mint-algorithmic"
         let fn = null
-        if (collatRatio === 100) {
-            path = "/mint-1to1"
-            const result = await makeDeiRequest(path)
-            console.log(getToWei(amountIn1, from1Currency.decimals).toFixed(0),
-                result.collateral_price,
-                result.expire_block,
-                result.signature,
-                chainId,
-                web3);
-            fn = mint1t1DEI(
-                getToWei(amountIn1, from1Currency.decimals).toFixed(0),
-                result.collateral_price,
-                result.expire_block,
-                result.signature,
-                chainId,
-                web3,
-            )
-        } else if (collatRatio > 0) {
-            path = "/mint-fractional"
-            const result = await makeDeiRequest(path)
-            console.log(result.collateral_price);
-            console.log(result.collateral_price);
-            fn = mintFractional(
-                getToWei(amountIn1, from1Currency.decimals).toFixed(0),
-                getToWei(amountIn2, from2Currency.decimals).toFixed(0),
-                result.collateral_price.toString(),
-                result.deus_price,
-                result.expire_block,
-                result.signature,
-                chainId,
-                web3,
-            )
+        if (!proxy) {
+            if (collatRatio === 100) {
+                path = "/mint-1to1"
+                const result = await makeDeiRequest(path)
+                fn = mint1t1DEI(
+                    amount1toWei,
+                    result.collateral_price,
+                    result.expire_block,
+                    result.signature,
+                    chainId,
+                    web3,
+                )
+            } else if (collatRatio > 0) {
+                path = "/mint-fractional"
+                const result = await makeDeiRequest(path)
+                const amount2toWei = getToWei(amountIn2, from2Currency.decimals).toFixed(0)
+                fn = mintFractional(
+                    amount1toWei,
+                    amount2toWei,
+                    result.collateral_price.toString(),
+                    result.deus_price,
+                    result.expire_block,
+                    result.signature,
+                    chainId,
+                    web3,
+                )
+            } else {
+                const result = await makeDeiRequest(path)
+                fn = mintAlgorithmic(
+                    amount1toWei,
+                    result.deus_price,
+                    result.expire_block,
+                    result.signature,
+                    chainId,
+                    web3,
+                )
+            }
         } else {
-            const result = await makeDeiRequest(path)
-            fn = mintAlgorithmic(
-                getToWei(amountIn1, from1Currency.decimals).toFixed(0),
-                result.deus_price,
-                result.expire_block,
-                result.signature,
-                chainId,
-                web3,
-            )
+            path = "/mint-fractional"
+            try {
+                const result = await makeDeiRequest(path)
+                const { collateral_price, deus_price, expire_block, signature } = result
+                const erc20Path = mintPath[from1Currency.symbol]
+
+                if (from1Currency.address === "0x") {
+                    fn = nativeCoinToDei(
+                        amount1toWei,
+                        collateral_price,
+                        deus_price,
+                        expire_block,
+                        signature,
+                        false,
+                        erc20Path,
+                        null,
+                        chainId,
+                        web3
+                    )
+                }
+                else if (from1Currency.symbol === "HUSD") {
+                    console.log("log");
+                    fn = collateralToDei(
+                        amount1toWei,
+                        collateral_price,
+                        deus_price,
+                        expire_block,
+                        signature,
+                        false,
+                        null,
+                        chainId,
+                        web3
+                    )
+                }
+                else {
+                    if (!erc20Path) {
+                        console.error("INVALID PATH with ", from1Currency)
+                        return
+                    }
+                    fn = ERC20ToDei(
+                        amount1toWei,
+                        collateral_price,
+                        deus_price,
+                        expire_block,
+                        signature,
+                        false,
+                        erc20Path,
+                        null,
+                        chainId,
+                        web3
+                    )
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
-        return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`)
-    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, account, chainId, collatRatio, validChainId, web3])
+        const payload = from1Currency.address === "0x" ? { value: amount1toWei } : {}
+        try {
+            return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`, payload)
+        } catch (error) {
+            console.log(chainId);
+        }
+    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, validChainId, proxy, account, chainId, web3])
 
     return { onMint: handleMint }
 }

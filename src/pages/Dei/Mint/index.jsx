@@ -226,7 +226,7 @@ const Dei = () => {
 
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, chainId)
+    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, proxy, chainId)
 
     const handleApprove = useCallback(async () => {
         try {

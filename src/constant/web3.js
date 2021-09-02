@@ -11,6 +11,7 @@ export const ChainMap = {
     HECO_TESTNET: 256,
     MATIC: 137,
     MATIC_TESTNET: 0,
+    AVALANCHE: 43114,
 }
 
 export const NameChainMap = {
@@ -116,5 +117,16 @@ export const rpcConfig = {
         },
         rpcUrls: ["https://http-testnet.hecochain.com"],
         blockExplorerUrls: ["https://testnet.hecoinfo.com"],
+    },
+    [ChainMap.AVALANCHE]: {
+        chainId: "0xa86a",
+        chainName: "Avalanche Network",
+        nativeCurrency: {
+            name: "AVAX",
+            symbol: "AVAX",
+            decimals: 18,
+        },
+        rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
+        blockExplorerUrls: [" https://cchain.explorer.avax.network/"],
     },
 }

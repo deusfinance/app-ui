@@ -4,7 +4,7 @@ import { makeCostDataBuyBack } from '../../../helper/deiHelper'
 import { MainWrapper, FeeWrapper, FeeTitle, FeePrice } from './CostBox'
 import { useRecoilValue } from 'recoil';
 import { deiPricesState, availableRecollatState, husdPoolDataState } from '../../../store/dei';
-import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS } from '../../../constant/contracts';
 import { ExternalLink } from '../Link';
 
 const CostPriceTitle = styled.span`
@@ -20,12 +20,11 @@ function truncate(str, n = 10) {
 export const CostBoxBuyBack = () => {
     const { availableExcessCollatDV } = useRecoilValue(husdPoolDataState)
     let availableBuyback = Math.max(availableExcessCollatDV, 0)
-    console.log(availableBuyback);
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     let deiPrices = useRecoilValue(deiPricesState)
     let deus_price = null
     if (deiPrices) deus_price = deiPrices["deus_price"]
-    let costs = makeCostDataBuyBack(deus_price, truncate(HUSD_POOL_ADDRESS[128]), availableBuyback, availableRecollat, HUSD_POOL_ADDRESS[128], 128)
+    let costs = makeCostDataBuyBack(deus_price, truncate(COLLATERAL_POOL_ADDRESS[128]), availableBuyback, availableRecollat, COLLATERAL_POOL_ADDRESS[128], 128)
 
     return (
         useMemo(() => {

@@ -1,5 +1,6 @@
+import { collateralToDei } from '../helper/deiHelper';
 import { Token } from '../utils/classes';
-import { DEI_ADDRESS, HUSD_ADDRESS } from './contracts';
+import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEUS_ADDRESS } from './contracts';
 import { ChainMap } from './web3';
 
 export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
@@ -10,25 +11,30 @@ export const wxdaiToken = new Token(100, "0xe91d153e0b41518a2ce8dd3d7944fa863463
 
 export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 
+
 export const deiToken2 = {
     [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, DEI_ADDRESS[ChainMap.RINKEBY], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
     [ChainMap.HECO]: new Token(ChainMap.HECO, DEI_ADDRESS[ChainMap.HECO], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
-};
-export const husdToken = {
-    [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, HUSD_ADDRESS[ChainMap.RINKEBY], 18, "DEI", "DEI", "/tokens/husd.svg"),
-    [ChainMap.HECO]: new Token(ChainMap.HECO, HUSD_ADDRESS[ChainMap.HECO], 8, "HUSD", "HUSD", "/tokens/husd.svg"),
+    [ChainMap.AVALANCHE]: new Token(ChainMap.AVALANCHE, DEI_ADDRESS[ChainMap.AVALANCHE], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
 };
 
-export const deiToken = new Token(4, "0x3974DF053d7759C1B6d8a6164c963AabE2E635Eb", 18, "DEI", "DEI", "/img/Dei_logo.svg");
+export const collateralToken = {
+    [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, COLLATERAL_ADDRESS[ChainMap.RINKEBY], 18, "DEI", "DEI", "/tokens/husd.svg"),
+    [ChainMap.HECO]: new Token(ChainMap.HECO, COLLATERAL_ADDRESS[ChainMap.HECO], 8, "HUSD", "HUSD", "/tokens/husd.svg"),
+    [ChainMap.AVALANCHE]: new Token(ChainMap.AVALANCHE, COLLATERAL_ADDRESS[ChainMap.AVALANCHE], 18, "DAI", "DAI", "/tokens/dai.png"),
+}
 
-export const deiHusdLpToken = {
+
+export const deiCollateralLpToken = {
     [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, "0x8f3906394382a7e30961ACDf217b9FBf242c1B96", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
     [ChainMap.HECO]: new Token(ChainMap.HECO, "0xcd9383b17264D32F690E1192B5967514034b168D", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
+    [ChainMap.AVALANCHE]: new Token(ChainMap.AVALANCHE, "0x33cf66920F25e0233cd429114CfD06DA3886EEb2", 18, "DEI-DAI", "DEI-DAI", "/img/Dei_logo.svg"),
 }
 
 export const deiDeusLpToken = {
     [ChainMap.RINKEBY]: new Token(4, "0x5e2ce79ca56c5EA39530BBFe8fEd68aFc69e6B4D", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
     [ChainMap.HECO]: new Token(ChainMap.HECO, "0xd0B9d3A52fa1dAee082F9ac998b9fB49F6bb7a16", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+    [ChainMap.AVALANCHE]: new Token(ChainMap.AVALANCHE, "0x6c3de04c121D6754bbb963F183ab31734e6a0e9b", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
 }
 
 
@@ -101,6 +107,12 @@ export const DEITokens = [
     { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO, pairID: 1 },
     { logo: "/tokens/ht.png", symbol: "HT", address: "0x", decimals: 18, chainId: ChainMap.HECO },
     { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xa71edc38d189767582c38a3145b5873052c3e47a", decimals: 18, chainId: ChainMap.HECO },
+
+    { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE },
+    { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE },
+    { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE, pairID: 1 },
+    { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE, pairID: 1 },
+
 ]
 
 export const DeusPath = {

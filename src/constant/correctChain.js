@@ -14,7 +14,7 @@ export const correctChains = [
     },
     {
         url: "/stable",
-        chains: [ChainMap.HECO, ChainMap.RINKEBY],
+        chains: [ChainMap.HECO, ChainMap.AVALANCHE, ChainMap.RINKEBY],
     },
     {
         url: "/crosschain/xdai",

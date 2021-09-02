@@ -22,7 +22,7 @@ import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
 import { useDeiUpdateBuyBack, useAllowance } from '../../../hooks/useDei';
 import { availableRecollatState, deiPricesState, husdPoolDataState } from '../../../store/dei';
-import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS } from '../../../constant/contracts';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 
@@ -75,7 +75,7 @@ const Dei = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
-    const contractAddress = HUSD_POOL_ADDRESS[chainId]
+    const contractAddress = COLLATERAL_POOL_ADDRESS[chainId]
 
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
     const tokensMap = {}
@@ -88,8 +88,8 @@ const Dei = () => {
     }
 
     const TokensMap = tokensMap
-    let primaryToken = tokens.filter(token => token.symbol === "DEUS")[0]
-    let secondaryToken = tokens.filter(token => token.symbol === "HUSD")[0]
+    let primaryToken = tokens[2]
+    let secondaryToken = tokens[3]
     const swapState = { from: secondaryToken, to: primaryToken }
     const [amountIn1, setAmountIn1] = useState("")
     const [amountIn2, setAmountIn2] = useState("")

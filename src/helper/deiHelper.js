@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js"
-import { HUSD_POOL_ADDRESS } from "../constant/contracts"
+import { COLLATERAL_POOL_ADDRESS } from "../constant/contracts"
 import { isZero } from "../constant/number"
+import { collateralToken } from "../constant/token"
 import { ChainMap } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
@@ -111,69 +112,69 @@ export const getStakingTokenData = (conf, account) => {
 export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_price, account) => {
     let calls = [
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'collatDollarBalance',
             params: [collat_usd_price],
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'availableExcessCollatDV',
             params: [[collat_usd_price]]
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'pool_ceiling',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'redemption_fee',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'minting_fee',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'buyback_fee',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'recollat_fee',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'recollateralizePaused',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'buyBackPaused',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'mintPaused',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'redeemPaused',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'bonus_rate',
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'redemption_delay',
         },
     ]
     if (account) {
         calls = [...calls,
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'redeemDEUSBalances',
             params: [account]
         },
         {
-            address: HUSD_POOL_ADDRESS[chainId],
+            address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'redeemCollateralBalances',
             params: [account]
         }]
@@ -182,7 +183,7 @@ export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_price, ac
 }
 
 //WRITE FUNCTIONS
-export const SendWithToast = (fn, account, chainId, message, payload) => {
+export const SendWithToast = (fn, account, chainId, message, payload = {}) => {
     if (!fn) return
     let hash = null
     const value = payload.value ? { value: payload.value } : {}
@@ -313,9 +314,9 @@ export const makeDeiRequest = async (path) => {
     return fetcher(baseUrl + path)
 }
 
-export const isProxyMinter = (token, isPair, collatRatio) => {
+export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
     if (!token || collatRatio === null) return null
-    if ((collatRatio === 100 && token.symbol === "HUSD" && !isPair) ||
+    if ((collatRatio === 100 && token.symbol === collateralToken[chainId]?.symbol && !isPair) ||
         (collatRatio === 0 && token.symbol === "DEUS" && !isPair) ||
         (collatRatio > 0 && collatRatio < 100 && isPair)) return false
     return true

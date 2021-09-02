@@ -22,7 +22,7 @@ import {
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
-import { husdToken } from '../constant/token'
+import { collateralToken } from '../constant/token'
 
 export const useDeposit = (currency, amount, address, validChainId) => {
     const web3 = useWeb3()
@@ -287,19 +287,24 @@ export const useStakingInfo = (conf, validChainId) => {
 
     useEffect(() => {
         const get = async () => {
-            const mul = await multicall(web3, StakingDeiAbi, getStakingData(conf, account), chainId)
-            const [
-                users,
-                pendingReward
-            ] = mul
-            const { depositAmount, paidReward } = users
+            try {
+                const mul = await multicall(web3, StakingDeiAbi, getStakingData(conf, account), validChainId)
+                const [
+                    users,
+                    pendingReward
+                ] = mul
+                const { depositAmount, paidReward } = users
 
-            setRes({
-                ...conf,
-                depositAmount: RemoveTrailingZero(fromWei(depositAmount["_hex"], 18), 18),
-                paidReward: RemoveTrailingZero(fromWei(paidReward["_hex"], 18), 18),
-                pendingReward: formatBalance3(fromWei(pendingReward, 18), 6),
-            })
+                setRes({
+                    ...conf,
+                    depositAmount: RemoveTrailingZero(fromWei(depositAmount["_hex"], 18), 18),
+                    paidReward: RemoveTrailingZero(fromWei(paidReward["_hex"], 18), 18),
+                    pendingReward: formatBalance3(fromWei(pendingReward, 18), 6),
+                })
+            } catch (error) {
+                console.log("useStakingInfo ", error);
+            }
+
         }
         if (web3 && account) {
             get()
@@ -312,22 +317,28 @@ export const useTokenInfo = (conf, validChainId) => {
     const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
     const { fastRefresh } = useRefresh()
-
     const [res, setRes] = useState(conf)
     useEffect(() => {
         const get = async () => {
-            const mul = await multicall(web3, ERC20Abi, getStakingTokenData(conf, account), chainId)
-            const [
-                allowance,
-                depositTokenWalletBalance,
-                totalDepositBalance
-            ] = mul
-            setRes({
-                ...conf,
-                allowance: new BigNumber(allowance),
-                depositTokenWalletBalance: fromWei(depositTokenWalletBalance),
-                totalDepositBalance: fromWei(totalDepositBalance),
-            })
+            try {
+                const mul = await multicall(web3, ERC20Abi, getStakingTokenData(conf, account), validChainId)
+
+                const [
+                    allowance,
+                    depositTokenWalletBalance,
+                    totalDepositBalance
+                ] = mul
+                setRes({
+                    ...conf,
+                    allowance: new BigNumber(allowance),
+                    depositTokenWalletBalance: fromWei(depositTokenWalletBalance),
+                    totalDepositBalance: fromWei(totalDepositBalance),
+                })
+            } catch (error) {
+                console.log("useTokenInfo ", error);
+
+            }
+
         }
         if (web3 && account && conf) {
             get()
@@ -418,7 +429,7 @@ export const useHusdPoolData = (validChainId) => {
                     buyBackPaused: buyBackPaused[0],
                     recollateralizePaused: recollateralizePaused[0],
                     redeemDEUSBalances: account ? fromWei(redeemDEUSBalances, 18) : "0",
-                    redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, husdToken[validChainId].decimals) : "0",
+                    redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, collateralToken[validChainId].decimals) : "0",
                 }
                 setHusdPoolData({ ...updateState })
             } catch (error) {
@@ -493,7 +504,7 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
 
     useEffect(() => {
         const fetchAllowance = async () => {
-            if (!tokenAddress) return setAllowance(ZERO)
+            if (!tokenAddress || contractAddress === undefined) return setAllowance(ZERO)
             if (validChainId && chainId !== validChainId) setAllowance(ZERO)
             if (contract === null) setAllowance(ethers.constants.MaxUint256)
             else if (currency.allowance) { setAllowance(currency.allowance) }

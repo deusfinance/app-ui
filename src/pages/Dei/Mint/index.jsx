@@ -11,10 +11,9 @@ import SwapAction from '../../../components/App/Dei/SwapAction';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
-// import { useAllowance } from '../../../hooks/useAllowance';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { HUSD_POOL_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
@@ -48,7 +47,7 @@ const Dei = () => {
     const [isPair, setIsPair] = useState(false)
     const [activeSearchBox, setActiveSearchBox] = useState(false)
 
-    const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : HUSD_POOL_ADDRESS[chainId], [chainId, proxy])
+    const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
 
     const tokens = useMemo(() => DEITokens
         .filter((token) => (!token.chainId || token.chainId === chainId))
@@ -179,7 +178,7 @@ const Dei = () => {
     }, [chainId, account, isPair, swapState.from, contractAddress]);
 
     useEffect(() => {
-        setProxy(isProxyMinter(swapState.from, isPair, collatRatio))
+        setProxy(isProxyMinter(swapState.from, isPair, collatRatio, chainId))
     }, [swapState.from, isPair, collatRatio])
 
 
@@ -193,24 +192,6 @@ const Dei = () => {
             setIsApproved(false)
             // console.log("come 2");
         }
-
-
-        // if (isPreApproved == null) {
-        //     if (allowance.toString() === "-1" || (isPair ? allowancePairToken.toString() === "-1" : false)) {
-        //         setIsPreApproved(null) //doNothing
-        //     } else {
-        //         if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
-        //             setIsPreApproved(true)
-        //         }
-        //         else {
-        //             setIsPreApproved(false)
-        //         }
-        //     }
-        // } else {
-        //     if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
-        //         setIsApproved(true)
-        //     }
-        // }
 
         //eslint-disable-next-line 
     }, [allowance, allowancePairToken, isApproved, proxy, isPair, contractAddress]) //isPreApproved ?
@@ -276,7 +257,7 @@ const Dei = () => {
         setAmountInPair("")
 
         if (type === "from") {
-            setProxy(isProxyMinter(token, isPair, collatRatio))
+            setProxy(isProxyMinter(token, isPair, collatRatio, chainId))
         }
 
         const vsType = getSwapVsType(type)
@@ -394,7 +375,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
-                <SwapCard title="Minter Contract" value={proxy === null ? "..." : proxy ? "Proxy" : "HUSD Pool"} />
+                <SwapCard title="Minter Contract" value={proxy === null ? "..." : proxy ? "Proxy" : "Collateral Pool"} />
                 <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} />
             </ContentWrapper>
         </MainWrapper>

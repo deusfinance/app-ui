@@ -10,7 +10,7 @@ import { useApprove } from '../../../hooks/useApprove';
 import { DEITokens, deiToken2 } from '../../../constant/token';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { HUSD_POOL_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS } from '../../../constant/contracts';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
 import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
@@ -42,7 +42,7 @@ const Dei = () => {
     const { account } = useWeb3React()
 
     const [isPair, setIsPair] = useState(false)
-    const contractAddress = HUSD_POOL_ADDRESS[chainId]
+    const contractAddress = COLLATERAL_POOL_ADDRESS[chainId]
 
     const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
     const tokensMap = {}

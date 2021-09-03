@@ -50,7 +50,7 @@ export function colors(darkMode) {
     bg_warning: darkMode ? "rgba(255, 85, 85, 0.2)" : "#d4d3d3",
 
     sync_active: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)' : "linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)",
-    sync_dactive: darkMode ? 'rgb(28, 28, 28)' : "rgb(200, 28, 28)",
+    deactivated: darkMode ? 'rgb(28, 28, 28)' : "rgb(200, 28, 28)",
 
     //gradinant
     grad1: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%)' : 'linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%)',

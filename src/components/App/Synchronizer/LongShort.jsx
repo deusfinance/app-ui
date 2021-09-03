@@ -16,7 +16,7 @@ const WrapActions = styled.div`
   }
 `;
 const ButtonSelect = styled.div`
-  background: ${({ active, theme, bg }) => active ? bg : theme.sync_dactive};
+  background: ${({ active, theme, bg }) => active ? bg : theme.sync_deactivated};
   color: ${({ theme, color, active }) => active ? color ? color : theme.text1_2 : theme.text1};
   opacity: ${({ active }) => active ? 1 : 0.5};
   display: flex;

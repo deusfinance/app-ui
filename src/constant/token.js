@@ -4,11 +4,7 @@ import { ChainMap } from './web3';
 
 export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
 export const muonToken = new Token(1, null, 18, "MUON", "MUON", "/tokens/muon.svg");
-
 export const xdaiToken = new Token(100, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
-export const wxdaiToken = new Token(100, "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d", 18, "wxDAI", "wxDAI", "/tokens/xdai.svg");
-
-export const busdToken = new Token(56, "0xe9e7cea3dedca5984780bafc599bd69add087d56", 18, "BUSD", "BUSD", "/tokens/busd.svg");
 
 
 export const deiToken2 = {
@@ -35,12 +31,6 @@ export const deiDeusLpToken = {
     [ChainMap.HECO]: new Token(ChainMap.HECO, "0xd0B9d3A52fa1dAee082F9ac998b9fB49F6bb7a16", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
     [ChainMap.AVALANCHE]: new Token(ChainMap.AVALANCHE, "0x6c3de04c121D6754bbb963F183ab31734e6a0e9b", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
 }
-
-
-export const busdTestToken = new Token(97, "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47", 18, "BUSD", "BUSD", "/tokens/busd.svg");
-export const bnbTestToken = new Token(97, null, 18, "BNB", "BNB", "/tokens/busd.svg");
-export const dgmeTestToken = new Token(97, "0xf923835cf23370a90784eb794f5b0098833015f1", 18, "dGME", "GameStop Corp. Long DEUS Sync V1", "/img/ticker/GME.png");
-export const dAmcTestToken = new Token(56, "0xc36827ac37a92f6353125ce6c84fb625cc4bd202", 18, "dAMC", "AMC Entertainment Holdings Inc Long DEUS Synthetic V1", "/img/ticker/AMC.png");
 
 export const isNative = (address, chainId) => {
     return address === "0x"
@@ -94,6 +84,9 @@ export const MuonPreSaleTokens = [
     ...SealedTokens,
 ]
 
+
+
+
 export const DEITokens = [
     { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4 },
     { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4 },
@@ -117,20 +110,6 @@ export const DEITokens = [
 export const DeusPath = {
     "deus": {
         "eth": true,
-        "bakkt": true,
-        "coinbase": true
-    },
-    "dea": {
-        "spcx": true,
-    },
-    "coinbase": {
-        "deus": true,
-    },
-    "bakkt": {
-        "deus": true,
-    },
-    "spcx": {
-        "dea": true,
     },
     "eth": {
         "deus": true,

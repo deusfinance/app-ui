@@ -22,8 +22,8 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
     useEffect(() => {
         const fetchAllowance = async () => {
             if (contract === null) setAllowance(ethers.constants.MaxUint256)
-            else if (currency.stable && !SyncConfig.isStableApprovable) setAllowance(ethers.constants.MaxUint256)
-            else if (!currency.stable && !SyncConfig.isAssetApprovable) setAllowance(ethers.constants.MaxUint256)
+            else if (currency.stable && !SyncConfig.isStableApprove) setAllowance(ethers.constants.MaxUint256)
+            else if (!currency.stable && !SyncConfig.isAssetApprove) setAllowance(ethers.constants.MaxUint256)
             else if (validChainId && chainId !== validChainId) setAllowance(ZERO)
             else {
                 const alow = await contract.methods.allowance(account, contractAddress).call()

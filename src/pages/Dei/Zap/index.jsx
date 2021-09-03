@@ -193,7 +193,7 @@ const Zap = () => {
                             chainId={chainId}
                         />
 
-                        <Image src="/img/dei/zap.svg" alt="zap" mx="23px" />
+                        <Image src="/img/dei/zap.svg" alt="zap" mx="23px" my="15px" height="39px" weight="21px" />
 
                         <ZapStakingBox
                             type="to"

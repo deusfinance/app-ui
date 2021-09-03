@@ -57,6 +57,10 @@ export const COLLATERAL_POOL_ADDRESS = {
 
 export const PROXY_MINT_ADDRESS = {
     [ChainMap.HECO]: "0xd25CF1D484CFE0d6DaeaF890D31AcC40b1DAc5f8",
-    [ChainMap.RINKEBY]: null,
+    [ChainMap.AVALANCHE]: "0x118ea9a7f281aBC0517359d5e34BEEc56fDf3B15",
+}
+
+export const ZAP_ADDRESS = {
+    [ChainMap.AVALANCHE]: "0x9fcbF85D419905537b9721A4C3B8E74cF57cC8D1",
 }
 

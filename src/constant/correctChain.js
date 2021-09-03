@@ -3,18 +3,13 @@ import { ChainMap } from "./web3";
 //Always we use first chainId as prefer chain
 export const correctChains = [
     {
-        url: "/swap",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
-        exact: true,
-    },
-    {
         url: "/swap2",
         chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },
     {
         url: "/stable",
-        chains: [ChainMap.HECO, ChainMap.AVALANCHE, ChainMap.RINKEBY],
+        chains: [ChainMap.AVALANCHE, ChainMap.HECO, ChainMap.RINKEBY],
     },
     {
         url: "/crosschain/xdai",
@@ -34,35 +29,6 @@ export const correctChains = [
     },
     {
         url: "/synchronizer",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
-        exact: true,
-    },
-    {
-        url: "/stake-and-yield",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
-        exact: true,
-    },
-    {
-        url: "/vaults",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
-        exact: true,
-    },
-    {
-        url: "/staking",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
-    },
-    {
-        url: "/migrator",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
-        exact: true,
-    },
-    {
-        url: "/bakkt",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
-        exact: true,
-    },
-    {
-        url: "/musk",
         chains: [ChainMap.ETH, ChainMap.RINKEBY],
         exact: true,
     },

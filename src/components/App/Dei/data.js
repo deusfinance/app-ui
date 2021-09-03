@@ -6,6 +6,10 @@ export const urls = [{
   link: '/stable/mint'
 },
 {
+  name: 'Zap',
+  link: '/stable/zap'
+},
+{
   name: 'Staking',
   link: '/stable/staking'
 },

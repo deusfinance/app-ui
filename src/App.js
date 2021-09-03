@@ -15,6 +15,7 @@ import './assets/styles/base.scss'
 const Sync2 = React.lazy(() => import('./pages/Sync2'));
 const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
+const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
 const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
 const DeiBuyBackRecollateralize = React.lazy(() => import('./pages/Dei/BuyBackRecollateralize'))
@@ -54,6 +55,7 @@ function App() {
                   <Route exact path="/swap2" component={Swap2} />
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />
+                  <Route exact path="/stable/zap" component={DeiZap} />
                   <Route exact path="/stable/staking" component={DeiStaking} />
                   <Route exact path="/stable/redeem" component={DeiRedeem} />
                   <Route exact path="/stable/buyback-recollat" component={DeiBuyBackRecollateralize} />

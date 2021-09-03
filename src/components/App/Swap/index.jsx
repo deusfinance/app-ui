@@ -13,7 +13,7 @@ export const InputAmount = styled.input.attrs({
     outline-style: none;
     width: ${({ width }) => width || "0px"};
     font-size: ${({ fontSize }) => fontSize || "25px"};
-     color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.text1};
     background: transparent;
 
 `

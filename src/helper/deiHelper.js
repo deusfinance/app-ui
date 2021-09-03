@@ -6,7 +6,7 @@ import { ChainMap } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getHusdPoolContract, getProxyMinterContract, getZapContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getProxyMinterContract, getZapContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
@@ -224,13 +224,13 @@ export const DeiWithdraw = (withdrawToken, amount, address, web3) => {
 }
 
 export const buyBackDEUS = (amountIn, deus_price, expire_block, signature, pool_collateral_price = "0", account, chainId, web3) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .buyBackDEUS(amountIn, [pool_collateral_price], deus_price, expire_block, [signature])
 }
 
 export const RecollateralizeDEI = (collateral_price, deus_price, expire_block, signature, amountIn, pool_collateral_price, account, chainId, web3) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .recollateralizeDEI([amountIn, pool_collateral_price, [collateral_price], deus_price, expire_block, [signature]])
 }
@@ -264,43 +264,43 @@ export const DeusToDei = (deus_amount, collateral_price, deus_price, expire_bloc
 
 //HUSD MINT
 export const mint1t1DEI = (collateral_amount, collateral_price, expire_block, signature, chainId, web3) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .mint1t1DEI(collateral_amount, collateral_price, expire_block, [signature])
 }
 
 export const mintFractional = (collateral_amount, deus_amount, collateral_price, deus_current_price, expireBlock, signature, chainId, web3) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .mintFractionalDEI(collateral_amount, deus_amount, collateral_price, deus_current_price, expireBlock, [signature])
 }
 
 export const mintAlgorithmic = (deus_amount_d18, deus_current_price, expire_block, signature, chainId, web3) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .mintAlgorithmicDEI(deus_amount_d18, deus_current_price, expire_block, [signature])
 }
 
 export const redeem1to1Dei = (amountIn, collateral_price, expire_block, signature, chainId, web3) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .redeem1t1DEI(amountIn, collateral_price, expire_block, [signature])
 }
 
 export const redeemFractionalDei = (collateral_price, deus_price, expire_block, signature, amountIn, chainId, web3) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .redeemFractionalDEI(amountIn, collateral_price, deus_price, expire_block, [signature])
 }
 
 export const redeemAlgorithmicDei = (deus_price, expire_block, signature, amountIn, chainId, web3) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .redeemAlgorithmicDEI(amountIn, deus_price, expire_block, [signature])
 }
 
 export const getClaimAll = async (account, web3, chainId = ChainMap.RINKEBY) => {
-    return getHusdPoolContract(web3, chainId)
+    return getCollateralPoolContract(web3, chainId)
         .methods
         .collectRedemption()
         .send({ from: account })
@@ -329,8 +329,14 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
 }
 
 export const mintPath = {
-    HT: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
-    USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
+    [ChainMap.HECO]: {
+        HT: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
+        USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
+    },
+    [ChainMap.AVALANCHE]: {
+        AVAX: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
+        USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
+    },
 }
 
 export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3, chainId) => {
@@ -339,7 +345,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
     const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
     let method = ""
     let params = [amountInToWei, deusPriceWei]
-    const erc20Path = mintPath[fromCurrency.symbol]
+    const erc20Path = mintPath[chainId][fromCurrency.symbol]
 
     if (fromCurrency.address === "0x") {
         method = "getAmountsOutNativeCoinToDei"
@@ -363,7 +369,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
 }
 
 export const zapIn = (currency, staking, amountIn, minLpAmount, transferResidual, web3, chainId) => {
-    const erc20Path = mintPath[currency.symbol]
+    const erc20Path = mintPath[chainId][currency.symbol]
 
     if (currency.address === "0x")
         return getZapContract(web3, chainId)

@@ -3,6 +3,7 @@ import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
 import { DEITokens, deiToken } from '../../../constant/token';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
+import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { Type } from '../../../components/App/Text';
 import { Image } from 'rebass/styled-components';
@@ -47,7 +48,7 @@ const Dei = () => {
     const [escapedType, setEscapedType] = useState("from")
     const [isPair, setIsPair] = useState(false)
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-
+    const [slippage, setSlippage] = useState(0.5)
     const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
@@ -213,7 +214,7 @@ const Dei = () => {
 
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, proxy, chainId)
+    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -381,6 +382,7 @@ const Dei = () => {
 
                 </SwapWrapper>
 
+                <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />
                 <SwapCard title="Minter Contract" value={proxy === null ? "..." : proxy ? "Proxy" : "Collateral Pool"} />
                 <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} />
             </ContentWrapper>

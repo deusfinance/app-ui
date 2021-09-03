@@ -177,7 +177,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
     return { onRedeem: handleRedeem }
 }
 
-export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, proxy, validChainId) => {
+export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
@@ -188,7 +188,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
 
         const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
-
+        const minAmountOut = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
         let path = "/mint-algorithmic"
         let fn = null
         if (!proxy) {
@@ -233,7 +233,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             try {
                 const result = await makeDeiRequest(path)
                 const { collateral_price, deus_price, expire_block, signature } = result
-                const erc20Path = mintPath[from1Currency.symbol]
+                const erc20Path = mintPath[chainId][from1Currency.symbol]
 
                 if (from1Currency.address === "0x") {
                     fn = nativeCoinToDei(
@@ -244,12 +244,13 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                         signature,
                         false,
                         erc20Path,
-                        "0",
+                        minAmountOut,
                         chainId,
                         web3
                     )
                 }
                 else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
+
                     fn = collateralToDei(
                         amount1toWei,
                         collateral_price,
@@ -257,7 +258,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                         expire_block,
                         signature,
                         false,
-                        "0",
+                        minAmountOut,
                         chainId,
                         web3
                     )
@@ -270,7 +271,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                         expire_block,
                         signature,
                         false,
-                        "0",
+                        minAmountOut,
                         chainId,
                         web3
                     )
@@ -288,7 +289,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                         signature,
                         false,
                         erc20Path,
-                        "0",
+                        minAmountOut,
                         chainId,
                         web3
                     )
@@ -303,7 +304,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         } catch (error) {
             console.log(chainId);
         }
-    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, validChainId, proxy, account, chainId, web3])
+    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, account, chainId, validChainId, web3])
 
     return { onMint: handleMint }
 }

@@ -13,7 +13,7 @@ import DeiAbi from '../config/abi/DEIAbi.json'
 import SyncAbi from '../config/abi/Sync.json'
 import XdaiProxyAbi from '../config/abi/XdaiProxyAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
-import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
+import CollateralAbi from '../config/abi/HusdPoolAbi.json'
 import ProxyMinterAbi from '../config/abi/ProxyMinterAbi.json'
 import ZapAbi from '../config/abi/ZapAbi.json'
 import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, PROXY_MINT_ADDRESS, ZAP_ADDRESS } from '../constant/contracts'
@@ -73,8 +73,8 @@ export const getDeiContract = (web3, chainId = ChainMap.RINKEBY) => {
     return getContract(DeiAbi, DEI_ADDRESS[chainId], web3)
 }
 
-export const getHusdPoolContract = (web3, chainId = ChainMap.RINKEBY) => {
-    return getContract(HusdPoolAbi, COLLATERAL_POOL_ADDRESS[chainId], web3)
+export const getCollateralPoolContract = (web3, chainId = ChainMap.AVALANCHE) => {
+    return getContract(CollateralAbi, COLLATERAL_POOL_ADDRESS[chainId], web3)
 }
 export const getDeiStakingContract = (web3, address) => {
     return getContract(StakingDeiAbi, address, web3)

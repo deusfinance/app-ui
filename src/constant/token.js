@@ -2,12 +2,12 @@ import { Token } from '../utils/classes';
 import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEUS_ADDRESS } from './contracts';
 import { ChainMap } from './web3';
 
+
 export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
 export const muonToken = new Token(1, null, 18, "MUON", "MUON", "/tokens/muon.svg");
 export const xdaiToken = new Token(100, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
 
-
-export const deiToken2 = {
+export const deiToken = {
     [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, DEI_ADDRESS[ChainMap.RINKEBY], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
     [ChainMap.HECO]: new Token(ChainMap.HECO, DEI_ADDRESS[ChainMap.HECO], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
     [ChainMap.AVALANCHE]: new Token(ChainMap.AVALANCHE, DEI_ADDRESS[ChainMap.AVALANCHE], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
@@ -18,7 +18,6 @@ export const collateralToken = {
     [ChainMap.HECO]: new Token(ChainMap.HECO, COLLATERAL_ADDRESS[ChainMap.HECO], 8, "HUSD", "HUSD", "/tokens/husd.svg"),
     [ChainMap.AVALANCHE]: new Token(ChainMap.AVALANCHE, COLLATERAL_ADDRESS[ChainMap.AVALANCHE], 18, "DAI", "DAI", "/tokens/dai.png"),
 }
-
 
 export const deiCollateralLpToken = {
     [ChainMap.RINKEBY]: new Token(ChainMap.RINKEBY, "0x8f3906394382a7e30961ACDf217b9FBf242c1B96", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
@@ -31,6 +30,31 @@ export const deiDeusLpToken = {
     [ChainMap.HECO]: new Token(ChainMap.HECO, "0xd0B9d3A52fa1dAee082F9ac998b9fB49F6bb7a16", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
     [ChainMap.AVALANCHE]: new Token(ChainMap.AVALANCHE, "0x6c3de04c121D6754bbb963F183ab31734e6a0e9b", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
 }
+
+
+export const DEITokens = {
+    [ChainMap.AVALANCHE]: [
+        { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE },
+        { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE, pairID: 1 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE, pairID: 1 },
+    ],
+    [ChainMap.HECO]: [
+        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainMap.HECO },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO },
+        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainMap.HECO, pairID: 1 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO, pairID: 1 },
+        { logo: "/tokens/ht.png", symbol: "HT", address: "0x", decimals: 18, chainId: ChainMap.HECO },
+        { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xa71edc38d189767582c38a3145b5873052c3e47a", decimals: 18, chainId: ChainMap.HECO },
+    ],
+    [ChainMap.RINKEBY]: [
+        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4 },
+        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4, pairID: 1 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4, pairID: 1 },
+    ]
+}
+
 
 export const isNative = (address, chainId) => {
     return address === "0x"
@@ -82,29 +106,6 @@ export const MuonPreSaleTokens = [
     sdeaToken,
     { logo: "/tokens/sdea.svg", symbol: "sDEUS", address: "0xc586AeA83A96d57764A431B9F4e2E84844075a01", decimals: 18, chainId: 1 },
     ...SealedTokens,
-]
-
-
-
-
-export const DEITokens = [
-    { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4 },
-    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4 },
-    { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4, pairID: 1 },
-    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4, pairID: 1 },
-
-    { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainMap.HECO },
-    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO },
-    { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainMap.HECO, pairID: 1 },
-    { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainMap.HECO, pairID: 1 },
-    { logo: "/tokens/ht.png", symbol: "HT", address: "0x", decimals: 18, chainId: ChainMap.HECO },
-    { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xa71edc38d189767582c38a3145b5873052c3e47a", decimals: 18, chainId: ChainMap.HECO },
-
-    { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE },
-    { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE },
-    { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE, pairID: 1 },
-    { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainMap.AVALANCHE], decimals: 18, chainId: ChainMap.AVALANCHE, pairID: 1 },
-
 ]
 
 export const DeusPath = {

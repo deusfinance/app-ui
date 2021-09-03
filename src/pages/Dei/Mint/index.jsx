@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
-import { DEITokens, deiToken2 } from '../../../constant/token';
+import { DEITokens, deiToken } from '../../../constant/token';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import LinkBox from '../../../components/App/Dei/LinkBox'
@@ -50,9 +50,8 @@ const Dei = () => {
 
     const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
 
-    const tokens = useMemo(() => DEITokens
-        .filter((token) => (!token.chainId || token.chainId === chainId))
-        .filter((token) => !token.pairID || (token.pairID && ((collatRatio > 0 && collatRatio < 100))))
+    const tokens = useMemo(() => chainId ? DEITokens[chainId]
+        .filter((token) => !token.pairID || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
         , [chainId, collatRatio])
 
     const pairedTokens = useMemo(() => {
@@ -89,7 +88,7 @@ const Dei = () => {
 
     const [swapState, setSwapState] = useState({
         from: '',
-        to: deiToken2[chainId],
+        to: deiToken[chainId],
     })
 
     const [focusType, setFocusType] = useState("from1")

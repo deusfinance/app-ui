@@ -77,7 +77,7 @@ const Dei = () => {
     const { account } = useWeb3React()
     const contractAddress = COLLATERAL_POOL_ADDRESS[chainId]
 
-    const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
+    const tokens = useMemo(() => chainId ? DEITokens[chainId] : [], [chainId])
     const tokensMap = {}
 
     for (let i = 0; i < tokens.length; i++) {

@@ -7,7 +7,7 @@ import SwapCard from '../../../components/App/Swap/SwapCard';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
-import { DEITokens, deiToken2 } from '../../../constant/token';
+import { DEITokens, deiToken } from '../../../constant/token';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { COLLATERAL_POOL_ADDRESS } from '../../../constant/contracts';
@@ -44,7 +44,7 @@ const Dei = () => {
     const [isPair, setIsPair] = useState(false)
     const contractAddress = COLLATERAL_POOL_ADDRESS[chainId]
 
-    const tokens = useMemo(() => DEITokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
+    const tokens = useMemo(() => chainId ? DEITokens[chainId] : [], [chainId])
     const tokensMap = {}
 
     for (let i = 0; i < tokens.length; i++) {
@@ -58,7 +58,7 @@ const Dei = () => {
 
     let secondaryToken = tokens[2]
     const [swapState, setSwapState] = useState({
-        from: deiToken2[chainId],
+        from: deiToken[chainId],
         to: secondaryToken,
     })
 

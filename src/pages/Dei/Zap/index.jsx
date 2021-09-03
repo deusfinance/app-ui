@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
-import { DEITokens, deiToken2 } from '../../../constant/token';
+import { DEITokens, deiToken } from '../../../constant/token';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import LinkBox from '../../../components/App/Dei/LinkBox'
@@ -43,9 +43,7 @@ const Zap = () => {
     const [stakingTo,] = useState("")
     const contractAddress = useMemo(() => ZAP_ADDRESS[chainId], [chainId])
 
-    const tokens = useMemo(() => DEITokens
-        .filter((token) => !token.pairID && (!token.chainId || token.chainId === chainId))
-        , [chainId])
+    const tokens = useMemo(() => chainId ? DEITokens[chainId].filter((token) => !token.pairID) : [], [chainId])
 
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
@@ -56,7 +54,7 @@ const Zap = () => {
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
         from: tokens[0],
-        to: deiToken2[chainId],
+        to: deiToken[chainId],
     })
 
     const [, setFocusType] = useState("from1")

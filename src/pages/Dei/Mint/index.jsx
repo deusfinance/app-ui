@@ -75,7 +75,7 @@ const Dei = () => {
 
     const balances = useTokenBalances(tokensMap, chainId)
 
-    const TokensMap = tokensMap
+    const TokensMap = balances
 
     useEffect(() => {
         for (let i = 0; i < tokens.length; i++) {

@@ -1,0 +1,117 @@
+[
+    {
+        "type": "event",
+        "name": "ZappedIn",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "input_token",
+                "internalType": "address",
+                "indexed": false
+            },
+            {
+                "type": "address",
+                "name": "output_token",
+                "internalType": "address",
+                "indexed": false
+            },
+            {
+                "type": "uint256",
+                "name": "input_amount",
+                "internalType": "uint256",
+                "indexed": false
+            },
+            {
+                "type": "uint256",
+                "name": "output_amount",
+                "internalType": "uint256",
+                "indexed": false
+            },
+            {
+                "type": "bool",
+                "name": "transfer_residual",
+                "internalType": "bool",
+                "indexed": false
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "function",
+        "stateMutability": "nonpayable",
+        "outputs": [],
+        "name": "zapInCollateral",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "amountIn",
+                "internalType": "uint256"
+            },
+            {
+                "type": "uint256",
+                "name": "minLPAmount",
+                "internalType": "uint256"
+            },
+            {
+                "type": "bool",
+                "name": "transferResidual",
+                "internalType": "bool"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "stateMutability": "nonpayable",
+        "outputs": [],
+        "name": "zapInERC20",
+        "inputs": [
+            {
+                "type": "address[]",
+                "name": "path",
+                "internalType": "address[]"
+            },
+            {
+                "type": "uint256",
+                "name": "amountIn",
+                "internalType": "uint256"
+            },
+            {
+                "type": "uint256",
+                "name": "minLPAmount",
+                "internalType": "uint256"
+            },
+            {
+                "type": "bool",
+                "name": "transferResidual",
+                "internalType": "bool"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "stateMutability": "payable",
+        "outputs": [],
+        "name": "zapInNativecoin",
+        "inputs": [
+            {
+                "type": "address[]",
+                "name": "path",
+                "internalType": "address[]"
+            },
+            {
+                "type": "uint256",
+                "name": "minLPAmount",
+                "internalType": "uint256"
+            },
+            {
+                "type": "bool",
+                "name": "transferResidual",
+                "internalType": "bool"
+            }
+        ]
+    },
+    {
+        "type": "receive",
+        "stateMutability": "payable"
+    }
+]

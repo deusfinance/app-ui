@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Flex, Box, Image } from 'rebass/styled-components';
+import React from 'react';
+import { Image } from 'rebass/styled-components';
 import styled from 'styled-components';
-import { getFullDisplayBalance } from '../../../helper/formatBalance';
-import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';
-import { formatBalance3 } from '../../../utils/utils';
-import { ButtonMax } from '../Button';
 import { FlexCenter } from '../Container';
 import CurrencyLogo from '../Currency';
-import { InputAmount } from '../Swap';
 import { Type } from '../Text';
 
 const Wrapper = styled(FlexCenter)`
@@ -33,43 +28,19 @@ const TokenInfo = styled(FlexCenter)`
     }
 `
 
-
-const ZapBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, setFocusType, focusType, type, setActive, TokensMap, chainId, wrongNetwork, fastUpdate, mt }) => {
-    const [onMax, setOnMax] = useState(false)
-    const data = useCrossTokenBalance(currency?.address, chainId, fastUpdate)
-    const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
-
-    useEffect(() => {
-        const getBalance = () => {
-            setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
-        }
-
-        if (currency) {
-            getBalance()
-        }
-
-    }, [data, currency, wrongNetwork, TokensMap])
-
-    useEffect(() => {
-        if (inputAmount === balance) {
-            setOnMax(true)
-        } else {
-            setOnMax(false)
-        }
-    }, [inputAmount, balance])
-
+const ZapBox = ({ currency, inputAmount = "", type, setActive, TokensMap, chainId, wrongNetwork, fastUpdate, mt }) => {
 
     return (<Wrapper mt={mt}>
 
         <CurrencyLogo
-            style={{ verticalAlign: "middle", position: "absolute", top: "55px", zIndex: "1", padding: "5px" }}
+            style={{ verticalAlign: "middle", position: "absolute", top: "55px", marginLeft: "-20px", zIndex: "1", padding: "5px" }}
             currency={currency}
             size={"40px"}
             bgColor="#000000"
         />
 
         <CurrencyLogo
-            style={{ verticalAlign: "middle", position: "absolute", marginTop: "-15px", marginRight: "-50px", padding: "5px" }}
+            style={{ verticalAlign: "middle", position: "absolute", marginTop: "-15px", marginRight: "-30px", padding: "5px" }}
             currency={currency}
             size={"40px"}
             bgColor="#000000"

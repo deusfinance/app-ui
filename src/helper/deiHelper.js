@@ -47,7 +47,7 @@ export const makeCostDataRedeem = (collatRatio, poolBalance) => {
     }]
 }
 
-export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize, address, chainId = 4) => {
+export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize, address, chainId) => {
     const dp = deus_price !== null && !isNaN(deus_price) ? `$${new BigNumber(deus_price).toFixed(3)}` : null
     const p = pool ? pool : null
     const bb = buyBack !== null && !isNaN(buyBack) ? `${formatUnitAmount(buyBack)} HUSD` : null

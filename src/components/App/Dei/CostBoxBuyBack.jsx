@@ -17,14 +17,14 @@ function truncate(str, n = 10) {
     return (str.length > n) ? str.substr(0, 6) + '...' + str.substr(str.length - 4, str.length) : str;
 };
 
-export const CostBoxBuyBack = () => {
+export const CostBoxBuyBack = ({ chainId }) => {
     const { availableExcessCollatDV } = useRecoilValue(husdPoolDataState)
     let availableBuyback = Math.max(availableExcessCollatDV, 0)
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     let deiPrices = useRecoilValue(deiPricesState)
     let deus_price = null
     if (deiPrices) deus_price = deiPrices["deus_price"]
-    let costs = makeCostDataBuyBack(deus_price, truncate(COLLATERAL_POOL_ADDRESS[128]), availableBuyback, availableRecollat, COLLATERAL_POOL_ADDRESS[128], 128)
+    let costs = makeCostDataBuyBack(deus_price, truncate(COLLATERAL_POOL_ADDRESS[chainId]), availableBuyback, availableRecollat, COLLATERAL_POOL_ADDRESS[chainId], chainId)
 
     return (
         useMemo(() => {

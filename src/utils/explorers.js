@@ -2,6 +2,7 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { ExternalLink } from '../components/App/Link'
 import { Type } from '../components/App/Text'
+import { ChainMap } from '../constant/web3'
 import { TransactionState } from './constant'
 
 export function shortenHex(hex, length = 4) {
@@ -18,6 +19,7 @@ const EXPLORER_PREFIXES = {
   128: '',
   137: '',
   256: 'testnet.',
+  [ChainMap.AVALANCHE]: '',
 }
 
 function getEtherscanLink(chainId, data, type) {
@@ -36,8 +38,24 @@ function getEtherscanLink(chainId, data, type) {
   }
 }
 
-function getBlockscoutLink(chainId, data, type) {
-  const prefix = `https://blockscout.com/xdai/${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[100]
+function getXdaiLink(chainId, data, type) {
+  const prefix = `https://blockscout.com/xdai${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[100]
+    }`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/tokens/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+function getAvalancheLink(chainId, data, type) {
+  const prefix = `https://cchain.explorer.avax.network${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
     }`
 
   switch (type) {
@@ -53,7 +71,7 @@ function getBlockscoutLink(chainId, data, type) {
   }
 }
 
-function getBscscanLink(chainId, data, type) {
+function getBscScanLink(chainId, data, type) {
   const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[56]
     }bscscan.com`
 
@@ -88,7 +106,7 @@ function getPolygonScan(chainId, data, type) {
 }
 
 
-function getHechoInfo(chainId, data, type) {
+function getHecoLink(chainId, data, type) {
   const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[128]
     }hecoinfo.com`
 
@@ -112,20 +130,23 @@ export function getTransactionLink(chainId, data, type) {
     case 4: {
       return getEtherscanLink(chainId, data, type)
     }
-    case 56:
-    case 97: {
-      return getBscscanLink(chainId, data, type)
+    case ChainMap.BSC:
+    case ChainMap.BSC_TESTNET: {
+      return getBscScanLink(chainId, data, type)
     }
-    case 100: {
-      return getBlockscoutLink(chainId, data, type)
+    case ChainMap.XDAI: {
+      return getXdaiLink(chainId, data, type)
     }
 
-    case 256:
-    case 128: {
-      return getHechoInfo(chainId, data, type)
+    case ChainMap.HECO_TESTNET:
+    case ChainMap.HECO: {
+      return getHecoLink(chainId, data, type)
     }
-    case 137: {
+    case ChainMap.MATIC: {
       return getPolygonScan(chainId, data, type)
+    }
+    case ChainMap.AVALANCHE: {
+      return getAvalancheLink(chainId, data, type)
     }
     default: {
       return getEtherscanLink(chainId, data, type)

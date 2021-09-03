@@ -84,6 +84,7 @@ const TokenBox = ({ hasMax, setMaxBalance, mt, currency, inputAmount = "", setIn
     if (currency && account) {
       getBalance();
     }
+    //eslint-disable-next-line 
   }, [data, currency, wrongNetwork, TokensMap]);
 
   useEffect(() => {

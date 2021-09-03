@@ -40,14 +40,14 @@ const Zap = () => {
     const { account } = useWeb3React()
     const [escapedType, setEscapedType] = useState("from")
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-    const [stakingTo, setStakingTo] = useState("")
+    const [stakingTo,] = useState("")
     const contractAddress = useMemo(() => ZAP_ADDRESS[chainId], [chainId])
 
     const tokens = useMemo(() => DEITokens
         .filter((token) => !token.pairID && (!token.chainId || token.chainId === chainId))
-        , [chainId, collatRatio])
+        , [chainId])
 
-
+    //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
 
@@ -59,7 +59,7 @@ const Zap = () => {
         to: deiToken2[chainId],
     })
 
-    const [focusType, setFocusType] = useState("from1")
+    const [, setFocusType] = useState("from1")
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")

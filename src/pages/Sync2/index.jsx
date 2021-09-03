@@ -10,7 +10,7 @@ import SearchBox from '../../components/App/Synchronizer/SearchBox';
 import { Base } from '../../components/App/Button';
 import LongShort from '../../components/App/Synchronizer/LongShort';
 import RateBox from '../../components/App/Synchronizer/RateBox';
-import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
+// import RemainingCap from '../../components/App/Synchronizer/RemainingCap';
 import { SyncData } from '../../constant/synchronizer';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useWeb3React } from '@web3-react/core';
@@ -110,7 +110,8 @@ const Sync2 = () => {
     const [conducted, setConducted] = useState(null)
     const [loading, setLoading] = useState(true);
     const [amountInMaxBalance, setAmountInMaxBalance] = useState(null);
-    const [loadingCap, setLoadingCAP] = useState(false);
+    // const [loadingCap, setLoadingCAP] = useState(false);
+    const [loadingCap,] = useState(false);
 
     const [focusType, setFocusType] = useState("from")
     const getConducted = useOracleFetch(oracle.conducted, {})
@@ -134,6 +135,8 @@ const Sync2 = () => {
         setToCurrency(null)
         setAmountIn("")
         setAmountOut("")
+
+        //eslint-disable-next-line 
     }, [SyncChainId])
 
     useEffect(() => {
@@ -182,6 +185,7 @@ const Sync2 = () => {
                 setLoading(false);
             })
         })
+        //eslint-disable-next-line 
     }, [getStocks, getConducted, getPrices]);
 
     useEffect(() => {
@@ -202,6 +206,7 @@ const Sync2 = () => {
                 setFromCurrency({ ...currency })
             }
         }
+        //eslint-disable-next-line 
     }, [isLong, position])
 
     useEffect(() => {
@@ -265,12 +270,14 @@ const Sync2 = () => {
         const network = NameChainMap[SyncChainId]
         const position_type = isLong ? "long" : "short"
         return createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
+        //eslint-disable-next-line 
     }, [priceSymbol, NameChainMap[SyncChainId], isLong, position])
 
     const priceURLs = useMemo(() => {
         const network = NameChainMap[SyncChainId]
         if (!priceSymbol || !NameChainMap[SyncChainId]) return
         return createPriceUrls(oracle.prices, priceSymbol, network)
+        //eslint-disable-next-line 
     }, [priceSymbol, SyncChainId])
 
     const getSignatures = useOracleFetch(signaturesRequestUrl)
@@ -284,13 +291,14 @@ const Sync2 = () => {
                 setPriceResult({ ...prices[0] })
             })
         }
+        //eslint-disable-next-line 
     }, [getSinglePrice])
 
 
     useEffect(() => {
         if (priceResult) {
             const position_type = isLong ? "long_price" : "short_price"
-            const price = priceResult && priceResult["status"] == "open" ? priceResult[position_type] : 0
+            const price = priceResult && priceResult["status"] === "open" ? priceResult[position_type] : 0
             const assetPrice = { price: price, fee: 0.01 }
             if (price !== null) {
                 if (position === "buy") {
@@ -305,6 +313,7 @@ const Sync2 = () => {
                 setAssetInfo({ ...assetInfo })
             }
         }
+        //eslint-disable-next-line 
     }, [isLong, priceResult])
 
     const { getAmountsOut } = useAmountsOut(fromCurrency, toCurrency, debouncedAmountIn, assetInfo)
@@ -460,7 +469,7 @@ const Sync2 = () => {
                     <RateBox
                         show={fromCurrency && toCurrency}
                         currencies={{ from: fromCurrency, to: toCurrency || { symbol: "dAsset" } }}
-                        marketPrice={priceResult && priceResult["status"] == "open" ? priceResult["long_price"] : "(CLOSED)"}
+                        marketPrice={priceResult && priceResult["status"] === "open" ? priceResult["long_price"] : "(CLOSED)"}
                         amountIn={amountIn}
                         amountOut={amountOut}
                         setInvert={setInvert}

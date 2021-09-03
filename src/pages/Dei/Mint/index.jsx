@@ -69,7 +69,7 @@ const Dei = () => {
         return pTokens
     }, [tokens])
 
-
+    //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
 
@@ -84,7 +84,7 @@ const Dei = () => {
             if (tokensMap[address]) tokensMap[address + pairID] = currToken
             else tokensMap[address] = currToken
         }
-    }, [tokens])
+    }, [tokens, tokensMap])
 
 
     const [swapState, setSwapState] = useState({
@@ -186,7 +186,7 @@ const Dei = () => {
 
     useEffect(() => {
         setProxy(isProxyMinter(swapState.from, isPair, collatRatio, chainId))
-    }, [swapState.from, isPair, collatRatio])
+    }, [swapState.from, isPair, chainId, collatRatio])
 
 
 

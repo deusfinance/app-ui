@@ -9,7 +9,6 @@ import Wallets from '../../common/Navbar/Wallets';
 import { NameChainMap } from '../../../constant/web3';
 import { addRPC } from '../../../services/addRPC';
 import { useTranslation } from 'react-i18next';
-import BigNumber from 'bignumber.js';
 
 // import Loader from '../Loader';
 const errors = {

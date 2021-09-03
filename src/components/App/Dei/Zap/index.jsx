@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Flex, Box, Image } from 'rebass/styled-components';
+import { Flex } from 'rebass/styled-components';
 import styled from 'styled-components';
 
 

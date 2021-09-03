@@ -32,7 +32,7 @@ export const useZap = (currency, staking, amountIn, minLpAmount = 0, validChainI
     const { account, chainId } = useWeb3React()
 
     const handleZap = useCallback(async () => {
-        if (validChainId && chainId !== validChainId || !currency) return false
+        if ((validChainId && chainId !== validChainId) || !currency) return false
         const amountInToWei = getToWei(amountIn, currency.decimals)
         const minLpAmountToWei = getToWei(minLpAmount, 18)
         const fn = zapIn(currency, staking, amountInToWei, minLpAmountToWei, false, web3, chainId)
@@ -341,7 +341,7 @@ export const useStakingInfo = (conf, validChainId) => {
         if (web3 && account) {
             get()
         }
-    }, [conf, fastRefresh, account, chainId, web3])
+    }, [conf, fastRefresh, account, chainId, validChainId, web3])
     return res
 }
 
@@ -375,7 +375,7 @@ export const useTokenInfo = (conf, validChainId) => {
         if (web3 && account && conf) {
             get()
         }
-    }, [conf, fastRefresh, account, chainId, web3])
+    }, [conf, fastRefresh, account, chainId, validChainId, web3])
     return res
 }
 

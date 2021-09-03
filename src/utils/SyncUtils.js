@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { sendMessage } from "./telegramLogger";
+// import { sendMessage } from "./telegramLogger";
 
 export const fetcher = async function (url, init) {
     try {
@@ -31,5 +31,6 @@ export const useOracleFetch = (urls = [], init = { cache: "no-cache" }) => {
         }).catch(function (error) {
             console.log(error);
         })
+        //eslint-disable-next-line 
     }, [urls])
 }

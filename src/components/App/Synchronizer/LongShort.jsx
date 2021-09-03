@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components'
-import { ButtonSyncActive } from '../Button';
 
 const WrapActions = styled.div`
   margin-top: ${({ mt }) => mt && mt};

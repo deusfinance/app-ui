@@ -76,6 +76,7 @@ export const useAmountsOut = (from, to, debouncedAmountIn, assetInfo) => {
         const { fromPrice, toPrice, fee } = assetInfo
         if (!fromPrice || !toPrice || isZero(toPrice) || !from || !to) return "0"
         return getToWei(new BigNumber(fromPrice).times(debouncedAmountIn).times(1 - fee).div(toPrice), to.decimals)
+        //eslint-disable-next-line
     }, [to, debouncedAmountIn, assetInfo])
     return { getAmountsOut }
 }
@@ -86,6 +87,7 @@ export const useAmountsIn = (from, to, debouncedAmountOut, assetInfo) => {
         console.log("called here with ", fromPrice, toPrice);
         if (!fromPrice || !toPrice || isZero(fromPrice) || !from || !to) return "0"
         return getToWei(new BigNumber(toPrice).times(debouncedAmountOut).div(fromPrice).times(1 + fee), from.decimals)
+        //eslint-disable-next-line
     }, [from, debouncedAmountOut, assetInfo])
     return { getAmountsIn }
 }

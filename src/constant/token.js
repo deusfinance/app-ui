@@ -1,4 +1,3 @@
-import { collateralToDei } from '../helper/deiHelper';
 import { Token } from '../utils/classes';
 import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEUS_ADDRESS } from './contracts';
 import { ChainMap } from './web3';

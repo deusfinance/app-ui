@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
-import { WaveLoading } from 'react-loadingg';
 import { useWeb3React } from '@web3-react/core';
 import { isGt, isZero } from '../../../constant/number';
 import Wallets from '../../common/Navbar/Wallets';

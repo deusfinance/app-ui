@@ -365,7 +365,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
 export const zapIn = (currency, staking, amountIn, minLpAmount, transferResidual, web3, chainId) => {
     const erc20Path = mintPath[currency.symbol]
 
-    if (currency.address == "0x")
+    if (currency.address === "0x")
         return getZapContract(web3, chainId)
             .methods
             .zapInNativecoin(erc20Path, minLpAmount, transferResidual) // TODO  VALUE:AVAX?

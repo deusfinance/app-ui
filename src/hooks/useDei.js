@@ -18,11 +18,31 @@ import {
 import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
-    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast, mint1t1DEI, collatUsdPrice, mintPath, ERC20ToDei, nativeCoinToDei, collateralToDei
+    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
+    mint1t1DEI, collatUsdPrice, mintPath, ERC20ToDei, nativeCoinToDei, collateralToDei, zapIn, DeusToDei
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
+import { COLLATERAL_ADDRESS, DEUS_ADDRESS } from '../constant/contracts'
+
+
+export const useZap = (currency, staking, amountIn, minLpAmount = 0, validChainId) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleZap = useCallback(async () => {
+        if (validChainId && chainId !== validChainId || !currency) return false
+        const amountInToWei = getToWei(amountIn, currency.decimals)
+        const minLpAmountToWei = getToWei(minLpAmount, 18)
+        const fn = zapIn(currency, staking, amountInToWei, minLpAmountToWei, false, web3, chainId)
+        const payload = currency.address === "0x" ? { value: amountInToWei } : {}
+        return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${staking?.title} `, payload)
+    }, [currency, staking, amountIn, minLpAmount, validChainId, chainId, account, web3])
+    return { onZap: handleZap }
+}
+
+
 
 export const useDeposit = (currency, amount, address, validChainId) => {
     const web3 = useWeb3()
@@ -224,13 +244,12 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                         signature,
                         false,
                         erc20Path,
-                        null,
+                        "0",
                         chainId,
                         web3
                     )
                 }
-                else if (from1Currency.symbol === "HUSD") {
-                    console.log("log");
+                else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
                     fn = collateralToDei(
                         amount1toWei,
                         collateral_price,
@@ -238,7 +257,20 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                         expire_block,
                         signature,
                         false,
-                        null,
+                        "0",
+                        chainId,
+                        web3
+                    )
+                }
+                else if (from1Currency.address === DEUS_ADDRESS[chainId]) {
+                    fn = DeusToDei(
+                        amount1toWei,
+                        collateral_price,
+                        deus_price,
+                        expire_block,
+                        signature,
+                        false,
+                        "0",
                         chainId,
                         web3
                     )
@@ -256,7 +288,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                         signature,
                         false,
                         erc20Path,
-                        null,
+                        "0",
                         chainId,
                         web3
                     )

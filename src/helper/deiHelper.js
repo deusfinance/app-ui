@@ -1,12 +1,12 @@
 import BigNumber from "bignumber.js"
-import { COLLATERAL_POOL_ADDRESS } from "../constant/contracts"
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS } from "../constant/contracts"
 import { isZero } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainMap } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getHusdPoolContract, getProxyMinterContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getHusdPoolContract, getProxyMinterContract, getZapContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
@@ -237,22 +237,28 @@ export const RecollateralizeDEI = (collateral_price, deus_price, expire_block, s
 
 
 //Proxy Mint
-export const nativeCoinToDei = (amountIn, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out = "0", chainId, web3) => {
+export const nativeCoinToDei = (amountIn, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out, chainId, web3) => {
     return getProxyMinterContract(web3, chainId)
         .methods
-        .nativeCoinToDei(collateral_price, deus_price, expire_block, [signature], transferResidual, path, "0")
+        .nativeCoinToDei(collateral_price, deus_price, expire_block, [signature], transferResidual, path, min_amount_out)
 }
 
-export const ERC20ToDei = (erc20amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out = "0", chainId, web3) => {
+export const ERC20ToDei = (erc20amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out, chainId, web3) => {
     return getProxyMinterContract(web3, chainId)
         .methods
-        .ERC20ToDei(erc20amount, collateral_price, deus_price, expire_block, [signature], transferResidual, path, "0")
+        .ERC20ToDei(erc20amount, collateral_price, deus_price, expire_block, [signature], transferResidual, path, min_amount_out)
 }
 
-export const collateralToDei = (collateral_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out = "0", chainId, web3) => {
+export const collateralToDei = (collateral_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out, chainId, web3) => {
     return getProxyMinterContract(web3, chainId)
         .methods
-        .collateralToDei(collateral_amount, collateral_price, deus_price, expire_block, [signature], transferResidual, "0")
+        .collateralToDei(collateral_amount, collateral_price, deus_price, expire_block, [signature], transferResidual, min_amount_out)
+}
+
+export const DeusToDei = (deus_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out, chainId, web3) => {
+    return getProxyMinterContract(web3, chainId)
+        .methods
+        .DeusToDei(deus_amount, collateral_price, deus_price, expire_block, [signature], transferResidual, min_amount_out)
 }
 
 
@@ -339,8 +345,11 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
         method = "getAmountsOutNativeCoinToDei"
         params.push(erc20Path)
     }
-    else if (fromCurrency.symbol === "HUSD") {
+    else if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
         method = "getAmountsOutCollateralToDei"
+    }
+    else if (fromCurrency.address === DEUS_ADDRESS[chainId]) {
+        method = "getAmountsOutDeusToDei"
     }
     else {
         method = "getAmountsOutERC20ToDei"
@@ -351,4 +360,22 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
         params.push(erc20Path)
     }
     return getProxyMinterContract(web3, chainId).methods[method](...params).call()
+}
+
+export const zapIn = (currency, staking, amountIn, minLpAmount, transferResidual, web3, chainId) => {
+    const erc20Path = mintPath[currency.symbol]
+
+    if (currency.address == "0x")
+        return getZapContract(web3, chainId)
+            .methods
+            .zapInNativecoin(erc20Path, minLpAmount, transferResidual) // TODO  VALUE:AVAX?
+
+    else if (currency.address === COLLATERAL_ADDRESS[chainId])
+        return getZapContract(web3, chainId)
+            .methods
+            .zapInCollateral(amountIn, minLpAmount, transferResidual)
+
+    return getZapContract(web3, chainId)
+        .methods
+        .zapInERC20(erc20Path, amountIn, minLpAmount, transferResidual)
 }

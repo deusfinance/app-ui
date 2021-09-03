@@ -12,17 +12,18 @@ import ZapStakingBox from '../../../components/App/Dei/ZapStakingBox';
 import SwapAction from '../../../components/App/Dei/SwapAction';
 import { useWeb3React } from '@web3-react/core';
 import { useApprove } from '../../../hooks/useApprove';
+import useTokenBalances from '../../../hooks/useTokenBalances';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { ZAP_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper } from '../../../components/App/Dei';
 import { useDeiUpdate, useZap, useAllowance } from '../../../hooks/useDei';
-import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
+import { collatRatioState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import { getSwapVsType } from '../../../utils/utils';
-import SearchBox from '../../../components/App/Dei/SearchBox';
+import SearchBox from '../../../components/App/Swap/SearchBox';
 
 const Zap = () => {
     const location = useLocation()
@@ -31,7 +32,6 @@ const Zap = () => {
     useDeiUpdate(chainId)
     const collatRatio = useRecoilValue(collatRatioState)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
-    const deiPrices = useRecoilValue(deiPricesState)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -48,10 +48,10 @@ const Zap = () => {
         , [chainId, collatRatio])
 
 
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
+    ), [tokens])
 
-    const tokensMap = {}
-
-
+    const balances = useTokenBalances(tokensMap, chainId)
 
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
@@ -164,8 +164,7 @@ const Zap = () => {
 
         <SearchBox
             account={account}
-            pairedTokens={tokens}
-            currencies={TokensMap}
+            currencies={balances}
             swapState={swapState}
             escapedType={escapedType}
             changeToken={changeToken}

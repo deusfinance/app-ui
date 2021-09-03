@@ -25,6 +25,7 @@ import { isProxyMinter, getAmountOutProxy } from '../../../helper/deiHelper';
 import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
+import useTokenBalances from '../../../hooks/useTokenBalances';
 
 const Dei = () => {
     const location = useLocation()
@@ -68,7 +69,13 @@ const Dei = () => {
         return pTokens
     }, [tokens])
 
-    const tokensMap = {}
+
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
+    ), [tokens])
+
+    const balances = useTokenBalances(tokensMap, chainId)
+
+    const TokensMap = tokensMap
 
     useEffect(() => {
         for (let i = 0; i < tokens.length; i++) {
@@ -79,7 +86,7 @@ const Dei = () => {
         }
     }, [tokens])
 
-    const TokensMap = tokensMap
+
     const [swapState, setSwapState] = useState({
         from: '',
         to: deiToken2[chainId],

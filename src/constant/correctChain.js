@@ -1,89 +1,89 @@
-import { ChainMap } from "./web3";
+import { ChainId } from "./web3";
 
 //Always we use first chainId as prefer chain
 export const correctChains = [
     {
         url: "/swap2",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
+        chains: [ChainId.ETH, ChainId.RINKEBY],
         exact: true,
     },
     {
         url: "/stable",
-        chains: [ChainMap.AVALANCHE, ChainMap.HECO, ChainMap.RINKEBY],
+        chains: [ChainId.AVALANCHE, ChainId.HECO, ChainId.RINKEBY],
     },
     {
         url: "/crosschain/xdai",
-        chains: [ChainMap.XDAI],
+        chains: [ChainId.XDAI],
     },
     {
         url: "/crosschain/bsc",
-        chains: [ChainMap.BSC, ChainMap.BSC_TESTNET],
+        chains: [ChainId.BSC, ChainId.BSC_TESTNET],
     },
     {
         url: "/crosschain/heco",
-        chains: [ChainMap.HECO],
+        chains: [ChainId.HECO],
     },
     {
         url: "/crosschain/polygon",
-        chains: [ChainMap.MATIC],
+        chains: [ChainId.MATIC],
     },
     {
         url: "/synchronizer",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
+        chains: [ChainId.ETH, ChainId.RINKEBY],
         exact: true,
     },
     {
         url: "/sealed-swap",
-        chains: [ChainMap.ETH],
+        chains: [ChainId.ETH],
         exact: true,
     },
     {
         url: "/crosschain/bsc/muon-presale",
-        chains: [ChainMap.BSC_TESTNET, ChainMap.BSC],
+        chains: [ChainId.BSC_TESTNET, ChainId.BSC],
         exact: true,
     },
     {
         url: "/crosschain/xdai/muon-presale",
-        chains: [ChainMap.XDAI],
+        chains: [ChainId.XDAI],
         exact: true,
     },
     {
         url: "/muon-presale",
-        chains: [ChainMap.ETH],
+        chains: [ChainId.ETH],
         exact: true,
     },
     {
         url: "/sync2",
-        chains: [ChainMap.BSC, ChainMap.XDAI, ChainMap.HECO, ChainMap.MATIC],
+        chains: [ChainId.BSC, ChainId.XDAI, ChainId.HECO, ChainId.MATIC],
         exact: true,
     },
     {
         url: "/sync3",
-        chains: [ChainMap.BSC, ChainMap.BSC_TESTNET],
+        chains: [ChainId.BSC, ChainId.BSC_TESTNET],
         exact: true,
     },
     {
         url: "/bridge",
-        chains: [ChainMap.RINKEBY, ChainMap.BSC_TESTNET],
+        chains: [ChainId.RINKEBY, ChainId.BSC_TESTNET],
     },
     {
         url: "/not-found",
-        chains: Object.values(ChainMap),
+        chains: Object.values(ChainId),
     },
 ]
 
 export function getCorrectChains(path) {
-    if (path === "/") return [ChainMap.ETH]
+    if (path === "/") return [ChainId.ETH]
     for (let i = 0; i < correctChains.length; i++) {
         if (path.includes(correctChains[i].url)) {
             if (correctChains[i].exact) {
                 if (correctChains[i].url === path)
                     return correctChains[i].chains
                 else
-                    return [ChainMap.ETH]
+                    return [ChainId.ETH]
             }
             return correctChains[i].chains
         }
     }
-    return [ChainMap.ETH]
+    return [ChainId.ETH]
 }

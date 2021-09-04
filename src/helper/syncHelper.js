@@ -1,5 +1,5 @@
 import { isZero } from "../constant/number"
-import { ChainMap } from "../constant/web3"
+import { ChainId } from "../constant/web3"
 import { getSynchronizerContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { SwapWithToast } from "./web3"
@@ -39,8 +39,8 @@ const syncDefaultFuncMaker = (fromCurrency, toCurrency, amountInWei, amountOutWe
     const amount = type === "buy" ? amountOutWei : amountInWei
     const data = oracles.slice(0, requiredSignature)
 
-    const salt = chainId !== ChainMap.XDAI ? "For" : ""
-    let params = chainId !== ChainMap.XDAI ? [account] : []
+    const salt = chainId !== ChainId.XDAI ? "For" : ""
+    let params = chainId !== ChainId.XDAI ? [account] : []
 
     params = [
         ...params,

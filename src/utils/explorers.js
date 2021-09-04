@@ -2,7 +2,7 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { ExternalLink } from '../components/App/Link'
 import { Type } from '../components/App/Text'
-import { ChainMap } from '../constant/web3'
+import { ChainId } from '../constant/web3'
 import { TransactionState } from './constant'
 
 export function shortenHex(hex, length = 4) {
@@ -19,7 +19,7 @@ const EXPLORER_PREFIXES = {
   128: '',
   137: '',
   256: 'testnet.',
-  [ChainMap.AVALANCHE]: '',
+  [ChainId.AVALANCHE]: '',
 }
 
 function getEtherscanLink(chainId, data, type) {
@@ -130,22 +130,22 @@ export function getTransactionLink(chainId, data, type) {
     case 4: {
       return getEtherscanLink(chainId, data, type)
     }
-    case ChainMap.BSC:
-    case ChainMap.BSC_TESTNET: {
+    case ChainId.BSC:
+    case ChainId.BSC_TESTNET: {
       return getBscScanLink(chainId, data, type)
     }
-    case ChainMap.XDAI: {
+    case ChainId.XDAI: {
       return getXdaiLink(chainId, data, type)
     }
 
-    case ChainMap.HECO_TESTNET:
-    case ChainMap.HECO: {
+    case ChainId.HECO_TESTNET:
+    case ChainId.HECO: {
       return getHecoLink(chainId, data, type)
     }
-    case ChainMap.MATIC: {
+    case ChainId.MATIC: {
       return getPolygonScan(chainId, data, type)
     }
-    case ChainMap.AVALANCHE: {
+    case ChainId.AVALANCHE: {
       return getAvalancheLink(chainId, data, type)
     }
     default: {

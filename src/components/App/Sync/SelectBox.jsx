@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { ChainMap, NameChainMap } from '../../../constant/web3';
+import { ChainId, NameChainId } from '../../../constant/web3';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 const SelectBox = ({ currRow, setCurrRow }) => {
-    const rows = [ChainMap.BSC, ChainMap.XDAI, ChainMap.HECO, ChainMap.ETH, ChainMap.MATIC]
+    const rows = [ChainId.BSC, ChainId.XDAI, ChainId.HECO, ChainId.ETH, ChainId.MATIC]
     const ICONS = {
-        [ChainMap.BSC]: "/img/chains/bsc.png",
-        [ChainMap.XDAI]: "/img/chains/xdai.png",
-        [ChainMap.ETH]: "/tokens/eth-logo.svg",
-        [ChainMap.MATIC]: "/img/ticker/MATIC.png",
-        [ChainMap.HECO]: "/img/chains/heco.svg",
+        [ChainId.BSC]: "/img/chains/bsc.png",
+        [ChainId.XDAI]: "/img/chains/xdai.png",
+        [ChainId.ETH]: "/tokens/eth-logo.svg",
+        [ChainId.MATIC]: "/img/ticker/MATIC.png",
+        [ChainId.HECO]: "/img/chains/heco.svg",
     }
 
     const [open, setOpen] = useState(false)
@@ -22,7 +22,7 @@ const SelectBox = ({ currRow, setCurrRow }) => {
             <div className={`select-box ${open ? "select-open" : ""}`}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
                     <img src={process.env.PUBLIC_URL + ICONS[currRow]} style={{ width: "25px", height: "25px", marginRight: "8px" }} alt={ICONS[currRow]} />
-                    {NameChainMap[currRow]}
+                    {NameChainId[currRow]}
                 </div>
                 <svg width={9} height={5} viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0.5 0.5L4.3 4.3L8.1 0.5" stroke="white" strokeMiterlimit={10} strokeLinecap="round" strokeLinejoin="round" />
@@ -34,7 +34,7 @@ const SelectBox = ({ currRow, setCurrRow }) => {
                     return <li key={id} onClick={() => setCurrRow(row)}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
                             <img src={process.env.PUBLIC_URL + ICONS[row]} style={{ width: "25px", height: "25px", borderRadius: "50%", marginRight: "8px" }} alt="chain" />
-                            {NameChainMap[row]}
+                            {NameChainId[row]}
                         </div>
                     </li>
                 })}

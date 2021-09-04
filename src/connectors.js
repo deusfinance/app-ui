@@ -3,9 +3,9 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { FrameConnector } from '@web3-react/frame-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { FortmaticConnector } from '@web3-react/fortmatic-connector'
-import { ChainMap } from './constant/web3'
+import { ChainId } from './constant/web3'
 
-const supportedChainIds = Object.values(ChainMap)
+const supportedChainIds = Object.values(ChainId)
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 const FORTMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
 

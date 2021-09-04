@@ -23,7 +23,7 @@ import { useSync, useAmountsIn, useAmountsOut, useAllowance } from '../../hooks/
 import { useApprove } from '../../hooks/useApprove';
 import { isZero } from '../../constant/number';
 import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
-import { NameChainMap } from '../../constant/web3';
+import { NameChainId } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 
 const MainWrapper = styled.div`
@@ -204,15 +204,15 @@ const Sync2 = () => {
     const priceSymbol = targetCurrency && targetCurrency.long_symbol?.substring(1)
 
     const signaturesRequestUrl = useMemo(() => {
-        if (!priceSymbol || !NameChainMap[SyncChainId] || !isLong || !position) return
-        const network = NameChainMap[SyncChainId]
+        if (!priceSymbol || !NameChainId[SyncChainId] || !isLong || !position) return
+        const network = NameChainId[SyncChainId]
         const position_type = isLong ? "long" : "short"
         return createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
-    }, [priceSymbol, NameChainMap[SyncChainId], isLong, position])
+    }, [priceSymbol, NameChainId[SyncChainId], isLong, position])
 
     const priceURLs = useMemo(() => {
-        const network = NameChainMap[SyncChainId]
-        if (!priceSymbol || !NameChainMap[SyncChainId]) return
+        const network = NameChainId[SyncChainId]
+        if (!priceSymbol || !NameChainId[SyncChainId]) return
         return createPriceUrls(oracle.prices, priceSymbol, network)
     }, [priceSymbol, SyncChainId])
 
@@ -337,7 +337,7 @@ const Sync2 = () => {
                     <NetworkTitle>
                         <RowCenter >
                             <img src={process.env.PUBLIC_URL + "/img/chains/bsc.png"} style={{ width: "25px", height: "25px", marginRight: "5px" }} alt="DEUS" />
-                            {NameChainMap[SyncChainId]}
+                            {NameChainId[SyncChainId]}
                         </RowCenter>
                     </NetworkTitle>
                 </div>

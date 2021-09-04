@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { formatAddress } from '../../../utils/utils';
 import { useTranslation } from 'react-i18next'
 import { getCorrectChains } from '../../../constant/correctChain';
-import { NameChainMap } from '../../../constant/web3';
+import { NameChainId } from '../../../constant/web3';
 import { NavLink, useLocation } from 'react-router-dom';
 import Wallets from './Wallets';
 import { addRPC } from '../../../services/addRPC';
@@ -235,12 +235,12 @@ const Navbar = () => {
                     (chainId && validChains.indexOf(chainId) === -1)
                         ?
                         <NavButton className="network-label" active={true} onClick={() => addRPC(account, validChains[0], web3)}>
-                            {t("changeTo")} {NameChainMap[validChains[0]] || "ETH"}
+                            {t("changeTo")} {NameChainId[validChains[0]] || "ETH"}
                         </NavButton>
                         :
                         <NavButton className="network-label" active={false} >
-                            <span style={{ opacity: "0.5", marginRight: "5px" }}>Network: </span> {NameChainMap[chainId]}
-                            {/* {NameChainMap[chainId]} */}
+                            <span style={{ opacity: "0.5", marginRight: "5px" }}>Network: </span> {NameChainId[chainId]}
+                            {/* {NameChainId[chainId]} */}
                         </NavButton>
                     :
                     <NavButton active={true} onClick={handleConnect}>

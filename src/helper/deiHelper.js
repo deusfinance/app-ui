@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js"
 import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS } from "../constant/contracts"
 import { isZero } from "../constant/number"
 import { collateralToken } from "../constant/token"
-import { ChainMap } from "../constant/web3"
+import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
@@ -109,7 +109,7 @@ export const getStakingTokenData = (conf, account) => {
         }
     ]
 }
-export const getHusdPoolData = (chainId = ChainMap.RINKEBY, collat_usd_price, account) => {
+export const getHusdPoolData = (chainId = ChainId.RINKEBY, collat_usd_price, account) => {
     let calls = [
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -299,7 +299,7 @@ export const redeemAlgorithmicDei = (deus_price, expire_block, signature, amount
         .redeemAlgorithmicDEI(amountIn, deus_price, expire_block, [signature])
 }
 
-export const getClaimAll = async (account, web3, chainId = ChainMap.RINKEBY) => {
+export const getClaimAll = async (account, web3, chainId = ChainId.RINKEBY) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
         .collectRedemption()
@@ -308,7 +308,7 @@ export const getClaimAll = async (account, web3, chainId = ChainMap.RINKEBY) => 
 
 
 //READ FUNCTIONS
-export const getDeiInfo = async (web3, chainId = ChainMap.RINKEBY, collat_usd_price = collatUsdPrice) => {
+export const getDeiInfo = async (web3, chainId = ChainId.RINKEBY, collat_usd_price = collatUsdPrice) => {
     return getDeiContract(web3, chainId)
         .methods
         .dei_info([collat_usd_price])
@@ -329,11 +329,11 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
 }
 
 export const mintPath = {
-    [ChainMap.HECO]: {
+    [ChainId.HECO]: {
         HT: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
         USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
     },
-    [ChainMap.AVALANCHE]: {
+    [ChainId.AVALANCHE]: {
         AVAX: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
         USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
     },

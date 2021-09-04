@@ -1,5 +1,5 @@
 import { deiDeusLpToken, deiCollateralLpToken } from "../../../constant/token"
-import { ChainMap } from "../../../constant/web3"
+import { ChainId } from "../../../constant/web3"
 
 export const urls = [{
   name: 'Mint',
@@ -24,45 +24,45 @@ export const urls = [{
 ]
 
 export const StakingConfig = {
-  [ChainMap.RINKEBY]: [
+  [ChainId.RINKEBY]: [
     {
       title: "DEI-HUSD",
-      depositToken: deiCollateralLpToken[ChainMap.RINKEBY],
-      withdrawToken: deiCollateralLpToken[ChainMap.RINKEBY],
+      depositToken: deiCollateralLpToken[ChainId.RINKEBY],
+      withdrawToken: deiCollateralLpToken[ChainId.RINKEBY],
       stakingContract: "0xcb98da981680a65ef5B4f12877A4DEB35b896541"
     },
     {
       title: "DEI-DEUS",
-      depositToken: deiDeusLpToken[ChainMap.RINKEBY],
-      withdrawToken: deiDeusLpToken[ChainMap.RINKEBY],
+      depositToken: deiDeusLpToken[ChainId.RINKEBY],
+      withdrawToken: deiDeusLpToken[ChainId.RINKEBY],
       stakingContract: "0xcc4d8FDD8647331A9ab0BA153EA8c929cAc25245"
     }
   ],
-  [ChainMap.HECO]: [
+  [ChainId.HECO]: [
     {
       title: "DEI-HUSD",
-      depositToken: deiCollateralLpToken[ChainMap.HECO],
-      withdrawToken: deiCollateralLpToken[ChainMap.HECO],
+      depositToken: deiCollateralLpToken[ChainId.HECO],
+      withdrawToken: deiCollateralLpToken[ChainId.HECO],
       stakingContract: "0x93a40f2652E86086238A9495B8b083c694cac0A2"
     },
     {
       title: "DEI-DEUS",
-      depositToken: deiDeusLpToken[ChainMap.HECO],
-      withdrawToken: deiDeusLpToken[ChainMap.HECO],
+      depositToken: deiDeusLpToken[ChainId.HECO],
+      withdrawToken: deiDeusLpToken[ChainId.HECO],
       stakingContract: "0x0c199524b6E7C01558342e80502Ec7175550ba48"
     }
   ],
-  [ChainMap.AVALANCHE]: [ //TODO
+  [ChainId.AVALANCHE]: [ //TODO
     {
       title: "DEI-DAI",
-      depositToken: deiCollateralLpToken[ChainMap.AVALANCHE],
-      withdrawToken: deiCollateralLpToken[ChainMap.AVALANCHE],
+      depositToken: deiCollateralLpToken[ChainId.AVALANCHE],
+      withdrawToken: deiCollateralLpToken[ChainId.AVALANCHE],
       stakingContract: "0x977E4BCAC46C3e1E39F9f8baf82E236809D17435"
     },
     {
       title: "DEI-DEUS",
-      depositToken: deiDeusLpToken[ChainMap.AVALANCHE],
-      withdrawToken: deiDeusLpToken[ChainMap.AVALANCHE],
+      depositToken: deiDeusLpToken[ChainId.AVALANCHE],
+      withdrawToken: deiDeusLpToken[ChainId.AVALANCHE],
       stakingContract: "0x085d3eB826416606Aaf83ffc4b797B3641DC5C73"
     }
   ]

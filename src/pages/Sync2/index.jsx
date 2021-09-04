@@ -23,7 +23,7 @@ import { useSync, useAmountsIn, useAmountsOut, useAllowance } from '../../hooks/
 import { useApprove } from '../../hooks/useApprove';
 import { isZero } from '../../constant/number';
 import { fromWei, RemoveTrailingZero } from '../../helper/formatBalance';
-import { ChainMap, NameChainMap } from '../../constant/web3';
+import { ChainId, NameChainId } from '../../constant/web3';
 import { createPriceUrls, createSignaturesUrls } from '../../helper/syncHelper'
 import { Type } from '../../components/App/Text';
 import SelectBox from '../../components/App/Sync/SelectBox';
@@ -79,10 +79,10 @@ const Sync2 = () => {
         position: new URLSearchParams(search).get('position')?.toUpperCase(),
         type: new URLSearchParams(search).get('type')?.toUpperCase(),
     }
-    const tempChain = queryParams.network && ChainMap[queryParams.network] ? ChainMap[queryParams.network] : null
+    const tempChain = queryParams.network && ChainId[queryParams.network] ? ChainId[queryParams.network] : null
     const userChain = tempChain ? tempChain : chainId
     const validChains = getCorrectChains(location.pathname)
-    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainMap.BSC
+    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainId.BSC
     const [SyncChainId, setSyncChainId] = useState(currChain)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -266,16 +266,16 @@ const Sync2 = () => {
     const priceSymbol = targetCurrency && targetCurrency.long_symbol?.substring(1)
 
     const signaturesRequestUrl = useMemo(() => {
-        if (!priceSymbol || !NameChainMap[SyncChainId]) return
-        const network = NameChainMap[SyncChainId]
+        if (!priceSymbol || !NameChainId[SyncChainId]) return
+        const network = NameChainId[SyncChainId]
         const position_type = isLong ? "long" : "short"
         return createSignaturesUrls(oracle.signatures, priceSymbol, network, position_type, position)
         //eslint-disable-next-line 
-    }, [priceSymbol, NameChainMap[SyncChainId], isLong, position])
+    }, [priceSymbol, NameChainId[SyncChainId], isLong, position])
 
     const priceURLs = useMemo(() => {
-        const network = NameChainMap[SyncChainId]
-        if (!priceSymbol || !NameChainMap[SyncChainId]) return
+        const network = NameChainId[SyncChainId]
+        if (!priceSymbol || !NameChainId[SyncChainId]) return
         return createPriceUrls(oracle.prices, priceSymbol, network)
         //eslint-disable-next-line 
     }, [priceSymbol, SyncChainId])

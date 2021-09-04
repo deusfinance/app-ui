@@ -1,4 +1,4 @@
-export const ChainMap = {
+export const ChainId = {
     ETH: 1,
     ROPSTEN: 2,
     RINKEBY: 4,
@@ -14,7 +14,7 @@ export const ChainMap = {
     AVALANCHE: 43114,
 }
 
-export const NameChainMap = {
+export const NameChainId = {
     1: "ETH",
     2: "Ropsten",
     4: "Rinkeby",
@@ -30,7 +30,7 @@ export const NameChainMap = {
 }
 
 export const rpcConfig = {
-    [ChainMap.ETH]: {
+    [ChainId.ETH]: {
         chainId: "0x1",
         chainName: "Ethereum Mainnet",
         nativeCurrency: {
@@ -41,7 +41,7 @@ export const rpcConfig = {
         rpcUrls: ["https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY],
         blockExplorerUrls: ["https://etherscan.io/"],
     },
-    [ChainMap.RINKEBY]: {
+    [ChainId.RINKEBY]: {
         chainId: "0x4",
         chainName: "Rinkeby Testnet",
         nativeCurrency: {
@@ -52,7 +52,7 @@ export const rpcConfig = {
         rpcUrls: ["https://rinkeby.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY],
         blockExplorerUrls: ["https://rinkeby.etherscan.io/"],
     },
-    [ChainMap.XDAI]: {
+    [ChainId.XDAI]: {
         chainId: "0x64",
         chainName: "xDAI Chain",
         nativeCurrency: {
@@ -63,7 +63,7 @@ export const rpcConfig = {
         rpcUrls: ["https://rpc.xdaichain.com/"],
         blockExplorerUrls: ["https://blockscout.com/poa/xdai/"],
     },
-    [ChainMap.MATIC]: {
+    [ChainId.MATIC]: {
         chainId: "0x89",
         chainName: "Matic Mainnet",
         nativeCurrency: {
@@ -75,7 +75,7 @@ export const rpcConfig = {
         blockExplorerUrls: ["https://polygonscan.com/"],
         iconUrls: []
     },
-    [ChainMap.BSC]: {
+    [ChainId.BSC]: {
         chainId: "0x38",
         chainName: "Binance Smart Chain Mainnet",
         nativeCurrency: {
@@ -86,7 +86,7 @@ export const rpcConfig = {
         rpcUrls: ["https://bsc-dataseed.binance.org", "https://bsc-dataseed1.defibit.io"],
         blockExplorerUrls: ["https://bscscan.com"],
     },
-    [ChainMap.BSC_TESTNET]: {
+    [ChainId.BSC_TESTNET]: {
         chainId: "0x61",
         chainName: "Binance Smart Chain Testnet",
         nativeCurrency: {
@@ -97,7 +97,7 @@ export const rpcConfig = {
         rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545", "https://data-seed-prebsc-2-s1.binance.org:8545"],
         blockExplorerUrls: ["https://testnet.bscscan.com"],
     },
-    [ChainMap.HECO]: {
+    [ChainId.HECO]: {
         chainId: "0x80",
         chainName: "Huobi ECO Chain Mainnet",
         nativeCurrency: {
@@ -108,7 +108,7 @@ export const rpcConfig = {
         rpcUrls: ["https://http-mainnet.hecochain.com"],
         blockExplorerUrls: ["https://hecoinfo.com"],
     },
-    [ChainMap.HECO_TESTNET]: {
+    [ChainId.HECO_TESTNET]: {
         chainId: "0x100",
         chainName: "Huobi ECO Chain Testnet",
         nativeCurrency: {
@@ -119,7 +119,7 @@ export const rpcConfig = {
         rpcUrls: ["https://http-testnet.hecochain.com"],
         blockExplorerUrls: ["https://testnet.hecoinfo.com"],
     },
-    [ChainMap.AVALANCHE]: {
+    [ChainId.AVALANCHE]: {
         chainId: "0xa86a",
         chainName: "Avalanche Network",
         nativeCurrency: {

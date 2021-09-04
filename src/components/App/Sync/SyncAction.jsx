@@ -6,7 +6,7 @@ import { FlexCenter } from '../Container';
 import { WaveLoading } from 'react-loadingg';
 import { isZero, isGt } from '../../../constant/number';
 import Wallets from '../../common/Navbar/Wallets';
-import { NameChainMap } from '../../../constant/web3';
+import { NameChainId } from '../../../constant/web3';
 import { addRPC } from '../../../services/addRPC';
 import { useTranslation } from 'react-i18next';
 
@@ -99,7 +99,7 @@ const SyncAction = ({ maxBalance, isPreApproved, validNetwork, fromCurrency, toC
         return <WrapActions>
             <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
             <ButtonSwap active={true} onClick={() => addRPC(account, validNetwork)}>
-                SWITCH TO {NameChainMap[validNetwork]}
+                SWITCH TO {NameChainId[validNetwork]}
             </ButtonSwap>
         </WrapActions>
     }

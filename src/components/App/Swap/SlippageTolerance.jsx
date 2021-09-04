@@ -62,7 +62,7 @@ const InputSlippage = styled.input.attrs(
 
 `
 const defaultAmounts = [0.1, 0.5, 1]
-const SlippageTolerance = ({ slippage, setSlippage, bgColor }) => {
+const SlippageTolerance = ({ slippage, setSlippage, style, bgColor }) => {
     const [customActive, setCustomActive] = useState(false)
 
     const handleMinSlippage = () => {
@@ -82,7 +82,7 @@ const SlippageTolerance = ({ slippage, setSlippage, bgColor }) => {
         }
     }
 
-    return (<Wrapper>
+    return (<Wrapper style={style}>
         <Type.SM className="inner-title">Slippage Telorance</Type.SM>
         <div style={{ display: "inline-block" }} height="25px">
             {defaultAmounts.map(amount => {

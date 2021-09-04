@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
+import { isZero } from '../../../constant/number';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
 import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';
 import { formatBalance3 } from '../../../utils/utils';
@@ -97,7 +98,7 @@ const ZapBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, set
                 setInputAmount(e.currentTarget.value)
             }} />
 
-            {hasMax && !onMax && <ButtonMax width={"40px"}
+            {hasMax && !onMax && !isZero(balance) && <ButtonMax width={"40px"}
                 onClick={() => setInputAmount(balance)}>
                 MAX
             </ButtonMax>}

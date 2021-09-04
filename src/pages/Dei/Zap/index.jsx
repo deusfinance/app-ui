@@ -3,6 +3,7 @@ import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
 import { DEITokens, deiToken } from '../../../constant/token';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
+import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { Type } from '../../../components/App/Text';
 import { Image } from 'rebass/styled-components';
@@ -42,6 +43,7 @@ const Zap = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [stakingTo,] = useState("")
     const contractAddress = useMemo(() => ZAP_ADDRESS[chainId], [chainId])
+    const [slippage, setSlippage] = useState(0.5)
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId].filter((token) => !token.pairID) : [], [chainId])
 
@@ -229,6 +231,7 @@ const Zap = () => {
 
                 </SwapWrapper>
 
+                <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} style={{ maxWidth: "560px" }} />
                 <SwapCard title="Zapping Fee" value={mintingFee ? `${mintingFee} %` : ""} style={{ maxWidth: "560px" }} />
             </ContentWrapper>
         </MainWrapper>

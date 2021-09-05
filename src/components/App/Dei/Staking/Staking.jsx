@@ -60,7 +60,7 @@ const Action = styled.div`
     }
     padding: 2px;
 `
-const Staking = ({ config, chainId }) => {
+const Staking = ({ config = {}, chainId }) => {
     const { account } = useWeb3React()
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -98,10 +98,11 @@ const Staking = ({ config, chainId }) => {
         //eslint-disable-next-line 
     }, [allowance])
 
-    const { onApprove } = useApprove(config.depositToken, config.stakingContract, chainId)
-    const { onDeposit } = useDeposit(config.depositToken, depositInput, config.stakingContract, chainId)
-    const { onWithdraw } = useWithdraw(config.depositToken, withdrawAmount, config.stakingContract, chainId)
-    const { onWithdraw: onClaim } = useWithdraw(config.depositToken, "0", config.stakingContract, chainId)
+    const { depositToken, stakingContract } = config
+    const { onApprove } = useApprove(depositToken, stakingContract, chainId)
+    const { onDeposit } = useDeposit(depositToken, depositInput, stakingContract, chainId)
+    const { onWithdraw } = useWithdraw(depositToken, withdrawAmount, stakingContract, chainId)
+    const { onWithdraw: onClaim } = useWithdraw(depositToken, "0", stakingContract, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -180,6 +181,7 @@ const Staking = ({ config, chainId }) => {
                 title={"Withdraw " + stakingInfo.title}
                 balance={depositAmount || "0"}
                 buttonText="WITHDRAW"
+                stakingContract={stakingContract}
                 isPreApproved={true}
                 isApproved={true}
                 loading={false}
@@ -195,6 +197,7 @@ const Staking = ({ config, chainId }) => {
                 setAmount={setDepositInput}
                 balance={depositTokenWalletBalance}
                 buttonText="STAKE"
+                stakingContract={stakingContract}
                 isPreApproved={isPreApproved}
                 isApproved={isApproved}
                 loading={approveLoading}
@@ -203,7 +206,7 @@ const Staking = ({ config, chainId }) => {
             />
             <ActionWrap active={active}>
                 <ActionContainer style={{ borderRadius: "6px 0 0 0" }} >
-                    <Action style={{ borderRadius: "6px 0 0 0" }}>Mint</Action>
+                    <Action style={{ borderRadius: "6px 0 0 0" }}>Provide Liquidity</Action>
                 </ActionContainer>
                 <ActionContainer style={{ borderRadius: " 0  6px 0 0" }}>
                     <Action style={{ borderRadius: "0  6px 0 0" }} onClick={() => setActiveDeposit(true)}>Stake Here</Action>

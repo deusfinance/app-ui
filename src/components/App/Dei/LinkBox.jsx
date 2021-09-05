@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { urls } from './data'
+import { urls } from '../../../constant/staking'
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components'
 

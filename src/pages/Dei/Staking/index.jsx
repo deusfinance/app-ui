@@ -4,7 +4,7 @@ import { CostBox } from '../../../components/App/Dei/CostBox'
 import { Type } from '../../../components/App/Text';
 import { useDeiUpdateRedeem } from '../../../hooks/useDei';
 import Staking from '../../../components/App/Dei/Staking/Staking';
-import { StakingConfig } from '../../../components/App/Dei/data';
+import { StakingConfig } from '../../../constant/staking';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';

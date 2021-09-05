@@ -9,6 +9,7 @@ import { ExternalLink } from '../../Link';
 import { FlexCenter } from '../../Container';
 import SwapAction from '../SwapAction';
 import { formatBalance3 } from '../../../../utils/utils';
+import { getTransactionLink } from '../../../../utils/explorers';
 
 ReactModal.setAppElement("#root")
 
@@ -25,6 +26,7 @@ const Popup = ({
     isApproved,
     chainId,
     loading,
+    stakingContract,
     handleApprove,
     handleAction }) => {
 
@@ -154,7 +156,7 @@ const Popup = ({
                         </ButtonMax >}
                     </InputContainer>
 
-                    <ExternalLink href="https://rinkeby.etherscan.io/address/0xeC954bBdb8436Dc52e05b965bBECbd795bc6E027">
+                    <ExternalLink href={getTransactionLink(chainId, stakingContract)}>
                         <FlexCenter style={{ marginTop: "20px" }}>
                             <Type.MD style={{ marginRight: "2px", marginTop: "3px" }}  >SHOW ME THE CONTRACT</Type.MD>
                             <ExternalIcon height="18px" />
@@ -175,7 +177,7 @@ const Popup = ({
                 </Container>
             </Wrapper>
         </ReactModal>
-    }, [customStyles, chainId, title, hasMax, onMax, active, setActive, amount, balance, handleAction, handleApprove, loading, buttonText, isApproved, isPreApproved, setAmount])
+    }, [customStyles, stakingContract, chainId, title, hasMax, onMax, active, setActive, amount, balance, handleAction, handleApprove, loading, buttonText, isApproved, isPreApproved, setAmount])
     );
 }
 

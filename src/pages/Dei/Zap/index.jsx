@@ -16,7 +16,6 @@ import { useApprove } from '../../../hooks/useApprove';
 import useTokenBalances from '../../../hooks/useTokenBalances';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { ZAP_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper } from '../../../components/App/Dei';
 import { useDeiUpdate, useZap, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, husdPoolDataState } from '../../../store/dei';
@@ -41,8 +40,9 @@ const Zap = () => {
     const { account } = useWeb3React()
     const [escapedType, setEscapedType] = useState("from")
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-    const [stakingTo,] = useState("")
-    const contractAddress = useMemo(() => ZAP_ADDRESS[chainId], [chainId])
+    const [activeStakingList, setActiveStakingList] = useState(false)
+    const [stakingTo,] = useState("0x977E4BCAC46C3e1E39F9f8baf82E236809D17435")
+    const contractAddress = useMemo(() => stakingTo, [chainId])
     const [slippage, setSlippage] = useState(0.5)
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId].filter((token) => !token.pairID) : [], [chainId])
@@ -99,7 +99,7 @@ const Zap = () => {
 
 
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onZap } = useZap(swapState.from, stakingTo, amountIn, chainId)
+    const { onZap } = useZap(swapState.from, stakingTo, amountIn, 0, chainId)
 
     const handleApprove = useCallback(async () => {
         try {

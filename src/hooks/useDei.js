@@ -33,8 +33,9 @@ export const useZap = (currency, staking, amountIn, minLpAmount = 0, validChainI
 
     const handleZap = useCallback(async () => {
         if ((validChainId && chainId !== validChainId) || !currency) return false
-        const amountInToWei = getToWei(amountIn, currency.decimals)
-        const minLpAmountToWei = getToWei(minLpAmount, 18)
+        const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
+        // const minLpAmountToWei = getToWei(minLpAmount, 18)
+        const minLpAmountToWei = "0"
         const fn = zapIn(currency, staking, amountInToWei, minLpAmountToWei, false, web3, chainId)
         const payload = currency.address === "0x" ? { value: amountInToWei } : {}
         return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${staking?.title} `, payload)

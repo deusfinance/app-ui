@@ -184,6 +184,7 @@ export const getHusdPoolData = (chainId = ChainId.RINKEBY, collat_usd_price, acc
 
 //WRITE FUNCTIONS
 export const SendWithToast = (fn, account, chainId, message, payload = {}) => {
+
     if (!fn) return
     let hash = null
     const value = payload.value ? { value: payload.value } : {}
@@ -368,20 +369,20 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
     return getProxyMinterContract(web3, chainId).methods[method](...params).call()
 }
 
-export const zapIn = (currency, staking, amountIn, minLpAmount, transferResidual, web3, chainId) => {
+export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, transferResidual, web3, chainId) => {
     const erc20Path = mintPath[chainId][currency.symbol]
 
     if (currency.address === "0x")
-        return getZapContract(web3, chainId)
+        return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInNativecoin(erc20Path, minLpAmount, transferResidual) // TODO  VALUE:AVAX?
 
-    else if (currency.address === COLLATERAL_ADDRESS[chainId])
-        return getZapContract(web3, chainId)
+    else if (currency.address === COLLATERAL_ADDRESS[chainId]) {
+        return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInCollateral(amountIn, minLpAmount, transferResidual)
-
-    return getZapContract(web3, chainId)
+    }
+    return getZapContract(web3, zapperAddress, chainId)
         .methods
         .zapInERC20(erc20Path, amountIn, minLpAmount, transferResidual)
 }

@@ -111,7 +111,7 @@ const Dei = () => {
 
     useEffect(() => {
         if (focusType === "from1") {
-            getAmountsTokens(amountIn, null, null)
+            getAmountsTokens(debouncedAmountIn, null, null)
         }
         if (focusType === "from2") {
             console.log(amountInPair);
@@ -120,7 +120,8 @@ const Dei = () => {
         if (focusType === "to") {
             getAmountsTokens(null, null, amountOut)
         }
-    }, [amountIn, amountInPair, amountOut, mintingFee, deiPrices]);// eslint-disable-line
+        console.log("called");
+    }, [debouncedAmountIn, amountInPair, amountOut, mintingFee, deiPrices]);// eslint-disable-line
 
 
     const getAmountsTokens = async (in1, in2, out) => {

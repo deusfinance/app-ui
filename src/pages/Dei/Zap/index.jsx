@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
 import { DEITokens, deiToken } from '../../../constant/token';
+import { StakingConfig } from '../../../constant/staking';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
@@ -41,8 +42,10 @@ const Zap = () => {
     const [escapedType, setEscapedType] = useState("from")
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [activeStakingList, setActiveStakingList] = useState(false)
-    const [stakingTo,] = useState("0x977E4BCAC46C3e1E39F9f8baf82E236809D17435")
-    const contractAddress = useMemo(() => stakingTo, [chainId])
+    const availableStaking = StakingConfig[chainId]
+    const [stakingInfo, setStakingInfo] = useState(availableStaking[0])
+    const contractAddress = stakingInfo.zapperContract
+
     const [slippage, setSlippage] = useState(0.5)
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId].filter((token) => !token.pairID) : [], [chainId])
@@ -70,9 +73,6 @@ const Zap = () => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
 
-
-
-
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
@@ -97,9 +97,8 @@ const Zap = () => {
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
 
-
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onZap } = useZap(swapState.from, stakingTo, amountIn, 0, chainId)
+    const { onZap } = useZap(swapState.from, stakingInfo, amountIn, 0, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -153,7 +152,6 @@ const Zap = () => {
     }
 
     // TODO: loader animation --> needs to fix at the end
-
     if (!swapState.from.address || collatRatio === null || mintingFee === null) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
@@ -198,11 +196,15 @@ const Zap = () => {
                         <ZapStakingBox
                             type="to"
                             title="To (estimated)"
+                            activeStakingList={activeStakingList}
+                            availableStaking={availableStaking}
+                            setStakingInfo={setStakingInfo}
+                            stakingInfo={stakingInfo}
                             setFocusType={setFocusType}
                             focusType="to"
                             inputAmount={amountOut}
                             setInputAmount={setAmountOut}
-                            setActive={showSearchBox}
+                            setActive={setActiveStakingList}
                             TokensMap={TokensMap}
                             currency={swapState.to}
                             fastUpdate={fastUpdate}

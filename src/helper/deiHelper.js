@@ -250,16 +250,37 @@ export const ERC20ToDei = (erc20amount, collateral_price, deus_price, expire_blo
         .ERC20ToDei(erc20amount, collateral_price, deus_price, expire_block, [signature], transferResidual, path, min_amount_out)
 }
 
+
+// struct ProxyInput {
+//     uint256 collateral_price;
+//     uint256 deus_price;
+//     uint256 expire_block;
+//     uint min_amount_out;
+//     bytes[] sigs;
+//     bool transferResidual;
+//     address[] path;
+// }
+
 export const collateralToDei = (collateral_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out, chainId, web3) => {
     return getProxyMinterContract(web3, chainId)
         .methods
-        .collateralToDei(collateral_amount, collateral_price, deus_price, expire_block, [signature], transferResidual, min_amount_out)
+        .collateralToDei([
+            collateral_price,
+            deus_price,
+            expire_block,
+            min_amount_out,
+            [signature],
+            transferResidual,
+            []
+        ],
+            collateral_amount)
 }
 
 export const DeusToDei = (deus_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out, chainId, web3) => {
+    console.log(min_amount_out);
     return getProxyMinterContract(web3, chainId)
         .methods
-        .DeusToDei(deus_amount, collateral_price, deus_price, expire_block, [signature], transferResidual, min_amount_out)
+        .DeusToDei([collateral_price, deus_price, expire_block, min_amount_out, [signature], transferResidual, []], deus_amount)
 }
 
 
@@ -329,14 +350,18 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
     return true
 }
 
+
+
+
 export const mintPath = {
     [ChainId.HECO]: {
         HT: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
         USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
     },
     [ChainId.AVALANCHE]: {
-        AVAX: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
-        USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
+        AVAX: ["0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", "0xc7198437980c041c805A1EDcbA50c1Ce5db95118"],
+        USDT: ["0xc7198437980c041c805A1EDcbA50c1Ce5db95118", "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70"],
+        WETH: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
     },
 }
 
@@ -353,12 +378,14 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
         params.push(erc20Path)
     }
     else if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
+        // console.log("getAmountsOutCollateralToDei");
         method = "getAmountsOutCollateralToDei"
     }
     else if (fromCurrency.address === DEUS_ADDRESS[chainId]) {
         method = "getAmountsOutDeusToDei"
     }
     else {
+        // console.log("getAmountsOutERC20ToDei");
         method = "getAmountsOutERC20ToDei"
         if (!erc20Path) {
             console.error("INVALID PATH with ", fromCurrency)

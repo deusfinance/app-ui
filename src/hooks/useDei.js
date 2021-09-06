@@ -27,19 +27,19 @@ import { collateralToken } from '../constant/token'
 import { COLLATERAL_ADDRESS, DEUS_ADDRESS } from '../constant/contracts'
 
 
-export const useZap = (currency, staking, amountIn, minLpAmount = 0, validChainId) => {
+export const useZap = (currency, stakingInfo, amountIn, minLpAmount, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
     const handleZap = useCallback(async () => {
         if ((validChainId && chainId !== validChainId) || !currency) return false
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
-        // const minLpAmountToWei = getToWei(minLpAmount, 18)
+        // const minLpAmountToWei = getToWei(minLpAmount, 18).toFixed(0)
         const minLpAmountToWei = "0"
-        const fn = zapIn(currency, staking, amountInToWei, minLpAmountToWei, false, web3, chainId)
+        const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, false, web3, chainId)
         const payload = currency.address === "0x" ? { value: amountInToWei } : {}
-        return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${staking?.title} `, payload)
-    }, [currency, staking, amountIn, minLpAmount, validChainId, chainId, account, web3])
+        return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
+    }, [currency, stakingInfo, amountIn, validChainId, chainId, account, web3])
     return { onZap: handleZap }
 }
 
@@ -265,6 +265,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                     )
                 }
                 else if (from1Currency.address === DEUS_ADDRESS[chainId]) {
+                    // console.log("minAmountOut: ", minAmountOut);
                     fn = DeusToDei(
                         amount1toWei,
                         collateral_price,

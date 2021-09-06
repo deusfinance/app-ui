@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
+import { formatBalance3 } from '../../../../utils/utils';
 
 const Wrapper = styled.div`
     display: flex;
@@ -44,7 +45,7 @@ const Amount = styled.div`
 `
 const ClaimButton = ({ actionTitle, onAction = undefined, symbol, amount, amountTitle }) => {
     return (<Wrapper>
-        <Amount>{amount} {symbol} {amountTitle}</Amount>
+        <Amount>{formatBalance3(amount, 8)} {symbol} {amountTitle}</Amount>
         <ButtonAction onClick={onAction}>{actionTitle}</ButtonAction>
     </Wrapper>);
 }

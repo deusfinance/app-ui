@@ -38,6 +38,8 @@ export const DEITokens = {
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.AVALANCHE], decimals: 18, chainId: ChainId.AVALANCHE },
         { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainId.AVALANCHE], decimals: 18, chainId: ChainId.AVALANCHE, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.AVALANCHE], decimals: 18, chainId: ChainId.AVALANCHE, pairID: 1 },
+        { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118", decimals: 6, chainId: ChainId.AVALANCHE },
+        { logo: "/tokens/avax.png", symbol: "AVAX", address: "0x", decimals: 18, chainId: ChainId.AVALANCHE },
     ],
     [ChainId.HECO]: [
         { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainId.HECO },
@@ -45,7 +47,7 @@ export const DEITokens = {
         { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainId.HECO, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainId.HECO, pairID: 1 },
         { logo: "/tokens/ht.png", symbol: "HT", address: "0x", decimals: 18, chainId: ChainId.HECO },
-        { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xa71edc38d189767582c38a3145b5873052c3e47a", decimals: 18, chainId: ChainId.HECO },
+        { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xa71edc38d189767582c38a3145b5873052c3e47a", decimals: 6, chainId: ChainId.HECO },
     ],
     [ChainId.RINKEBY]: [
         { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4 },

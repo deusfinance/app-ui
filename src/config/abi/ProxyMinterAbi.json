@@ -89,12 +89,6 @@
             },
             {
                 "type": "uint256",
-                "name": "residual_collateral_amount",
-                "internalType": "uint256",
-                "indexed": false
-            },
-            {
-                "type": "uint256",
                 "name": "collateral_ratio",
                 "internalType": "uint256",
                 "indexed": false
@@ -122,38 +116,50 @@
         "name": "DeusToDei",
         "inputs": [
             {
+                "type": "tuple",
+                "name": "proxy_input",
+                "internalType": "struct DEIProxy.ProxyInput",
+                "components": [
+                    {
+                        "type": "uint256",
+                        "name": "collateral_price",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "deus_price",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "expire_block",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "min_amount_out",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "bytes[]",
+                        "name": "sigs",
+                        "internalType": "bytes[]"
+                    },
+                    {
+                        "type": "bool",
+                        "name": "transferResidual",
+                        "internalType": "bool"
+                    },
+                    {
+                        "type": "address[]",
+                        "name": "path",
+                        "internalType": "address[]"
+                    }
+                ]
+            },
+            {
                 "type": "uint256",
                 "name": "deus_amount",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "collateral_price",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "deus_price",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "expire_block",
-                "internalType": "uint256"
-            },
-            {
-                "type": "bytes[]",
-                "name": "sigs",
-                "internalType": "bytes[]"
-            },
-            {
-                "type": "bool",
-                "name": "transferResidual",
-                "internalType": "bool"
-            },
-            {
-                "type": "uint256",
-                "name": "min_amount_out",
                 "internalType": "uint256"
             }
         ]
@@ -161,47 +167,60 @@
     {
         "type": "function",
         "stateMutability": "nonpayable",
-        "outputs": [],
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "",
+                "internalType": "uint256"
+            }
+        ],
         "name": "ERC20ToDei",
         "inputs": [
             {
+                "type": "tuple",
+                "name": "proxy_input",
+                "internalType": "struct DEIProxy.ProxyInput",
+                "components": [
+                    {
+                        "type": "uint256",
+                        "name": "collateral_price",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "deus_price",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "expire_block",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "min_amount_out",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "bytes[]",
+                        "name": "sigs",
+                        "internalType": "bytes[]"
+                    },
+                    {
+                        "type": "bool",
+                        "name": "transferResidual",
+                        "internalType": "bool"
+                    },
+                    {
+                        "type": "address[]",
+                        "name": "path",
+                        "internalType": "address[]"
+                    }
+                ]
+            },
+            {
                 "type": "uint256",
                 "name": "erc20amount",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "collateral_price",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "deus_price",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "expire_block",
-                "internalType": "uint256"
-            },
-            {
-                "type": "bytes[]",
-                "name": "sigs",
-                "internalType": "bytes[]"
-            },
-            {
-                "type": "bool",
-                "name": "transferResidual",
-                "internalType": "bool"
-            },
-            {
-                "type": "address[]",
-                "name": "path",
-                "internalType": "address[]"
-            },
-            {
-                "type": "uint256",
-                "name": "min_amount_out",
                 "internalType": "uint256"
             }
         ]
@@ -246,42 +265,60 @@
     {
         "type": "function",
         "stateMutability": "nonpayable",
-        "outputs": [],
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "",
+                "internalType": "uint256"
+            }
+        ],
         "name": "collateralToDei",
         "inputs": [
             {
+                "type": "tuple",
+                "name": "proxy_input",
+                "internalType": "struct DEIProxy.ProxyInput",
+                "components": [
+                    {
+                        "type": "uint256",
+                        "name": "collateral_price",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "deus_price",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "expire_block",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "min_amount_out",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "bytes[]",
+                        "name": "sigs",
+                        "internalType": "bytes[]"
+                    },
+                    {
+                        "type": "bool",
+                        "name": "transferResidual",
+                        "internalType": "bool"
+                    },
+                    {
+                        "type": "address[]",
+                        "name": "path",
+                        "internalType": "address[]"
+                    }
+                ]
+            },
+            {
                 "type": "uint256",
                 "name": "collateral_amount",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "collateral_price",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "deus_price",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "expire_block",
-                "internalType": "uint256"
-            },
-            {
-                "type": "bytes[]",
-                "name": "sigs",
-                "internalType": "bytes[]"
-            },
-            {
-                "type": "bool",
-                "name": "transferResidual",
-                "internalType": "bool"
-            },
-            {
-                "type": "uint256",
-                "name": "min_amount_out",
                 "internalType": "uint256"
             }
         ]
@@ -537,43 +574,56 @@
     {
         "type": "function",
         "stateMutability": "payable",
-        "outputs": [],
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "",
+                "internalType": "uint256"
+            }
+        ],
         "name": "nativeCoinToDei",
         "inputs": [
             {
-                "type": "uint256",
-                "name": "collateral_price",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "deus_price",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "expire_block",
-                "internalType": "uint256"
-            },
-            {
-                "type": "bytes[]",
-                "name": "sigs",
-                "internalType": "bytes[]"
-            },
-            {
-                "type": "bool",
-                "name": "transferResidual",
-                "internalType": "bool"
-            },
-            {
-                "type": "address[]",
-                "name": "path",
-                "internalType": "address[]"
-            },
-            {
-                "type": "uint256",
-                "name": "min_amount_out",
-                "internalType": "uint256"
+                "type": "tuple",
+                "name": "proxy_input",
+                "internalType": "struct DEIProxy.ProxyInput",
+                "components": [
+                    {
+                        "type": "uint256",
+                        "name": "collateral_price",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "deus_price",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "expire_block",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "min_amount_out",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "type": "bytes[]",
+                        "name": "sigs",
+                        "internalType": "bytes[]"
+                    },
+                    {
+                        "type": "bool",
+                        "name": "transferResidual",
+                        "internalType": "bool"
+                    },
+                    {
+                        "type": "address[]",
+                        "name": "path",
+                        "internalType": "address[]"
+                    }
+                ]
             }
         ]
     },

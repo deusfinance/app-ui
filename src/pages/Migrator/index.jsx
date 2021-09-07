@@ -12,17 +12,29 @@ import BigNumber from 'bignumber.js';
 import { fromWei } from '../../helper/formatBalance';
 import { useApprove } from '../../hooks/useApprove';
 import { useSwap } from "../../hooks/useMigrator";
-import { SealedTokens, sdeaToken } from '../../constant/token';
-import useChain from '../../hooks/useChain';
-import { getTokenAddr } from '../../utils/contracts';
+import { SealedTokens, MainTokens } from '../../constant/token';
 import useTokenBalances from '../../hooks/useTokenBalances';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useLocation } from 'react-router';
-import { MMDToken } from "../../constant/token";
+// import { MMDToken } from "../../constant/token";
 import { LOCKER_ADDRESS } from "../../constant/contracts";
 import { useAllowance } from "../../hooks/useAllowance";
+import styled from 'styled-components';
+import SelectBox from '../../components/App/Migrator/SelectBox';
+import { ChainMap, NameChainMap } from '../../constant/web3';
+import { getCorrectChains } from '../../constant/correctChain';
+
+const SwapNetwork = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 12px;
+    font-weight: 400;
+`;
 
 const Migrator = () => {
+    const { account, chainId } = useWeb3React()
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [bptPayload, setBptPayload] = useState([])
     const [invert, setInvert] = useState(false)
@@ -32,13 +44,23 @@ const Migrator = () => {
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
-    const { account } = useWeb3React()
-    const validNetworks = [1, 4]
-    const chainId = useChain(validNetworks)
     const contractAddress = LOCKER_ADDRESS[chainId];
-    const allowance = useAllowance(MMDToken, contractAddress, chainId);
 
+    const location = useLocation()
     const search = useLocation().search;
+    const queryParams = {
+        network: new URLSearchParams(search).get('network')?.toUpperCase(),
+        symbol: new URLSearchParams(search).get('symbol')?.toUpperCase(),
+        position: new URLSearchParams(search).get('position')?.toUpperCase(),
+        type: new URLSearchParams(search).get('type')?.toUpperCase(),
+    }
+    const tempChain = queryParams.network && ChainMap[queryParams.network] ? ChainMap[queryParams.network] : null
+    const userChain = tempChain ? tempChain : chainId
+    const validChains = getCorrectChains(location.pathname)
+    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainMap.ETH
+    const [SyncChainId, setSyncChainId] = useState(currChain)
+
+
     let inputCurrency = new URLSearchParams(search).get('inputCurrency')
 
     const tokens = useMemo(() => SealedTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
@@ -55,14 +77,15 @@ const Migrator = () => {
         inputCurrency = null
     }
 
-    // const sUniDD = getTokenAddr("sand_deus_dea", chainId)
-    // let fromAddress = inputCurrency ? inputCurrency : sUniDD
+    const sUniDD = SealedTokens.find(token => token.symbol === 'sUniDD')
 
     const [swapState, setSwapState] = useState({
-        // from: { ...TokensMap[fromAddress] },
-        from: MMDToken,
-        to: sdeaToken,
+        from: sUniDD,
+        to: MainTokens[0],
     })
+
+    // const allowance = useAllowance(swapState.to, contractAddress, chainId);
+    const allowance = new BigNumber(-1)
 
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
@@ -125,8 +148,8 @@ const Migrator = () => {
     // const { getAmountsOut } = useSealedGetAmountsOut(swapState.from, debouncedAmountIn, chainId)
     // const { onApprove } = useApprove(swapState.from, SEALED_ADDRESS, chainId)
     // const { onSwap } = useSwap(swapState.from, swapState.to, amountIn, amountOut, slippage, chainId, bptPayload)
-    const { onApprove } = useApprove(MMDToken, contractAddress, chainId);
-    const { onSwap } = useSwap(MMDToken, amountIn, chainId);
+    const { onApprove } = useApprove(swapState.to, contractAddress, chainId);
+    const { onSwap } = useSwap(swapState.to, amountIn, chainId);
 
     // useEffect(() => {
     //     const get = async () => {
@@ -191,7 +214,13 @@ const Migrator = () => {
 
         <MainWrapper>
             <SwapTitle active={false} bgColor={"grad_dei"} m="auto"> MIGRATOR </SwapTitle>
+
             <SwapWrapper>
+                <SwapNetwork>
+                    <span> Choose Chain to Migrate to </span>
+                    <SelectBox currRow={SyncChainId} setCurrRow={setSyncChainId} />
+                </SwapNetwork>
+
                 <TokenBox
                     type="from"
                     hasMax={true}
@@ -203,9 +232,9 @@ const Migrator = () => {
                     fastUpdate={fastUpdate}
                 />
 
-                {/* <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" /> */}
+                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-                {/* <TokenBox
+                <TokenBox
                     type="to"
                     title="To (estimated)"
                     inputAmount={amountOut}
@@ -214,15 +243,15 @@ const Migrator = () => {
                     TokensMap={TokensMap}
                     currency={swapState.to}
                     fastUpdate={fastUpdate}
-                /> */}
+                />
 
-                {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}
+                {<RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />}
 
                 <SwapAction
-                    text="LOCK"
+                    text="MIGRATE"
                     bgColor={"grad_dei"}
                     isPreApproved={isPreApproved}
-                    validNetworks={[1, 4]}
+                    validNetworks={validChains}
                     isApproved={isApproved}
                     loading={approveLoading}
                     handleApprove={handleApprove}
@@ -241,8 +270,7 @@ const Migrator = () => {
                 amountOut={amountOut}
             /> */}
 
-
-            <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"}/>
+            {/* <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"}/> */}
         </MainWrapper>
         {/* <div className='tut-left-wrap'>
             <SelectedNetworks />

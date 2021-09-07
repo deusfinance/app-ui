@@ -9,12 +9,7 @@ export const correctChains = [
     },
     {
         url: "/migrator",
-        chains: [ChainMap.RINKEBY],
-        exact: true,
-    },
-    {
-        url: "/new-migrator",
-        chains: [ChainMap.MAINNET, ChainMap.RINKEBY],
+        chains: [ChainMap.ETH, ChainMap.RINKEBY, ChainMap.MATIC],
         exact: true,
     },
     {
@@ -64,11 +59,6 @@ export const correctChains = [
     {
         url: "/staking",
         chains: [ChainMap.ETH, ChainMap.RINKEBY],
-    },
-    {
-        url: "/migrator",
-        chains: [ChainMap.ETH, ChainMap.RINKEBY],
-        exact: true,
     },
     {
         url: "/bakkt",

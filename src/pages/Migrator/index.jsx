@@ -25,9 +25,11 @@ import { ChainMap, NameChainMap } from '../../constant/web3';
 import { getCorrectChains } from '../../constant/correctChain';
 
 const SwapNetwork = styled.div`
+    margin-left: 14px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
     margin-bottom: 20px;
     font-size: 12px;
     font-weight: 400;
@@ -217,7 +219,7 @@ const Migrator = () => {
 
             <SwapWrapper>
                 <SwapNetwork>
-                    <span> Choose Chain to Migrate to </span>
+                    <span style={{ opacity: "0.5" }}> Choose Chain to Migrate to </span>
                     <SelectBox currRow={SyncChainId} setCurrRow={setSyncChainId} />
                 </SwapNetwork>
 

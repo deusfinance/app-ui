@@ -12,9 +12,7 @@ import multicall from '../helper/multicall'
 import { useCrossERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
-import {
-    collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState
-} from '../store/dei'
+import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState } from '../store/dei'
 import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,

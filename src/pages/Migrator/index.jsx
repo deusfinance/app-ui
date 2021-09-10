@@ -266,7 +266,7 @@ const Migrator = () => {
                     amountOut={amountOut}
                 />
 
-                <MigrateStep bgColor={"grad_dei"} />
+                <MigrateStep bgColor={"grad_dei"} state={2} />
 
             </SwapWrapper>
 

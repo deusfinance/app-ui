@@ -23,6 +23,8 @@ import styled from 'styled-components';
 import SelectBox from '../../components/App/Migrator/SelectBox';
 import { ChainMap, NameChainMap } from '../../constant/web3';
 import { getCorrectChains } from '../../constant/correctChain';
+import { Type } from '../../components/App/Text';
+import MigrateStep from '../../components/App/Migrator/MigrateStep';
 
 const SwapNetwork = styled.div`
     margin-left: 14px;
@@ -215,7 +217,7 @@ const Migrator = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            <SwapTitle active={false} bgColor={"grad_dei"} m="auto"> MIGRATOR </SwapTitle>
+            <Type.XL fontWeight="300"> Migrate </Type.XL>
 
             <SwapWrapper>
                 <SwapNetwork>
@@ -263,6 +265,8 @@ const Migrator = () => {
                     amountIn={amountIn}
                     amountOut={amountOut}
                 />
+
+                <MigrateStep bgColor={"grad_dei"} />
 
             </SwapWrapper>
 

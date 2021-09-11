@@ -16,23 +16,42 @@ const WrapActions = styled.div`
 const WrapSteps = styled(FlexCenter)`
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
 `
 
-const WrapEachStep = styled(FlexCenter)`
+const WrapEachStep = styled.div`
+    display:flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+`
+
+const WrapRightDate = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    opacity: ${({ active }) => active ? 1 : 0.5};
+    font-size: 14px;
+    margin-left: 10px;
+`
+
+const WrapLeft = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 `
 
 const Text = styled.span`
     opacity: ${({ active }) => active ? 1 : 0.5 };
     margin-left: 10px;
     font-size: 14px;
-`
-
-const Date = styled.span`
-    opacity: ${({ active }) => active ? 1 : 0.5};
-    margin-left: 10px;
-    font-size: 14px;
-    margin-left: 100px;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        font-size: 13.5px;
+    `}
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        font-size: 12px;
+    `}
 `
 
 const CycleNumber = styled(FlexCenter)`
@@ -53,29 +72,31 @@ const Line = styled.div`
     height: 20px;
 `
 
-const MigrateStep = ({ bgColor, state = 1 }) => {
+const MigrateStep = ({ bgColor, state = 0 }) => {
     return (<>
         <WrapActions style={{ backgroundColor: "" }}>
             <WrapSteps style={{ backgroundColor: "" }} bgColor={bgColor}>
                 <WrapEachStep>
-                    <CycleNumber bgColor={bgColor} active={state > 0}>1</CycleNumber>
-                    <Text active={state > 0}> Withdrawal order submitted </Text>
-                    <Date active={false}> 2021-07-17 08:12 </Date>
+                    <WrapLeft>
+                        <CycleNumber bgColor={bgColor} active={state > 0}>1</CycleNumber>
+                        <Text active={state > 0}> Withdrawal order submitted </Text>
+                    </WrapLeft>
+                    <WrapRightDate active={false}> 2021-07-17 08:12 </WrapRightDate>
                 </WrapEachStep>
 
                 <Line bgColor={bgColor}></Line>
 
-                <WrapEachStep>
+                <WrapLeft>
                     <CycleNumber bgColor={bgColor} active={state > 1}>2</CycleNumber>
                     <Text active={state > 1}> System processing </Text>
-                </WrapEachStep>
+                </WrapLeft>
 
                 <Line bgColor={bgColor}></Line>
 
-                <WrapEachStep>
+                <WrapLeft>
                     <CycleNumber bgColor={bgColor} active={state > 2}>3</CycleNumber>
                     <Text active={state > 2}> Completed </Text>
-                </WrapEachStep>
+                </WrapLeft>
             </WrapSteps>
         </WrapActions>
     </>);

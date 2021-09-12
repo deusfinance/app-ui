@@ -45,7 +45,6 @@ const Zap = () => {
     const availableStaking = StakingConfig[chainId]
     const [stakingInfo, setStakingInfo] = useState(availableStaking[0])
     const contractAddress = stakingInfo.zapperContract
-
     const [slippage, setSlippage] = useState(0.5)
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId].filter((token) => !token.pairID) : [], [chainId])

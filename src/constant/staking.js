@@ -10,8 +10,8 @@ export const urls = [{
   link: '/stable/zap'
 },
 {
-  name: 'Staking',
-  link: '/stable/staking'
+  name: 'Farm',
+  link: '/stable/farm'
 },
 {
   name: 'Redeem',

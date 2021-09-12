@@ -359,7 +359,7 @@ export const mintPath = {
         USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
     },
     [ChainId.AVALANCHE]: {
-        AVAX: ["0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", "0xc7198437980c041c805A1EDcbA50c1Ce5db95118"],
+        AVAX: ["0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", "0x9Ea9F4F8DDeb79f2b8d16EBA1Aff0306f8035919"],
         USDT: ["0xc7198437980c041c805A1EDcbA50c1Ce5db95118", "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70"],
         WETH: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
     },
@@ -399,12 +399,14 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
 export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, transferResidual, web3, chainId) => {
     const erc20Path = mintPath[chainId][currency.symbol]
 
-    if (currency.address === "0x")
+    if (currency.address === "0x") {
+        console.log(erc20Path, minLpAmount, transferResidual);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInNativecoin(erc20Path, minLpAmount, transferResidual) // TODO  VALUE:AVAX?
-
+    }
     else if (currency.address === COLLATERAL_ADDRESS[chainId]) {
+        console.log(amountIn, minLpAmount, transferResidual);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInCollateral(amountIn, minLpAmount, transferResidual)

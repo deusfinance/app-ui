@@ -39,7 +39,8 @@ const Dei = () => {
 
     return (<>
         <MainWrapper>
-            <Type.XL fontWeight="300" mb="5">Staking</Type.XL>
+            <Type.XL fontWeight="300" mb="3">Farm</Type.XL>
+            <Type.MD fontWeight="300" mb="4" opacity="0.5">Stake LP tokens to earn.</Type.MD>
             <StakingContainer>
                 <Staking config={StakingConfig[chainId][0]} chainId={chainId} />
                 <Staking config={StakingConfig[chainId][1]} chainId={chainId} />

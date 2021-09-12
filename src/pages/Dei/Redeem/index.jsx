@@ -284,7 +284,7 @@ const Dei = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBox type={'redeem'} />
+            <CostBox type={'redeem'} chainId={chainId} />
         </div>
     </>);
 }

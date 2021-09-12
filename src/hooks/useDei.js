@@ -75,7 +75,7 @@ export const useBuyBack = (fromCurrency, toCurrency, amountIn, amountOut, validC
     const { account, chainId } = useWeb3React()
     const handleBuyBack = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        const result = await makeDeiRequest("/buyback")
+        const result = await makeDeiRequest("/buyback", validChainId)
         const fn = buyBackDEUS(
             getToWei(amountIn, fromCurrency.decimals).toFixed(0),
             result.deus_price,
@@ -99,7 +99,7 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
 
     const handleRecollat = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        const result = await makeDeiRequest("/recollat")
+        const result = await makeDeiRequest("/recollat", validChainId)
         const fn = RecollateralizeDEI(
             result.collateral_price,
             result.deus_price,
@@ -139,7 +139,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
         if (validChainId && chainId !== validChainId) return false
         let fn = null
         if (collatRatio === 100) {
-            const result = await makeDeiRequest("/redeem-1to1")
+            const result = await makeDeiRequest("/redeem-1to1", validChainId)
             fn = redeem1to1Dei(
                 getToWei(amountIn, fromCurrency.decimals).toFixed(0),
                 result.collateral_price,
@@ -149,7 +149,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
                 web3,
             )
         } else if (collatRatio > 0) {
-            const result = await makeDeiRequest("/redeem-fractional")
+            const result = await makeDeiRequest("/redeem-fractional", validChainId)
             fn = redeemFractionalDei(
                 result.collateral_price,
                 result.deus_price,
@@ -160,7 +160,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
                 web3,
             )
         } else {
-            const result = await makeDeiRequest("/redeem-algorithmic")
+            const result = await makeDeiRequest("/redeem-algorithmic", validChainId)
             fn = redeemAlgorithmicDei(
                 result.deus_price,
                 result.expire_block,
@@ -193,7 +193,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         if (!proxy) {
             if (collatRatio === 100) {
                 path = "/mint-1to1"
-                const result = await makeDeiRequest(path)
+                const result = await makeDeiRequest(path, validChainId)
                 fn = mint1t1DEI(
                     amount1toWei,
                     result.collateral_price,
@@ -204,7 +204,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                 )
             } else if (collatRatio > 0) {
                 path = "/mint-fractional"
-                const result = await makeDeiRequest(path)
+                const result = await makeDeiRequest(path, validChainId)
                 const amount2toWei = getToWei(amountIn2, from2Currency.decimals).toFixed(0)
                 fn = mintFractional(
                     amount1toWei,
@@ -217,7 +217,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                     web3,
                 )
             } else {
-                const result = await makeDeiRequest(path)
+                const result = await makeDeiRequest(path, validChainId)
                 fn = mintAlgorithmic(
                     amount1toWei,
                     result.deus_price,
@@ -230,7 +230,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         } else {
             path = "/mint-fractional"
             try {
-                const result = await makeDeiRequest(path)
+                const result = await makeDeiRequest(path, validChainId)
                 const { collateral_price, deus_price, expire_block, signature } = result
                 const erc20Path = mintPath[chainId][from1Currency.symbol]
 
@@ -494,30 +494,30 @@ export const useCollatRatio = (validChainId) => {
 
 export const useDeiUpdate = (validChainId) => {
     useCollatRatio(validChainId)
-    useDeiPrices()
+    useDeiPrices(validChainId)
     useHusdPoolData(validChainId)
 }
 
 export const useDeiUpdateRedeem = (validChainId) => {
     useCollatRatio(validChainId)
-    useDeiPrices()
+    useDeiPrices(validChainId)
     useHusdPoolData(validChainId)
 }
 
 export const useDeiUpdateBuyBack = (validChainId) => {
-    useDeiPrices()
+    useDeiPrices(validChainId)
     useAvailableRecollat(validChainId)
     useHusdPoolData(validChainId)
 
 }
 
-export const useDeiPrices = () => {
+export const useDeiPrices = (validChainId) => {
     const { slowRefresh } = useRefresh()
     const setRefreshRatio = useSetRecoilState(deiPricesState)
     useEffect(() => {
         const get = async () => {
             try {
-                const result = await makeDeiRequest("/price")
+                const result = await makeDeiRequest("/price", validChainId)
                 setRefreshRatio(result)
             } catch (error) {
                 console.log("useDeiPrices ", error);

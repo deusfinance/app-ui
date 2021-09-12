@@ -35,9 +35,10 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling 
     }]
 }
 
-export const makeCostDataRedeem = (collatRatio, poolBalance) => {
+export const makeCostDataRedeem = (collatRatio, poolBalance, chainId) => {
+    const cToken = collateralToken[chainId]
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pb = poolBalance !== null ? `${formatUnitAmount(poolBalance)} HUSD` : null
+    const pb = poolBalance !== null ? `${formatUnitAmount(poolBalance)} ${cToken.symbol}` : null
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
@@ -47,18 +48,22 @@ export const makeCostDataRedeem = (collatRatio, poolBalance) => {
     }]
 }
 
-export const makeCostDataBuyBack = (deus_price, pool, buyBack, recollateralize, address, chainId) => {
-    const dp = deus_price !== null && !isNaN(deus_price) ? `$${new BigNumber(deus_price).toFixed(3)}` : null
+export const makeCostDataBuyBack = (deus_price, dei_price, pool, buyBack, recollateralize, address, chainId) => {
+    if (!chainId) return []
+    const cToken = collateralToken[chainId]
+    const deusPrice = deus_price !== null && !isNaN(deus_price) ? `$${new BigNumber(deus_price).toFixed(3)}` : null
+    const deiPrice = dei_price !== null && !isNaN(dei_price) ? `$${new BigNumber(dei_price).toFixed(3)}` : "1.000"
     const p = pool ? pool : null
-    const bb = buyBack !== null && !isNaN(buyBack) ? `${formatUnitAmount(buyBack)} HUSD` : null
+    const bb = buyBack !== null && !isNaN(buyBack) ? `${formatUnitAmount(buyBack)} ${cToken.symbol}` : null
     const rc = recollateralize !== null && !isNaN(recollateralize) ? `${formatUnitAmount(recollateralize)} DEUS` : null
+    let deiPriceTemp = deiPrice
 
     return [{
         name: 'EXCHANGE RATES',
-        title1: 'HUSD: ',
-        value1: '$1.000',
+        title1: cToken.symbol,
+        value1: `$${deiPrice}`,
         title2: 'DEUS: ',
-        value2: dp
+        value2: deusPrice
     }, {
         name: 'AVAILABLE VALUE',
         title1: 'To Buyback: ',

@@ -37,8 +37,7 @@ export const FeePrice = styled.span`
     display: block;
 `
 
-export const CostBox = (props) => {
-    const type = props.type
+export const CostBox = ({ type, chainId }) => {
 
     const deusPrices = useRecoilValue(deiPricesState)
     const deiPrice = deusPrices ? deusPrices.dei_price : null
@@ -46,7 +45,7 @@ export const CostBox = (props) => {
     const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance } = useRecoilValue(husdPoolDataState)
     let costs = null
     if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling)
-    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance)
+    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance, chainId)
 
     return (
         useMemo(() => {

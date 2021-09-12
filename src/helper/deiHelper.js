@@ -338,8 +338,8 @@ export const getDeiInfo = async (web3, chainId = ChainId.RINKEBY, collat_usd_pri
 }
 
 
-export const makeDeiRequest = async (path) => {
-    return fetcher(baseUrl + path)
+export const makeDeiRequest = async (path, chainId = 4) => {
+    return fetcher(baseUrl + path + `?chainId=${chainId}`)
 }
 
 export const isProxyMinter = (token, isPair, collatRatio, chainId) => {

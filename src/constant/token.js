@@ -14,19 +14,19 @@ export const deiToken = {
 };
 
 export const collateralToken = {
-    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, COLLATERAL_ADDRESS[ChainId.RINKEBY], 18, "DEI", "DEI", "/tokens/husd.svg"),
+    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, COLLATERAL_ADDRESS[ChainId.RINKEBY], 6, "USDC", "USDC", "/tokens/usdc.svg"),
     [ChainId.HECO]: new Token(ChainId.HECO, COLLATERAL_ADDRESS[ChainId.HECO], 8, "HUSD", "HUSD", "/tokens/husd.svg"),
     [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, COLLATERAL_ADDRESS[ChainId.AVALANCHE], 18, "DAI", "DAI", "/tokens/dai.png"),
 }
 
 export const deiCollateralLpToken = {
-    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, "0x8f3906394382a7e30961ACDf217b9FBf242c1B96", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
+    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, "0xf730a6391F9Bd745F0518AC6116E1cF4B2653fcE", 18, "DEI-USDC", "DEI-USDC", "/img/Dei_logo.svg"),
     [ChainId.HECO]: new Token(ChainId.HECO, "0xcd9383b17264D32F690E1192B5967514034b168D", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
     [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, "0x33cf66920F25e0233cd429114CfD06DA3886EEb2", 18, "DEI-DAI", "DEI-DAI", "/img/Dei_logo.svg"),
 }
 
 export const deiDeusLpToken = {
-    [ChainId.RINKEBY]: new Token(4, "0x5e2ce79ca56c5EA39530BBFe8fEd68aFc69e6B4D", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, "0x7420ba4Cd2D5583e965DE9A862c0743B26B1Cd53", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
     [ChainId.HECO]: new Token(ChainId.HECO, "0xd0B9d3A52fa1dAee082F9ac998b9fB49F6bb7a16", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
     [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, "0x6c3de04c121D6754bbb963F183ab31734e6a0e9b", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
 }
@@ -50,10 +50,10 @@ export const DEITokens = {
         { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xa71edc38d189767582c38a3145b5873052c3e47a", decimals: 6, chainId: ChainId.HECO },
     ],
     [ChainId.RINKEBY]: [
-        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4 },
-        { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4 },
-        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4, pairID: 1 },
-        { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0xEe70f1FE057A886fbB1990a53228C313875faa3E", decimals: 18, chainId: 4, pairID: 1 },
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.RINKEBY], decimals: 6, chainId: 4 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.RINKEBY], decimals: 18, chainId: 4 },
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.RINKEBY], decimals: 6, chainId: 4, pairID: 1 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.RINKEBY], decimals: 18, chainId: 4, pairID: 1 },
     ]
 }
 

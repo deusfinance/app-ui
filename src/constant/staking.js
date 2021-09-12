@@ -26,18 +26,18 @@ export const urls = [{
 export const StakingConfig = {
   [ChainId.RINKEBY]: [
     {
-      title: "DEI-HUSD",
+      title: "DEI-USDC",
       pic1: "/tokens/dei.svg",
-      pic2: "/tokens/husd.svg",
+      pic2: "/tokens/usdc.svg",
       depositToken: deiCollateralLpToken[ChainId.RINKEBY],
-      stakingContract: "0xcb98da981680a65ef5B4f12877A4DEB35b896541"
+      stakingContract: "0x9e0a047994f5C4d46Da1678039CC6101DecD8412"
     },
     {
       title: "DEI-DEUS",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/deus.svg",
       depositToken: deiDeusLpToken[ChainId.RINKEBY],
-      stakingContract: "0xcc4d8FDD8647331A9ab0BA153EA8c929cAc25245"
+      stakingContract: "0x9d11aE78B850D1505164127F177F6Bfa9347617E"
     }
   ],
   [ChainId.HECO]: [

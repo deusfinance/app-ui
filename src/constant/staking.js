@@ -30,14 +30,17 @@ export const StakingConfig = {
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/usdc.svg",
       depositToken: deiCollateralLpToken[ChainId.RINKEBY],
-      stakingContract: "0x9e0a047994f5C4d46Da1678039CC6101DecD8412"
+      stakingContract: "0x9e0a047994f5C4d46Da1678039CC6101DecD8412",
+      zapperContract: "0x9e0a047994f5C4d46Da1678039CC6101DecD8412",
+
     },
     {
       title: "DEI-DEUS",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/deus.svg",
       depositToken: deiDeusLpToken[ChainId.RINKEBY],
-      stakingContract: "0x9d11aE78B850D1505164127F177F6Bfa9347617E"
+      stakingContract: "0x9d11aE78B850D1505164127F177F6Bfa9347617E",
+      zapperContract: "0x9d11aE78B850D1505164127F177F6Bfa9347617E",
     }
   ],
   [ChainId.HECO]: [

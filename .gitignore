@@ -109,11 +109,10 @@ dist
 .tern-port
 
 package-lock.json
+yarn.lock
 
 # Source and Build zip files
 build*.zip
 src*.zip
 
 
-package-lock.json
-yarn.lock

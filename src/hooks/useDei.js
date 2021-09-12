@@ -517,14 +517,14 @@ export const useDeiPrices = (validChainId) => {
     useEffect(() => {
         const get = async () => {
             try {
-                const result = await makeDeiRequest("/price", validChainId)
+                const result = await makeDeiRequest("/price", 4)//TODO
                 setRefreshRatio(result)
             } catch (error) {
                 console.log("useDeiPrices ", error);
             }
         }
         get()
-    }, [slowRefresh, setRefreshRatio])
+    }, [slowRefresh, validChainId, setRefreshRatio])
 }
 
 export const useAllowance = (currency, contractAddress, validChainId) => {

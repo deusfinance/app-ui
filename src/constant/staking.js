@@ -6,16 +6,16 @@ export const urls = [{
   link: '/stable/mint'
 },
 {
+  name: 'Redeem',
+  link: '/stable/redeem'
+},
+{
   name: 'Zap',
   link: '/stable/zap'
 },
 {
-  name: 'Farm',
-  link: '/stable/farm'
-},
-{
-  name: 'Redeem',
-  link: '/stable/redeem'
+  name: 'Farms',
+  link: '/stable/farms'
 },
 {
   name: 'Buyback & Recollateralize',

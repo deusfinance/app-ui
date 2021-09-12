@@ -56,7 +56,7 @@ function App() {
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />
                   <Route exact path="/stable/zap" component={DeiZap} />
-                  <Route exact path="/stable/farm" component={DeiStaking} />
+                  <Route exact path="/stable/farms" component={DeiStaking} />
                   <Route exact path="/stable/redeem" component={DeiRedeem} />
                   <Route exact path="/stable/buyback-recollat" component={DeiBuyBackRecollateralize} />
                   <Route exact path="/muon-presale" component={Muon} />

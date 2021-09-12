@@ -78,15 +78,21 @@ export const defaultNavbar = [
       exact: true
     },
     {
-      id: 'STAKING',
-      text: 'xDAI',
-      path: '/stable/staking',
-      exact: true
-    },
-    {
       id: 'REDEEM',
       text: 'BSC',
       path: '/stable/redeem',
+      exact: true
+    },
+    {
+      id: 'ZAP',
+      text: 'xDAI',
+      path: '/stable/zap',
+      exact: true
+    },
+    {
+      id: 'FARMS',
+      text: 'xDAI',
+      path: '/stable/farms',
       exact: true
     },
     {

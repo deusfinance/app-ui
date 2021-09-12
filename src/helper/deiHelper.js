@@ -56,7 +56,6 @@ export const makeCostDataBuyBack = (deus_price, dei_price, pool, buyBack, recoll
     const p = pool ? pool : null
     const bb = buyBack !== null && !isNaN(buyBack) ? `${formatUnitAmount(buyBack)} ${cToken.symbol}` : null
     const rc = recollateralize !== null && !isNaN(recollateralize) ? `${formatUnitAmount(recollateralize)} DEUS` : null
-    let deiPriceTemp = deiPrice
 
     return [{
         name: 'EXCHANGE RATES',

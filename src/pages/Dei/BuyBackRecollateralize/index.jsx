@@ -88,9 +88,7 @@ const Dei = () => {
     }
 
     const TokensMap = tokensMap
-    let primaryToken = tokens[2]
-    let secondaryToken = tokens[3]
-    const swapState = { from: secondaryToken, to: primaryToken }
+    const swapState = { from: tokens[3], to: tokens[2] }
     const [amountIn1, setAmountIn1] = useState("")
     const [amountIn2, setAmountIn2] = useState("")
     const debouncedAmountIn = useDebounce(amountIn1, 500);

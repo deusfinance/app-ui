@@ -8,65 +8,37 @@
         "text": "muon presale",
         "path": "/muon-presale",
         "exact": true
-      },
-      {
-        "id": "STAKE & YIELD",
-        "text": "STAKE & YIELD",
-        "path": "/stake-and-yield",
-        "exact": true
-      },
-      {
-        "id": "SEALED SWAP",
-        "text": "sealed swap",
-        "path": "/sealed-swap",
-        "exact": true
-      },
-      {
-        "id": "vaultsL",
-        "text": "VAULTS (LEGACY)",
-        "path": "/vaults",
-        "exact": true
-      },
-      {
-        "id": "STAKING (LEGACY)",
-        "text": "STAKING (LEGACY)",
-        "path": "/staking"
       }
     ]
   },
   {
-    "id": "synthetics",
-    "text": "SYNTHETICS",
+    "id": "STABLE COIN",
+    "text": "STABLE COIN",
     "children": [
       {
-        "id": "ETH",
-        "text": "ETH",
-        "path": "/synchronizer",
-        "exact": true
+        "id": "MINT",
+        "text": "MINT",
+        "path": "/stable/mint"
       },
       {
-        "id": "xDai",
-        "text": "xDAI",
-        "path": "/crosschain/xdai/synchronizer",
-        "exact": true
+        "id": "REDEEM",
+        "text": "REDEEM",
+        "path": "/stable/redeem"
       },
       {
-        "id": "bsc",
-        "text": "BSC",
-        "path": "/crosschain/bsc/synchronizer",
-        "exact": true
+        "id": "ZAP",
+        "text": "ZAP",
+        "path": "/stable/zap"
       },
       {
-        "id": "heco",
-        "text": "HECO",
-        "path": "/crosschain/heco/synchronizer",
-        "exact": true
+        "id": "FARMS",
+        "text": "FARMS",
+        "path": "/stable/farms"
       },
       {
-        "id": "polygon",
-        "text": "POLYGON",
-        "path": "/crosschain/polygon/synchronizer",
-        "exact": true
+        "id": "BUYBACK & RECOLLAT",
+        "text": "BUYBACK & RECOLLAT",
+        "path": "/stable/buyback-recollat"
       }
     ]
   },

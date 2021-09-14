@@ -31,29 +31,34 @@ const Navbar = () => {
     const [open, setOpen] = useState(false)
     const [tvl, setTvl] = useState(null)
     const { t } = useTranslation()
+    const [desktopRoutes, setDesktopRoutes] = useState([])
+    const [mobileRoutes, setMobileRoutes] = useState([])
 
-    const desktopNavs = [
-        ...routes.slice(0, 2),
-        {
-            id: 'swap',
-            text: 'SWAP',
-            path: '/swap',
-            exact: true,
-        },
-        ...routes.slice(2)].reverse()
-    let { children } = routes[0]
-    if (children && children[0].id !== "swap")
-        routes[0] = {
-            ...routes[0],
-            children: [{
+
+    useEffect(() => {
+        setDesktopRoutes([
+            ...routes.slice(0, 2),
+            {
                 id: 'swap',
                 text: 'SWAP',
                 path: '/swap',
                 exact: true,
-            }, ...children]
-        }
+            },
+            ...routes.slice(2)].reverse())
+        let { children } = routes[0]
+        if (children && children[0].id !== "swap")
+            routes[0] = {
+                ...routes[0],
+                children: [{
+                    id: 'swap',
+                    text: 'SWAP',
+                    path: '/swap',
+                    exact: true,
+                }, ...children]
+            }
 
-    const navsMobile = routes.reverse()
+        setMobileRoutes(routes)
+    }, [])
 
     useEffect(() => {
         if (account)
@@ -128,7 +133,7 @@ const Navbar = () => {
             </NavbarSideWrap>
 
             <NavbarContentWrap>
-                {desktopNavs.map((nav, index) => {
+                {desktopRoutes.map((nav, index) => {
                     let res = null
                     if (nav.path) {
                         if (nav.path.charAt(0) === "/") {
@@ -188,7 +193,7 @@ const Navbar = () => {
                         </li>
 
                         {<div className="nav-item-wrap-img" >
-                            {navsMobile.filter(nav => nav.image).map((nav, index) => {
+                            {mobileRoutes.filter(nav => nav.image).map((nav, index) => {
                                 let res = null
                                 res = <ExternalLink href={nav.path}  >
                                     <img width='20px' height="20px" src={`/img/navbar/${nav.id}.svg`} alt="" />
@@ -197,7 +202,7 @@ const Navbar = () => {
                             })}
                         </div>}
 
-                        {navsMobile.map((nav, index) => {
+                        {mobileRoutes.map((nav, index) => {
                             let res = null
                             if (nav.path) {
                                 if (nav.path.charAt(0) === "/") {

@@ -77,7 +77,7 @@
       {
         "id": "DEUS android",
         "text": "DEUS android",
-        "path": "https: //play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US"
+        "path": "https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US"
       }
     ]
   },
@@ -89,12 +89,12 @@
       {
         "id": "Announcement",
         "text": "Announcement Channel",
-        "path": "https: //t.me/deusfinance_news"
+        "path": "https://t.me/deusfinance_news"
       },
       {
         "id": "Community",
         "text": "Community Channel",
-        "path": "https: //t.me/deusfinance"
+        "path": "https://t.me/deusfinance"
       }
     ]
   },

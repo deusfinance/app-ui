@@ -41,10 +41,7 @@ const Navbar = () => {
             exact: true,
         },
         ...routes.slice(2)].reverse()
-
-
     let { children } = routes[0]
-
     if (children && children[0].id !== "swap")
         routes[0] = {
             ...routes[0],

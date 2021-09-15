@@ -145,7 +145,7 @@ const Navbar = () => {
                                     <img src={`/img/navbar/${nav.id}.svg`} alt="" />
                                 </ExternalLink>
                             } else {
-                                res = <ExternalLink href={nav.path} >
+                                res = <ExternalLink href={nav.path} textDecoration="none">
                                     <span> {t(nav.id)} </span>
                                 </ExternalLink>
                             }

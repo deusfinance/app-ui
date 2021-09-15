@@ -71,10 +71,6 @@
     ]
   },
   {
-    "id": "MEDIUM",
-    "path": "https://medium.com/deus-finance"
-  },
-  {
     "id": "tools",
     "text": "TOOLS",
     "children": [
@@ -84,6 +80,10 @@
         "path": "https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US"
       }
     ]
+  },
+  {
+    "id": "MEDIUM",
+    "path": "https://medium.com/deus-finance"
   },
   {
     "id": "telegram",

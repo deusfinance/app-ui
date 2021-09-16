@@ -1,32 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { formatAddress } from '../../../utils/utils';
 import { useTranslation } from 'react-i18next'
-import { getCorrectChains } from '../../../constant/correctChain';
-import { NameChainId } from '../../../constant/web3';
-import { NavLink, useLocation } from 'react-router-dom';
 import Wallets from './Wallets';
-import { addRPC } from '../../../services/addRPC';
-import OutsideClickHandler from 'react-outside-click-handler';
-import {
-    NavbarContentWrap,
-    NavbarWrap,
-    NavButton,
-    NavbarSideWrap,
-    NavWarningButton,
-    SubNavbarContentWrap,
-    NavbarMobileContent,
-} from '../../App/Navbar';
-import LanguageSelector from './LanguageSelector';
+import { NavbarWrap, NavButton, NavbarSideWrap, } from '../../App/Navbar';
 import { ExternalLink } from '../../App/Link';
 import useRefresh from '../../../hooks/useRefresh';
-import useWeb3 from '../../../hooks/useWeb3';
 import routes from '../../../config/routes.json'
+import NavDesktop from './NavDesktopContent';
+import NavMobile from './NavMobileContent';
+import NavSide from './NavSide';
 
 const Navbar = () => {
-    const web3 = useWeb3()
     const { chainId, account } = useWeb3React()
-    const location = useLocation()
     const [showWallets, setShowWallets] = useState(false)
     const [open, setOpen] = useState(false)
     const [tvl, setTvl] = useState(null)
@@ -62,7 +47,6 @@ const Navbar = () => {
     const handleConnect = async () => {
         setShowWallets(true)
     }
-    const validChains = getCorrectChains(location.pathname)
 
     useEffect(() => {
         const blurPop = "blured"
@@ -73,8 +57,6 @@ const Navbar = () => {
             document.getElementById("blur-pop").classList.add(blurPop)
         }
     }, [open])
-
-
 
     return (<>
         <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
@@ -106,146 +88,10 @@ const Navbar = () => {
                 </NavButton>}
             </NavbarSideWrap>
 
-            <NavbarContentWrap>
-                {routes.reverse().map((nav, index) => {
-                    let res = null
-                    if (nav.path) {
-                        if (nav.path.charAt(0) === "/") {
-                            res = <NavLink key={"desk" + index} to={nav.path} > {t(nav.id)} </NavLink>
-                        } else {
-                            if (nav.image) {
-                                res = <ExternalLink href={nav.path} >
-                                    {/* height="20%" width="20%" */}
-                                    <img src={`/img/navbar/${nav.id}.svg`} alt="" />
-                                </ExternalLink>
-                            } else {
-                                res = <ExternalLink href={nav.path} textDecoration="none">
-                                    <span> {t(nav.id)} </span>
-                                </ExternalLink>
-                            }
-                        }
-                    } else {
-                        res = <p>{t(nav.id)}</p>
-                    }
+            <NavDesktop routes={routes} />
+            <NavMobile routes={routes} open={open} setOpen={setOpen} />
+            <NavSide account={account} chainId={chainId} open={open} setOpen={setOpen} handleConnect={handleConnect} />
 
-                    if (nav.children) {
-                        res = <>
-                            {res}
-                            <img className="polygon" src="/img/navbar/polygon.png" height="13px" width="13px" alt="polygon" />
-                            <SubNavbarContentWrap>
-                                {nav.children.map(subnav => {
-                                    if (subnav.path.charAt(0) === "/")
-                                        return <li key={subnav.id + "_desktop"}><NavLink to={subnav.path} > {t(subnav.id)} </NavLink></li>
-                                    if (subnav.image) {
-                                        return <li key={subnav.id + "_desktop"}><ExternalLink href={subnav.path} textDecoration="none">
-                                            <img src={`/img/navbar/${subnav.id}.svg`} alt="" height="20%" width="20%" />
-                                        </ExternalLink></li>
-                                    }
-                                    return <li key={subnav.id + "_desktop"}><ExternalLink href={subnav.path} textDecoration="none">
-                                        <span>{t(subnav.id)}</span>
-                                    </ExternalLink></li>
-                                })}
-                            </SubNavbarContentWrap>
-                        </>
-                    }
-                    return <li key={nav.id + "_desktop"}>{res}</li>
-                })}
-                <li>
-                    <LanguageSelector />
-                </li>
-            </NavbarContentWrap>
-
-            <OutsideClickHandler onOutsideClick={() => setOpen(false)}>
-                <NavbarMobileContent open={open}>
-                    <ul onClick={() => setOpen(false)}>
-                        <li className="icon-close">
-                            <div className="menu-title">{t("menu")}</div><svg onClick={() => setOpen(!open)} viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="Page-1" stroke="white" strokeWidth={1} fill="white" fillRule="evenodd"><g id="icon-shape"><polygon id="Combined-Shape" points="10 8.58578644 2.92893219 1.51471863 1.51471863 2.92893219 8.58578644 10 1.51471863 17.0710678 2.92893219 18.4852814 10 11.4142136 17.0710678 18.4852814 18.4852814 17.0710678 11.4142136 10 18.4852814 2.92893219 17.0710678 1.51471863 10 8.58578644" /></g></g></svg>
-                        </li>
-
-                        <li className="nav-item-lg" >
-                            <LanguageSelector />
-                        </li>
-
-                        {<div className="nav-item-wrap-img" >
-                            {routes.filter(nav => nav.image).map((nav, index) => {
-                                let res = null
-                                res = <ExternalLink href={nav.path}  >
-                                    <img width='20px' height="20px" src={`/img/navbar/${nav.id}.svg`} alt="" />
-                                </ExternalLink>
-                                return <li key={nav.id + index} className="nav-item-img">{res}</li>
-                            })}
-                        </div>}
-
-                        {routes.map((nav, index) => {
-                            let res = null
-                            if (nav.path) {
-                                if (nav.path.charAt(0) === "/") {
-                                    res = <li key={index} className="nav-item-box" >
-                                        <NavLink className="nav-item-text nav-item-ln" to={nav.path} >
-                                            {t(nav.id)}
-                                        </NavLink> </li>
-                                } else if (!nav.image) {
-                                    res = <div key={index} className="nav-item-box">
-                                        <li> <ExternalLink href={nav.path} className="nav-item-text" >{t(nav.id)}</ExternalLink> </li>
-                                    </div>
-                                }
-                            } else {
-                                res = <div key={index} className="nav-item-wrap-img"  >
-                                    <li> <p className="nav-title">{t(nav.id)}</p> </li>
-                                </div>
-                            }
-
-                            if (nav.children && !nav.image) {
-                                res = <div key={index} > {res}
-                                    {nav.children.map((subnav, index) => {
-                                        if (subnav.path.charAt(0) === "/")
-                                            return <li key={subnav.id + "_mobile" + index} className="nav-item-box"><NavLink className="nav-item-text" to={subnav.path} > {t(subnav.id)} </NavLink></li>
-                                        return <li key={subnav.id + "_mobile" + index} className="nav-item-box"><ExternalLink className="nav-item-text" href={subnav.path} textDecoration="none">
-                                            <span>{t(subnav.id)}</span>
-                                        </ExternalLink></li>
-                                    })}
-                                </div>
-                            }
-                            return res
-                        })}
-                    </ul>
-                </NavbarMobileContent>
-            </OutsideClickHandler>
-
-            <NavbarSideWrap >
-                {account && <>
-                    {chainId && validChains.indexOf(chainId) === -1 ?
-                        <NavWarningButton active={false} >
-                            {t("WrongNetwork")}
-                        </NavWarningButton>
-                        :
-                        <NavButton active={false} >
-                            <svg width={8} height={8} style={{ marginRight: "5px" }} viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx={4} cy={4} r={4} fill="#00E376" />
-                            </svg>
-                            {formatAddress(account)}
-                        </NavButton>
-                    }
-                </>}
-                {account ?
-                    (chainId && validChains.indexOf(chainId) === -1)
-                        ?
-                        <NavButton className="network-label" active={true} onClick={() => addRPC(account, validChains[0], web3)}>
-                            {t("changeTo")} {NameChainId[validChains[0]] || "ETH"}
-                        </NavButton>
-                        :
-                        <NavButton className="network-label" active={false} >
-                            <span style={{ opacity: "0.5", marginRight: "5px" }}>Network: </span> {NameChainId[chainId]}
-                            {/* {NameChainId[chainId]} */}
-                        </NavButton>
-                    :
-                    <NavButton active={true} onClick={handleConnect}>
-                        {t("connectWallet")}
-                    </NavButton>
-                }
-
-                <svg className="hamb" onClick={() => setOpen(!open)} width={22} height={16} viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15H1" stroke="white" strokeWidth={2} strokeLinecap="round" /><path d="M21 8H1" stroke="white" strokeWidth={2} strokeLinecap="round" /><path d="M21 1H1" stroke="white" strokeWidth={2} strokeLinecap="round" /></svg>
-            </NavbarSideWrap>
         </NavbarWrap>
     </>);
 }

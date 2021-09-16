@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-const LanguageSelector = ({ name = "language" }) => {
+const LanguageSelector = () => {
     const { i18n } = useTranslation()
     const changeLanguage = (value) => {
         i18n.changeLanguage(value)
@@ -14,13 +14,9 @@ const LanguageSelector = ({ name = "language" }) => {
         {
             name: "CN",
             value: "cn"
-        },
-        {
-            name: "ARA",
-            value: "ara"
         }
     ]
-    const currLang = ["en", "cn", "ara"].indexOf(i18n.language) === -1 ? "en" : i18n.language
+    const currLang = ["en", "cn"].indexOf(i18n.language) === -1 ? "en" : i18n.language
 
     return (
         <div className="lang-warp" style={{ display: "flex", flexDirection: "row" }}>

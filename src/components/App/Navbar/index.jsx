@@ -65,7 +65,7 @@ export const NavbarMobileContent = styled.div`
     z-index: 10;
     > ul{
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
         justify-content: flex-start;
         list-style:none;
         .icon-close{

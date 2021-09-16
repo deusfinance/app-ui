@@ -12,6 +12,10 @@
     ]
   },
   {
+    "id": "MIGRATOR",
+    "path": "/migrator"
+  },
+  {
     "id": "STABLE COIN",
     "text": "STABLE COIN",
     "children": [

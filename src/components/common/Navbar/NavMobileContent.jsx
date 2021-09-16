@@ -8,20 +8,16 @@ import OutsideClickHandler from 'react-outside-click-handler';
 
 const NavMobile = ({ routes, open, setOpen }) => {
     const { t } = useTranslation()
-
     return useMemo(() => {
         return <OutsideClickHandler onOutsideClick={() => setOpen(false)}>
             <NavbarMobileContent open={open}>
                 <ul onClick={() => setOpen(false)}>
-                    <li className="icon-close">
-                        <div className="menu-title">{t("menu")}</div><svg onClick={() => setOpen(!open)} viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="Page-1" stroke="white" strokeWidth={1} fill="white" fillRule="evenodd"><g id="icon-shape"><polygon id="Combined-Shape" points="10 8.58578644 2.92893219 1.51471863 1.51471863 2.92893219 8.58578644 10 1.51471863 17.0710678 2.92893219 18.4852814 10 11.4142136 17.0710678 18.4852814 18.4852814 17.0710678 11.4142136 10 18.4852814 2.92893219 17.0710678 1.51471863 10 8.58578644" /></g></g></svg>
-                    </li>
 
                     <li className="nav-item-lg" >
                         <LanguageSelector />
                     </li>
 
-                    {<div className="nav-item-wrap-img" >
+                    {<div className="nav-item-wrap-img" style={{ marginTop: "5px", marginBottom: "20px" }}>
                         {routes.filter(nav => nav.image).map((nav, index) => {
                             console.log(nav);
                             let res = null
@@ -64,6 +60,10 @@ const NavMobile = ({ routes, open, setOpen }) => {
                         }
                         return res
                     })}
+
+                    <li className="icon-close">
+                        <div className="menu-title">{t("menu")}</div><svg onClick={() => setOpen(!open)} viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="Page-1" stroke="white" strokeWidth={1} fill="white" fillRule="evenodd"><g id="icon-shape"><polygon id="Combined-Shape" points="10 8.58578644 2.92893219 1.51471863 1.51471863 2.92893219 8.58578644 10 1.51471863 17.0710678 2.92893219 18.4852814 10 11.4142136 17.0710678 18.4852814 18.4852814 17.0710678 11.4142136 10 18.4852814 2.92893219 17.0710678 1.51471863 10 8.58578644" /></g></g></svg>
+                    </li>
                 </ul>
             </NavbarMobileContent>
         </OutsideClickHandler>

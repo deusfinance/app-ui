@@ -54,6 +54,10 @@
     ]
   },
   {
+    "id": "MEDIUM",
+    "path": "https://medium.com/deus-finance"
+  },
+  {
     "id": "telegram",
     "image": true,
     "path": "https://t.me/deusfinance",

@@ -7,6 +7,8 @@ export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D
 export const muonToken = new Token(1, null, 18, "MUON", "MUON", "/tokens/muon.svg");
 export const xdaiToken = new Token(100, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
 
+
+//START DEI
 export const deiToken = {
     [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_ADDRESS[ChainId.RINKEBY], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
     [ChainId.HECO]: new Token(ChainId.HECO, DEI_ADDRESS[ChainId.HECO], 18, "DEI", "DEI", "/img/Dei_logo.svg"),
@@ -66,6 +68,7 @@ export const DEITokens = {
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.MATIC], decimals: 18, chainId: ChainId.MATIC, pairID: 1 },
     ],
 }
+//END DEI
 
 
 export const isNative = (address, chainId) => {

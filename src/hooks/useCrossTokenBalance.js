@@ -35,7 +35,7 @@ const useCrossTokenBalance = (tokenAddress, chainId, fastUpdate = null) => {
         } else {
             setBalance("")
         }
-    }, [account, tokenAddress, web3, contract, fastRefresh, fastUpdate])
+    }, [account, tokenAddress, web3, chainId, contract, fastRefresh, fastUpdate])
 
     return balance
 }

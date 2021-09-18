@@ -50,7 +50,6 @@ const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [slippage, setSlippage] = useState(0.5)
     const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
-
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
         .filter((token) => !token.pairID || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
         , [chainId, collatRatio])
@@ -120,7 +119,6 @@ const Dei = () => {
         if (focusType === "to") {
             getAmountsTokens(null, null, amountOut)
         }
-        console.log("called");
     }, [debouncedAmountIn, amountInPair, amountOut, mintingFee, deiPrices]);// eslint-disable-line
 
 

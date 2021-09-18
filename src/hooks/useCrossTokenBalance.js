@@ -17,12 +17,17 @@ const useCrossTokenBalance = (tokenAddress, chainId, fastUpdate = null) => {
     useEffect(() => {
         const fetchBalance = async () => {
             let walletBalance = null
-            if (!isAddress(tokenAddress)) {
-                walletBalance = await web3.eth.getBalance(account)
-            } else {
-                walletBalance = await contract.methods.balanceOf(account).call()
+            try {
+                if (!isAddress(tokenAddress)) {
+                    walletBalance = await web3.eth.getBalance(account)
+                } else {
+                    walletBalance = await contract.methods.balanceOf(account).call()
+                }
+                setBalance(new BigNumber(walletBalance))
+            } catch (error) {
+                console.log(`get Balance of ${tokenAddress} with chainId ${chainId}`, error);
             }
-            setBalance(new BigNumber(walletBalance))
+
         }
 
         if (account && tokenAddress) {

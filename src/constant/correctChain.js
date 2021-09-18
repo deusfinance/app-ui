@@ -9,7 +9,7 @@ export const correctChains = [
     },
     {
         url: "/stable",
-        chains: [ChainId.RINKEBY, ChainId.AVALANCHE, ChainId.HECO, ChainId.RINKEBY],
+        chains: [ChainId.MATIC, ChainId.RINKEBY, ChainId.AVALANCHE, ChainId.HECO, ChainId.RINKEBY],
     },
     {
         url: "/crosschain/xdai",

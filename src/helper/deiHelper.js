@@ -254,17 +254,6 @@ export const ERC20ToDei = (erc20amount, collateral_price, deus_price, expire_blo
         .ERC20ToDei(erc20amount, collateral_price, deus_price, expire_block, [signature], transferResidual, path, min_amount_out)
 }
 
-
-// struct ProxyInput {
-//     uint256 collateral_price;
-//     uint256 deus_price;
-//     uint256 expire_block;
-//     uint min_amount_out;
-//     bytes[] sigs;
-//     bool transferResidual;
-//     address[] path;
-// }
-
 export const collateralToDei = (collateral_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out, chainId, web3) => {
     return getProxyMinterContract(web3, chainId)
         .methods

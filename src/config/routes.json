@@ -4,16 +4,17 @@
     "text": "APP",
     "children": [
       {
+        "id": "MIGRATOR",
+        "path": "/migrator",
+        "exact": true
+      },
+      {
         "id": "MUON PRESALE",
         "text": "muon presale",
         "path": "/muon-presale",
         "exact": true
       }
     ]
-  },
-  {
-    "id": "MIGRATOR",
-    "path": "/migrator"
   },
   {
     "id": "STABLE COIN",

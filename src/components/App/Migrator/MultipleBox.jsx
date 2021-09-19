@@ -5,11 +5,14 @@ import styled from 'styled-components';
 import { Type } from '../Text';
 
 const PlusImg = styled.img`
-    z-index: 1;
+    z-index: 10;
     position: absolute;
     text-align: center;
-    margin-top: 0px;
-    margin-left: 142px;
+    /* left: 0;
+    right: 0; */
+    /* margin-top: 0px;
+    margin-left: 142px; */
+
 
     /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         margin-bottom: 5px;
@@ -22,9 +25,10 @@ const PlusImgMid = styled.img`
     z-index: 1;
     position: absolute;
     text-align: center;
-    margin-top: -19px;
-    margin-left: -522px;
-
+    /* margin-top: -19px;
+    margin-left: -522px; */
+    margin-top: -16px;
+    margin-left: -8px;
     /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         margin-bottom: 5px;
         width: 23px;
@@ -34,6 +38,8 @@ const PlusImgMid = styled.img`
 
 const QuadBox = styled.div`
     margin: 25px 0;
+    max-width: 324px;
+    position: relative;
 `
 
 const DoubleBox = styled.div`
@@ -60,69 +66,73 @@ const Wrapper = styled.div`
 const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => {
     // const data = useCrossTokenBalance(currency?.address, chainId, fastUpdate)
 
-    return (<QuadBox>
-        <DoubleBox>
-            <Wrapper>
-                <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
-                    <Box>
-                        <Type.LG>
-                            {currency[0].balance}
-                        </Type.LG>
-                        <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
-                            {currency[0].symbol}
-                        </Type.LG>
-                    </Box>
-                </Flex>
-            </Wrapper>
+    return (<div style={{ width: "100%" }}>
 
-            {currency[1] && !currency[3] && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+        <QuadBox>
+            <DoubleBox>
+                <Wrapper>
+                    <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
+                        <Box>
+                            <Type.LG>
+                                {currency[0].balance}
+                            </Type.LG>
+                            <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                                {currency[0].symbol}
+                            </Type.LG>
+                        </Box>
+                    </Flex>
+                </Wrapper>
 
-            {currency[1] && <Wrapper>
-                <Flex justifyContent="flex-end" marginTop="12px" marginRight="12px" >
-                    <Box>
-                        <Type.LG>
-                            {currency[1].balance}
-                        </Type.LG>
-                        <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
-                            {currency[1].symbol}
-                        </Type.LG>
-                    </Box>
-                </Flex>
-            </Wrapper>}
-        </DoubleBox>
+                {currency[1] && !currency[3] && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
 
-        {currency[3] && <PlusImgMid src="/img/dei/plus.svg" alt="plus" />}
+                {currency[1] && <Wrapper>
+                    <Flex justifyContent="flex-end" marginTop="12px" marginRight="12px" >
+                        <Box>
+                            <Type.LG>
+                                {currency[1].balance}
+                            </Type.LG>
+                            <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
+                                {currency[1].symbol}
+                            </Type.LG>
+                        </Box>
+                    </Flex>
+                </Wrapper>}
+            </DoubleBox>
 
-        <DoubleBox>
-            {currency[2] && <Wrapper>
-                <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
-                    <Box>
-                        <Type.LG>
-                            {currency[2].balance}
-                        </Type.LG>
-                        <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
-                            {currency[2].symbol}
-                        </Type.LG>
-                    </Box>
-                </Flex>
-            </Wrapper>}
+            {currency[3] && <PlusImgMid src="/img/dei/plus.svg" alt="plus" />}
 
-            {currency[3] && !currency[3] && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+            <DoubleBox>
+                {currency[2] && <Wrapper>
+                    <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
+                        <Box>
+                            <Type.LG>
+                                {currency[2].balance}
+                            </Type.LG>
+                            <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                                {currency[2].symbol}
+                            </Type.LG>
+                        </Box>
+                    </Flex>
+                </Wrapper>}
 
-            {currency[3] && <Wrapper>
-                <Flex justifyContent="flex-end" marginTop="12px" marginRight="12px" >
-                    <Box>
-                        <Type.LG>
-                            {currency[3].balance}
-                        </Type.LG>
-                        <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
-                            {currency[3].symbol}
-                        </Type.LG>
-                    </Box>
-                </Flex>
-            </Wrapper>}
-        </DoubleBox>
-    </QuadBox>);
+                {currency[3] && !currency[3] && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+
+                {currency[3] && <Wrapper>
+                    <Flex justifyContent="flex-end" marginTop="12px" marginRight="12px" >
+                        <Box>
+                            <Type.LG>
+                                {currency[3].balance}
+                            </Type.LG>
+                            <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
+                                {currency[3].symbol}
+                            </Type.LG>
+                        </Box>
+                    </Flex>
+                </Wrapper>}
+            </DoubleBox>
+        </QuadBox>
+    </div>
+    );
 }
 
 export default MultipleBox;

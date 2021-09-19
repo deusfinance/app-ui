@@ -24,6 +24,7 @@ import { useAllowance } from "../../hooks/useAllowance";
 import SelectBox from '../../components/App/Migrator/SelectBox';
 import { ChainId, NameChainId } from '../../constant/web3';
 import { getCorrectChains } from '../../constant/correctChain';
+import NewDEUS from '../../components/App/Migrator/NewDEUS';
 
 export const MainWrapper = styled.div`
    padding-top: 60px;
@@ -33,8 +34,13 @@ export const MainWrapper = styled.div`
    margin:auto;
 `
 
+
 export const Container = styled.div`
    margin-top: 60px;
+   max-width: 845px;
+   width: 100%;
+   /* display: flex;
+   flex-wrap: wrap; */
    background: linear-gradient(180deg, #18191D 0%, #18191D 100%);
    /* border: 1px solid #000000; */
    border-radius: 15px 15px 0px 0px;
@@ -103,32 +109,46 @@ const Migrator = () => {
 
     return (<MainWrapper>
         <Type.XXL fontWeight="300">Migrator</Type.XXL>
-        <Container>
-            <Title>
-                <div style={{ display: 'flex', justifyContent: "flex-start", alignItems: "center" }}>
-                    <svg style={{ margin: "0 10px" }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="20" height="20" rx="3" fill="#CECECE" />
-                    </svg>
-                    <Type.LG color={'secondary'} fontWeight="300">Migrate: </Type.LG>
-                    <Type.LG style={{ marginLeft: "5px" }} fontWeight="300"> DEA / sDEA </Type.LG>
+        <div style={{ display: "flex", width: "100%", alignItems: "center", margin: "auto", justifyContent: "center" }}>
+            <Container>
+                <Title>
+                    <div style={{ display: 'flex', justifyContent: "flex-start", alignItems: "center" }}>
+                        <svg style={{ margin: "0 10px" }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="20" height="20" rx="3" fill="#CECECE" />
+                        </svg>
+                        <Type.LG color={'secondary'} fontWeight="300">Migrate From: </Type.LG>
+                        <Type.LG style={{ marginLeft: "5px" }} fontWeight="300"> DEA / sDEA </Type.LG>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: "center", width: "315px", textAlign: "center" }}>
+
+                        <Type.LG color={'secondary'} fontWeight="300">To: </Type.LG>
+                        <Type.LG fontWeight="300" style={{ marginLeft: "5px" }}> DEUS V2 </Type.LG>
+
+                    </div>
+
+                    {/* <div>&#8594;</div> */}
+
+                </Title>
+
+
+                <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                    <MultipleBox
+                        currency={swapState}
+                        fastUpdate={fastUpdate}
+                    />
+                    <NewDEUS />
+
                 </div>
-                <div>&#8594;</div>
-            </Title>
-
-            <div style={{ marginBottom: '20px' }}>
-                <MultipleBox
-                    currency={swapState}
-                    fastUpdate={fastUpdate}
-                />
-            </div>
-            <div>.</div>
-        </Container>
-
+                {/* <div>.</div> */}
+            </Container>
+            {/* <NewDEUS /> */}
+        </div>
         <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
         {/* style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }} */}
-        
-        <div>
+
+        <div >
             <MigrateBox
                 title="Select Destination Network"
                 SyncChainId={SyncChainId}

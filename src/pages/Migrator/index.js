@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
 import { Type } from '../../components/App/Text';
+import MultipleBox from '../../components/App/Migrator/MultipleBox';
 
 export const MainWrapper = styled.div`
    padding-top: 60px;
@@ -9,6 +10,7 @@ export const MainWrapper = styled.div`
    max-width: 95%;
    margin:auto;
 `
+
 export const Container = styled.div`
    margin-top: 60px;
    background: linear-gradient(180deg, #18191D 0%, #18191D 100%);
@@ -24,6 +26,7 @@ export const Title = styled.div`
    height: 70px;
    border: 1px solid #000000;
 `
+
 export const TokensContainer = styled.div`
     display: flex;
     justify-content: flex-start;
@@ -42,9 +45,15 @@ export const Token = styled.div`
     height: 100px;
 `
 
-
-
 const Migrator = () => {
+    const [fastUpdate, setFastUpdate] = useState(0)
+    const [swapState, setSwapState] = useState([
+        { symbol: "DEA", balance: "342.23" },
+        { symbol: "sDEA", balance: "342.23" },
+        // { symbol: "DEA", balance: "342.23" },
+        // { symbol: "sDEA", balance: "342.23" },
+    ])
+
     return (<MainWrapper>
         <Type.XXL fontWeight="300">Migrator</Type.XXL>
         <Container>
@@ -58,6 +67,15 @@ const Migrator = () => {
                 </div>
                 <div>&#8594;</div>
             </Title>
+
+            <div style={{ marginBottom: '20px'}}>
+                <MultipleBox
+                    currency={swapState}
+                    fastUpdate={fastUpdate}
+                />
+            </div>
+
+            <div>.</div>
 
         </Container>
     </MainWrapper>);

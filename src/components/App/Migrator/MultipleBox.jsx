@@ -1,0 +1,128 @@
+import React, { useState, useEffect } from 'react';
+import { Flex, Box, Image } from 'rebass/styled-components';
+import styled from 'styled-components';
+// import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';
+import { Type } from '../Text';
+
+const PlusImg = styled.img`
+    z-index: 1;
+    position: absolute;
+    text-align: center;
+    margin-top: 0px;
+    margin-left: 142px;
+
+    /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        margin-bottom: 5px;
+        width: 23px;
+        height: 23px;
+    `} */
+`
+
+const PlusImgMid = styled.img`
+    z-index: 1;
+    position: absolute;
+    text-align: center;
+    margin-top: -19px;
+    margin-left: -368px;
+
+    /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        margin-bottom: 5px;
+        width: 23px;
+        height: 23px;
+    `} */
+`
+
+const QuadBox = styled.div`
+    margin: 25px 0;
+`
+
+const DoubleBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    margin-left: 20px;
+`
+
+const Wrapper = styled.div`
+    position: relative;
+    height: 100px;
+    width: 100%;
+    max-width: 160px;
+    margin-top: ${({ mt }) => (mt && mt)};
+    background: ${({ theme }) => theme.border1};
+    border: 1px solid #000000;
+    border-radius: ${({ borderRadius }) => borderRadius || "15px"};
+    margin: 0;
+`
+
+const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => {
+    // const data = useCrossTokenBalance(currency?.address, chainId, fastUpdate)
+
+    return (<QuadBox>
+        <DoubleBox>
+            <Wrapper>
+                <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
+                    <Box>
+                        <Type.LG>
+                            {currency[0].balance}
+                        </Type.LG>
+                        <Type.LG style={{ marginLeft: "0" }} >
+                            {currency[0].symbol}
+                        </Type.LG>
+                    </Box>
+                </Flex>
+            </Wrapper>
+
+            {currency[1] && !currency[3] && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+
+            {currency[1] && <Wrapper>
+                <Flex justifyContent="flex-end" marginTop="12px" marginRight="12px" >
+                    <Box>
+                        <Type.LG>
+                            {currency[1].balance}
+                        </Type.LG>
+                        <Type.LG>
+                            {currency[1].symbol}
+                        </Type.LG>
+                    </Box>
+                </Flex>
+            </Wrapper>}
+        </DoubleBox>
+
+        {currency[3] && <PlusImgMid src="/img/dei/plus.svg" alt="plus" />}
+
+        <DoubleBox>
+            {currency[2] && <Wrapper>
+                <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
+                    <Box>
+                        <Type.LG>
+                            {currency[2].balance}
+                        </Type.LG>
+                        <Type.LG style={{ marginLeft: "0" }} >
+                            {currency[2].symbol}
+                        </Type.LG>
+                    </Box>
+                </Flex>
+            </Wrapper>}
+
+            {currency[3] && !currency[3] && <PlusImg src="/img/dei/plus.svg" alt="plus" />}
+
+            {currency[3] && <Wrapper>
+                <Flex justifyContent="flex-end" marginTop="12px" marginRight="12px" >
+                    <Box>
+                        <Type.LG>
+                            {currency[3].balance}
+                        </Type.LG>
+                        <Type.LG>
+                            {currency[3].symbol}
+                        </Type.LG>
+                    </Box>
+                </Flex>
+            </Wrapper>}
+        </DoubleBox>
+    </QuadBox>);
+}
+
+export default MultipleBox;

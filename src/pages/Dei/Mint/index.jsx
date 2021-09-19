@@ -100,7 +100,6 @@ const Dei = () => {
 
     // const allowance = new BigNumber(1)
     // const allowancePairToken = new BigNumber(1)
-
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 

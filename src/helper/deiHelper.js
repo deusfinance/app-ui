@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js"
-import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS } from "../constant/contracts"
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, MINT_PATH } from "../constant/contracts"
 import { isZero } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
@@ -344,27 +344,13 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
 }
 
 
-
-
-export const mintPath = {
-    [ChainId.HECO]: {
-        HT: ["0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f", "0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
-        USDT: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"]
-    },
-    [ChainId.AVALANCHE]: {
-        AVAX: ["0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", "0x9Ea9F4F8DDeb79f2b8d16EBA1Aff0306f8035919"],
-        USDT: ["0xc7198437980c041c805A1EDcbA50c1Ce5db95118", "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7", "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70"],
-        WETH: ["0xa71edc38d189767582c38a3145b5873052c3e47a", "0x0298c2b32eae4da002a15f36fdf7615bea3da047"],
-    },
-}
-
 export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3, chainId) => {
     if (!fromCurrency || !amountIn || isZero(amountIn) || deus_price === undefined) return ""
     const amountInToWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
     const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
     let method = ""
     let params = [amountInToWei, deusPriceWei]
-    const erc20Path = mintPath[chainId][fromCurrency.symbol]
+    const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
 
     if (fromCurrency.address === "0x") {
         method = "getAmountsOutNativeCoinToDei"
@@ -390,7 +376,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
 }
 
 export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, transferResidual, web3, chainId) => {
-    const erc20Path = mintPath[chainId][currency.symbol]
+    const erc20Path = MINT_PATH[chainId][currency.symbol]
 
     if (currency.address === "0x") {
         console.log(erc20Path, minLpAmount, transferResidual);

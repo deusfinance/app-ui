@@ -23,7 +23,7 @@ const PlusImgMid = styled.img`
     position: absolute;
     text-align: center;
     margin-top: -19px;
-    margin-left: -368px;
+    margin-left: -522px;
 
     /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         margin-bottom: 5px;

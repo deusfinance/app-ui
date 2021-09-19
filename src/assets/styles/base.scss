@@ -320,3 +320,29 @@ a {
         }
     }
 }
+
+.select-items-flat {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.select-box-item {
+    display: flex;
+    justify-content: center;
+    background: #1C1C1C;
+    padding: 8px 16px;
+    margin: 8px;
+    margin-left: 0;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.select-box-item-chosen {
+    background: #7951DD;
+    opacity: 1;
+}

@@ -34,14 +34,12 @@ const Dei = () => {
     const chainId = useChain(validNetworks)
     useDeiUpdate(chainId)
     const collatRatio = useRecoilValue(collatRatioState)
-    // const collatRatio = 100
     const web3 = useCrossWeb3(chainId)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const deiPrices = useRecoilValue(deiPricesState)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [proxy, setProxy] = useState(null)
     const [isApproved, setIsApproved] = useState(null)
-    // const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const [swapLoading, setSwapLoading] = useState(false)
     const { account } = useWeb3React()
@@ -87,7 +85,7 @@ const Dei = () => {
 
 
     const [swapState, setSwapState] = useState({
-        from: '',
+        from: {},
         to: deiToken[chainId],
     })
 
@@ -98,8 +96,7 @@ const Dei = () => {
     const [amountOut, setAmountOut] = useState("")
     const [pairToken, setPairToken] = useState({ address: null })
 
-    // const allowance = new BigNumber(1)
-    // const allowancePairToken = new BigNumber(1)
+
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 

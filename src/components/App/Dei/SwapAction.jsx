@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components'
 import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { FlexCenter } from '../Container';
@@ -67,51 +67,57 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
             setShowWallets(false)
     }, [account])
 
-    if (!account) {
-        return <WrapActions>
-            <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
-            <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
-                CONNECT WALLET
-            </ButtonSwap>
-        </WrapActions>
-    }
+    const error = checkError()
 
-    if (checkError()) {
-        return <WrapActions>
-            <ButtonSyncDeactivated >{checkError()}</ButtonSyncDeactivated>
-        </WrapActions>
-    }
-    return (<>
-        {(isMint && isApproved === true) || (!isMint && isPreApproved) ?
-            <WrapActions>
-                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>{text}
-                    {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="40" height="40" />}
+    return (useMemo(() => {
+        if (!account) {
+            return <WrapActions>
+                <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
+                <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
+                    CONNECT WALLET
                 </ButtonSwap>
-            </WrapActions> : <>
-                <WrapActions>
-                    {!isApproved ? <>
-                        <ButtonSwap bgColor={bgColor} active={true} onClick={handleApprove} >
-                            APPROVE {targetToken && targetToken.symbol}
-                            {loading && <img style={{ position: "absolute", right: "0px" }} alt="sp" src="/img/spinner.svg" width="30" height="30" />}
-                        </ButtonSwap>
-                        <ButtonSyncDeactivated>{text}</ButtonSyncDeactivated>
-                    </> : <>
-                        <ButtonSyncDeactivated>APPROVED</ButtonSyncDeactivated>
-                        <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
-                            {text}
-                            {swapLoading && <img style={{ position: "absolute", right: "0px" }} alt="sp" src="/img/spinner.svg" width="30" height="30" />}
-                        </ButtonSwap>
-                    </>
-                    }
-                </WrapActions>
-                <WrapStep bgColor={bgColor}>
-                    <CycleNumber bgColor={bgColor} active={true}>1</CycleNumber>
-                    <Line bgColor={bgColor}></Line>
-                    <CycleNumber bgColor={bgColor} active={isApproved}>2</CycleNumber>
-                </WrapStep>
-            </>
+            </WrapActions>
         }
-    </>);
+
+        if (error)
+            return <WrapActions>
+                <ButtonSyncDeactivated >{error}</ButtonSyncDeactivated>
+            </WrapActions>
+
+        return <>
+            {(isMint && isApproved === true) || (!isMint && isPreApproved) ?
+                <WrapActions>
+                    <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>{text}
+                        {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="40" height="40" />}
+                    </ButtonSwap>
+                </WrapActions> : <>
+                    <WrapActions>
+                        {!isApproved ? <>
+                            <ButtonSwap bgColor={bgColor} active={true} onClick={handleApprove} >
+                                APPROVE {targetToken && targetToken.symbol}
+                                {loading && <img style={{ position: "absolute", right: "0px" }} alt="sp" src="/img/spinner.svg" width="30" height="30" />}
+                            </ButtonSwap>
+                            <ButtonSyncDeactivated>{text}</ButtonSyncDeactivated>
+                        </> : <>
+                            <ButtonSyncDeactivated>APPROVED</ButtonSyncDeactivated>
+                            <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
+                                {text}
+                                {swapLoading && <img style={{ position: "absolute", right: "0px" }} alt="sp" src="/img/spinner.svg" width="30" height="30" />}
+                            </ButtonSwap>
+                        </>
+                        }
+                    </WrapActions>
+                    <WrapStep bgColor={bgColor}>
+                        <CycleNumber bgColor={bgColor} active={true}>1</CycleNumber>
+                        <Line bgColor={bgColor}></Line>
+                        <CycleNumber bgColor={bgColor} active={isApproved}>2</CycleNumber>
+                    </WrapStep>
+                </>
+            }
+        </>
+    }, [account, showWallets, setShowWallets, targetToken, isMint, isApproved, isPreApproved, handleApprove, handleSwap, bgColor, text, loading, swapLoading, error])
+
+    );
 }
 
 export default SwapAction;

@@ -420,7 +420,7 @@ export const useHusdPoolData = (validChainId) => {
     const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
     const { slowRefresh } = useRefresh()
-    const forceRefresh = useRedemptionDelay()
+    // const forceRefresh = useRedemptionDelay()
     const setHusdPoolData = useSetRecoilState(husdPoolDataState)
 
     useEffect(() => {
@@ -471,7 +471,7 @@ export const useHusdPoolData = (validChainId) => {
 
         }
         get()
-    }, [setHusdPoolData, slowRefresh, forceRefresh, web3, account, validChainId, chainId])
+    }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
 }
 
 export const useCollatRatio = (validChainId) => {

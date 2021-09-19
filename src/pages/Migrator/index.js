@@ -50,8 +50,8 @@ const Migrator = () => {
     const [swapState, setSwapState] = useState([
         { symbol: "DEA", balance: "342.23" },
         { symbol: "sDEA", balance: "342.23" },
-        // { symbol: "DEA", balance: "342.23" },
-        // { symbol: "sDEA", balance: "342.23" },
+        { symbol: "DEA", balance: "342.23" },
+        { symbol: "sDEA", balance: "342.23" },
     ])
 
     return (<MainWrapper>
@@ -62,7 +62,7 @@ const Migrator = () => {
                     <svg style={{ margin: "0 10px" }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="20" height="20" rx="3" fill="#CECECE" />
                     </svg>
-                    <Type.LG fontWeight="300">Migrate: </Type.LG>
+                    <Type.LG color={'secondary'} fontWeight="300">Migrate: </Type.LG>
                     <Type.LG style={{ marginLeft: "5px" }} fontWeight="300"> DEA / sDEA </Type.LG>
                 </div>
                 <div>&#8594;</div>

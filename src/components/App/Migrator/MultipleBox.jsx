@@ -68,7 +68,7 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                         <Type.LG>
                             {currency[0].balance}
                         </Type.LG>
-                        <Type.LG style={{ marginLeft: "0" }} >
+                        <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                             {currency[0].symbol}
                         </Type.LG>
                     </Box>
@@ -83,7 +83,7 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                         <Type.LG>
                             {currency[1].balance}
                         </Type.LG>
-                        <Type.LG>
+                        <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                             {currency[1].symbol}
                         </Type.LG>
                     </Box>
@@ -100,7 +100,7 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                         <Type.LG>
                             {currency[2].balance}
                         </Type.LG>
-                        <Type.LG style={{ marginLeft: "0" }} >
+                        <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                             {currency[2].symbol}
                         </Type.LG>
                     </Box>
@@ -115,7 +115,7 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                         <Type.LG>
                             {currency[3].balance}
                         </Type.LG>
-                        <Type.LG>
+                        <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                             {currency[3].symbol}
                         </Type.LG>
                     </Box>

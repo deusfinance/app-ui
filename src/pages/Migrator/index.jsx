@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Type } from '../../components/App/Text';
 import MultipleBox from '../../components/App/Migrator/MultipleBox';
 import MigrateBox from '../../components/App/Migrator/MigrateBox';
-import SwapAction from '../../components/App/Dei/SwapAction';
+import SwapAction from '../../components/App/Migrator/SwapAction';
 import { Image } from 'rebass/styled-components';
 import TokenBox from '../../components/App/Swap/TokenBox';
 import SlippageTolerance from '../../components/App/Swap/SlippageTolerance';
@@ -34,7 +34,6 @@ export const MainWrapper = styled.div`
    margin:auto;
 `
 
-
 export const Container = styled.div`
    margin-top: 60px;
    max-width: 845px;
@@ -51,8 +50,8 @@ export const Title = styled.div`
     justify-content: space-between;
     align-items: center;
     padding-left: 12px;
-   height: 70px;
-   border: 1px solid #000000;
+    height: 70px;
+    border: 1px solid #000000;
 `
 
 export const TokensContainer = styled.div`
@@ -60,8 +59,8 @@ export const TokensContainer = styled.div`
     justify-content: flex-start;
     align-items: center;
     padding-left: 22px;
-   height: 70px;
-   border: 1px solid #000000;
+    height: 70px;
+    border: 1px solid #000000;
 `
 
 export const Token = styled.div`
@@ -121,14 +120,9 @@ const Migrator = () => {
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: "center", width: "315px", textAlign: "center" }}>
-
                         <Type.LG color={'secondary'} fontWeight="300">To: </Type.LG>
                         <Type.LG fontWeight="300" style={{ marginLeft: "5px" }}> DEUS V2 </Type.LG>
-
                     </div>
-
-                    {/* <div>&#8594;</div> */}
-
                 </Title>
 
 
@@ -140,38 +134,34 @@ const Migrator = () => {
                     <NewDEUS />
 
                 </div>
-                {/* <div>.</div> */}
             </Container>
             {/* <NewDEUS /> */}
         </div>
         <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-        {/* style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }} */}
-
-        <div >
+        <Container>
             <MigrateBox
                 title="Select Destination Network"
                 SyncChainId={SyncChainId}
                 setSyncChainId={setSyncChainId}
             ></MigrateBox>
-            {/* <SwapAction
+
+            <SwapAction
                 bgColor={"grad_dei"}
                 text="Migrate"
-                isPreApproved={true}
-                isApproved={isApproved}
-                validNetworks={validNetworks}
-                targetToken={targetToken}
-                loading={approveLoading}
-                swapLoading={swapLoading}
-                handleApprove={handleApprove}
-                handleSwap={handleSwap}
-                TokensMap={TokensMap}
-                swapState={swapState}
-                amountIn={amountIn}
-                amountOut={amountOut}
-                isMint={true}
-            /> */}
-        </div>
+                isPreApproved={false}
+                isApproved={false}
+                validNetworks={[1, 4]}
+                // targetToken={targetToken}
+                loading={false}
+                swapLoading={false}
+                // handleApprove={handleApprove}
+                // handleSwap={handleSwap}
+                // swapState={swapState}
+                // amountIn={amountIn}
+                // amountOut={amountOut}
+            />
+        </Container>
     </MainWrapper>);
 }
 

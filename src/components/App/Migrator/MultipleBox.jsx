@@ -8,6 +8,7 @@ const PlusImg = styled.img`
     z-index: 10;
     position: absolute;
     text-align: center;
+    margin-left: 135px;
     /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         margin-bottom: 5px;
         width: 23px;

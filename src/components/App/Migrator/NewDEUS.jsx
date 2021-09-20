@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
-// import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';
 import { Type } from '../Text';
 
 export const MainWrapper = styled.div`
@@ -9,13 +7,6 @@ export const MainWrapper = styled.div`
    max-width: 315px;
    background: #0D0D0D;
 `
-
-// export const Container = styled.div`
-//     width: 250px;
-//     height: 100px;
-
-
-// `
 
 
 export const TokensContainer = styled.div`
@@ -31,27 +22,28 @@ export const Token = styled.div`
     margin:10px auto;
     font-size: 20px;
     color: rgba(255, 255, 255, 0.25);
-     background: rgba(15, 180, 244, 0.1);
-   border-radius: 15px;
+    background: ${({ active }) => active ? "#0FB4F4" : "#0d1e25"};
+    cursor: ${({ active }) => active ? "default" : "pointer"};
     border-radius: 15px;
-    /* padding:0 20px; */
     width: 250px;
     height: 100px;
+    &:hover{
+        filter: ${({ active }) => active ? "brightness(1)" : "brightness(1.5)"};
+    }
+
 `
 
-const NewDEUS = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => {
-
+const NewDEUS = ({ tokens = [], activeToken }) => {
     return (<MainWrapper>
         <TokensContainer>
-            <Token>
-                <Type.LG>342.23</Type.LG>
-                <Type.MD>DEUS</Type.MD>
-            </Token>
+            {tokens.map(token => {
+                const active = token.symbol === activeToken
 
-            <Token>
-                <Type.LG>342.23</Type.LG>
-                <Type.MD>DEUS-USDC LP</Type.MD>
-            </Token>
+                return <Token key={token.symbol} active={active}>
+                    <Type.LG color={active ? "#000000" : "#49565B"}>{token.amount}</Type.LG>
+                    <Type.MD mt="1" color={active ? "#075A7A   " : "#49565B"}>{token.symbol}</Type.MD>
+                </Token>
+            })}
 
         </TokensContainer>
     </MainWrapper>);

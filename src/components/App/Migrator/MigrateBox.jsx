@@ -19,7 +19,7 @@ const SwapNetwork = styled.div`
     margin-top: 20px;
 `;
 
-const titleText = styled.span`
+const TitleText = styled.span`
     opacity: "0.5";
     font-size: "12px";
 `
@@ -28,7 +28,7 @@ const MigratorBox = ({ title, SyncChainId, setSyncChainId }) => {
     return (
         <SmallWrapper>
             <SwapNetwork>
-                <titleText> {title} </titleText>
+                <TitleText> {title} </TitleText>
                 <SelectBox currRow={SyncChainId} setCurrRow={setSyncChainId} />
             </SwapNetwork>
         </SmallWrapper>

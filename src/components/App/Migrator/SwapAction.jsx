@@ -15,7 +15,7 @@ const errors = {
 }
 
 const WrapActions = styled.div`
-    margin-top:33px;
+    margin: 24px;
     height: "55px";
     display:flex;
     font-size:20px;
@@ -24,6 +24,7 @@ const WrapActions = styled.div`
         margin:0px 5px;
     }
 `
+
 const ButtonSwap = styled(ButtonSyncActive)`
   background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
   color: ${({ theme }) => theme.text1_2};
@@ -31,23 +32,24 @@ const ButtonSwap = styled(ButtonSyncActive)`
 `
 
 const WrapStep = styled(FlexCenter)`
-margin-top:10px;
+    margin-top: 10px;
+    margin-bottom: 25px;
 `
 
 const CycleNumber = styled(FlexCenter)`
-width:20px;
-height:20px;
-border-radius:20px;
-background: ${({ theme, bgColor, active }) => active ? bgColor ? theme[bgColor] : theme.grad3 : theme.border1};
-color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1};
-z-index: 0;
-font-size:12px;
-margin:0 -1px;
+    width:20px;
+    height:20px;
+    border-radius:20px;
+    background: ${({ theme, bgColor, active }) => active ? bgColor ? theme[bgColor] : theme.grad3 : theme.border1};
+    color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1};
+    z-index: 0;
+    font-size:12px;
+    margin:0 -1px;
 `
 const Line = styled.div`
-background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
-height: 2px;
-width: 50%;
+    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
+    height: 2px;
+    width: 50%;
 `
 const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, swapLoading = false, validNetworks = [4, 1], handleApprove, handleSwap, bgColor, targetToken, isMint = false }) => {
 

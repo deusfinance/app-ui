@@ -31,18 +31,24 @@ export const MainWrapper = styled.div`
    padding-bottom: 30px;
    text-align:center;
    max-width: 95%;
-   margin:auto;
+   margin: auto;
+`
+
+export const MainDiv = styled.div`
+    display: "flex";
+    width: "100%";
+    align-items: "center";
+    margin: "auto";
+    justify-content: "center";
 `
 
 export const Container = styled.div`
-   margin-top: 60px;
-   max-width: 845px;
-   width: 100%;
-   /* display: flex;
-   flex-wrap: wrap; */
-   background: linear-gradient(180deg, #18191D 0%, #18191D 100%);
-   /* border: 1px solid #000000; */
-   border-radius: 15px 15px 0px 0px;
+    margin: 8px auto;
+    width: 100%;
+    max-width: 845px;
+    background: linear-gradient(180deg, #18191D 0%, #18191D 100%);
+    border-radius: 15px;
+    padding-bottom: 4px;
 `
 
 export const Title = styled.div`
@@ -70,6 +76,12 @@ export const Token = styled.div`
     border-radius: 15px;
     width: 160px;
     height: 100px;
+`
+
+export const Line = styled.div`
+    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
+    height: 1px;
+    width: 100%;
 `
 
 const Migrator = () => {
@@ -107,8 +119,8 @@ const Migrator = () => {
     ])
 
     return (<MainWrapper>
-        <Type.XXL fontWeight="300">Migrator</Type.XXL>
-        <div style={{ display: "flex", width: "100%", alignItems: "center", margin: "auto", justifyContent: "center" }}>
+        <Type.XXL fontWeight="300" marginBottom="30px">Migrator</Type.XXL>
+        <MainDiv>
             <Container>
                 <Title>
                     <div style={{ display: 'flex', justifyContent: "flex-start", alignItems: "center" }}>
@@ -125,7 +137,6 @@ const Migrator = () => {
                     </div>
                 </Title>
 
-
                 <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
                     <MultipleBox
                         currency={swapState}
@@ -136,7 +147,8 @@ const Migrator = () => {
                 </div>
             </Container>
             {/* <NewDEUS /> */}
-        </div>
+        </MainDiv>
+
         <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
         <Container>
@@ -145,6 +157,8 @@ const Migrator = () => {
                 SyncChainId={SyncChainId}
                 setSyncChainId={setSyncChainId}
             ></MigrateBox>
+
+            <Line bgColor={'black'}></Line>
 
             <SwapAction
                 bgColor={"grad_dei"}
@@ -155,11 +169,11 @@ const Migrator = () => {
                 // targetToken={targetToken}
                 loading={false}
                 swapLoading={false}
-                // handleApprove={handleApprove}
-                // handleSwap={handleSwap}
+                handleApprove={null}
+                handleSwap={null}
                 // swapState={swapState}
-                // amountIn={amountIn}
-                // amountOut={amountOut}
+                amountIn={1}
+                amountOut={0}
             />
         </Container>
     </MainWrapper>);

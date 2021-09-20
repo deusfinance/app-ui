@@ -8,12 +8,6 @@ const PlusImg = styled.img`
     z-index: 10;
     position: absolute;
     text-align: center;
-    /* left: 0;
-    right: 0; */
-    /* margin-top: 0px;
-    margin-left: 142px; */
-
-
     /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         margin-bottom: 5px;
         width: 23px;
@@ -25,8 +19,6 @@ const PlusImgMid = styled.img`
     z-index: 1;
     position: absolute;
     text-align: center;
-    /* margin-top: -19px;
-    margin-left: -522px; */
     margin-top: -16px;
     margin-left: -8px;
     /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`

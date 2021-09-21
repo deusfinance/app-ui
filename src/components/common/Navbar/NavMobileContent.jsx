@@ -19,7 +19,6 @@ const NavMobile = ({ routes, open, setOpen }) => {
 
                     {<div className="nav-item-wrap-img" style={{ marginTop: "5px", marginBottom: "20px" }}>
                         {routes.filter(nav => nav.image).map((nav, index) => {
-                            console.log(nav);
                             let res = null
                             res = <ExternalLink href={nav.path}  >
                                 <img width='20px' height="20px" src={`/img/navbar/${nav.id}.svg`} alt="" />

@@ -11,7 +11,7 @@ import { useLocation } from 'react-router';
 import SelectBox from '../../components/App/Migrator/SelectBox';
 import { ChainId, NameChainId } from '../../constant/web3';
 import { getCorrectChains } from '../../constant/correctChain';
-import NewDEUS from '../../components/App/Migrator/NewDEUS';
+import DeusV2Tokens from '../../components/App/Migrator/DeusV2Tokens';
 import MigrationTitle from '../../components/App/Migrator/MigrationTitle';
 import { RowBetween } from '../../components/App/Row';
 import { MainWrapper, MainDiv, Container, Line } from '../../components/App/Migrator';
@@ -33,14 +33,19 @@ const Migrator = () => {
     const validChains = getCorrectChains(location.pathname)
     const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainId.ETH
     const [SyncChainId, setSyncChainId] = useState(currChain)
-
-    const selectedList = {
-        0: {
-            targetToken: "DEUS"
+    const [migrateList, setMigrateList] = useState({})
+    const toggleId = (id, active, token) => {
+        if (active) {
+            delete migrateList[id]
+        } else {
+            migrateList[id] = {
+                targetToken: token ?? MIGRATION_CONFIG[id].tokens.to[0].symbol
+            }
         }
+        setMigrateList({ ...migrateList })
     }
 
-    //Array of ids
+    // Array of migrated id
     const migratedList = [2]
 
 
@@ -49,13 +54,13 @@ const Migrator = () => {
         <MainDiv>
             {MIGRATION_CONFIG.filter(config => !migratedList.includes(config.id)).map(config => {
                 return <Container key={config.id}>
-                    <MigrationTitle active={selectedList[config.id]} config={config} />
+                    <MigrationTitle toggleId={toggleId} active={migrateList[config.id]} config={config} />
                     <RowBetween align={"flex-start"}>
                         <MultipleBox
                             currency={config.tokens.from}
                             fastUpdate={fastUpdate}
                         />
-                        <NewDEUS tokens={config.tokens.to} activeToken={selectedList[config.id]?.targetToken} />
+                        <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
                     </RowBetween>
                 </Container>
             })}

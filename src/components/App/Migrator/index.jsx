@@ -1,6 +1,4 @@
-// import React from 'react';
 import styled from 'styled-components'
-
 
 export const MainWrapper = styled.div`
    padding-top: 60px;

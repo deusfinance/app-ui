@@ -34,4 +34,20 @@ export const MIGRATION_CONFIG = [
             ]
         }
     },
+    {
+        id: 2,
+        title: {
+            from: "DEUS / sDEUS",
+            to: "DEUS V2"
+        },
+        tokens: {
+            from: [
+                { symbol: "UNI-DD LP", balance: "1.23587" },
+            ],
+            to: [
+                { symbol: "DEUS-DEI LP", amount: "5311" },
+                { symbol: "DEUS", amount: "2.354" },
+            ]
+        }
+    },
 ]

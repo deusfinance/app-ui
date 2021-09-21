@@ -66,7 +66,7 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                 <Wrapper>
                     <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
                         <Box>
-                            <Type.LG>
+                            <Type.LG style={{ textAlign: "left" }}>
                                 {currency[0].balance}
                             </Type.LG>
                             <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>

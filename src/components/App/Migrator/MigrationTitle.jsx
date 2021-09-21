@@ -11,10 +11,10 @@ const TitleWrap = styled.div`
     border-bottom: 2px solid #000000;
 `
 
-const MigrationTitle = ({ config, active }) => {
+const MigrationTitle = ({ config, toggleId, active }) => {
     const { title, id } = config
     return (<TitleWrap>
-        <div style={{ display: 'flex', justifyContent: "flex-start", alignItems: "center" }}>
+        <div style={{ display: 'flex', justifyContent: "flex-start", alignItems: "center", cursor: "pointer" }} onClick={() => toggleId(id, active)}>
             {active ? <svg style={{ margin: "0 10px" }} width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width={20} height={20} rx={3} fill="#0FB4F4" />
                 <path d="M7 10.5L8.63082 12.7832C9.04487 13.3628 9.915 13.336 10.2926 12.7319L14.5 6" stroke="white" strokeWidth={2} strokeLinecap="round" />

@@ -77,5 +77,24 @@ export const StakingConfig = {
       stakingContract: "0x085d3eB826416606Aaf83ffc4b797B3641DC5C73",
       zapperContract: "0x8a833926E9b7ca23193D98A35831b67C85Aa521E",
     }
-  ]
+  ],
+  [ChainId.MATIC]: [
+    {
+      title: "DEI-DAI",
+      pic1: "/tokens/dei.svg",
+      pic2: "/tokens/dai.png",
+      depositToken: deiCollateralLpToken[ChainId.MATIC],
+      stakingContract: "0xa775c8392cED560010a52487133e58D07566336a",
+      zapperContract: "0xa775c8392cED560010a52487133e58D07566336a",
+
+    },
+    {
+      title: "DEI-DEUS",
+      pic1: "/tokens/dei.svg",
+      pic2: "/tokens/deus.svg",
+      depositToken: deiDeusLpToken[ChainId.MATIC],
+      stakingContract: "0x344bF33411A008D45838f08B4974C946aD207D2e",
+      zapperContract: "0x344bF33411A008D45838f08B4974C946aD207D2e",
+    }
+  ],
 }

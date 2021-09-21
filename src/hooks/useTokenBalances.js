@@ -12,7 +12,7 @@ const useTokenBalances = (tokensMap, validChainId) => {
     const [balances, setBalances] = useState(tokensMap)
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
-    const { fastRefresh } = useRefresh()
+    const { slowRefresh } = useRefresh()
 
     useEffect(() => {
 
@@ -45,7 +45,7 @@ const useTokenBalances = (tokensMap, validChainId) => {
         if (account) {
             fetchBalances()
         }
-    }, [account, tokensMap, validChainId, chainId, fastRefresh, web3])
+    }, [account, tokensMap, validChainId, chainId, slowRefresh, web3])
 
     return balances
 }

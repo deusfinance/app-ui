@@ -17,12 +17,12 @@ import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
-    mint1t1DEI, collatUsdPrice, mintPath, ERC20ToDei, nativeCoinToDei, collateralToDei, zapIn, DeusToDei
+    mint1t1DEI, collatUsdPrice, ERC20ToDei, nativeCoinToDei, collateralToDei, zapIn, DeusToDei
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
-import { COLLATERAL_ADDRESS, DEUS_ADDRESS } from '../constant/contracts'
+import { COLLATERAL_ADDRESS, DEUS_ADDRESS, MINT_PATH } from '../constant/contracts'
 
 
 export const useZap = (currency, stakingInfo, amountIn, minLpAmount, validChainId) => {
@@ -232,7 +232,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             try {
                 const result = await makeDeiRequest(path, validChainId)
                 const { collateral_price, deus_price, expire_block, signature } = result
-                const erc20Path = mintPath[chainId][from1Currency.symbol]
+                const erc20Path = MINT_PATH[chainId][from1Currency.symbol]
 
                 if (from1Currency.address === "0x") {
                     fn = nativeCoinToDei(
@@ -420,7 +420,7 @@ export const useHusdPoolData = (validChainId) => {
     const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
     const { slowRefresh } = useRefresh()
-    const forceRefresh = useRedemptionDelay()
+    // const forceRefresh = useRedemptionDelay()
     const setHusdPoolData = useSetRecoilState(husdPoolDataState)
 
     useEffect(() => {
@@ -471,7 +471,7 @@ export const useHusdPoolData = (validChainId) => {
 
         }
         get()
-    }, [setHusdPoolData, slowRefresh, forceRefresh, web3, account, validChainId, chainId])
+    }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
 }
 
 export const useCollatRatio = (validChainId) => {
@@ -517,7 +517,7 @@ export const useDeiPrices = (validChainId) => {
     useEffect(() => {
         const get = async () => {
             try {
-                const result = await makeDeiRequest("/price", 4)//TODO
+                const result = await makeDeiRequest("/price", validChainId)//TODO
                 setRefreshRatio(result)
             } catch (error) {
                 console.log("useDeiPrices ", error);

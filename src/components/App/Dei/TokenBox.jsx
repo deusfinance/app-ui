@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
@@ -52,52 +52,53 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, s
     }, [inputAmount, balance])
 
 
-    return (<Wrapper mt={mt}>
-        <Flex
-            p="10px 0"
-            justifyContent={"space-between"}
-        >
-            <Box>
-                <Type.SM color={'secondary'}>
-                    {title || "From"}
-                </Type.SM>
-            </Box>
-            <Box>
-                <Type.SM color={'secondary'}>
-                    Balance: {formatBalance3(balance)}
-                </Type.SM>
-            </Box>
-        </Flex>
+    return (useMemo(() => {
+        return <Wrapper mt={mt}>
+            <Flex
+                p="10px 0"
+                justifyContent={"space-between"}
+            >
+                <Box>
+                    <Type.SM color={'secondary'}>
+                        {title || "From"}
+                    </Type.SM>
+                </Box>
+                <Box>
+                    <Type.SM color={'secondary'}>
+                        Balance: {formatBalance3(balance)}
+                    </Type.SM>
+                </Box>
+            </Flex>
 
-        <Flex
-            justifyContent="space-between"
-            alignItems="center"
-            mt="5px"
-        >
-            <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
-                setFocusType(focusType)
-                setInputAmount(e.currentTarget.value)
-            }} />
+            <Flex
+                justifyContent="space-between"
+                alignItems="center"
+                mt="5px"
+            >
+                <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+                    setFocusType(focusType)
+                    setInputAmount(e.currentTarget.value)
+                }} />
 
-            {hasMax && !onMax && <ButtonMax width={"40px"}
-                onClick={() => setInputAmount(balance)}>
-                MAX
-            </ButtonMax>}
+                {hasMax && !onMax && <ButtonMax width={"40px"}
+                    onClick={() => setInputAmount(balance)}>
+                    MAX
+                </ButtonMax>}
 
-            <TokenInfo onClick={setActive ? () => setActive(true, type) : undefined} active={setActive ? true : false}>
-                <CurrencyLogo
-                    style={{ verticalAlign: "middle" }}
-                    currency={currency}
-                    size={"25px"}
-                />
-                <Type.LG color="text1" ml="7px" mr="9px">{currency?.symbol}</Type.LG>
-                {setActive && <Image src="/img/select.svg" size="10px" />}
-            </TokenInfo>
-        </Flex>
+                <TokenInfo onClick={setActive ? () => setActive(true, type) : undefined} active={setActive ? true : false}>
+                    <CurrencyLogo
+                        style={{ verticalAlign: "middle" }}
+                        currency={currency}
+                        size={"25px"}
+                    />
+                    <Type.LG color="text1" ml="7px" mr="9px">{currency?.symbol}</Type.LG>
+                    {setActive && <Image src="/img/select.svg" size="10px" />}
+                </TokenInfo>
+            </Flex>
+        </Wrapper>
+    }, [currency, focusType, type, mt, title, setInputAmount, inputAmount, balance, setFocusType, hasMax, onMax, setActive])
 
-
-
-    </Wrapper>);
+    );
 }
 
 export default TokenBox;

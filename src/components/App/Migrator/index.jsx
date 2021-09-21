@@ -22,6 +22,8 @@ export const Container = styled.div`
     max-width: 845px;
     background: linear-gradient(180deg, #18191D 0%, #18191D 100%);
     border-radius: 15px;
+    padding-bottom: ${({ pb }) => pb ?? "0"} ;
+
 `
 
 export const TokensContainer = styled.div`

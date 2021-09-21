@@ -68,7 +68,7 @@ const Migrator = () => {
 
         <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-        <Container>
+        <Container pb={"20px"}>
             <MigrateBox
                 title="Select Destination Network"
                 SyncChainId={SyncChainId}
@@ -80,7 +80,7 @@ const Migrator = () => {
             <SwapAction
                 bgColor={"grad_dei"}
                 text="Migrate"
-                isPreApproved={false}
+                isPreApproved={true}
                 isApproved={false}
                 validNetworks={validChains}
                 // targetToken={targetToken}

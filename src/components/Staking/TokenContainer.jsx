@@ -564,17 +564,20 @@ const TokenContainer = (props) => {
           />
         )}
         {collapseContent === 'lock' && (
-          <Mint
-            {...userInfo}
-            vaultContract={vaultContract}
-            owner={owner}
-            chainId={chainId}
-            title={title}
-            titleExit={titleExit}
-            tokenName={tokenName}
-            handleBack={handleBack}
-            onlyLocking={onlyLocking}
-          />
+          // <Mint
+          //   {...userInfo}
+          //   vaultContract={vaultContract}
+          //   owner={owner}
+          //   chainId={chainId}
+          //   title={title}
+          //   titleExit={titleExit}
+          //   tokenName={tokenName}
+          //   handleBack={handleBack}
+          //   onlyLocking={onlyLocking}
+          // />
+          <div>
+            In preparation for the upcoming migration to V2, locking tokens has been disabled
+          </div>
         )}
       </Collapsible>
     </div>

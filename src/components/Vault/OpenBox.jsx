@@ -17,9 +17,7 @@ const OpenBox = ({ handleLock, vault, token }) => {
             </div>
             <div className="door-btns">
 
-                <div className="grad-wrap stake-btn-wrap" onClick={() => handleLock(vault)}>
-                    <div className="grad lock-more ">{t("lockMore")}</div>
-                </div>
+                {<span></span>}
                 <div className="grad-wrap get-wrap">
                     {AllStakings[vault.name].innerLink ?
                         <Link to={"/swap"} className="grad" >{t("get")} {vault.title}</Link> :

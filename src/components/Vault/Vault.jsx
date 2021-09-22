@@ -285,16 +285,13 @@ class Vault extends Component {
 
 
             <ChainPupop
-                title={t("WrongNetwork")}
-                show={chainId && chainId !== 1}
+                title={"PLEASE NOTE"}
+                show={true}
                 close={false}
                 handlePopup={() => console.log()}
                 popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
                     <div>
-                        {t("badNetwork1")}
-                        <br />
-                        <br />
-                        {t("changeToMain")}
+                        In preparation for the upcoming migration to V2, locking tokens has been disabled
                     </div>
                 </div>}
             />

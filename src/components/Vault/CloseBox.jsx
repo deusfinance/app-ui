@@ -25,10 +25,7 @@ const CloseBox = ({ token, vault, handleLock }) => {
             </div> */}
             <div className="btns">
                 {(vault.allowances || vault.total) ? <>
-                    {vault.allowances ? <div className="grad-wrap" onClick={() => handleLock(vault)}>
-                        <div className="grad" >{t("lockHere")}
-                        </div>
-                    </div > : <span></span>}
+                    {<span></span>}
                     <div className="grad-wrap get-wrap">
                         {AllStakings[vault.name].innerLink ?
                             <Link to={"/swap"} className="grad" >{t("get")} {vault.title}</Link> :

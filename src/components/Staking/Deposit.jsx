@@ -113,6 +113,7 @@ const Deposit = (props) => {
       <div className="back-btn pointer" onClick={handleBack}>
         Back
       </div>
+
       {/* )} */}
       <div className="deposit-container">
         <ToggleButtons
@@ -277,6 +278,9 @@ const Deposit = (props) => {
             setOpen(!open)
           }}
         />
+      </div>
+      <div style={{ marginTop: "40px", fontSize: "12px" }} >
+        * We advise waiting for the launch of V2 when you'll be able to migrate your tokens and enter the new yield farms
       </div>
     </>
   )

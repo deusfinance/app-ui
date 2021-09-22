@@ -245,7 +245,7 @@ export const RecollateralizeDEI = (collateral_price, deus_price, expire_block, s
 export const nativeCoinToDei = (amountIn, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out, chainId, web3) => {
     return getProxyMinterContract(web3, chainId)
         .methods
-        .nativeCoinToDei(collateral_price, deus_price, expire_block, [signature], transferResidual, path, min_amount_out)
+        .Nativecoin2DEI(collateral_price, deus_price, expire_block, [signature], path, min_amount_out)
 }
 
 export const ERC20ToDei = (erc20amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out, chainId, web3) => {
@@ -255,15 +255,15 @@ export const ERC20ToDei = (erc20amount, collateral_price, deus_price, expire_blo
 }
 
 export const collateralToDei = (collateral_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out, chainId, web3) => {
+    console.log("collateralToDei");
     return getProxyMinterContract(web3, chainId)
         .methods
-        .collateralToDei([
+        .collateral2DEI([
             collateral_price,
             deus_price,
             expire_block,
             min_amount_out,
             [signature],
-            transferResidual,
             []
         ],
             collateral_amount)
@@ -273,7 +273,7 @@ export const DeusToDei = (deus_amount, collateral_price, deus_price, expire_bloc
     console.log(min_amount_out);
     return getProxyMinterContract(web3, chainId)
         .methods
-        .DeusToDei([collateral_price, deus_price, expire_block, min_amount_out, [signature], transferResidual, []], deus_amount)
+        .DEUS2DEI([collateral_price, deus_price, expire_block, min_amount_out, [signature], []], deus_amount)
 }
 
 
@@ -353,25 +353,26 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, web3
     const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
 
     if (fromCurrency.address === "0x") {
-        method = "getAmountsOutNativeCoinToDei"
+        method = "getAmountOutNativecoin2DEI"
         params.push(erc20Path)
     }
     else if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
-        // console.log("getAmountsOutCollateralToDei");
-        method = "getAmountsOutCollateralToDei"
+        console.log("getAmountOutCollateral2DEI");
+        method = "getAmountOutCollateral2DEI"
     }
     else if (fromCurrency.address === DEUS_ADDRESS[chainId]) {
-        method = "getAmountsOutDeusToDei"
+        method = "getAmountOutDEUS2DEI"
     }
     else {
-        // console.log("getAmountsOutERC20ToDei");
-        method = "getAmountsOutERC20ToDei"
+        console.log("getAmountOutERC202DEI");
+        method = "getAmountOutERC202DEI"
         if (!erc20Path) {
             console.error("INVALID PATH with ", fromCurrency)
             return
         }
         params.push(erc20Path)
     }
+    console.log(method, params);
     return getProxyMinterContract(web3, chainId).methods[method](...params).call()
 }
 

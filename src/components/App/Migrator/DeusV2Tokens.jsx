@@ -41,8 +41,8 @@ const DeusV2Tokens = ({ config, toggleId, active }) => {
             {tokens.to.map(token => {
                 const active = token.symbol === activeToken
                 return <Token key={token.symbol} active={active} onClick={() => toggleId(id, false, token.symbol)}>
-                    <Type.LG color={active ? "#000000" : "#49565B"}>{token.amount}</Type.LG>
-                    <Type.MD mt="1" color={active ? "#075A7A   " : "#49565B"}>{token.symbol}</Type.MD>
+                    <Type.LG fontWeight="300" color={active ? "#000000" : "#49565B"}>{token.amount}</Type.LG>
+                    <Type.MD fontWeight="300" mt="0.5" color={active ? "#075A7A   " : "#49565B"}>{token.symbol}</Type.MD>
                 </Token>
             })}
 

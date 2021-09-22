@@ -48,12 +48,16 @@ const Wrapper = styled.div`
     position: relative;
     height: 100px;
     width: 100%;
-    max-width: 160px;
+    max-width: 180px;
     margin-top: ${({ mt }) => (mt && mt)};
     background: ${({ theme }) => theme.border1};
     border: 1px solid #000000;
     border-radius: ${({ borderRadius }) => borderRadius || "15px"};
     margin: 0;
+`
+
+const TokenText = styled(Type.LG)`
+    font-weight:300;
 `
 
 const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => {
@@ -66,12 +70,12 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                 <Wrapper>
                     <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
                         <Box>
-                            <Type.LG style={{ textAlign: "left" }}>
+                            <TokenText fontWeigh={"300"} style={{ textAlign: "left" }}>
                                 {currency[0].balance}
-                            </Type.LG>
-                            <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                            </TokenText>
+                            <TokenText fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                                 {currency[0].symbol}
-                            </Type.LG>
+                            </TokenText>
                         </Box>
                     </Flex>
                 </Wrapper>
@@ -81,12 +85,12 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                 {currency[1] && <Wrapper>
                     <Flex justifyContent="flex-end" marginTop="12px" marginRight="12px" >
                         <Box>
-                            <Type.LG>
+                            <TokenText fontWeigh={"300"}>
                                 {currency[1].balance}
-                            </Type.LG>
-                            <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
+                            </TokenText>
+                            <TokenText fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                                 {currency[1].symbol}
-                            </Type.LG>
+                            </TokenText>
                         </Box>
                     </Flex>
                 </Wrapper>}
@@ -98,12 +102,12 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                 {currency[2] && <Wrapper>
                     <Flex justifyContent="flex-start" marginTop="12px" marginLeft="12px" >
                         <Box>
-                            <Type.LG>
+                            <TokenText fontWeigh={"300"}>
                                 {currency[2].balance}
-                            </Type.LG>
-                            <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                            </TokenText>
+                            <TokenText fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                                 {currency[2].symbol}
-                            </Type.LG>
+                            </TokenText>
                         </Box>
                     </Flex>
                 </Wrapper>}
@@ -113,12 +117,12 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                 {currency[3] && <Wrapper>
                     <Flex justifyContent="flex-end" marginTop="12px" marginRight="12px" >
                         <Box>
-                            <Type.LG>
+                            <TokenText fontWeigh={"300"}>
                                 {currency[3].balance}
-                            </Type.LG>
-                            <Type.LG style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
+                            </TokenText>
+                            <TokenText fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                                 {currency[3].symbol}
-                            </Type.LG>
+                            </TokenText>
                         </Box>
                     </Flex>
                 </Wrapper>}

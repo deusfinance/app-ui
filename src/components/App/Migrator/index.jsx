@@ -17,12 +17,13 @@ export const MainDiv = styled.div`
 `
 
 export const Container = styled.div`
-    margin: 8px auto;
+    margin: 0 auto;
     width: 100%;
     max-width: 845px;
     background: linear-gradient(180deg, #18191D 0%, #18191D 100%);
     border-radius: 15px;
     padding-bottom: ${({ pb }) => pb ?? "0"} ;
+    overflow: hidden;
 
 `
 

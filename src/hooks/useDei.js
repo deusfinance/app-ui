@@ -180,12 +180,11 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
-
-
     const handleMint = useCallback(async () => {
-        if (validChainId && chainId !== validChainId) return false
-        if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
 
+        if (validChainId && chainId !== validChainId) return false
+        if (!amountOut) amountOut = 0.00001 //TODO REMOVE IT
+        if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
         const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
         const minAmountOut = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
         let path = "/mint-algorithmic"
@@ -249,7 +248,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                     )
                 }
                 else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
-
                     fn = collateralToDei(
                         amount1toWei,
                         collateral_price,

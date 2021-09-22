@@ -53,20 +53,23 @@ const Migrator = () => {
         <Type.XXL fontWeight="300" marginBottom="30px">Migrator</Type.XXL>
         <MainDiv>
             {MIGRATION_CONFIG.filter(config => !migratedList.includes(config.id)).map(config => {
-                return <Container key={config.id}>
-                    <MigrationTitle toggleId={toggleId} active={migrateList[config.id]} config={config} />
-                    <RowBetween align={"flex-start"}>
-                        <MultipleBox
-                            currency={config.tokens.from}
-                            fastUpdate={fastUpdate}
-                        />
-                        <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
-                    </RowBetween>
-                </Container>
+                return <div key={config.id}>
+                    <Container >
+                        <MigrationTitle toggleId={toggleId} active={migrateList[config.id]} config={config} />
+                        <RowBetween align={"flex-start"}>
+                            <MultipleBox
+                                currency={config.tokens.from}
+                                fastUpdate={fastUpdate}
+                            />
+                            <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
+                        </RowBetween>
+                    </Container>
+                    {(config.id + 1) !== MIGRATION_CONFIG.length && <Image src="/img/dei/arrow-down.svg" size="35px" my="15px" />}
+                </div>
             })}
         </MainDiv>
 
-        <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+        <div style={{ margin: "40px 0" }}></div>
 
         <Container pb={"20px"}>
             <MigrateBox

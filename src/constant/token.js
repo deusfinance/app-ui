@@ -1,5 +1,5 @@
 import { Token } from '../utils/classes';
-import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEUS_ADDRESS } from './contracts';
+import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEI_DEUS_LP, DEI_COLLATERAL_LP, DEUS_ADDRESS } from './contracts';
 import { ChainId } from './web3';
 
 
@@ -24,17 +24,17 @@ export const collateralToken = {
 }
 
 export const deiCollateralLpToken = {
-    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, "0xf730a6391F9Bd745F0518AC6116E1cF4B2653fcE", 18, "DEI-USDC", "DEI-USDC", "/img/Dei_logo.svg"),
-    [ChainId.HECO]: new Token(ChainId.HECO, "0xcd9383b17264D32F690E1192B5967514034b168D", 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
-    [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, "0x33cf66920F25e0233cd429114CfD06DA3886EEb2", 18, "DEI-DAI", "DEI-DAI", "/img/Dei_logo.svg"),
-    [ChainId.MATIC]: new Token(ChainId.MATIC, "0x659a87EFf57AACc3e5792b9bFeA90808163EE802", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_COLLATERAL_LP[ChainId.RINKEBY], 18, "DEI-USDC", "DEI-USDC", "/img/Dei_logo.svg"),
+    [ChainId.HECO]: new Token(ChainId.HECO, DEI_COLLATERAL_LP[ChainId.HECO], 18, "DEI-HUSD", "DEI-HUSD", "/img/Dei_logo.svg"),
+    [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, DEI_COLLATERAL_LP[ChainId.AVALANCHE], 18, "DEI-DAI", "DEI-DAI", "/img/Dei_logo.svg"),
+    [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_COLLATERAL_LP[ChainId.MATIC], 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
 }
 
 export const deiDeusLpToken = {
-    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, "0x7420ba4Cd2D5583e965DE9A862c0743B26B1Cd53", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
-    [ChainId.HECO]: new Token(ChainId.HECO, "0xd0B9d3A52fa1dAee082F9ac998b9fB49F6bb7a16", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
-    [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, "0x6c3de04c121D6754bbb963F183ab31734e6a0e9b", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
-    [ChainId.MATIC]: new Token(ChainId.MATIC, "0x0C53D7fa080F47c0666b7D5693D2A4c801a5Ec12", 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_DEUS_LP[ChainId.RINKEBY], 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+    [ChainId.HECO]: new Token(ChainId.HECO, DEI_DEUS_LP[ChainId.HECO], 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+    [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, DEI_DEUS_LP[ChainId.AVALANCHE], 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
+    [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_DEUS_LP[ChainId.MATIC], 18, "DEI-DEUS", "DEI-DEUS", "/img/Dei_logo.svg"),
 }
 
 

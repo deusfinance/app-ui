@@ -345,7 +345,7 @@ export const makeDeiRequest = async (path, chainId = 4) => {
 }
 
 export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
-    if (!token || collatRatio === null) return null
+    if (!token || !token.symbol || collatRatio === null) return null
     if ((collatRatio === 100 && token.symbol === collateralToken[chainId]?.symbol && !isPair) ||
         (collatRatio === 0 && token.symbol === "DEUS" && !isPair) ||
         (collatRatio > 0 && collatRatio < 100 && isPair)) return false

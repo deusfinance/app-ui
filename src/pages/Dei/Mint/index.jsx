@@ -51,7 +51,6 @@ const Dei = () => {
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
         .filter((token) => !token.pairID || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
         , [chainId, collatRatio])
-
     const pairedTokens = useMemo(() => {
         let pTokens = []
         for (let i = 0; i < tokens.length; i++) {
@@ -95,7 +94,6 @@ const Dei = () => {
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
     const [pairToken, setPairToken] = useState({ address: null })
-
 
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)

@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
 import { Type } from '../../components/App/Text';
 import MultipleBox from '../../components/App/Migrator/MultipleBox';
-import MigrateBox from '../../components/App/Migrator/MigrateBox';
+import MigrateChains from '../../components/App/Migrator/MigrateChains';
 import SwapAction from '../../components/App/Migrator/SwapAction';
 import { Image } from 'rebass/styled-components';
 import { useWeb3React } from '@web3-react/core';
-// import useTokenBalances from '../../hooks/useTokenBalances';
 import { useLocation } from 'react-router';
-// import { LOCKER_ADDRESS } from "../../constant/contracts";
-import SelectBox from '../../components/App/Migrator/SelectBox';
-import { ChainId, NameChainId } from '../../constant/web3';
+import { ChainId } from '../../constant/web3';
 import { getCorrectChains } from '../../constant/correctChain';
 import DeusV2Tokens from '../../components/App/Migrator/DeusV2Tokens';
 import MigrationTitle from '../../components/App/Migrator/MigrationTitle';
 import { RowBetween } from '../../components/App/Row';
 import { MainWrapper, MainDiv, Container, Line } from '../../components/App/Migrator';
-import { MIGRATION_CONFIG } from '../../constant/migration';
-
+import { MIGRATION_CONFIG, snapShotMaker } from '../../constant/migration';
+import snapshot from '../../config/snapshot.json'
+import { useEffect } from 'react/cjs/react.development';
 
 const Migrator = () => {
     const { account, chainId } = useWeb3React()
     const [fastUpdate, setFastUpdate] = useState(0)
+    const [userSnap, setUserSnap] = useState([])
     const contractAddress = "";
 
+    useEffect(() => {
+        const snap = snapshot.filter(snap => snap.HolderAddress === account.toLowerCase())
+        if (snap.length > 0) {
+            setUserSnap(snapShotMaker(snap[0]))
+        }
+    }, [account])
+
+    console.log(userSnap);
     const location = useLocation()
     const search = useLocation().search;
     const queryParams = {
@@ -39,32 +46,28 @@ const Migrator = () => {
             delete migrateList[id]
         } else {
             migrateList[id] = {
-                targetToken: token ?? MIGRATION_CONFIG[id].tokens.to[0].symbol
+                targetToken: token ?? userSnap[id].tokens.to[0].symbol
             }
         }
         setMigrateList({ ...migrateList })
     }
 
     // Array of migrated id
-    const migratedList = [2]
-
+    const migratedList = []
 
     return (<MainWrapper>
         <Type.XXL fontWeight="300" marginBottom="30px">Migrator</Type.XXL>
         <MainDiv>
-            {MIGRATION_CONFIG.filter(config => !migratedList.includes(config.id)).map(config => {
+            {userSnap.filter(config => !migratedList.includes(config.id) && config.tokens.from.filter(token => token.balance > 0).length > 0).map(config => {
                 return <div key={config.id}>
                     <Container >
                         <MigrationTitle toggleId={toggleId} active={migrateList[config.id]} config={config} />
                         <RowBetween align={"flex-start"}>
-                            <MultipleBox
-                                currency={config.tokens.from}
-                                fastUpdate={fastUpdate}
-                            />
+                            <MultipleBox currency={config.tokens.from} fastUpdate={fastUpdate} />
                             <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
                         </RowBetween>
                     </Container>
-                    {(config.id + 1) !== MIGRATION_CONFIG.length && <Image src="/img/dei/arrow-down.svg" size="35px" my="15px" />}
+                    {(config.id + 1) !== userSnap.length && <Image src="/img/dei/arrow-down.svg" size="35px" my="15px" />}
                 </div>
             })}
         </MainDiv>
@@ -72,7 +75,7 @@ const Migrator = () => {
         <div style={{ margin: "40px 0" }}></div>
 
         <Container pb={"20px"}>
-            <MigrateBox
+            <MigrateChains
                 title="Select Destination Network"
                 SyncChainId={SyncChainId}
                 setSyncChainId={setSyncChainId}
@@ -86,12 +89,10 @@ const Migrator = () => {
                 isPreApproved={true}
                 isApproved={false}
                 validNetworks={validChains}
-                // targetToken={targetToken}
                 loading={false}
                 swapLoading={false}
                 handleApprove={null}
                 handleSwap={null}
-                // swapState={swapState}
                 amountIn={1}
                 amountOut={0}
             />

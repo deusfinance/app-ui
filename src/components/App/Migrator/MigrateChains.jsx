@@ -24,7 +24,7 @@ const TitleText = styled.span`
     font-size: "12px";
 `
 
-const MigratorBox = ({ title, SyncChainId, setSyncChainId }) => {
+const MigrateChains = ({ title, SyncChainId, setSyncChainId }) => {
     return (
         <SmallWrapper>
             <SwapNetwork>
@@ -34,4 +34,4 @@ const MigratorBox = ({ title, SyncChainId, setSyncChainId }) => {
         </SmallWrapper>
     );
 }
-export default MigratorBox
+export default MigrateChains

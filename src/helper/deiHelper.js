@@ -256,6 +256,15 @@ export const ERC20ToDei = (erc20amount, collateral_price, deus_price, expire_blo
 
 export const collateralToDei = (collateral_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out, chainId, web3) => {
     console.log("collateralToDei");
+    console.log([
+        collateral_price,
+        deus_price,
+        expire_block,
+        min_amount_out,
+        [signature],
+        []
+    ],
+        collateral_amount);
     return getProxyMinterContract(web3, chainId)
         .methods
         .collateral2DEI([

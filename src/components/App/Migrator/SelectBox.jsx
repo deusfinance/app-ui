@@ -14,7 +14,7 @@ const MainItemsDiv = styled.div`
 const NameItemsDiv = styled.div`
     display: flex;
     justify-content: center;
-    background: #1C1C1C;
+    background: #272727;
     padding: 8px 16px;
     margin: 8px;
     margin-left: 0;

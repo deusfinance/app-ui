@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Flex, Box, Image } from 'rebass/styled-components';
+import React from 'react';
+import { Flex, Box } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { formatBalance3 } from '../../../utils/utils';
 // import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';

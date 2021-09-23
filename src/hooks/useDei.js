@@ -183,7 +183,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
     const handleMint = useCallback(async () => {
 
         if (validChainId && chainId !== validChainId) return false
-        if (!amountOut) amountOut = 0.00001 //TODO REMOVE IT
+        // if (!amountOut) amountOut = 0.00001 //TODO REMOVE IT
         if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
         const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
         const minAmountOut = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)

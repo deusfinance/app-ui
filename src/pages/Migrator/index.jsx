@@ -12,15 +12,15 @@ import DeusV2Tokens from '../../components/App/Migrator/DeusV2Tokens';
 import MigrationTitle from '../../components/App/Migrator/MigrationTitle';
 import { RowBetween } from '../../components/App/Row';
 import { MainWrapper, MainDiv, Container, Line } from '../../components/App/Migrator';
-import { MIGRATION_CONFIG, snapShotMaker } from '../../constant/migration';
+import { snapShotMaker } from '../../constant/migration';
 import snapshot from '../../config/snapshot.json'
 import { useEffect } from 'react/cjs/react.development';
 
 const Migrator = () => {
     const { account, chainId } = useWeb3React()
-    const [fastUpdate, setFastUpdate] = useState(0)
+    const [fastUpdate,] = useState(0)
     const [userSnap, setUserSnap] = useState([])
-    const contractAddress = "";
+    // const contractAddress = "";
 
     useEffect(() => {
         const snap = snapshot.filter(snap => snap.HolderAddress === account.toLowerCase())

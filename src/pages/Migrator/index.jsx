@@ -17,24 +17,27 @@ import snapshot from '../../config/snapshot.json'
 import { useEffect } from 'react/cjs/react.development';
 
 const Migrator = () => {
-    const { account, chainId } = useWeb3React()
+    const { account: wallet, chainId } = useWeb3React()
     const [fastUpdate,] = useState(0)
     const [userSnap, setUserSnap] = useState([])
     // const contractAddress = "";
+    const location = useLocation()
+    const search = useLocation().search;
+    const queryParams = {
+        network: new URLSearchParams(search).get('network')?.toUpperCase(),
+        account: new URLSearchParams(search).get('account')?.toUpperCase(),
+    }
+    const account = queryParams.account ?? wallet
 
     useEffect(() => {
         const snap = snapshot.filter(snap => snap.HolderAddress === account.toLowerCase())
         if (snap.length > 0) {
             setUserSnap(snapShotMaker(snap[0]))
+        } else {
+            setUserSnap([])
         }
     }, [account])
 
-    console.log(userSnap);
-    const location = useLocation()
-    const search = useLocation().search;
-    const queryParams = {
-        network: new URLSearchParams(search).get('network')?.toUpperCase(),
-    }
     const tempChain = queryParams.network && ChainId[queryParams.network] ? ChainId[queryParams.network] : null
     const userChain = tempChain ? tempChain : chainId
     const validChains = getCorrectChains(location.pathname)

@@ -27,7 +27,7 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, setFocusType, focusType, type, setActive, TokensMap, chainId, wrongNetwork, fastUpdate, mt }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, setFocusType, focusType, type, setActive, TokensMap, disabled, chainId, wrongNetwork, fastUpdate, mt }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useCrossTokenBalance(currency?.address, chainId, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
@@ -74,9 +74,10 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, s
                 justifyContent="space-between"
                 alignItems="center"
                 mt="5px"
+                onFocus={() => setFocusType(focusType)}
             >
-                <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
-                    setFocusType(focusType)
+                <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} disabled={disabled} onChange={(e) => {
+                    // setFocusType(focusType)
                     setInputAmount(e.currentTarget.value)
                 }} />
 

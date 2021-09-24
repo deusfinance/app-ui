@@ -33,7 +33,6 @@ export const StakingConfig = {
       depositToken: deiCollateralLpToken[ChainId.RINKEBY],
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.RINKEBY],
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.RINKEBY],
-
     },
     {
       title: "DEI-DEUS",

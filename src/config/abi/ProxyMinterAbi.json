@@ -52,12 +52,6 @@
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "amountIn",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
                 "name": "amountOut",
                 "type": "uint256"
             },
@@ -91,19 +85,6 @@
         "type": "event"
     },
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "while_times",
-                "type": "uint256"
-            }
-        ],
-        "name": "WhileTimesSet",
-        "type": "event"
-    },
-    {
         "inputs": [
             {
                 "components": [
@@ -124,7 +105,12 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "min_amount_out",
+                        "name": "amount_out",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "max_amount_in",
                         "type": "uint256"
                     },
                     {
@@ -141,67 +127,6 @@
                 "internalType": "struct DEIProxy.ProxyInput",
                 "name": "proxy_input",
                 "type": "tuple"
-            },
-            {
-                "internalType": "uint256",
-                "name": "deus_amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "DEUS2DEI",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "dei_amount",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "collateral_price",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "deus_price",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "expire_block",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "min_amount_out",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "bytes[]",
-                        "name": "sigs",
-                        "type": "bytes[]"
-                    },
-                    {
-                        "internalType": "address[]",
-                        "name": "path",
-                        "type": "address[]"
-                    }
-                ],
-                "internalType": "struct DEIProxy.ProxyInput",
-                "name": "proxy_input",
-                "type": "tuple"
-            },
-            {
-                "internalType": "uint256",
-                "name": "erc20amount",
-                "type": "uint256"
             }
         ],
         "name": "ERC202DEI",
@@ -236,7 +161,12 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "min_amount_out",
+                        "name": "amount_out",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "max_amount_in",
                         "type": "uint256"
                     },
                     {
@@ -290,6 +220,52 @@
                 "components": [
                     {
                         "internalType": "uint256",
+                        "name": "deus_price_usd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "col_price_usd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateral_amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "col_ratio",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct DEIProxy.MintFD_Params",
+                "name": "params",
+                "type": "tuple"
+            }
+        ],
+        "name": "calcMintFractionalDEI",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
                         "name": "collateral_price",
                         "type": "uint256"
                     },
@@ -305,7 +281,12 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "min_amount_out",
+                        "name": "amount_out",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "max_amount_in",
                         "type": "uint256"
                     },
                     {
@@ -322,11 +303,6 @@
                 "internalType": "struct DEIProxy.ProxyInput",
                 "name": "proxy_input",
                 "type": "tuple"
-            },
-            {
-                "internalType": "uint256",
-                "name": "collateral_amount",
-                "type": "uint256"
             }
         ],
         "name": "collateral2DEI",
@@ -447,20 +423,25 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "collateral_amount",
+                "name": "amount_out",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
                 "name": "deus_price",
                 "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateral_price",
+                "type": "uint256"
             }
         ],
-        "name": "getAmountOutCollateral2DEI",
+        "name": "getAmountInCollateral2DEI",
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "dei_amount",
+                "name": "_amount",
                 "type": "uint256"
             }
         ],
@@ -471,36 +452,17 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "deus_amount",
+                "name": "amount_out",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
                 "name": "deus_price",
                 "type": "uint256"
-            }
-        ],
-        "name": "getAmountOutDEUS2DEI",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "dei_amount",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "erc20amount",
-                "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "deus_price",
+                "name": "collateral_price",
                 "type": "uint256"
             },
             {
@@ -509,40 +471,11 @@
                 "type": "address[]"
             }
         ],
-        "name": "getAmountOutERC202DEI",
+        "name": "getAmountInERC20ORNativecoin2DEI",
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "native_amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "deus_price",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address[]",
-                "name": "path",
-                "type": "address[]"
-            }
-        ],
-        "name": "getAmountOutNativecoin2DEI",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
+                "name": "_amount",
                 "type": "uint256"
             }
         ],
@@ -558,49 +491,35 @@
             },
             {
                 "internalType": "uint256",
-                "name": "collateral_amount",
+                "name": "amount_out",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
                 "name": "deus_price",
                 "type": "uint256"
-            }
-        ],
-        "name": "getCollateralAmountIn2DEUSForMintDEI",
-        "outputs": [
+            },
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "collateral_price",
                 "type": "uint256"
             }
         ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
+        "name": "getAmountsForMint",
+        "outputs": [
             {
                 "internalType": "uint256",
-                "name": "global_collateral_ratio",
+                "name": "collateral_needed_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateral_for_deus_amount",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
                 "name": "deus_amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "deus_price",
-                "type": "uint256"
-            }
-        ],
-        "name": "getDEUSAmountIn2CollateralForMintDEI",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
                 "type": "uint256"
             }
         ],
@@ -681,11 +600,6 @@
                 "internalType": "uint256",
                 "name": "_collateral_missing_decimals_d18",
                 "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_while_times",
-                "type": "uint256"
             }
         ],
         "name": "setVariables",
@@ -714,19 +628,6 @@
                 "internalType": "address",
                 "name": "",
                 "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "while_times",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
             }
         ],
         "stateMutability": "view",

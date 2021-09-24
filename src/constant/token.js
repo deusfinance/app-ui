@@ -60,6 +60,9 @@ export const DEITokens = {
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.RINKEBY], decimals: 18, chainId: 4 },
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.RINKEBY], decimals: 6, chainId: 4, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.RINKEBY], decimals: 18, chainId: 4, pairID: 1 },
+        { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, chainId: 4 },
+        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x8313949568A16b2Cc786Af26F363071777Af4b8b", decimals: 6, chainId: 4 },
+
     ],
     [ChainId.MATIC]: [
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.MATIC], decimals: 6, chainId: ChainId.MATIC },

@@ -19,10 +19,10 @@ import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
+import { fromWei, getToWei, RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import { isProxyMinter, getAmountOutProxy } from '../../../helper/deiHelper';
+import { isProxyMinter, getAmountOutProxy, dollarDecimals } from '../../../helper/deiHelper';
 import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
@@ -82,7 +82,6 @@ const Dei = () => {
         }
     }, [tokens, tokensMap])
 
-
     const [swapState, setSwapState] = useState({
         from: {},
         to: deiToken[chainId],
@@ -91,18 +90,29 @@ const Dei = () => {
     const [focusType, setFocusType] = useState("from1")
     const [amountIn, setAmountIn] = useState("")
     const [amountInPair, setAmountInPair] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
+    const debouncedAmountIn = useDebounce(amountIn, 1000);
+    const debouncedAmountOut = useDebounce(amountOut, 1000);
     const [pairToken, setPairToken] = useState({ address: null })
 
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 
     useEffect(() => {
-        if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
-    }, [amountIn, debouncedAmountIn]);
+        console.log("called", focusType);
+        if (amountIn === "" && focusType === "from1") {
+            setAmountOut("")
+            setAmountInPair("")
+        }
+        if (amountIn === "" && focusType === "from2") {
+            setAmountOut("")
+            setAmountIn("")
+        }
+
+    }, [amountIn]);
 
     useEffect(() => {
+        console.log("heyyy ", focusType);
         if (focusType === "from1") {
             getAmountsTokens(debouncedAmountIn, null, null)
         }
@@ -111,9 +121,9 @@ const Dei = () => {
             getAmountsTokens(null, amountInPair, null)
         }
         if (focusType === "to") {
-            getAmountsTokens(null, null, amountOut)
+            getAmountsTokens(null, null, debouncedAmountOut)
         }
-    }, [debouncedAmountIn, amountInPair, amountOut, mintingFee, deiPrices]);// eslint-disable-line
+    }, [debouncedAmountIn, amountInPair, debouncedAmountOut, mintingFee, deiPrices]);// eslint-disable-line
 
 
     const getAmountsTokens = async (in1, in2, out) => {
@@ -142,9 +152,9 @@ const Dei = () => {
                     amountIn2 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals, BigNumber.ROUND_UP)
                 }
             } else {
-                amountIn1 = in1
-                const amountOutProxy = await getAmountOutProxy(swapState.from, amountIn, deus_price, web3, chainId)
-                amountOut = amountOutProxy ? fromWei(amountOutProxy, 18) : ""
+                amountOut = out
+                const amountOutProxy = await getAmountOutProxy(swapState.from, amountOut, deus_price, collateral_price, web3, chainId)
+                amountIn1 = amountOutProxy ? fromWei(amountOutProxy, swapState.from.decimals) : ""
             }
             setAmountIn(amountIn1)
             setAmountInPair(amountIn2)
@@ -182,6 +192,9 @@ const Dei = () => {
     }, [swapState.from, isPair, chainId, collatRatio])
 
 
+    useEffect(() => {
+        console.log("focusType : ", focusType);
+    }, [focusType])
 
     useEffect(() => {
 
@@ -315,6 +328,7 @@ const Dei = () => {
                         setActive={showSearchBox}
                         currency={swapState.from}
                         TokensMap={TokensMap}
+                        disabled={proxy}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
                     />

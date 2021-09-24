@@ -253,10 +253,18 @@ export const RecollateralizeDEI = (collateral_price, deus_price, expire_block, s
 // }
 
 //Proxy Mint
-export const nativeCoinToDei = (amountIn, collateral_price, deus_price, expire_block, signature, transferResidual = false, path, min_amount_out, chainId, web3) => {
+export const nativeCoinToDei = (max_amount_in, amount_out, collateral_price, deus_price, expire_block, signature, path, chainId, web3) => {
     return getProxyMinterContract(web3, chainId)
         .methods
-        .Nativecoin2DEI(collateral_price, deus_price, expire_block, [signature], path, min_amount_out)
+        .Nativecoin2DEI([
+            collateral_price,
+            deus_price,
+            expire_block,
+            amount_out,
+            max_amount_in,
+            [signature],
+            path]
+        )
 }
 
 export const ERC202DEI = (max_amount_in, amount_out, collateral_price, deus_price, expire_block, signature, path, chainId, web3) => {

@@ -237,20 +237,20 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                 const { collateral_price, deus_price, expire_block, signature } = result
                 const erc20Path = MINT_PATH[chainId][from1Currency.symbol]
 
-                // if (from1Currency.address === "0x") {
-                //     fn = nativeCoinToDei(
-                //         amount1toWei,
-                //         minAmountOut,
-                //         collateral_price,
-                //         deus_price,
-                //         expire_block,
-                //         signature,
-                //         erc20Path,
-                //         chainId,
-                //         web3
-                //     )
-                // }
-                if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
+                if (from1Currency.address === "0x") {
+                    fn = nativeCoinToDei(
+                        maxAmountInToWei,
+                        amountOutToWei,
+                        collateral_price,
+                        deus_price,
+                        expire_block,
+                        signature,
+                        MINT_PATH[chainId][from1Currency.symbol],
+                        chainId,
+                        web3
+                    )
+                }
+                else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
                     fn = collateral2DEI(
                         maxAmountInToWei,
                         amountOutToWei,

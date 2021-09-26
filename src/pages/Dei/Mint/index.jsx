@@ -19,10 +19,10 @@ import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { fromWei, getToWei, RemoveTrailingZero } from '../../../helper/formatBalance';
+import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import { isProxyMinter, getAmountOutProxy, dollarDecimals } from '../../../helper/deiHelper';
+import { isProxyMinter, getAmountOutProxy } from '../../../helper/deiHelper';
 import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
@@ -109,7 +109,7 @@ const Dei = () => {
             setAmountIn("")
         }
 
-    }, [amountIn]);
+    }, [amountIn, focusType]);
 
     useEffect(() => {
         console.log("heyyy ", focusType);

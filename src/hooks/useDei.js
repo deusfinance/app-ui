@@ -17,12 +17,12 @@ import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
-    mint1t1DEI, collatUsdPrice, ERC202DEI, nativeCoinToDei, collateral2DEI, zapIn, DeusToDei
+    mint1t1DEI, collatUsdPrice, ERC202DEI, nativeCoinToDei, collateral2DEI, zapIn,
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
-import { COLLATERAL_ADDRESS, DEUS_ADDRESS, MINT_PATH } from '../constant/contracts'
+import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
 
 
 export const useZap = (currency, stakingInfo, amountIn, minLpAmount, validChainId) => {
@@ -188,7 +188,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
         const amountOutToWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
 
-        const minAmountOut = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
+        // const minAmountOut = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
         const maxAmountInToWei = getToWei(amountIn1, from1Currency.decimals).times(1 + (slippage / 100)).toFixed(0)
 
         let path = "/mint-algorithmic"

@@ -97,7 +97,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, s
                 </TokenInfo>
             </Flex>
         </Wrapper>
-    }, [currency, focusType, type, mt, title, setInputAmount, inputAmount, balance, setFocusType, hasMax, onMax, setActive])
+    }, [currency, disabled, focusType, type, mt, title, setInputAmount, inputAmount, balance, setFocusType, hasMax, onMax, setActive])
 
     );
 }

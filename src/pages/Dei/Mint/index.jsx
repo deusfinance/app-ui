@@ -112,7 +112,6 @@ const Dei = () => {
     }, [amountIn, focusType]);
 
     useEffect(() => {
-        console.log("heyyy ", focusType);
         if (focusType === "from1") {
             getAmountsTokens(debouncedAmountIn, null, null)
         }

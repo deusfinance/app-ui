@@ -40,3 +40,27 @@ export const SwapWithToast = (fn, payload = {}) => {
         .once('receipt', () => SwapTransaction(TransactionState.SUCCESS, { hash, chainId, from, to }))
         .once('error', () => SwapTransaction(TransactionState.FAILED, { hash, chainId, from, to }))
 }
+
+
+export function doSignTypedData(time, dataToSign, account, web3) {
+    return new Promise(resolve => {
+        web3.currentProvider.sendAsync({
+            from: account,
+            id: time,
+            jsonrpc: "2.0",
+            method: 'eth_signTypedData_v4',
+            params: [account, dataToSign]
+        }, (error, result) => {
+            if (error) {
+                console.error(error);
+                resolve(false);
+            } else if (result.error) {
+                console.error(result.error.message);
+                resolve(false);
+            } else {
+                console.log("Signature: " + result.result);
+                resolve(result.result);
+            }
+        });
+    });
+}

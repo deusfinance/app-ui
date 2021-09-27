@@ -2,11 +2,9 @@ import { Token } from '../utils/classes';
 import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEI_DEUS_LP, DEI_COLLATERAL_LP, DEUS_ADDRESS } from './contracts';
 import { ChainId } from './web3';
 
-
 export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
 export const muonToken = new Token(1, null, 18, "MUON", "MUON", "/tokens/muon.svg");
 export const xdaiToken = new Token(100, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
-
 
 //START DEI
 export const deiToken = {
@@ -73,7 +71,6 @@ export const DEITokens = {
 }
 //END DEI
 
-
 export const isNative = (address, chainId) => {
     return address === "0x"
         || (chainId === 1 && address === "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
@@ -112,7 +109,6 @@ export const SealedTokens = [
     { logo: "/tokens/suni2.svg", symbol: "sUniDE", address: "0x670431fCdAf39280deE488C6D8277B9865E22d08", decimals: 18, chainId: 1 },
     { logo: "/tokens/bpt.svg", symbol: "BPT", address: "0x1Dc2948B6dB34E38291090B825518C1E8346938B", decimals: 18, chainId: 1 },
     { logo: "/tokens/usdc.svg", symbol: "ERT", address: "0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6", decimals: 18, chainId: 97 },
-
 ]
 
 export const MuonPreSaleTokens = [

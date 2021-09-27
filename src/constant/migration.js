@@ -1,3 +1,5 @@
+import { convertRate } from "../helper/migrationHelper"
+
 export const snapShotMaker = (snap) => {
     const {
         BPT_balance,
@@ -10,8 +12,17 @@ export const snapShotMaker = (snap) => {
         UniDE_balance,
         UniDU_balance,
         SDEUS_balance,
+        DEA_balance_DU,
+        USDC_balance_DU,
+        DEA_balance_from_BPT,
+        SDEA_balance_from_BPT,
+        sUniDD_balance_from_BPT,
+        sUniDE_balance_from_BPT,
+        sUniDU_balance_from_BPT,
+        SDEUS_balance_from_BPT,
     } = snap
-    return [
+
+    const addedBalance = [
         {
             id: 0,
             title: {
@@ -24,7 +35,7 @@ export const snapShotMaker = (snap) => {
                     { symbol: "sDEA", balance: SDEA_balance },
                 ],
                 to: [
-                    { symbol: "DEUS", amount: "342.23" },
+                    { symbol: "DEUS" },
                 ]
             }
         },
@@ -40,8 +51,8 @@ export const snapShotMaker = (snap) => {
                     { symbol: "sDEUS", balance: SDEUS_balance },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP", amount: "100" },
-                    { symbol: "DEUS", amount: "100" },
+                    { symbol: "DEUS/DEI LP" },
+                    { symbol: "DEUS" },
                 ]
             }
         },
@@ -56,11 +67,20 @@ export const snapShotMaker = (snap) => {
                     { symbol: "sUNI-DD", balance: sUniDD_balance },
                     { symbol: "sUNI-DE", balance: sUniDE_balance },
                     { symbol: "sUNI-DU", balance: sUniDU_balance },
-                    { symbol: "BPT", balance: BPT_balance },
+                    {
+                        symbol: "BPT",
+                        balance: BPT_balance,
+                        DEA_balance_from_BPT,
+                        SDEA_balance_from_BPT,
+                        sUniDD_balance_from_BPT,
+                        sUniDE_balance_from_BPT,
+                        sUniDU_balance_from_BPT,
+                        SDEUS_balance_from_BPT,
+                    },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP", amount: "100" },
-                    { symbol: "DEUS", amount: "100" },
+                    { symbol: "DEUS/DEI LP" },
+                    { symbol: "DEUS" },
                 ]
             }
         },
@@ -75,8 +95,8 @@ export const snapShotMaker = (snap) => {
                     { symbol: "Uni-DEUS/DEA", balance: UniDD_balance },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP", amount: "100" },
-                    { symbol: "DEUS", amount: "100" },
+                    { symbol: "DEUS/DEI LP" },
+                    { symbol: "DEUS" },
                 ]
             }
         },
@@ -91,9 +111,9 @@ export const snapShotMaker = (snap) => {
                     { symbol: "Uni-DEA/USDC", balance: UniDU_balance },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP", amount: "100" },
-                    { symbol: "DEUS", amount: "100" },
-                    { symbol: "DEUS/USDC LP", amount: "100" },
+                    { symbol: "DEUS/DEI LP" },
+                    { symbol: "DEUS" },
+                    { isDU: true, symbol: "DEUS,USDC", amountDEUS: DEA_balance_DU, amountUSDC: USDC_balance_DU },
                 ]
             }
         },
@@ -108,10 +128,19 @@ export const snapShotMaker = (snap) => {
                     { symbol: "Uni-DEUS/ETH", balance: UniDE_balance },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP", amount: "100" },
-                    { symbol: "DEUS", amount: "100" },
+                    { symbol: "DEUS/DEI LP" },
+                    { symbol: "DEUS" },
                 ]
             }
         },
     ]
+
+    const addedAmount = addedBalance.map(item => {
+        return {
+            ...item,
+            tokens: convertRate(item.tokens)
+        }
+    })
+
+    return addedAmount
 }

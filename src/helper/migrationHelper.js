@@ -10,19 +10,19 @@ import BigNumber from "bignumber.js"
 const BASE_URL = 'https://oracle5.deus.finance/migrator' //Main
 
 
-export const signMsg = async (nonce, migrateOption, time, account, chainId, web3) => {
+export const signMsg = async (requestId, migrateOption, time, account, chainId, web3) => {
     let eip712TypedData = {
         types: {
             EIP712Domain: [
                 { name: "name", type: "string" },
                 { name: "chainId", type: "uint256" },
-                { name: "migratorContract", type: "address" },
+                // { name: "migratorContract", type: "address" },
                 { "name": 'version', "type": 'string' },
                 { "name": "verifyingContract", "type": "address" }
             ],
             Message: [
                 { name: "from", type: "address" },
-                { name: "nonce", type: "string" },
+                { name: "requestId", type: "string" },
                 { name: "migrateOption", type: "string" },
                 { name: "contents", type: "string" },
                 { name: "timeStamp", type: "uint256" }
@@ -32,16 +32,15 @@ export const signMsg = async (nonce, migrateOption, time, account, chainId, web3
         domain: {
             name: "Deus Migrate",
             chainId: chainId,
-            migratorContract: MIGRATOR_ADDRESS[chainId],
-            "version": "4",
-            "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+            version: 1,
+            verifyingContract: MIGRATOR_ADDRESS[chainId],
         },
         message: {
             from: account,
-            nonce: nonce,
+            requestId: requestId,
             migrateOption: migrateOption,
             timeStamp: time,
-            contents: `I am a user with Wallet address ${account} intending to migrate to ${NameChainId[chainId]} network.`,
+            contents: `I'm a user with Wallet address ${account} intending to migrate to ${NameChainId[chainId]} network.`,
         },
     }
 
@@ -69,11 +68,11 @@ export const getRandomNumber = async (account) => {
     }
 }
 
-export const doMigration = async (nonce, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, callback) => {
+export const doMigration = async (requestId, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, callback) => {
 
     if (validChainId !== chainId) return
 
-    const signature = await signMsg(nonce, migrateOption, timeStamp, account, chainId, web3)
+    const signature = await signMsg(requestId, migrateOption, timeStamp, account, chainId, web3)
 
     if (!signature) {
         ToastTransaction("warn", "Failed to sign", "", { autoClose: true })
@@ -122,7 +121,7 @@ export const doMigration = async (nonce, migrateOption, timeStamp, account, chai
         // callback(tx)
     } catch (error) {
         // callback({ status: false })
-        console.log(error)
+        console.log("getTx failed ", error.response.data);
     }
 }
 

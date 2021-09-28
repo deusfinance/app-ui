@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChainId, NameChainId } from '../../../constant/web3';
+import { NameChainId } from '../../../constant/web3';
 import OutsideClickHandler from 'react-outside-click-handler';
 import styled from 'styled-components'
 

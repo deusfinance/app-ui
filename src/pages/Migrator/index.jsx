@@ -15,8 +15,6 @@ import { MainWrapper, MainDiv, Container, Line } from '../../components/App/Migr
 import { snapShotMaker } from '../../constant/migration';
 import snapshot from '../../config/snapshot.json'
 import { useCallback, useEffect } from 'react/cjs/react.development';
-import { MIGRATOR_ADDRESS } from '../../constant/contracts';
-import { getMigrationOption, getRandomNumber } from '../../helper/migrationHelper';
 import { useMigrate } from '../../hooks/useMigrate';
 
 const Migrator = () => {

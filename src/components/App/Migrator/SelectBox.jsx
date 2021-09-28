@@ -20,17 +20,15 @@ const NameItemsDiv = styled.div`
     margin-left: 0;
     font-size: 15px;
     border-radius: 6px;
-    border: 1px solid black;
+    border: 1px solid ${({ row, currRow }) => (row === currRow) ? "black" : "transparent"};
     cursor: pointer;
     opacity: 0.5;
-
     background: ${({ row, currRow }) => (row === currRow) && "#7951DD"};
-    border: ${({ row, currRow }) => (row === currRow) && "0"};
     opacity: ${({ row, currRow }) => (row === currRow) && "1"};
 `
 
-const SelectBox = ({ currRow, setCurrRow }) => {
-    const rows = [ChainId.ETH, ChainId.MATIC]
+const SelectBox = ({ currRow, setCurrRow, validNetworks }) => {
+    const rows = validNetworks
     const [open, setOpen] = useState(false)
 
     return (<OutsideClickHandler onOutsideClick={() => { setOpen(false) }}>

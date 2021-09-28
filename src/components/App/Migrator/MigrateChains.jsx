@@ -24,12 +24,12 @@ const TitleText = styled.span`
     font-size: "12px";
 `
 
-const MigrateChains = ({ title, SyncChainId, setSyncChainId }) => {
+const MigrateChains = ({ title, SyncChainId, setSyncChainId, validNetworks }) => {
     return (
         <SmallWrapper>
             <SwapNetwork>
                 <TitleText> {title} </TitleText>
-                <SelectBox currRow={SyncChainId} setCurrRow={setSyncChainId} />
+                <SelectBox currRow={SyncChainId} setCurrRow={setSyncChainId} validNetworks={validNetworks} />
             </SwapNetwork>
         </SmallWrapper>
     );

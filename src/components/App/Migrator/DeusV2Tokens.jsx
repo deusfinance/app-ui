@@ -5,7 +5,7 @@ import { Type } from '../Text';
 
 export const MainWrapper = styled.div`
    width: 95%;
-   max-width: 315px;
+   max-width: 300px;
    background: #0D0D0D;
 `
 
@@ -39,9 +39,9 @@ const DeusV2Tokens = ({ config, toggleId, active }) => {
     const activeToken = active?.targetToken
     return (<MainWrapper>
         <TokensContainer>
-            {tokens.to.map(token => {
+            {tokens.to.map((token, index) => {
                 const active = token.symbol === activeToken
-                return <Token key={token.symbol} active={active} onClick={() => toggleId(id, false, token.symbol)}>
+                return <Token key={token.symbol} active={active} onClick={() => toggleId(id, false, token.symbol, index)}>
                     {token.isDU ? <>
                         <Type.LG fontWeight="300" color={active ? "#000000" : "#49565B"}>{formatBalance3(token.amountDEUS)}</Type.LG>
                         <Type.MD fontWeight="300" mt="0.5" color={active ? "#075A7A   " : "#49565B"}>DEUS</Type.MD>

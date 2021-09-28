@@ -14,13 +14,16 @@ import { RowBetween } from '../../components/App/Row';
 import { MainWrapper, MainDiv, Container, Line } from '../../components/App/Migrator';
 import { snapShotMaker } from '../../constant/migration';
 import snapshot from '../../config/snapshot.json'
-import { useEffect } from 'react/cjs/react.development';
+import { useCallback, useEffect } from 'react/cjs/react.development';
+import { MIGRATOR_ADDRESS } from '../../constant/contracts';
+import { getMigrationOption, getRandomNumber } from '../../helper/migrationHelper';
+import { useMigrate } from '../../hooks/useMigrate';
 
 const Migrator = () => {
     const { account: wallet, chainId } = useWeb3React()
     const [fastUpdate,] = useState(0)
     const [userSnap, setUserSnap] = useState([])
-    // const contractAddress = "";
+    const [nonce, setNonce] = useState(null)
     const location = useLocation()
     const search = useLocation().search;
     const queryParams = {
@@ -44,19 +47,39 @@ const Migrator = () => {
     const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainId.ETH
     const [SyncChainId, setSyncChainId] = useState(currChain)
     const [migrateList, setMigrateList] = useState({})
-    const toggleId = (id, active, token) => {
+
+    const migratedList = []
+
+    useEffect(() => {
+        setSyncChainId(currChain)
+    }, [currChain]);
+
+    const toggleId = (id, active, token, index) => {
         if (active) {
             delete migrateList[id]
         } else {
             migrateList[id] = {
-                targetToken: token ?? userSnap[id].tokens.to[0].symbol
+                targetToken: token ?? userSnap[id].tokens.to[0].symbol,
+                index: index + 1
             }
         }
         setMigrateList({ ...migrateList })
     }
 
+    // console.log(getMigrationOption(migrateList));
     // Array of migrated id
-    const migratedList = []
+
+    const { onMigrate } = useMigrate(migrateList, SyncChainId)
+
+    const handleMigrate = useCallback(async () => {
+        try {
+            await onMigrate()
+        } catch (e) {
+            console.error(e)
+        }
+    }, [onMigrate])
+
+
 
     return (<MainWrapper>
         <Type.XXL fontWeight="300" marginBottom="30px">Migrator</Type.XXL>
@@ -82,6 +105,7 @@ const Migrator = () => {
                 title="Select Destination Network"
                 SyncChainId={SyncChainId}
                 setSyncChainId={setSyncChainId}
+                validNetworks={validChains}
             />
 
             <Line bgColor={'black'}></Line>
@@ -89,13 +113,14 @@ const Migrator = () => {
             <SwapAction
                 bgColor={"grad_dei"}
                 text="Migrate"
+                migrateList={migrateList}
                 isPreApproved={true}
                 isApproved={false}
                 validNetworks={validChains}
                 loading={false}
                 swapLoading={false}
                 handleApprove={null}
-                handleSwap={null}
+                handleSwap={handleMigrate}
                 amountIn={1}
                 amountOut={0}
             />

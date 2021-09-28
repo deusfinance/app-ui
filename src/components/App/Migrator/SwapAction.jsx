@@ -7,6 +7,7 @@ import Wallets from '../../common/Navbar/Wallets';
 const errors = {
     NotConnected: "CONNECT WALLET",
     WrongNetwork: "WRONG NETWORK",
+    SelectTokens: "SELECT TOKENS",
 }
 
 const WrapActions = styled.div`
@@ -24,13 +25,14 @@ const ButtonSwap = styled(ButtonSyncActive)`
   color: ${({ theme }) => theme.text1_2};
   font-size:${({ fontSize }) => fontSize || "20px"};
 `
-const SwapAction = ({ text = "SWAP", swapLoading = false, validNetworks = [4, 1], handleSwap, bgColor }) => {
+const SwapAction = ({ text = "SWAP", swapLoading = false, migrateList, validNetworks = [4, 1], handleSwap, bgColor }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
+        if (Object.keys(migrateList).length === 0) return errors.SelectTokens
         return null;
     }
 

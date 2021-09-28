@@ -21,7 +21,6 @@ const Migrator = () => {
     const { account: wallet, chainId } = useWeb3React()
     const [fastUpdate,] = useState(0)
     const [userSnap, setUserSnap] = useState([])
-    const [nonce, setNonce] = useState(null)
     const location = useLocation()
     const search = useLocation().search;
     const queryParams = {

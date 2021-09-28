@@ -144,6 +144,19 @@
             {
                 "indexed": false,
                 "internalType": "uint256",
+                "name": "_migrationStatusBound",
+                "type": "uint256"
+            }
+        ],
+        "name": "SetMigrationStatusBound",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
                 "name": "value",
                 "type": "uint256"
             }
@@ -336,9 +349,9 @@
                 "type": "uint256[]"
             },
             {
-                "internalType": "uint256",
-                "name": "expireBlock",
-                "type": "uint256"
+                "internalType": "uint256[]",
+                "name": "expireBlocks",
+                "type": "uint256[]"
             },
             {
                 "internalType": "uint8",
@@ -414,6 +427,19 @@
             }
         ],
         "name": "revokeRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_migrationStatusBound",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMigrationStatusBound",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -519,9 +545,9 @@
         "name": "usersStatus",
         "outputs": [
             {
-                "internalType": "uint8",
+                "internalType": "uint256",
                 "name": "",
-                "type": "uint8"
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",

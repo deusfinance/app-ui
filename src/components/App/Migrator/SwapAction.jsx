@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { useWeb3React } from '@web3-react/core';
 import Wallets from '../../common/Navbar/Wallets';
+import { addRPC } from '../../../services/addRPC';
+import { NameChainId } from '../../../constant/web3';
 
 const errors = {
     NotConnected: "CONNECT WALLET",
@@ -25,13 +27,13 @@ const ButtonSwap = styled(ButtonSyncActive)`
   color: ${({ theme }) => theme.text1_2};
   font-size:${({ fontSize }) => fontSize || "20px"};
 `
-const SwapAction = ({ text = "SWAP", swapLoading = false, migrateList, validNetworks = [4, 1], handleSwap, bgColor }) => {
+const SwapAction = ({ text = "SWAP", swapLoading = false, migrateList, validNetwork, handleSwap, bgColor }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
-        if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
+        // if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (Object.keys(migrateList).length === 0) return errors.SelectTokens
         return null;
     }
@@ -49,6 +51,15 @@ const SwapAction = ({ text = "SWAP", swapLoading = false, migrateList, validNetw
             </ButtonSwap>
         </WrapActions>
     }
+    if (chainId && chainId !== validNetwork) {
+        return <WrapActions>
+            <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
+            <ButtonSwap bgColor={bgColor} active={true} onClick={() => addRPC(account, validNetwork)}>
+                SWITCH TO {NameChainId[validNetwork].toUpperCase()}
+            </ButtonSwap>
+        </WrapActions>
+    }
+
 
     if (checkError()) {
         return <WrapActions>

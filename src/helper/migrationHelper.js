@@ -1,28 +1,60 @@
+import React from 'react';
 import { MIGRATOR_ADDRESS } from "../constant/contracts"
-import { NameChainId } from "../constant/web3"
-import { ToastTransaction } from "../utils/explorers"
-import { doSignTypedData } from "./web3"
+import { getTransactionLink, ToastTransaction } from "../utils/explorers"
+import { doSignTypedData, SendWithToast } from "./web3"
 import axios from "axios"
 import { isZero, ZERO } from "../constant/number"
 import BigNumber from "bignumber.js"
+import { getMigrationContract } from "./contractHelpers"
+import { ChainId } from "../constant/web3"
+import { TransactionState } from "../utils/constant"
+import { ExternalLink } from "../components/App/Link"
 
+const NameChainId = {
+    1: 'ETH Mainnet',
+    4: 'Rinkeby',
+    137: 'Polygon Mainnet'
+}
 
-const BASE_URL = 'https://oracle5.deus.finance/migrator' //Main
+export const BASE_URL = 'https://oracle5.deus.finance/migrator' //Main
+export const BASE_URL2 = 'https://oracle5.deus.finance/migrator2' //Main
 
+export const migrateTX = async (results, migrationOption, account, chainId, web3) => {
+    const migrationContract = getMigrationContract(web3, chainId)
+    const amounts = [results[0].amount[0].toString()]
+    const expireBlocks = results.map(result => result.expireBlock)
+    const signatures = results.map(result => result.signature)
+    let migrationStatus = ""
+    for (var i = 0; i < migrationOption.length; i++) {
+        migrationStatus += migrationOption.charAt(i) === "0" ? "0" : "1"
+    }
+    migrationStatus = parseInt(migrationStatus, 2).toString()
+    console.log(amounts, expireBlocks, migrationStatus, signatures);
 
-export const signMsg = async (nonce, migrateOption, time, account, chainId, web3) => {
+    const fn = migrationContract
+        .methods
+        .migrate(
+            amounts,
+            expireBlocks,
+            migrationStatus,
+            signatures
+        )
+
+    return SendWithToast(fn, { from: account }, chainId, "Migrate to " + NameChainId[chainId])
+}
+
+export const signMsg = async (requestIds, migrateOption, time, account, chainId, web3) => {
     let eip712TypedData = {
         types: {
             EIP712Domain: [
                 { name: "name", type: "string" },
                 { name: "chainId", type: "uint256" },
-                { name: "migratorContract", type: "address" },
                 { "name": 'version', "type": 'string' },
                 { "name": "verifyingContract", "type": "address" }
             ],
             Message: [
                 { name: "from", type: "address" },
-                { name: "nonce", type: "string" },
+                { name: "requestIds", type: "string" },
                 { name: "migrateOption", type: "string" },
                 { name: "contents", type: "string" },
                 { name: "timeStamp", type: "uint256" }
@@ -32,16 +64,15 @@ export const signMsg = async (nonce, migrateOption, time, account, chainId, web3
         domain: {
             name: "Deus Migrate",
             chainId: chainId,
-            migratorContract: MIGRATOR_ADDRESS[chainId],
-            "version": "4",
-            "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+            version: "1",
+            verifyingContract: MIGRATOR_ADDRESS[chainId],
         },
         message: {
             from: account,
-            nonce: nonce,
+            requestIds: requestIds,
             migrateOption: migrateOption,
             timeStamp: time,
-            contents: `I am a user with Wallet address ${account} intending to migrate to ${NameChainId[chainId]} network.`,
+            contents: `I'm a user with Wallet address ${account} intending to migrate to ${NameChainId[chainId]} network.`,
         },
     }
 
@@ -59,21 +90,22 @@ export const getMigrationOption = (migratedList) => {
 }
 
 
-export const getRandomNumber = async (account) => {
+export const getRandomNumber = async (account, url) => {
     const data = { address: account }
     try {
-        const output = await axios.post(BASE_URL + "/getRandom", data)
-        return output
+        const output = await axios.post(url + "/getRandom", data)
+        return output.data.randomNumber
     } catch (error) {
         console.log("getRandom failed ", error.response.data);
     }
 }
 
-export const doMigration = async (nonce, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, callback) => {
+export const doMigration = async (requestIds, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, callback) => {
 
-    if (validChainId !== chainId) return
+    // if (validChainId !== chainId) return
 
-    const signature = await signMsg(nonce, migrateOption, timeStamp, account, chainId, web3)
+
+    const signature = await signMsg(requestIds, migrateOption, timeStamp, account, validChainId, web3)
 
     if (!signature) {
         ToastTransaction("warn", "Failed to sign", "", { autoClose: true })
@@ -83,10 +115,10 @@ export const doMigration = async (nonce, migrateOption, timeStamp, account, chai
     }
 
     let data = {
+        requestIds,
         address: account,
-        // signature: signature.slice(2),
         signature,
-        chainId: `${chainId}`,
+        chainId: `${validChainId}`,
         migrateOption,
         timeStamp
     }
@@ -95,17 +127,37 @@ export const doMigration = async (nonce, migrateOption, timeStamp, account, chai
         console.log(data);
         const output = await axios.post(BASE_URL + "/migrate", data)
         const oracleResult = output.data
-        console.log(output);
         console.log(oracleResult);
 
-        if (!oracleResult.success) {
-            const errorMessage = oracleResult.error.message ? oracleResult.error.message : oracleResult.error ? oracleResult.error : ""
-            ToastTransaction("warn", "MIGRATION FAILED", errorMessage, { autoClose: true })
+        if (oracleResult.message) {
+            ToastTransaction("warn", "Migration Failed", oracleResult.message, { autoClose: true })
             return
         }
 
-        const { result } = oracleResult
-        console.log(result);
+        const output2 = await axios.post(BASE_URL2 + "/migrate", data)
+        const oracleResult2 = output2.data
+        console.log(oracleResult2);
+
+
+        if (validChainId === ChainId.MATIC) {
+            ToastTransaction(TransactionState.SUCCESS, "Migration started", <div>Please allow a few minutes for your new tokens to reflect on the destination chain <ExternalLink href={getTransactionLink(ChainId.MATIC, oracleResult2, "transaction")}> View on explorer</ExternalLink> </div>, { autoClose: true })
+            return
+            // web3.getTransactionReceipt(oracleResult2).then(receipt => {
+            //     console.log(receipt);
+            //     console.log(receipt.status);
+            // })
+            // return
+        }
+        const tx = await migrateTX([oracleResult, oracleResult2], migrateOption, account, chainId, web3)
+        console.log(tx);
+        // if (!oracleResult.success) {
+        //     const errorMessage = oracleResult.error.message ? oracleResult.error.message : oracleResult.error ? oracleResult.error : ""
+        //     ToastTransaction("warn", "MIGRATION FAILED", errorMessage, { autoClose: true })
+        //     return
+        // }
+
+        // const { result } = oracleResult
+        // console.log(result);
 
         // const tx = await deposit(
         //     fromCurrency,
@@ -122,7 +174,11 @@ export const doMigration = async (nonce, migrateOption, timeStamp, account, chai
         // callback(tx)
     } catch (error) {
         // callback({ status: false })
-        console.log(error)
+        console.log(error);
+        if (error.response.data.message) {
+            ToastTransaction("warn", "Migration Failed", error.response.data.message, { autoClose: true })
+        }
+        console.log("getTx failed ", error.response.data);
     }
 }
 

@@ -25,12 +25,19 @@ import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Swap/SearchBox';
+import { ChainId } from '../../../constant/web3';
 
 const Zap = () => {
     const location = useLocation()
-    const validNetworks = getCorrectChains(location.pathname)
-    const chainId = useChain(validNetworks)
-    useDeiUpdate(chainId)
+    const { account, chainId } = useWeb3React()
+    const tempChain = null
+    const userChain = tempChain ? tempChain : chainId
+    const validChains = getCorrectChains(location.pathname)
+    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainId.RINKEBY //TODO
+    // console.log(currChain);
+    // const chainId = useChain(validNetworks)
+    // console.log(chainId);
+    useDeiUpdate(currChain)
     const collatRatio = useRecoilValue(collatRatioState)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -38,27 +45,31 @@ const Zap = () => {
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const [swapLoading, setSwapLoading] = useState(false)
-    const { account } = useWeb3React()
     const [escapedType, setEscapedType] = useState("from")
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [activeStakingList, setActiveStakingList] = useState(false)
-    const availableStaking = StakingConfig[chainId]
+    const availableStaking = StakingConfig[currChain]
     const [stakingInfo, setStakingInfo] = useState(availableStaking[0])
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
 
-    const tokens = useMemo(() => chainId ? DEITokens[chainId].filter((token) => !token.pairID) : [], [chainId])
-
+    const tokens = useMemo(() => currChain ? DEITokens[currChain].filter((token) => !token.pairID) : [], [currChain])
+    useEffect(() => {
+        setSwapState({
+            from: tokens[0],
+            to: deiToken[currChain]
+        })
+    }, [tokens])
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
 
-    const balances = useTokenBalances(tokensMap, chainId)
+    const balances = useTokenBalances(tokensMap, currChain)
 
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
         from: tokens[0],
-        to: deiToken[chainId],
+        to: deiToken[currChain],
     })
 
     const [, setFocusType] = useState("from1")
@@ -66,7 +77,7 @@ const Zap = () => {
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
 
-    const allowance = useAllowance(swapState.from, contractAddress, chainId)
+    const allowance = useAllowance(swapState.from, contractAddress, currChain)
 
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
@@ -75,7 +86,7 @@ const Zap = () => {
     useEffect(() => {
         setIsPreApproved(null)
         setIsApproved(null)
-    }, [chainId, account, swapState.from]);
+    }, [currChain, account, swapState.from]);
 
     useEffect(() => {
         if (isPreApproved == null) {
@@ -96,8 +107,8 @@ const Zap = () => {
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
 
-    const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onZap } = useZap(swapState.from, stakingInfo, amountIn, 0, chainId)
+    const { onApprove } = useApprove(swapState.from, contractAddress, currChain)
+    const { onZap } = useZap(swapState.from, stakingInfo, amountIn, 0, currChain)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -187,7 +198,7 @@ const Zap = () => {
                             currency={swapState.from}
                             TokensMap={TokensMap}
                             fastUpdate={fastUpdate}
-                            chainId={chainId}
+                            chainId={currChain}
                         />
 
                         <Image src="/img/dei/zap.svg" alt="zap" mx="23px" my="15px" height="39px" weight="21px" />
@@ -207,7 +218,7 @@ const Zap = () => {
                             TokensMap={TokensMap}
                             currency={swapState.to}
                             fastUpdate={fastUpdate}
-                            chainId={chainId}
+                            chainId={currChain}
                         />
                     </ZapContainer>
 
@@ -218,7 +229,7 @@ const Zap = () => {
                         text="ZAP"
                         isPreApproved={isPreApproved}
                         isApproved={isApproved}
-                        validNetworks={validNetworks}
+                        validNetworks={validChains}
                         targetToken={swapState.from}
                         loading={approveLoading}
                         swapLoading={swapLoading}
@@ -239,7 +250,7 @@ const Zap = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBox type={'mint'} chainId={chainId} />
+            <CostBox type={'mint'} chainId={currChain} />
         </div>
     </>);
 }

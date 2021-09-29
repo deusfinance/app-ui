@@ -10,6 +10,7 @@ const SmallWrapper = styled(FlexCenter)`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    text-align: left;
 `
 
 const SwapNetwork = styled.div`
@@ -26,7 +27,7 @@ const TitleText = styled.span`
 
 const MigrateChains = ({ title, SyncChainId, setSyncChainId, validNetworks }) => {
     return (
-        <SmallWrapper>
+        <SmallWrapper >
             <SwapNetwork>
                 <TitleText> {title} </TitleText>
                 <SelectBox currRow={SyncChainId} setCurrRow={setSyncChainId} validNetworks={validNetworks} />

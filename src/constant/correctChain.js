@@ -9,11 +9,11 @@ export const correctChains = [
     },
     {
         url: "/stable",
-        chains: [ChainId.MATIC, ChainId.RINKEBY, ChainId.AVALANCHE, ChainId.HECO, ChainId.RINKEBY],
+        chains: [ChainId.MATIC, ChainId.RINKEBY, ChainId.AVALANCHE, ChainId.HECO],
     },
     {
         url: "/migrator",
-        chains: [ChainId.MATIC, ChainId.RINKEBY],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.RINKEBY],
     },
     {
         url: "/crosschain/xdai",

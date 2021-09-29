@@ -1,11 +1,14 @@
+import React from 'react';
 import { MIGRATOR_ADDRESS } from "../constant/contracts"
-import { ToastTransaction } from "../utils/explorers"
+import { getTransactionLink, ToastTransaction } from "../utils/explorers"
 import { doSignTypedData, SendWithToast } from "./web3"
 import axios from "axios"
 import { isZero, ZERO } from "../constant/number"
 import BigNumber from "bignumber.js"
 import { getMigrationContract } from "./contractHelpers"
 import { ChainId } from "../constant/web3"
+import { TransactionState } from "../utils/constant"
+import { ExternalLink } from "../components/App/Link"
 
 const NameChainId = {
     1: 'ETH Mainnet',
@@ -16,13 +19,16 @@ const NameChainId = {
 export const BASE_URL = 'https://oracle5.deus.finance/migrator' //Main
 export const BASE_URL2 = 'https://oracle5.deus.finance/migrator2' //Main
 
-export const migrateTX = async (results, account, chainId, web3) => {
+export const migrateTX = async (results, migrationOption, account, chainId, web3) => {
     const migrationContract = getMigrationContract(web3, chainId)
-    const amounts = results.map(result => result.amount[0])
+    const amounts = [results[0].amount[0].toString()]
     const expireBlocks = results.map(result => result.expireBlock)
     const signatures = results.map(result => result.signature)
-    const migrationStatus = await migrationContract.methods.usersStatus(account).call()
-
+    let migrationStatus = ""
+    for (var i = 0; i < migrationOption.length; i++) {
+        migrationStatus += migrationOption.charAt(i) === "0" ? "0" : "1"
+    }
+    migrationStatus = parseInt(migrationStatus, 2).toString()
     console.log(amounts, expireBlocks, migrationStatus, signatures);
 
     const fn = migrationContract
@@ -96,9 +102,10 @@ export const getRandomNumber = async (account, url) => {
 
 export const doMigration = async (requestIds, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, callback) => {
 
-    if (validChainId !== chainId) return
+    // if (validChainId !== chainId) return
 
-    const signature = await signMsg(requestIds, migrateOption, timeStamp, account, chainId, web3)
+
+    const signature = await signMsg(requestIds, migrateOption, timeStamp, account, validChainId, web3)
 
     if (!signature) {
         ToastTransaction("warn", "Failed to sign", "", { autoClose: true })
@@ -111,7 +118,7 @@ export const doMigration = async (requestIds, migrateOption, timeStamp, account,
         requestIds,
         address: account,
         signature,
-        chainId: `${chainId}`,
+        chainId: `${validChainId}`,
         migrateOption,
         timeStamp
     }
@@ -131,24 +138,17 @@ export const doMigration = async (requestIds, migrateOption, timeStamp, account,
         const oracleResult2 = output2.data
         console.log(oracleResult2);
 
-        // if (oracleResult2.message) {
-        //     ToastTransaction("warn", "Migration Failed", oracleResult2.message, { autoClose: true })
-        //     return
-        // }
 
-        // if (!(oracleResult2 && oracleResult)) {
-        //     ToastTransaction("warn", "Migration Failed", "Oracle didn't signed your signature", { autoClose: true })
-        //     return
-        // }
-
-        if (chainId === ChainId.MATIC) {
-            web3.getTransactionReceipt(oracleResult2).then(receipt => {
-                console.log(receipt);
-                console.log(receipt.status);
-            })
+        if (validChainId === ChainId.MATIC) {
+            ToastTransaction(TransactionState.SUCCESS, "Migration started", <div>Please allow a few minutes for your new tokens to reflect on the destination chain <ExternalLink href={getTransactionLink(ChainId.MATIC, oracleResult2, "transaction")}> View on explorer</ExternalLink> </div>, { autoClose: true })
             return
+            // web3.getTransactionReceipt(oracleResult2).then(receipt => {
+            //     console.log(receipt);
+            //     console.log(receipt.status);
+            // })
+            // return
         }
-        const tx = await migrateTX([oracleResult, oracleResult2], account, chainId, web3)
+        const tx = await migrateTX([oracleResult, oracleResult2], migrateOption, account, chainId, web3)
         console.log(tx);
         // if (!oracleResult.success) {
         //     const errorMessage = oracleResult.error.message ? oracleResult.error.message : oracleResult.error ? oracleResult.error : ""

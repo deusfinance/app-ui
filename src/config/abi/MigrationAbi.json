@@ -42,9 +42,9 @@
             },
             {
                 "indexed": false,
-                "internalType": "uint8",
+                "internalType": "uint256",
                 "name": "migrationStatus",
-                "type": "uint8"
+                "type": "uint256"
             }
         ],
         "name": "Migrate",
@@ -354,9 +354,9 @@
                 "type": "uint256[]"
             },
             {
-                "internalType": "uint8",
+                "internalType": "uint256",
                 "name": "migrationStatus",
-                "type": "uint8"
+                "type": "uint256"
             },
             {
                 "internalType": "bytes[]",

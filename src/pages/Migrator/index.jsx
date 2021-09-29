@@ -15,7 +15,7 @@ import { MainWrapper, MainDiv, Container, Line } from '../../components/App/Migr
 import { snapShotMaker } from '../../constant/migration';
 import snapshot from '../../config/snapshot.json'
 import { useCallback, useEffect } from 'react/cjs/react.development';
-import { useMigrate } from '../../hooks/useMigrate';
+import { useMigrate, useUserStatus } from '../../hooks/useMigrate';
 
 const Migrator = () => {
     const { account: wallet, chainId } = useWeb3React()
@@ -30,11 +30,13 @@ const Migrator = () => {
     const account = queryParams.account ?? wallet
 
     useEffect(() => {
-        const snap = snapshot.filter(snap => snap.HolderAddress === account.toLowerCase())
-        if (snap.length > 0) {
-            setUserSnap(snapShotMaker(snap[0]))
-        } else {
-            setUserSnap([])
+        if (account) {
+            const snap = snapshot.filter(snap => snap.HolderAddress === account.toLowerCase())
+            if (snap.length > 0) {
+                setUserSnap(snapShotMaker(snap[0]))
+            } else {
+                setUserSnap([])
+            }
         }
     }, [account])
 
@@ -45,7 +47,10 @@ const Migrator = () => {
     const [SyncChainId, setSyncChainId] = useState(currChain)
     const [migrateList, setMigrateList] = useState({})
 
-    const migratedList = []
+    console.log(SyncChainId);
+
+
+
 
     useEffect(() => {
         setSyncChainId(currChain)
@@ -63,8 +68,6 @@ const Migrator = () => {
         setMigrateList({ ...migrateList })
     }
 
-    // console.log(getMigrationOption(migrateList));
-    // Array of migrated id
 
     const { onMigrate } = useMigrate(migrateList, SyncChainId)
 
@@ -76,12 +79,23 @@ const Migrator = () => {
         }
     }, [onMigrate])
 
+    // Array of migrated id
+    const migratedList = useUserStatus(account)
 
+    if (!migratedList) {
+        return (<div className="loader-wrap">
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+        </div>)
+    }
+
+    const currUnMigratedList = userSnap.filter(config => !migratedList.includes(config.id) && config.tokens.from.filter(token => token.balance > 0).length > 0)
 
     return (<MainWrapper>
-        <Type.XXL fontWeight="300" marginBottom="30px">Migrator</Type.XXL>
-        <MainDiv>
-            {userSnap.filter(config => !migratedList.includes(config.id) && config.tokens.from.filter(token => token.balance > 0).length > 0).map(config => {
+        <Type.XXL fontWeight="300" marginBottom="20px">Migrator</Type.XXL>
+        <Type.MD fontWeight="300" margin="auto" mb="4" opacity="0.5" maxWidth="700px" width="80%" >Please check the box corresponding to the tokens you wish to migrate. Note that all tokens checked will be migrated to the chosen network. Each token type can only be migrated ONCE.</Type.MD>
+
+        {account && <MainDiv>
+            {currUnMigratedList.length > 0 ? currUnMigratedList.map(config => {
                 return <div key={config.id}>
                     <Container >
                         <MigrationTitle toggleId={toggleId} active={migrateList[config.id]} config={config} />
@@ -92,12 +106,12 @@ const Migrator = () => {
                     </Container>
                     {(config.id + 1) !== userSnap.length && <Image src="/img/dei/arrow-down.svg" size="35px" my="15px" />}
                 </div>
-            })}
-        </MainDiv>
+            }) : <div style={{ borderRadius: "8px", display: "inline-block", padding: "10px 20px", backgroundColor: "#2b2d34", margin: "20px auto" }}><Type.MD>No eligible tokens for migration found</Type.MD></div>}
+        </MainDiv>}
 
         <div style={{ margin: "40px 0" }}></div>
 
-        <Container pb={"20px"}>
+        {(currUnMigratedList.length > 0 || !account) && <Container pb={"20px"}>
             <MigrateChains
                 title="Select Destination Network"
                 SyncChainId={SyncChainId}
@@ -113,7 +127,7 @@ const Migrator = () => {
                 migrateList={migrateList}
                 isPreApproved={true}
                 isApproved={false}
-                validNetworks={validChains}
+                validNetwork={SyncChainId}
                 loading={false}
                 swapLoading={false}
                 handleApprove={null}
@@ -121,7 +135,7 @@ const Migrator = () => {
                 amountIn={1}
                 amountOut={0}
             />
-        </Container>
+        </Container>}
     </MainWrapper>);
 }
 

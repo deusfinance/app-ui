@@ -43,7 +43,7 @@ const Migrator = () => {
     const tempChain = queryParams.network && ChainId[queryParams.network] ? ChainId[queryParams.network] : null
     const userChain = tempChain ? tempChain : chainId
     const validChains = getCorrectChains(location.pathname)
-    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainId.ETH
+    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainId.RINKEBY
     const [SyncChainId, setSyncChainId] = useState(currChain)
     const [migrateList, setMigrateList] = useState({})
 

@@ -13,7 +13,7 @@ export const correctChains = [
     },
     {
         url: "/migrator",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.RINKEBY],
+        chains: [ChainId.RINKEBY, ChainId.MATIC],
     },
     {
         url: "/crosschain/xdai",

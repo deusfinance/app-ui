@@ -9,8 +9,9 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import useChain from '../../../hooks/useChain';
-
-
+import {useAPY} from '../../../hooks/useDei';
+import { useRecoilValue } from 'recoil';
+import { APYState } from './../../../store/dei/index';
 
 const StakingContainer = styled.div`
     display: flex;
@@ -36,14 +37,16 @@ const Dei = () => {
     const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
     useDeiUpdateRedeem(chainId)
+    useAPY(chainId)
+    let APY = useRecoilValue(APYState)
 
     return (<>
         <MainWrapper>
             <Type.XL fontWeight="300" mb="3">Farms</Type.XL>
             <Type.MD fontWeight="300" mb="4" opacity="0.5">Stake LP tokens to earn.</Type.MD>
             <StakingContainer>
-                <Staking config={StakingConfig[chainId][0]} chainId={chainId} />
-                <Staking config={StakingConfig[chainId][1]} chainId={chainId} />
+                <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={APY} />
+                <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={APY} />
             </StakingContainer>
         </MainWrapper>
 

@@ -60,7 +60,7 @@ const Action = styled.div`
     }
     padding: 2px;
 `
-const Staking = ({ config = {}, chainId }) => {
+const Staking = ({ config = {}, chainId, apyValue }) => {
     const { account } = useWeb3React()
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -213,7 +213,7 @@ const Staking = ({ config = {}, chainId }) => {
                 </ActionContainer>
             </ActionWrap>
             <Type.XXL mb="4" mt="4">{stakingInfo.title}</Type.XXL>
-            <Type.LG mt="3" mb="3">150.00% APY</Type.LG>
+            <Type.LG mt="3" mb="3"> {apyValue}% APY</Type.LG>
             {active && <>
                 <Type.MD mt="2" mb="4" >you own {percent}% of the pool</Type.MD>
                 <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount={pendingReward} onAction={handleClaim} />

@@ -52,3 +52,7 @@ export const husdPoolDataState = atom({
     default: {},
 });
 
+export const APYState = atom({
+    key: 'APY',
+    default: "",
+});

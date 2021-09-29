@@ -31,7 +31,7 @@ const Migrator = () => {
 
     useEffect(() => {
         if (account) {
-            const snap = snapshot.filter(snap => snap.HolderAddress === account.toLowerCase())
+            const snap = snapshot.filter(snap => snap.user_address === account.toLowerCase())
             if (snap.length > 0) {
                 setUserSnap(snapShotMaker(snap[0]))
             } else {

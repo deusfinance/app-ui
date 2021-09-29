@@ -21,7 +21,7 @@ export const BASE_URL2 = 'https://oracle5.deus.finance/migrator2' //Main
 
 export const migrateTX = async (results, migrationOption, account, chainId, web3) => {
     const migrationContract = getMigrationContract(web3, chainId)
-    const amounts = [results[0].amount[0].toString()]
+    const amounts = results[0].amount
     const expireBlocks = results.map(result => result.expireBlock)
     const signatures = results.map(result => result.signature)
     let migrationStatus = ""
@@ -29,12 +29,15 @@ export const migrateTX = async (results, migrationOption, account, chainId, web3
         migrationStatus += migrationOption.charAt(i) === "0" ? "0" : "1"
     }
     migrationStatus = parseInt(migrationStatus, 2).toString()
-    console.log(amounts, expireBlocks, migrationStatus, signatures);
+    console.log(amounts.map(t => t.toString()),
+        expireBlocks,
+        migrationStatus,
+        signatures);
 
     const fn = migrationContract
         .methods
         .migrate(
-            amounts,
+            amounts.map(amount => new BigNumber(amount).toFixed()),
             expireBlocks,
             migrationStatus,
             signatures
@@ -182,6 +185,12 @@ export const doMigration = async (requestIds, migrateOption, timeStamp, account,
     }
 }
 
+// DD_TO_DEUS = Decimal(2)
+// DU_TO_DEUS = Decimal(10 / 27)
+// DE_TO_DEUS = Decimal(10 / 48)
+// DEUS_TO_DEUS_DEI_LP = Decimal(1 / 2)
+// OLD_DEUS_TO_DEUS = Decimal(20)
+// SDU_TO_DU = Decimal(1 / 1e5)
 
 export const convertRate = (tokens) => {
     let { from, to } = tokens
@@ -193,7 +202,7 @@ export const convertRate = (tokens) => {
         "sDEUS": 0.05,
         "sUNI-DD": 0.5,
         "sUNI-DE": 4.8,
-        "sUNI-DU": 2.7,
+        "sUNI-DU": 0.000027,
         "BPT": 0,
         "Uni-DEUS/DEA": 0.5,
         "Uni-DEA/USDC": 2.7,
@@ -202,36 +211,36 @@ export const convertRate = (tokens) => {
 
     const V2_PER_DEUS_RATE = {
         "DEUS": 1,
-        "DEUS/DEI LP": 1.5,
+        "DEUS/DEI LP": 2,
     }
 
-    let totalBalanceInDEA = ZERO
+    // let totalBalanceInDEA = ZERO
 
-    for (let i = 0; i < from.length; i++) {
-        const adder = new BigNumber(from[i].balance).times(V1_PER_DEUS_RATE[from[i].symbol])
-        totalBalanceInDEA = totalBalanceInDEA.plus(adder)
-    }
+    // for (let i = 0; i < from.length; i++) {
+    //     const adder = new BigNumber(from[i].balance).times(V1_PER_DEUS_RATE[from[i].symbol])
+    //     totalBalanceInDEA = totalBalanceInDEA.plus(adder)
+    // }
 
-    if (from.length === 4 && !isZero(from[3].balance)) {
-        const DEA_balance_from_BPT_to_DEA = new BigNumber(from[3].DEA_balance_from_BPT).times(V1_PER_DEUS_RATE["DEA"])
-        const DEA_balance_from_BPT_to_SDEA = new BigNumber(from[3].SDEA_balance_from_BPT).times(V1_PER_DEUS_RATE["sDEA"])
-        const sUniDD_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDD_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DD"])
-        const sUniDE_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDE_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DE"])
-        const sUniDU_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDU_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DU"])
-        const SDEUS_balance_from_BPT_to_DEA = new BigNumber(from[3].SDEUS_balance_from_BPT).times(V1_PER_DEUS_RATE["sDEUS"])
+    // if (from.length === 4 && !isZero(from[3].balance)) {
+    //     const DEA_balance_from_BPT_to_DEA = new BigNumber(from[3].DEA_balance_from_BPT).times(V1_PER_DEUS_RATE["DEA"])
+    //     const DEA_balance_from_BPT_to_SDEA = new BigNumber(from[3].SDEA_balance_from_BPT).times(V1_PER_DEUS_RATE["sDEA"])
+    //     const sUniDD_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDD_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DD"])
+    //     const sUniDE_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDE_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DE"])
+    //     const sUniDU_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDU_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DU"])
+    //     const SDEUS_balance_from_BPT_to_DEA = new BigNumber(from[3].SDEUS_balance_from_BPT).times(V1_PER_DEUS_RATE["sDEUS"])
 
-        totalBalanceInDEA = totalBalanceInDEA
-            .plus(DEA_balance_from_BPT_to_DEA)
-            .plus(DEA_balance_from_BPT_to_SDEA)
-            .plus(sUniDD_balance_from_BPT_to_DEA)
-            .plus(sUniDE_balance_from_BPT_to_DEA)
-            .plus(sUniDU_balance_from_BPT_to_DEA)
-            .plus(SDEUS_balance_from_BPT_to_DEA)
-    }
+    //     totalBalanceInDEA = totalBalanceInDEA
+    //         .plus(DEA_balance_from_BPT_to_DEA)
+    //         .plus(DEA_balance_from_BPT_to_SDEA)
+    //         .plus(sUniDD_balance_from_BPT_to_DEA)
+    //         .plus(sUniDE_balance_from_BPT_to_DEA)
+    //         .plus(sUniDU_balance_from_BPT_to_DEA)
+    //         .plus(SDEUS_balance_from_BPT_to_DEA)
+    // }
 
-    for (let i = 0; i < to.length; i++) {
-        to[i].amount = totalBalanceInDEA.div(V2_PER_DEUS_RATE[to[i].symbol]).toFixed()
-    }
+    // for (let i = 0; i < to.length; i++) {
+    //     to[i].amount = totalBalanceInDEA.div(V2_PER_DEUS_RATE[to[i].symbol]).toFixed()
+    // }
 
     return { from, to }
 }

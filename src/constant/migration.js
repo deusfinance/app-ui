@@ -1,26 +1,26 @@
 import { convertRate } from "../helper/migrationHelper"
 
+// {
+//     "user_address": "0xa8d359c5559f7b88d460b4268ba438fbcf61e900",
+
+
+
+
+
+
+//     "box6_in_UniDE": 0,
+//     "box6_in_UniDE_staking": 0,
+//     "box6_out_DDLP": 0,
+//     "box6_out_DEUS": 0,
+//     "box6_out_eth": 0,
+//     "box6_out_bEth": 0
+//   }
+
 export const snapShotMaker = (snap) => {
-    const {
-        BPT_balance,
-        DEA_balance,
-        SDEA_balance,
-        sUniDD_balance,
-        sUniDE_balance,
-        sUniDU_balance,
-        UniDD_balance,
-        UniDE_balance,
-        UniDU_balance,
-        SDEUS_balance,
-        DEA_balance_DU,
-        USDC_balance_DU,
-        DEA_balance_from_BPT,
-        SDEA_balance_from_BPT,
-        sUniDD_balance_from_BPT,
-        sUniDE_balance_from_BPT,
-        sUniDU_balance_from_BPT,
-        SDEUS_balance_from_BPT,
-    } = snap
+
+
+
+
 
     const addedBalance = [
         {
@@ -31,11 +31,11 @@ export const snapShotMaker = (snap) => {
             },
             tokens: {
                 from: [
-                    { symbol: "DEA", balance: DEA_balance },
-                    { symbol: "sDEA", balance: SDEA_balance },
+                    { symbol: "DEA", balance: snap["box1_in_DEA"], fromStaking: snap["box1_in_DEA_staking"] },
+                    { symbol: "sDEA", balance: snap["box1_in_sDEA"], fromStaking: snap["box1_in_sDEA_staking"] },
                 ],
                 to: [
-                    { symbol: "DEUS" },
+                    { symbol: "DEUS", amount: snap["box1_out_DEUS"] },
                 ]
             }
         },
@@ -47,12 +47,12 @@ export const snapShotMaker = (snap) => {
             },
             tokens: {
                 from: [
-                    { symbol: "DEUS", balance: 0 },
-                    { symbol: "sDEUS", balance: SDEUS_balance },
+                    { symbol: "DEUS", balance: snap["box2_in_DEUS"], fromStaking: snap["box2_in_DEUS_staking"] },
+                    { symbol: "sDEUS", balance: snap["box2_in_sDEUS"], fromStaking: snap["box2_in_sDEUS_staking"] },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP" },
-                    { symbol: "DEUS" },
+                    { symbol: "DEUS/DEI LP", amount: snap["box2_out_DDLP"] },
+                    { symbol: "DEUS", amount: snap["box2_out_DEUS"] },
                 ]
             }
         },
@@ -64,23 +64,14 @@ export const snapShotMaker = (snap) => {
             },
             tokens: {
                 from: [
-                    { symbol: "sUNI-DD", balance: sUniDD_balance },
-                    { symbol: "sUNI-DE", balance: sUniDE_balance },
-                    { symbol: "sUNI-DU", balance: sUniDU_balance },
-                    {
-                        symbol: "BPT",
-                        balance: BPT_balance,
-                        DEA_balance_from_BPT,
-                        SDEA_balance_from_BPT,
-                        sUniDD_balance_from_BPT,
-                        sUniDE_balance_from_BPT,
-                        sUniDU_balance_from_BPT,
-                        SDEUS_balance_from_BPT,
-                    },
+                    { symbol: "sUNI-DD", balance: snap["box3_in_sUniDD"] },
+                    { symbol: "sUNI-DE", balance: snap["box3_in_sUniDE"] },
+                    { symbol: "sUNI-DU", balance: snap["box3_in_sUniDU"] },
+                    { symbol: "BPT", balance: snap["box3_in_BPT"], fromStaking: snap["box3_in_BPT_staking"] },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP" },
-                    { symbol: "DEUS" },
+                    { symbol: "DEUS/DEI LP", amount: snap["box3_out_DDLP"] },
+                    { symbol: "DEUS", amount: snap["box3_out_DEUS"] },
                 ]
             }
         },
@@ -92,11 +83,11 @@ export const snapShotMaker = (snap) => {
             },
             tokens: {
                 from: [
-                    { symbol: "Uni-DEUS/DEA", balance: UniDD_balance },
+                    { symbol: "Uni-DEUS/DEA", balance: snap["box4_in_UniDD"], fromStaking: snap["box4_in_UniDD_staking"] },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP" },
-                    { symbol: "DEUS" },
+                    { symbol: "DEUS/DEI LP", amount: snap["box4_out_DDLP"] },
+                    { symbol: "DEUS", amount: snap["box4_out_DEUS"] },
                 ]
             }
         },
@@ -108,12 +99,12 @@ export const snapShotMaker = (snap) => {
             },
             tokens: {
                 from: [
-                    { symbol: "Uni-DEA/USDC", balance: UniDU_balance },
+                    { symbol: "Uni-DEA/USDC", balance: snap["box5_in_UniDU"], fromStaking: snap["box5_in_UniDU_staking"] },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP" },
-                    { symbol: "DEUS" },
-                    { isDU: true, symbol: "DEUS,USDC", amountDEUS: DEA_balance_DU, amountUSDC: USDC_balance_DU },
+                    { symbol: "DEUS/DEI LP", amount: snap["box5_out_DDLP"] },
+                    { symbol: "DEUS", amount: snap["box5_out_DEUS"] },
+                    { isDU: true, symbol: "DEUS,USDC", amountDEUS: snap["box5_out_dea->DEUS"], amountUSDC: snap["box5_out_USDC"] },
                 ]
             }
         },
@@ -125,22 +116,16 @@ export const snapShotMaker = (snap) => {
             },
             tokens: {
                 from: [
-                    { symbol: "Uni-DEUS/ETH", balance: UniDE_balance },
+                    { symbol: "Uni-DEUS/ETH", balance: snap["box6_in_UniDE"], fromStaking: snap["box6_in_UniDE_staking"] },
                 ],
                 to: [
-                    { symbol: "DEUS/DEI LP" },
-                    { symbol: "DEUS" },
+                    { symbol: "DEUS/DEI LP", amount: snap["box6_out_DDLP"], },
+                    { symbol: "DEUS", amount: snap["box6_out_DEUS"], },
                 ]
             }
         },
     ]
 
-    const addedAmount = addedBalance.map(item => {
-        return {
-            ...item,
-            tokens: convertRate(item.tokens)
-        }
-    })
 
-    return addedAmount
+    return addedBalance
 }

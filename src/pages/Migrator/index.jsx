@@ -47,11 +47,6 @@ const Migrator = () => {
     const [SyncChainId, setSyncChainId] = useState(currChain)
     const [migrateList, setMigrateList] = useState({})
 
-    console.log(SyncChainId);
-
-
-
-
     useEffect(() => {
         setSyncChainId(currChain)
     }, [currChain]);
@@ -68,7 +63,6 @@ const Migrator = () => {
         setMigrateList({ ...migrateList })
     }
 
-
     const { onMigrate } = useMigrate(migrateList, SyncChainId)
 
     const handleMigrate = useCallback(async () => {
@@ -82,7 +76,7 @@ const Migrator = () => {
     // Array of migrated id
     const migratedList = useUserStatus(account)
 
-    if (!migratedList) {
+    if (account && !migratedList) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)

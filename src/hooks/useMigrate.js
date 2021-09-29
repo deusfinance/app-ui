@@ -55,9 +55,10 @@ export const useUserStatus = (account) => {
             console.log("userPolygonStatus ", userPolygonStatus);
             if (!userETHStatus || !userPolygonStatus) return
 
-            userETHStatus = userETHStatus.toString(2).padStart(6, "0")
-            userPolygonStatus = userPolygonStatus.toString(2).padStart(6, "0")
+            userETHStatus = parseInt(userETHStatus).toString(2).padStart(6, "0")
+            userPolygonStatus = parseInt(userPolygonStatus).toString(2).padStart(6, "0")
             console.log(userETHStatus, userPolygonStatus);
+
             let status = []
             for (var i = 0; i < 6; i++) {
                 if (userETHStatus.charAt(i) !== "0" || userPolygonStatus.charAt(i) !== "0") {

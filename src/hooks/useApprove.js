@@ -5,7 +5,6 @@ import { useERC20 } from './useContract'
 
 export const useApprove = (currency, contractAddress, validChainId) => {
     const { account, chainId } = useWeb3React()
-
     const { address: tokenAddress } = currency
     const contract = useERC20(tokenAddress)
 

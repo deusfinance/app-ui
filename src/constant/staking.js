@@ -81,8 +81,8 @@ export const StakingConfig = {
   [ChainId.MATIC]: [
     {
       title: "DEI-USDC",
-      pic1: "/tokens/usdc.svg",
-      pic2: "/tokens/dai.png",
+      pic1: "/tokens/dei.svg",
+      pic2: "/tokens/usdc.svg",
       depositToken: deiCollateralLpToken[ChainId.MATIC],
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.MATIC],
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.MATIC],

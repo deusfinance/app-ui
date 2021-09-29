@@ -29,7 +29,8 @@ export const migrateTX = async (results, migrationOption, account, chainId, web3
         migrationStatus += migrationOption.charAt(i) === "0" ? "0" : "1"
     }
     migrationStatus = parseInt(migrationStatus, 2).toString()
-    console.log(amounts.map(t => t.toString()),
+    console.log(amounts);
+    console.log(amounts.map(amount => new BigNumber(amount).toFixed(0)),
         expireBlocks,
         migrationStatus,
         signatures);

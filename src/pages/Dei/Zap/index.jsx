@@ -26,6 +26,7 @@ import { getCorrectChains } from '../../../constant/correctChain';
 import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Swap/SearchBox';
 import { ChainId } from '../../../constant/web3';
+import BigNumber from 'bignumber.js';
 
 const Zap = () => {
     const location = useLocation()
@@ -79,6 +80,8 @@ const Zap = () => {
 
     const allowance = useAllowance(swapState.from, contractAddress, currChain)
 
+    // console.log(swapState.from?.address, contractAddress, allowance.toString());
+
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
@@ -116,6 +119,7 @@ const Zap = () => {
             const tx = await onApprove()
             if (tx.status) {
                 console.log("Approved");
+                setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
             } else {
                 console.log("Approve Failed");
             }

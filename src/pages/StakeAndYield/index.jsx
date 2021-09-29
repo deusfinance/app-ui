@@ -69,6 +69,14 @@ const Staking = () => {
         <ExternalLink className="explainer"> Explainer</ExternalLink>
       </div>
 
+      <div className="popUp" style={{textAlign: "center", margin: "30px 45px"}}>
+        <span> PLEASE NOTE </span>
+        <br />
+        <span> In preparation for the upcoming migration to V2, Stake and Yield has been disabled. </span>
+        <br />
+        <span> There's no need to unstake, all Stake and Yield balances can be read by the migrator. </span>
+      </div>
+
       <div className="staking-content">
         <ToggleButtons
           data={[
@@ -88,7 +96,7 @@ const Staking = () => {
               key={index}
               type={type}
               {...token}
-              owner={account}
+              owner={account} // TODO: change account here
               chainId={chainId}
               open={open}
               handleTriggerClick={(token, balance, withDrawable, withDrawableExit) => {

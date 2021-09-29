@@ -333,69 +333,75 @@ class StakingManager extends Component {
 
 
         return (<>
-            <ToastContainer style={{ width: "400px" }} />
-            <ChainPupop
-                title={t("wrongNetwork")}
-                show={chainId && chainId !== 1}
-                close={false}
-                handlePopup={() => console.log()}
-                popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
-                    <div>
-                        {t("badNetwork1")}
-                        <br />
-                        <br />
-                        {t("changeToMain")}
+            <div className="popUp" style={{ textAlign: "center", margin: "30px 45px" }}>
+                <span> There's no need to unstake, all Stakings balances can be read by the migrator. </span>
+            </div>
+            
+            <div className="staking-content">
+                <ToastContainer style={{ width: "400px" }} />
+                <ChainPupop
+                    title={t("wrongNetwork")}
+                    show={chainId && chainId !== 1}
+                    close={false}
+                    handlePopup={() => console.log()}
+                    popBody={<div className="description" style={{ padding: "30px  10px", textAlign: "center" }}>
+                        <div>
+                            {t("badNetwork1")}
+                            <br />
+                            <br />
+                            {t("changeToMain")}
+                        </div>
+                    </div>}
+                />
+                {/* <TopNotification text={innnerText} /> */}
+                {currStake && currToken && <StakePopup
+                    title={t("stakeToEarn")}
+                    close={true}
+                    isStakePopup={isStakePopup}
+                    handleApprove={this.handleApprove(currToken)}
+                    handleStake={this.handleStake(currToken)}
+                    handlePopup={this.handlePopup}
+                    token={currToken}
+                    staking={currStaking}
+                    contractAddr={addrs["staking"][currStake][chainId ? chainId : 1]}
+                    isApproved={approved}
+                />}
+
+                {currStake && currToken && <WithdrawPopup
+                    title={t("withdraw")}
+                    close={true}
+                    deposited={stakingsMap[currToken.name].deposited}
+                    isWithdrawPopup={isWithdrawPopup}
+                    handleWithdraw={this.handleWithdraw(currToken.name)}
+                    handleWithdrawPopup={this.handleWithdrawPopup}
+                    token={currToken}
+                    staking={currStaking}
+                    contractAddr={addrs["staking"][currStake][chainId ? chainId : 1]}
+                />}
+
+                <div className="staking-wrap" >
+
+                    <TopNotif typeID={this.props.navId} />
+
+                    <div className="stake-container-wrap" ></div>
+                    <div className="container-single-wrap">
+                        {
+                            pools.map((token, i) => {
+                                return <QStake
+                                    key={i}
+                                    handleClaim={this.handleClaim(token)}
+                                    handleStakePopup={this.handlePopup}
+                                    handleWithdrawPopup={this.handleWithdrawPopup}
+                                    staking={stakingsMap[token]}
+                                    handleStake={this.handleStake}
+                                    deposited={stakingsMap[token].deposited}
+                                    stakable={stakingsMap[token].onlyMain || stakingsMap[token].off ? false : true}
+                                />
+                            })
+                        }
+
+
                     </div>
-                </div>}
-            />
-            {/* <TopNotification text={innnerText} /> */}
-            { currStake && currToken && <StakePopup
-                title={t("stakeToEarn")}
-                close={true}
-                isStakePopup={isStakePopup}
-                handleApprove={this.handleApprove(currToken)}
-                handleStake={this.handleStake(currToken)}
-                handlePopup={this.handlePopup}
-                token={currToken}
-                staking={currStaking}
-                contractAddr={addrs["staking"][currStake][chainId ? chainId : 1]}
-                isApproved={approved}
-            />}
-
-            { currStake && currToken && <WithdrawPopup
-                title={t("withdraw")}
-                close={true}
-                deposited={stakingsMap[currToken.name].deposited}
-                isWithdrawPopup={isWithdrawPopup}
-                handleWithdraw={this.handleWithdraw(currToken.name)}
-                handleWithdrawPopup={this.handleWithdrawPopup}
-                token={currToken}
-                staking={currStaking}
-                contractAddr={addrs["staking"][currStake][chainId ? chainId : 1]}
-            />}
-
-            <div className="staking-wrap" >
-
-                <TopNotif typeID={this.props.navId} />
-
-                <div className="stake-container-wrap" ></div>
-                <div className="container-single-wrap">
-                    {
-                        pools.map((token, i) => {
-                            return <QStake
-                                key={i}
-                                handleClaim={this.handleClaim(token)}
-                                handleStakePopup={this.handlePopup}
-                                handleWithdrawPopup={this.handleWithdrawPopup}
-                                staking={stakingsMap[token]}
-                                handleStake={this.handleStake}
-                                deposited={stakingsMap[token].deposited}
-                                stakable={stakingsMap[token].onlyMain || stakingsMap[token].off ? false : true}
-                            />
-                        })
-                    }
-
-
                 </div>
             </div>
         </>);

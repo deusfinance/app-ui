@@ -96,6 +96,17 @@
     cursor: pointer;
 }
 
+.popUp {
+  background: linear-gradient(98.22deg, #e45b5b 35%, #5e5be4 65%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bolder;
+  font-size: larger;
+  border: white solid 1px;
+  border-radius: 25px;
+  padding: 20px 0;
+}
+
 .container-staking {
     font-family: "Monument Grotesk Semi";
     padding: 5px;
@@ -175,6 +186,9 @@
         padding: 50px;
         padding-top: 35px;
         margin: 0 auto;
+        opacity: 0.4; 
+        pointer-events: none;
+        /* TODO: PP */
     }
 
     .wrap-tokens {
@@ -1388,6 +1402,9 @@
         .staking-content {
             padding: 0px;
             padding-top: 40px;
+            opacity: 0.4;
+            pointer-events: none;
+            /* TODO: PP */
         }
         .token-container {
             padding: 15px 8px;

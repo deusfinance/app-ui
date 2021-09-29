@@ -64,7 +64,7 @@ const Navbar = () => {
             <NavbarSideWrap className="deus-logo" style={{ zIndex: 1 }}>
                 <ExternalLink href="https://deus.finance" style={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
                     <img style={{ width: "32px" }} src="/img/deus.svg" alt="deus" />
-                    <img style={{ height: "22px", marginLeft: "10px" }} src="/img/deus-text.svg" alt="deus" />
+                    <img style={{ height: "22px", marginLeft: "10px" }} className="deus-text" src="/img/deus-text.svg" alt="deus" />
                 </ExternalLink>
                 {tvl && <NavButton className="tvl" active={false} >
                     {t("tvl")}: {tvl}

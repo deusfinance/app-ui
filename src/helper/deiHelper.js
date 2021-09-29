@@ -367,7 +367,6 @@ export const getClaimAll = async (account, web3, chainId = ChainId.RINKEBY) => {
         .send({ from: account })
 }
 
-
 //READ FUNCTIONS
 export const getDeiInfo = async (web3, chainId = ChainId.RINKEBY, collat_usd_price = collatUsdPrice) => {
     return getDeiContract(web3, chainId)

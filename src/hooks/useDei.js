@@ -12,9 +12,9 @@ import multicall from '../helper/multicall'
 import { useCrossERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
-import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState } from '../store/dei'
+import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, APYState } from '../store/dei'
 import {
-    makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
+    makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData, getAPYValue,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
     mint1t1DEI, collatUsdPrice, ERC202DEI, nativeCoinToDei, collateral2DEI, zapIn,
@@ -23,6 +23,26 @@ import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
 import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
+
+
+export const useAPY = (validChainId) => {
+    const web3 = useCrossWeb3(validChainId)
+    const { slowRefresh } = useRefresh()
+    const setAPY = useSetRecoilState(APYState)
+
+    useEffect(() => {
+        const get = async () => {
+            try {
+                const apy = await makeDeiRequest("/getApy", validChainId)
+                const apyValue = apy ? apy : "- "
+                setAPY(apyValue)
+            } catch (error) {
+                console.log("useAPY ", error);
+            }
+        }
+        get()
+    }, [slowRefresh, web3, setAPY, validChainId])
+}
 
 
 export const useZap = (currency, stakingInfo, amountIn, minLpAmount, validChainId) => {
@@ -40,7 +60,6 @@ export const useZap = (currency, stakingInfo, amountIn, minLpAmount, validChainI
     }, [currency, stakingInfo, amountIn, validChainId, chainId, account, web3])
     return { onZap: handleZap }
 }
-
 
 
 export const useDeposit = (currency, amount, address, validChainId) => {

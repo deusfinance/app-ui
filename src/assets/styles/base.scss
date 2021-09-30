@@ -53,6 +53,21 @@ body,
   padding: 20px 0;
 }
 
+.bg-black {
+    background: #000000;
+}
+
+.popUpSwap {
+  background: linear-gradient(98.22deg, #e45b5b 35%, #5e5be4 65%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bolder;
+  font-size: larger;
+  border: white solid 1px;
+  border-radius: 25px;
+  padding: 20px 0;
+}
+
 .staking-content {
   opacity: 0.4;
   pointer-events: none;

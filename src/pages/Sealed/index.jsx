@@ -186,58 +186,69 @@ const Sealed = () => {
             setActive={setActiveSearchBox} />
 
         <MainWrapper>
-            <SwapTitle active={false} bgColor="grad4" m="auto">SEALED SWAP</SwapTitle>
-            <SwapWrapper>
-                <TokenBox
-                    type="from"
-                    hasMax={true}
-                    inputAmount={amountIn}
-                    setInputAmount={setAmountIn}
-                    setActive={showSearchBox}
-                    currency={swapState.from}
-                    TokensMap={TokensMap}
-                    fastUpdate={fastUpdate}
-                />
+            <div className="bg-black">
+                <div className="popUpSwap" style={{ textAlign: "center", margin: "30px 45px" }}>
+                    <span> PLEASE NOTE </span>
+                    <br />
+                    <span> In preparation for the upcoming migration to V2, SealedSwap has been disabled. </span>
+                </div>
+            </div>
 
-                <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
+            <div className="staking-content">
+                <SwapTitle active={false} bgColor="grad4" m="auto">SEALED SWAP</SwapTitle>
+                <SwapWrapper>
+                    <TokenBox
+                        type="from"
+                        hasMax={true}
+                        inputAmount={amountIn}
+                        setInputAmount={setAmountIn}
+                        setActive={showSearchBox}
+                        currency={swapState.from}
+                        TokensMap={TokensMap}
+                        fastUpdate={fastUpdate}
+                    />
 
-                <TokenBox
-                    type="to"
-                    title="To (estimated)"
-                    inputAmount={amountOut}
-                    setInputAmount={setAmountOut}
-                    setActive={null}
-                    TokensMap={TokensMap}
-                    currency={swapState.to}
-                    fastUpdate={fastUpdate}
-                />
+                    <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
-                <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
+                    <TokenBox
+                        type="to"
+                        title="To (estimated)"
+                        inputAmount={amountOut}
+                        setInputAmount={setAmountOut}
+                        setActive={null}
+                        TokensMap={TokensMap}
+                        currency={swapState.to}
+                        fastUpdate={fastUpdate}
+                    />
 
-                <SwapAction
-                    bgColor="grad4"
-                    isPreApproved={isPreApproved}
-                    validNetworks={[1]}
-                    isApproved={isApproved}
-                    loading={approveLoading}
-                    handleApprove={handleApprove}
-                    handleSwap={handleSwap}
-                    TokensMap={TokensMap}
-                    swapState={swapState}
-                    amountIn={amountIn}
-                    amountOut={amountOut}
-                />
+                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
-            </SwapWrapper>
+                    <SwapAction
+                        bgColor="grad4"
+                        isPreApproved={isPreApproved}
+                        validNetworks={[1]}
+                        isApproved={isApproved}
+                        loading={approveLoading}
+                        handleApprove={handleApprove}
+                        handleSwap={handleSwap}
+                        TokensMap={TokensMap}
+                        swapState={swapState}
+                        amountIn={amountIn}
+                        amountOut={amountOut}
+                    />
 
-            {/* <PriceImpact
+                </SwapWrapper>
+
+                {/* <PriceImpact
                 minAmountOut={minAmountOut}
                 amountIn={debouncedAmountIn}
                 amountOut={amountOut}
             /> */}
 
 
-            <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor="grad4" />
+                <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor="grad4" />
+            </div>
+
         </MainWrapper>
         {/* <div className='tut-left-wrap'>
             <SelectedNetworks />

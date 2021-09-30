@@ -62,6 +62,13 @@ const Dei = () => {
         to: secondaryToken,
     })
 
+    useEffect(() => {
+        setSwapState({
+            from: deiToken[chainId],
+            to: secondaryToken,
+        })
+    }, [secondaryToken, chainId])
+
     const [focusType, setFocusType] = useState("from1")
     const [amountIn, setAmountIn] = useState("")
     const [amountOutPair, setAmountOutPair] = useState("")
@@ -139,8 +146,9 @@ const Dei = () => {
             setSwapState({ ...swapState, to: primaryToken })
         }
         if (collatRatio !== null) changeToTokens()
-    }, [collatRatio]);// eslint-disable-line
+    }, [collatRatio, tokens]);// eslint-disable-line
 
+    //TODO
     useEffect(() => {
         const token = swapState.to
         setIsPair(false)
@@ -206,6 +214,13 @@ const Dei = () => {
             console.error(e)
         }
     }, [onRedeem])
+
+
+    if (collatRatio === null || redemptionFee === null) {
+        return (<div className="loader-wrap">
+            {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
+        </div>)
+    }
 
     return (<>
         <MainWrapper>

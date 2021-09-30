@@ -78,7 +78,7 @@ const Zap = () => {
     const [amountOut, setAmountOut] = useState("")
 
     const allowance = useAllowance(swapState.from, contractAddress, currChain)
-    console.log(swapState.from?.address, contractAddress, allowance.toString());
+    // console.log(swapState.from?.address, contractAddress, allowance.toString());
 
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
@@ -115,7 +115,21 @@ const Zap = () => {
     }, [allowance]) //isPreApproved ?
 
     const { onApprove } = useApprove(swapState.from, contractAddress, currChain)
-    const { onZap } = useZap(swapState.from, stakingInfo, amountIn, slippage, currChain)
+    const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, currChain)
+    // const { getAmountsOut } = useGetAmountsOutZap(swapState.from, stakingInfo, debouncedAmountIn, chainId)
+
+    // useEffect(() => {
+    //     const get = async () => {
+    //         const amount = await getAmountsOut()
+    //         // // console.log("swap ", amount);
+    //         if (amountIn === "") setAmountOut("")
+    //         else setAmountOut(fromWei(amount, 18))
+    //     }
+    //     get()
+
+    //     //eslint-disable-next-line
+    // }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
+
 
     const handleApprove = useCallback(async () => {
         try {

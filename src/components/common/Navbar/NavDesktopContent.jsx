@@ -53,9 +53,9 @@ const NavDesktop = ({ routes }) => {
                 }
                 return <li key={nav.id + "_desktop"}>{res}</li>
             })}
-            <li>
+            {/* <li>
                 <LanguageSelector />
-            </li>
+            </li> */}
         </NavbarContentWrap>
     }, [routes, t])
 }

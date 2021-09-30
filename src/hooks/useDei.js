@@ -54,13 +54,33 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, validChainId) 
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         // const minLpAmountToWei = getToWei(minLpAmount, 18).toFixed(0)
         // const minLpAmountToWei = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(18, 1)
-        const minLpAmountToWei = "0" //TODO
-        const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, false, web3, chainId)
+        // const minLpAmountToWei = "0" //TODO
+        const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, slippage, false, web3, chainId)
         const payload = currency.address === "0x" ? { value: amountInToWei } : {}
         return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
     }, [currency, stakingInfo, amountIn, validChainId, chainId, account, web3, slippage])
     return { onZap: handleZap }
 }
+
+
+
+
+// export const useGetAmountsOutZap = (currency, stakingInfo, amountIn, validChainId) => {
+//     const web3 = useWeb3()
+//     const { account, chainId } = useWeb3React()
+
+//     const handleGetAmountOut = useCallback(async () => {
+//         if ((validChainId && chainId !== validChainId) || !currency) return false
+//         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
+//         // const minLpAmountToWei = getToWei(minLpAmount, 18).toFixed(0)
+//         // const minLpAmountToWei = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(18, 1)
+//         // const minLpAmountToWei = "0" //TODO
+//         // const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, false, web3, chainId)
+//         // const payload = currency.address === "0x" ? { value: amountInToWei } : {}
+//         return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
+//     }, [currency, stakingInfo, amountIn, validChainId, chainId, account, web3])
+//     return { getAmountsOut: handleGetAmountOut }
+// }
 
 
 export const useDeposit = (currency, amount, address, validChainId) => {

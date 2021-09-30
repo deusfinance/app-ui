@@ -1,87 +1,133 @@
-// Deploy muon
-// 1. ownerAddSigner(muon_node_1/2/3)
-
-// Deploy bridge
-// step 1. set network
-// step 2. ownerAddToken
-// setp 3. mint token
-// setp 4. ownerSetSideContract
-
 import { makeContract } from '../../utils/Stakefun'
 import { BridgeABI } from '../../utils/StakingABI'
 import Web3 from 'web3'
 
 const validNetworks = [4, 97, 4002]
 
-// const MUON_NODE_1 = '0x06A85356DCb5b307096726FB86A78c59D38e08ee'
-// const MUON_NODE_2 = '0x4513218Ce2e31004348Fd374856152e1a026283C'
-// const MUON_NODE_3 = '0xe4f507b6D5492491f4B57f0f235B158C4C862fea'
+// const BSCDEAToken='0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D'
+// const FTMDEAToken='0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
 
-// const BSCMuon = '0xA740811dBA35B719DAc61395A913dE67AA60a415'
-// const ETHMuon = '0xf0A7580d99E71785C892080Ac29E2F653B00d63d'
-// const FTMMuon = '0x73349C38E06470a55901e3388006C68Ce4140D97'
+const BridgeContractAddress = {
+  4: '0xdAa80B54725147169614EF40C4a8EdeeA0F34D03',
+  97: '0x11B650B8D2bbc60CdC434bd300F1b643ac77BAdA',
+  4002: '0x05dFC221471F7Ea525c794Cfd3b5eC58D0d6B115'
+}
 
-const BSCContract = '0x5D91EA00E414BB113C8ECe6674F84C906BD8b5D4'
-const ETHContract = '0x42196Ecdd7fa421706Cb9CEA0BBE560fc05D3248'
-const FTMContract = '0x4Cf8106B486A5b6df8FB748c94EB129c104fdba4'
+const bscWeb3 = new Web3(
+  new Web3.providers.HttpProvider(
+    'https://data-seed-prebsc-1-s1.binance.org:8545/'
+  )
+)
+
+const ethWeb3 = new Web3(
+  new Web3.providers.HttpProvider(
+    'https://rinkeby.infura.io/v3/cf6ea736e00b4ee4bc43dfdb68f51093'
+  )
+)
+
+const ftmWeb3 = new Web3(
+  new Web3.providers.HttpProvider('https://rpc.testnet.fantom.network/')
+)
+
+const NetworkWeb3 = {
+  4: ethWeb3,
+  97: bscWeb3,
+  4002: ftmWeb3
+}
+
+const Contract = {
+  4: makeContract(ethWeb3, BridgeABI, BridgeContractAddress[4]),
+  97: makeContract(bscWeb3, BridgeABI, BridgeContractAddress[97]),
+  4002: makeContract(ftmWeb3, BridgeABI, BridgeContractAddress[4002])
+}
 
 const tokens = [
   {
     name: 'DEUS',
+    decimals: 18,
     tokenId: '1',
+    balances: {
+      4: '0',
+      97: '0',
+      4002: '0'
+    },
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
+      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
+      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
     },
     icon: 'DEUS.svg'
   },
   {
     name: 'DEA',
     tokenId: '2',
+    decimals: 18,
+    balances: {
+      4: '0',
+      97: '0',
+      4002: '0'
+    },
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
+      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
+      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
     },
     icon: 'DEA.svg'
   },
   {
     name: 'BPT',
     tokenId: '3',
+    decimals: 18,
+    balances: {
+      4: '0',
+      97: '0',
+      4002: '0'
+    },
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
+      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
+      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
     },
     icon: 'BPT.svg'
   },
   {
     name: 'sDEA',
     tokenId: '4',
+    decimals: 18,
+    balances: {
+      4: '0',
+      97: '0',
+      4002: '0'
+    },
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
+      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
+      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
     },
     icon: 'sDEA.svg'
   },
   {
     name: 'sDEUS',
     tokenId: '5',
+    decimals: 18,
+    balances: {
+      4: '0',
+      97: '0',
+      4002: '0'
+    },
     address: {
       4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6',
-      4002: '0x91E32eE7799F20e6b89A36CdaA7fa12d5f482781'
+      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
+      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
     },
     icon: 'sDEUS.svg'
   }
 ]
 
 const chains = [
-  { id: 97, name: 'BSC', network: 2, networkName: 'bsctest' },
-  { id: 4, name: 'ETH', network: 1, networkName: 'rinkeby' },
-  { id: 4002, name: 'FTM', network: 3, networkName: 'ftmtest' }
+  { name: 'ETH', network: 4, networkName: 'rinkeby', web3: ethWeb3 },
+  { name: 'BSC', network: 97, networkName: 'bsctest', web3: bscWeb3 },
+  { name: 'FTM', network: 4002, networkName: 'ftmtest', web3: ftmWeb3 }
 ]
 
 const instructions = [
@@ -92,7 +138,7 @@ const instructions = [
   },
   {
     name: 'deposit',
-    title: '2 – Deposit',
+    title: '2 – Deposit to Bridge',
     desc: 'Your asset will be deposited to the bridge before you can withdraw '
   },
   {
@@ -101,49 +147,18 @@ const instructions = [
     desc: 'Either press the button in the bridge interface or click: Change Network'
   },
   {
-    name: 'bridge',
-    title: '4 – Initiate Bridging',
-    desc: 'Initiate bridging to the new network by pressing the button in the interface.'
-  },
-  {
     name: 'claim',
-    title: '5 – Claim on destination Network',
+    title: '4 – Claim Token',
     desc: 'Claim your bridged token.'
   }
 ]
 
-const bscWeb3 = new Web3(
-  new Web3.providers.HttpProvider(
-    'https://data-seed-prebsc-1-s1.binance.org:8545/'
-  )
-)
-
-const ethWeb3 = new Web3(
-  new Web3.providers.HttpProvider(
-    'https://rinkeby.infura.io/v3/4e955a81217a477e88e3793856deb18b'
-  )
-)
-
-const ftmWeb3 = new Web3(
-  new Web3.providers.HttpProvider('https://rpc.testnet.fantom.network/')
-)
-
-const ethContract = makeContract(ethWeb3, BridgeABI, ETHContract)
-const bscContract = makeContract(bscWeb3, BridgeABI, BSCContract)
-const ftmContract = makeContract(ftmWeb3, BridgeABI, FTMContract)
-
 export {
-  ETHContract,
-  BSCContract,
-  FTMContract,
   tokens,
   chains,
   instructions,
   validNetworks,
-  ethContract,
-  bscContract,
-  ftmContract,
-  ethWeb3,
-  bscWeb3,
-  ftmWeb3
+  BridgeContractAddress,
+  NetworkWeb3,
+  Contract
 }

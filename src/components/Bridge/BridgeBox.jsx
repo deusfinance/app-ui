@@ -18,35 +18,48 @@ const BridgeBox = (props) => {
   return (
     <div className="bridge-box">
       <div className="flex-between">
-        <div className="bridge-from">{title}</div>
-        <div className="bridge-from font-weight-600">{`Balance: ${balance}`}</div>
+        <div className="bridge-from">{`${title} ${chain ? chain : ''}`}</div>
+        <div className="bridge-from">
+          {balance && `Balance: ${balance}`}
+          {max && (
+            <div
+              onClick={() => setAmount(String(balance))}
+              className="bridge-max pointer"
+            >
+              (Max)
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex-between pt-13">
         <div>
           {readonly ? (
-            <div className="bridge-amount">{amount}</div>
+            <div className="bridge-amount">{amount ? amount : '0.0'}</div>
           ) : (
             <input
-              type="text"
+              type="number"
               className="input-transparent bridge-amount"
               value={amount}
+              placeholder="0"
               onChange={(e) => setAmount(e.target.value)}
             />
           )}
         </div>
 
         <div className="bridge-token ">
-          {max && (
-            <div
-              onClick={() => setAmount(balance)}
-              className="bridge-max pointer"
-            >
-              Max
-            </div>
-          )}
-          <TokenBadge chain={chain} icon={icon} />
-          <div className="bridge-assets" onClick={handleOpenModal}>
-            {name} <img src="/img/arrow-nav.svg" alt="arrow" />
+          {chain && <TokenBadge chain={chain} icon={icon} />}
+          <div className="bridge-assets pointer" onClick={handleOpenModal}>
+            {name ? (
+              <div className="select-token">
+                {name}
+                <img src="/img/arrow-nav-black.svg" alt="arrow" />
+              </div>
+            ) : (
+              <div className="select-token-btn">
+                <span>Select a Token</span>
+                <img src="/img/bridge/arrow-nav-black.svg" alt="arrow" />
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -10,6 +10,7 @@ const errors = {
     NotConnected: "CONNECT WALLET",
     WrongNetwork: "WRONG NETWORK",
     SelectTokens: "SELECT TOKENS",
+    CoolDown: "*COOLDOWN",
 }
 
 const WrapActions = styled.div`
@@ -27,13 +28,14 @@ const ButtonSwap = styled(ButtonSyncActive)`
   color: ${({ theme }) => theme.text1_2};
   font-size:${({ fontSize }) => fontSize || "20px"};
 `
-const SwapAction = ({ text = "SWAP", swapLoading = false, migrateList, validNetwork, handleSwap, bgColor }) => {
+const SwapAction = ({ text = "SWAP", swapLoading = false, migrateList, validNetwork, handleSwap, coolDown, bgColor }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
         // if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
+        if (parseInt(coolDown) !== 0) return errors.CoolDown + " : " + coolDown + " s"
         if (Object.keys(migrateList).length === 0) return errors.SelectTokens
         return null;
     }

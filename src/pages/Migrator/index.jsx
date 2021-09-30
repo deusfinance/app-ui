@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Type } from '../../components/App/Text';
 import MultipleBox from '../../components/App/Migrator/MultipleBox';
 import MigrateChains from '../../components/App/Migrator/MigrateChains';
@@ -14,20 +14,24 @@ import { RowBetween } from '../../components/App/Row';
 import { MainWrapper, MainDiv, Container, Line } from '../../components/App/Migrator';
 import { snapShotMaker } from '../../constant/migration';
 import snapshot from '../../config/snapshot.json'
-import { useCallback, useEffect } from 'react/cjs/react.development';
 import { useMigrate, useUserStatus } from '../../hooks/useMigrate';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { coolDownState } from '../../store/dei';
+import { getCurrentTimeStamp } from '../../utils/utils';
 
 const Migrator = () => {
-    const { account: wallet, chainId } = useWeb3React()
+    const { account, chainId } = useWeb3React()
     const [fastUpdate,] = useState(0)
     const [userSnap, setUserSnap] = useState([])
     const location = useLocation()
+    const coolDown = useRecoilValue(coolDownState)
+    const [seconds, setSeconds] = useState(0)
+    const setCoolDown = useSetRecoilState(coolDownState)
+
     const search = useLocation().search;
     const queryParams = {
         network: new URLSearchParams(search).get('network')?.toUpperCase(),
-        account: new URLSearchParams(search).get('account')?.toUpperCase(),
     }
-    const account = queryParams.account ?? wallet
 
     useEffect(() => {
         if (account) {
@@ -50,6 +54,29 @@ const Migrator = () => {
     useEffect(() => {
         setSyncChainId(currChain)
     }, [currChain]);
+
+    useEffect(() => {
+        const reminded = parseInt(coolDown) - parseInt(getCurrentTimeStamp())
+        if (coolDown && reminded)
+            setSeconds(reminded)
+    }, [coolDown]);
+
+
+    useEffect(() => {
+        let myInterval = setInterval(() => {
+            if (seconds > 0) {
+                setSeconds(seconds - 1);
+            }
+            if (seconds === 0) {
+                setCoolDown(0)
+                clearInterval(myInterval)
+            }
+        }, 1000)
+        return () => {
+            clearInterval(myInterval);
+        };
+    }, [seconds]);
+
 
     const toggleId = (id, active, token, index) => {
         if (active) {
@@ -115,6 +142,7 @@ const Migrator = () => {
 
             <Line bgColor={'black'}></Line>
 
+
             <SwapAction
                 bgColor={"grad_dei"}
                 text="Migrate"
@@ -128,7 +156,9 @@ const Migrator = () => {
                 handleSwap={handleMigrate}
                 amountIn={1}
                 amountOut={0}
+                coolDown={seconds}
             />
+            {seconds > 0 && <Type.MD mt="2" color="#ff4646">*Next migration available after cooldown timer is at zero</Type.MD>}
         </Container>}
     </MainWrapper>);
 }

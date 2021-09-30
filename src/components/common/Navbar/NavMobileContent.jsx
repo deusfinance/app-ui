@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { ExternalLink } from '../../App/Link';
 import { NavbarMobileContent } from '../../App/Navbar';
 import { NavLink } from 'react-router-dom';
-import LanguageSelector from './LanguageSelector';
 import { useTranslation } from 'react-i18next'
 import OutsideClickHandler from 'react-outside-click-handler';
 

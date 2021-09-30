@@ -66,9 +66,9 @@ const Navbar = () => {
                     <img style={{ width: "32px" }} src="/img/deus.svg" alt="deus" />
                     <img style={{ height: "22px", marginLeft: "10px" }} className="deus-text" src="/img/deus-text.svg" alt="deus" />
                 </ExternalLink>
-                {tvl && <NavButton className="tvl" active={false} >
+                {/* {tvl && <NavButton className="tvl" active={false} >
                     {t("tvl")}: {tvl}
-                </NavButton>}
+                </NavButton>} */}
             </NavbarSideWrap>
 
             <NavDesktop routes={routes} />

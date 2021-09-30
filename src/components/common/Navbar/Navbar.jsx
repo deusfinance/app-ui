@@ -127,9 +127,9 @@ const Navbar = () => {
                         </defs>
                     </svg>
                 </ExternalLink>
-                {tvl && <NavButton className="tvl" active={false} >
+                {/* {tvl && <NavButton className="tvl" active={false} >
                     {t("tvl")}: {tvl}
-                </NavButton>}
+                </NavButton>} */}
             </NavbarSideWrap>
 
             <NavbarContentWrap>

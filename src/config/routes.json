@@ -1,20 +1,13 @@
 [
   {
-    "id": "app",
-    "text": "APP",
-    "children": [
-      {
-        "id": "MIGRATOR",
-        "path": "/migrator",
-        "exact": true
-      },
-      {
-        "id": "MUON PRESALE",
-        "text": "muon presale",
-        "path": "/muon-presale",
-        "exact": true
-      }
-    ]
+    "id": "MUON PRESALE",
+    "path": "/muon-presale",
+    "exact": true
+  },
+  {
+    "id": "V2 MIGRATOR",
+    "path": "/migrator",
+    "exact": true
   },
   {
     "id": "STABLE COIN",
@@ -44,17 +37,6 @@
         "id": "BUYBACK & RECOLLAT",
         "text": "BUYBACK & RECOLLAT",
         "path": "/stable/buyback-recollat"
-      }
-    ]
-  },
-  {
-    "id": "tools",
-    "text": "TOOLS",
-    "children": [
-      {
-        "id": "DEUS android",
-        "text": "DEUS android",
-        "path": "https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US"
       }
     ]
   },

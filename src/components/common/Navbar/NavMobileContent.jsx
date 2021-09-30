@@ -13,9 +13,9 @@ const NavMobile = ({ routes, open, setOpen }) => {
             <NavbarMobileContent open={open}>
                 <ul onClick={() => setOpen(false)}>
 
-                    <li className="nav-item-lg" >
+                    {/* <li className="nav-item-lg" >
                         <LanguageSelector />
-                    </li>
+                    </li> */}
 
                     {<div className="nav-item-wrap-img" style={{ marginTop: "5px", marginBottom: "20px" }}>
                         {routes.filter(nav => nav.image).map((nav, index) => {

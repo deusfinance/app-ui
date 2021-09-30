@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { COLLATERAL_POOL_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
@@ -49,7 +49,7 @@ const Dei = () => {
     const [slippage, setSlippage] = useState(0.5)
     const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
-        .filter((token) => !token.pairID || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
+        .filter((token) => (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
         , [chainId, collatRatio])
     const pairedTokens = useMemo(() => {
         let pTokens = []
@@ -64,6 +64,7 @@ const Dei = () => {
         }
         return pTokens
     }, [tokens])
+
 
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
@@ -86,6 +87,8 @@ const Dei = () => {
         from: {},
         to: deiToken[chainId],
     })
+
+
 
     const [focusType, setFocusType] = useState("from1")
     const [amountIn, setAmountIn] = useState("")
@@ -149,7 +152,7 @@ const Dei = () => {
                     amountOut = out
                     amountIn1 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(collatRatio).div(100).div(in1Unit), swapState.from.decimals, BigNumber.ROUND_DOWN)
                     amountIn2 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals, BigNumber.ROUND_UP)
-                    if (collatRatio == 0){
+                    if (collatRatio == 0) {
                         if (amountIn1 == 0) amountIn1 = amountIn2
                         else if (amountIn2 == 0) amountIn2 = amountIn1
                     }
@@ -179,11 +182,12 @@ const Dei = () => {
             } else if (collatRatio === 0) {
                 primaryToken = tokens[1]
             }
-            setSwapState({ ...swapState, from: primaryToken })
+
+            setSwapState({ to: deiToken[chainId], from: primaryToken })
 
         }
         if (collatRatio != null) changeFromTokens()
-    }, [collatRatio]);// eslint-disable-line
+    }, [collatRatio, tokens, chainId]);// eslint-disable-line
 
     useEffect(() => {
         // setIsPreApproved(null)

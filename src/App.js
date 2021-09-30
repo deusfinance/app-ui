@@ -24,16 +24,13 @@ const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const NotFound = React.lazy(() => import('./components/NotFound'))
 
 // const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
-// const Bridge = React.lazy(() => import('./components/Bridge'))
+const Bridge = React.lazy(() => import('./components/Bridge'))
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));
 // const Sync = React.lazy(() => import('./pages/Sync'));
 // const SyncBSCTest = React.lazy(() => import('./pages/SyncBscTest'));
 // const dbETH = React.lazy(() => import('./pages/dbETH'))
 
-
-
 function App() {
-
   useGoogleAnalytics()
 
   return (
@@ -45,7 +42,7 @@ function App() {
             <div id="blur-pop"></div>
             <Announcements />
             <div className="app-body">
-              <ToastContainer style={{ maxWidth: '450px', width: "90%" }} />
+              <ToastContainer style={{ maxWidth: '450px', width: '90%' }} />
               <Switch>
                 <Route exact path="/not-found" component={NotFound} />
                 <Route
@@ -75,7 +72,7 @@ function App() {
                   component={StakeAndYield}
                 />
                 {/* <Route exact path="/dbETH" component={dbETH} /> */}
-                {/* <Route exact path="/bridge" component={Bridge} /> */}
+                <Route exact path="/bridge" component={Bridge} />
                 <Route exact path="/swap2" component={Swap2} />
                 <Route exact path="/sealed-swap" component={Sealed} />
                 <Route exact path="/muon-presale" component={Muon} />

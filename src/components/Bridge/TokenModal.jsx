@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactModal from 'react-modal'
-import TokenBadge from './TokenBadge'
-import { tokens, chains } from './data'
+import { chains } from './data'
 if (typeof window !== 'undefined') {
   ReactModal.setAppElement('body')
 }
@@ -18,119 +17,117 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: '95%',
-    width: '560px',
+    maxWidth: '560px',
+    width: '95% ',
     background: '#242424',
     border: '1px solid #242424',
+    borderRadius: '10px',
     padding: '26px 20px'
+    // overflow: 'unset'
   }
 }
 
 const TokenModal = (props) => {
-  const { open, hide, changeToken } = props
-  const [chainToken, setChainToken] = React.useState(chains)
-  const [searchQuery, setSearchQuery] = React.useState('')
+  const { open, hide, changeToken, tokens, tokenId, selectedChain } = props
+  const [chain, setChain] = React.useState('')
   const [showTokens, setShowTokens] = React.useState(tokens)
+  // const [checked, setChecked] = React.useState({
+  //   FTM: true,
+  //   ETH: true,
+  //   BSC: true
+  // })
 
-  const handleSearchModal = (e) => {
-    let search = e.target.value
-    setSearchQuery(search)
-  }
-  const handleFilter = (e) => {
-    if (e.target.checked) {
-      let result = chainToken.filter((item) => item.name === e.target.value)
-      if (result.length === 0) {
-        setChainToken(chains)
-      } else {
-        setChainToken(result)
-      }
-    } else {
-      let result = chainToken.filter((item) => item.name !== e.target.value)
-      if (result.length === 0) {
-        setChainToken(chains)
-      } else {
-        setChainToken(result)
-      }
-    }
-  }
   React.useEffect(() => {
-    const search = new RegExp([searchQuery].join(''), 'i')
-    const resultFilter = tokens.filter(
-      (item) => search.test(item.name) || search.test(item.chain)
-    )
-    setShowTokens(resultFilter)
-  }, [chainToken, searchQuery])
+    if (tokenId) {
+      let result = showTokens.filter((token) => token.tokenId === tokenId)
+      setShowTokens(result)
+    } else {
+      setShowTokens(tokens)
+    }
+  }, [tokenId]) // eslint-disable-line
+
+  const closeModal = () => {
+    hide()
+    setChain('')
+  }
+
   return (
     <ReactModal
       isOpen={open}
       style={customStyles}
-      closeTimeoutMS={200}
-      onRequestClose={hide}
+      onRequestClose={closeModal}
       shouldCloseOnOverlayClick={true}
     >
       <div>
+        {/* <> */}
         <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLabel">
-            Select an asset
-          </h5>
-
-          <span className="close" onClick={hide}>
+          <div className="modal-title">Select an asset</div>
+          <span onClick={closeModal} className="close">
             &times;
           </span>
         </div>
-        <div className="modal-body">
-          <div className="content-modal-bridge">
-            <input
-              className="input-search"
-              placeholder="Type to search"
-              onChange={handleSearchModal}
-            />
-            <div className="filter">Filter</div>
-            <div className="bridge-checkbox">
-              {chains.map((chain, index) => (
-                <span key={index}>
-                  <input
-                    type="checkbox"
-                    id={chain.name}
-                    name={chain.name}
-                    defaultValue={chain.name}
-                    onChange={handleFilter}
-                  />
-                  <label htmlFor={chain.name}>{chain.name}</label>
-                </span>
-              ))}
-            </div>
-            <div className="border-bottom"></div>
-            <div className="flex-between token-name">
-              <div>Token name</div>
-              <div>Balance</div>
-            </div>
-            <div className="border-bottom mb-5"></div>
-            <div className="pt-20">
-              {chainToken.map((chain) =>
-                showTokens.map((token, index) => {
-                  return (
-                    <div
-                      className="token-list"
-                      key={index}
-                      onClick={() => {
-                        changeToken(token, chain.id)
-                        setChainToken(chains)
-                        hide()
-                      }}
-                    >
-                      <div className="token-list-item">
-                        <TokenBadge chain={chain.name} icon={token.icon} />
-                        <span>{`${token.name} (${chain.name})`}</span>
+        <div className="border-bottom"></div>
+
+        <div className="content-modal-bridge">
+          <div className="filter">Select Chain</div>
+          <ul className="bridge-radio">
+            {chains.map((chain, index) => (
+              <li key={index} className="pointer">
+                <input
+                  type="radio"
+                  id={chain.name}
+                  name="chainRadio"
+                  onChange={() => setChain(chain)}
+                  disabled={chain.network === selectedChain}
+                />
+                <label htmlFor={chain.name} className={`${chain.name} pointer`}>
+                  {chain.name}
+                </label>
+              </li>
+            ))}
+          </ul>
+          <div className="flex-between token-name">
+            <div>Token name</div>
+            <div className="pr-13">Balance</div>
+          </div>
+          <div className="border-bottom"></div>
+          <div className="container-token">
+            {chain ? (
+              showTokens.map((token, index) => {
+                return (
+                  <div className="token-list" key={index}>
+                    <div className="token-list-item ">
+                      <img src={`/img/bridge/${token.icon}`} alt={token.icon} />
+
+                      <div
+                        className="pointer"
+                        onClick={() => {
+                          changeToken(token, chain.network)
+                          closeModal()
+                        }}
+                      >
+                        {token.name}
+                        <span className="bridge-container-badge-modal">
+                          (
+                          <span
+                            className={`modal-badge badge badge-${chain.name}`}
+                          >
+                            {chain.name}
+                          </span>
+                          )
+                        </span>
                       </div>
-                      <div>{token.balance}</div>
                     </div>
-                  )
-                })
-              )}
-            </div>
+                    <div>{token.balances[chain.network]}</div>
+                  </div>
+                )
+              })
+            ) : (
+              <div className="desc-select-chain">Select a Chain</div>
+            )}
           </div>
         </div>
+        {/* </div> */}
       </div>
     </ReactModal>
   )

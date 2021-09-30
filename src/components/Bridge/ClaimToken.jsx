@@ -1,84 +1,13 @@
 import React from 'react'
 import TokenBadge from './TokenBadge'
 import useWeb3 from '../../hooks/useWeb3'
-import { makeContract } from '../../utils/Stakefun'
-import { BridgeABI } from '../../utils/StakingABI'
-import { sendTransaction } from '../../utils/Stakefun'
-import { chains, tokens, BSCContract, ETHContract, FTMContract } from './data'
-import { ethCallContract } from './utils'
+
+import { chains, tokens } from './data'
 
 const ClaimToken = (props) => {
-  const { claims, chainId, account, setFetch } = props
+  const { claims, chainId, handleClaim } = props
   const web3 = useWeb3()
-  const activeEthContract = makeContract(web3, BridgeABI, ETHContract)
-  const activeBscContract = makeContract(web3, BridgeABI, BSCContract)
-  const activeFtmContract = makeContract(web3, BridgeABI, FTMContract)
 
-  const handleClaim = async (claim, id) => {
-    if (chainId !== id) {
-      return
-    }
-    let Contract = ''
-
-    switch (chainId) {
-      case 4:
-        Contract = activeEthContract
-        break
-      case 97:
-        Contract = activeBscContract
-        break
-      case 4002:
-        Contract = activeFtmContract
-        break
-      default:
-        break
-    }
-    let originContractAddress = ''
-    switch (Number(claim.fromChain)) {
-      case 1:
-        originContractAddress = ETHContract
-        break
-      case 2:
-        originContractAddress = BSCContract
-        break
-      case 3:
-        originContractAddress = FTMContract
-        break
-      default:
-        break
-    }
-    let amount = web3.utils.fromWei(claim.amount, 'ether')
-    let chain = chains.find((item) => item.network === Number(claim.toChain))
-    // const Contract = makeContract(web3, BridgeABI, bridgeContract)
-    let nodesSigResults = await ethCallContract(
-      originContractAddress,
-      'getTx',
-      [claim.txId],
-      BridgeABI,
-      Number(claim.fromChain)
-    )
-    let sigs = nodesSigResults.result.signatures.map(
-      ({ signature }) => signature
-    )
-    sendTransaction(
-      Contract,
-      `claim`,
-      [
-        account,
-        claim.amount,
-        Number(claim.fromChain),
-        Number(claim.toChain),
-        claim.tokenId,
-        claim.txId,
-        sigs
-      ],
-      account,
-      chainId,
-      `Claim ${amount} ${chain.name}`
-    ).then(() => {
-      setFetch(claim)
-    })
-  }
   return (
     <>
       {claims.length > 0 && (
@@ -91,26 +20,38 @@ const ClaimToken = (props) => {
               (item) => item.network === Number(claim.toChain)
             )
             return (
-              <div className="flex-between mb-5" key={index}>
-                <div className="token-item">
-                  <TokenBadge chain={chain.name} icon={token.icon} />
-                  <span>{`${token.name} (${chain.name})`}</span>
+              <div key={index}>
+                <div className="flex-between mb-5">
+                  <div className="token-item">
+                    <TokenBadge chain={chain.name} icon={token.icon} />
+                    <span>{`${token.name} (${chain.name})`}</span>
+                  </div>
+                  <div className="claim-amount">{amount}</div>
                 </div>
-                <div className="claim-amount">{amount}</div>
-                <div className="container-claim-btn">
-                  {chain.id !== chainId && (
-                    <div className="claim-btn">Change Network</div>
-                  )}
+                {chain.network !== chainId ? (
+                  <div className=" container-claim-btn change-claim">
+                    CHANGE NETWORK TO CLAIM
+                  </div>
+                ) : (
                   <div
-                    className="claim-btn"
-                    onClick={() => handleClaim(claim, chain.id)}
+                    className="container-claim-btn claim-btn pointer"
+                    onClick={() => handleClaim(claim, chain.network)}
                   >
                     CLAIM
                   </div>
-                </div>
+                )}
+                <div className="border-bottom-claim mb-20" />
               </div>
             )
           })}
+          <div className="desc-claim">
+            <span className="pink-color opacity-1">
+              Change to the destination Network
+            </span>
+            <span className="opacity-5">
+              to claim your token on respective networks.
+            </span>
+          </div>
         </div>
       )}
     </>

@@ -21,6 +21,7 @@
     "jsbi": "^3.1.4",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
+    "muon": "github:muon-protocol/muon-client-js",
     "node-sass": "^4.14.1",
     "react": "^17.0.2",
     "react-collapsible": "^2.8.3",

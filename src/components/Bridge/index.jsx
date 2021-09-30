@@ -9,67 +9,72 @@ import TokenModal from './TokenModal'
 import { makeContract } from '../../utils/Stakefun'
 import {
   chains,
-  BSCContract,
-  ETHContract,
-  FTMContract,
   validNetworks,
-  ethContract,
-  bscContract,
-  ftmContract,
-  ethWeb3,
-  bscWeb3,
-  ftmWeb3
+  tokens,
+  NetworkWeb3,
+  BridgeContractAddress,
+  Contract
 } from './data'
-import { abi, BridgeABI } from '../../utils/StakingABI'
-import { sendTransaction } from '../../utils/Stakefun'
+import { ERC20ABI, BridgeABI } from '../../utils/StakingABI'
+import { sendTransaction, sendTransactionDeposit } from '../../utils/Stakefun'
 import useWeb3 from '../../hooks/useWeb3'
+import useTokenBalances from './getBalances'
 import { ethCallContract } from './utils'
 
 const Bridge = () => {
   const { account, chainId } = useWeb3React()
   const web3React = useWeb3React()
   const { activate } = web3React
+  const [fetch, setFetch] = React.useState('')
+
+  const tokensBalance = useTokenBalances(chains, tokens, fetch)
+
   const [open, setOpen] = React.useState(false)
   const [claims, setClaims] = React.useState([])
-  const [currentTx, setCurrentTx] = React.useState('')
   const [wrongNetwork, setWrongNetwork] = React.useState(false)
-  const [collapse, setCollapse] = React.useState({
-    approve: { pending: true, success: false },
-    deposit: { pending: false, success: false },
-    network: { pending: false, success: false },
-    bridge: { pending: false, success: false },
-    claim: { pending: false, success: false }
-  })
+  const [approve, setApprove] = React.useState('')
+  const [tokenId, setTokenId] = React.useState('')
+  const [lock, setLock] = React.useState('')
 
   const [target, setTarget] = React.useState()
   // TODO change chainId
   const [bridge, setBridge] = React.useState({
     from: {
+      ...tokensBalance[0],
       chain: 'ETH',
-      icon: 'DEUS.svg',
-      name: 'DEUS',
       chainId: 4,
-      tokenId: '1',
-      address: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1'
+      address: tokensBalance[0].address[4]
     },
-    to: {
-      chain: 'BSC',
-      icon: 'DEUS.svg',
-      name: 'DEUS',
-      chainId: 97,
-      tokenId: '1',
-      address: '0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6'
-    }
+    to: {}
   })
-  const [fromBalance, setFromBalance] = React.useState(0)
-  const [toBalance, setToBalance] = React.useState(0)
-  const [amount, setAmount] = React.useState('0')
-  const [fetch, setFetch] = React.useState('')
+  React.useEffect(() => {
+    if (bridge.to.chain) {
+      let result = tokensBalance.find(
+        (token) => token.tokenId === bridge.from.tokenId
+      )
+      let validChain = chains.filter(
+        (chain) => chain.network !== bridge.from.chainId
+      )
+      setBridge((prev) => ({
+        ...prev,
+        to: {
+          ...result,
+          chain: validChain[0].name,
+          chainId: validChain[0].network,
+          address: result.address[validChain[0].network]
+        }
+      }))
+    }
+  }, [bridge.from, tokensBalance]) // eslint-disable-line
+  const [amount, setAmount] = React.useState('')
+  const [selectedChain, setSelectedChain] = React.useState('')
   const web3 = useWeb3()
 
-  const activeEthContract = makeContract(web3, BridgeABI, ETHContract)
-  const activeBscContract = makeContract(web3, BridgeABI, BSCContract)
-  const activeFtmContract = makeContract(web3, BridgeABI, FTMContract)
+  const activeContract = {
+    4: makeContract(web3, BridgeABI, BridgeContractAddress[4]),
+    97: makeContract(web3, BridgeABI, BridgeContractAddress[97]),
+    4002: makeContract(web3, BridgeABI, BridgeContractAddress[4002])
+  }
 
   React.useEffect(() => {
     if (!validNetworks.includes(chainId)) {
@@ -87,112 +92,42 @@ const Bridge = () => {
       for (let index = 0; index < chains.length; index++) {
         const chain = chains[index]
 
-        let originContract = ''
-        switch (chain.network) {
-          case 1:
-            originContract = ethContract
-            break
-          case 2:
-            originContract = bscContract
-            break
-          case 3:
-            originContract = ftmContract
-            break
-          default:
-            break
-        }
         let dest = chains.filter((item) => item.network !== chain.network)
-
         for (let index = 0; index < dest.length; index++) {
           const item = dest[index]
-          let destContract = ''
-          switch (item.network) {
-            case 1:
-              destContract = ethContract
-              break
-            case 2:
-              destContract = bscContract
-              break
-            case 3:
-              destContract = ftmContract
-              break
-            default:
-              break
-          }
-          let userTxs = await originContract.methods
-            .getUserTxs(account, item.network)
-            .call()
 
-          let pendingTxs = await destContract.methods
-            .pendingTxs(chain.network, userTxs)
-            .call()
-          const pendingIndex = pendingTxs.reduce(
-            (out, bool, index) => (bool ? out : out.concat(index)),
-            []
-          )
-          for (let index = 0; index < pendingIndex.length; index++) {
-            let claim = await originContract.methods
-              .txs(userTxs[pendingIndex[index]])
+          try {
+            let userTxs = await Contract[chain.network].methods
+              .getUserTxs(account, item.network)
               .call()
-
-            claims.push(claim)
+            let pendingTxs = await Contract[item.network].methods
+              .pendingTxs(chain.network, userTxs)
+              .call()
+            const pendingIndex = pendingTxs.reduce(
+              (out, bool, index) => (bool ? out : out.concat(index)),
+              []
+            )
+            for (let index = 0; index < pendingIndex.length; index++) {
+              let claim = await Contract[chain.network].methods
+                .txs(userTxs[pendingIndex[index]])
+                .call()
+              claims.push(claim)
+            }
+          } catch (error) {
+            console.log('error happend in find Claim')
           }
         }
       }
 
       setClaims(claims)
     }
-    const getBalance = async () => {
-      let bridgeWeb3 = ''
-      let bridgeToWeb3 = ''
-      let toChain = chains.find((item) => item.id === bridge.to.chainId).network
-      let fromChain = chains.find(
-        (item) => item.id === bridge.from.chainId
-      ).network
-      switch (fromChain) {
-        case 1:
-          bridgeWeb3 = ethWeb3
-          break
-        case 2:
-          bridgeWeb3 = bscWeb3
-          break
-        case 3:
-          bridgeWeb3 = ftmWeb3
-          break
-        default:
-          break
-      }
-      switch (toChain) {
-        case 1:
-          bridgeToWeb3 = ethWeb3
-          break
-        case 2:
-          bridgeToWeb3 = bscWeb3
-          break
-        case 3:
-          bridgeToWeb3 = ftmWeb3
-          break
-        default:
-          break
-      }
 
-      const fromContract = makeContract(bridgeWeb3, abi, bridge.from.address)
-      let fromBalance = await fromContract.methods.balanceOf(account).call()
-      fromBalance = web3.utils.fromWei(fromBalance, 'ether')
-      setFromBalance(fromBalance)
-      const toContract = makeContract(bridgeToWeb3, abi, bridge.to.address)
-      let toBalance = await toContract.methods.balanceOf(account).call()
-      toBalance = web3.utils.fromWei(toBalance, 'ether')
-      setToBalance(toBalance)
-    }
     if (account && validNetworks.includes(chainId)) {
-      getBalance()
       findClaim()
     }
 
     const interval = setInterval(() => {
       if (account && validNetworks.includes(chainId)) {
-        getBalance()
         findClaim()
       }
     }, 15000)
@@ -202,59 +137,34 @@ const Bridge = () => {
 
   React.useEffect(() => {
     const checkApprove = async () => {
-      let bridgeWeb3 = ''
-      let bridgeContract = ''
-      let fromChain = chains.find(
-        (item) => item.id === bridge.from.chainId
-      ).network
-      switch (fromChain) {
-        case 1:
-          bridgeContract = ETHContract
-          bridgeWeb3 = ethWeb3
-          break
-        case 2:
-          bridgeContract = BSCContract
-          bridgeWeb3 = bscWeb3
-          break
-        case 3:
-          bridgeContract = FTMContract
-          bridgeWeb3 = ftmWeb3
-          break
-        default:
-          break
-      }
-      const fromContract = makeContract(bridgeWeb3, abi, bridge.from.address)
+      const fromContract = makeContract(
+        NetworkWeb3[bridge.from.chainId],
+        ERC20ABI,
+        bridge.from.address
+      )
       let approve = await fromContract.methods
-        .allowance(account, bridgeContract)
+        .allowance(account, BridgeContractAddress[bridge.from.chainId])
         .call()
 
       if (approve !== '0') {
-        setCollapse({
-          approve: { pending: false, success: true },
-          deposit: { pending: true, success: false },
-          network: { pending: false, success: false },
-          bridge: { pending: false, success: false },
-          claim: { pending: false, success: false }
-        })
+        setApprove(true)
       } else {
-        setCollapse({
-          approve: { pending: true, success: false },
-          deposit: { pending: false, success: false },
-          network: { pending: false, success: false },
-          bridge: { pending: false, success: false },
-          claim: { pending: false, success: false }
-        })
+        setApprove(false)
       }
     }
-    if (account && !collapse.network.pending) checkApprove()
+    if (account) checkApprove()
   }, [bridge.from, account]) // eslint-disable-line
 
-  const handleOpenModal = (data) => {
+  const handleOpenModal = (data, tokenId) => {
     setTarget(data)
+    if (tokenId) {
+      setTokenId(tokenId)
+      setSelectedChain(bridge.from.chainId)
+    }
     setOpen(true)
   }
   const changeToken = (token, chainId) => {
-    let chain = chains.find((item) => item.id === chainId).name
+    let chain = chains.find((item) => item.network === chainId).name
     setBridge((prev) => ({
       ...prev,
       [target]: {
@@ -268,338 +178,183 @@ const Bridge = () => {
 
   const handleApprove = async () => {
     try {
+      if (!account || approve) return
       if (chainId !== bridge.from.chainId) {
         setWrongNetwork(true)
         return
       }
-      if (!account) return
-      if (collapse.approve.success) return
-      let Contract = makeContract(web3, abi, bridge.from.address)
-      let amount = web3.utils.toWei('1000000000000000000')
-      let bridgeContract = ''
-      let fromChain = chains.find(
-        (item) => item.id === bridge.from.chainId
-      ).network
-      switch (fromChain) {
-        case 1:
-          bridgeContract = ETHContract
-          break
-        case 2:
-          bridgeContract = BSCContract
-          break
-        case 3:
-          bridgeContract = FTMContract
-          break
-        default:
-          break
-      }
 
+      let Contract = makeContract(web3, ERC20ABI, bridge.from.address)
+      let amount = web3.utils.toWei('1000000000000000000')
       sendTransaction(
         Contract,
         `approve`,
-        [bridgeContract, amount],
+        [BridgeContractAddress[bridge.from.chainId], amount],
         account,
         chainId,
         `Approved ${bridge.from.name}`
       ).then(() => {
-        setCollapse((prev) => {
-          return {
-            ...prev,
-            approve: {
-              pending: false,
-              success: true
-            },
-            deposit: { pending: true, success: false }
-          }
-        })
+        setApprove(true)
       })
     } catch (error) {
-      console.log('error happend in Approve', error)
+      console.log('error happened in Approve', error)
     }
   }
   const handleDeposit = () => {
     try {
+      if (!approve || !account || amount === '0' || amount === '') return
+
       if (chainId !== bridge.from.chainId) {
         setWrongNetwork(true)
         return
       }
-      if (!collapse.approve.success) return
-      if (!account) {
-        return
-      }
-      if (amount === '0' || amount === '') return
-      let toChain = chains.find((item) => item.id === bridge.to.chainId).network
-      let fromChain = chains.find(
-        (item) => item.id === bridge.from.chainId
-      ).network
 
-      let Contract = ''
-
-      switch (fromChain) {
-        case 1:
-          Contract = activeEthContract
-          break
-        case 2:
-          Contract = activeBscContract
-          break
-        case 3:
-          Contract = activeFtmContract
-          break
-        default:
-          break
-      }
-      // const Contract = makeContract(web3, BridgeABI, bridgeContract)
       let amountWie = web3.utils.toWei(amount)
-      sendTransaction(
-        Contract,
+      sendTransactionDeposit(
+        activeContract[bridge.from.chainId],
         `deposit`,
-        [amountWie, toChain, bridge.from.tokenId],
+        [amountWie, bridge.to.chainId, bridge.from.tokenId],
         account,
         chainId,
-        `Deposite ${amount} ${bridge.from.name}`
+        `Deposit ${amount} ${bridge.from.name}`,
+        NetworkWeb3[bridge.from.chainId]
       ).then(() => {
-        setCollapse((prev) => {
-          return {
-            ...prev,
-            deposit: {
-              pending: false,
-              success: true
-            },
-            network: { pending: true, success: false }
-          }
-        })
+        setAmount('')
+        setFetch(new Date().getTime())
       })
     } catch (error) {
       console.log('error happend in Deposit', error)
     }
   }
-  const handleChangeNetwork = () => {
-    if (chainId !== bridge.to.chainId) {
-      setWrongNetwork(true)
-      return
-    }
-    setCollapse((prev) => {
-      return {
-        ...prev,
-        network: {
-          pending: false,
-          success: true
-        },
-        bridge: { pending: true, success: false }
-      }
-    })
-  }
-  const handleBridge = async () => {
-    if (chainId !== bridge.to.chainId) {
-      setWrongNetwork(true)
-      return
-    }
 
-    let toChain = chains.find((item) => item.id === bridge.to.chainId).network
-    let fromChain = chains.find(
-      (item) => item.id === bridge.from.chainId
-    ).network
-
-    let destContract = ''
-    let originContract = ''
-    let originContractAddress = ''
-
-    switch (toChain) {
-      case 1:
-        destContract = ethContract
-        break
-      case 2:
-        destContract = bscContract
-        break
-      case 3:
-        destContract = ftmContract
-        break
-      default:
-        break
-    }
-    switch (fromChain) {
-      case 1:
-        originContract = ethContract
-        originContractAddress = ETHContract
-        break
-      case 2:
-        originContract = bscContract
-        originContractAddress = BSCContract
-        break
-      case 3:
-        originContract = ftmContract
-        originContractAddress = FTMContract
-        break
-      default:
-        break
-    }
-    let userTxs = await originContract.methods
-      .getUserTxs(account, toChain)
-      .call()
-
-    let pendingTxs = await destContract.methods
-      .pendingTxs(fromChain, userTxs)
-      .call()
-    let currentPending = pendingTxs[pendingTxs.length - 1]
-    if (!currentPending) {
-      let txId = userTxs[userTxs.length - 1]
-      let nodesSigResults = await ethCallContract(
-        originContractAddress,
-        'getTx',
-        [txId],
-        BridgeABI,
-        fromChain
-      )
-      console.log({ nodesSigResults, currentPending })
-      let sigs = nodesSigResults.result.signatures.map(
-        ({ signature }) => signature
-      )
-      setCurrentTx({ txId, sigs })
-    }
-
-    setCollapse((prev) => {
-      return {
-        ...prev,
-        bridge: {
-          pending: false,
-          success: true
-        },
-        claim: { pending: true, success: false }
-      }
-    })
-  }
-  const handleClaim = async () => {
-    if (chainId !== bridge.to.chainId) {
-      setWrongNetwork(true)
-      return
-    }
-    let Contract = ''
-
-    switch (chainId) {
-      case 4:
-        Contract = activeEthContract
-        break
-      case 97:
-        Contract = activeBscContract
-        break
-      case 4002:
-        Contract = activeFtmContract
-        break
-      default:
-        break
-    }
-    let amountWie = web3.utils.toWei(amount)
-    let toChain = chains.find((item) => item.id === bridge.to.chainId).network
-    let fromChain = chains.find(
-      (item) => item.id === bridge.from.chainId
-    ).network
-    // const Contract = makeContract(web3, BridgeABI, bridgeContract)
-
-    sendTransaction(
-      Contract,
-      `claim`,
-      [
-        account,
-        amountWie,
-        fromChain,
-        toChain,
-        bridge.from.tokenId,
-        currentTx.txId,
-        currentTx.sigs
-      ],
-      account,
-      chainId,
-      `Claim ${amount} ${bridge.to.chain}`
-    ).then(() => {
-      setFetch(`${currentTx}-claim`)
-      setCollapse({
-        approve: { pending: false, success: true },
-        deposit: { pending: true, success: false },
-        network: { pending: false, success: false },
-        bridge: { pending: false, success: false },
-        claim: { pending: false, success: false }
-      })
-      setAmount('0')
-    })
-  }
   const handleConnectWallet = async () => {
     await activate(injected)
   }
+  const handleSwap = () => {
+    if (bridge.to.chain) {
+      let swap = bridge
+      setBridge({
+        from: { ...bridge.to },
+        to: { ...swap.from }
+      })
+    }
+  }
+  const handleClaim = async (claim, network) => {
+    try {
+      if (
+        chainId !== network ||
+        (lock &&
+          lock.fromChain === claim.fromChain &&
+          lock.toChain === claim.toChain &&
+          lock.txId === claim.txId)
+      ) {
+        return
+      }
+
+      let amount = web3.utils.fromWei(claim.amount, 'ether')
+      let chain = chains.find((item) => item.network === Number(claim.toChain))
+      let nodesSigResults = await ethCallContract(
+        BridgeContractAddress[Number(claim.fromChain)],
+        'getTx',
+        [claim.txId],
+        BridgeABI,
+        Number(claim.fromChain)
+      )
+      let _reqId = `0x${nodesSigResults.result.cid.substr(1)}`
+      let sigs = nodesSigResults.result.signatures.map(
+        ({ signature }) => signature
+      )
+      setLock(claim)
+      sendTransaction(
+        activeContract[chainId],
+        `claim`,
+        [
+          account,
+          claim.amount,
+          Number(claim.fromChain),
+          Number(claim.toChain),
+          claim.tokenId,
+          claim.txId,
+          _reqId,
+          sigs
+        ],
+        account,
+        chainId,
+        `Claim ${amount} ${chain.name}`
+      ).then(() => {
+        setFetch(claim)
+        setLock('')
+      })
+    } catch (error) {
+      console.log('error happend in Claim', error)
+    }
+  }
+
   return (
-    <>
-      <Instruction collapse={collapse} />
-      <ClaimToken
-        claims={claims}
-        chainId={chainId}
-        account={account}
-        setFetch={(data) => setFetch(data)}
-      />
+    <div className="wrap-bridge">
+      <div className="width-340">
+        <Instruction />
+      </div>
+
       <div className="container-bridge">
         <div className="bridge-title">
           <h1>DEUS Bridge</h1>
         </div>
-        <div className="bridge">
-          <img src="/img/bridge/bridge.svg" alt="bridge" />
-          <img
-            src="/img/bridge/bsc-logo 1.svg"
-            alt="bsc-logo"
-            className="bsc-logo"
-          />
-          <img
-            src="/img/bridge/Ethereum-icon.svg"
-            alt="eth-logo"
-            className="eth-logo"
-          />
-          <img src="/img/bridge/image 1.svg" alt="logo" className="logo" />
-
-          <div className="bridge-box-1">
+        <img src="/img/bridge/bridge.svg" alt="bridge" />
+        <img
+          src="/img/bridge/bsc-logo 1.svg"
+          alt="bsc-logo"
+          className="bsc-logo"
+        />
+        <img
+          src="/img/bridge/Ethereum-icon.svg"
+          alt="eth-logo"
+          className="eth-logo"
+        />
+        <img src="/img/bridge/image 1.svg" alt="logo" className="ftm-logo" />
+        <div className="wrapp-bridge-box">
+          <div className="relative">
             <BridgeBox
               title="from"
               {...bridge.from}
-              balance={fromBalance}
+              balance={bridge.from.balances[bridge.from.chainId]}
               amount={amount}
               setAmount={(data) => setAmount(data)}
               max={true}
               handleOpenModal={() => handleOpenModal('from')}
             />
-          </div>
-          <div className="arrow">
-            <img src="/img/swap/swap-arrow.svg" alt="arrow" />
-          </div>
 
-          <div className="bridge-box-2">
+            <div className="arrow pointer" onClick={handleSwap}>
+              <img src="/img/swap/swap-arrow.svg" alt="arrow" />
+            </div>
             <BridgeBox
               title="to"
               {...bridge.to}
-              balance={toBalance}
+              balance={
+                bridge.to.balances ? bridge.to.balances[bridge.to.chainId] : ''
+              }
               amount={amount}
               readonly={true}
-              handleOpenModal={() => handleOpenModal('to')}
+              handleOpenModal={() => handleOpenModal('to', bridge.from.tokenId)}
             />
           </div>
-        </div>
-        {account ? (
-          <>
-            {(collapse.approve.pending || collapse.deposit.pending) &&
-              !wrongNetwork && (
+          {account ? (
+            <>
+              {!wrongNetwork && (
                 <>
                   <div className="container-btn">
                     <div
                       className={
-                        collapse.approve.success
-                          ? 'bridge-deposit'
-                          : 'bridge-approve pointer'
+                        approve ? 'bridge-deposit' : 'bridge-approve pointer'
                       }
                       onClick={handleApprove}
                     >
-                      Approve
+                      {approve ? 'Approved' : 'Approve'}
                     </div>
 
                     <div
                       className={
-                        collapse.approve.success
-                          ? 'bridge-approve pointer'
-                          : 'bridge-deposit'
+                        approve ? 'bridge-approve pointer' : 'bridge-deposit'
                       }
                       onClick={handleDeposit}
                     >
@@ -609,43 +364,45 @@ const Bridge = () => {
                   <div className="container-status-button">
                     <div className="status-button">
                       <div className="active">1</div>
-                      <div className={collapse.approve.success ? 'active' : ''}>
-                        2
-                      </div>
+                      <div className={approve ? 'active' : ''}>2</div>
                     </div>
                   </div>
                 </>
               )}
-            {collapse.network.pending && !wrongNetwork && (
-              <div className="pink-btn" onClick={handleChangeNetwork}>
-                CHANGE NETWORK
-              </div>
-            )}
-            {collapse.bridge.pending && !wrongNetwork && (
-              <div className="pink-btn" onClick={handleBridge}>
-                INITIATE BRIDGING
-              </div>
-            )}
-            {collapse.claim.pending && !wrongNetwork && (
-              <div className="pink-btn" onClick={handleClaim}>
-                CLAIM TOKEN
-              </div>
-            )}
-            {wrongNetwork && <div className="wrong-network">Wrong Network</div>}
-          </>
-        ) : (
-          <div className="pink-btn" onClick={handleConnectWallet}>
-            Connect Wallet
-          </div>
-        )}
+              {wrongNetwork && (
+                <div className="wrong-network-bridge">Wrong Network</div>
+              )}
+            </>
+          ) : (
+            <div className="pink-btn pointer" onClick={handleConnectWallet}>
+              Connect Wallet
+            </div>
+          )}
+        </div>
 
         <TokenModal
+          tokens={tokensBalance}
           open={open}
-          hide={() => setOpen(!open)}
+          tokenId={tokenId}
+          selectedChain={selectedChain}
+          hide={() => {
+            setOpen(!open)
+            setTokenId('')
+            setSelectedChain('')
+          }}
           changeToken={(token, chainId) => changeToken(token, chainId)}
         />
       </div>
-    </>
+      <div className="width-340">
+        <ClaimToken
+          claims={claims}
+          chainId={chainId}
+          account={account}
+          setFetch={(data) => setFetch(data)}
+          handleClaim={(claim, network) => handleClaim(claim, network)}
+        />
+      </div>
+    </div>
   )
 }
 

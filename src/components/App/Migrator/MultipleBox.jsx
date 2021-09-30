@@ -26,6 +26,15 @@ const PlusImgMid = styled.img`
     `}
 `
 
+// position: relative;
+// height: 75px;
+// width: 100 %;
+// max - width: 180px;
+// background: #272727;
+// border: 1px solid #000000;
+// border - radius: 15px;
+// margin: 0;
+
 const QuadBox = styled.div`
     margin: 25px 0;
     max-width: 324px;
@@ -54,10 +63,20 @@ const Wrapper = styled.div`
     border: 1px solid #000000;
     border-radius: ${({ borderRadius }) => borderRadius || "15px"};
     margin: 0;
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        font-size: 13px;
+        height: 80px;
+    `}
 `
 
 const TokenText = styled(Type.LG)`
     font-weight: 300;
+        ${({ theme }) => theme.mediaWidth.upToSmall`
+        font-size: 15px;
+    `}
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        font-size: 13px;
+    `}
 `
 
 const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => {

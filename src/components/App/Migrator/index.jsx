@@ -15,9 +15,9 @@ export const MainDiv = styled.div`
     margin: "auto";
     justify-content: "center";
     margin: 0 auto;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
+    /* ${({ theme }) => theme.mediaWidth.upToSmall`
         max-width: 450px;
-    `}
+    `} */
 `
 
 export const Container = styled.div`
@@ -57,9 +57,9 @@ export const Line = styled.div`
 
 export const DesktopDiv = styled.div`
     display: block;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
+    /* ${({ theme }) => theme.mediaWidth.upToSmall`
         display: none;
-    `}
+    `} */
 `
 
 export const MobileDiv = styled.div`

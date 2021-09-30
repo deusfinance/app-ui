@@ -7,14 +7,18 @@ export const MainWrapper = styled.div`
    width: 95%;
    max-width: 300px;
    background: #0D0D0D;
-   ${({ theme }) => theme.mediaWidth.upToSmall`
+   /* ${({ theme }) => theme.mediaWidth.upToSmall`
         margin: 0 auto;
         background: transparent;
-    `}
+    `} */
 `
 
 export const TokensContainer = styled.div`
     padding: 15px 0;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        margin-left: 8px;
+        margin-right: 8px;
+    `}
 `
 
 export const Token = styled.div`
@@ -35,6 +39,12 @@ export const Token = styled.div`
     &:hover{
         filter: ${({ active }) => active ? "brightness(1)" : "brightness(1.5)"};
     }
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        max-width: 200px;
+    `}
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        max-width: 150px;
+    `}
 `
 
 const DeusV2Tokens = ({ config, toggleId, active }) => {

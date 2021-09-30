@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Text } from 'rebass/styled-components'
 
 const TextWrapper = styled(Text)`
-  color: ${({ color, theme }) => (theme)[color]};
+    color: ${({ color, theme }) => (theme)[color]};
 `
 
 export const Type = {

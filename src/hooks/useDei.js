@@ -33,8 +33,8 @@ export const useAPY = (validChainId) => {
     useEffect(() => {
         const get = async () => {
             try {
-                const apy = await makeDeiRequest("/getApy", validChainId)
-                const apyValue = apy ? apy : "- "
+                const apy = await makeDeiRequest("/apy", validChainId)
+                const apyValue = apy ? apy : null
                 setAPY(apyValue)
             } catch (error) {
                 console.log("useAPY ", error);

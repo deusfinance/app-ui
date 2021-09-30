@@ -31,7 +31,7 @@ const QuadBox = styled.div`
     max-width: 324px;
     position: relative;
     ${({ theme }) => theme.mediaWidth.upToSmall`
-        margin: 15px auto;
+        margin-right: 8px;
     `}
 `
 

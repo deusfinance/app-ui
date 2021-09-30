@@ -213,7 +213,12 @@ const Staking = ({ config = {}, chainId, apyValue }) => {
                 </ActionContainer>
             </ActionWrap>
             <Type.XXL mb="4" mt="4">{stakingInfo.title}</Type.XXL>
-            <Type.LG mt="3" mb="3"> {apyValue}% APY</Type.LG>
+
+            <Type.LG mt="3" mb="3"> 
+                {apyValue && <span> {apyValue}% APY </span>}
+                {!apyValue && <img alt="sp" src="/img/spinner.svg" width="40" height="40" />}
+            </Type.LG>
+
             {active && <>
                 <Type.MD mt="2" mb="4" >you own {percent}% of the pool</Type.MD>
                 <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount={pendingReward} onAction={handleClaim} />

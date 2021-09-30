@@ -125,12 +125,12 @@ const Migrator = () => {
                                 <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
                             </RowBetween>
                         </DesktopDiv>
-                        <MobileDiv>
+                        {/* <MobileDiv>
                             <AutoRow>
                                 <MultipleBox currency={config.tokens.from} fastUpdate={fastUpdate} />
                                 <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
                             </AutoRow>
-                        </MobileDiv>
+                        </MobileDiv> */}
                     </Container>
                     {(config.id + 1) !== userSnap.length && <Image src="/img/dei/arrow-down.svg" size="35px" my="15px" />}
                 </div>

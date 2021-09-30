@@ -11,6 +11,13 @@ const TitleWrap = styled.div`
     border-bottom: 2px solid #000000;
 `
 
+const TLG = styled(Type.LG)`
+    font-size: 20px;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        font-size: 15px;
+    `}
+`
+
 const MigrationTitle = ({ config, toggleId, active }) => {
     const { title, id } = config
     return (<TitleWrap>
@@ -25,13 +32,13 @@ const MigrationTitle = ({ config, toggleId, active }) => {
                 </svg>
 
             }
-            <Type.LG color={'secondary'} fontWeight="300">Migrate From: </Type.LG>
-            <Type.LG style={{ marginLeft: "5px" }} fontWeight="300"> {title.from} </Type.LG>
+            <TLG color={'secondary'} fontWeight="300">Migrate From: </TLG>
+            <TLG style={{ marginLeft: "5px" }} fontWeight="300"> {title.from} </TLG>
         </div>
 
         <div style={{ display: 'flex', justifyContent: "center", width: "315px", textAlign: "center" }}>
-            <Type.LG color={'secondary'} fontWeight="300">To: </Type.LG>
-            <Type.LG fontWeight="300" style={{ marginLeft: "5px" }}> {title.to} </Type.LG>
+            <TLG color={'secondary'} fontWeight="300">To: </TLG>
+            <TLG fontWeight="300" style={{ marginLeft: "5px" }}> {title.to} </TLG>
         </div>
     </TitleWrap>);
 }

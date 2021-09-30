@@ -1,27 +1,5 @@
-import { convertRate } from "../helper/migrationHelper"
-
-// {
-//     "user_address": "0xa8d359c5559f7b88d460b4268ba438fbcf61e900",
-
-
-
-
-
-
-//     "box6_in_UniDE": 0,
-//     "box6_in_UniDE_staking": 0,
-//     "box6_out_DDLP": 0,
-//     "box6_out_DEUS": 0,
-//     "box6_out_eth": 0,
-//     "box6_out_bEth": 0
-//   }
 
 export const snapShotMaker = (snap) => {
-
-
-
-
-
     const addedBalance = [
         {
             id: 0,

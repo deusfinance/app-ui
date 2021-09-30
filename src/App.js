@@ -12,8 +12,8 @@ import { RecoilRoot } from 'recoil';
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
-const Sync2 = React.lazy(() => import('./pages/Sync2'));
-const Swap2 = React.lazy(() => import('./pages/Swap2'))
+// const Sync2 = React.lazy(() => import('./pages/Sync2'));
+// const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
 const Migrator = React.lazy(() => import('./pages/Migrator'))
@@ -22,11 +22,11 @@ const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
 const DeiBuyBackRecollateralize = React.lazy(() => import('./pages/Dei/BuyBackRecollateralize'))
 
 const Muon = React.lazy(() => import('./pages/Muon'))
-const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
-const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
-const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
-const SyncMain = React.lazy(() => import('./pages/SyncMain'))
-const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
+// const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
+// const SyncHeco = React.lazy(() => import('./pages/SyncHeco'))
+// const SyncMatic = React.lazy(() => import('./pages/SyncMatic'))
+// const SyncMain = React.lazy(() => import('./pages/SyncMain'))
+// const SyncBSC = React.lazy(() => import('./pages/SyncBsc'))
 const NotFound = React.lazy(() => import('./pages/Errors'))
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));
 
@@ -48,12 +48,12 @@ function App() {
                 <ToastContainer style={{ maxWidth: '450px', width: "90%" }} />
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
-                  <Route exact path="/crosschain/xdai/synchronizer" component={SyncXdai} />
+                  {/* <Route exact path="/crosschain/xdai/synchronizer" component={SyncXdai} />
                   <Route exact path="/crosschain/bsc/synchronizer" component={SyncBSC} />
                   <Route exact path="/crosschain/heco/synchronizer" component={SyncHeco} />
                   <Route exact path="/crosschain/polygon/synchronizer" component={SyncMatic} />
-                  <Route exact path="/synchronizer" component={SyncMain} />
-                  <Route exact path="/swap2" component={Swap2} />
+                  <Route exact path="/synchronizer" component={SyncMain} /> */}
+                  {/* <Route exact path="/swap2" component={Swap2} /> */}
                   <Route exact path="/migrator" component={Migrator} />
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />
@@ -63,7 +63,7 @@ function App() {
                   <Route exact path="/stable/buyback-recollat" component={DeiBuyBackRecollateralize} />
                   <Route exact path="/muon-presale" component={Muon} />
                   <Route path="/crosschain/:id/muon-presale" component={Muon} />
-                  <Route exact path="/sync2" component={Sync2} />
+                  {/* <Route exact path="/sync2" component={Sync2} /> */}
                   <Redirect exact from="/" to="/stable/mint" />
                   <Redirect to="not-found" />
                 </Switch>

@@ -42,7 +42,7 @@ export const useMigrate = (migrateList, validChainId = 1, callback) => {
             console.log(e);
             return false
         }
-    }, [migrateList, account, chainId, validChainId, callback, web3])
+    }, [migrateList, account, chainId, validChainId, setCoolDown, web3])
 
     return { onMigrate: handleSwap }
 }
@@ -82,6 +82,6 @@ export const useUserStatus = (account) => {
         if (account && ethContract && polygonContract) {
             getUserStatus(account)
         }
-    }, [account, fastRefresh])
+    }, [account, fastRefresh])//ethContract,polygonContract
     return userStatus
 }

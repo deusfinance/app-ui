@@ -1,16 +1,12 @@
 import React from 'react';
 import { MIGRATOR_ADDRESS } from "../constant/contracts"
-import { getTransactionLink, ToastTransaction } from "../utils/explorers"
+import { ToastTransaction } from "../utils/explorers"
 import { doSignTypedData, SendWithToast } from "./web3"
 import axios from "axios"
-import { isZero, ZERO } from "../constant/number"
 import BigNumber from "bignumber.js"
 import { getMigrationContract } from "./contractHelpers"
 import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
-import { ExternalLink } from "../components/App/Link"
-import { useSetRecoilState } from 'recoil';
-import { coolDownState } from '../store/dei';
 
 const NameChainId = {
     1: 'ETH Mainnet',

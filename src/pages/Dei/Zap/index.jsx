@@ -15,7 +15,6 @@ import SwapAction from '../../../components/App/Dei/SwapAction';
 import { useWeb3React } from '@web3-react/core';
 import { useApprove } from '../../../hooks/useApprove';
 import useTokenBalances from '../../../hooks/useTokenBalances';
-import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { ContentWrapper } from '../../../components/App/Dei';
 import { useDeiUpdate, useZap, useAllowance } from '../../../hooks/useDei';
@@ -60,7 +59,7 @@ const Zap = () => {
             from: tokens[0],
             to: deiToken[currChain]
         })
-    }, [tokens])
+    }, [tokens, currChain])
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])

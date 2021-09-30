@@ -10,8 +10,8 @@ import { ChainId } from '../../constant/web3';
 import { getCorrectChains } from '../../constant/correctChain';
 import DeusV2Tokens from '../../components/App/Migrator/DeusV2Tokens';
 import MigrationTitle from '../../components/App/Migrator/MigrationTitle';
-import { RowBetween, AutoRow } from '../../components/App/Row';
-import { MainWrapper, MainDiv, Container, Line, DesktopDiv, MobileDiv } from '../../components/App/Migrator';
+import { RowBetween } from '../../components/App/Row';
+import { MainWrapper, MainDiv, Container, Line, DesktopDiv } from '../../components/App/Migrator';
 import { snapShotMaker } from '../../constant/migration';
 import snapshot from '../../config/snapshot.json'
 import { useMigrate, useUserStatus } from '../../hooks/useMigrate';
@@ -74,7 +74,7 @@ const Migrator = () => {
         return () => {
             clearInterval(myInterval);
         };
-    }, [seconds]);
+    }, [seconds, setCoolDown]);
 
 
     const toggleId = (id, active, token, index) => {

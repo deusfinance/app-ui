@@ -7,11 +7,14 @@ export const MainWrapper = styled.div`
    width: 95%;
    max-width: 300px;
    background: #0D0D0D;
+   ${({ theme }) => theme.mediaWidth.upToSmall`
+        margin: 0 auto;
+        background: transparent;
+    `}
 `
 
-
 export const TokensContainer = styled.div`
-padding: 15px 0;
+    padding: 15px 0;
 `
 
 export const Token = styled.div`

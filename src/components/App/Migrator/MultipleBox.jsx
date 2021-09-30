@@ -10,11 +10,9 @@ const PlusImg = styled.img`
     position: absolute;
     text-align: center;
     margin-left: 135px;
-    /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        margin-bottom: 5px;
-        width: 23px;
-        height: 23px;
-    `} */
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: none;
+    `}
 `
 
 const PlusImgMid = styled.img`
@@ -23,17 +21,18 @@ const PlusImgMid = styled.img`
     text-align: center;
     margin-top: -16px;
     margin-left: -8px;
-    /* ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        margin-bottom: 5px;
-        width: 23px;
-        height: 23px;
-    `} */
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: none;
+    `}
 `
 
 const QuadBox = styled.div`
     margin: 25px 0;
     max-width: 324px;
     position: relative;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        margin: 15px auto;
+    `}
 `
 
 const DoubleBox = styled.div`
@@ -58,7 +57,7 @@ const Wrapper = styled.div`
 `
 
 const TokenText = styled(Type.LG)`
-    font-weight:300;
+    font-weight: 300;
 `
 
 const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => {

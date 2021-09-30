@@ -14,6 +14,10 @@ export const MainDiv = styled.div`
     align-items: "center";
     margin: "auto";
     justify-content: "center";
+    margin: 0 auto;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        max-width: 450px;
+    `}
 `
 
 export const Container = styled.div`
@@ -49,4 +53,18 @@ export const Line = styled.div`
     background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
     height: 1px;
     width: 100%;
+`
+
+export const DesktopDiv = styled.div`
+    display: block;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: none;
+    `}
+`
+
+export const MobileDiv = styled.div`
+    display: none;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: block;
+    `}
 `

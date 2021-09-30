@@ -24,7 +24,6 @@ export const RowFlat = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
 `
 
 export const RowStart = styled.div`

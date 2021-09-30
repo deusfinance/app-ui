@@ -72,7 +72,7 @@ function App() {
                   component={StakeAndYield}
                 />
                 {/* <Route exact path="/dbETH" component={dbETH} /> */}
-                <Route exact path="/bridge" component={Bridge} />
+                {/* <Route exact path="/bridge" component={Bridge} /> */}
                 <Route exact path="/swap2" component={Swap2} />
                 <Route exact path="/sealed-swap" component={Sealed} />
                 <Route exact path="/muon-presale" component={Muon} />

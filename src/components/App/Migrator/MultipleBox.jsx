@@ -26,14 +26,17 @@ const PlusImgMid = styled.img`
     `}
 `
 
-// position: relative;
-// height: 75px;
-// width: 100 %;
-// max - width: 180px;
-// background: #272727;
-// border: 1px solid #000000;
-// border - radius: 15px;
-// margin: 0;
+const StakeSpan = styled.span`
+    margin-top: 12px;
+    font-size: 10px;
+    opacity: 0.7;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        position: absolute;
+        margin-left: -6px;
+        margin-top: 16px;
+        font-size: 7px;
+    `}
+`
 
 const QuadBox = styled.div`
     margin: 25px 0;
@@ -94,6 +97,9 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                             <TokenText fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                                 {currency[0].symbol}
                             </TokenText>
+                            {currency[0].fromStaking && <StakeSpan fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                                Staked:{formatBalance3(currency[0].fromStaking, 4)}
+                            </StakeSpan>}
                         </Box>
                     </Flex>
                 </Wrapper>
@@ -109,6 +115,9 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                             <TokenText fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                                 {currency[1].symbol}
                             </TokenText>
+                            {currency[1].fromStaking && <StakeSpan fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                                Staked:{formatBalance3(currency[1].fromStaking, 4)}
+                            </StakeSpan>}
                         </Box>
                     </Flex>
                 </Wrapper>}
@@ -126,6 +135,9 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                             <TokenText fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                                 {currency[2].symbol}
                             </TokenText>
+                            {currency[2].fromStaking && <StakeSpan fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                                Staked:{formatBalance3(currency[2].fromStaking, 4)}
+                            </StakeSpan>}
                         </Box>
                     </Flex>
                 </Wrapper>}
@@ -141,6 +153,9 @@ const MultipleBox = ({ title, currency, chainId, wrongNetwork, fastUpdate }) => 
                             <TokenText fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                                 {currency[3].symbol}
                             </TokenText>
+                            {currency[3].fromStaking && <StakeSpan fontWeigh={"300"} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                                Staked:{formatBalance3(currency[3].fromStaking, 4)}
+                            </StakeSpan>}
                         </Box>
                     </Flex>
                 </Wrapper>}

@@ -54,17 +54,3 @@ export const Line = styled.div`
     height: 1px;
     width: 100%;
 `
-
-export const DesktopDiv = styled.div`
-    display: block;
-    /* ${({ theme }) => theme.mediaWidth.upToSmall`
-        display: none;
-    `} */
-`
-
-export const MobileDiv = styled.div`
-    display: none;
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-        display: block;
-    `}
-`

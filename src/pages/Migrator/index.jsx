@@ -11,7 +11,7 @@ import { getCorrectChains } from '../../constant/correctChain';
 import DeusV2Tokens from '../../components/App/Migrator/DeusV2Tokens';
 import MigrationTitle from '../../components/App/Migrator/MigrationTitle';
 import { RowBetween } from '../../components/App/Row';
-import { MainWrapper, MainDiv, Container, Line, DesktopDiv } from '../../components/App/Migrator';
+import { MainWrapper, MainDiv, Container, Line } from '../../components/App/Migrator';
 import { snapShotMaker } from '../../constant/migration';
 import snapshot from '../../config/snapshot.json'
 import { useMigrate, useUserStatus } from '../../hooks/useMigrate';
@@ -119,18 +119,10 @@ const Migrator = () => {
                 return <div key={config.id}>
                     <Container >
                         <MigrationTitle toggleId={toggleId} active={migrateList[config.id]} config={config} />
-                        <DesktopDiv>
-                            <RowBetween align={"flex-start"}>
-                                <MultipleBox currency={config.tokens.from} fastUpdate={fastUpdate} />
-                                <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
-                            </RowBetween>
-                        </DesktopDiv>
-                        {/* <MobileDiv>
-                            <AutoRow>
-                                <MultipleBox currency={config.tokens.from} fastUpdate={fastUpdate} />
-                                <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
-                            </AutoRow>
-                        </MobileDiv> */}
+                        <RowBetween align={"flex-start"}>
+                            <MultipleBox currency={config.tokens.from} fastUpdate={fastUpdate} />
+                            <DeusV2Tokens toggleId={toggleId} config={config} active={migrateList[config.id]} />
+                        </RowBetween>
                     </Container>
                     {(config.id + 1) !== userSnap.length && <Image src="/img/dei/arrow-down.svg" size="35px" my="15px" />}
                 </div>

@@ -413,66 +413,76 @@ class MainSwap extends Component {
 
             {/* {!isMobile && <ToastContainer style={{ width: "450px" }} />} */}
 
-            <Title web3={web3} claimable_amount={claimable_amount} />
-
-            <SwapWrap>
-                <div className="swap-box">
-
-                    <TokenBox type={"from"} token={from_token}
-                        estimated=""
-                        handleSearchBox={this.handleSearchBox}
-                        handleTokenInputChange={this.handleTokenInputChange}
-                    />
-
-                    <img
-                        onClick={this.handleChangeType}
-                        src={process.env.PUBLIC_URL + "/img/arrow.svg"}
-                        alt="arrow"
-                        className="arrow" />
-
-                    <TokenBox type={"to"} token={to_token}
-                        estimated={` (${t("estimated")})`}
-                        handleSearchBox={this.handleSearchBox}
-                        handleTokenInputChange={this.handleTokenInputChange}
-                        disabled={true}
-                    />
-
-                    <TokenMarket
-                        handleSwich={this.handleSwichPerPrice}
-                        swap={swap}
-                        toAmount={toAmount}
-                        fromAmount={fromAmount}
-                        fromPerTo={fromPerTo}
-                        perPrice={""}
-                        tvl={""}
-                        tradeVol={""} />
-
-                    <div style={{ margin: "8px 0" }}></div>
-
-                    <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
+            <div className="bg-black">
+                <div className="popUpSwap" style={{ textAlign: "center", margin: "30px 45px" }}>
+                    <span> PLEASE NOTE </span>
+                    <br />
+                    <span> In preparation for the upcoming migration to V2, Swap has been disabled. </span>
                 </div>
+            </div>
 
-                <SearchBox
-                    showSearchBox={showSearchBox}
-                    choosedToken={swap[searchBoxType].name}
-                    handleSearchBox={this.handleSearchBox}
-                    allTokens={allTokens}
-                    tokens={tokens}
-                    handleFilterToken={this.state.tokensMap}
-                    handleChangeToken={this.handleChangeToken}
-                />
+            <div className="staking-content">
+                <Title web3={web3} claimable_amount={claimable_amount} />
 
-                {/* <PriceBox impact={""} vaultsFee={""} /> */}
-                {<PriceBox impact={priceImpactResult} />}
+                <SwapWrap>
+                    <div className="swap-box">
 
-                {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
-                <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} />
+                        <TokenBox type={"from"} token={from_token}
+                            estimated=""
+                            handleSearchBox={this.handleSearchBox}
+                            handleTokenInputChange={this.handleTokenInputChange}
+                        />
+
+                        <img
+                            onClick={this.handleChangeType}
+                            src={process.env.PUBLIC_URL + "/img/arrow.svg"}
+                            alt="arrow"
+                            className="arrow" />
+
+                        <TokenBox type={"to"} token={to_token}
+                            estimated={` (${t("estimated")})`}
+                            handleSearchBox={this.handleSearchBox}
+                            handleTokenInputChange={this.handleTokenInputChange}
+                            disabled={true}
+                        />
+
+                        <TokenMarket
+                            handleSwich={this.handleSwichPerPrice}
+                            swap={swap}
+                            toAmount={toAmount}
+                            fromAmount={fromAmount}
+                            fromPerTo={fromPerTo}
+                            perPrice={""}
+                            tvl={""}
+                            tradeVol={""} />
+
+                        <div style={{ margin: "8px 0" }}></div>
+
+                        <SwapButton handleSwap={this.handleSwap} token={swap.from} approved={approved} web3={web3} isMobile={isMobile} />
+                    </div>
+
+                    <SearchBox
+                        showSearchBox={showSearchBox}
+                        choosedToken={swap[searchBoxType].name}
+                        handleSearchBox={this.handleSearchBox}
+                        allTokens={allTokens}
+                        tokens={tokens}
+                        handleFilterToken={this.state.tokensMap}
+                        handleChangeToken={this.handleChangeToken}
+                    />
+
+                    {/* <PriceBox impact={""} vaultsFee={""} /> */}
+                    {<PriceBox impact={priceImpactResult} />}
+
+                    {from_token.name && to_token && <Routes from={from_token} to={to_token} chainId={chainId} />}
+                    <Slippage slippage={slippageAmount} setSlippage={this.handleSlippage} />
 
 
-            </SwapWrap>
+                </SwapWrap>
 
-            <div className='tut-left-wrap'>
-                <SelectedNetworks />
+                {/* <div className='tut-left-wrap'>
+                    <SelectedNetworks />
+                </div> */}
             </div>
 
         </div>);

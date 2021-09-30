@@ -13,7 +13,7 @@ import './assets/styles/base.scss'
 
 const Deus = React.lazy(() => import('./components/Deus'))
 const StakeAndYield = React.lazy(() => import('./pages/StakeAndYield'))
-const Swap2 = React.lazy(() => import('./pages/Swap2'))
+// const Swap2 = React.lazy(() => import('./pages/Swap2'))
 const Sealed = React.lazy(() => import('./pages/Sealed'))
 const Muon = React.lazy(() => import('./pages/Muon'))
 const SyncXdai = React.lazy(() => import('./pages/SyncXdai'))
@@ -76,7 +76,7 @@ function App() {
                 />
                 {/* <Route exact path="/dbETH" component={dbETH} /> */}
                 {/* <Route exact path="/bridge" component={Bridge} /> */}
-                <Route exact path="/swap2" component={Swap2} />
+                {/* <Route exact path="/swap2" component={Swap2} /> */}
                 <Route exact path="/sealed-swap" component={Sealed} />
                 <Route exact path="/muon-presale" component={Muon} />
                 <Route path="/crosschain/:id/muon-presale" component={Muon} />

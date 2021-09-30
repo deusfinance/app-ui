@@ -9,6 +9,8 @@ import { getMigrationContract } from "./contractHelpers"
 import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { ExternalLink } from "../components/App/Link"
+import { useSetRecoilState } from 'recoil';
+import { coolDownState } from '../store/dei';
 
 const NameChainId = {
     1: 'ETH Mainnet',
@@ -29,7 +31,8 @@ export const migrateTX = async (results, migrationOption, account, chainId, web3
         migrationStatus += migrationOption.charAt(i) === "0" ? "0" : "1"
     }
     migrationStatus = parseInt(migrationStatus, 2).toString()
-    console.log(amounts.map(t => t.toString()),
+    console.log(amounts);
+    console.log(amounts.map(amount => new BigNumber(amount).toFixed(0)),
         expireBlocks,
         migrationStatus,
         signatures);
@@ -103,13 +106,14 @@ export const getRandomNumber = async (account, url) => {
     }
 }
 
+
+
 export const doMigration = async (requestIds, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, callback) => {
 
-    // if (validChainId !== chainId) return
-
+    if (validChainId !== chainId) return
 
     const signature = await signMsg(requestIds, migrateOption, timeStamp, account, validChainId, web3)
-
+    let status = {}
     if (!signature) {
         ToastTransaction("warn", "Failed to sign", "", { autoClose: true })
         return
@@ -134,113 +138,34 @@ export const doMigration = async (requestIds, migrateOption, timeStamp, account,
 
         if (oracleResult.message) {
             ToastTransaction("warn", "Migration Failed", oracleResult.message, { autoClose: true })
-            return
+            return { message: oracleResult.message, success: false }
         }
 
         const output2 = await axios.post(BASE_URL2 + "/migrate", data)
         const oracleResult2 = output2.data
         console.log(oracleResult2);
 
+        if (oracleResult2.message) {
+            ToastTransaction("warn", "Migration Failed", oracleResult.message, { autoClose: true })
+            return { message: oracleResult2.message, success: false }
+        }
 
+        //<ExternalLink href={getTransactionLink(ChainId.MATIC, oracleResult2, "transaction")}> View on explorer</ExternalLink> 
         if (validChainId === ChainId.MATIC) {
-            ToastTransaction(TransactionState.SUCCESS, "Migration started", <div>Please allow a few minutes for your new tokens to reflect on the destination chain <ExternalLink href={getTransactionLink(ChainId.MATIC, oracleResult2, "transaction")}> View on explorer</ExternalLink> </div>, { autoClose: true })
+            ToastTransaction(TransactionState.SUCCESS, "Migration started", <div>Please allow a few minutes for your new tokens to reflect on the destination chain </div>, { autoClose: true })
             return
-            // web3.getTransactionReceipt(oracleResult2).then(receipt => {
-            //     console.log(receipt);
-            //     console.log(receipt.status);
-            // })
-            // return
         }
         const tx = await migrateTX([oracleResult, oracleResult2], migrateOption, account, chainId, web3)
         console.log(tx);
-        // if (!oracleResult.success) {
-        //     const errorMessage = oracleResult.error.message ? oracleResult.error.message : oracleResult.error ? oracleResult.error : ""
-        //     ToastTransaction("warn", "MIGRATION FAILED", errorMessage, { autoClose: true })
-        //     return
-        // }
 
-        // const { result } = oracleResult
-        // console.log(result);
-
-        // const tx = await deposit(
-        //     fromCurrency,
-        //     toCurrency,
-        //     amountIn,
-        //     amountOut,
-        //     result.data.result,
-        //     result.cid,
-        //     result.signatures,
-        //     account,
-        //     validChainId,
-        //     web3
-        // )
-        // callback(tx)
     } catch (error) {
-        // callback({ status: false })
         console.log(error);
         if (error.response.data.message) {
             ToastTransaction("warn", "Migration Failed", error.response.data.message, { autoClose: true })
+            status = { message: error.response.data.message, success: false }
         }
         console.log("getTx failed ", error.response.data);
     }
+    return status
 }
 
-// DD_TO_DEUS = Decimal(2)
-// DU_TO_DEUS = Decimal(10 / 27)
-// DE_TO_DEUS = Decimal(10 / 48)
-// DEUS_TO_DEUS_DEI_LP = Decimal(1 / 2)
-// OLD_DEUS_TO_DEUS = Decimal(20)
-// SDU_TO_DU = Decimal(1 / 1e5)
-
-export const convertRate = (tokens) => {
-    let { from, to } = tokens
-
-    const V1_PER_DEUS_RATE = {
-        "DEA": 1,
-        "sDEA": 1,
-        "DEUS": 0.05,
-        "sDEUS": 0.05,
-        "sUNI-DD": 0.5,
-        "sUNI-DE": 4.8,
-        "sUNI-DU": 0.000027,
-        "BPT": 0,
-        "Uni-DEUS/DEA": 0.5,
-        "Uni-DEA/USDC": 2.7,
-        "Uni-DEUS/ETH": 4.8,
-    }
-
-    const V2_PER_DEUS_RATE = {
-        "DEUS": 1,
-        "DEUS/DEI LP": 2,
-    }
-
-    // let totalBalanceInDEA = ZERO
-
-    // for (let i = 0; i < from.length; i++) {
-    //     const adder = new BigNumber(from[i].balance).times(V1_PER_DEUS_RATE[from[i].symbol])
-    //     totalBalanceInDEA = totalBalanceInDEA.plus(adder)
-    // }
-
-    // if (from.length === 4 && !isZero(from[3].balance)) {
-    //     const DEA_balance_from_BPT_to_DEA = new BigNumber(from[3].DEA_balance_from_BPT).times(V1_PER_DEUS_RATE["DEA"])
-    //     const DEA_balance_from_BPT_to_SDEA = new BigNumber(from[3].SDEA_balance_from_BPT).times(V1_PER_DEUS_RATE["sDEA"])
-    //     const sUniDD_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDD_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DD"])
-    //     const sUniDE_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDE_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DE"])
-    //     const sUniDU_balance_from_BPT_to_DEA = new BigNumber(from[3].sUniDU_balance_from_BPT).times(V1_PER_DEUS_RATE["sUNI-DU"])
-    //     const SDEUS_balance_from_BPT_to_DEA = new BigNumber(from[3].SDEUS_balance_from_BPT).times(V1_PER_DEUS_RATE["sDEUS"])
-
-    //     totalBalanceInDEA = totalBalanceInDEA
-    //         .plus(DEA_balance_from_BPT_to_DEA)
-    //         .plus(DEA_balance_from_BPT_to_SDEA)
-    //         .plus(sUniDD_balance_from_BPT_to_DEA)
-    //         .plus(sUniDE_balance_from_BPT_to_DEA)
-    //         .plus(sUniDU_balance_from_BPT_to_DEA)
-    //         .plus(SDEUS_balance_from_BPT_to_DEA)
-    // }
-
-    // for (let i = 0; i < to.length; i++) {
-    //     to[i].amount = totalBalanceInDEA.div(V2_PER_DEUS_RATE[to[i].symbol]).toFixed()
-    // }
-
-    return { from, to }
-}

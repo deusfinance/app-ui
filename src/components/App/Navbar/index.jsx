@@ -175,6 +175,11 @@ export const NavbarSideWrap = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 2;
+    @media screen and (max-width: 500px) {
+        .deus-text{
+            display:none;
+        }
+    }
     >*{
         margin: 0 7.5px;
     }

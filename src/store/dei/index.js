@@ -17,6 +17,11 @@ export const deiPricesState = atom({
     default: {},
 });
 
+export const coolDownState = atom({
+    key: 'coolDown',
+    default: 0,
+});
+
 export const availableRecollatState = atom({
     key: 'availableRecollat',
     default: null,

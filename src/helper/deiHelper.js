@@ -434,7 +434,7 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, transferRe
             .zapInNativecoin(erc20Path, minLpAmount, transferResidual) // TODO  VALUE:AVAX?
     }
     else if (currency.address === COLLATERAL_ADDRESS[chainId]) {
-        console.log(amountIn, minLpAmount, transferResidual);
+        console.log("zapInCollateral ", amountIn, minLpAmount, transferResidual);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInCollateral(amountIn, minLpAmount, transferResidual)

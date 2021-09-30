@@ -29,6 +29,7 @@ const TitleImage = styled.img`
 const TitleText = styled.span`
     font-weight: bold;
     font-size: 15px;
+    margin-top: 5px;
 `
 
 const Line = styled.div`
@@ -70,8 +71,8 @@ const LinkBox = () => {
         useMemo(() => {
             return <MainWrapper>
                 <FlexDiv>
-                    <TitleImage src={"/img/Dei_logo.svg"} alt="Dei_logo" />
-                    <TitleText > DEI Stable Coin </TitleText>
+                    <TitleImage src={"/img/Dei_logo.svg"} alt="Dei_logo" width="30" />
+                    <TitleText> DEI Stable Coin </TitleText>
                 </FlexDiv>
 
                 <Line />
@@ -82,12 +83,12 @@ const LinkBox = () => {
                     </EachUrl>
                 })}
 
-                <Line2 />
+                {/* <Line2 />
 
                 <BottomTextDiv>
                     If you need more help visit the{' '}
                     <WikiLink href="https://wiki.deus.finance/docs/" target="_blank">wiki</WikiLink>.
-                </BottomTextDiv>
+                </BottomTextDiv> */}
             </MainWrapper>
         }, [])
     )

@@ -88,7 +88,7 @@ const Dei = () => {
     }
 
     const TokensMap = tokensMap
-    const swapState = { from: tokens[3], to: tokens[2] }
+    const swapState = { from: tokens[2], to: tokens[3] }
     const [amountIn1, setAmountIn1] = useState("")
     const [amountIn2, setAmountIn2] = useState("")
     const debouncedAmountIn = useDebounce(amountIn1, 500);

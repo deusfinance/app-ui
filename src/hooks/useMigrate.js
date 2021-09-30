@@ -12,7 +12,7 @@ import { coolDownState } from "../store/dei";
 
 
 
-export const useMigrate = (migrateList, validChainId = 1, callback) => {
+export const useMigrate = (migrateList, validChainId = 1, forceUpdate) => {
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
     const setCoolDown = useSetRecoilState(coolDownState)
@@ -30,19 +30,17 @@ export const useMigrate = (migrateList, validChainId = 1, callback) => {
             const requestId2 = await getRandomNumber(account, BASE_URL2)
 
             const status = await doMigration([requestId1, requestId2].join(","), migrateOption, timeStamp, account, chainId, validChainId, web3)
-            // console.log(status);
             console.log(timeStamp);
             console.log(parseInt(status.message.match(/(\d+)/)[0]) + timeStamp);
             if (!status.success) {
                 setCoolDown(parseInt(status.message.match(/(\d+)/)[0]) + timeStamp)
             }
-            // await buyMuon(fromCurrency, toCurrency, amountIn, amountOut, fromSymbol, amount, time, account, chainId, validChainId, web3, callback)
 
         } catch (e) {
             console.log(e);
             return false
         }
-    }, [migrateList, account, chainId, validChainId, setCoolDown, web3])
+    }, [migrateList, account, chainId, validChainId, setCoolDown, web3, forceUpdate])
 
     return { onMigrate: handleSwap }
 }

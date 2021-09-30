@@ -21,7 +21,7 @@ import { getCurrentTimeStamp } from '../../utils/utils';
 
 const Migrator = () => {
     const { account, chainId } = useWeb3React()
-    const [fastUpdate,] = useState(0)
+    const [fastUpdate, setFastUpdate] = useState(0)
     const [userSnap, setUserSnap] = useState([])
     const location = useLocation()
     const coolDown = useRecoilValue(coolDownState)
@@ -89,11 +89,13 @@ const Migrator = () => {
         setMigrateList({ ...migrateList })
     }
 
-    const { onMigrate } = useMigrate(migrateList, SyncChainId)
+    const { onMigrate } = useMigrate(migrateList, SyncChainId, fastUpdate)
 
     const handleMigrate = useCallback(async () => {
         try {
-            await onMigrate()
+            const tx = await onMigrate()
+            console.log(tx);
+            setFastUpdate(fastUpdate => fastUpdate + 1)
         } catch (e) {
             console.error(e)
         }

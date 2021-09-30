@@ -464,6 +464,12 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, transferRe
                 .methods
                 .zapInCollateral(amountIn, minLpAmount, transferResidual)
         }
+        else if (currency.address === DEUS_ADDRESS[chainId]) {
+            console.log("zapInDEUS ", amountIn, minLpAmount, transferResidual, erc20Path);
+            return getZapContract(web3, zapperAddress, chainId)
+                .methods
+                .zapInDEUS(amountIn, minLpAmount, transferResidual, erc20Path)
+        }
         console.log(erc20Path, amountIn, minLpAmount, transferResidual);
         return getZapContract(web3, zapperAddress, chainId)
             .methods

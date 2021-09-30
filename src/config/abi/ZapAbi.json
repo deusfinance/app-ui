@@ -1,117 +1,533 @@
 [
     {
-        "type": "event",
-        "name": "ZappedIn",
         "inputs": [
             {
-                "type": "address",
-                "name": "input_token",
                 "internalType": "address",
-                "indexed": false
+                "name": "_pair_address",
+                "type": "address"
             },
             {
-                "type": "address",
-                "name": "output_token",
                 "internalType": "address",
-                "indexed": false
+                "name": "_collateral_address",
+                "type": "address"
             },
             {
-                "type": "uint256",
-                "name": "input_amount",
-                "internalType": "uint256",
-                "indexed": false
+                "internalType": "address",
+                "name": "_deus_address",
+                "type": "address"
             },
             {
-                "type": "uint256",
-                "name": "output_amount",
-                "internalType": "uint256",
-                "indexed": false
+                "internalType": "address",
+                "name": "_dei_address",
+                "type": "address"
             },
             {
-                "type": "bool",
-                "name": "transfer_residual",
-                "internalType": "bool",
-                "indexed": false
+                "internalType": "address",
+                "name": "_staking_address",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_uniswap_router",
+                "type": "address"
             }
         ],
-        "anonymous": false
+        "stateMutability": "nonpayable",
+        "type": "constructor"
     },
     {
-        "type": "function",
-        "stateMutability": "nonpayable",
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "staking_address",
+                "type": "address"
+            }
+        ],
+        "name": "StakingSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "input_token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "output_token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "input_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "output_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "transfer_residual",
+                "type": "bool"
+            }
+        ],
+        "name": "ZappedIn",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "_approveToken",
         "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collateral_address",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "dei_address",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "deus_address",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "emergencyWithdrawERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address payable",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "emergencyWithdrawETH",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "usdc_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAmountOutLPCollateral",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "percentage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lp",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "path",
+                "type": "address[]"
+            }
+        ],
+        "name": "getAmountOutLPDEUS",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "percentage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lp",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "path",
+                "type": "address[]"
+            }
+        ],
+        "name": "getAmountOutLPERC20ORNativecoin",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "percentage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lp",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pair_address",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_staking_address",
+                "type": "address"
+            }
+        ],
+        "name": "setStaking",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "staking_address",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "stopped",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "toggleContractActive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "uniswap_router",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minLPAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "transferResidual",
+                "type": "bool"
+            }
+        ],
         "name": "zapInCollateral",
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "amountIn",
-                "internalType": "uint256"
-            },
-            {
-                "type": "uint256",
-                "name": "minLPAmount",
-                "internalType": "uint256"
-            },
-            {
-                "type": "bool",
-                "name": "transferResidual",
-                "internalType": "bool"
-            }
-        ]
-    },
-    {
-        "type": "function",
+        "outputs": [],
         "stateMutability": "nonpayable",
-        "outputs": [],
-        "name": "zapInERC20",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
-                "type": "address[]",
-                "name": "path",
-                "internalType": "address[]"
-            },
-            {
-                "type": "uint256",
+                "internalType": "uint256",
                 "name": "amountIn",
-                "internalType": "uint256"
+                "type": "uint256"
             },
             {
-                "type": "uint256",
+                "internalType": "uint256",
                 "name": "minLPAmount",
-                "internalType": "uint256"
+                "type": "uint256"
             },
             {
-                "type": "bool",
+                "internalType": "bool",
                 "name": "transferResidual",
-                "internalType": "bool"
+                "type": "bool"
             }
-        ]
+        ],
+        "name": "zapInDEI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     },
     {
-        "type": "function",
-        "stateMutability": "payable",
-        "outputs": [],
-        "name": "zapInNativecoin",
         "inputs": [
             {
-                "type": "address[]",
-                "name": "path",
-                "internalType": "address[]"
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
             },
             {
-                "type": "uint256",
+                "internalType": "uint256",
                 "name": "minLPAmount",
-                "internalType": "uint256"
+                "type": "uint256"
             },
             {
-                "type": "bool",
+                "internalType": "bool",
                 "name": "transferResidual",
-                "internalType": "bool"
+                "type": "bool"
+            },
+            {
+                "internalType": "address[]",
+                "name": "path",
+                "type": "address[]"
             }
-        ]
+        ],
+        "name": "zapInDEUS",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     },
     {
-        "type": "receive",
-        "stateMutability": "payable"
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "path",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minLPAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "transferResidual",
+                "type": "bool"
+            }
+        ],
+        "name": "zapInERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "path",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minLPAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "transferResidual",
+                "type": "bool"
+            }
+        ],
+        "name": "zapInNativecoin",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
     }
 ]

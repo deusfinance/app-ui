@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
-import { DEITokens, deiToken } from '../../../constant/token';
+import { ZapTokens, deiToken } from '../../../constant/token';
 import { StakingConfig } from '../../../constant/staking';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
@@ -54,7 +54,7 @@ const Zap = () => {
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
 
-    const tokens = useMemo(() => currChain ? DEITokens[currChain].filter((token) => !token.pairID) : [], [currChain])
+    const tokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain])
     useEffect(() => {
         setSwapState({
             from: tokens[0],

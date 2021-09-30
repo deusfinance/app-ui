@@ -78,8 +78,7 @@ const Zap = () => {
     const [amountOut, setAmountOut] = useState("")
 
     const allowance = useAllowance(swapState.from, contractAddress, currChain)
-
-    // console.log(swapState.from?.address, contractAddress, allowance.toString());
+    console.log(swapState.from?.address, contractAddress, allowance.toString());
 
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
@@ -91,26 +90,32 @@ const Zap = () => {
     }, [currChain, account, swapState.from]);
 
     useEffect(() => {
-        if (isPreApproved == null) {
-            if (allowance.toString() === "-1") {
-                setIsPreApproved(null) //doNothing
-            } else {
-                if (allowance.gt(0)) {
-                    setIsPreApproved(true)
-                } else {
-                    setIsPreApproved(false)
-                }
-            }
+
+        if (allowance.gt(0)) {
+            setIsApproved(true)
         } else {
-            if (allowance.gt(0)) {
-                setIsApproved(true)
-            }
+            setIsApproved(false)
         }
+        // if (isPreApproved == null) {
+        //     if (allowance.toString() === "-1") {
+        //         setIsPreApproved(null) //doNothing
+        //     } else {
+        //         if (allowance.gt(0)) {
+        //             setIsPreApproved(true)
+        //         } else {
+        //             setIsPreApproved(false)
+        //         }
+        //     }
+        // } else {
+        //     if (allowance.gt(0)) {
+        //         setIsApproved(true)
+        //     }
+        // }
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
 
     const { onApprove } = useApprove(swapState.from, contractAddress, currChain)
-    const { onZap } = useZap(swapState.from, stakingInfo, amountIn, 0, currChain)
+    const { onZap } = useZap(swapState.from, stakingInfo, amountIn, slippage, currChain)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -230,7 +235,7 @@ const Zap = () => {
                     <SwapAction
                         bgColor={"grad_dei"}
                         text="ZAP"
-                        isPreApproved={isPreApproved}
+                        isPreApproved={0}
                         isApproved={isApproved}
                         validNetworks={validChains}
                         targetToken={swapState.from}

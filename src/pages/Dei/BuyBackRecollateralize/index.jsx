@@ -26,6 +26,7 @@ import { COLLATERAL_POOL_ADDRESS } from '../../../constant/contracts';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import { Chains } from '../../../components/App/Dei/Chains';
+import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 
 
 const TopWrap = styled.div`
@@ -365,6 +366,11 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBoxBuyBack chainId={chainId} />
+            {/* <Chains validChainId={chainId} validNetworks={validNetworks} /> */}
+        </div>
+
+        <div className='tut-right-wrap'>
+            <DeusTokenBox />
             <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);

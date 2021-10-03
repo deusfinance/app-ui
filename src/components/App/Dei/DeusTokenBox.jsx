@@ -28,9 +28,21 @@ const EachUrl = styled.span`
     font-size: 15px;
     margin:10px 0;
     font-weight: 300;
+    p{
+        display: flex;
+        align-items: center;
+    }
     &:hover{
         color:#13a9cf;
     }
+`
+
+const Line = styled.div`
+    width: 75%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin:auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
 `
 
 const DeusTokenBox = () => {
@@ -41,12 +53,12 @@ const DeusTokenBox = () => {
         useMemo(() => {
             return <MainWrapper>
                 <EachUrl>
-                    <p onClick={() => addToken(deusToken)}>Add $DEUS to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                    <p onClick={() => addToken(deusToken)}>Add  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} /> DEUS to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
                 <EachUrl>
                     <CopyToClipboard text={deusToken.address}
                         onCopy={() => console.log("copied")}>
-                        <p>Copy $DEUS Contract
+                        <p>Copy <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEUS Contract
                             <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
                                 <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
@@ -55,12 +67,28 @@ const DeusTokenBox = () => {
                     </CopyToClipboard>
 
                 </EachUrl>
+                <Line />
+                <EachUrl>
+                    <p onClick={() => addToken(deiToken, "dev")}>Add <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                </EachUrl>
+                <EachUrl>
+                    <CopyToClipboard text={deiToken.address}
+                        onCopy={() => console.log("copied")}>
+                        <p>Copy <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEI Contract
+                            <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
+                                <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
+                            </svg>
+                        </p>
+                    </CopyToClipboard>
+                </EachUrl>
+                {/* 
                 <EachUrl style={{ color: "#F34692" }}>
                     <ExternalLink href={`https://app.uniswap.org/#/swap?use=V2&outputCurrency=${deusToken.address}&inputCurrency=${deiToken.address}`}> Buy $DEUS on Uniswap</ExternalLink>
                 </EachUrl>
                 <EachUrl style={{ color: "#87b2ff" }}>
                     <ExternalLink href={`https://quickswap.exchange/#/swap?outputCurrency=${deusToken.address}&inputCurrency=${deiToken.address}`}> Buy $DEUS on QuickSwap</ExternalLink>
-                </EachUrl>
+                </EachUrl> */}
 
             </MainWrapper>
         }, [])

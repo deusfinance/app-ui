@@ -53,6 +53,17 @@ body,
         margin-top: 10px;
     }
 }
+.tut-right-wrap {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    right: 20px;
+    top: 110px;
+    max-width: 300px;
+    .min-tut-wrap {
+        margin-top: 10px;
+    }
+}
 
 .loader-wrap {
     top: 0;
@@ -244,7 +255,8 @@ a {
 }
 
 @media screen and (max-width: 1150px) {
-    .tut-left-wrap {
+    .tut-left-wrap,
+    .tut-right-wrap {
         position: relative !important;
         margin: auto !important;
         text-align: center !important;

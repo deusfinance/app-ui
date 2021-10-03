@@ -29,6 +29,7 @@ import { ChainId } from '../../../constant/web3';
 import { fromWei } from '../../../helper/formatBalance';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
+import DeiTokenBox from '../../../components/App/Dei/DeiTokenBox';
 
 const Zap = () => {
     const location = useLocation()
@@ -285,6 +286,7 @@ const Zap = () => {
 
         <div className='tut-right-wrap'>
             <DeusTokenBox />
+            <DeiTokenBox />
             <Chains validChainId={chainId} validNetworks={validChains} />
         </div>
     </>);

@@ -33,18 +33,18 @@ const EachUrl = styled.span`
     }
 `
 
-const DeusTokenBox = () => {
-    const deusToken = DEITokens[1][1]
+const DeiTokenBox = () => {
+    const deiToken = DEITokens[1][0]
     return (
         useMemo(() => {
             return <MainWrapper>
                 <EachUrl>
-                    <p onClick={() => addToken(deusToken)}>Add $DEUS to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                    <p onClick={() => addToken(deiToken)}>Add $DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
                 <EachUrl>
-                    <CopyToClipboard text={deusToken.address}
+                    <CopyToClipboard text={deiToken.address}
                         onCopy={() => console.log("copied")}>
-                        <p>Copy $DEUS Contract
+                        <p>Copy $DEI Contract
                             <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
                                 <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
@@ -53,16 +53,9 @@ const DeusTokenBox = () => {
                     </CopyToClipboard>
 
                 </EachUrl>
-                <EachUrl style={{ color: "#F34692" }}>
-                    <ExternalLink href={`https://app.uniswap.org/#/swap?use=V2&outputCurrency=${deusToken.address}`}> Buy $DEUS on Uniswap</ExternalLink>
-                </EachUrl>
-                <EachUrl style={{ color: "#87b2ff" }}>
-                    <ExternalLink href={`https://quickswap.exchange/#/swap?outputCurrency=${deusToken.address}`}> Buy $DEUS on QuickSwap</ExternalLink>
-                </EachUrl>
-
             </MainWrapper>
         }, [])
     )
 }
 
-export default DeusTokenBox
+export default DeiTokenBox

@@ -23,7 +23,8 @@ const NameItemsDiv = styled.div`
     border: 1px solid ${({ row, currRow }) => (row === currRow) ? "black" : "transparent"};
     cursor: pointer;
     opacity: 0.5;
-    background: ${({ row, currRow }) => (row === currRow) && "#7951DD"};
+    background: ${({ row, currRow }) => (row === currRow && currRow == 137) && "#7951DD"};
+    background: ${({ row, currRow }) => (row === currRow && currRow == 1) && "#4169e1"};
     opacity: ${({ row, currRow }) => (row === currRow) && "1"};
 `
 

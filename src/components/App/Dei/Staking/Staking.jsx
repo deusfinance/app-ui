@@ -233,7 +233,7 @@ const Staking = ({ config = {}, chainId, apyValue }) => {
 
             {active && <>
                 <Type.MD mt="2" mb="4" >you own {percent}% of the pool</Type.MD>
-                <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="claimable" amount={pendingReward} onAction={handleClaim} />
+                <ClaimButton actionTitle="claim" symbol="DEUS" amountTitle="" amount={pendingReward} onAction={handleClaim} />
                 <ClaimButton actionTitle="withdraw & claim" symbol="" amountTitle="deposited" amount={depositAmount} onAction={() => setActiveWithdraw(true)} />
             </>}
         </Wrapper >

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ExternalLink } from '../Link';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { addToken } from '../../../utils/addTokens';
-import { DEITokens } from '../../../constant/token';
+import { deiToken, DEITokens, ZapTokens } from '../../../constant/token';
 
 
 const MainWrapper = styled.div`
@@ -35,6 +35,8 @@ const EachUrl = styled.span`
 
 const DeusTokenBox = () => {
     const deusToken = DEITokens[1][1]
+    const deiToken = ZapTokens[1][0]
+
     return (
         useMemo(() => {
             return <MainWrapper>
@@ -54,10 +56,10 @@ const DeusTokenBox = () => {
 
                 </EachUrl>
                 <EachUrl style={{ color: "#F34692" }}>
-                    <ExternalLink href={`https://app.uniswap.org/#/swap?use=V2&outputCurrency=${deusToken.address}`}> Buy $DEUS on Uniswap</ExternalLink>
+                    <ExternalLink href={`https://app.uniswap.org/#/swap?use=V2&outputCurrency=${deusToken.address}&inputCurrency=${deiToken.address}`}> Buy $DEUS on Uniswap</ExternalLink>
                 </EachUrl>
                 <EachUrl style={{ color: "#87b2ff" }}>
-                    <ExternalLink href={`https://quickswap.exchange/#/swap?outputCurrency=${deusToken.address}`}> Buy $DEUS on QuickSwap</ExternalLink>
+                    <ExternalLink href={`https://quickswap.exchange/#/swap?outputCurrency=${deusToken.address}&inputCurrency=${deiToken.address}`}> Buy $DEUS on QuickSwap</ExternalLink>
                 </EachUrl>
 
             </MainWrapper>

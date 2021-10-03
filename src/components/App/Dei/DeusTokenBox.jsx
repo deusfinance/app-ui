@@ -21,14 +21,12 @@ const MainWrapper = styled.div`
     font-weight: 300;
 `
 
-
 const EachUrl = styled.span`
     cursor: pointer;
     display: block;
     font-size: 15px;
     margin:10px 0;
     font-weight: 300;
-    /* color: rgba(255, 255, 255, 0.5); */
     .active {
         color: #0DB0F4;
     }
@@ -61,14 +59,6 @@ const DeusTokenBox = () => {
                     <ExternalLink href={`https://quickswap.exchange/#/swap?outputCurrency=${deusToken.address}`}> Buy $DEUS on QuickSwap</ExternalLink>
                 </EachUrl>
 
-
-
-                {/* <Line2 />
-
-                <BottomTextDiv>
-                    If you need more help visit the{' '}
-                    <WikiLink href="https://wiki.deus.finance/docs/" target="_blank">wiki</WikiLink>.
-                </BottomTextDiv> */}
             </MainWrapper>
         }, [])
     )

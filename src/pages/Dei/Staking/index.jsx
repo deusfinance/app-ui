@@ -14,6 +14,7 @@ import { useRecoilValue } from 'recoil';
 import { APYState } from './../../../store/dei/index';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
+import DeiTokenBox from '../../../components/App/Dei/DeiTokenBox';
 
 const StakingContainer = styled.div`
     display: flex;
@@ -59,6 +60,8 @@ const Dei = () => {
 
         <div className='tut-right-wrap'>
             <DeusTokenBox />
+            <DeiTokenBox />
+
             <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);

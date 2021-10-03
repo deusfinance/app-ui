@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ExternalLink } from '../Link';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { addToken } from '../../../utils/addTokens';
-import { DEITokens } from '../../../constant/token';
+import { deiToken, ZapTokens } from '../../../constant/token';
 
 
 const MainWrapper = styled.div`
@@ -34,15 +34,16 @@ const EachUrl = styled.span`
 `
 
 const DeiTokenBox = () => {
-    const deiToken = DEITokens[1][0]
+    // console.log(deiToken);
+    const deiTokenETH = ZapTokens[1][0]
     return (
         useMemo(() => {
             return <MainWrapper>
                 <EachUrl>
-                    <p onClick={() => addToken(deiToken)}>Add $DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                    <p onClick={() => addToken(deiTokenETH, "dev")}>Add $DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
                 <EachUrl>
-                    <CopyToClipboard text={deiToken.address}
+                    <CopyToClipboard text={deiTokenETH.address}
                         onCopy={() => console.log("copied")}>
                         <p>Copy $DEI Contract
                             <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">

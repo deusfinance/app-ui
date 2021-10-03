@@ -1,6 +1,6 @@
-export function addToken(token) {
+export function addToken(token, base) {
     const { address, symbol, decimals } = token
-    const image = "https://app.deus.finance" + token.logo
+    const image = `https://${base ?? "app"}.deus.finance` + token.logo
 
     if (window.ethereum) {
         window.ethereum.request({

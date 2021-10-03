@@ -15,7 +15,7 @@ const NameItemsDiv = styled.div`
     display: flex;
     justify-content: center;
     background: #272727;
-    padding: 8px 16px;
+    padding: 6px 16px;
     margin: 8px;
     margin-left: 0;
     font-size: 15px;
@@ -29,7 +29,6 @@ const NameItemsDiv = styled.div`
 
 const SelectBox = ({ currRow, validNetworks, account, web3 }) => {
     const rows = validNetworks
-
     return (<MainItemsDiv>
         {rows.map((row, id) => {
             return <span key={id} onClick={() => addRPC(account, row, web3)}>

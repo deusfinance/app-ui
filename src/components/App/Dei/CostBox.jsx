@@ -8,7 +8,7 @@ import { husdPoolDataState } from '../../../store/dei'
 export const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
     width: 100%;
-    padding: 20px 25px;
+    padding: 15px 25px;
     background: #0d0d0d;
     border: 1px solid #1c1c1c;
     border-radius: 10px;
@@ -16,7 +16,7 @@ export const MainWrapper = styled.div`
     font-weight: normal;
     font-size: 15px;
     line-height: 20px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
     padding-top: 0;
     padding-bottom: 0;
     font-weight: 300;
@@ -24,8 +24,8 @@ export const MainWrapper = styled.div`
 
 export const FeeWrapper = styled.div`
     display: block;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     font-size: 15px;
 `
 

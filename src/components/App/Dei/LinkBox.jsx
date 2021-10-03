@@ -6,7 +6,7 @@ import styled from 'styled-components'
 const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
     width: 100%;
-    padding: 20px 25px;
+    padding: 15px 25px;
     background: #0d0d0d;
     border: 1px solid #1c1c1c;
     border-radius: 10px;
@@ -14,7 +14,7 @@ const MainWrapper = styled.div`
     font-weight: normal;
     font-size: 15px;
     line-height: 20px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
     font-weight: 300;
 `
 
@@ -55,10 +55,10 @@ const BottomTextDiv = styled.div`
 `
 
 const EachUrl = styled.span`
+
     display: block;
-    font-size: 20px;
-    margin-top: 22px;
-    margin-bottom: 22px;
+    font-size: 17px;
+    margin:15px 0;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.5);
     .active {

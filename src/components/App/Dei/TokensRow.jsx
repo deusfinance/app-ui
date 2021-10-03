@@ -8,7 +8,6 @@ import { FlexCenter } from '../Container';
 import { formatBalance3 } from '../../../utils/utils';
 import { isZero } from '../../../constant/number';
 
-
 const TokenRow = styled(RowBetween)`
 padding:0 20px;
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -25,6 +24,12 @@ const TokenRowContainer = styled.div`
 `
 const TokenWrap = styled(FlexCenter)`
     margin:7.5px 0;
+`
+
+const PLusIcon = styled.div`
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+     margin-left: -9px;
+  `}
 `
 
 const TokensRow = ({ tokens, currencies, account, handleClick, disableLoading }) => {
@@ -46,7 +51,7 @@ const TokensRow = ({ tokens, currencies, account, handleClick, disableLoading })
                             : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
                         }
                     </TokenRow>
-                    {isPlus && < img src="/img/dei/plus.svg" style={{ position: "absolute", marginTop: "-21px", paddingLeft: "27px", width: "53px" }} alt="plus" />}
+                    {isPlus && <PLusIcon> <img src="/img/dei/plus.svg" style={{ position: "absolute", marginTop: "-21px", paddingLeft: "27px", width: "53px" }} alt="plus" /> </PLusIcon>}
                 </>
             }))}
         </TokenRowContainer>

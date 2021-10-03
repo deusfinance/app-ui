@@ -15,7 +15,7 @@ export const InputAmount = styled.input.attrs({
     font-size: ${({ fontSize }) => fontSize || "25px"};
     color: ${({ theme }) => theme.text1};
     background: transparent;
-
+    cursor: ${({ disabled }) => (disabled && "not-allowed")};
 `
 export const SwapTitle = styled(FlexCenter)`
     display: inline-flex;

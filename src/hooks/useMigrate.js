@@ -9,9 +9,6 @@ import useRefresh from "./useRefresh";
 import { useSetRecoilState } from "recoil";
 import { coolDownState } from "../store/dei";
 
-
-
-
 export const useMigrate = (migrateList, validChainId = 1, forceUpdate) => {
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
@@ -48,11 +45,11 @@ export const useMigrate = (migrateList, validChainId = 1, forceUpdate) => {
 
 export const useUserStatus = (account) => {
     const [userStatus, setUserStatus] = useState(null)
-    const web3ETH = useCrossWeb3(ChainId.RINKEBY)
+    const web3ETH = useCrossWeb3(ChainId.ETH)
     const web3Polygon = useCrossWeb3(ChainId.MATIC)
     const { fastRefresh } = useRefresh()
 
-    const ethContract = getMigrationContract(web3ETH, ChainId.RINKEBY)
+    const ethContract = getMigrationContract(web3ETH, ChainId.ETH)
     const polygonContract = getMigrationContract(web3Polygon, ChainId.MATIC)
 
     useEffect(() => {

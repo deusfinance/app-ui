@@ -237,6 +237,30 @@
                 "internalType": "uint256",
                 "name": "amount",
                 "type": "uint256"
+            }
+        ],
+        "name": "getAmountOutLPDEI",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "percentage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lp",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
             },
             {
                 "internalType": "address[]",

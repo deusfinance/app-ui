@@ -8,6 +8,9 @@ import { isZero } from '../../../../constant/number';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../../hooks/useApprove';
 import { useWeb3React } from '@web3-react/core';
+import { ExternalLink } from '../../Link';
+import { Link } from 'react-router-dom';
+import { formatBalance3 } from '../../../../utils/utils';
 
 const Wrapper = styled.div`
     display: inline-block;
@@ -31,7 +34,7 @@ const ActionWrap = styled.div`
 `
 
 const ActionContainer = styled.div`
-    width: 49.8%;
+    flex:1;
     border-radius: 0;
     color:#fff;
     font-size: 18px;
@@ -169,7 +172,6 @@ const Staking = ({ config = {}, chainId, apyValue }) => {
         "0.0" :
         new BigNumber(depositAmount).div(totalDepositBalance).times(100).toFixed(2)
     const active = !isNaN(depositAmount) && !isZero(depositAmount) && account
-
     return (
         <Wrapper>
             <Popup
@@ -205,18 +207,28 @@ const Staking = ({ config = {}, chainId, apyValue }) => {
                 handleAction={handleDeposit}
             />
             <ActionWrap active={active}>
-                <ActionContainer style={{ borderRadius: "6px 0 0 0" }} >
-                    <Action style={{ borderRadius: "6px 0 0 0" }}>Provide Liquidity</Action>
-                </ActionContainer>
+                {stakingInfo.provideLink.charAt(0) === "/" ?
+                    <Link to={stakingInfo.provideLink} style={{ display: "flex", flex: "1" }}>
+                        <ActionContainer style={{ borderRadius: "6px 0 0 0" }} >
+                            <Action style={{ borderRadius: "6px 0 0 0", fontWeight: "300" }}>Zap</Action>
+                        </ActionContainer>
+                    </Link>
+                    : <ExternalLink href={stakingInfo.provideLink} textDecoration="none" style={{ display: "flex", flex: "1" }}>
+                        <ActionContainer style={{ borderRadius: "6px 0 0 0" }} >
+                            <Action style={{ borderRadius: "6px 0 0 0", fontWeight: "300" }}>Provide Liquidity</Action>
+                        </ActionContainer>
+                    </ExternalLink>
+                }
+
                 <ActionContainer style={{ borderRadius: " 0  6px 0 0" }}>
-                    <Action style={{ borderRadius: "0  6px 0 0" }} onClick={() => setActiveDeposit(true)}>Stake Here</Action>
+                    <Action style={{ borderRadius: "0  6px 0 0", fontWeight: "300" }} onClick={() => setActiveDeposit(true)}>Stake Here</Action>
                 </ActionContainer>
             </ActionWrap>
             <Type.XXL mb="4" mt="4">{stakingInfo.title}</Type.XXL>
 
-            <Type.LG mt="3" mb="3"> 
-                {apyValue && <span> {apyValue}% APY </span>}
-                {!apyValue && <img alt="sp" src="/img/spinner.svg" width="40" height="40" />}
+            <Type.LG mt="3" mb="3">
+                {(apyValue || apyValue === 0) && <span> {formatBalance3(apyValue, 4)}% APY </span>}
+                {!apyValue && apyValue !== 0 && <img alt="sp" src="/img/spinner.svg" width="40" height="40" />}
             </Type.LG>
 
             {active && <>

@@ -17,7 +17,7 @@ import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData, getAPYValue,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
-    mint1t1DEI, collatUsdPrice, ERC202DEI, nativeCoinToDei, collateral2DEI, zapIn,
+    mint1t1DEI, collatUsdPrice, ERC202DEI, nativeCoinToDei, collateral2DEI, zapIn, getZapAmountsOut
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
@@ -28,24 +28,31 @@ import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
 export const useAPY = (validChainId) => {
     const web3 = useCrossWeb3(validChainId)
     const { slowRefresh } = useRefresh()
-    const setAPY = useSetRecoilState(APYState)
+    const [apy, setApy] = useState(null)
 
     useEffect(() => {
         const get = async () => {
             try {
                 const apy = await makeDeiRequest("/apy", validChainId)
                 const apyValue = apy ? apy : null
-                setAPY(apyValue)
+                setApy(apyValue)
             } catch (error) {
                 console.log("useAPY ", error);
             }
         }
-        get()
-    }, [slowRefresh, web3, setAPY, validChainId])
+        if (validChainId)
+            get()
+    }, [slowRefresh, web3, setApy, validChainId])
+
+    useEffect(() => {
+        setApy(null)
+    }, [validChainId])
+
+    return apy
 }
 
 
-export const useZap = (currency, stakingInfo, amountIn, slippage, validChainId) => {
+export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
@@ -53,34 +60,42 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, validChainId) 
         if ((validChainId && chainId !== validChainId) || !currency) return false
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         // const minLpAmountToWei = getToWei(minLpAmount, 18).toFixed(0)
-        // const minLpAmountToWei = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(18, 1)
+        const minLpAmountToWei = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(0, 1)
         // const minLpAmountToWei = "0" //TODO
-        const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, slippage, false, web3, chainId)
+        const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, false, web3, chainId)
         const payload = currency.address === "0x" ? { value: amountInToWei } : {}
         return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
-    }, [currency, stakingInfo, amountIn, validChainId, chainId, account, web3, slippage])
+    }, [currency, stakingInfo, amountIn, amountOut, validChainId, chainId, account, web3, slippage])
     return { onZap: handleZap }
 }
 
 
 
 
-// export const useGetAmountsOutZap = (currency, stakingInfo, amountIn, validChainId) => {
-//     const web3 = useWeb3()
-//     const { account, chainId } = useWeb3React()
+export const useGetAmountsOutZap = (currency, zapperContract, amountIn, validChainId) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
 
-//     const handleGetAmountOut = useCallback(async () => {
-//         if ((validChainId && chainId !== validChainId) || !currency) return false
-//         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
-//         // const minLpAmountToWei = getToWei(minLpAmount, 18).toFixed(0)
-//         // const minLpAmountToWei = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(18, 1)
-//         // const minLpAmountToWei = "0" //TODO
-//         // const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, false, web3, chainId)
-//         // const payload = currency.address === "0x" ? { value: amountInToWei } : {}
-//         return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
-//     }, [currency, stakingInfo, amountIn, validChainId, chainId, account, web3])
-//     return { getAmountsOut: handleGetAmountOut }
-// }
+    const handleGetAmountOut = useCallback(async () => {
+        if (!validChainId || !currency || !amountIn || amountIn === "" || isZero(amountIn) || !zapperContract) return ""
+        const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
+        try {
+            const amount = await getZapAmountsOut(
+                currency,
+                amountInToWei,
+                zapperContract,
+                web3,
+                validChainId,
+            )
+            return amount
+        } catch (e) {
+            console.log(e);
+            return false
+        }
+
+    }, [currency, zapperContract, amountIn, validChainId, chainId, account, web3])
+    return { getAmountsOut: handleGetAmountOut }
+}
 
 
 export const useDeposit = (currency, amount, address, validChainId) => {
@@ -298,7 +313,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                         deus_price,
                         expire_block,
                         signature,
-                        MINT_PATH[chainId][from1Currency.symbol],
+                        [],
                         chainId,
                         web3
                     )
@@ -567,7 +582,7 @@ export const useDeiPrices = (validChainId) => {
     }, [slowRefresh, validChainId, setRefreshRatio])
 }
 
-export const useAllowance = (currency, contractAddress, validChainId) => {
+export const useAllowance = (currency, contractAddress, validChainId, fastUpdate) => {
     const [allowance, setAllowance] = useState(new BigNumber(-1))
     const { account, chainId } = useWeb3React()
     const web3 = useCrossWeb3(validChainId)
@@ -594,7 +609,7 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
         if (account && tokenAddress) {
             fetchAllowance()
         }
-    }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh])
+    }, [account, contract, chainId, contractAddress, tokenAddress, validChainId, currency, fastRefresh, fastUpdate])
 
     return allowance
 }

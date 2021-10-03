@@ -1,10 +1,5 @@
 [
   {
-    "id": "MUON PRESALE",
-    "path": "/muon-presale",
-    "exact": true
-  },
-  {
     "id": "V2 MIGRATOR",
     "path": "/migrator",
     "exact": true
@@ -41,7 +36,13 @@
     ]
   },
   {
-    "id": "MEDIUM",
+    "id": "MUON PRESALE",
+    "path": "/muon-presale",
+    "exact": true
+  },
+  {
+    "id": "medium",
+    "image": true,
     "path": "https://medium.com/deus-finance"
   },
   {

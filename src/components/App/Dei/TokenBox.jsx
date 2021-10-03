@@ -27,7 +27,7 @@ const TokenInfo = styled(Flex)`
     }
 `
 
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, setFocusType, focusType, type, setActive, TokensMap, disabled, chainId, wrongNetwork, fastUpdate, mt }) => {
+const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, setFocusType, focusType, type, setActive, TokensMap, disabled, disabledTitle, chainId, wrongNetwork, fastUpdate, mt }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useCrossTokenBalance(currency?.address, chainId, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
@@ -53,7 +53,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, s
 
 
     return (useMemo(() => {
-        return <Wrapper mt={mt}>
+        return <Wrapper mt={mt} >
             <Flex
                 p="10px 0"
                 justifyContent={"space-between"}
@@ -76,7 +76,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, s
                 mt="5px"
                 onFocus={() => setFocusType(focusType)}
             >
-                <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} disabled={disabled} onChange={(e) => {
+                <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} disabled={disabled} title={disabledTitle ?? ""} onChange={(e) => {
                     // setFocusType(focusType)
                     setInputAmount(e.currentTarget.value)
                 }} />
@@ -97,7 +97,7 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, s
                 </TokenInfo>
             </Flex>
         </Wrapper>
-    }, [currency, disabled, focusType, type, mt, title, setInputAmount, inputAmount, balance, setFocusType, hasMax, onMax, setActive])
+    }, [currency, disabled, disabledTitle, focusType, type, mt, title, setInputAmount, inputAmount, balance, setFocusType, hasMax, onMax, setActive])
 
     );
 }

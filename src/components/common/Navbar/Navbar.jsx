@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useTranslation } from 'react-i18next'
 import Wallets from './Wallets';
-import { NavbarWrap, NavButton, NavbarSideWrap, } from '../../App/Navbar';
+import { NavbarWrap, NavbarSideWrap, } from '../../App/Navbar';
 import { ExternalLink } from '../../App/Link';
-import useRefresh from '../../../hooks/useRefresh';
 import routes from '../../../config/routes.json'
 import NavDesktop from './NavDesktopContent';
 import NavMobile from './NavMobileContent';
@@ -14,7 +13,6 @@ const Navbar = () => {
     const { chainId, account } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
     const [open, setOpen] = useState(false)
-    const [tvl, setTvl] = useState(null)
     const { t } = useTranslation()
 
     useEffect(() => {
@@ -22,27 +20,6 @@ const Navbar = () => {
             setShowWallets(false)
     }, [account])
 
-    const { slowRefresh } = useRefresh()
-
-    useEffect(() => {
-        const getTVL = async () => {
-            const url = "https://app.deus.finance/tvl.json"
-            try {
-                const resp = await fetch(url)
-                const result = await resp.json()
-                const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.uniswapLockedValue + result.balancerLockedValue + result.etherLockedInMarketMaker + result.stakingV2LockedValue)
-                var formatter = new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0
-                });
-                setTvl(formatter.format(intResult))
-            } catch (error) {
-                console.log("fetch " + url + " had some error", error);
-            }
-        }
-        getTVL()
-    }, [slowRefresh])
 
     const handleConnect = async () => {
         setShowWallets(true)
@@ -66,9 +43,6 @@ const Navbar = () => {
                     <img style={{ width: "32px" }} src="/img/deus.svg" alt="deus" />
                     <img style={{ height: "22px", marginLeft: "10px" }} className="deus-text" src="/img/deus-text.svg" alt="deus" />
                 </ExternalLink>
-                {tvl && <NavButton className="tvl" active={false} >
-                    {t("tvl")}: {tvl}
-                </NavButton>}
             </NavbarSideWrap>
 
             <NavDesktop routes={routes} />

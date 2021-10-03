@@ -25,6 +25,7 @@ import { availableRecollatState, deiPricesState, husdPoolDataState } from '../..
 import { COLLATERAL_POOL_ADDRESS } from '../../../constant/contracts';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
+import { Chains } from '../../../components/App/Dei/Chains';
 
 
 const TopWrap = styled.div`
@@ -364,6 +365,7 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBoxBuyBack chainId={chainId} />
+            <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);
 }

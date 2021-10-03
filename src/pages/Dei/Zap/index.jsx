@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
 import { ZapTokens, deiToken } from '../../../constant/token';
 import { StakingConfig } from '../../../constant/staking';
+import { Flex } from 'rebass';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
@@ -17,15 +18,16 @@ import { useApprove } from '../../../hooks/useApprove';
 import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { ContentWrapper } from '../../../components/App/Dei';
-import { useDeiUpdate, useZap, useAllowance } from '../../../hooks/useDei';
+import { useDeiUpdate, useZap, useAllowance, useGetAmountsOutZap } from '../../../hooks/useDei';
 import { collatRatioState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import { getSwapVsType } from '../../../utils/utils';
+import { formatBalance3, getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Swap/SearchBox';
 import { ChainId } from '../../../constant/web3';
-import BigNumber from 'bignumber.js';
+import { fromWei } from '../../../helper/formatBalance';
+import { Chains } from '../../../components/App/Dei/Chains';
 
 const Zap = () => {
     const location = useLocation()
@@ -33,36 +35,42 @@ const Zap = () => {
     const tempChain = null
     const userChain = tempChain ? tempChain : chainId
     const validChains = getCorrectChains(location.pathname)
-    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainId.RINKEBY //TODO
-    // console.log(currChain);
-    // const chainId = useChain(validNetworks)
-    // console.log(chainId);
+    const currChain = userChain && validChains.indexOf(userChain) !== -1 ? userChain : ChainId.ETH //TODO
     useDeiUpdate(currChain)
+
+    const search = useLocation().search;
+    const queryParams = {
+        lp: new URLSearchParams(search).get('lp')?.toLowerCase(),
+    }
+
     const collatRatio = useRecoilValue(collatRatioState)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
-    const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const [swapLoading, setSwapLoading] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [activeStakingList, setActiveStakingList] = useState(false)
     const availableStaking = StakingConfig[currChain]
-    const [stakingInfo, setStakingInfo] = useState(availableStaking[0])
+    const resultLp = queryParams.lp ? availableStaking.filter(staking => staking.title.toLowerCase() === queryParams.lp) : []
+    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 0
+    const [stakingInfo, setStakingInfo] = useState(availableStaking[lpIndex])
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
 
     const tokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain])
+
+    //eslint-disable-next-line
+    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
+    ), [tokens])
+
     useEffect(() => {
         setSwapState({
             from: tokens[0],
             to: deiToken[currChain]
         })
     }, [tokens, currChain])
-    //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
-    ), [tokens])
 
     const balances = useTokenBalances(tokensMap, currChain)
 
@@ -76,59 +84,52 @@ const Zap = () => {
     const [amountIn, setAmountIn] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 500);
     const [amountOut, setAmountOut] = useState("")
+    const [percentage, setPercentage] = useState("")
 
-    const allowance = useAllowance(swapState.from, contractAddress, currChain)
-    // console.log(swapState.from?.address, contractAddress, allowance.toString());
+    const allowance = useAllowance(swapState.from, contractAddress, currChain, fastUpdate)
 
     useEffect(() => {
         if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
     }, [amountIn, debouncedAmountIn]);
 
     useEffect(() => {
-        setIsPreApproved(null)
+        // setIsPreApproved(null)
         setIsApproved(null)
     }, [currChain, account, swapState.from]);
 
     useEffect(() => {
-
         if (allowance.gt(0)) {
             setIsApproved(true)
         } else {
             setIsApproved(false)
         }
-        // if (isPreApproved == null) {
-        //     if (allowance.toString() === "-1") {
-        //         setIsPreApproved(null) //doNothing
-        //     } else {
-        //         if (allowance.gt(0)) {
-        //             setIsPreApproved(true)
-        //         } else {
-        //             setIsPreApproved(false)
-        //         }
-        //     }
-        // } else {
-        //     if (allowance.gt(0)) {
-        //         setIsApproved(true)
-        //     }
-        // }
         //eslint-disable-next-line 
     }, [allowance]) //isPreApproved ?
 
     const { onApprove } = useApprove(swapState.from, contractAddress, currChain)
-    const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, currChain)
-    // const { getAmountsOut } = useGetAmountsOutZap(swapState.from, stakingInfo, debouncedAmountIn, chainId)
+    const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, amountOut, currChain)
+    const { getAmountsOut } = useGetAmountsOutZap(swapState.from, contractAddress, debouncedAmountIn, chainId)
 
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const amount = await getAmountsOut()
-    //         // // console.log("swap ", amount);
-    //         if (amountIn === "") setAmountOut("")
-    //         else setAmountOut(fromWei(amount, 18))
-    //     }
-    //     get()
 
-    //     //eslint-disable-next-line
-    // }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
+    useEffect(() => {
+        const get = async () => {
+            const result = await getAmountsOut()
+            // console.log("swap ", amount);
+            if (result === "") {
+                setAmountOut("")
+                setPercentage("")
+            }
+            else {
+                console.log(result);
+                // const result.
+                setAmountOut(result.lp)
+                setPercentage(fromWei(result.percentage, 4))
+            }
+        }
+        get()
+
+        //eslint-disable-next-line
+    }, [getAmountsOut, amountIn])//replace multiple useState variables with useReducer
 
 
     const handleApprove = useCallback(async () => {
@@ -137,7 +138,8 @@ const Zap = () => {
             const tx = await onApprove()
             if (tx.status) {
                 console.log("Approved");
-                setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
+                setFastUpdate(fastUpdate => fastUpdate + 1)
+                // setIsApproved(new BigNumber(tx.events.Approval.raw.data, 16).gt(0))
             } else {
                 console.log("Approve Failed");
             }
@@ -176,6 +178,8 @@ const Zap = () => {
     const changeToken = (token, type) => {
         setActiveSearchBox(false)
         setAmountIn("")
+        setAmountOut("")
+        setPercentage("")
         const vsType = getSwapVsType(type)
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
@@ -243,13 +247,14 @@ const Zap = () => {
                             chainId={currChain}
                         />
                     </ZapContainer>
-
-                    {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}
-
+                    <Flex justifyContent="space-between" fontWeight="400" fontSize="12.5px" padding="0 10px" mt="15px" >
+                        <p style={{ opacity: "0.75" }}>Share of Pool</p>
+                        <p>{formatBalance3(percentage, 4)} %</p>
+                    </Flex>
                     <SwapAction
                         bgColor={"grad_dei"}
                         text="ZAP"
-                        isPreApproved={0}
+                        isPreApproved={true}
                         isApproved={isApproved}
                         validNetworks={validChains}
                         targetToken={swapState.from}
@@ -261,6 +266,7 @@ const Zap = () => {
                         swapState={swapState}
                         amountIn={amountIn}
                         amountOut={amountOut}
+                        isMint={true}
                     />
 
                 </SwapWrapper>
@@ -273,6 +279,7 @@ const Zap = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'mint'} chainId={currChain} />
+            <Chains validChainId={chainId} validNetworks={validChains} />
         </div>
     </>);
 }

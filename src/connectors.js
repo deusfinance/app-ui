@@ -3,7 +3,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { FrameConnector } from '@web3-react/frame-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { FortmaticConnector } from '@web3-react/fortmatic-connector'
-import { ChainId } from './constant/web3'
+import { ChainId, rpcConfig } from './constant/web3'
 
 const supportedChainIds = Object.values(ChainId)
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
@@ -42,6 +42,11 @@ export const walletconnect_eth = new WalletConnectConnector({
 //   // bridge: 'https://pancakeswap.bridge.walletconnect.org/',
 //   pollingInterval: POLLING_INTERVAL
 // })
+export const walletconnect_polygon = new WalletConnectConnector({
+  rpc: { [ChainId.MATIC]: rpcConfig[ChainId.MATIC].rpcUrls[0] },
+  qrcode: true,
+  pollingInterval: POLLING_INTERVAL
+})
 
 export const walletlink = new WalletLinkConnector({
   url: RPC_URLS[1],
@@ -58,7 +63,7 @@ export const frame = new FrameConnector({ supportedChainIds: [1] })
 export const ConnectorNames = {
   Injected: 'MetaMask',
   WalletConnect_ETH: 'WalletConnect (ETH)',
-  WalletConnect_BSC: 'WalletConnect (BSC)',
+  WalletConnect_Polygon: 'WalletConnect (Polygon)',
   WalletLink: 'WalletLink (ETH)',
   Ledger: 'Ledger',
   Trezor: 'Trezor',
@@ -70,8 +75,7 @@ export const ConnectorNames = {
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect_ETH]: walletconnect_eth,
-  // [ConnectorNames.WalletConnect_BSC]: walletconnect_bsc,
+  [ConnectorNames.WalletConnect_Polygon]: walletconnect_polygon,
   [ConnectorNames.WalletLink]: walletlink,
-  // [ConnectorNames.Frame]: frame, // api keys are missing
   [ConnectorNames.Fortmatic]: fortmatic
 }

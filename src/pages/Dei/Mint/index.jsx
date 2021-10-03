@@ -27,6 +27,8 @@ import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
 import useTokenBalances from '../../../hooks/useTokenBalances';
+import { ChainId } from '../../../constant/web3';
+import { Chains } from '../../../components/App/Dei/Chains';
 
 const Dei = () => {
     const location = useLocation()
@@ -48,6 +50,7 @@ const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [slippage, setSlippage] = useState(0.5)
     const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
+
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
         .filter((token) => (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
         , [chainId, collatRatio])
@@ -88,8 +91,6 @@ const Dei = () => {
         to: deiToken[chainId],
     })
 
-
-
     const [focusType, setFocusType] = useState("from1")
     const [amountIn, setAmountIn] = useState("")
     const [amountInPair, setAmountInPair] = useState("")
@@ -107,22 +108,26 @@ const Dei = () => {
             setAmountOut("")
             setAmountInPair("")
         }
-        if (amountIn === "" && focusType === "from2") {
+        if (amountInPair === "" && focusType === "from2") {
             setAmountOut("")
             setAmountIn("")
         }
+        if (amountOut === "" && focusType === "to") {
+            setAmountInPair("")
+            setAmountIn("")
+        }
 
-    }, [amountIn, focusType]);
+    }, [amountIn, amountOut, amountInPair, focusType]);
 
     useEffect(() => {
-        if (focusType === "from1") {
+        if (focusType === "from1" && amountIn !== "" && debouncedAmountIn === amountIn) {
             getAmountsTokens(debouncedAmountIn, null, null)
         }
-        if (focusType === "from2") {
+        if (focusType === "from2" && amountInPair !== "") {
             console.log(amountInPair);
             getAmountsTokens(null, amountInPair, null)
         }
-        if (focusType === "to") {
+        if (focusType === "to" && amountOut !== "" && debouncedAmountOut === amountOut) {
             getAmountsTokens(null, null, debouncedAmountOut)
         }
     }, [debouncedAmountIn, amountInPair, debouncedAmountOut, mintingFee, deiPrices]);// eslint-disable-line
@@ -175,8 +180,8 @@ const Dei = () => {
             if (collatRatio === 100) {
                 primaryToken = tokens[0]
             } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = tokens[2]
-                let secondToken = tokens[3]
+                primaryToken = tokens[1]
+                let secondToken = tokens[2]
                 setIsPair(true)
                 setPairToken(secondToken)
             } else if (collatRatio === 0) {
@@ -256,6 +261,8 @@ const Dei = () => {
             if (tx.status) {
                 console.log("swap did");
                 setAmountIn("")
+                setAmountInPair("")
+                setAmountOut("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
                 console.log("Swap Failed");
@@ -332,12 +339,13 @@ const Dei = () => {
                         hasMax={true}
                         inputAmount={amountIn}
                         setInputAmount={setAmountIn}
-                        setActive={showSearchBox}
+                        setActive={chainId === ChainId.MATIC ? showSearchBox : undefined}
                         currency={swapState.from}
                         TokensMap={TokensMap}
                         disabled={proxy}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
+                        disabledTitle="Please enter the desired DEI amount"
                     />
 
                     {isPair && <div>
@@ -405,6 +413,7 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'mint'} chainId={chainId} />
+            <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);
 }

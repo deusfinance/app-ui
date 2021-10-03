@@ -9,6 +9,8 @@ lerna-debug.log*
 .vscode/
 .DS_Store
 
+/src/costant/
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 

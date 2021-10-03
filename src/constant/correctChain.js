@@ -8,12 +8,16 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/stable/zap",
+        chains: [ChainId.MATIC],
+    },
+    {
         url: "/stable",
-        chains: [ChainId.MATIC, ChainId.RINKEBY, ChainId.AVALANCHE, ChainId.HECO],
+        chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
         url: "/migrator",
-        chains: [ChainId.RINKEBY, ChainId.MATIC],
+        chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
         url: "/crosschain/xdai",

@@ -24,6 +24,7 @@ import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
+import { Chains } from '../../../components/App/Dei/Chains';
 
 
 const Dei = () => {
@@ -307,6 +308,7 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'redeem'} chainId={chainId} />
+            <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);
 }

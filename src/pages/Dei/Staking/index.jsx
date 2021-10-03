@@ -12,6 +12,7 @@ import useChain from '../../../hooks/useChain';
 import { useAPY } from '../../../hooks/useDei';
 import { useRecoilValue } from 'recoil';
 import { APYState } from './../../../store/dei/index';
+import { Chains } from '../../../components/App/Dei/Chains';
 
 const StakingContainer = styled.div`
     display: flex;
@@ -37,8 +38,7 @@ const Dei = () => {
     const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
     useDeiUpdateRedeem(chainId)
-    useAPY(chainId)
-    let APY = useRecoilValue(APYState)
+    const APY = useAPY(chainId)
 
     return (<>
         <MainWrapper>
@@ -53,6 +53,7 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'redeem'} chainId={chainId} />
+            <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);
 }

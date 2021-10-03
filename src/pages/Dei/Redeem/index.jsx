@@ -25,6 +25,7 @@ import { ContentWrapper } from '../../../components/App/Dei';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import { Chains } from '../../../components/App/Dei/Chains';
+import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 
 
 const Dei = () => {
@@ -308,6 +309,11 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'redeem'} chainId={chainId} />
+            {/* <Chains validChainId={chainId} validNetworks={validNetworks} /> */}
+        </div>
+
+        <div className='tut-right-wrap'>
+            <DeusTokenBox />
             <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);

@@ -28,6 +28,7 @@ import SearchBox from '../../../components/App/Swap/SearchBox';
 import { ChainId } from '../../../constant/web3';
 import { fromWei } from '../../../helper/formatBalance';
 import { Chains } from '../../../components/App/Dei/Chains';
+import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 
 const Zap = () => {
     const location = useLocation()
@@ -279,6 +280,11 @@ const Zap = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'mint'} chainId={currChain} />
+            {/* <Chains validChainId={chainId} validNetworks={validChains} /> */}
+        </div>
+
+        <div className='tut-right-wrap'>
+            <DeusTokenBox />
             <Chains validChainId={chainId} validNetworks={validChains} />
         </div>
     </>);

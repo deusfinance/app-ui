@@ -13,6 +13,7 @@ import { useAPY } from '../../../hooks/useDei';
 import { useRecoilValue } from 'recoil';
 import { APYState } from './../../../store/dei/index';
 import { Chains } from '../../../components/App/Dei/Chains';
+import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 
 const StakingContainer = styled.div`
     display: flex;
@@ -53,6 +54,11 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'redeem'} chainId={chainId} />
+            {/* <Chains validChainId={chainId} validNetworks={validNetworks} /> */}
+        </div>
+
+        <div className='tut-right-wrap'>
+            <DeusTokenBox />
             <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);

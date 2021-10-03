@@ -28,8 +28,8 @@ const EachUrl = styled.span`
     font-size: 15px;
     margin:10px 0;
     font-weight: 300;
-    .active {
-        color: #0DB0F4;
+    &:hover {
+        color: #de8c5a;
     }
 `
 

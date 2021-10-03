@@ -38,27 +38,11 @@ const Line = styled.div`
     margin-top: 10px;
 `
 
-const Line2 = styled.div`
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    margin-top: 20px;
-`
-
-const WikiLink = styled.a`
-    color: rgb(251, 178, 174);
-    text-decoration: underline;
-`
-
-const BottomTextDiv = styled.div`
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
-    margin-top: 10px;
-`
-
 const EachUrl = styled.span`
 
     display: block;
-    font-size: 17px;
-    margin:15px 0;
+    font-size: 16px;
+    margin:10px 0;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.5);
     .active {

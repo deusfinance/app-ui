@@ -29,6 +29,7 @@ import { useCrossWeb3 } from '../../../hooks/useWeb3';
 import useTokenBalances from '../../../hooks/useTokenBalances';
 import { ChainId } from '../../../constant/web3';
 import { Chains } from '../../../components/App/Dei/Chains';
+import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 
 const Dei = () => {
     const location = useLocation()
@@ -413,6 +414,7 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'mint'} chainId={chainId} />
+            <DeusTokenBox />
             <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>
     </>);

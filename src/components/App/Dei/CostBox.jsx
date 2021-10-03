@@ -15,7 +15,7 @@ export const MainWrapper = styled.div`
     font-style: normal;
     font-weight: normal;
     font-size: 15px;
-    line-height: 20px;
+    line-height: 18px;
     margin-bottom: 10px;
     padding-top: 0;
     padding-bottom: 0;

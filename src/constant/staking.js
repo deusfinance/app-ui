@@ -27,6 +27,7 @@ export const urls = [{
 export const StakingConfig = {
   [ChainId.RINKEBY]: [
     {
+      id: 0,
       title: "DEI-USDC",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/usdc.svg",
@@ -35,6 +36,7 @@ export const StakingConfig = {
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.RINKEBY],
     },
     {
+      id: 1,
       title: "DEI-DEUS",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/deus.svg",
@@ -45,6 +47,7 @@ export const StakingConfig = {
   ],
   [ChainId.HECO]: [
     {
+      id: 0,
       title: "DEI-HUSD",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/husd.svg",
@@ -53,6 +56,7 @@ export const StakingConfig = {
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.HECO],
     },
     {
+      id: 1,
       title: "DEI-DEUS",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/deus.svg",
@@ -62,6 +66,7 @@ export const StakingConfig = {
   ],
   [ChainId.AVALANCHE]: [
     {
+      id: 0,
       title: "DEI-DAI",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/dai.png",
@@ -70,6 +75,7 @@ export const StakingConfig = {
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.AVALANCHE],
     },
     {
+      id: 1,
       title: "DEI-DEUS",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/deus.svg",
@@ -80,20 +86,46 @@ export const StakingConfig = {
   ],
   [ChainId.MATIC]: [
     {
+      id: 0,
       title: "DEI-USDC",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/usdc.svg",
       depositToken: deiCollateralLpToken[ChainId.MATIC],
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.MATIC],
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.MATIC],
+      provideLink: "/stable/zap?lp=dei-usdc",
     },
     {
+      id: 1,
       title: "DEI-DEUS",
       pic1: "/tokens/dei.svg",
       pic2: "/tokens/deus.svg",
       depositToken: deiDeusLpToken[ChainId.MATIC],
       stakingContract: DEI_DEUS_STAKING[ChainId.MATIC],
       zapperContract: DEI_DEUS_ZAP[ChainId.MATIC],
+      provideLink: "/stable/zap?lp=dei-deus",
+    }
+  ],
+  [ChainId.ETH]: [
+    {
+      id: 0,
+      title: "DEI-USDC",
+      pic1: "/tokens/dei.svg",
+      pic2: "/tokens/usdc.svg",
+      depositToken: deiCollateralLpToken[ChainId.ETH],
+      stakingContract: DEI_COLLATERAL_STAKING[ChainId.ETH],
+      zapperContract: DEI_COLLATERAL_ZAP[ChainId.ETH],
+      provideLink: "https://curve.fi/factory/47/deposit"
+    },
+    {
+      id: 1,
+      title: "DEI-DEUS",
+      pic1: "/tokens/dei.svg",
+      pic2: "/tokens/deus.svg",
+      depositToken: deiDeusLpToken[ChainId.ETH],
+      stakingContract: DEI_DEUS_STAKING[ChainId.ETH],
+      zapperContract: DEI_DEUS_ZAP[ChainId.ETH],
+      provideLink: "https://app.uniswap.org/#/add/v2/0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44?use=V2",
     }
   ],
 }

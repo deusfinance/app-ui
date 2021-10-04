@@ -338,16 +338,18 @@ const Dei = () => {
                         type="from"
                         setFocusType={setFocusType}
                         focusType="from1"
-                        hasMax={true}
+                        hasMax={!proxy}
                         inputAmount={amountIn}
                         setInputAmount={setAmountIn}
                         setActive={chainId === ChainId.MATIC ? showSearchBox : undefined}
                         currency={swapState.from}
                         TokensMap={TokensMap}
+                        disabledTitle="Please enter the desired DEI amount"
                         disabled={proxy}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
-                        disabledTitle="Please enter the desired DEI amount"
+                    // proxy={proxy}
+                    // placeHolder={""}
                     />
 
                     {isPair && <div>
@@ -382,6 +384,8 @@ const Dei = () => {
                         currency={swapState.to}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
+                        proxy={proxy}
+                        placeHolder={"ENTER AMOUNT"}
                     />
 
                     {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}

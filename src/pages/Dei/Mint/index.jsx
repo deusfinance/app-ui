@@ -30,7 +30,7 @@ import useTokenBalances from '../../../hooks/useTokenBalances';
 import { ChainId } from '../../../constant/web3';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
-import DeiTokenBox from '../../../components/App/Dei/DeiTokenBox';
+import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
 
 const Dei = () => {
     const location = useLocation()

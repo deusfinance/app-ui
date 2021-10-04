@@ -27,7 +27,7 @@ import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
-import DeiTokenBox from '../../../components/App/Dei/DeiTokenBox';
+import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
 
 
 const TopWrap = styled.div`

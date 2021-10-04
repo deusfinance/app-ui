@@ -33,7 +33,7 @@ const EachUrl = styled.span`
         align-items: center;
     }
     &:hover {
-        color: #de8c5a;
+        color: #13a9cf;
     }
 `
 

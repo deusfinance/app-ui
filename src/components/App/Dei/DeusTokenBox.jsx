@@ -32,8 +32,15 @@ const EachUrl = styled.span`
         display: flex;
         align-items: center;
     }
-    &:hover{
-        color:#13a9cf;
+    .deus{
+        &:hover{
+            color:#13a9cf;
+        }
+    }
+    .dei{
+        &:hover{
+            color:#de8c5a;
+        }
     }
 `
 
@@ -53,12 +60,12 @@ const DeusTokenBox = () => {
         useMemo(() => {
             return <MainWrapper>
                 <EachUrl>
-                    <p onClick={() => addToken(deusToken)}>Add  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} /> DEUS to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                    <p className="deus" onClick={() => addToken(deusToken)}>Add  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} /> DEUS to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
                 <EachUrl>
                     <CopyToClipboard text={deusToken.address}
                         onCopy={() => console.log("copied")}>
-                        <p>Copy <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEUS Contract
+                        <p className="deus">Copy <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEUS Contract
                             <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
                                 <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
@@ -69,12 +76,12 @@ const DeusTokenBox = () => {
                 </EachUrl>
                 <Line />
                 <EachUrl>
-                    <p onClick={() => addToken(deiToken, "dev")}>Add <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                    <p className="dei" onClick={() => addToken(deiToken, "dev")}>Add <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
                 <EachUrl>
                     <CopyToClipboard text={deiToken.address}
                         onCopy={() => console.log("copied")}>
-                        <p>Copy <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEI Contract
+                        <p className="dei">Copy <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEI Contract
                             <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
                                 <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />

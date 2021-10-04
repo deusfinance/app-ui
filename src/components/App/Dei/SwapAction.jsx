@@ -51,14 +51,14 @@ height: 2px;
 width: 50%;
 `
 const SwapAction = ({ text = "SWAP", proxy, isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, swapLoading = false, validNetworks = [4, 1], handleApprove, handleSwap, bgColor, targetToken, isMint = false }) => {
-
+    console.log(amountOut);
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
     const checkError = () => {
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return proxy ? errors.EMPTY_PROXY : errors.EMPTY
         if (swapState && isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
-        if (isNaN(amountOut) || isPreApproved === null || (isMint && isApproved === null)) return errors.LOADING
+        if (isNaN(amountOut) || isPreApproved === null || (isMint && isApproved === null) || amountOut === "") return errors.LOADING
         return null;
     }
 

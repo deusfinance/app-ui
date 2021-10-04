@@ -348,8 +348,8 @@ const Dei = () => {
                         disabled={proxy}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
-                    // proxy={proxy}
-                    // placeHolder={""}
+                        proxy={proxy}
+                        placeHolder={""}
                     />
 
                     {isPair && <div>
@@ -384,8 +384,8 @@ const Dei = () => {
                         currency={swapState.to}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
-                        proxy={proxy}
-                        placeHolder={"ENTER AMOUNT"}
+                    // proxy={proxy}
+                    // placeHolder={"ENTER AMOUNT"}
                     />
 
                     {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}

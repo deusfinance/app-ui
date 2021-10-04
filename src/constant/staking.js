@@ -94,6 +94,7 @@ export const StakingConfig = {
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.MATIC],
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.MATIC],
       provideLink: "/stable/zap?lp=dei-usdc",
+      apy: "50"
     },
     {
       id: 1,
@@ -104,6 +105,7 @@ export const StakingConfig = {
       stakingContract: DEI_DEUS_STAKING[ChainId.MATIC],
       zapperContract: DEI_DEUS_ZAP[ChainId.MATIC],
       provideLink: "/stable/zap?lp=dei-deus",
+      apy: "100"
     }
   ],
   [ChainId.ETH]: [
@@ -115,7 +117,8 @@ export const StakingConfig = {
       depositToken: deiCollateralLpToken[ChainId.ETH],
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.ETH],
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.ETH],
-      provideLink: "https://curve.fi/factory/47/deposit"
+      provideLink: "https://curve.fi/factory/47/deposit",
+      apy: "50"
     },
     {
       id: 1,
@@ -126,6 +129,7 @@ export const StakingConfig = {
       stakingContract: DEI_DEUS_STAKING[ChainId.ETH],
       zapperContract: DEI_DEUS_ZAP[ChainId.ETH],
       provideLink: "https://app.uniswap.org/#/add/v2/0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44?use=V2",
+      apy: "100"
     }
   ],
 }

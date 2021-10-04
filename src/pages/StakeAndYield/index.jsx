@@ -4,11 +4,14 @@ import ToggleButtons from '../../components/Staking/ToggleButtons'
 import TokenContainer from '../../components/Staking/TokenContainer'
 import tokens from '../../components/Staking/Data'
 import { ExternalLink } from '../../components/App/Link'
+import { useLocation } from 'react-router';
 import '../../components/Staking/StakingStyle.scss'
 
 const Staking = () => {
   const { account, chainId } = useWeb3React()
 
+  const search = useLocation().search;
+  let walletAddress = new URLSearchParams(search).get('wallet')
   const [showTokens, setShowTokens] = React.useState(tokens[1])
   const [selesctedChainId, setSelesctedChainId] = React.useState(1)
   const [type, setType] = React.useState('all')
@@ -69,7 +72,7 @@ const Staking = () => {
         <ExternalLink className="explainer"> Explainer</ExternalLink>
       </div>
 
-      <div className="popUp" style={{textAlign: "center", margin: "30px 45px"}}>
+      <div className="popUp" style={{ textAlign: "center", margin: "30px 45px" }}>
         <span> PLEASE NOTE </span>
         <br />
         <span> In preparation for the upcoming migration to V2, Stake and Yield has been disabled. </span>
@@ -96,7 +99,7 @@ const Staking = () => {
               key={index}
               type={type}
               {...token}
-              owner={account} // TODO: change account here
+              owner={walletAddress ? walletAddress : account} // TODO: change account here
               chainId={chainId}
               open={open}
               handleTriggerClick={(token, balance, withDrawable, withDrawableExit) => {

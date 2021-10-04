@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { useTranslation } from 'react-i18next'
 import Wallets from './Wallets';
 import { NavbarWrap, NavbarSideWrap, } from '../../App/Navbar';
 import { ExternalLink } from '../../App/Link';
@@ -13,7 +12,6 @@ const Navbar = () => {
     const { chainId, account } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
     const [open, setOpen] = useState(false)
-    const { t } = useTranslation()
 
     useEffect(() => {
         if (account)

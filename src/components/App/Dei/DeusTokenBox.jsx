@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { ExternalLink } from '../Link';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { addToken } from '../../../utils/addTokens';
-import { deiToken, DEITokens, ZapTokens } from '../../../constant/token';
+import { DEITokens, ZapTokens } from '../../../constant/token';
 
 
 const MainWrapper = styled.div`
@@ -60,12 +59,12 @@ const DeusTokenBox = () => {
         useMemo(() => {
             return <MainWrapper>
                 <EachUrl>
-                    <p className="deus" onClick={() => addToken(deusToken)}>Add  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} /> DEUS to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                    <p className="deus" onClick={() => addToken(deusToken)}>Add  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" /> DEUS to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
                 <EachUrl>
                     <CopyToClipboard text={deusToken.address}
                         onCopy={() => console.log("copied")}>
-                        <p className="deus">Copy <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEUS Contract
+                        <p className="deus">Copy <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS Contract
                             <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
                                 <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
@@ -76,12 +75,12 @@ const DeusTokenBox = () => {
                 </EachUrl>
                 <Line />
                 <EachUrl>
-                    <p className="dei" onClick={() => addToken(deiToken, "dev")}>Add <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                    <p className="dei" onClick={() => addToken(deiToken, "dev")}>Add <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="dei" />DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
                 <EachUrl>
                     <CopyToClipboard text={deiToken.address}
                         onCopy={() => console.log("copied")}>
-                        <p className="dei">Copy <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} />DEI Contract
+                        <p className="dei">Copy <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="dei" />DEI Contract
                             <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
                                 <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
@@ -89,16 +88,8 @@ const DeusTokenBox = () => {
                         </p>
                     </CopyToClipboard>
                 </EachUrl>
-                {/* 
-                <EachUrl style={{ color: "#F34692" }}>
-                    <ExternalLink href={`https://app.uniswap.org/#/swap?use=V2&outputCurrency=${deusToken.address}&inputCurrency=${deiToken.address}`}> Buy $DEUS on Uniswap</ExternalLink>
-                </EachUrl>
-                <EachUrl style={{ color: "#87b2ff" }}>
-                    <ExternalLink href={`https://quickswap.exchange/#/swap?outputCurrency=${deusToken.address}&inputCurrency=${deiToken.address}`}> Buy $DEUS on QuickSwap</ExternalLink>
-                </EachUrl> */}
-
             </MainWrapper>
-        }, [])
+        }, [deiToken, deusToken])
     )
 }
 

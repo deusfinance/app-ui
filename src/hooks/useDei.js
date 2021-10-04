@@ -12,9 +12,9 @@ import multicall from '../helper/multicall'
 import { useCrossERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
-import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, APYState } from '../store/dei'
+import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState } from '../store/dei'
 import {
-    makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData, getAPYValue,
+    makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
     mint1t1DEI, collatUsdPrice, ERC202DEI, nativeCoinToDei, collateral2DEI, zapIn, getZapAmountsOut
@@ -74,7 +74,6 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, val
 
 export const useGetAmountsOutZap = (currency, zapperContract, amountIn, validChainId) => {
     const web3 = useWeb3()
-    const { account, chainId } = useWeb3React()
 
     const handleGetAmountOut = useCallback(async () => {
         if (!validChainId || !currency || !amountIn || amountIn === "" || isZero(amountIn) || !zapperContract) return ""
@@ -93,7 +92,7 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, validCha
             return false
         }
 
-    }, [currency, zapperContract, amountIn, validChainId, chainId, account, web3])
+    }, [currency, zapperContract, amountIn, validChainId, web3])
     return { getAmountsOut: handleGetAmountOut }
 }
 

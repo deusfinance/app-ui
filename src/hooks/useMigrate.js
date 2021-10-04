@@ -17,10 +17,6 @@ export const useMigrate = (migrateList, validChainId = 1, forceUpdate) => {
     const handleSwap = useCallback(async () => {
         try {
             if (validChainId && chainId !== validChainId) return false
-            // console.log(amount);
-            // console.log(getToWei(amount, fromCurrency.decimals).toFixed(0));
-            // const muonOutput = await getSign(fromSymbol, getToWei(amount, fromCurrency.decimals), account)
-
             const timeStamp = getCurrentTimeStamp()
             const migrateOption = getMigrationOption(migrateList)
             const requestId1 = await getRandomNumber(account, BASE_URL)
@@ -37,6 +33,7 @@ export const useMigrate = (migrateList, validChainId = 1, forceUpdate) => {
             console.log(e);
             return false
         }
+        // eslint-disable-next-line
     }, [migrateList, account, chainId, validChainId, setCoolDown, web3, forceUpdate])
 
     return { onMigrate: handleSwap }
@@ -55,10 +52,7 @@ export const useUserStatus = (account) => {
     useEffect(() => {
         const getUserStatus = async (account) => {
             let userETHStatus = await ethContract.methods.usersStatus(account).call()
-            // let userETHStatus = 63
-            // console.log("userETHStatus ", userETHStatus);
             let userPolygonStatus = await polygonContract.methods.usersStatus(account).call()
-            // console.log("userPolygonStatus ", userPolygonStatus);
             if (!userETHStatus || !userPolygonStatus) return
 
             userETHStatus = parseInt(userETHStatus).toString(2).padStart(6, "0")
@@ -77,6 +71,7 @@ export const useUserStatus = (account) => {
         if (account && ethContract && polygonContract) {
             getUserStatus(account)
         }
-    }, [account, fastRefresh])//ethContract,polygonContract
+        // eslint-disable-next-line
+    }, [account, fastRefresh])//ethContract,polygonContract TODO
     return userStatus
 }

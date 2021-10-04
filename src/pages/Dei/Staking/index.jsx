@@ -10,8 +10,6 @@ import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import useChain from '../../../hooks/useChain';
 import { useAPY } from '../../../hooks/useDei';
-import { useRecoilValue } from 'recoil';
-import { APYState } from './../../../store/dei/index';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';

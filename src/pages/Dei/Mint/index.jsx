@@ -31,6 +31,7 @@ import { ChainId } from '../../../constant/web3';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
+import { isZero } from '../../../constant/number';
 
 const Dei = () => {
     const location = useLocation()
@@ -159,9 +160,9 @@ const Dei = () => {
                     amountOut = out
                     amountIn1 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(collatRatio).div(100).div(in1Unit), swapState.from.decimals, BigNumber.ROUND_DOWN)
                     amountIn2 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals, BigNumber.ROUND_UP)
-                    if (collatRatio == 0) {
-                        if (amountIn1 == 0) amountIn1 = amountIn2
-                        else if (amountIn2 == 0) amountIn2 = amountIn1
+                    if (collatRatio === 0) {
+                        if (isZero(amountIn1)) amountIn1 = amountIn2
+                        else if (isZero(amountIn2)) amountIn2 = amountIn1
                     }
                 }
             } else {
@@ -406,6 +407,7 @@ const Dei = () => {
                         amountIn={amountIn}
                         amountOut={amountOut}
                         isMint={true}
+                        proxy={proxy}
                     />
 
                 </SwapWrapper>

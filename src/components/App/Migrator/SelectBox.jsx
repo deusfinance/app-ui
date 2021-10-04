@@ -24,7 +24,7 @@ const NameItemsDiv = styled.div`
     cursor: pointer;
     opacity: 0.5;
     background: ${({ row, currRow }) => (row === currRow) && "#7951DD"};
-    background: ${({ row, currRow }) => (row === currRow && currRow == 1) && "#4169e1"};
+    background: ${({ row, currRow }) => (row === currRow && currRow === 1) && "#4169e1"};
     opacity: ${({ row, currRow }) => (row === currRow) && "1"};
 `
 

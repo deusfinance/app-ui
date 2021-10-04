@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NameChainId } from '../../../constant/web3';
-import OutsideClickHandler from 'react-outside-click-handler';
 import styled from 'styled-components'
 import { addRPC } from '../../../services/addRPC';
 
@@ -23,7 +22,7 @@ const NameItemsDiv = styled.div`
     cursor: pointer;
     opacity: 0.5;
     background: ${({ row, currRow }) => (row === currRow) && "#7951DD"};
-    background: ${({ row, currRow }) => (row === currRow && currRow == 1) && "#4169e1"};
+    background: ${({ row, currRow }) => (row === currRow && currRow === 1) && "#4169e1"};
     opacity: ${({ row, currRow }) => (row === currRow) && "1"};
 `
 

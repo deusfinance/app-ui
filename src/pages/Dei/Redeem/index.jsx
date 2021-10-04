@@ -57,6 +57,7 @@ const Dei = () => {
         else tokensMap[address] = currToken
     }
 
+
     const TokensMap = tokensMap
 
     let secondaryToken = tokens[2]
@@ -110,15 +111,15 @@ const Dei = () => {
                 amountIn1 = in1
                 amountOut1 = RemoveTrailingZero(new BigNumber(amountIn1).times(collateral_price).div(100).times(collatRatio).times(1 - (redemptionFee / 100)).toFixed(18))
                 amountOut2 = RemoveTrailingZero(new BigNumber(amountIn1).times(100 - collatRatio).div(100).div(deus_price).times(1 - (redemptionFee / 100)).toFixed(18))
-                if (collatRatio == 0) {
-                    if (amountOut1 == 0) amountOut1 = amountOut2
-                    else if (amountOut2 == 0) amountOut2 = amountOut1
+                if (collatRatio === 0) {
+                    if (isZero(amountOut1)) amountOut1 = amountOut2
+                    else if (isZero(amountOut2)) amountOut2 = amountOut1
                 }
             } if (out1) {
                 amountIn1 = RemoveTrailingZero(new BigNumber(out1).div(collateral_price).times(100).div(collatRatio).div(1 - (redemptionFee / 100)).toFixed(18))
                 amountOut1 = out1
                 amountOut2 = RemoveTrailingZero(new BigNumber(out1).div(collateral_price).div(collatRatio).div(1 - (redemptionFee / 100)).times(100 - collatRatio).div(deus_price).times(1 - (redemptionFee / 100)).toFixed(18))
-                if (collatRatio == 0) {
+                if (collatRatio === 0) {
                     amountIn1 = RemoveTrailingZero(new BigNumber(out1).times(deus_price).div(1 - (redemptionFee / 100)).toFixed(18))
                 }
             } if (out2) {

@@ -18,7 +18,7 @@ const NavDesktop = ({ routes }) => {
                         if (nav.image) {
                             res = <ExternalLink href={nav.path} >
                                 {/* height="20%" width="20%" */}
-                                <img src={`/img/navbar/${nav.id}.svg`} alt="" />
+                                <img width="20px" src={`/img/navbar/${nav.id}.svg`} alt="" />
                             </ExternalLink>
                         } else {
                             res = <ExternalLink href={nav.path} textDecoration="none">

@@ -30,6 +30,7 @@ import { fromWei } from '../../../helper/formatBalance';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
+import Under from '../../Maintenance/Under';
 
 const Zap = () => {
     const location = useLocation()
@@ -208,8 +209,9 @@ const Zap = () => {
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
 
+        <Under />
 
-        <MainWrapper>
+        {false && <MainWrapper >
             <ContentWrapper deactivated={mintPaused}>
                 <Type.XL fontWeight="300">Zap</Type.XL>
                 <SwapWrapper style={{ marginTop: "25px", maxWidth: "560px" }}>
@@ -276,7 +278,7 @@ const Zap = () => {
                 <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} style={{ maxWidth: "560px" }} />
                 <SwapCard title="Zapping Fee" value={mintingFee ? `${mintingFee} %` : ""} style={{ maxWidth: "560px" }} />
             </ContentWrapper>
-        </MainWrapper>
+        </MainWrapper>}
 
         <div className='tut-left-wrap'>
             <LinkBox />

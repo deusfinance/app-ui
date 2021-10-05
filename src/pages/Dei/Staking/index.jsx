@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import useChain from '../../../hooks/useChain';
-import { useAPY } from '../../../hooks/useDei';
+// import { useAPY } from '../../../hooks/useDei';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
@@ -38,7 +38,7 @@ const Dei = () => {
     const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
     useDeiUpdateRedeem(chainId)
-    const APY = useAPY(chainId)
+    // const APY = useAPY(chainId)
 
     return (<>
         <MainWrapper>

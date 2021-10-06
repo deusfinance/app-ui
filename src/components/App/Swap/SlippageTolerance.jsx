@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components'
 import { StyleSwapBase, StyleTitles } from '.';
 import { Base } from '../Button';
@@ -62,17 +62,17 @@ const InputSlippage = styled.input.attrs(
 
 `
 const defaultAmounts = [0.1, 0.5, 1]
-const SlippageTolerance = ({ slippage, setSlippage, bgColor }) => {
+const SlippageTolerance = ({ slippage, setSlippage, style, bgColor }) => {
     const [customActive, setCustomActive] = useState(false)
 
-    const handleMinSlipage = () => {
+    const handleMinSlippage = useCallback(() => {
         if (slippage < 0.1) {
             setSlippage(0.1)
             setCustomActive(false)
         }
-    }
+    }, [setSlippage, slippage, setCustomActive])
 
-    const handleCustomChange = (e) => {
+    const handleCustomChange = useCallback((e) => {
         if (e.currentTarget.value !== "") {
             setCustomActive(true)
             setSlippage(parseFloat(e.currentTarget.value))
@@ -80,28 +80,31 @@ const SlippageTolerance = ({ slippage, setSlippage, bgColor }) => {
             setCustomActive(false)
             setSlippage(0.5)
         }
-    }
+    }, [setSlippage, setCustomActive])
 
-    return (<Wrapper>
-        <Type.SM className="inner-title">Slippage Telorance</Type.SM>
-        <div style={{ display: "inline-block" }} height="25px">
-            {defaultAmounts.map(amount => {
-                return <Option key={amount} active={amount === slippage && !customActive} bgColor={bgColor} onClick={() => {
-                    setCustomActive(false)
-                    setSlippage(amount)
-                }}>{amount}%</Option>
-            })}
-            <CustomOption active={customActive}  >
-                <InputSlippage
-                    placeholder={slippage.toFixed(1)}
-                    value={customActive ? slippage : ""}
-                    onBlur={handleMinSlipage}
-                    onChange={(e) => handleCustomChange(e)}
-                />
-                %
-            </CustomOption>
-        </div>
-    </Wrapper >);
+    return (useMemo(() => {
+        return <Wrapper style={style}>
+            <Type.SM className="inner-title">Slippage Tolerance</Type.SM>
+            <div style={{ display: "inline-block" }} height="25px">
+                {defaultAmounts.map(amount => {
+                    return <Option key={amount} active={amount === slippage && !customActive} bgColor={bgColor} onClick={() => {
+                        setCustomActive(false)
+                        setSlippage(amount)
+                    }}>{amount}%</Option>
+                })}
+                <CustomOption active={customActive}  >
+                    <InputSlippage
+                        placeholder={slippage.toFixed(1)}
+                        value={customActive ? slippage : ""}
+                        onBlur={handleMinSlippage}
+                        onChange={(e) => handleCustomChange(e)}
+                    />
+                    %
+                </CustomOption>
+            </div>
+        </Wrapper >
+    }, [style, setSlippage, handleCustomChange, handleMinSlippage, slippage, setCustomActive, bgColor, customActive])
+    );
 }
 
 export default SlippageTolerance;

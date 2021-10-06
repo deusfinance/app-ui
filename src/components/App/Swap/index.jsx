@@ -13,9 +13,9 @@ export const InputAmount = styled.input.attrs({
     outline-style: none;
     width: ${({ width }) => width || "0px"};
     font-size: ${({ fontSize }) => fontSize || "25px"};
-     color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.text1};
     background: transparent;
-
+    cursor: ${({ disabled }) => (disabled && "not-allowed")};
 `
 export const SwapTitle = styled(FlexCenter)`
     display: inline-flex;
@@ -24,7 +24,7 @@ export const SwapTitle = styled(FlexCenter)`
     border-radius: 15px 1px;
     font-size:25px;
     color:#000;
-    background:${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3}
+    background:${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
 `
 
 export const StyleSwapBase = css`
@@ -50,7 +50,7 @@ export const SwapArrow = styled(FlexCenter)`
     display:inline-flex;
     cursor:pointer;
     &:hover{
-        filter:brightness(0.8)
+        filter:brightness(0.8);
     }
 `
 export const MainWrapper = styled.div`
@@ -59,7 +59,6 @@ export const MainWrapper = styled.div`
    text-align:center;
    max-width: 95%;
    margin:auto;
-
 `
 export const SwapWrapper = styled.div`
 ${StyleSwapBase}
@@ -77,5 +76,3 @@ export const SmallWrapper = styled(FlexCenter)`
     margin-top: -1px;
     padding:0 20px;
 `
-
-

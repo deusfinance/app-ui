@@ -9,6 +9,8 @@ lerna-debug.log*
 .vscode/
 .DS_Store
 
+public/index.html
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
@@ -109,11 +111,10 @@ dist
 .tern-port
 
 package-lock.json
+yarn.lock
 
 # Source and Build zip files
 build*.zip
 src*.zip
 
-
-package-lock.json
 

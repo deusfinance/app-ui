@@ -1,6 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { InputAmount } from '.';
@@ -15,6 +13,7 @@ const Wrapper = styled.div`
     position: relative;
     height: ${({ height }) => (height || "90px")};
     width: ${({ width }) => (width || "100%")};
+    margin-top: ${({ mt }) => (mt && mt)};
     background: ${({ theme }) => theme.border1};
     border: 2px solid #000000;
     padding:0 15px;
@@ -27,15 +26,14 @@ const TokenInfo = styled(Flex)`
         filter:${({ active }) => active && "brightness(0.8)"};
     }
 `
-
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate }) => {
+const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFocusType = null, fastUpdate }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
 
     useEffect(() => {
         const getBalance = () => {
-            setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
+            setBalance(data ? getFullDisplayBalance(data, currency.decimals) : TokensMap[currency.address]?.balance ? TokensMap[currency.address]?.balance : "0")
         }
 
         if (currency) {
@@ -53,18 +51,18 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
     }, [inputAmount, balance])
 
 
-    return (<Wrapper>
+    return (<Wrapper mt={mt}>
         <Flex
             p="10px 0"
             justifyContent={"space-between"}
         >
             <Box>
-                <Type.SM color={'secodery'}>
+                <Type.SM color={'secondary'}>
                     {title || "From"}
                 </Type.SM>
             </Box>
             <Box>
-                <Type.SM color={'secodery'}>
+                <Type.SM color={'secondary'}>
                     Balance: {formatBalance3(balance)}
                 </Type.SM>
             </Box>
@@ -75,7 +73,10 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             alignItems="center"
             mt="5px"
         >
-            <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => setInputAmount(e.currentTarget.value)} />
+            <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+                if (setFocusType) { setFocusType(type) }
+                setInputAmount(e.currentTarget.value)
+            }} />
 
             {hasMax && !onMax && <ButtonMax width={"40px"}
                 onClick={() => setInputAmount(balance)}>

@@ -16,6 +16,13 @@ export const useERC20 = (address) => {
     }, [address, web3])
 }
 
+export const useCrossERC20 = (address, web3) => {
+    return useMemo(() => {
+        if (!isAddress(address)) return null
+        return getERC20Contract(address, web3)
+    }, [address, web3])
+}
+
 export const useDeusAMM = (address) => {
     const web3 = useWeb3()
     const { chainId } = useWeb3React()

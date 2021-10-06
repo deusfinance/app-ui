@@ -65,7 +65,7 @@ export const NavbarMobileContent = styled.div`
     z-index: 10;
     > ul{
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
         justify-content: flex-start;
         list-style:none;
         .icon-close{
@@ -103,6 +103,11 @@ export const NavbarMobileContent = styled.div`
         .nav-item-text {
             margin-left: 20px;
             margin-bottom: 12px;
+        }
+        .mobile-nav-text {
+            display: block;
+            height: 100%;
+            width: 100%;
         }
         .nav-item-box {
             margin-bottom: 10px;
@@ -175,6 +180,11 @@ export const NavbarSideWrap = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 2;
+    @media screen and (max-width: 500px) {
+        .deus-text{
+            display:none;
+        }
+    }
     >*{
         margin: 0 7.5px;
     }

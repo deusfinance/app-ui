@@ -1,88 +1,48 @@
 [
   {
-    "id": "app",
-    "text": "APP",
+    "id": "V2 MIGRATOR",
+    "path": "/migrator",
+    "exact": true
+  },
+  {
+    "id": "STABLE COIN",
+    "text": "STABLE COIN",
     "children": [
       {
-        "id": "MUON PRESALE",
-        "text": "muon presale",
-        "path": "/muon-presale",
-        "exact": true
+        "id": "MINT",
+        "text": "MINT",
+        "path": "/stable/mint"
       },
       {
-        "id": "STAKE & YIELD",
-        "text": "STAKE & YIELD",
-        "path": "/stake-and-yield",
-        "exact": true
+        "id": "REDEEM",
+        "text": "REDEEM",
+        "path": "/stable/redeem"
       },
       {
-        "id": "SEALED SWAP",
-        "text": "sealed swap",
-        "path": "/sealed-swap",
-        "exact": true
+        "id": "ZAP",
+        "text": "ZAP",
+        "path": "/stable/zap"
       },
       {
-        "id": "vaultsL",
-        "text": "VAULTS (LEGACY)",
-        "path": "/vaults",
-        "exact": true
+        "id": "FARMS",
+        "text": "FARMS",
+        "path": "/stable/farms"
       },
       {
-        "id": "STAKING (LEGACY)",
-        "text": "STAKING (LEGACY)",
-        "path": "/staking"
+        "id": "BUYBACK & RECOLLAT",
+        "text": "BUYBACK & RECOLLAT",
+        "path": "/stable/buyback-recollat"
       }
     ]
   },
   {
-    "id": "synthetics",
-    "text": "SYNTHETICS",
-    "children": [
-      {
-        "id": "ETH",
-        "text": "ETH",
-        "path": "/synchronizer",
-        "exact": true
-      },
-      {
-        "id": "xDai",
-        "text": "xDAI",
-        "path": "/crosschain/xdai/synchronizer",
-        "exact": true
-      },
-      {
-        "id": "bsc",
-        "text": "BSC",
-        "path": "/crosschain/bsc/synchronizer",
-        "exact": true
-      },
-      {
-        "id": "heco",
-        "text": "HECO",
-        "path": "/crosschain/heco/synchronizer",
-        "exact": true
-      },
-      {
-        "id": "polygon",
-        "text": "POLYGON",
-        "path": "/crosschain/polygon/synchronizer",
-        "exact": true
-      }
-    ]
+    "id": "MUON PRESALE",
+    "path": "/muon-presale",
+    "exact": true
   },
   {
-    "id": "tools",
-    "text": "TOOLS",
-    "children": [
-      {
-        "id": "DEUS android",
-        "text": "DEUS android",
-        "path": "https://play.google.com/store/apps/details?id=finance.deus.deus_mobile&hl=en_US"
-      }
-    ]
-  },
-  {
-    "id": "MEDIUM",
+    "id": "medium",
+    "image": true,
     "path": "https://medium.com/deus-finance"
   },
   {
@@ -110,6 +70,6 @@
   {
     "id": "discord",
     "image": true,
-    "path": "https://discord.com/invite/xfeYT6acha"
+    "path": "https://discord.gg/xTTaBBAMgG"
   }
 ]

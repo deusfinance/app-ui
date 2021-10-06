@@ -53,14 +53,13 @@ const ButtonSync = styled(Base).attrs({
 export const ButtonSyncDeactivated = styled(ButtonSync)`
     box-shadow: none;
     font-family:"Monument Grotesk Semi";
-    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.sync_dactive};
+    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.deactivated};
     color: ${({ theme, color }) => color ? theme[color] : "#8d8d8d"};
     cursor: default;
 `
 
 export const ButtonSyncActive = styled(ButtonSync)`
   background: ${({ theme }) => theme.sync_active};
-  /* box-shadow: 0px 2px 4px rgb(100 100 100 / 50%); */
   font-size: 25px;
   &:hover{
     filter:${({ active }) => active && "brightness(1.2)"};

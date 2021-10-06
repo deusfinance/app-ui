@@ -22,7 +22,13 @@ export const RowCenter = styled(Row)`
 
 export const RowFlat = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: flex-end;
+`
+
+export const RowStart = styled.div`
+  display: flex;
+  align-items: flex-start;
 `
 
 export const AutoRow = styled(Row)`

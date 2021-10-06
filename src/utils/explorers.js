@@ -2,6 +2,7 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { ExternalLink } from '../components/App/Link'
 import { Type } from '../components/App/Text'
+import { ChainId } from '../constant/web3'
 import { TransactionState } from './constant'
 
 export function shortenHex(hex, length = 4) {
@@ -17,13 +18,13 @@ const EXPLORER_PREFIXES = {
   97: 'testnet.',
   128: '',
   137: '',
-  256: 'testnet.'
+  256: 'testnet.',
+  [ChainId.AVALANCHE]: '',
 }
 
 function getEtherscanLink(chainId, data, type) {
-  const prefix = `https://${
-    EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
-  }etherscan.io`
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
+    }etherscan.io`
 
   switch (type) {
     case 'transaction': {
@@ -38,10 +39,25 @@ function getEtherscanLink(chainId, data, type) {
   }
 }
 
-function getBlockscoutLink(chainId, data, type) {
-  const prefix = `https://blockscout.com/xdai/${
-    EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[100]
-  }`
+function getXdaiLink(chainId, data, type) {
+  const prefix = `https://blockscout.com/xdai${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[100]
+    }`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/tokens/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+function getAvalancheLink(chainId, data, type) {
+  const prefix = `https://cchain.explorer.avax.network${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
+    }`
 
   switch (type) {
     case 'transaction': {
@@ -56,10 +72,9 @@ function getBlockscoutLink(chainId, data, type) {
   }
 }
 
-function getBscscanLink(chainId, data, type) {
-  const prefix = `https://${
-    EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[56]
-  }bscscan.com`
+function getBscScanLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[56]
+    }bscscan.com`
 
   switch (type) {
     case 'transaction': {
@@ -75,9 +90,8 @@ function getBscscanLink(chainId, data, type) {
 }
 
 function getPolygonScan(chainId, data, type) {
-  const prefix = `https://${
-    EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[137]
-  }polygonscan.com`
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[137]
+    }polygonscan.com`
 
   switch (type) {
     case 'transaction': {
@@ -92,10 +106,10 @@ function getPolygonScan(chainId, data, type) {
   }
 }
 
-function getHechoInfo(chainId, data, type) {
-  const prefix = `https://${
-    EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[128]
-  }hecoinfo.com`
+
+function getHecoLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[128]
+    }hecoinfo.com`
 
   switch (type) {
     case 'transaction': {
@@ -117,26 +131,30 @@ export function getTransactionLink(chainId, data, type) {
     case 4: {
       return getEtherscanLink(chainId, data, type)
     }
-    case 56:
-    case 97: {
-      return getBscscanLink(chainId, data, type)
+    case ChainId.BSC:
+    case ChainId.BSC_TESTNET: {
+      return getBscScanLink(chainId, data, type)
     }
-    case 100: {
-      return getBlockscoutLink(chainId, data, type)
+    case ChainId.XDAI: {
+      return getXdaiLink(chainId, data, type)
     }
 
-    case 256:
-    case 128: {
-      return getHechoInfo(chainId, data, type)
+    case ChainId.HECO_TESTNET:
+    case ChainId.HECO: {
+      return getHecoLink(chainId, data, type)
     }
-    case 137: {
+    case ChainId.MATIC: {
       return getPolygonScan(chainId, data, type)
+    }
+    case ChainId.AVALANCHE: {
+      return getAvalancheLink(chainId, data, type)
     }
     default: {
       return getEtherscanLink(chainId, data, type)
     }
   }
 }
+
 
 export function ToastTransaction(type, title, data = '', option = {}) {
   switch (type) {
@@ -187,7 +205,7 @@ export function ToastTransaction(type, title, data = '', option = {}) {
   }
 }
 
-export function SwapTransaction(type, payload) {
+export function SwapTransaction(type, payload, option = { autoClose: true }) {
   toast.dismiss()
   switch (type) {
     case TransactionState.LOADING:
@@ -218,8 +236,8 @@ export function SwapTransaction(type, payload) {
           )}
         >
           {`Swapped ${payload.from.amount} ${payload.from.symbol} for ${payload.to.amount} ${payload.to.symbol} ↗ `}
-        </ExternalLink>
-      )
+        </ExternalLink>,
+        option)
       break
 
     case TransactionState.FAILED:
@@ -240,8 +258,8 @@ export function SwapTransaction(type, payload) {
           )}
         >
           {`View On Explorer ↗`}
-        </ExternalLink>
-      )
+        </ExternalLink>,
+        option)
       break
 
     default:
@@ -256,8 +274,8 @@ export function SwapTransaction(type, payload) {
           )}
         >
           {`View On Explorer ↗`}
-        </ExternalLink>
-      )
+        </ExternalLink>,
+        option)
   }
   return
 }
@@ -335,10 +353,8 @@ export function ApproveTransaction(type, payload) {
   return
 }
 
-//to do
-export function CustomTransaction(type, payload) {
+export function CustomTransaction(type, payload, option = { autoClose: true }) {
   toast.dismiss()
-
   switch (type) {
     case TransactionState.LOADING:
       ToastTransaction(
@@ -352,7 +368,8 @@ export function CustomTransaction(type, payload) {
           )}
         >
           {`${payload.message} ↗ `}
-        </ExternalLink>
+        </ExternalLink>,
+        {}
       )
       break
 
@@ -368,23 +385,29 @@ export function CustomTransaction(type, payload) {
           )}
         >
           {`${payload.message}`}
-        </ExternalLink>
+        </ExternalLink>,
+        option
       )
       break
 
     case TransactionState.FAILED:
+      if (!payload.hash) {
+        ToastTransaction('warn', 'Transaction Rejected', "", { autoClose: true })
+        return
+      }
       ToastTransaction(
         'warn',
-        'Transaction Failed'
-        // <ExternalLink
-        //   href={getTransactionLink(
-        //     payload.chainId,
-        //     payload.hash,
-        //     'transaction'
-        //   )}
-        // >
-        //   {`View On Explorer`}
-        // </ExternalLink>
+        'Transaction Failed',
+        <ExternalLink
+          href={getTransactionLink(
+            payload.chainId,
+            payload.hash,
+            'transaction'
+          )}
+        >
+          {`View On Explorer ↗`}
+        </ExternalLink>,
+        option
       )
       break
 
@@ -400,7 +423,8 @@ export function CustomTransaction(type, payload) {
           )}
         >
           {`View On Explorer`}
-        </ExternalLink>
+        </ExternalLink>,
+        option
       )
   }
   return

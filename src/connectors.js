@@ -3,9 +3,9 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { FrameConnector } from '@web3-react/frame-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { FortmaticConnector } from '@web3-react/fortmatic-connector'
-import { ChainMap } from './constant/web3'
+import { ChainId, rpcConfig } from './constant/web3'
 
-const supportedChainIds = Object.values(ChainMap)
+const supportedChainIds = Object.values(ChainId)
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 const FORTMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
 
@@ -28,14 +28,23 @@ export const injected = new InjectedConnector({
 const POLLING_INTERVAL = 15000
 
 //only mainnet (walletconnect only one chain supports)
-export const walletconnect = new WalletConnectConnector({
-  rpc: {
-    1: RPC_URLS[1],
-    56: RPC_URLS[56],
-    100: RPC_URLS[100]
-  },
+export const walletconnect_eth = new WalletConnectConnector({
+  rpc: { 1: RPC_URLS[1] },
   // bridge: 'https://bridge.walletconnect.org',
   // qrcode: true,
+  pollingInterval: POLLING_INTERVAL
+})
+
+//bsc
+// export const walletconnect_bsc = new WalletConnectConnector({
+//   rpc: { 56: RPC_URLS[56] },
+//   qrcode: true,
+//   // bridge: 'https://pancakeswap.bridge.walletconnect.org/',
+//   pollingInterval: POLLING_INTERVAL
+// })
+export const walletconnect_polygon = new WalletConnectConnector({
+  rpc: { [ChainId.MATIC]: rpcConfig[ChainId.MATIC].rpcUrls[0] },
+  qrcode: true,
   pollingInterval: POLLING_INTERVAL
 })
 
@@ -53,9 +62,9 @@ export const frame = new FrameConnector({ supportedChainIds: [1] })
 
 export const ConnectorNames = {
   Injected: 'MetaMask',
-  Network: 'Network',
-  WalletConnect: 'WalletConnect',
-  WalletLink: 'WalletLink',
+  WalletConnect_ETH: 'WalletConnect (ETH)',
+  WalletConnect_Polygon: 'WalletConnect (Polygon)',
+  WalletLink: 'WalletLink (ETH)',
   Ledger: 'Ledger',
   Trezor: 'Trezor',
   Lattice: 'Lattice',
@@ -65,8 +74,8 @@ export const ConnectorNames = {
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
-  [ConnectorNames.WalletConnect]: walletconnect,
+  [ConnectorNames.WalletConnect_ETH]: walletconnect_eth,
+  [ConnectorNames.WalletConnect_Polygon]: walletconnect_polygon,
   [ConnectorNames.WalletLink]: walletlink,
-  // [ConnectorNames.Frame]: frame, // api keys are missing
   [ConnectorNames.Fortmatic]: fortmatic
 }

@@ -9,6 +9,7 @@ const RefreshContext = React.createContext({ slow: 0, fast: 0 })
 const RefreshContextProvider = ({ children }) => {
     const [slow, setSlow] = useState(0)
     const [fast, setFast] = useState(0)
+
     useEffect(() => {
         const interval = setInterval(async () => {
             setFast((prev) => prev + 1)

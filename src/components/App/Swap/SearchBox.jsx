@@ -114,9 +114,9 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoa
         <Line my="5px"></Line>
         <TokensWrap>
           {Object.keys(currencies)
-            .filter(address => currencies[address].symbol !== swapState[escapedType].symbol)
-            .map((address, id) => (
-              <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
+            .filter(address => currencies[address].symbol !== swapState[escapedType].symbol && (!swapState[escapedType].pairID || (swapState[escapedType].pairID && currencies[address].pairID !== swapState[escapedType].pairID)))
+            .map((address, id) => {
+              return <TokenRow key={id} onClick={() => changeToken(currencies[address], escapedType)}>
                 <TokenWrap>
                   <StyledLogo size="40px" src={currencies[address]?.logo || CircleToken} alt={currencies[address]?.symbol || "token"} />
                   <Type.LG style={{ marginLeft: "10px" }} >{currencies[address]?.symbol}</Type.LG>
@@ -126,11 +126,10 @@ const SearchBox = ({ currencies, swapState, escapedType, changeToken, disableLoa
                   : <img style={{ marginRight: "-15px" }} src="/img/spinner.svg" width="40" height="40" alt="sp" />
                 }
               </TokenRow>
-            ))}
-
+            })}
         </TokensWrap>
-      </Wrapper>
-    </ReactModal>
+      </Wrapper >
+    </ReactModal >
   );
 }
 

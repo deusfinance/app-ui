@@ -7,7 +7,6 @@ import OutsideClickHandler from 'react-outside-click-handler';
 
 const NavMobile = ({ routes, open, setOpen }) => {
     const { t } = useTranslation()
-    console.log(routes);
     const CurrRoutes = [
         ...routes.slice(0, 4),
         routes[5],
@@ -19,7 +18,6 @@ const NavMobile = ({ routes, open, setOpen }) => {
             ]
         },
     ]
-    console.log(CurrRoutes);
 
     return useMemo(() => {
         return <OutsideClickHandler onOutsideClick={() => setOpen(false)}>
@@ -75,7 +73,7 @@ const NavMobile = ({ routes, open, setOpen }) => {
             </NavbarMobileContent>
         </OutsideClickHandler>
 
-    }, [routes, CurrRoutes, open, setOpen, t])
+    }, [CurrRoutes, open, setOpen, t])
 }
 
 export default NavMobile;

@@ -75,7 +75,7 @@ const DeusTokenBox = () => {
                 </EachUrl>
                 <Line />
                 <EachUrl>
-                    <p className="dei" onClick={() => addToken(deiToken, "dev")}>Add <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="dei" />DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                    <p className="dei" onClick={() => addToken(deiToken)}>Add <img src="/tokens/dei.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="dei" />DEI to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
                 <EachUrl>
                     <CopyToClipboard text={deiToken.address}

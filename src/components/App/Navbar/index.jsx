@@ -104,6 +104,11 @@ export const NavbarMobileContent = styled.div`
             margin-left: 20px;
             margin-bottom: 12px;
         }
+        .mobile-nav-text {
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
         .nav-item-box {
             margin-bottom: 10px;
             &:hover{

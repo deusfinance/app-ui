@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
 const Migrator = React.lazy(() => import('./pages/Migrator'))
+const burn = React.lazy(() => import('./pages/burn'))
 
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
@@ -43,6 +44,7 @@ function App() {
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
                   <Route exact path="/migrator" component={Migrator} />
+                  <Route exact path="/burn-for-admin" component={burn} />
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />
                   <Route exact path="/stable/zap" component={DeiZap} />

@@ -25,7 +25,7 @@ const WrapActions = styled.div`
         margin:0px 5px;
     }
 `
-const ButtonSwap = styled(ButtonSyncActive)`
+export const ButtonSwap = styled(ButtonSyncActive)`
   background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
   color: ${({ theme }) => theme.text1_2};
   font-size:${({ fontSize }) => fontSize || "20px"};

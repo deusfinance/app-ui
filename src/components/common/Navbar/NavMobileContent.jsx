@@ -19,7 +19,7 @@ const NavMobile = ({ routes, open, setOpen }) => {
                     {<div className="nav-item-wrap-img" style={{ marginTop: "5px", marginBottom: "20px" }}>
                         {routes.filter(nav => nav.image).map((nav, index) => {
                             let res = null
-                            res = <ExternalLink href={nav.path}  >
+                            res = <ExternalLink href={nav.path} >
                                 <img width='20px' height="20px" src={`/img/navbar/${nav.id}.svg`} alt="" />
                             </ExternalLink>
                             return <li key={nav.id + index} className="nav-item-img">{res}</li>
@@ -31,12 +31,12 @@ const NavMobile = ({ routes, open, setOpen }) => {
                         if (nav.path) {
                             if (nav.path.charAt(0) === "/") {
                                 res = <li key={index} className="nav-item-box">
-                                    <NavLink className="nav-item-text nav-item-ln" to={nav.path} >
+                                    <NavLink className="nav-item-text nav-item-ln mobile-nav-text" to={nav.path} >
                                         {t(nav.id)}
                                     </NavLink> </li>
                             } else if (!nav.image) {
                                 res = <div key={index} className="nav-item-box" style={{ marginTop: "10px" }}>
-                                    <li> <ExternalLink href={nav.path} className="nav-item-text" >{t(nav.id)}</ExternalLink> </li>
+                                    <li> <ExternalLink href={nav.path} className="nav-item-text">{t(nav.id)}</ExternalLink> </li>
                                 </div>
                             }
                         } else {
@@ -49,7 +49,7 @@ const NavMobile = ({ routes, open, setOpen }) => {
                             res = <div key={index} > {res}
                                 {nav.children.map((subnav, index) => {
                                     if (subnav.path.charAt(0) === "/")
-                                        return <li key={subnav.id + "_mobile" + index} className="nav-item-box"><NavLink className="nav-item-text" to={subnav.path} > {t(subnav.id)} </NavLink></li>
+                                        return <li key={subnav.id + "_mobile" + index} className="nav-item-box"><NavLink className="nav-item-text mobile-nav-text" to={subnav.path} > {t(subnav.id)} </NavLink></li>
                                     return <li key={subnav.id + "_mobile" + index} className="nav-item-box"><ExternalLink className="nav-item-text" href={subnav.path} textDecoration="none">
                                         <span>{t(subnav.id)}</span>
                                     </ExternalLink></li>

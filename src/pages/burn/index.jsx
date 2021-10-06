@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../components/App/Swap';
-import { DEITokens, deiToken } from '../../constant/token';
+import { DEITokens } from '../../constant/token';
 import { CostBox } from '../../components/App/Dei/CostBox';
 import LinkBox from '../../components/App/Dei/LinkBox'
 import { Type } from '../../components/App/Text';
 import { useApprove } from '../../hooks/useApprove';
 import useChain from '../../hooks/useChain';
-import { ContentWrapper, PlusImg } from '../../components/App/Dei';
-import { useDeiUpdate, useMint, useAllowance } from '../../hooks/useDei';
+import { ContentWrapper } from '../../components/App/Dei';
+import { useDeiUpdate } from '../../hooks/useDei';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../constant/correctChain';
 import { Chains } from '../../components/App/Dei/Chains';
@@ -19,7 +19,7 @@ const Burn = () => {
     const location = useLocation()
     const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
-    const [approveLoading, setApproveLoading] = useState(false)
+    const [, setApproveLoading] = useState(false)
     useDeiUpdate(chainId)
 
     let targetToken = DEITokens[chainId][1]

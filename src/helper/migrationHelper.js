@@ -150,7 +150,7 @@ export const doMigration = async (requestIds, migrateOption, timeStamp, account,
                     return
                 }
                 const tx = await migrateTX([oracleResult, oracleResult2], migrateOption, account, chainId, web3)
-                // console.log(tx);
+                console.log(tx);
                 // console.log(oracleResult, oracleResult2);
             })
 

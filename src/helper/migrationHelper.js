@@ -126,42 +126,42 @@ export const doMigration = async (requestIds, migrateOption, timeStamp, account,
         timeStamp
     }
 
-    try {
-        console.log(data);
-        const output = await axios.post(BASE_URL + "/migrate", data)
-        const oracleResult = output.data
-        console.log(oracleResult);
 
-        if (oracleResult.message) {
-            ToastTransaction("warn", "Migration Failed", oracleResult.message, { autoClose: true })
-            return { message: oracleResult.message, success: false }
-        }
+    const req1 = axios.post(BASE_URL + "/migrate", data)
+    const req2 = axios.post(BASE_URL2 + "/migrate", data)
 
-        const output2 = await axios.post(BASE_URL2 + "/migrate", data)
-        const oracleResult2 = output2.data
-        console.log(oracleResult2);
+    status = axios
+        .all([req1, req2])
+        .then(
+            axios.spread(async (...responses) => {
+                const oracleResult = responses[0].data;
+                const oracleResult2 = responses[1].data;
+                if (oracleResult.message) {
+                    ToastTransaction("warn", "Migration Failed", oracleResult.message, { autoClose: true })
+                    return { message: oracleResult.message, success: false }
+                }
+                if (oracleResult2.message) {
+                    ToastTransaction("warn", "Migration Failed", oracleResult2.message, { autoClose: true })
+                    return { message: oracleResult2.message, success: false }
+                }
 
-        if (oracleResult2.message) {
-            ToastTransaction("warn", "Migration Failed", oracleResult.message, { autoClose: true })
-            return { message: oracleResult2.message, success: false }
-        }
+                if (validChainId === ChainId.MATIC) {
+                    ToastTransaction(TransactionState.SUCCESS, "Migration started", <div>Please allow a few minutes for your new tokens to reflect on the destination chain </div>, { autoClose: true })
+                    return
+                }
+                const tx = await migrateTX([oracleResult, oracleResult2], migrateOption, account, chainId, web3)
+                console.log(tx);
+                // console.log(oracleResult, oracleResult2);
+            })
 
-        //<ExternalLink href={getTransactionLink(ChainId.MATIC, oracleResult2, "transaction")}> View on explorer</ExternalLink> 
-        if (validChainId === ChainId.MATIC) {
-            ToastTransaction(TransactionState.SUCCESS, "Migration started", <div>Please allow a few minutes for your new tokens to reflect on the destination chain </div>, { autoClose: true })
-            return
-        }
-        const tx = await migrateTX([oracleResult, oracleResult2], migrateOption, account, chainId, web3)
-        console.log(tx);
-
-    } catch (error) {
-        console.log(error);
-        if (error.response.data.message) {
-            ToastTransaction("warn", "Migration Failed", error.response.data.message, { autoClose: true })
-            status = { message: error.response.data.message, success: false }
-        }
-        console.log("getTx failed ", error.response.data);
-    }
+        )
+        .catch(errors => {
+            //errors.response
+            if (errors.response && errors.response.data.message) {
+                ToastTransaction("warn", "Migration Failed", errors.response.data.message, { autoClose: true })
+                status = { message: errors.response.data.message, success: false }
+                return status
+            }
+        });
     return status
 }
-

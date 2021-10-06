@@ -7,17 +7,26 @@ import OutsideClickHandler from 'react-outside-click-handler';
 
 const NavMobile = ({ routes, open, setOpen }) => {
     const { t } = useTranslation()
+    console.log(routes);
+    const CurrRoutes = [
+        ...routes.slice(0, 4),
+        routes[5],
+        {
+            "id": "APP",
+            "text": "APP",
+            "children": [
+                routes[6], routes[4]
+            ]
+        },
+    ]
+    console.log(CurrRoutes);
+
     return useMemo(() => {
         return <OutsideClickHandler onOutsideClick={() => setOpen(false)}>
             <NavbarMobileContent open={open}>
                 <ul onClick={() => setOpen(false)}>
-
-                    {/* <li className="nav-item-lg" >
-                        <LanguageSelector />
-                    </li> */}
-
                     {<div className="nav-item-wrap-img" style={{ marginTop: "5px", marginBottom: "20px" }}>
-                        {routes.filter(nav => nav.image).map((nav, index) => {
+                        {CurrRoutes.filter(nav => nav.image).map((nav, index) => {
                             let res = null
                             res = <ExternalLink href={nav.path} >
                                 <img width='20px' height="20px" src={`/img/navbar/${nav.id}.svg`} alt="" />
@@ -26,7 +35,7 @@ const NavMobile = ({ routes, open, setOpen }) => {
                         })}
                     </div>}
 
-                    {routes.map((nav, index) => {
+                    {CurrRoutes.map((nav, index) => {
                         let res = null
                         if (nav.path) {
                             if (nav.path.charAt(0) === "/") {
@@ -66,7 +75,7 @@ const NavMobile = ({ routes, open, setOpen }) => {
             </NavbarMobileContent>
         </OutsideClickHandler>
 
-    }, [routes, open, setOpen, t])
+    }, [routes, CurrRoutes, open, setOpen, t])
 }
 
 export default NavMobile;

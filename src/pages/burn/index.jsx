@@ -35,7 +35,6 @@ const Burn = () => {
                 console.log("Approved");
             } else {
                 console.log("Approve Failed");
-
             }
             setApproveLoading(false)
 

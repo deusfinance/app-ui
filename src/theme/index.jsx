@@ -52,7 +52,7 @@ export function colors(darkMode) {
     sync_active: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)' : "linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)",
     deactivated: 'rgb(28, 28, 28)',
 
-    //gradinant
+    //gradient
     grad1: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%)' : 'linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%)',
     grad2: darkMode ? "linear-gradient(135deg, rgba(91, 204, 189, 0.14902) 0%, rgba(97, 192, 191, 0.14902) 33.33%, rgba(85, 188, 200, 0.14902) 74.49%, rgba(105, 207, 184, 0.14902) 100%)" : "rgba(105, 207, 184, 0.14902)",
     grad3: darkMode ? "linear-gradient(247.41deg, #A2FBB0 16.32%, #5EC4D6 87.6%);" : "rgba(105, 207, 184, 0.14902)",
@@ -64,6 +64,11 @@ export function colors(darkMode) {
     label_primary: "#0779e4",
     label_warning: "#FF5555",
 
+    ChainId: {
+      1: "#4169e1",
+      4: "#FFA500",
+      137: "#7951DD"
+    }
   }
 }
 

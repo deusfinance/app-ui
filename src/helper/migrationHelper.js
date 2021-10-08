@@ -1,7 +1,7 @@
 import React from 'react';
 import { MIGRATOR_ADDRESS } from "../constant/contracts"
 import { ToastTransaction } from "../utils/explorers"
-import { doSignTypedData, SendWithToast } from "./web3"
+import { doPersonalSignTypedData, doSignTypedData, SendWithToast } from "./web3"
 import axios from "axios"
 import BigNumber from "bignumber.js"
 import { getMigrationContract } from "./contractHelpers"
@@ -44,6 +44,14 @@ export const migrateTX = async (results, migrationOption, account, chainId, web3
 
     return SendWithToast(fn, { from: account }, chainId, "Migrate to " + NameChainId[chainId])
 }
+
+export const signPersonal = async (requestIds, migrateOption, time, account, chainId, web3) => {
+    const message = `By signing this, you permit us to do the migration for ${account} from Deus V1 to Deus V2 ecosystem on ${NameChainId[chainId]} with chainID ${chainId} using the migration option ${migrateOption} which you CANNOT use anymore after migration has been completed.\nTime: ${time}\nverifyingContract: ${MIGRATOR_ADDRESS[chainId]}\nRequest ID: ${requestIds}`
+    console.log(message);
+    return doPersonalSignTypedData(message, account, web3)
+}
+
+
 
 export const signMsg = async (requestIds, migrateOption, time, account, chainId, web3) => {
     let eip712TypedData = {
@@ -104,11 +112,11 @@ export const getRandomNumber = async (account, url) => {
 
 
 
-export const doMigration = async (requestIds, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, callback) => {
+export const doMigration = async (requestIds, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, isPersonal) => {
 
     if (validChainId !== chainId) return
 
-    const signature = await signMsg(requestIds, migrateOption, timeStamp, account, validChainId, web3)
+    const signature = isPersonal ? await signPersonal(requestIds, migrateOption, timeStamp, account, chainId, web3) : await signMsg(requestIds, migrateOption, timeStamp, account, validChainId, web3)
     let status = {}
     if (!signature) {
         ToastTransaction("warn", "Failed to sign", "", { autoClose: true })

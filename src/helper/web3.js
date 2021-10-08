@@ -64,3 +64,25 @@ export function doSignTypedData(time, dataToSign, account, web3) {
         });
     });
 }
+
+
+export function doPersonalSignTypedData(dataToSign, account, web3) {
+    return new Promise(resolve => {
+        web3.currentProvider.sendAsync({
+            from: account,
+            method: 'personal_sign',
+            params: [web3.utils.toHex(dataToSign), account]
+        }, (error, result) => {
+            if (error) {
+                console.error(error);
+                resolve(false);
+            } else if (result.error) {
+                console.error(result.error.message);
+                resolve(false);
+            } else {
+                console.log("Signature: " + result.result);
+                resolve(result.result);
+            }
+        });
+    });
+}

@@ -21,22 +21,16 @@ const NameItemsDiv = styled.div`
     border: 1px solid ${({ row, currRow }) => (row === currRow) ? "black" : "transparent"};
     cursor: pointer;
     opacity: 0.5;
-    background: ${({ color, row, currRow }) => (row === currRow) && color[row]};
     opacity: ${({ row, currRow }) => (row === currRow) && "1"};
+    background: ${({ theme, row, currRow }) => (row === currRow) && theme.ChainId[row]};
 `
-
-const rowColor = {
-    1: "#4169e1",
-    4: "#FFA500",
-    137: "#7951DD",
-}
 
 const SelectBox = ({ currRow, validNetworks, account, web3 }) => {
     const rows = validNetworks
     return (<MainItemsDiv>
         {rows.map((row, id) => {
             return <span key={id} onClick={() => addRPC(account, row, web3)}>
-                <NameItemsDiv color={rowColor} row={row} currRow={currRow}>
+                <NameItemsDiv row={row} currRow={currRow}>
                     {NameChainId[row].toUpperCase()}
                 </NameItemsDiv>
             </span>

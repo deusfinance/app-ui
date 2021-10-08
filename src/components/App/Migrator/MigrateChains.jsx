@@ -26,6 +26,7 @@ const TitleText = styled.span`
 `
 
 const MigrateChains = ({ title, SyncChainId, setSyncChainId, validNetworks }) => {
+    console.log(SyncChainId, validNetworks);
     return (
         <SmallWrapper >
             <SwapNetwork>

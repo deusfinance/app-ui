@@ -113,7 +113,7 @@ export const getStakingTokenData = (conf, account) => {
         }
     ]
 }
-export const getHusdPoolData = (chainId = ChainId.RINKEBY, collat_usd_price, account) => {
+export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account) => {
     let calls = [
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -360,7 +360,7 @@ export const redeemAlgorithmicDei = (deus_price, expire_block, signature, amount
         .redeemAlgorithmicDEI(amountIn, deus_price, expire_block, [signature])
 }
 
-export const getClaimAll = async (account, web3, chainId = ChainId.RINKEBY) => {
+export const getClaimAll = async (account, web3, chainId = ChainId.ETH) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
         .collectRedemption()
@@ -368,7 +368,7 @@ export const getClaimAll = async (account, web3, chainId = ChainId.RINKEBY) => {
 }
 
 //READ FUNCTIONS
-export const getDeiInfo = async (web3, chainId = ChainId.RINKEBY, collat_usd_price = collatUsdPrice) => {
+export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price = collatUsdPrice) => {
     return getDeiContract(web3, chainId)
         .methods
         .dei_info([collat_usd_price])

@@ -23,8 +23,10 @@ export const CostBoxBuyBack = ({ chainId }) => {
     let availableRecollat = Math.max(useRecoilValue(availableRecollatState), 0)
     let deiInfo = useRecoilValue(deiPricesState)
     let deus_price = null
+    let dei_price = null
     if (deiInfo) deus_price = deiInfo["deus_price"]
-    let costs = makeCostDataBuyBack(deus_price, deiInfo["dei_price"], truncate(COLLATERAL_POOL_ADDRESS[chainId]), availableBuyback, availableRecollat, COLLATERAL_POOL_ADDRESS[chainId], chainId)
+    if (deiInfo) dei_price = deiInfo["dei_price"]
+    let costs = makeCostDataBuyBack(deus_price, dei_price, truncate(COLLATERAL_POOL_ADDRESS[chainId]), availableBuyback, availableRecollat, COLLATERAL_POOL_ADDRESS[chainId], chainId)
 
     return (
         useMemo(() => {

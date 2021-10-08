@@ -24,7 +24,7 @@ const NameItemsDiv = styled.div`
     cursor: pointer;
     opacity: 0.5;
     opacity: ${({ row, currRow }) => (row === currRow) && "1"};
-    background: ${({ row, currRow, theme }) => (row === currRow) && theme.ChainId[row]};
+    background: ${({ theme, row, currRow }) => (row === currRow) && theme.ChainId[row]};
 `
 
 const SelectBox = ({ currRow, setCurrRow, validNetworks }) => {

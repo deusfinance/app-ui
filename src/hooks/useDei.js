@@ -335,7 +335,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         try {
             return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`, payload)
         } catch (error) {
-            console.log(chainId);
+            console.log(error);
         }
     }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, amountOutParams, account, chainId, validChainId, web3])
 

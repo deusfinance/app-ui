@@ -91,7 +91,7 @@ const Dei = () => {
     }, [tokens, tokensMap])
 
     const [swapState, setSwapState] = useState({
-        from: {},
+        from: tokens[0],
         to: deiToken[chainId],
     })
 
@@ -178,26 +178,37 @@ const Dei = () => {
         }
     }
 
+    // useEffect(() => {
+    //     const changeFromTokens = () => {
+    //         let primaryToken = null
+    //         setIsPair(false)
+    //         if (collatRatio === 100) {
+    //             primaryToken = tokens[0]
+    //         } else if (collatRatio > 0 && collatRatio < 100) {
+    //             primaryToken = tokens[1]
+    //             let secondToken = tokens[2]
+    //             setIsPair(true)
+    //             setPairToken(secondToken)
+    //         } else if (collatRatio === 0) {
+    //             primaryToken = tokens[1]
+    //         }
+
+    //         setSwapState({ to: deiToken[chainId], from: primaryToken })
+
+    //     }
+    //     if (collatRatio != null) changeFromTokens()
+    // }, [collatRatio, tokens, chainId]);// eslint-disable-line
+
     useEffect(() => {
-        const changeFromTokens = () => {
-            let primaryToken = null
-            setIsPair(false)
-            if (collatRatio === 100) {
-                primaryToken = tokens[0]
-            } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = tokens[1]
-                let secondToken = tokens[2]
-                setIsPair(true)
-                setPairToken(secondToken)
-            } else if (collatRatio === 0) {
-                primaryToken = tokens[1]
-            }
+        setSwapState({ from: tokens[0], to: deiToken[chainId] })
+        setAmountIn("")
+        setAmountInPair("")
+        setAmountOut("")
+        setAmountOutParams([])
+    }, [tokens, chainId]);// eslint-disable-line
 
-            setSwapState({ to: deiToken[chainId], from: primaryToken })
 
-        }
-        if (collatRatio != null) changeFromTokens()
-    }, [collatRatio, tokens, chainId]);// eslint-disable-line
+
 
     useEffect(() => {
         // setIsPreApproved(null)
@@ -336,9 +347,10 @@ const Dei = () => {
                         type="from"
                         setFocusType={setFocusType}
                         focusType="from1"
+                        hasMax={true}
                         inputAmount={amountIn}
                         setInputAmount={setAmountIn}
-                        setActive={chainId === ChainId.MATIC ? showSearchBox : undefined}
+                        setActive={showSearchBox}
                         currency={swapState.from}
                         TokensMap={TokensMap}
                         // disabledTitle="Please enter the desired DEI amount"
@@ -405,7 +417,6 @@ const Dei = () => {
                         amountIn={amountIn}
                         amountOut={amountOut}
                         isMint={true}
-                        proxy={proxy}
                     />
 
                 </SwapWrapper>

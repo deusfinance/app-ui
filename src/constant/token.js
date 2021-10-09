@@ -70,22 +70,6 @@ export const ZapTokens = {
 
 
 export const DEITokens = {
-    [ChainId.AVALANCHE]: [
-        { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainId.AVALANCHE], decimals: 18, chainId: ChainId.AVALANCHE },
-        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.AVALANCHE], decimals: 18, chainId: ChainId.AVALANCHE },
-        { logo: "/tokens/dai.png", symbol: "DAI", address: COLLATERAL_ADDRESS[ChainId.AVALANCHE], decimals: 18, chainId: ChainId.AVALANCHE, pairID: 1 },
-        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.AVALANCHE], decimals: 18, chainId: ChainId.AVALANCHE, pairID: 1 },
-        { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118", decimals: 6, chainId: ChainId.AVALANCHE },
-        { logo: "/tokens/avax.png", symbol: "AVAX", address: "0x", decimals: 18, chainId: ChainId.AVALANCHE },
-    ],
-    [ChainId.HECO]: [
-        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainId.HECO },
-        { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainId.HECO },
-        { logo: "/tokens/husd.svg", symbol: "HUSD", address: "0x7a5a3819EcB1E481D656dAbE4a489644FBcb5844", decimals: 8, chainId: ChainId.HECO, pairID: 1 },
-        { logo: "/tokens/deus.svg", symbol: "DEUS", address: "0x86eD67215aE62a849B5f0c900A7Ed8B9e94945B9", decimals: 18, chainId: ChainId.HECO, pairID: 1 },
-        { logo: "/tokens/ht.png", symbol: "HT", address: "0x", decimals: 18, chainId: ChainId.HECO },
-        { logo: "/tokens/usdt.png", symbol: "USDT", address: "0xa71edc38d189767582c38a3145b5873052c3e47a", decimals: 6, chainId: ChainId.HECO },
-    ],
     [ChainId.RINKEBY]: [
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.RINKEBY], decimals: 6, chainId: 4 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.RINKEBY], decimals: 18, chainId: 4 },
@@ -101,13 +85,15 @@ export const DEITokens = {
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.MATIC], decimals: 18, chainId: ChainId.MATIC, pairID: 1 },
         { logo: "/tokens/matic.jpg", symbol: "MATIC", address: "0x", decimals: 18, chainId: ChainId.MATIC },
         { logo: "/tokens/eth-logo.svg", symbol: "WETH", address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", decimals: 18, chainId: ChainId.MATIC },
-
     ],
     [ChainId.ETH]: [
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.ETH], decimals: 6, chainId: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ETH], decimals: 18, chainId: 1 },
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.ETH], decimals: 6, chainId: 1, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ETH], decimals: 18, chainId: 1, pairID: 1 },
+        { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, chainId: 1 },
+        { logo: "/tokens/dai.png", symbol: "DAI", address: "0x6B175474E89094C44Da98b954EedeAC495271d0F", decimals: 18, chainId: 1 },
+        { logo: "/tokens/wbtc.png", symbol: "wBTC", address: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599", decimals: 8, chainId: 1 },
     ],
 }
 //END DEI
@@ -144,13 +130,7 @@ export const NativeTokens = [
 
 export const DefaultTokens = [...NativeTokens, ...MainTokens, ...TestTokens]
 
-export const SealedTokens = [
-    { logo: "/tokens/suni2.svg", symbol: "sUniDD", address: "0x2EdE9CB92a6dE0916889E5936B1aAd0e99ddf242", decimals: 18, chainId: 1 },
-    { logo: "/tokens/suni2.svg", symbol: "sUniDU", address: "0xB7b52c3523Af9c237817a49D17E656283cC59678", decimals: 18, chainId: 1 },
-    { logo: "/tokens/suni2.svg", symbol: "sUniDE", address: "0x670431fCdAf39280deE488C6D8277B9865E22d08", decimals: 18, chainId: 1 },
-    { logo: "/tokens/bpt.svg", symbol: "BPT", address: "0x1Dc2948B6dB34E38291090B825518C1E8346938B", decimals: 18, chainId: 1 },
-    { logo: "/tokens/usdc.svg", symbol: "ERT", address: "0x4Ef4E0b448AC75b7285c334e215d384E7227A2E6", decimals: 18, chainId: 97 },
-]
+
 
 export const MuonPreSaleTokens = [
     { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, chainId: 1 },

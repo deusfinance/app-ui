@@ -280,7 +280,7 @@ export function SwapTransaction(type, payload, option = { autoClose: true }) {
   return
 }
 
-export function ApproveTransaction(type, payload) {
+export function ApproveTransaction(type, payload, option = { autoClose: true }) {
   toast.dismiss()
   switch (type) {
     case TransactionState.LOADING:
@@ -295,7 +295,8 @@ export function ApproveTransaction(type, payload) {
           )}
         >
           {`Approve  ${payload.from.symbol} ↗`}
-        </ExternalLink>
+        </ExternalLink>,
+        {}
       )
       break
 
@@ -311,13 +312,14 @@ export function ApproveTransaction(type, payload) {
           )}
         >
           {`Approved ${payload.from.symbol} ↗`}
-        </ExternalLink>
+        </ExternalLink>,
+        option
       )
       break
 
     case TransactionState.FAILED:
       if (!payload.hash) {
-        ToastTransaction('warn', 'Transaction Rejected')
+        ToastTransaction('warn', 'Transaction Rejected', null, option)
         return
       }
       ToastTransaction(
@@ -331,7 +333,8 @@ export function ApproveTransaction(type, payload) {
           )}
         >
           {`View On Explorer ↗`}
-        </ExternalLink>
+        </ExternalLink>,
+        option
       )
       break
 
@@ -347,7 +350,8 @@ export function ApproveTransaction(type, payload) {
           )}
         >
           {`View On Explorer ↗`}
-        </ExternalLink>
+        </ExternalLink>,
+        option
       )
   }
   return

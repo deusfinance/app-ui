@@ -6,7 +6,7 @@ import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getProxyMinterContract, getZapContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getProxyMinterContract, getZapContract, getNewProxyMinterContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
@@ -240,89 +240,6 @@ export const RecollateralizeDEI = (collateral_price, deus_price, expire_block, s
         .recollateralizeDEI([amountIn, pool_collateral_price, [collateral_price], deus_price, expire_block, [signature]])
 }
 
-
-
-// 	struct ProxyInput {
-// 		uint256 collateral_price;
-// 		uint256 deus_price;
-// 		uint256 expire_block;
-// 		uint amount_out;
-// 		uint max_amount_in;
-//     bytes[] sigs;
-//     address[] path;
-// }
-
-//Proxy Mint
-export const nativeCoinToDei = (max_amount_in, amount_out, collateral_price, deus_price, expire_block, signature, path, chainId, web3) => {
-    return getProxyMinterContract(web3, chainId)
-        .methods
-        .Nativecoin2DEI([
-            collateral_price,
-            deus_price,
-            expire_block,
-            amount_out,
-            max_amount_in,
-            [signature],
-            path]
-        )
-}
-
-export const ERC202DEI = (max_amount_in, amount_out, collateral_price, deus_price, expire_block, signature, path, chainId, web3) => {
-
-    console.log([
-        collateral_price,
-        deus_price,
-        expire_block,
-        amount_out,
-        max_amount_in,
-        [signature],
-        path
-    ]);
-
-    return getProxyMinterContract(web3, chainId)
-        .methods
-        .ERC202DEI([
-            collateral_price,
-            deus_price,
-            expire_block,
-            amount_out,
-            max_amount_in,
-            [signature],
-            path
-        ])
-}
-
-export const collateral2DEI = (max_amount_in, amount_out, collateral_price, deus_price, expire_block, signature, path, chainId, web3) => {
-    console.log([
-        collateral_price,
-        deus_price,
-        expire_block,
-        amount_out,
-        max_amount_in,
-        [signature],
-        path
-    ]);
-    return getProxyMinterContract(web3, chainId)
-        .methods
-        .collateral2DEI([
-            collateral_price,
-            deus_price,
-            expire_block,
-            amount_out,
-            max_amount_in,
-            [signature],
-            path
-        ])
-}
-
-export const DeusToDei = (deus_amount, collateral_price, deus_price, expire_block, signature, transferResidual = false, min_amount_out, chainId, web3) => {
-    console.log(deus_amount);
-    // return getProxyMinterContract(web3, chainId)
-    //     .methods
-    //     .DEUS2DEI([collateral_price, deus_price, expire_block, min_amount_out, [signature], []], deus_amount)
-}
-
-
 //HUSD MINT
 export const mint1t1DEI = (collateral_amount, collateral_price, expire_block, signature, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
@@ -390,28 +307,22 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
 }
 
 
-export const getAmountOutProxy = async (fromCurrency, amountOut, deus_price, collateral_price, web3, chainId) => {
-
-    if (!fromCurrency || !amountOut || isZero(amountOut) || deus_price === undefined) return ""
-    const amountOutToWei = getToWei(amountOut, 18).toFixed(0)
+export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, collateral_price, web3, chainId) => {
+    //getERC202DEIInputs
+    if (!fromCurrency || !amountIn || isZero(amountIn) || deus_price === undefined) return ""
+    const amountInToWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
     const collateralPriceWei = getToWei(collateral_price, 6).toFixed(0)
     const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
     let method = ""
-    let params = [amountOutToWei, deusPriceWei, collateralPriceWei]
-    console.log(chainId, amountOutToWei);
+    let params = [amountInToWei, deusPriceWei, collateralPriceWei]
+    console.log(chainId, amountInToWei);
 
     const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
 
     if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
-        console.log("getAmountInCollateral2DEI");
-        method = "getAmountInCollateral2DEI"
-    }
-    // else if (fromCurrency.address === DEUS_ADDRESS[chainId]) {
-    //     method = "getAmountOutDEUS2DEI"
-    // }
-    else {
-        console.log("getAmountInERC20ORNativecoin2DEI");
-        method = "getAmountInERC20ORNativecoin2DEI"
+        method = "getUSDC2DEIInputs"
+    } else {
+        method = "getERC202DEIInputs"
         if (!erc20Path) {
             console.error("INVALID PATH with ", fromCurrency)
             return
@@ -419,7 +330,7 @@ export const getAmountOutProxy = async (fromCurrency, amountOut, deus_price, col
         params.push(erc20Path)
     }
     console.log(method, params);
-    return getProxyMinterContract(web3, chainId).methods[method](...params).call()
+    return getNewProxyMinterContract(web3, chainId).methods[method](...params).call()
 }
 
 

@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, NEW_PROXY_MINT_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
@@ -52,7 +52,8 @@ const Dei = () => {
     const [isPair, setIsPair] = useState(false)
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [slippage, setSlippage] = useState(0.5)
-    const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
+    const [amountOutParams, setAmountOutParams] = useState([])
+    const contractAddress = useMemo(() => proxy ? NEW_PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
         .filter((token) => (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
@@ -166,9 +167,10 @@ const Dei = () => {
                     }
                 }
             } else {
-                amountOut = out
-                const amountOutProxy = await getAmountOutProxy(swapState.from, amountOut, deus_price, collateral_price, web3, chainId)
-                amountIn1 = amountOutProxy ? fromWei(amountOutProxy, swapState.from.decimals) : ""
+                amountIn1 = in1
+                const amountOutProxy = await getAmountOutProxy(swapState.from, amountIn1, deus_price, collateral_price, web3, chainId)
+                setAmountOutParams([amountOutProxy[0], amountOutProxy[1], amountOutProxy[2]])
+                amountOut = amountOutProxy ? fromWei(amountOutProxy[0], swapState.to.decimals) : ""
             }
             setAmountIn(amountIn1)
             setAmountInPair(amountIn2)
@@ -230,7 +232,7 @@ const Dei = () => {
 
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, chainId)
+    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, amountOutParams, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -261,6 +263,7 @@ const Dei = () => {
                 setAmountIn("")
                 setAmountInPair("")
                 setAmountOut("")
+                setAmountOutParams([])
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
                 console.log("Swap Failed");
@@ -333,18 +336,16 @@ const Dei = () => {
                         type="from"
                         setFocusType={setFocusType}
                         focusType="from1"
-                        hasMax={!proxy}
                         inputAmount={amountIn}
                         setInputAmount={setAmountIn}
                         setActive={chainId === ChainId.MATIC ? showSearchBox : undefined}
                         currency={swapState.from}
                         TokensMap={TokensMap}
-                        disabledTitle="Please enter the desired DEI amount"
-                        disabled={proxy}
+                        // disabledTitle="Please enter the desired DEI amount"
                         fastUpdate={fastUpdate}
                         chainId={chainId}
-                        proxy={proxy}
-                        placeHolder={""}
+                    // proxy={proxy}
+                    // placeHolder={""}
                     />
 
                     {isPair && <div>
@@ -379,6 +380,9 @@ const Dei = () => {
                         currency={swapState.to}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
+                        hasMax={!proxy}
+                        disabled={proxy}
+
                     // proxy={proxy}
                     // placeHolder={"ENTER AMOUNT"}
                     />

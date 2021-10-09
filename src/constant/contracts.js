@@ -79,6 +79,10 @@ export const PROXY_MINT_ADDRESS = {
     [ChainId.MATIC]: "0xd8e79FeC03dd3ca0dCF4d7525d2dC438E8Fc0606",
     [ChainId.ETH]: '',
 }
+export const NEW_PROXY_MINT_ADDRESS = {
+    [ChainId.MATIC]: "0x8E17742983CBa809bc554868D8a69A37e3a8a207",
+    [ChainId.ETH]: '',
+}
 
 //Staking
 export const DEI_DEUS_LP = {

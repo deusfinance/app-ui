@@ -15,10 +15,11 @@ import XdaiProxyAbi from '../config/abi/XdaiProxyAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import CollateralAbi from '../config/abi/HusdPoolAbi.json'
 import ProxyMinterAbi from '../config/abi/ProxyMinterAbi.json'
+import NewProxyMinterAbi from '../config/abi/NewProxyAbi'
 import ZapAbi from '../config/abi/ZapAbi.json'
 import DeiDeusZapAbi from '../config/abi/DeiDeusZap.json'
 import MigrationAbi from '../config/abi/MigrationAbi.json'
-import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, PROXY_MINT_ADDRESS, MIGRATOR_ADDRESS, DEI_DEUS_ZAP } from '../constant/contracts'
+import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, PROXY_MINT_ADDRESS, MIGRATOR_ADDRESS, DEI_DEUS_ZAP, NEW_PROXY_MINT_ADDRESS } from '../constant/contracts'
 import { ChainId } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
 import { SyncData } from '../constant/synchronizer'
@@ -92,4 +93,8 @@ export const getZapContract = (web3, address, chainId = ChainId.AVALANCHE) => {
 
 export const getMigrationContract = (web3, chainId = ChainId.RINKEBY) => {
     return getContract(MigrationAbi, MIGRATOR_ADDRESS[chainId], web3, chainId)
+}
+
+export const getNewProxyMinterContract = (web3, chainId = ChainId.MATIC) => {
+    return getContract(NewProxyMinterAbi, NEW_PROXY_MINT_ADDRESS[chainId], web3, chainId)
 }

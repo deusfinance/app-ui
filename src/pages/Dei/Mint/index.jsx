@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, NEW_PROXY_MINT_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
@@ -27,7 +27,6 @@ import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
 import useTokenBalances from '../../../hooks/useTokenBalances';
-import { ChainId } from '../../../constant/web3';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
@@ -52,7 +51,8 @@ const Dei = () => {
     const [isPair, setIsPair] = useState(false)
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [slippage, setSlippage] = useState(0.5)
-    const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
+    const [amountOutParams, setAmountOutParams] = useState([])
+    const contractAddress = useMemo(() => proxy ? NEW_PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
         .filter((token) => (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
@@ -90,7 +90,7 @@ const Dei = () => {
     }, [tokens, tokensMap])
 
     const [swapState, setSwapState] = useState({
-        from: {},
+        from: tokens[0],
         to: deiToken[chainId],
     })
 
@@ -166,9 +166,10 @@ const Dei = () => {
                     }
                 }
             } else {
-                amountOut = out
-                const amountOutProxy = await getAmountOutProxy(swapState.from, amountOut, deus_price, collateral_price, web3, chainId)
-                amountIn1 = amountOutProxy ? fromWei(amountOutProxy, swapState.from.decimals) : ""
+                amountIn1 = in1
+                const amountOutProxy = await getAmountOutProxy(swapState.from, amountIn1, deus_price, collateral_price, web3, chainId)
+                setAmountOutParams([amountOutProxy[0], amountOutProxy[1], amountOutProxy[2]])
+                amountOut = amountOutProxy ? fromWei(amountOutProxy[0], swapState.to.decimals) : ""
             }
             setAmountIn(amountIn1)
             setAmountInPair(amountIn2)
@@ -176,26 +177,37 @@ const Dei = () => {
         }
     }
 
+    // useEffect(() => {
+    //     const changeFromTokens = () => {
+    //         let primaryToken = null
+    //         setIsPair(false)
+    //         if (collatRatio === 100) {
+    //             primaryToken = tokens[0]
+    //         } else if (collatRatio > 0 && collatRatio < 100) {
+    //             primaryToken = tokens[1]
+    //             let secondToken = tokens[2]
+    //             setIsPair(true)
+    //             setPairToken(secondToken)
+    //         } else if (collatRatio === 0) {
+    //             primaryToken = tokens[1]
+    //         }
+
+    //         setSwapState({ to: deiToken[chainId], from: primaryToken })
+
+    //     }
+    //     if (collatRatio != null) changeFromTokens()
+    // }, [collatRatio, tokens, chainId]);// eslint-disable-line
+
     useEffect(() => {
-        const changeFromTokens = () => {
-            let primaryToken = null
-            setIsPair(false)
-            if (collatRatio === 100) {
-                primaryToken = tokens[0]
-            } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = tokens[1]
-                let secondToken = tokens[2]
-                setIsPair(true)
-                setPairToken(secondToken)
-            } else if (collatRatio === 0) {
-                primaryToken = tokens[1]
-            }
+        setSwapState({ from: tokens[0], to: deiToken[chainId] })
+        setAmountIn("")
+        setAmountInPair("")
+        setAmountOut("")
+        setAmountOutParams([])
+    }, [tokens, chainId]);// eslint-disable-line
 
-            setSwapState({ to: deiToken[chainId], from: primaryToken })
 
-        }
-        if (collatRatio != null) changeFromTokens()
-    }, [collatRatio, tokens, chainId]);// eslint-disable-line
+
 
     useEffect(() => {
         // setIsPreApproved(null)
@@ -230,7 +242,7 @@ const Dei = () => {
 
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, chainId)
+    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, amountOutParams, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -261,6 +273,7 @@ const Dei = () => {
                 setAmountIn("")
                 setAmountInPair("")
                 setAmountOut("")
+                setAmountOutParams([])
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
                 console.log("Swap Failed");
@@ -333,18 +346,17 @@ const Dei = () => {
                         type="from"
                         setFocusType={setFocusType}
                         focusType="from1"
-                        hasMax={!proxy}
+                        hasMax={true}
                         inputAmount={amountIn}
                         setInputAmount={setAmountIn}
-                        setActive={chainId === ChainId.MATIC ? showSearchBox : undefined}
+                        setActive={showSearchBox}
                         currency={swapState.from}
                         TokensMap={TokensMap}
-                        disabledTitle="Please enter the desired DEI amount"
-                        disabled={proxy}
+                        // disabledTitle="Please enter the desired DEI amount"
                         fastUpdate={fastUpdate}
                         chainId={chainId}
-                        proxy={proxy}
-                        placeHolder={""}
+                    // proxy={proxy}
+                    // placeHolder={""}
                     />
 
                     {isPair && <div>
@@ -379,6 +391,9 @@ const Dei = () => {
                         currency={swapState.to}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
+                        hasMax={!proxy}
+                        disabled={proxy}
+
                     // proxy={proxy}
                     // placeHolder={"ENTER AMOUNT"}
                     />
@@ -401,7 +416,6 @@ const Dei = () => {
                         amountIn={amountIn}
                         amountOut={amountOut}
                         isMint={true}
-                        proxy={proxy}
                     />
 
                 </SwapWrapper>

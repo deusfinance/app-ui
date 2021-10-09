@@ -6,7 +6,7 @@ import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getProxyMinterContract, getZapContract, getNewProxyMinterContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 

@@ -57,7 +57,6 @@ const DeusTokenBox = () => {
     const deusToken = DEITokens[1][1]
     const deiToken = ZapTokens[1][0]
     const [state, setState] = useState({ "deusToken": false, "deiToken": false })
-    console.log(state);
     return (
         useMemo(() => {
             return <MainWrapper>

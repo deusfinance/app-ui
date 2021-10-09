@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { addToken } from '../../../utils/addTokens';
-import { deiCollateralLpToken, deiDeusLpToken, DEITokens, ZapTokens } from '../../../constant/token';
+import { deiCollateralLpToken, deiDeusLpToken } from '../../../constant/token';
 
 
 const MainWrapper = styled.div`

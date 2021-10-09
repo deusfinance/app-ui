@@ -17,12 +17,13 @@ import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
-    mint1t1DEI, collatUsdPrice, ERC202DEI, nativeCoinToDei, collateral2DEI, zapIn, getZapAmountsOut
+    mint1t1DEI, collatUsdPrice, zapIn, getZapAmountsOut
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
 import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
+import { getNewProxyMinterContract } from '../helper/contractHelpers'
 
 
 export const useAPY = (validChainId) => {
@@ -228,7 +229,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
     return { onRedeem: handleRedeem }
 }
 
-export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, validChainId) => {
+export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, amountOutParams, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
@@ -239,9 +240,8 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
         const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
         const amountOutToWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
-
-        // const minAmountOut = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
         const maxAmountInToWei = getToWei(amountIn1, from1Currency.decimals).times(1 + (slippage / 100)).toFixed(0)
+        const minAmountOutToWei = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
 
         let path = "/mint-algorithmic"
         let fn = null
@@ -288,75 +288,54 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                 const result = await makeDeiRequest(path, validChainId)
                 const { collateral_price, deus_price, expire_block, signature } = result
                 const erc20Path = MINT_PATH[chainId][from1Currency.symbol]
+                let method = ""
+                let proxyTuple = []
+                if (amountOutParams.length > 0 && amountOutParams[0] === amountOutToWei)
+                    proxyTuple = [
+                        amount1toWei,
+                        minAmountOutToWei,
+                        deus_price,
+                        collateral_price,
+                        amountOutParams[1],
+                        amountOutParams[2],
+                        expire_block,
+                        [signature]
+                    ]
+                let param = [proxyTuple]
 
                 if (from1Currency.address === "0x") {
-                    fn = nativeCoinToDei(
-                        maxAmountInToWei,
-                        amountOutToWei,
-                        collateral_price,
-                        deus_price,
-                        expire_block,
-                        signature,
-                        MINT_PATH[chainId][from1Currency.symbol],
-                        chainId,
-                        web3
-                    )
+                    method = "Nativecoin2DEI"
+                    param.push(erc20Path)
+
                 }
                 else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
-                    fn = collateral2DEI(
-                        maxAmountInToWei,
-                        amountOutToWei,
-                        collateral_price,
-                        deus_price,
-                        expire_block,
-                        signature,
-                        [],
-                        chainId,
-                        web3
-                    )
+                    method = "USDC2DEI"
                 }
-                // else if (from1Currency.address === DEUS_ADDRESS[chainId]) {
-                //     // console.log("minAmountOut: ", minAmountOut);
-                //     fn = DeusToDei(
-                //         amount1toWei,
-                //         collateral_price,
-                //         deus_price,
-                //         expire_block,
-                //         signature,
-                //         false,
-                //         minAmountOut,
-                //         chainId,
-                //         web3
-                //     )
-                // }
+
                 else {
                     if (!erc20Path) {
                         console.error("INVALID PATH with ", from1Currency)
                         return
                     }
-                    fn = ERC202DEI(
-                        maxAmountInToWei,
-                        amountOutToWei,
-                        collateral_price,
-                        deus_price,
-                        expire_block,
-                        signature,
-                        MINT_PATH[chainId][from1Currency.symbol],
-                        chainId,
-                        web3
-                    )
+                    method = "ERC202DEI"
+                    param.push(erc20Path)
                 }
+                console.log(method, param);
+
+                fn = getNewProxyMinterContract(web3, chainId).methods[method](...param)
+
             } catch (error) {
                 console.log(error);
             }
         }
         const payload = from1Currency.address === "0x" ? { value: maxAmountInToWei } : {}
+
         try {
             return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`, payload)
         } catch (error) {
-            console.log(chainId);
+            console.log(error);
         }
-    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, account, chainId, validChainId, web3])
+    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, amountOutParams, account, chainId, validChainId, web3])
 
     return { onMint: handleMint }
 }

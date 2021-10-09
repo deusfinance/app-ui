@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { addToken } from '../../../utils/addTokens';
 import { deiCollateralLpToken, deiDeusLpToken } from '../../../constant/token';
+import { Copy, CheckCircle } from 'react-feather';
 
 
 const MainWrapper = styled.div`
@@ -54,6 +55,8 @@ const Line = styled.div`
 const LpTokens = ({ chainId = 1 }) => {
     const deiCollateralLp = deiCollateralLpToken[chainId]
     const deiDeusLp = deiDeusLpToken[chainId]
+    const [state, setState] = useState({ "deiCollateral": false, "deiDeus": false })
+
     return (
         useMemo(() => {
             return <MainWrapper>
@@ -62,12 +65,9 @@ const LpTokens = ({ chainId = 1 }) => {
                 </EachUrl>
                 <EachUrl>
                     <CopyToClipboard text={deiDeusLp.address}
-                        onCopy={() => console.log("copied")}>
+                        onCopy={() => setState({ ...state, "deiDeus": true })}>
                         <p className="deus">Copy DEI-DEUS LP Contract
-                            <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
-                                <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
-                            </svg>
+                            {state["deiDeus"] ? <CheckCircle width="15px" style={{ marginLeft: "3px" }} /> : <Copy width="15px" style={{ marginLeft: "3px" }} />}
                         </p>
                     </CopyToClipboard>
 
@@ -78,17 +78,14 @@ const LpTokens = ({ chainId = 1 }) => {
                 </EachUrl>
                 <EachUrl>
                     <CopyToClipboard text={deiCollateralLp.address}
-                        onCopy={() => console.log("copied")}>
+                        onCopy={() => setState({ ...state, "deiCollateral": true })}>
                         <p className="dei">Copy DEI-USDC LP Contract
-                            <svg style={{ marginLeft: "5px" }} width={11} height={13} viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="0.5" y="3.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
-                                <rect x="3.5" y="0.5" width={7} height={9} rx="0.5" stroke="#C4C4C4" />
-                            </svg>
+                            {state["deiCollateral"] ? <CheckCircle width="15px" style={{ marginLeft: "3px" }} /> : <Copy width="15px" style={{ marginLeft: "3px" }} />}
                         </p>
                     </CopyToClipboard>
                 </EachUrl>
             </MainWrapper>
-        }, [deiCollateralLp, deiDeusLp])
+        }, [deiCollateralLp, deiDeusLp, state])
     )
 }
 

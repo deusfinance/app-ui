@@ -106,7 +106,7 @@ const Dei = () => {
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 
     useEffect(() => {
-        console.log("called", focusType);
+        // console.log("called", focusType);
         if (amountIn === "" && focusType === "from1") {
             setAmountOut("")
             setAmountInPair("")
@@ -127,7 +127,7 @@ const Dei = () => {
             getAmountsTokens(debouncedAmountIn, null, null)
         }
         if (focusType === "from2" && amountInPair !== "") {
-            console.log(amountInPair);
+            // console.log(amountInPair);
             getAmountsTokens(null, amountInPair, null)
         }
         if (focusType === "to" && amountOut !== "" && debouncedAmountOut === amountOut) {
@@ -207,18 +207,13 @@ const Dei = () => {
     }, [swapState.from, isPair, chainId, collatRatio])
 
 
-    useEffect(() => {
-        console.log("focusType : ", focusType);
-    }, [focusType])
 
     useEffect(() => {
 
         if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
             setIsApproved(true)
-            // console.log("come 1");
         } else {
             setIsApproved(false)
-            // console.log("come 2");
         }
 
         //eslint-disable-next-line 
@@ -300,7 +295,6 @@ const Dei = () => {
             let secondToken = tokens.filter(currToken => {
                 return currToken.pairID === token.pairID && currToken.address !== token.address
             })[0]
-            console.log(secondToken);
             setPairToken(secondToken)
             setSwapState({ ...swapState, [type]: token })
             return
@@ -421,8 +415,6 @@ const Dei = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'mint'} chainId={chainId} />
-            {/* <DeusTokenBox /> */}
-            {/* <Chains validChainId={chainId} validNetworks={validNetworks} /> */}
         </div>
 
         <div className='tut-right-wrap'>

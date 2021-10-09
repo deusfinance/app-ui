@@ -52,10 +52,8 @@ const Line = styled.div`
 `
 
 const LpTokens = ({ chainId = 1 }) => {
-    console.log(chainId);
     const deiCollateralLp = deiCollateralLpToken[chainId]
     const deiDeusLp = deiDeusLpToken[chainId]
-    console.log(deiCollateralLp, deiDeusLp);
     return (
         useMemo(() => {
             return <MainWrapper>

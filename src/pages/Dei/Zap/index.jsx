@@ -283,7 +283,6 @@ const Zap = () => {
         <div className='tut-left-wrap'>
             <LinkBox />
             <CostBox type={'mint'} chainId={currChain} />
-            {/* <Chains validChainId={chainId} validNetworks={validChains} /> */}
         </div>
 
         <div className='tut-right-wrap'>

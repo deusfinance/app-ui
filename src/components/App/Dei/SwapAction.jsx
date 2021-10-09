@@ -51,7 +51,6 @@ height: 2px;
 width: 50%;
 `
 const SwapAction = ({ text = "SWAP", proxy, isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, swapLoading = false, validNetworks = [4, 1], handleApprove, handleSwap, bgColor, targetToken, isMint = false }) => {
-    console.log(amountOut);
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
     const checkError = () => {

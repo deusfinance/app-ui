@@ -18,9 +18,9 @@ const NameItemsDiv = styled.div`
     margin-left: 0;
     font-size: 15px;
     border-radius: 6px;
-    border: 1px solid ${({ row, currRow }) => (row === currRow) ? "black" : "transparent"};
     cursor: pointer;
     opacity: 0.5;
+    border: 1px solid ${({ row, currRow }) => (row === currRow) ? "black" : "transparent"};
     opacity: ${({ row, currRow }) => (row === currRow) && "1"};
     background: ${({ theme, row, currRow }) => (row === currRow) && theme.ChainId[row]};
 `

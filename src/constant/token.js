@@ -24,19 +24,19 @@ export const collateralToken = {
 }
 
 export const deiCollateralLpToken = {
-    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_COLLATERAL_LP[ChainId.RINKEBY], 18, "DEI-USDC", "DEI-USDC", "/tokens/dei.svg"),
-    [ChainId.HECO]: new Token(ChainId.HECO, DEI_COLLATERAL_LP[ChainId.HECO], 18, "DEI-HUSD", "DEI-HUSD", "/tokens/dei.svg"),
-    [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, DEI_COLLATERAL_LP[ChainId.AVALANCHE], 18, "DEI-DAI", "DEI-DAI", "/tokens/dei.svg"),
-    [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_COLLATERAL_LP[ChainId.MATIC], 18, "DEI-USDC", "DEI-USDC", "/tokens/dei.svg"),
-    [ChainId.ETH]: new Token(ChainId.ETH, DEI_COLLATERAL_LP[ChainId.ETH], 18, "DEI-USDC", "DEI-USDC", "/tokens/dei.svg"),
+    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_COLLATERAL_LP[ChainId.RINKEBY], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
+    [ChainId.HECO]: new Token(ChainId.HECO, DEI_COLLATERAL_LP[ChainId.HECO], 18, "DEI-HUSD LP", "DEI-HUSD LP", "/tokens/dei.svg"),
+    [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, DEI_COLLATERAL_LP[ChainId.AVALANCHE], 18, "DEI-DAI LP", "DEI-DAI LP", "/tokens/dei.svg"),
+    [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_COLLATERAL_LP[ChainId.MATIC], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
+    [ChainId.ETH]: new Token(ChainId.ETH, DEI_COLLATERAL_LP[ChainId.ETH], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
 }
 
 export const deiDeusLpToken = {
-    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_DEUS_LP[ChainId.RINKEBY], 18, "DEI-DEUS", "DEI-DEUS", "/tokens/dei.svg"),
-    [ChainId.HECO]: new Token(ChainId.HECO, DEI_DEUS_LP[ChainId.HECO], 18, "DEI-DEUS", "DEI-DEUS", "/tokens/dei.svg"),
-    [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, DEI_DEUS_LP[ChainId.AVALANCHE], 18, "DEI-DEUS", "DEI-DEUS", "/tokens/dei.svg"),
-    [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_DEUS_LP[ChainId.MATIC], 18, "DEI-DEUS", "DEI-DEUS", "/tokens/dei.svg"),
-    [ChainId.ETH]: new Token(ChainId.ETH, DEI_DEUS_LP[ChainId.ETH], 18, "DEI-DEUS", "DEI-DEUS", "/tokens/dei.svg"),
+    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_DEUS_LP[ChainId.RINKEBY], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/dei.svg"),
+    [ChainId.HECO]: new Token(ChainId.HECO, DEI_DEUS_LP[ChainId.HECO], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/dei.svg"),
+    [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, DEI_DEUS_LP[ChainId.AVALANCHE], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/dei.svg"),
+    [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_DEUS_LP[ChainId.MATIC], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/dei.svg"),
+    [ChainId.ETH]: new Token(ChainId.ETH, DEI_DEUS_LP[ChainId.ETH], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/dei.svg"),
 }
 
 

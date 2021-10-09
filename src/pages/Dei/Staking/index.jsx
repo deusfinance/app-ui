@@ -11,8 +11,8 @@ import { getCorrectChains } from '../../../constant/correctChain';
 import useChain from '../../../hooks/useChain';
 // import { useAPY } from '../../../hooks/useDei';
 import { Chains } from '../../../components/App/Dei/Chains';
-import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
-import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
+import LpTokens from '../../../components/App/Dei/LpTokens';
+import BuyDEUS from '../../../components/App/Dei/BuyDEUS';
 
 const StakingContainer = styled.div`
     display: flex;
@@ -57,8 +57,8 @@ const Dei = () => {
         </div>
 
         <div className='tut-right-wrap'>
-            <DeusTokenBox />
-            <DeiTokenBox />
+            <LpTokens chainId={chainId} />
+            <BuyDEUS />
 
             <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>

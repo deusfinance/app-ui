@@ -76,7 +76,7 @@ const DeusV2Tokens = ({ config, toggleId, active }) => {
         <TokensContainer>
             {tokens.to.map((token, index) => {
                 const active = token.symbol === activeToken
-                return <Token key={token.symbol} active={active} onClick={() => toggleId(id, false, token.symbol, index)}>
+                return <Token key={token.symbol} active={active} style={{ pointerEvents: token.amount === null && "none", opacity: token.amount === null && "0.5" }} onClick={() => toggleId(id, false, token.symbol, index)}>
                     {token.isDU ? <>
                         <TokenText fontWeight="300" color={active ? "#000000" : "#49565B"}>{formatBalance3(token.amountDEUS)}</TokenText>
                         <TokenTextTitle fontWeight="300" mt="0.5" color={active ? "#075A7A   " : "#49565B"}>DEUS</TokenTextTitle>
@@ -84,10 +84,10 @@ const DeusV2Tokens = ({ config, toggleId, active }) => {
                         <TokenText fontWeight="300" color={active ? "#000000" : "#49565B"}>{formatBalance3(token.amountUSDC)}</TokenText>
                         <TokenTextTitle fontWeight="300" mt="0.5" color={active ? "#075A7A   " : "#49565B"}>USDC</TokenTextTitle>
                     </> :
-                        <>
-                            <TokenText fontWeight="300" color={active ? "#000000" : "#49565B"}>{formatBalance3(token.amount)}</TokenText>
+                        <div>
+                            {token.amount !== null && <TokenText fontWeight="300" color={active ? "#000000" : "#49565B"}>{formatBalance3(token.amount)}</TokenText>}
                             <TokenTextTitle fontWeight="300" mt="0.5" color={active ? "#075A7A   " : "#49565B"}>{token.symbol}</TokenTextTitle>
-                        </>}
+                        </div>}
                 </Token>
             })}
 

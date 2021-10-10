@@ -343,6 +343,77 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 }
 
 
+export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatRatio, slippage, proxy, amountOutParams, validChainId) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleMint = useCallback(async () => {
+
+        if (validChainId && chainId !== validChainId) return false
+        if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
+
+        const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
+        const amountOutToWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
+        const maxAmountInToWei = getToWei(amountIn1, from1Currency.decimals).times(1 + (slippage / 100)).toFixed(0)
+        const minAmountOutToWei = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
+
+        let fn = null
+
+        let path = "/mint-fractional"
+        try {
+            const result = await makeDeiRequest(path, validChainId)
+            const { collateral_price, deus_price, expire_block, signature } = result
+            const erc20Path = MINT_PATH[chainId][from1Currency.symbol]
+            let method = ""
+            let proxyTuple = []
+            if (amountOutParams.length > 0 && amountOutParams[0] === amountOutToWei)
+                proxyTuple = [
+                    amount1toWei,
+                    minAmountOutToWei,
+                    deus_price,
+                    collateral_price,
+                    amountOutParams[1],
+                    amountOutParams[2],
+                    expire_block,
+                    [signature]
+                ]
+            let param = [proxyTuple]
+
+            if (from1Currency.address === "0x") {
+                method = "Nativecoin2DEI"
+                param.push(erc20Path)
+
+            }
+            else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
+                method = "USDC2DEI"
+            }
+
+            else {
+                if (!erc20Path) {
+                    console.error("INVALID PATH with ", from1Currency)
+                    return
+                }
+                method = "ERC202DEI"
+                param.push(erc20Path)
+            }
+            console.log(method, param);
+
+            fn = getNewProxyMinterContract(web3, chainId).methods[method](...param)
+
+        } catch (error) {
+            console.log(error);
+        }
+        const payload = from1Currency.address === "0x" ? { value: maxAmountInToWei } : {}
+
+        try {
+            return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`, payload)
+        } catch (error) {
+            console.log(error);
+        }
+    }, [from1Currency, toCurrency, amountIn1, amountOut, collatRatio, slippage, proxy, amountOutParams, account, chainId, validChainId, web3])
+
+    return { onMint: handleMint }
+}
 
 
 export const useStakingInfo = (conf, validChainId) => {

@@ -15,6 +15,7 @@ import './assets/styles/base.scss'
 const Migrator = React.lazy(() => import('./pages/Migrator'))
 const burn = React.lazy(() => import('./pages/burn'))
 
+const BuyDEUS = React.lazy(() => import('./pages/Dei/Buy'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
@@ -46,6 +47,7 @@ function App() {
                   <Route exact path="/burn-for-admin" component={burn} />
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />
+                  <Route exact path="/stable/swap" component={BuyDEUS} />
                   <Route exact path="/stable/zap" component={DeiZap} />
                   <Route exact path="/stable/farms" component={DeiStaking} />
                   <Route exact path="/stable/redeem" component={DeiRedeem} />

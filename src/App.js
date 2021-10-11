@@ -44,10 +44,10 @@ function App() {
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
                   <Route exact path="/migrator" component={Migrator} />
+                  <Route exact path="/swap" component={BuyDEUS} />
                   <Route exact path="/burn-for-admin" component={burn} />
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />
-                  <Route exact path="/stable/swap" component={BuyDEUS} />
                   <Route exact path="/stable/zap" component={DeiZap} />
                   <Route exact path="/stable/farms" component={DeiStaking} />
                   <Route exact path="/stable/redeem" component={DeiRedeem} />

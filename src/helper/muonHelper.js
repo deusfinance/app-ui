@@ -178,6 +178,12 @@ export const buyMuon = async (fromCurrency, toCurrency, amountIn, amountOut, fro
         }
 
         const { result } = muonOutput
+
+        if (!result.confirmed) {
+            ToastTransaction("warn", "MUONIZE FAILED", "Muon request failed", { autoClose: true })
+            return
+        }
+
         console.log(result);
 
         const tx = await deposit(

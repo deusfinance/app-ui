@@ -35,7 +35,7 @@ export const StakingConfig = {
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.MATIC],
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.MATIC],
       provideLink: "https://quickswap.exchange/#/add/0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-      apy: "35"
+      apy: "50"
     },
     {
       id: 1,
@@ -46,7 +46,7 @@ export const StakingConfig = {
       stakingContract: DEI_DEUS_STAKING[ChainId.MATIC],
       zapperContract: DEI_DEUS_ZAP[ChainId.MATIC],
       provideLink: "https://quickswap.exchange/#/add/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44/0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
-      apy: "80"
+      apy: "100"
     },
     {
       id: 2,
@@ -56,8 +56,8 @@ export const StakingConfig = {
       depositToken: DeusNativeLpToken[ChainId.MATIC],
       stakingContract: DEUS_NATIVE_STAKING[ChainId.MATIC],
       zapperContract: DEI_DEUS_ZAP[ChainId.MATIC],
-      provideLink: "https://quickswap.exchange/#/add/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44/0x0d350B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
-      apy: "35"
+      provideLink: "https://quickswap.exchange/#/add/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+      apy: "50"
     }
   ],
   [ChainId.ETH]: [
@@ -70,7 +70,7 @@ export const StakingConfig = {
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.ETH],
       zapperContract: DEI_COLLATERAL_ZAP[ChainId.ETH],
       provideLink: "https://curve.fi/factory/47/deposit",
-      apy: "35"
+      apy: "50"
     },
     {
       id: 1,
@@ -81,7 +81,7 @@ export const StakingConfig = {
       stakingContract: DEI_DEUS_STAKING[ChainId.ETH],
       zapperContract: DEI_DEUS_ZAP[ChainId.ETH],
       provideLink: "https://app.uniswap.org/#/add/v2/0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44?use=V2",
-      apy: "80"
+      apy: "100"
     },
     {
       id: 2,
@@ -92,7 +92,7 @@ export const StakingConfig = {
       stakingContract: DEUS_NATIVE_STAKING[ChainId.ETH],
       zapperContract: DEI_DEUS_ZAP[ChainId.ETH],
       provideLink: "https://app.uniswap.org/#/add/v2/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44?use=V2",
-      apy: "35"
+      apy: "50"
     }
   ],
 }

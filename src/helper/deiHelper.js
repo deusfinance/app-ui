@@ -441,15 +441,11 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .zapInDEI(amountIn, minLpAmount, transferResidual)
-        } else if (currency.address === COLLATERAL_ADDRESS[chainId]) {
-            console.log("zapInCollateral ", amountIn, minLpAmount, transferResidual);
-            return getZapContract(web3, zapperAddress, chainId)
-                .methods
-                .zapInERC20(proxyTuple, minLpAmount, [], transferResidual)
         }
         return getZapContract(web3, zapperAddress, chainId)
             .methods
-            .zapInERC20(proxyTuple, minLpAmount, erc20Path, transferResidual)
+            .zapInERC20(proxyTuple, amountIn, minLpAmount, erc20Path, transferResidual)
+
     } else {
         if (currency.address === "0x") {
             console.log(erc20Path, minLpAmount, transferResidual);
@@ -478,6 +474,6 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
         console.log(erc20Path, amountIn, minLpAmount, transferResidual);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
-            .zapInERC20(erc20Path, amountIn, minLpAmount, transferResidual)
+            .zapInERC20(erc20Path, amountIn, minLpAmount, erc20Path, transferResidual)
     }
 }

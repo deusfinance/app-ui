@@ -56,7 +56,7 @@ const Zap = () => {
     const [activeStakingList, setActiveStakingList] = useState(false)
     const availableStaking = StakingConfig[currChain]
     const resultLp = queryParams.lp ? availableStaking.filter(staking => staking.title.toLowerCase() === queryParams.lp) : []
-    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 0
+    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 1
     const [stakingInfo, setStakingInfo] = useState(availableStaking[lpIndex])
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)

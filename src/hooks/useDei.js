@@ -71,6 +71,8 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, val
 }
 
 
+
+
 export const useGetAmountsOutZap = (currency, zapperContract, amountIn, validChainId) => {
     const web3 = useWeb3()
 
@@ -339,7 +341,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
     return { onMint: handleMint }
 }
-
 
 export const useStakingInfo = (conf, validChainId) => {
     const web3 = useCrossWeb3(validChainId)

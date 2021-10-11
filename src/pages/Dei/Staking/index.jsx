@@ -29,7 +29,6 @@ const MainWrapper = styled.div`
     padding: 10px;
     padding-top: 60px;
     padding-bottom: 30px;
-
     text-align: center;
 `
 

@@ -18,6 +18,10 @@ const StakingContainer = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    margin:auto;
+    width: calc(100% - 540px);
     @media screen and (max-width: 1600px) {
         flex-direction: column;
         align-items:center;
@@ -46,6 +50,7 @@ const Dei = () => {
             <StakingContainer>
                 <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={StakingConfig[chainId][0].apy} />
                 <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={StakingConfig[chainId][1].apy} />
+                <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2].apy} />
             </StakingContainer>
         </MainWrapper>
 

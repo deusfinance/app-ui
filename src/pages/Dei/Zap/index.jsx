@@ -84,7 +84,7 @@ const Zap = () => {
 
     const [, setFocusType] = useState("from1")
     const [amountIn, setAmountIn] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500);
+    const debouncedAmountIn = useDebounce(amountIn, 1000);
     const [amountOut, setAmountOut] = useState("")
     const [percentage, setPercentage] = useState("")
 
@@ -113,7 +113,7 @@ const Zap = () => {
 
     const { onApprove } = useApprove(swapState.from, contractAddress, currChain)
     const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, amountOut, amountOutParams, currChain)
-    const { getAmountsOut } = useGetAmountsOutZap(swapState.from, contractAddress, debouncedAmountIn, chainId)
+    const { getAmountsOut } = useGetAmountsOutZap(swapState.from, contractAddress, amountIn, debouncedAmountIn, chainId)
 
     useEffect(() => {
         const get = async () => {
@@ -273,6 +273,7 @@ const Zap = () => {
                         TokensMap={TokensMap}
                         swapState={swapState}
                         amountIn={amountIn}
+                        debouncedAmountIn={debouncedAmountIn}
                         amountOut={amountOut}
                         isMint={true}
                     />

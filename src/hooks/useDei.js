@@ -81,11 +81,11 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
 
 
 
-export const useGetAmountsOutZap = (currency, zapperContract, amountIn, validChainId) => {
+export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debouncedAmountIn, validChainId) => {
     const web3 = useWeb3()
 
     const handleGetAmountOut = useCallback(async () => {
-        if (!validChainId || !currency || !amountIn || amountIn === "" || isZero(amountIn) || !zapperContract) return ""
+        if (!validChainId || !currency || !amountIn || amountIn === "" || isZero(amountIn) || !zapperContract || debouncedAmountIn !== amountIn) return ""
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         try {
             let result = null
@@ -108,7 +108,7 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, validCha
             return false
         }
 
-    }, [currency, zapperContract, amountIn, validChainId, web3])
+    }, [currency, zapperContract, amountIn, debouncedAmountIn, validChainId, web3])
     return { getAmountsOut: handleGetAmountOut }
 }
 

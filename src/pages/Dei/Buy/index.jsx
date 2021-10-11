@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
-import { DEITokens, deiToken, deusToken } from '../../../constant/token';
+import { DEITokens, deusToken } from '../../../constant/token';
 import { CostBox } from '../../../components/App/Dei/CostBox';
-import SwapCard from '../../../components/App/Swap/SwapCard';
 import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { Type } from '../../../components/App/Text';
@@ -10,19 +9,18 @@ import { Image } from 'rebass/styled-components';
 import TokenBox from '../../../components/App/Dei/TokenBox';
 import SwapAction from '../../../components/App/Dei/SwapAction';
 import { useWeb3React } from '@web3-react/core';
-import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, DEUS_SWAP_ADDRESS, NEW_PROXY_MINT_ADDRESS } from '../../../constant/contracts';
-import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useMint, useAllowance, useSwap } from '../../../hooks/useDei';
+import { DEUS_ADDRESS, DEUS_SWAP_ADDRESS } from '../../../constant/contracts';
+import { ContentWrapper } from '../../../components/App/Dei';
+import { useDeiUpdate, useAllowance, useSwap } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
+import { fromWei } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import { isProxyMinter, getAmountOutProxy, getAmountOutDeusSwap } from '../../../helper/deiHelper';
+import { isProxyMinter, getAmountOutDeusSwap } from '../../../helper/deiHelper';
 import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
@@ -30,7 +28,6 @@ import useTokenBalances from '../../../hooks/useTokenBalances';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
-import { isZero } from '../../../constant/number';
 import RateBox from '../../../components/App/Swap/RateBox';
 
 const Dei = () => {
@@ -58,7 +55,7 @@ const Dei = () => {
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
         .filter((token) => (!token.pairID && token.address !== DEUS_ADDRESS[chainId])) : []
-        , [chainId, collatRatio])
+        , [chainId])
     const pairedTokens = useMemo(() => {
         let pTokens = []
         for (let i = 0; i < tokens.length; i++) {
@@ -261,9 +258,7 @@ const Dei = () => {
         }
         if (token.pairID) {
             setIsPair(true)
-            let secondToken = tokens.filter(currToken => {
-                return currToken.pairID === token.pairID && currToken.address !== token.address
-            })[0]
+
             setSwapState({ ...swapState, [type]: token })
             return
         }

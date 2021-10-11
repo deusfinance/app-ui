@@ -353,7 +353,6 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
 
         const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
         const amountOutToWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
-        const maxAmountInToWei = getToWei(amountIn1, from1Currency.decimals).times(1 + (slippage / 100)).toFixed(0)
         const minAmountOutToWei = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
 
         let fn = null
@@ -409,7 +408,7 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
         } catch (error) {
             console.log(error);
         }
-    }, [from1Currency, toCurrency, amountIn1, amountOut, collatRatio, slippage, proxy, amountOutParams, account, chainId, validChainId, web3])
+    }, [from1Currency, toCurrency, amountIn1, amountOut, slippage, amountOutParams, account, chainId, validChainId, web3])
 
     return { onMint: handleMint }
 }

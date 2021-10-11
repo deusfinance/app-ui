@@ -3,13 +3,12 @@ import { ChainId } from "./web3";
 //Always we use first chainId as prefer chain
 export const correctChains = [
     {
-        url: "/swap2",
-        chains: [ChainId.ETH, ChainId.RINKEBY],
-        exact: true,
-    },
-    {
         url: "/swap",
         chains: [ChainId.ETH, ChainId.MATIC],
+    },
+    {
+        url: "/swap2",
+        chains: [ChainId.ETH, ChainId.RINKEBY],
         exact: true,
     },
     {

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { ExternalLink } from '../Link';
 import { DEITokens, ZapTokens } from '../../../constant/token';
-
+import { NavLink } from 'react-router-dom';
 
 const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
@@ -28,8 +28,19 @@ const EachUrl = styled.span`
     font-weight: 300;
     &.uni:hover{
         color: #f62d8d;
+        opacity: 1;
     }
     &.quick:hover{
+        color: #6db7ff;
+        opacity: 1;
+    }
+    &.uni{
+        opacity: 0.75;
+    }
+    &.quick{
+        opacity: 0.75;
+    }
+    &.deusSwap:hover{
         color: #6db7ff;
     }
     a{
@@ -44,6 +55,9 @@ const DeiTokenBox = () => {
     return (
         useMemo(() => {
             return <MainWrapper>
+                <EachUrl className="deusSwap" >
+                    <NavLink textDecoration="none" to={"/swap"}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  DEUS Swap </NavLink>
+                </EachUrl>
                 <EachUrl className="uni" >
                     <ExternalLink textDecoration="none" href={`https://app.uniswap.org/#/swap?use=V2&outputCurrency=${deusToken.address}&inputCurrency=${deiToken.address}`}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  Uniswap <img src="/img/uniswap.png" style={{ width: "20px", marginLeft: "4px" }} alt="uniswap" /></ExternalLink>
                 </EachUrl>

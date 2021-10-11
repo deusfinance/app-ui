@@ -8,6 +8,11 @@ export const correctChains = [
         exact: true,
     },
     {
+        url: "/swap",
+        chains: [ChainId.ETH, ChainId.MATIC],
+        exact: true,
+    },
+    {
         url: "/stable/zap",
         chains: [ChainId.MATIC],
     },

@@ -39,7 +39,6 @@ const Line = styled.div`
 `
 
 const EachUrl = styled.span`
-
     display: block;
     font-size: 16px;
     margin:10px 0;

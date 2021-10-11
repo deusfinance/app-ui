@@ -3,32 +3,37 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "_pair_address",
+                "name": "_pairAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_collateral_address",
+                "name": "_usdcAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_dei_address",
+                "name": "_deiAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_deus_address",
+                "name": "_deusAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_uniswap_router",
+                "name": "_uniswapRouter",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_staking_address",
+                "name": "_stakingAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deiProxyAddress",
                 "type": "address"
             }
         ],
@@ -113,29 +118,6 @@
             },
             {
                 "internalType": "address",
-                "name": "spender",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "_approveToken",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "token",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
                 "name": "to",
                 "type": "address"
             }
@@ -147,7 +129,7 @@
     },
     {
         "inputs": [],
-        "name": "collateral_address",
+        "name": "deiAddress",
         "outputs": [
             {
                 "internalType": "address",
@@ -160,7 +142,7 @@
     },
     {
         "inputs": [],
-        "name": "dei_address",
+        "name": "deiProxyAddress",
         "outputs": [
             {
                 "internalType": "address",
@@ -173,7 +155,7 @@
     },
     {
         "inputs": [],
-        "name": "deus_address",
+        "name": "deusAddress",
         "outputs": [
             {
                 "internalType": "address",
@@ -277,7 +259,17 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "amount",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deusPriceUSD",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "colPriceUSD",
                 "type": "uint256"
             },
             {
@@ -296,6 +288,16 @@
             {
                 "internalType": "uint256",
                 "name": "lp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "usdcForMintAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deusNeededAmount",
                 "type": "uint256"
             }
         ],
@@ -324,7 +326,7 @@
     },
     {
         "inputs": [],
-        "name": "pair_address",
+        "name": "pairAddress",
         "outputs": [
             {
                 "internalType": "address",
@@ -346,7 +348,7 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "_staking_address",
+                "name": "_stakingAddress",
                 "type": "address"
             }
         ],
@@ -359,32 +361,37 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "_pair_address",
+                "name": "_pairAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_collateral_address",
+                "name": "_usdcAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_dei_address",
+                "name": "_deiAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_deus_address",
+                "name": "_deusAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_uniswap_router",
+                "name": "_uniswapRouter",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_staking_address",
+                "name": "_stakingAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deiProxyAddress",
                 "type": "address"
             }
         ],
@@ -395,7 +402,7 @@
     },
     {
         "inputs": [],
-        "name": "staking_address",
+        "name": "stakingAddress",
         "outputs": [
             {
                 "internalType": "address",
@@ -441,7 +448,20 @@
     },
     {
         "inputs": [],
-        "name": "uniswap_router",
+        "name": "uniswapRouter",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "usdcAddress",
         "outputs": [
             {
                 "internalType": "address",
@@ -501,9 +521,51 @@
     {
         "inputs": [
             {
-                "internalType": "address[]",
-                "name": "path",
-                "type": "address[]"
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amountIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minAmountOut",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "colPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "usdcForMintAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusNeededAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expireBlock",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes[]",
+                        "name": "sigs",
+                        "type": "bytes[]"
+                    }
+                ],
+                "internalType": "struct ProxyInput",
+                "name": "proxyInput",
+                "type": "tuple"
             },
             {
                 "internalType": "uint256",
@@ -514,6 +576,11 @@
                 "internalType": "uint256",
                 "name": "minLPAmount",
                 "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "path",
+                "type": "address[]"
             },
             {
                 "internalType": "bool",
@@ -529,14 +596,61 @@
     {
         "inputs": [
             {
-                "internalType": "address[]",
-                "name": "path",
-                "type": "address[]"
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amountIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minAmountOut",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "colPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "usdcForMintAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusNeededAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expireBlock",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes[]",
+                        "name": "sigs",
+                        "type": "bytes[]"
+                    }
+                ],
+                "internalType": "struct ProxyInput",
+                "name": "proxyInput",
+                "type": "tuple"
             },
             {
                 "internalType": "uint256",
                 "name": "minLPAmount",
                 "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "path",
+                "type": "address[]"
             },
             {
                 "internalType": "bool",
@@ -548,9 +662,5 @@
         "outputs": [],
         "stateMutability": "payable",
         "type": "function"
-    },
-    {
-        "stateMutability": "payable",
-        "type": "receive"
     }
 ]

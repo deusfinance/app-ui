@@ -30,7 +30,6 @@ import { fromWei } from '../../../helper/formatBalance';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
-import Under from '../../Maintenance/Under';
 
 const Zap = () => {
     const location = useLocation()
@@ -61,7 +60,7 @@ const Zap = () => {
     const [stakingInfo, setStakingInfo] = useState(availableStaking[lpIndex])
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
-
+    const [amountOutParams, setAmountOutParams] = useState(null)
     const tokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain])
 
     //eslint-disable-next-line
@@ -92,7 +91,10 @@ const Zap = () => {
     const allowance = useAllowance(swapState.from, contractAddress, currChain, fastUpdate)
 
     useEffect(() => {
-        if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
+        if (amountIn === "" || debouncedAmountIn === "") {
+            setAmountOut("")
+            setAmountOutParams(null)
+        }
     }, [amountIn, debouncedAmountIn]);
 
     useEffect(() => {
@@ -110,9 +112,8 @@ const Zap = () => {
     }, [allowance]) //isPreApproved ?
 
     const { onApprove } = useApprove(swapState.from, contractAddress, currChain)
-    const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, amountOut, currChain)
+    const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, amountOut, amountOutParams, currChain)
     const { getAmountsOut } = useGetAmountsOutZap(swapState.from, contractAddress, debouncedAmountIn, chainId)
-
 
     useEffect(() => {
         const get = async () => {
@@ -120,11 +121,13 @@ const Zap = () => {
             // console.log("swap ", amount);
             if (result === "") {
                 setAmountOut("")
+                setAmountOutParams(null)
                 setPercentage("")
             }
             else {
                 console.log(result);
                 // const result.
+                setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount])
                 setAmountOut(result.lp)
                 setPercentage(fromWei(result.percentage, 4))
             }
@@ -183,6 +186,7 @@ const Zap = () => {
         setAmountIn("")
         setAmountOut("")
         setPercentage("")
+        setAmountOutParams(null)
         const vsType = getSwapVsType(type)
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
@@ -209,9 +213,9 @@ const Zap = () => {
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
 
-        <Under />
+        {/* <Under /> */}
 
-        {false && <MainWrapper >
+        {true && <MainWrapper >
             <ContentWrapper deactivated={mintPaused}>
                 <Type.XL fontWeight="300">Zap</Type.XL>
                 <SwapWrapper style={{ marginTop: "25px", maxWidth: "560px" }}>

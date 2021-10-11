@@ -360,7 +360,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
 }
 
 
-export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, web3, chainId) => {
+export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
 
     if (zapperAddress === DEI_COLLATERAL_ZAP[chainId]) {
@@ -397,15 +397,32 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, w
             .getAmountOutLPDEI(amountInToWei).call()
     }
 
-    console.log("getAmountOutLPERC20ORNativecoin ", amountInToWei, " DEI_DEUS_ZAP");
+    console.log("getAmountOutLPERC20ORNativecoin ", amountInToWei, " DEI_DEUS_ZAP", result.deus_price, result.collateral_price);
     return getZapContract(web3, zapperAddress, chainId)
         .methods
-        .getAmountOutLPERC20ORNativecoin(amountInToWei, [...erc20Path, DEI_ADDRESS[chainId]]).call() // TODO  VALUE:AVAX?
+        .getAmountOutLPERC20ORNativecoin(amountInToWei, result.deus_price, result.collateral_price, [...erc20Path, DEI_ADDRESS[chainId]]).call() // TODO  VALUE:AVAX?
 }
 
 
-export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, transferResidual, web3, chainId) => {
+export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual, web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
+    const { collateral_price, deus_price, expire_block, signature } = result
+
+    let proxyTuple = []
+    if (amountOutParams.length > 0)
+        proxyTuple = [
+            amountIn,
+            minLpAmount,
+            deus_price,
+            collateral_price,
+            amountOutParams[2],
+            amountOutParams[3],
+            expire_block,
+            [signature]
+        ]
+
+    let param = [proxyTuple]
+
     if (zapperAddress === DEI_DEUS_ZAP[chainId]) {
         if (currency.address === "0x") {
             console.log("zapInNativecoin ", amountIn, minLpAmount, transferResidual);

@@ -23,7 +23,7 @@ import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
 import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
-import { getNewProxyMinterContract } from '../helper/contractHelpers'
+import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
 
 
 export const useAPY = (validChainId) => {
@@ -242,7 +242,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
         const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
         const amountOutToWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
-        const maxAmountInToWei = getToWei(amountIn1, from1Currency.decimals).times(1 + (slippage / 100)).toFixed(0)
         const minAmountOutToWei = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
 
         let path = "/mint-algorithmic"
@@ -330,7 +329,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                 console.log(error);
             }
         }
-        const payload = from1Currency.address === "0x" ? { value: maxAmountInToWei } : {}
+        const payload = from1Currency.address === "0x" ? { value: amount1toWei } : {}
 
         try {
             return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`, payload)
@@ -341,6 +340,79 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
     return { onMint: handleMint }
 }
+
+
+export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatRatio, slippage, proxy, amountOutParams, validChainId) => {
+    const web3 = useWeb3()
+    const { account, chainId } = useWeb3React()
+
+    const handleMint = useCallback(async () => {
+
+        if (validChainId && chainId !== validChainId) return false
+        if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
+
+        const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
+        const amountOutToWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
+        const minAmountOutToWei = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
+
+        let fn = null
+
+        let path = "/mint-fractional"
+        try {
+            const result = await makeDeiRequest(path, validChainId)
+            const { collateral_price, deus_price, expire_block, signature } = result
+            const erc20Path = MINT_PATH[chainId][from1Currency.symbol]
+            let method = ""
+            let proxyTuple = []
+            if (amountOutParams.length > 0 && amountOutParams[0] === amountOutToWei)
+                proxyTuple = [
+                    amount1toWei,
+                    minAmountOutToWei,
+                    deus_price,
+                    collateral_price,
+                    amountOutParams[1],
+                    amountOutParams[2],
+                    expire_block,
+                    [signature]
+                ]
+            let param = [proxyTuple]
+
+            if (from1Currency.address === "0x") {
+                method = "Nativecoin2DEUS"
+                param.push(erc20Path)
+
+            }
+            else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
+                method = "USDC2DEUS"
+            }
+
+            else {
+                if (!erc20Path) {
+                    console.error("INVALID PATH with ", from1Currency)
+                    return
+                }
+                method = "ERC202DEUS"
+                param.push(erc20Path)
+            }
+            console.log(method, param);
+
+            fn = getDeusSwapContract(web3, chainId).methods[method](...param)
+
+        } catch (error) {
+            console.log(error);
+        }
+        const payload = from1Currency.address === "0x" ? { value: amount1toWei } : {}
+
+        try {
+            return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`, payload)
+        } catch (error) {
+            console.log(error);
+        }
+    }, [from1Currency, toCurrency, amountIn1, amountOut, slippage, amountOutParams, account, chainId, validChainId, web3])
+
+    return { onMint: handleMint }
+}
+
 
 export const useStakingInfo = (conf, validChainId) => {
     const web3 = useCrossWeb3(validChainId)

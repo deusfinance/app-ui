@@ -6,7 +6,7 @@ import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
@@ -306,6 +306,32 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
     return true
 }
 
+
+export const getAmountOutDeusSwap = async (fromCurrency, amountIn, deus_price, collateral_price, web3, chainId) => {
+    //getERC202DEIInputs
+    if (!fromCurrency || !amountIn || isZero(amountIn) || deus_price === undefined) return ""
+    const amountInToWei = getToWei(amountIn, fromCurrency.decimals).toFixed(0)
+    const collateralPriceWei = getToWei(collateral_price, 6).toFixed(0)
+    const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
+    let method = ""
+    let params = [amountInToWei, deusPriceWei, collateralPriceWei]
+    console.log(chainId, amountInToWei);
+
+    const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
+
+    if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
+        method = "getUSDC2DEUSInputs"
+    } else {
+        method = "getERC202DEUSInputs"
+        if (!erc20Path) {
+            console.error("INVALID PATH with ", fromCurrency)
+            return
+        }
+        params.push(erc20Path)
+    }
+    console.log(method, params);
+    return getDeusSwapContract(web3, chainId).methods[method](...params).call()
+}
 
 export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, collateral_price, web3, chainId) => {
     //getERC202DEIInputs

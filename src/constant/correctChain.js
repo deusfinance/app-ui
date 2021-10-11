@@ -3,10 +3,10 @@ import { ChainId } from "./web3";
 //Always we use first chainId as prefer chain
 export const correctChains = [
     {
-        url: "/swap2",
-        chains: [ChainId.ETH, ChainId.RINKEBY],
-        exact: true,
+        url: "/swap",
+        chains: [ChainId.ETH, ChainId.MATIC],
     },
+
     {
         url: "/stable/zap",
         chains: [ChainId.MATIC],
@@ -28,46 +28,16 @@ export const correctChains = [
         chains: [ChainId.BSC, ChainId.BSC_TESTNET],
     },
     {
-        url: "/crosschain/heco",
-        chains: [ChainId.HECO],
-    },
-    {
-        url: "/crosschain/polygon",
-        chains: [ChainId.MATIC],
-    },
-    {
-        url: "/synchronizer",
-        chains: [ChainId.ETH, ChainId.RINKEBY],
-        exact: true,
-    },
-    {
-        url: "/sealed-swap",
-        chains: [ChainId.ETH],
-        exact: true,
-    },
-    {
         url: "/crosschain/bsc/muon-presale",
         chains: [ChainId.BSC_TESTNET, ChainId.BSC],
-        exact: true,
     },
     {
         url: "/crosschain/xdai/muon-presale",
         chains: [ChainId.XDAI],
-        exact: true,
     },
     {
         url: "/muon-presale",
         chains: [ChainId.ETH],
-        exact: true,
-    },
-    {
-        url: "/sync2",
-        chains: [ChainId.BSC, ChainId.XDAI, ChainId.HECO, ChainId.MATIC],
-        exact: true,
-    },
-    {
-        url: "/sync3",
-        chains: [ChainId.BSC, ChainId.BSC_TESTNET],
         exact: true,
     },
     {

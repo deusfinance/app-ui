@@ -14,6 +14,11 @@ export const deiToken = {
     [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_ADDRESS[ChainId.MATIC], 18, "DEI", "DEI", "/tokens/dei.svg"),
     [ChainId.ETH]: new Token(ChainId.ETH, DEI_ADDRESS[ChainId.ETH], 18, "DEI", "DEI", "/tokens/dei.svg"),
 };
+export const deusToken = {
+    [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEUS_ADDRESS[ChainId.RINKEBY], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
+    [ChainId.MATIC]: new Token(ChainId.MATIC, DEUS_ADDRESS[ChainId.MATIC], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
+    [ChainId.ETH]: new Token(ChainId.ETH, DEUS_ADDRESS[ChainId.ETH], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
+};
 
 export const collateralToken = {
     [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, COLLATERAL_ADDRESS[ChainId.RINKEBY], 6, "USDC", "USDC", "/tokens/usdc.svg"),

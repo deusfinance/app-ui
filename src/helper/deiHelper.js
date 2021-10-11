@@ -6,7 +6,7 @@ import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import { fetcher } from "./muonHelper"
 
@@ -330,7 +330,7 @@ export const getAmountOutDeusSwap = async (fromCurrency, amountIn, deus_price, c
         params.push(erc20Path)
     }
     console.log(method, params);
-    return getNewProxyMinterContract(web3, chainId).methods[method](...params).call()
+    return getDeusSwapContract(web3, chainId).methods[method](...params).call()
 }
 
 export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, collateral_price, web3, chainId) => {

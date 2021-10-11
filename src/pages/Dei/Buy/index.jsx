@@ -14,15 +14,15 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, NEW_PROXY_MINT_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, DEUS_SWAP_ADDRESS, NEW_PROXY_MINT_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
+import { useDeiUpdate, useMint, useAllowance, useSwap } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import { isProxyMinter, getAmountOutProxy } from '../../../helper/deiHelper';
+import { isProxyMinter, getAmountOutProxy, getAmountOutDeusSwap } from '../../../helper/deiHelper';
 import { getSwapVsType } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
@@ -31,6 +31,7 @@ import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
 import { isZero } from '../../../constant/number';
+import RateBox from '../../../components/App/Swap/RateBox';
 
 const Dei = () => {
     const location = useLocation()
@@ -49,13 +50,14 @@ const Dei = () => {
     const { account } = useWeb3React()
     const [escapedType, setEscapedType] = useState("from")
     const [isPair, setIsPair] = useState(false)
+    const [invert, setInvert] = useState(false)
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [slippage, setSlippage] = useState(0.5)
     const [amountOutParams, setAmountOutParams] = useState([])
-    const contractAddress = useMemo(() => proxy ? NEW_PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
+    const contractAddress = useMemo(() => DEUS_SWAP_ADDRESS[chainId], [chainId])
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
-        .filter((token) => (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
+        .filter((token) => (!token.pairID && token.address !== DEUS_ADDRESS[chainId])) : []
         , [chainId, collatRatio])
     const pairedTokens = useMemo(() => {
         let pTokens = []
@@ -100,20 +102,14 @@ const Dei = () => {
     const [amountOut, setAmountOut] = useState("")
     const debouncedAmountIn = useDebounce(amountIn, 1000);
     const debouncedAmountOut = useDebounce(amountOut, 1000);
-    const [pairToken, setPairToken] = useState({ address: null })
 
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
-    const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 
     useEffect(() => {
         // console.log("called", focusType);
         if (amountIn === "" && focusType === "from1") {
             setAmountOut("")
             setAmountInPair("")
-        }
-        if (amountInPair === "" && focusType === "from2") {
-            setAmountOut("")
-            setAmountIn("")
         }
         if (amountOut === "" && focusType === "to") {
             setAmountInPair("")
@@ -126,53 +122,26 @@ const Dei = () => {
         if (focusType === "from1" && amountIn !== "" && debouncedAmountIn === amountIn) {
             getAmountsTokens(debouncedAmountIn, null, null)
         }
-        if (focusType === "from2" && amountInPair !== "") {
-            // console.log(amountInPair);
-            getAmountsTokens(null, amountInPair, null)
-        }
-        if (focusType === "to" && amountOut !== "" && debouncedAmountOut === amountOut) {
-            getAmountsTokens(null, null, debouncedAmountOut)
-        }
+        // if (focusType === "to" && amountOut !== "" && debouncedAmountOut === amountOut) {
+        //     getAmountsTokens(null, null, debouncedAmountOut)
+        // }
     }, [debouncedAmountIn, amountInPair, debouncedAmountOut, mintingFee, deiPrices]);// eslint-disable-line
 
 
-    const getAmountsTokens = async (in1, in2, out) => {
+    const getAmountsTokens = async (in1, out) => {
 
         if (deiPrices) {
             const { collateral_price, deus_price } = deiPrices
 
-            const in1Unit = collatRatio === 0 ? deus_price : collateral_price
-            const in2Unit = deus_price
-
             let amountOut = ""
             let amountIn1 = ""
-            let amountIn2 = ""
-            if (!proxy) {
-                if (in1) {
-                    amountIn1 = in1
-                    amountIn2 = (collatRatio > 0 && collatRatio < 100) ? RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).times(100 - collatRatio).div(collatRatio).div(in2Unit), pairToken.decimals) : 0
-                    amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
-                } if (in2) {
-                    amountIn2 = in2
-                    amountIn1 = RemoveTrailingZero(new BigNumber(amountIn2).times(in2Unit).times(collatRatio).div(100 - collatRatio).div(in1Unit), swapState.from.decimals)
-                    amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(in1Unit).plus(new BigNumber(amountIn2).times(in2Unit)).times(1 - (mintingFee / 100)), swapState.to.decimals)
-                } if (out) {
-                    amountOut = out
-                    amountIn1 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(collatRatio).div(100).div(in1Unit), swapState.from.decimals, BigNumber.ROUND_DOWN)
-                    amountIn2 = RemoveTrailingZero(new BigNumber(out).div(1 - (mintingFee / 100)).times(100 - collatRatio).div(100).div(in2Unit), pairToken.decimals, BigNumber.ROUND_UP)
-                    if (collatRatio === 0) {
-                        if (isZero(amountIn1)) amountIn1 = amountIn2
-                        else if (isZero(amountIn2)) amountIn2 = amountIn1
-                    }
-                }
-            } else {
-                amountIn1 = in1
-                const amountOutProxy = await getAmountOutProxy(swapState.from, amountIn1, deus_price, collateral_price, web3, chainId)
-                setAmountOutParams([amountOutProxy[0], amountOutProxy[1], amountOutProxy[2]])
-                amountOut = amountOutProxy ? fromWei(amountOutProxy[0], swapState.to.decimals) : ""
-            }
+
+            amountIn1 = in1
+            const amountOutProxy = await getAmountOutDeusSwap(swapState.from, amountIn1, deus_price, collateral_price, web3, chainId)
+            console.log(amountOutProxy);
+            setAmountOutParams([amountOutProxy[0], amountOutProxy[1], amountOutProxy[2]])
+            amountOut = amountOutProxy ? fromWei(amountOutProxy[0], swapState.to.decimals) : ""
             setAmountIn(amountIn1)
-            setAmountInPair(amountIn2)
             setAmountOut(amountOut)
         }
     }
@@ -201,7 +170,6 @@ const Dei = () => {
     useEffect(() => {
         setSwapState({ from: tokens[0], to: deusToken[chainId] })
         setAmountIn("")
-        setAmountInPair("")
         setAmountOut("")
         setAmountOutParams([])
     }, [tokens, chainId]);// eslint-disable-line
@@ -215,34 +183,22 @@ const Dei = () => {
     }, [chainId, account, isPair, swapState.from, contractAddress]);
 
     useEffect(() => {
-        setProxy(isProxyMinter(swapState.from, isPair, collatRatio, chainId))
-    }, [swapState.from, isPair, chainId, collatRatio])
 
-
-
-    useEffect(() => {
-
-        if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
+        if (allowance.gt(0)) {
             setIsApproved(true)
         } else {
             setIsApproved(false)
         }
 
         //eslint-disable-next-line 
-    }, [allowance, allowancePairToken, isApproved, proxy, isPair, contractAddress]) //isPreApproved ?
+    }, [allowance, isApproved, proxy, isPair, contractAddress]) //isPreApproved ?
 
 
 
-    let targetToken = useMemo(() => {
-        if (pairToken && allowance.gt(0) && !allowancePairToken.gt(0)) {
-            return pairToken
-        }
-        return swapState.from
-    }, [pairToken, allowance, allowancePairToken, swapState.from])
 
 
-    const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, amountOutParams, chainId)
+    const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
+    const { onMint } = useSwap(swapState.from, swapState.to, amountIn, amountOut, collatRatio, slippage, proxy, amountOutParams, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -308,7 +264,6 @@ const Dei = () => {
             let secondToken = tokens.filter(currToken => {
                 return currToken.pairID === token.pairID && currToken.address !== token.address
             })[0]
-            setPairToken(secondToken)
             setSwapState({ ...swapState, [type]: token })
             return
         }
@@ -359,23 +314,7 @@ const Dei = () => {
                     // placeHolder={""}
                     />
 
-                    {isPair && <div>
-                        <PlusImg src="/img/dei/plus.svg" alt="plus" />
-                        <TokenBox
-                            mt={"-21px"}
-                            type="from"
-                            setFocusType={setFocusType}
-                            focusType="from2"
-                            hasMax={true}
-                            inputAmount={amountInPair}
-                            setInputAmount={setAmountInPair}
-                            setActive={null}
-                            currency={pairToken}
-                            TokensMap={TokensMap}
-                            fastUpdate={fastUpdate}
-                            chainId={chainId}
-                        />
-                    </div>}
+
 
                     <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
@@ -398,15 +337,15 @@ const Dei = () => {
                     // placeHolder={"ENTER AMOUNT"}
                     />
 
-                    {/* <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} /> */}
+                    <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />
 
                     <SwapAction
                         bgColor={"grad_dei"}
-                        text="MINT"
+                        text="SWAP"
                         isPreApproved={true}
                         isApproved={isApproved}
                         validNetworks={validNetworks}
-                        targetToken={targetToken}
+                        targetToken={swapState.from}
                         loading={approveLoading}
                         swapLoading={swapLoading}
                         handleApprove={handleApprove}
@@ -421,8 +360,7 @@ const Dei = () => {
                 </SwapWrapper>
 
                 <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />
-                <SwapCard title="Minter Contract" value={proxy === null ? "..." : proxy ? "Proxy" : "Collateral Pool"} />
-                <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} />
+                {/* <SwapCard title="Minting Fee" value={mintingFee ? `${mintingFee} %` : ""} /> */}
             </ContentWrapper>
         </MainWrapper>
 

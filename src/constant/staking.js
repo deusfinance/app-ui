@@ -56,7 +56,7 @@ export const StakingConfig = {
       depositToken: DeusNativeLpToken[ChainId.MATIC],
       stakingContract: DEUS_NATIVE_STAKING[ChainId.MATIC],
       zapperContract: DEI_DEUS_ZAP[ChainId.MATIC],
-      provideLink: "https://quickswap.exchange/#/add/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+      provideLink: "https://quickswap.exchange/#/add/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44/ETH",
       apy: "50"
     }
   ],
@@ -91,7 +91,7 @@ export const StakingConfig = {
       depositToken: DeusNativeLpToken[ChainId.ETH],
       stakingContract: DEUS_NATIVE_STAKING[ChainId.ETH],
       zapperContract: DEI_DEUS_ZAP[ChainId.ETH],
-      provideLink: "https://app.uniswap.org/#/add/v2/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44?use=V2",
+      provideLink: "https://app.uniswap.org/#/add/v2/ETH/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44",
       apy: "50"
     }
   ],

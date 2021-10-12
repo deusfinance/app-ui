@@ -6,10 +6,9 @@ export const correctChains = [
         url: "/swap",
         chains: [ChainId.ETH, ChainId.MATIC],
     },
-
     {
         url: "/stable/zap",
-        chains: [ChainId.MATIC],
+        chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
         url: "/stable",

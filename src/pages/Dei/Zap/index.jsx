@@ -30,7 +30,6 @@ import { fromWei } from '../../../helper/formatBalance';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
-import Under from '../../Maintenance/Under';
 
 const Zap = () => {
     const location = useLocation()
@@ -57,11 +56,11 @@ const Zap = () => {
     const [activeStakingList, setActiveStakingList] = useState(false)
     const availableStaking = StakingConfig[currChain]
     const resultLp = queryParams.lp ? availableStaking.filter(staking => staking.title.toLowerCase() === queryParams.lp) : []
-    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 0
+    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 1
     const [stakingInfo, setStakingInfo] = useState(availableStaking[lpIndex])
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
-
+    const [amountOutParams, setAmountOutParams] = useState(null)
     const tokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain])
 
     //eslint-disable-next-line
@@ -85,14 +84,17 @@ const Zap = () => {
 
     const [, setFocusType] = useState("from1")
     const [amountIn, setAmountIn] = useState("")
-    const debouncedAmountIn = useDebounce(amountIn, 500);
+    const debouncedAmountIn = useDebounce(amountIn, 1000);
     const [amountOut, setAmountOut] = useState("")
     const [percentage, setPercentage] = useState("")
 
     const allowance = useAllowance(swapState.from, contractAddress, currChain, fastUpdate)
 
     useEffect(() => {
-        if (amountIn === "" || debouncedAmountIn === "") setAmountOut("")
+        if (amountIn === "" || debouncedAmountIn === "") {
+            setAmountOut("")
+            setAmountOutParams(null)
+        }
     }, [amountIn, debouncedAmountIn]);
 
     useEffect(() => {
@@ -110,9 +112,8 @@ const Zap = () => {
     }, [allowance]) //isPreApproved ?
 
     const { onApprove } = useApprove(swapState.from, contractAddress, currChain)
-    const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, amountOut, currChain)
-    const { getAmountsOut } = useGetAmountsOutZap(swapState.from, contractAddress, debouncedAmountIn, chainId)
-
+    const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, amountOut, amountOutParams, currChain)
+    const { getAmountsOut } = useGetAmountsOutZap(swapState.from, contractAddress, amountIn, debouncedAmountIn, chainId)
 
     useEffect(() => {
         const get = async () => {
@@ -120,11 +121,13 @@ const Zap = () => {
             // console.log("swap ", amount);
             if (result === "") {
                 setAmountOut("")
+                setAmountOutParams(null)
                 setPercentage("")
             }
             else {
                 console.log(result);
                 // const result.
+                setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount])
                 setAmountOut(result.lp)
                 setPercentage(fromWei(result.percentage, 4))
             }
@@ -183,6 +186,7 @@ const Zap = () => {
         setAmountIn("")
         setAmountOut("")
         setPercentage("")
+        setAmountOutParams(null)
         const vsType = getSwapVsType(type)
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
@@ -209,9 +213,9 @@ const Zap = () => {
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
 
-        <Under />
+        {/* <Under /> */}
 
-        {false && <MainWrapper >
+        {true && <MainWrapper >
             <ContentWrapper deactivated={mintPaused}>
                 <Type.XL fontWeight="300">Zap</Type.XL>
                 <SwapWrapper style={{ marginTop: "25px", maxWidth: "560px" }}>
@@ -244,7 +248,7 @@ const Zap = () => {
                             focusType="to"
                             inputAmount={amountOut}
                             setInputAmount={setAmountOut}
-                            setActive={setActiveStakingList}
+                            setActive={null} // setActiveStakingList
                             TokensMap={TokensMap}
                             currency={swapState.to}
                             fastUpdate={fastUpdate}
@@ -269,6 +273,7 @@ const Zap = () => {
                         TokensMap={TokensMap}
                         swapState={swapState}
                         amountIn={amountIn}
+                        debouncedAmountIn={debouncedAmountIn}
                         amountOut={amountOut}
                         isMint={true}
                     />

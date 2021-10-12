@@ -22,7 +22,7 @@ import {
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
-import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
+import { COLLATERAL_ADDRESS, DEI_ADDRESS, DEUS_ADDRESS, MINT_PATH } from '../constant/contracts'
 import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
 
 
@@ -53,19 +53,27 @@ export const useAPY = (validChainId) => {
 }
 
 
-export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, validChainId) => {
+export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
     const handleZap = useCallback(async () => {
         if ((validChainId && chainId !== validChainId) || !currency) return false
+
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         // const minLpAmountToWei = getToWei(minLpAmount, 18).toFixed(0)
         const minLpAmountToWei = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(0, 1)
         // const minLpAmountToWei = "0" //TODO
-        const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, false, web3, chainId)
-        const payload = currency.address === "0x" ? { value: amountInToWei } : {}
-        return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
+        try {
+            let path = "/mint-fractional"
+            const result = await makeDeiRequest(path, validChainId)
+
+            const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, result, amountOutParams, false, web3, chainId)
+            const payload = currency.address === "0x" ? { value: amountInToWei } : {}
+            return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
+        } catch (error) {
+            console.log(error);
+        }
     }, [currency, stakingInfo, amountIn, amountOut, validChainId, chainId, account, web3, slippage])
     return { onZap: handleZap }
 }
@@ -73,17 +81,24 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, val
 
 
 
-export const useGetAmountsOutZap = (currency, zapperContract, amountIn, validChainId) => {
+export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debouncedAmountIn, validChainId) => {
     const web3 = useWeb3()
 
     const handleGetAmountOut = useCallback(async () => {
-        if (!validChainId || !currency || !amountIn || amountIn === "" || isZero(amountIn) || !zapperContract) return ""
+        if (!validChainId || !currency || !amountIn || amountIn === "" || isZero(amountIn) || !zapperContract || debouncedAmountIn !== amountIn) return ""
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         try {
+            let result = null
+            if (currency.address !== DEUS_ADDRESS[validChainId] && currency.address !== DEI_ADDRESS[validChainId]) {
+                let path = "/mint-fractional"
+                result = await makeDeiRequest(path, validChainId)
+            }
+
             const amount = await getZapAmountsOut(
                 currency,
                 amountInToWei,
                 zapperContract,
+                result,
                 web3,
                 validChainId,
             )
@@ -93,7 +108,7 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, validCha
             return false
         }
 
-    }, [currency, zapperContract, amountIn, validChainId, web3])
+    }, [currency, zapperContract, amountIn, debouncedAmountIn, validChainId, web3])
     return { getAmountsOut: handleGetAmountOut }
 }
 

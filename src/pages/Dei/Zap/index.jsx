@@ -248,7 +248,7 @@ const Zap = () => {
                             focusType="to"
                             inputAmount={amountOut}
                             setInputAmount={setAmountOut}
-                            setActive={setActiveStakingList}
+                            setActive={null} // setActiveStakingList
                             TokensMap={TokensMap}
                             currency={swapState.to}
                             fastUpdate={fastUpdate}

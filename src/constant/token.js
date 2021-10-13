@@ -2,9 +2,7 @@ import { Token } from '../utils/classes';
 import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEI_DEUS_LP, DEI_COLLATERAL_LP, DEUS_ADDRESS, DEUS_NATIVE_LP } from './contracts';
 import { ChainId } from './web3';
 
-export const sdeaToken = new Token(1, "0xd8C33488B76D4a2C06D5cCB75574f10F6ccaC3D7", 18, "sDEA", "sDEA", "/tokens/sdea.svg");
 export const muonToken = new Token(1, null, 18, "MUON", "MUON", "/tokens/muon.svg");
-export const xdaiToken = new Token(100, "0x0000000000000000000000000000000000000001", 18, "xDAI", "xDAI", "/tokens/xdai.svg");
 
 //START DEI
 export const deiToken = {

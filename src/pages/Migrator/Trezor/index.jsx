@@ -23,7 +23,6 @@ const Migrator = () => {
     const { account, chainId } = useWeb3React()
     const [fastUpdate, setFastUpdate] = useState(0)
     const [userSnap, setUserSnap] = useState([])
-    const [isPersonal, setIsPersonal] = useState(true)
     const location = useLocation()
     const coolDown = useRecoilValue(coolDownState)
     const [seconds, setSeconds] = useState(0)
@@ -90,7 +89,7 @@ const Migrator = () => {
         setMigrateList({ ...migrateList })
     }
 
-    const { onMigrate } = useMigrate(migrateList, SyncChainId, fastUpdate, isPersonal)
+    const { onMigrate } = useMigrate(migrateList, SyncChainId, fastUpdate, true)
 
     const handleMigrate = useCallback(async () => {
         try {

@@ -53,7 +53,8 @@ const Zap = () => {
     const [swapLoading, setSwapLoading] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-    const [activeStakingList, setActiveStakingList] = useState(false)
+    // const [activeStakingList, setActiveStakingList] = useState(false)
+    const activeStakingList = false
     const availableStaking = StakingConfig[currChain]
     const resultLp = queryParams.lp ? availableStaking.filter(staking => staking.title.toLowerCase() === queryParams.lp) : []
     const lpIndex = resultLp.length > 0 ? resultLp[0].id : 1

@@ -74,7 +74,7 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
         } catch (error) {
             console.log(error);
         }
-    }, [currency, stakingInfo, amountIn, amountOut, validChainId, chainId, account, web3, slippage])
+    }, [currency, stakingInfo, amountIn, amountOut, amountOutParams, validChainId, chainId, account, web3, slippage])
     return { onZap: handleZap }
 }
 

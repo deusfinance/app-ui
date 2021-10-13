@@ -420,7 +420,6 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
             [signature]
         ]
 
-    let param = [proxyTuple]
 
     if (zapperAddress === DEI_DEUS_ZAP[chainId]) {
         if (currency.address === "0x") {

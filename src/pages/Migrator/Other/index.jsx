@@ -111,7 +111,7 @@ const Migrator = () => {
         </div>)
     }
 
-    const currUnMigratedList = userSnap.filter(config => !migratedList.includes(config.id) && config.tokens.from.filter(token => token.balance > 0).length > 0)
+    const currUnMigratedList = userSnap.filter(config => !migratedList?.includes(config.id) && config.tokens.from.filter(token => token.balance > 0).length > 0)
 
     return (<MainWrapper>
         <Type.XXL fontWeight="300" marginBottom="20px">Migrator</Type.XXL>

@@ -9,7 +9,7 @@ import useRefresh from "./useRefresh";
 import { useSetRecoilState } from "recoil";
 import { coolDownState } from "../store/dei";
 
-export const useMigrate = (migrateList, validChainId = 1, forceUpdate) => {
+export const useMigrate = (migrateList, validChainId = 1, forceUpdate, isPersonal = false) => {
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
     const setCoolDown = useSetRecoilState(coolDownState)
@@ -22,7 +22,7 @@ export const useMigrate = (migrateList, validChainId = 1, forceUpdate) => {
             const requestId1 = await getRandomNumber(account, BASE_URL)
             const requestId2 = await getRandomNumber(account, BASE_URL2)
 
-            const status = await doMigration([requestId1, requestId2].join(","), migrateOption, timeStamp, account, chainId, validChainId, web3)
+            const status = await doMigration([requestId1, requestId2].join(","), migrateOption, timeStamp, account, chainId, validChainId, web3, isPersonal)
             console.log(timeStamp);
             console.log(parseInt(status.message.match(/(\d+)/)[0]) + timeStamp);
             if (!status.success) {

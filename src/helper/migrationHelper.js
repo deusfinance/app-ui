@@ -111,7 +111,6 @@ export const getRandomNumber = async (account, url) => {
 }
 
 
-
 export const doMigration = async (requestIds, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, isPersonal) => {
 
     if (validChainId !== chainId) return

@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
 const Migrator = React.lazy(() => import('./pages/Migrator'))
+const MigratorTrezor = React.lazy(() => import('./pages/Migrator/Trezor'))
 const burn = React.lazy(() => import('./pages/burn'))
 
 const BuyDEUS = React.lazy(() => import('./pages/Dei/Buy'))
@@ -44,6 +45,7 @@ function App() {
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
                   <Route exact path="/migrator" component={Migrator} />
+                  <Route exact path="/migrator/trezor" component={MigratorTrezor} />
                   <Route exact path="/swap" component={BuyDEUS} />
                   <Route exact path="/burn-for-admin" component={burn} />
                   <Redirect exact from="/stable" to="/stable/mint" />

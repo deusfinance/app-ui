@@ -112,10 +112,9 @@ export const getRandomNumber = async (account, url) => {
 
 
 export const doMigration = async (requestIds, migrateOption, timeStamp, account, chainId, validChainId = 1, web3, isPersonal) => {
-
     if (validChainId !== chainId) return
-
     const signature = isPersonal ? await signPersonal(requestIds, migrateOption, timeStamp, account, chainId, web3) : await signMsg(requestIds, migrateOption, timeStamp, account, validChainId, web3)
+    const signatureType = isPersonal ? 1 : 0
     let status = {}
     if (!signature) {
         ToastTransaction("warn", "Failed to sign", "", { autoClose: true })
@@ -130,9 +129,9 @@ export const doMigration = async (requestIds, migrateOption, timeStamp, account,
         signature,
         chainId: `${validChainId}`,
         migrateOption,
-        timeStamp
+        timeStamp,
+        signatureType
     }
-
 
     const req1 = axios.post(BASE_URL + "/migrate", data)
     const req2 = axios.post(BASE_URL2 + "/migrate", data)

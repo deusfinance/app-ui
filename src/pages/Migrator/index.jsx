@@ -82,7 +82,7 @@ const Migrator = () => {
             delete migrateList[id]
         } else {
             migrateList[id] = {
-                targetToken: token ?? userSnap[id].tokens.to[0].symbol,
+                targetToken: token ?? userSnap[id].tokens.to.filter(t => t.symbol === "DEUS")[0].symbol,
                 index: index + 1
             }
         }

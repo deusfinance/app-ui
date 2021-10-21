@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { ExternalLink } from '../Link';
-import { DEITokens, ZapTokens } from '../../../constant/token';
+import { DEITokens } from '../../../constant/token';
 import { NavLink } from 'react-router-dom';
 
 const MainWrapper = styled.div`
@@ -51,7 +51,6 @@ const EachUrl = styled.span`
 
 const DeiTokenBox = () => {
     const deusToken = DEITokens[1][1]
-    const deiToken = ZapTokens[1][0]
     return (
         useMemo(() => {
             return <MainWrapper>
@@ -66,7 +65,7 @@ const DeiTokenBox = () => {
                 </EachUrl>
 
             </MainWrapper>
-        }, [deusToken, deiToken])
+        }, [deusToken])
     )
 }
 

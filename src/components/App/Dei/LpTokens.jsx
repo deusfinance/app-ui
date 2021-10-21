@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { addToken } from '../../../utils/addTokens';
-import { deiCollateralLpToken, deiDeusLpToken } from '../../../constant/token';
+import { deiCollateralLpToken, deiDeusLpToken, DeusNativeLpToken } from '../../../constant/token';
 import { Copy, CheckCircle } from 'react-feather';
 
 
@@ -55,11 +55,24 @@ const Line = styled.div`
 const LpTokens = ({ chainId = 1 }) => {
     const deiCollateralLp = deiCollateralLpToken[chainId]
     const deiDeusLp = deiDeusLpToken[chainId]
-    const [state, setState] = useState({ "deiCollateral": false, "deiDeus": false })
+    const deusNativeLp = DeusNativeLpToken[chainId]
+    const [state, setState] = useState({ "deiCollateral": false, "deiDeus": false, "deusNativeLp": false })
 
     return (
         useMemo(() => {
             return <MainWrapper>
+                <EachUrl>
+                    <p className="deus" onClick={() => addToken({ ...deusNativeLp, symbol: "UNI-V2" })}>Add {deusNativeLp.symbol} to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
+                </EachUrl>
+                <EachUrl>
+                    <CopyToClipboard text={deusNativeLp.address}
+                        onCopy={() => setState({ ...state, "deusNativeLp": true })}>
+                        <p className="deus">Copy {deusNativeLp.symbol} Contract
+                            {state["deusNativeLp"] ? <CheckCircle width="15px" style={{ marginLeft: "3px" }} /> : <Copy width="15px" style={{ marginLeft: "3px" }} />}
+                        </p>
+                    </CopyToClipboard>
+                </EachUrl>
+                <Line />
                 <EachUrl>
                     <p className="deus" onClick={() => addToken({ ...deiDeusLp, symbol: "UNI-V2" })}>Add  DEI-DEUS LP to MetaMask <img src="/img/metamask.png" alt="metmask" /> </p>
                 </EachUrl>
@@ -84,8 +97,9 @@ const LpTokens = ({ chainId = 1 }) => {
                         </p>
                     </CopyToClipboard>
                 </EachUrl>
+
             </MainWrapper>
-        }, [deiCollateralLp, deiDeusLp, state])
+        }, [deiCollateralLp, deiDeusLp, deusNativeLp, state])
     )
 }
 

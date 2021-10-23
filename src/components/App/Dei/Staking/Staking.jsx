@@ -20,11 +20,14 @@ const Wrapper = styled.div`
     color: #ffffff;
     min-height: 350px;
     max-width: 450px;
-    width: 100%;
+    width: 95%;
     background: #0d0d0d;
     border-radius: 7px;
     margin: 20px;
     box-shadow: 0px 0px 13px 1px #9be0fb;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+          margin: 20px auto;
+  `}
 `
 const ActionWrap = styled.div`
     display: flex;

@@ -33,6 +33,10 @@ const NavDesktop = ({ routes }) => {
 
     return useMemo(() => {
         return <NavbarContentWrap>
+            {/* {tvl && <NavButton className="tvl" active={false} >
+                {t("tvl")}: {tvl}
+            </NavButton>} */}
+
             {routes.reverse().map((nav, index) => {
                 let res = null
                 if (nav.path) {
@@ -76,13 +80,8 @@ const NavDesktop = ({ routes }) => {
                 }
                 return <li key={nav.id + "_desktop"}>{res}</li>
             })}
-            {/* <li>
-                {tvl && <NavButton className="tvl" active={false} >
-                    {t("tvl")}: {tvl}
-                </NavButton>}
-            </li> */}
         </NavbarContentWrap>
-    }, [routes, t])
+    }, [routes, t, tvl])
 }
 
 export default NavDesktop;

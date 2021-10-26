@@ -14,6 +14,11 @@ export const NavbarWrap = styled(RowBetween)`
         margin-top: 0px;
         display: none;
     }
+    .tvl{
+        position: absolute;
+        top: 8px;
+        left: 145px;
+    }
 
     ${({ theme }) => theme.mediaWidth.upToLarge`
         font-size: 12px;
@@ -35,12 +40,16 @@ export const NavbarWrap = styled(RowBetween)`
     @media screen and (max-width: 1150px) {
         font-size: 11px;
         .tvl{
-            display:none;
+            top: 13px;
+            left: 145px;
         }
-     }
+    }
     @media screen and (max-width: 1050px) {
-          .hamb{
+        .hamb{
             display: block;
+        }
+        .tvl{
+            display:none;
         }
      }
 `

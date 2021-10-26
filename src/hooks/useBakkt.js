@@ -35,7 +35,7 @@ export const useRatio = (migratorContract) => {
             })
         }
         getRatio()
-    }, [])
+    }, [web3])
 
     return ratio
 }

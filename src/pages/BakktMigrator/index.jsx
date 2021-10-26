@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image } from 'rebass/styled-components';
 import { MainWrapper, SwapWrapper, SwapArrow } from '../../components/App/MuonSwap';
 import TokenBox from '../../components/App/MuonSwap/TokenBox';
@@ -6,14 +6,10 @@ import SwapAction from '../../components/App/Swap/SwapAction';
 import RateBox from '../../components/App/MuonSwap/RateBox';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
-import { fromWei } from '../../helper/formatBalance';
 import { useApprove } from '../../hooks/useApprove';
 import { useAllowance } from '../../hooks/useAllowance';
-import { useSwap } from '../../hooks/useSwap';
-import { bakktToken, dBakktToken, DefaultTokens } from '../../constant/token';
-import { useGetAmountsOut } from '../../hooks/useGetAmountsOut';
+import { bakktToken, dBakktToken } from '../../constant/token';
 import useChain from '../../hooks/useChain';
-import { getContractAddr } from '../../utils/contracts';
 import { useDebounce } from '../../hooks/useDebounce';
 import { Type } from '../../components/App/Text';
 import { useMigrate, useRatio } from '../../hooks/useBakkt';
@@ -26,7 +22,7 @@ const BakktMigrator = () => {
     const [approveLoading, setApproveLoading] = useState(false)
     const { account } = useWeb3React()
     const validNetworks = [1]
-    const [focusType, setFocusType] = useState("from")
+    const [, setFocusType] = useState("from")
 
     const chainId = useChain(validNetworks)
 

@@ -12,6 +12,7 @@ import { RecoilRoot } from 'recoil';
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
+const BakktMigrator = React.lazy(() => import('./pages/BakktMigrator'))
 const Migrator = React.lazy(() => import('./pages/Migrator'))
 const MigratorOther = React.lazy(() => import('./pages/Migrator/Other'))
 const burn = React.lazy(() => import('./pages/burn'))
@@ -22,6 +23,7 @@ const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
 const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
 const DeiBuyBackRecollateralize = React.lazy(() => import('./pages/Dei/BuyBackRecollateralize'))
+
 
 const Muon = React.lazy(() => import('./pages/Muon'))
 const NotFound = React.lazy(() => import('./pages/Errors'))
@@ -44,6 +46,7 @@ function App() {
                 <ToastContainer style={{ maxWidth: '450px', width: "90%" }} />
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
+                  <Route exact path="/bakkt-migrator" component={BakktMigrator} />
                   <Route exact path="/migrator" component={Migrator} />
                   <Route exact path="/migrator/other" component={MigratorOther} />
                   <Route exact path="/swap" component={BuyDEUS} />

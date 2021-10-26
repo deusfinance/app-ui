@@ -1,9 +1,7 @@
-import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { InputAmount } from '.';
-import { isGt, isZero } from '../../../constant/number';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
 import useTokenBalance from '../../../hooks/useTokenBalance';
 import { formatBalance3 } from '../../../utils/utils';
@@ -15,7 +13,8 @@ const Wrapper = styled.div`
     position: relative;
     height: ${({ height }) => (height || "90px")};
     width: ${({ width }) => (width || "100%")};
-    background: ${({ theme }) => theme.bg8};
+    margin-top: ${({ mt }) => (mt && mt)};
+    background: ${({ theme }) => theme.border1};
     border: 2px solid #000000;
     padding:0 15px;
     border-radius: ${({ borderRadius }) => borderRadius || "15px"};
@@ -27,15 +26,14 @@ const TokenInfo = styled(Flex)`
         filter:${({ active }) => active && "brightness(0.8)"};
     }
 `
-
-const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, fastUpdate, setFocusType, price, allocation }) => {
+const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmount, type, setActive, TokensMap, wrongNetwork, setFocusType = null, fastUpdate }) => {
     const [onMax, setOnMax] = useState(false)
     const data = useTokenBalance(currency?.address, fastUpdate)
     const [balance, setBalance] = useState(wrongNetwork ? "0" : data)
 
     useEffect(() => {
         const getBalance = () => {
-            setBalance(data ? getFullDisplayBalance(data, currency?.decimals) : (TokensMap && TokensMap[currency.address]?.balance) ? TokensMap[currency.address]?.balance : "0")
+            setBalance(data ? getFullDisplayBalance(data, currency.decimals) : "0")
         }
 
         if (currency) {
@@ -52,18 +50,19 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
         }
     }, [inputAmount, balance])
 
-    return (<Wrapper>
+
+    return (<Wrapper mt={mt}>
         <Flex
             p="10px 0"
             justifyContent={"space-between"}
         >
             <Box>
-                <Type.SM color="#000" opacity="0.5">
+                <Type.SM color={'secondary'}>
                     {title || "From"}
                 </Type.SM>
             </Box>
             <Box>
-                <Type.SM color="#000" opacity="0.5" >
+                <Type.SM color={'secondary'}>
                     Balance: {formatBalance3(balance)}
                 </Type.SM>
             </Box>
@@ -75,43 +74,30 @@ const TokenBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, t
             mt="5px"
         >
             <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+                if (setFocusType) { setFocusType(type) }
                 setInputAmount(e.currentTarget.value)
-                setFocusType(type)
             }} />
 
-            {hasMax && !onMax && !isZero(balance) && <ButtonMax width={"40px"}
-                active={true}
-                style={{ color: "#000000", borderColor: "#000000" }}
-                onClick={() => {
-                    if (!isGt(allocation, 0))
-                        setInputAmount(balance)
-                    else {
-                        let estimation = 1;
-                        if (price !== 1) {
-                            estimation = 0.995
-                        }
-                        const balanceInDollar = new BigNumber(balance).times(price).times(estimation)
-                        const maxBalance = balanceInDollar.gt(allocation) ? new BigNumber(allocation).times(estimation).div(price).toFixed(currency?.decimals, BigNumber.ROUND_DOWN) : balance
-                        setInputAmount(maxBalance)
-                    }
-                }}>
+            {hasMax && !onMax && <ButtonMax width={"40px"}
+                onClick={() => setInputAmount(balance)}>
                 MAX
             </ButtonMax>}
 
             <TokenInfo onClick={setActive ? () => setActive(true, type) : undefined} active={setActive ? true : false}>
                 <CurrencyLogo
+                    bgColor="#ffffff"
                     style={{ verticalAlign: "middle" }}
                     currency={currency}
                     size={"25px"}
                 />
-                <Type.LG color="text1_2" ml="7px" mr="9px">{currency?.symbol}</Type.LG>
-                {setActive && <Image src="/img/select-black.svg" size="10px" />}
+                <Type.LG color="text1" ml="7px" mr="9px">{currency?.symbol}</Type.LG>
+                {setActive && <Image src="/img/select.svg" size="10px" />}
             </TokenInfo>
         </Flex>
 
 
 
-    </Wrapper >);
+    </Wrapper>);
 }
 
 export default TokenBox;

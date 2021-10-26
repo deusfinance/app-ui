@@ -27,7 +27,7 @@ const WrapActions = styled.div`
 `
 const ButtonSwap = styled(ButtonSyncActive)`
   background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
-  color: ${({ theme }) => theme.text1_2};
+  color: ${({ theme }) => theme.text1};
   font-size:${({ fontSize }) => fontSize || "20px"};
 `
 
@@ -40,7 +40,8 @@ width:20px;
 height:20px;
 border-radius:20px;
 background: ${({ theme, bgColor, active }) => active ? bgColor ? theme[bgColor] : theme.grad3 : theme.border1};
-color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1};
+/* color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1}; */
+color: ${({ theme, active }) => active ? theme.text1 : theme.text1};
 z-index: 0;
 font-size:12px;
 margin:0 -1px;
@@ -58,7 +59,7 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
     const checkError = () => {
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
-        if (isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
+        if (TokensMap && isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
         if (isNaN(amountOut)) return errors.LOADING
         return null;
     }
@@ -102,7 +103,7 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
                             APPROVE
                             {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
-                        <ButtonSyncDeactivated>SWAP</ButtonSyncDeactivated>
+                        <ButtonSyncDeactivated>{text}</ButtonSyncDeactivated>
                     </> : <>
                         <ButtonSyncDeactivated>APPROVED</ButtonSyncDeactivated>
                         <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>

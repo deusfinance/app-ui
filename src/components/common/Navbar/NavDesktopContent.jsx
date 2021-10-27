@@ -4,32 +4,33 @@ import { NavbarContentWrap, SubNavbarContentWrap } from '../../App/Navbar';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
 import useRefresh from '../../../hooks/useRefresh';
-import { NavButton } from '../../App/Navbar';
+// import { NavButton } from '../../App/Navbar';
 
 const NavDesktop = ({ routes }) => {
     const { t } = useTranslation()
     const [tvl, setTvl] = useState(null)
     const { slowRefresh } = useRefresh()
+    //dont uncomment this until ask mali :)
 
-    useEffect(() => {
-        const getTVL = async () => {
-            const url = "https://app.deus.finance/tvl.json"
-            try {
-                const resp = await fetch(url)
-                const result = await resp.json()
-                const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.uniswapLockedValue + result.balancerLockedValue + result.etherLockedInMarketMaker + result.stakingV2LockedValue)
-                var formatter = new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0
-                });
-                setTvl(formatter.format(intResult))
-            } catch (error) {
-                console.log("fetch " + url + " had some error", error);
-            }
-        }
-        getTVL()
-    }, [slowRefresh])
+    // useEffect(() => {
+    //     const getTVL = async () => {
+    //         const url = "https://app.deus.finance/tvl.json"
+    //         try {
+    //             const resp = await fetch(url)
+    //             const result = await resp.json()
+    //             const intResult = parseInt(result.stakingLockedValue + result.vaultLockedValue + result.uniswapLockedValue + result.balancerLockedValue + result.etherLockedInMarketMaker + result.stakingV2LockedValue)
+    //             var formatter = new Intl.NumberFormat('en-US', {
+    //                 style: 'currency',
+    //                 currency: 'USD',
+    //                 minimumFractionDigits: 0
+    //             });
+    //             setTvl(formatter.format(intResult))
+    //         } catch (error) {
+    //             console.log("fetch " + url + " had some error", error);
+    //         }
+    //     }
+    //     getTVL()
+    // }, [slowRefresh])
 
     return useMemo(() => {
         return <NavbarContentWrap>

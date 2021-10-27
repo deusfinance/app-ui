@@ -7,14 +7,14 @@ import routes from '../../../config/routes.json'
 import NavDesktop from './NavDesktopContent';
 import NavMobile from './NavMobileContent';
 import NavSide from './NavSide';
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 
 const Navbar = () => {
     const { chainId, account } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
     const [open, setOpen] = useState(false)
-    const [tvl, setTvl] = useState(null)
-    const { t } = useTranslation()
+    // const [tvl, setTvl] = useState(null)
+    // const { t } = useTranslation()
 
     useEffect(() => {
         if (account)

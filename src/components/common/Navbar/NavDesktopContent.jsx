@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { ExternalLink } from '../../App/Link';
 import { NavbarContentWrap, SubNavbarContentWrap } from '../../App/Navbar';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
-import useRefresh from '../../../hooks/useRefresh';
+// import useRefresh from '../../../hooks/useRefresh';
 // import { NavButton } from '../../App/Navbar';
 
 const NavDesktop = ({ routes }) => {
     const { t } = useTranslation()
-    const [tvl, setTvl] = useState(null)
-    const { slowRefresh } = useRefresh()
+    // const [tvl, setTvl] = useState(null)
+    // const { slowRefresh } = useRefresh()
     //dont uncomment this until ask mali :)
 
     // useEffect(() => {
@@ -82,7 +82,7 @@ const NavDesktop = ({ routes }) => {
                 return <li key={nav.id + "_desktop"}>{res}</li>
             })}
         </NavbarContentWrap>
-    }, [routes, t, tvl])
+    }, [routes, t])
 }
 
 export default NavDesktop;

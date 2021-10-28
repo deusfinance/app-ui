@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { CustomTransaction } from './explorers'
 import { TransactionState } from './constant'
 
@@ -107,10 +106,5 @@ const sendTransactionDeposit = (
   })
 }
 
-const diffHours = (customDate) => {
-  const date = moment(customDate)
-  let now = moment(new Date())
-  return date.diff(now)
-}
 
-export { makeContract, diffHours, sendTransaction, sendTransactionDeposit }
+export { makeContract, sendTransaction, sendTransactionDeposit }

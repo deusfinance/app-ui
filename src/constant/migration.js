@@ -30,7 +30,8 @@ export const snapShotMaker = (snap) => {
                 to: [
                     { symbol: "DEUS/DEI LP", amount: snap["box2_out_DDLP"] },
                     { symbol: "DEUS", amount: snap["box2_out_DEUS"] },
-                    { symbol: "bETH (soon)", amount: null },
+                    { symbol: "bETH", amount: null },
+                    { symbol: "ETH", amount: null },
                 ]
             }
         },

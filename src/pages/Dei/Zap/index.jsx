@@ -133,10 +133,10 @@ const Zap = () => {
                     setAmountOut(result.lp)
                     setPercentage(fromWei(result.percentage, 4))
                 } else {
-                    const { lpAmount, sAmount } = result
-                    setAmountOutParams([lpAmount.percentage, lpAmount.lp, lpAmount.percentage, lpAmount.lp, sAmount])
-                    setAmountOut(lpAmount.lp)
-                    setPercentage(fromWei(lpAmount.percentage, 4))
+                    // const { lpAmount, sAmount } = result
+                    setAmountOutParams([result.percentage, result.lp, result.percentage, result.lp])
+                    setAmountOut(result.lp)
+                    setPercentage(fromWei(result.percentage, 4))
                 }
             }
         }
@@ -289,7 +289,7 @@ const Zap = () => {
                 </SwapWrapper>
 
                 <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} style={{ maxWidth: "560px" }} />
-                <SwapCard title="Zapping Fee" value={mintingFee ? `${mintingFee} %` : ""} style={{ maxWidth: "560px" }} />
+                {/* <SwapCard title="Zapping Fee" value={mintingFee ? `${mintingFee} %` : ""} style={{ maxWidth: "560px" }} /> */}
             </ContentWrapper>
         </MainWrapper>}
 

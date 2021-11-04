@@ -30,6 +30,7 @@ import { fromWei } from '../../../helper/formatBalance';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
+import { DEI_DEUS_ZAP } from '../../../constant/contracts';
 
 const Zap = () => {
     const location = useLocation()
@@ -53,11 +54,10 @@ const Zap = () => {
     const [swapLoading, setSwapLoading] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-    // const [activeStakingList, setActiveStakingList] = useState(false)
-    const activeStakingList = false
+    const [activeStakingList, setActiveStakingList] = useState(false)
     const availableStaking = StakingConfig[currChain]
     const resultLp = queryParams.lp ? availableStaking.filter(staking => staking.title.toLowerCase() === queryParams.lp) : []
-    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 1
+    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 0
     const [stakingInfo, setStakingInfo] = useState(availableStaking[lpIndex])
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
@@ -70,7 +70,7 @@ const Zap = () => {
 
     useEffect(() => {
         setSwapState({
-            from: tokens[0],
+            from: tokens[1],
             to: deiToken[currChain]
         })
     }, [tokens, currChain])
@@ -79,7 +79,7 @@ const Zap = () => {
 
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
-        from: tokens[0],
+        from: tokens[1],
         to: deiToken[currChain],
     })
 
@@ -128,9 +128,16 @@ const Zap = () => {
             else {
                 console.log(result);
                 // const result.
-                setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount])
-                setAmountOut(result.lp)
-                setPercentage(fromWei(result.percentage, 4))
+                if (contractAddress === DEI_DEUS_ZAP){
+                    setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount])
+                    setAmountOut(result.lp)
+                    setPercentage(fromWei(result.percentage, 4))
+                } else {
+                    const { lpAmount, sAmount } = result
+                    setAmountOutParams([lpAmount.percentage, lpAmount.lp, lpAmount.percentage, lpAmount.lp, sAmount])
+                    setAmountOut(lpAmount.lp)
+                    setPercentage(fromWei(lpAmount.percentage, 4))
+                }
             }
         }
         get()
@@ -249,7 +256,7 @@ const Zap = () => {
                             focusType="to"
                             inputAmount={amountOut}
                             setInputAmount={setAmountOut}
-                            setActive={null} // setActiveStakingList
+                            setActive={setActiveStakingList}
                             TokensMap={TokensMap}
                             currency={swapState.to}
                             fastUpdate={fastUpdate}

@@ -16,7 +16,7 @@ import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import CollateralAbi from '../config/abi/HusdPoolAbi.json'
 import ProxyMinterAbi from '../config/abi/ProxyMinterAbi.json'
 import NewProxyMinterAbi from '../config/abi/NewProxyAbi'
-import ZapAbi from '../config/abi/ZapAbi.json'
+import DeiCollateralZapAbi from '../config/abi/DeiCollateralZapAbi.json'
 import DeiDeusZapAbi from '../config/abi/DeiDeusZap.json'
 import DeusSwapAbi from '../config/abi/DeusSwapAbi.json'
 import MigrationAbi from '../config/abi/MigrationAbi.json'
@@ -90,7 +90,7 @@ export const getProxyMinterContract = (web3, chainId = ChainId.AVALANCHE) => {
 export const getZapContract = (web3, address, chainId = ChainId.AVALANCHE) => {
     if (address === DEI_DEUS_ZAP[chainId])
         return getContract(DeiDeusZapAbi, address, web3, chainId)
-    return getContract(ZapAbi, address, web3, chainId)
+    return getContract(DeiCollateralZapAbi, address, web3, chainId)
 }
 
 export const getMigrationContract = (web3, chainId = ChainId.RINKEBY) => {

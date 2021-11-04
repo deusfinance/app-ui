@@ -362,27 +362,21 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
 
 export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
+    const { collateral_price, deus_price, expire_block, signature } = result
 
     if (zapperAddress === DEI_COLLATERAL_ZAP[chainId]) {
-        if (currency.address === COLLATERAL_ADDRESS[chainId]) {
-            console.log("getAmountOutLPCollateral ", zapperAddress, amountInToWei);
-            return getZapContract(web3, zapperAddress, chainId)
-                .methods
-                .getAmountOutLPCollateral(amountInToWei).call()
-        } else if (currency.address === DEUS_ADDRESS[chainId]) {
-            console.log("getAmountOutLPDEUS ", amountInToWei);
-            return getZapContract(web3, zapperAddress, chainId)
-                .methods
-                .getAmountOutLPDEUS(amountInToWei, [...erc20Path]).call()
-        } else if (currency.address === DEI_ADDRESS[chainId]) {
-            console.log("getAmountOutLPDEI haaa", amountInToWei, zapperAddress);
-            return getZapContract(web3, zapperAddress, chainId)
-                .methods
-                .getAmountOutLPDEI(amountInToWei).call()
-        }
-        return getZapContract(web3, zapperAddress, chainId)
+        let sAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods
-            .getAmountOutLPERC20ORNativecoin(amountInToWei, [...erc20Path]).call()
+            .getAmountOutLPERC20ORNativecoin([amountInToWei, deus_price, collateral_price, 4, erc20Path]).call()
+
+        // console.log(sAmount);
+        // return getZapContract(web3, zapperAddress, chainId)
+        //     .methods
+        //     .getAmountOutLPERC20ORNativecoin(amountInToWei, [...erc20Path]).call()
+        const lpAmount = await getZapContract(web3, zapperAddress, chainId)
+            .methods
+            .getAmountOutLPERC20ORNativecoin(amountInToWei, deus_price, collateral_price, 4, [...erc20Path]).call()
+        return {sAmount, lpAmount}
     }
 
     if (currency.address === DEUS_ADDRESS[chainId]) {
@@ -399,11 +393,11 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
     console.log("getAmountOutLPERC20ORNativecoin ", amountInToWei, result.deus_price, result.collateral_price, erc20Path);
     return getZapContract(web3, zapperAddress, chainId)
         .methods
-        .getAmountOutLPERC20ORNativecoin(amountInToWei, result.deus_price, result.collateral_price, erc20Path).call() // TODO  VALUE:AVAX?
+        .getAmountOutLPERC20ORNativecoin(amountInToWei, result.deus_price, result.collateral_price, erc20Path).call()
 }
 
 
-export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual, web3, chainId) => {
+export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual, sAmount, web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
     const { collateral_price, deus_price, expire_block, signature } = result
 
@@ -426,7 +420,7 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
             console.log("zapInNativecoin ", amountIn, minLpAmount, transferResidual);
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
-                .zapInNativecoin(proxyTuple, minLpAmount, erc20Path, transferResidual) // TODO  VALUE:AVAX?
+                .zapInNativecoin(proxyTuple, minLpAmount, erc20Path, transferResidual)
         }
         else if (currency.address === DEUS_ADDRESS[chainId]) {
 
@@ -450,29 +444,11 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
             console.log(erc20Path, minLpAmount, transferResidual);
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
-                .zapInNativecoin(erc20Path, minLpAmount, transferResidual) // TODO  VALUE:AVAX?
+                .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
         }
-        else if (currency.address === COLLATERAL_ADDRESS[chainId]) {
-            console.log("zapInCollateral ", amountIn, minLpAmount, transferResidual);
-            return getZapContract(web3, zapperAddress, chainId)
-                .methods
-                .zapInCollateral(amountIn, minLpAmount, transferResidual)
-        }
-        else if (currency.address === DEUS_ADDRESS[chainId]) {
-            console.log("zapInDEUS ", amountIn, minLpAmount, transferResidual, erc20Path);
-            return getZapContract(web3, zapperAddress, chainId)
-                .methods
-                .zapInDEUS(amountIn, minLpAmount, transferResidual, erc20Path)
-        }
-        else if (currency.address === DEI_ADDRESS[chainId]) {
-            console.log("zapInDEI ", amountIn, minLpAmount, transferResidual);
-            return getZapContract(web3, zapperAddress, chainId)
-                .methods
-                .zapInDEI(amountIn, minLpAmount, transferResidual)
-        }
-        console.log(erc20Path, amountIn, minLpAmount, transferResidual);
+        console.log(erc20Path, amountIn, minLpAmount, transferResidual, "HELOOOOO", amountOutParams[4][0]);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
-            .zapInERC20(erc20Path, amountIn, minLpAmount, erc20Path, transferResidual)
+            .zapInERC20(amountIn, minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4][0])
     }
 }

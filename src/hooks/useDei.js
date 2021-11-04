@@ -53,7 +53,7 @@ export const useAPY = (validChainId) => {
 }
 
 
-export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
+export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, sAmount, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
@@ -68,7 +68,7 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
             let path = "/mint-fractional"
             const result = await makeDeiRequest(path, validChainId)
 
-            const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, result, amountOutParams, false, web3, chainId)
+            const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, result, amountOutParams, false, sAmount, web3, chainId)
             const payload = currency.address === "0x" ? { value: amountInToWei } : {}
             return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
         } catch (error) {

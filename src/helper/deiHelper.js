@@ -363,7 +363,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
     const { collateral_price, deus_price } = result
 
     if (zapperAddress === DEI_COLLATERAL_ZAP[chainId]) {
-        console.log(amountInToWei, deus_price, collateral_price, 4, [...erc20Path], [], 10000, zapperAddress);
+        // console.log(amountInToWei, deus_price, collateral_price, 4, [...erc20Path], []);
         const lpAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOut([amountInToWei, deus_price, collateral_price, 4, [...erc20Path], []]).call()  // todo: 10000
@@ -388,7 +388,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
 }
 
 
-export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual, sAmount, web3, chainId) => {
+export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual, web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
     const { collateral_price, deus_price, expire_block, signature } = result
 
@@ -433,11 +433,11 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
             console.log(erc20Path, minLpAmount, transferResidual);
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
-                .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
+                .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[3])
         }
-        console.log(erc20Path, amountIn, minLpAmount, transferResidual, amountOutParams[4]);
+        console.log(amountIn, minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[3]);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
-            .zapInERC20(amountIn, minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
+            .zapInERC20(amountIn, minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[3])
     }
 }

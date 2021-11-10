@@ -81,9 +81,10 @@ const Migrator = () => {
         if (active) {
             delete migrateList[id]
         } else {
+            const deusIndex = userSnap[id].tokens.to.findIndex(t => t.symbol === "DEUS")
             migrateList[id] = {
-                targetToken: token ?? userSnap[id].tokens.to[0].symbol,
-                index: index + 1
+                targetToken: token ?? userSnap[id].tokens.to[deusIndex].symbol,
+                index: index !== null ? index + 1 : deusIndex + 1
             }
         }
         setMigrateList({ ...migrateList })

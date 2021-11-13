@@ -87,10 +87,10 @@ const DeusV2Tokens = ({ config, toggleId, active }) => {
                     </> :
                         <div>
                             {token.amount !== null && <TokenText fontWeight="300" color={active ? "#000000" : "#49565B"}>{formatBalance3(token.amount)}</TokenText>}
-                            <TokenTextTitle fontWeight="300" mt="0.5" color={active ? "#075A7A   " : "#49565B"}>{token.symbol} 
-                            {token.amount === null && <div 
-                                style={{height: "30px", background: "aqua", height: "20px", display: "inline-block", lineHeight: "17px", padding: "0 5px", margin: "0 0 0 5px", borderRadius: "5px"}}>
-                                soon </div>}</TokenTextTitle>
+                            <TokenTextTitle fontWeight="300" mt="0.5" color={active ? "#075A7A   " : "#49565B"}>{token.symbol}
+                                {token.amount === null && <div
+                                    style={{ background: "aqua", height: "20px", display: "inline-block", lineHeight: "17px", padding: "0 5px", margin: "0 0 0 5px", borderRadius: "5px" }}>
+                                    soon </div>}</TokenTextTitle>
                         </div>}
                 </Token>
             })}

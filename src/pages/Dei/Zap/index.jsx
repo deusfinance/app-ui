@@ -4,7 +4,6 @@ import { ZapTokens, deiToken } from '../../../constant/token';
 import { StakingConfig } from '../../../constant/staking';
 import { Flex } from 'rebass';
 import { CostBox } from '../../../components/App/Dei/CostBox';
-import SwapCard from '../../../components/App/Swap/SwapCard';
 import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { Type } from '../../../components/App/Text';
@@ -128,13 +127,12 @@ const Zap = () => {
             else {
                 console.log(result);
                 // const result.
-                if (contractAddress === DEI_DEUS_ZAP){
+                if (contractAddress === DEI_DEUS_ZAP) {
                     setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount])
                     setAmountOut(result.lp)
                     setPercentage(fromWei(result.percentage, 4))
                 } else {
-                    // const { lpAmount, sAmount } = result
-                    setAmountOutParams([result.percentage, result.lp, result.percentage, result.lp])
+                    setAmountOutParams([result.percentage, result.lp, result.swapAmountUsdc, "0"])
                     setAmountOut(result.lp)
                     setPercentage(fromWei(result.percentage, 4))
                 }

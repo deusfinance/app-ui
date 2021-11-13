@@ -388,7 +388,20 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
 }
 
 
-export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual, sAmount, web3, chainId) => {
+
+// struct ProxyInput DEI_COLLATERAL_ZAP {
+// 	uint amountIn;
+// 	uint minAmountOut;
+// 	uint deusPriceUSD;
+// 	uint colPriceUSD;
+// 	uint usdcForMintAmount;
+// 	uint deusNeededAmount;
+// 	uint expireBlock;
+// 	bytes[] sigs;
+// }
+
+
+export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual,  web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
     const { collateral_price, deus_price, expire_block, signature } = result
 
@@ -433,11 +446,11 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
             console.log(erc20Path, minLpAmount, transferResidual);
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
-                .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
+                .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[2])
         }
-        console.log(erc20Path, amountIn, minLpAmount, transferResidual, amountOutParams[4]);
+        console.log(erc20Path, amountIn, minLpAmount, transferResidual, amountOutParams[2]);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
-            .zapInERC20(amountIn, minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
+            .zapInERC20(amountIn, minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[2])
     }
 }

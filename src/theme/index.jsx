@@ -47,6 +47,7 @@ export function colors(darkMode) {
 
     bg_muon: darkMode ? "#F6F6F6" : "#F6F6F6",
     bg_blue: "#5F5CFE",
+    bg_bridge: "#2891f9",
     bg_warning: "rgba(255, 85, 85, 0.2)",
 
     sync_active: darkMode ? 'linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)' : "linear-gradient(90deg, #5BB0FF -0.01%, #EA2C62 93.44%)",

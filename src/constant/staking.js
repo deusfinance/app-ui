@@ -52,7 +52,7 @@ export const StakingConfig = {
       id: 2,
       title: "DEUS-MATIC",
       pic1: "/tokens/dei.svg",
-      pic2: "/tokens/matic.png",
+      pic2: "/tokens/matic.jpg",
       depositToken: DeusNativeLpToken[ChainId.MATIC],
       stakingContract: DEUS_NATIVE_STAKING[ChainId.MATIC],
       zapperContract: DEUS_NATIVE_ZAP[ChainId.MATIC],

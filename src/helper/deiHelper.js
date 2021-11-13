@@ -363,7 +363,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
     const { collateral_price, deus_price } = result
 
     if (zapperAddress === DEI_COLLATERAL_ZAP[chainId]) {
-        console.log(amountInToWei, deus_price, collateral_price, 4, [...erc20Path], [], 10000, zapperAddress);
+        // console.log(amountInToWei, deus_price, collateral_price, 4, [...erc20Path], []);
         const lpAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOut([amountInToWei, deus_price, collateral_price, 4, [...erc20Path], []]).call()  // todo: 10000
@@ -409,12 +409,12 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
 
     if (amountOutParams.length > 0)
         proxyTuple = [
-            amountIn,
-            minLpAmount,
+            amountOutParams[4], // amountIn,
+            0, // minLpAmount
             deus_price,
             collateral_price,
-            amountOutParams[2],
-            amountOutParams[3],
+            amountOutParams[2], // usdcForMintAmount
+            amountOutParams[3], // deusNeededAmount
             expire_block,
             [signature]
         ]

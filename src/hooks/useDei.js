@@ -563,7 +563,6 @@ export const useHusdPoolData = (validChainId) => {
                     redeemDEUSBalances,
                     redeemCollateralBalances,
                 ] = mul
-
                 const updateState = {
                     collatDollarBalance: fromWei(collatDollarBalance, 18),
                     availableExcessCollatDV: new BigNumber(availableExcessCollatDV).div(1e18).toFixed(),

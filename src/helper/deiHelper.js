@@ -123,7 +123,7 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'availableExcessCollatDV',
-            params: [[collat_usd_price]]
+            params: [[collat_usd_price, collat_usd_price]]
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -288,7 +288,7 @@ export const getClaimAll = async (account, web3, chainId = ChainId.ETH) => {
 export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price = collatUsdPrice) => {
     return getDeiContract(web3, chainId)
         .methods
-        .dei_info([collat_usd_price])
+        .dei_info([collat_usd_price, collat_usd_price])
         .call()
 }
 

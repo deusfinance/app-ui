@@ -110,8 +110,10 @@ const Bridge = () => {
             console.log("claims", claims);
             setClaims(claims)
         }
-        get()
-    }, [onClaim])
+        if (account) {
+            get()
+        }
+    }, [onClaim, account])
 
     const web3 = useWeb3()
     const handleClaim = async (claimTemp, network) => {

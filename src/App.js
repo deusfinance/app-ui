@@ -27,7 +27,6 @@ const DeiBuyBackRecollateralize = React.lazy(() =>
 )
 
 
-const Muon = React.lazy(() => import('./pages/Muon'))
 const Bridge = React.lazy(() => import('./pages/Bridge'))
 // const Bridge2 = React.lazy(() => import('./components/Bridge/index'))
 const NotFound = React.lazy(() => import('./pages/Errors'))
@@ -65,10 +64,8 @@ function App() {
                     path="/stable/buyback-recollat"
                     component={DeiBuyBackRecollateralize}
                   />
-                  <Route exact path="/muon-presale" component={Muon} />
                   <Route exact path="/bridge" component={Bridge} />
                   {/* <Route exact path="/bridge2" component={Bridge2} /> */}
-                  <Route path="/crosschain/:id/muon-presale" component={Muon} />
                   <Redirect exact from="/" to="/migrator" />
                   <Redirect to="not-found" />
                 </Switch>

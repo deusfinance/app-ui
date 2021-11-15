@@ -5,8 +5,6 @@ import DeusAMMAbi from '../config/abi/DeusAMM.json'
 import UniswapRouterAbi from '../config/abi/uniswapRouterAbi.json'
 import UniswapV2Abi from '../config/abi/UniswapV2Abi.json'
 import MultiCallAbi from '../config/abi/Multicall.json'
-import MuonPresaleAbi from '../config/abi/MuonPresale.json'
-import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleCrossChain.json'
 import SealedSwapperAbi from '../config/abi/SealedSwapperAbi.json'
 import DeiPoolAbi from '../config/abi/DeiPoolAbi.json'
 import DeiAbi from '../config/abi/DEIAbi.json'
@@ -66,11 +64,6 @@ export const getSealedSwapperContract = (address, web3) => {
     return getContract(SealedSwapperAbi, address, web3)
 }
 
-export const getMuonContract = (web3, chainId = ChainId.ETH) => {
-    if (chainId === ChainId.ETH)
-        return getContract(MuonPresaleAbi, getContractAddr("muon_presale", chainId), web3)
-    return getContract(MuonPresaleCrossChainAbi, getContractAddr("muon_presale", chainId), web3)
-}
 
 export const getDeiPoolContract = (web3, chainId = ChainId.RINKEBY) => {
     return getContract(DeiPoolAbi, DEI_POOL_ADDRESS[chainId], web3)

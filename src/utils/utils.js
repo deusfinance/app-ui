@@ -11,6 +11,17 @@ export const isDesktop = () => {
 };
 
 
+
+
+export const fetcher = async function (url, init) {
+    try {
+        const resp = await fetch(url, init)
+        return await resp.json()
+    } catch (error) {
+        console.log("fetch " + url + " had some error", error);
+    }
+}
+
 export const formatUnitAmount = (amount, fixed = 3) => {
     const bigAmount = new BigNumber(amount)
     if (bigAmount.gte(1000000)) {

@@ -5,10 +5,9 @@ import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
-import { formatUnitAmount } from "../utils/utils"
+import { fetcher, formatUnitAmount } from "../utils/utils"
 import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
-import { fetcher } from "./muonHelper"
 
 const baseUrl = "https://oracle4.deus.finance/dei"
 
@@ -52,7 +51,7 @@ export const makeCostDataBuyBack = (deus_price, dei_price, pool, buyBack, recoll
     if (!chainId) return []
     const cToken = collateralToken[chainId]
     const deusPrice = deus_price !== null && !isNaN(deus_price) ? `$${new BigNumber(deus_price).toFixed(3)}` : null
-    const deiPrice = dei_price !== null && !isNaN(dei_price) ? `$${new BigNumber(dei_price).toFixed(3)}` : "1.000"
+    const deiPrice = dei_price !== null && !isNaN(dei_price) ? `$${new BigNumber(dei_price).toFixed(3)}` : null
     const p = pool ? pool : null
     const bb = buyBack !== null && !isNaN(buyBack) ? `${formatUnitAmount(buyBack)} DEUS` : null
     const rc = recollateralize !== null && !isNaN(recollateralize) ? `${formatUnitAmount(recollateralize)} ${cToken.symbol}` : null
@@ -60,7 +59,7 @@ export const makeCostDataBuyBack = (deus_price, dei_price, pool, buyBack, recoll
     return [{
         name: 'EXCHANGE RATES',
         title1: cToken.symbol,
-        value1: `$${deiPrice}`,
+        value1: deiPrice,
         title2: 'DEUS: ',
         value2: deusPrice
     }, {

@@ -42,7 +42,7 @@ export const getClaimTokens = async (networks, account, web3s) => {
         try {
             const mul = await multicall(web3s[chainId], BridgeABI, userTxs, chainId)
             userTxsResponse = mul
-            console.log("userTxsResponse", userTxsResponse);
+            // console.log("userTxsResponse", userTxsResponse);
         } catch (error) {
             console.log("getUserTxs failed", error)
         }
@@ -81,7 +81,7 @@ export const getClaimTokens = async (networks, account, web3s) => {
                 mulWithClaimBlock.push({ ...res, remainingBlock: Number(res.txBlockNo) + blockTimes[chainId] - Number(currentBlockNo) })
             })
 
-            console.log("Txs = ", mul);
+            // console.log("Txs = ", mul);
             claims = [...claims, ...mulWithClaimBlock]
         } catch (error) {
             console.log("Txs failed", error)

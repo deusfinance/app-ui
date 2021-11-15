@@ -16,14 +16,8 @@ import BigNumber from 'bignumber.js';
 import { BRIDGE_ADDRESS } from '../../constant/contracts';
 import './bridge.css'
 import Muon from 'muon'
-import { handleClaim, useDeposit, useClaim } from '../../hooks/useBridge';
+import { useClaim, useDeposit, useGetNewClaim } from '../../hooks/useBridge';
 import { ChainId, NameChainId } from '../../constant/web3';
-import { fromWei } from '../../helper/formatBalance';
-import { getBridgeContract } from '../../helper/contractHelpers';
-import { SendWithToast } from '../../helper/deiHelper';
-import BridgeABI from '../../config/abi/BridgeABI.json'
-import useWeb3 from '../../hooks/useWeb3';
-import { formatBalance3 } from '../../utils/utils';
 
 
 const Bridge = () => {
@@ -34,7 +28,6 @@ const Bridge = () => {
     const [open, setOpen] = useState(false)
     const [claims, setClaims] = useState([])
     const [tokenId, setTokenId] = useState('')
-    const [tokenIndex, setTokenIndex] = useState(0)
     const [lock, setLock] = useState('')
     const [target, setTarget] = useState()
     const [selectedChain, setSelectedChain] = useState('')
@@ -44,6 +37,7 @@ const Bridge = () => {
 
     const tokensBalance = useTokenBalances(chains, tokens, fetch)
 
+    const tokenIndex = 0
     const [swapState, setSwapState] = useState({
         from: BridgeTokens[syncChainId][tokenIndex],
         to: BridgeTokens[syncChainId === ChainId.ETH ? ChainId.MATIC : ChainId.ETH][tokenIndex],
@@ -102,89 +96,20 @@ const Bridge = () => {
 
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onDeposit } = useDeposit(amountIn, swapState)
-    const { onClaim } = useClaim()
+    const { getClaim } = useGetNewClaim()
+    const { handleClaim } = useClaim(muon, lock, setLock, setFetch)
 
     useEffect(() => {
         const get = async () => {
-            const claims = await onClaim()
+            const claims = await getClaim()
             console.log("claims", claims);
             setClaims(claims)
         }
         if (account) {
             get()
         }
-    }, [onClaim, account])
+    }, [getClaim, fastUpdate, account])
 
-    const web3 = useWeb3()
-    const handleClaim = async (claimTemp, network) => {
-        const claim = {
-            fromChain: claimTemp.fromChain.toString(),
-            toChain: claimTemp.toChain.toString(),
-            txId: claimTemp.txId.toString(),
-            amount: claimTemp.amount.toString(),
-            txBlockNo: claimTemp.txBlockNo.toString(),
-            tokenId: claimTemp.tokenId.toString(),
-        }
-
-        console.log("claim = ", claim);
-
-        try {
-            if (
-                chainId !== network ||
-                (lock &&
-                    lock.fromChain === claim.fromChain &&
-                    lock.toChain === claim.toChain &&
-                    lock.txId === claim.txId)
-            ) {
-                return
-            }
-
-            let amount = fromWei(claim.amount)
-            let abi = [BridgeABI.find(({ name, type }) => name === 'getTx' && type === 'function')]
-            let networkName = chains.find((item) => item.network === Number(claim.fromChain)).networkName
-            console.log({
-                address: BRIDGE_ADDRESS[Number(claim.fromChain)],
-                method: 'getTx',
-                params: [claim.txId],
-                abi,
-                network: networkName
-            })
-            const muonResponse = await muon
-                .app('eth')
-                .method('call', {
-                    address: BRIDGE_ADDRESS[Number(claim.fromChain)],
-                    method: 'getTx',
-                    params: [claim.txId],
-                    abi,
-                    network: networkName,
-                    hashTimestamp: false
-                })
-                .call()
-            // console.log("muonResponse", muonResponse)
-            let { sigs, reqId } = muonResponse
-            let currentBlockNo = muonResponse.data.result.currentBlockNo
-            setLock(claim)
-            console.log("chainId = ", getBridgeContract[chainId]);
-            const fn = getBridgeContract(web3, chainId).methods.claim(
-                account,
-                claim.amount,
-                Number(claim.fromChain),
-                Number(claim.toChain),
-                claim.tokenId,
-                currentBlockNo,
-                claim.txBlockNo,
-                claim.txId,
-                reqId,
-                sigs
-            )
-            SendWithToast(fn, account, chainId, `Claim ${formatBalance3(amount)}`).then(() => {
-                setFetch(claim)
-                setLock('')
-            })
-        } catch (error) {
-            console.log('error happened in Claim', error)
-        }
-    }
 
     const handleOpenModal = (data, tokenId) => {
         setTarget(data)
@@ -198,12 +123,17 @@ const Bridge = () => {
     //TODO
     const changeToken = (token, chainId) => {
         const other = target === "from" ? "to" : "from"
-        // console.log("changeToken ", target, token, chainId, token.Id);
-        // console.log(BridgeTokens[swapState[other].chainId !== chainId ? chainId].filter((t) => t.id === token.id));
         setSwapState((prev) => ({
             [other]: BridgeTokens[prev[other].chainId === chainId ? chainId === 1 ? 137 : 1 : prev[other].chainId].filter(t => t.id === token.id)[0],
             [target]: { ...token }
         }))
+    }
+
+
+    const swapTokensPosition = () => {
+        setSwapState({ from: swapState.to, to: swapState.from })
+        setAmountOut("")
+        setAmountIn("")
     }
 
 
@@ -255,7 +185,7 @@ const Bridge = () => {
             <div className="wrap-bridge-box">
                 <div className="relative">
                     <BridgeBox
-                        title={"From " + NameChainId[swapState.from.chainId]}
+                        title={<div >From <span style={{ padding: "2px 4px", borderRadius: "4px" }} className={`badge-${NameChainId[swapState.from.chainId]}`}>{NameChainId[swapState.from.chainId]}</span></div>}
                         currency={swapState.from}
                         {...swapState.from}
                         amount={amountIn}
@@ -264,11 +194,12 @@ const Bridge = () => {
                         handleOpenModal={() => handleOpenModal('from')}
                     />
 
-                    <div className="arrow pointer" onClick={undefined}>
+                    <div className="arrow pointer" onClick={() => swapTokensPosition()}>
                         <img src="/img/swap/swap-arrow.svg" alt="arrow" />
                     </div>
+
                     <BridgeBox
-                        title={"To " + NameChainId[swapState.to.chainId]}
+                        title={<div >To <span style={{ padding: "2px 4px", borderRadius: "4px" }} className={`badge-${NameChainId[swapState.to.chainId]}`}>{NameChainId[swapState.to.chainId]}</span></div>}
                         currency={swapState.to}
                         {...swapState.to}
                         amount={amountOut}

@@ -35,7 +35,7 @@ const BridgeBox = (props) => {
   return (
     <div className="bridge-box">
       <div className="flex-between">
-        <div className="bridge-from">{title}</div>
+        <div className="bridge-from" >{title}</div>
         <div className="bridge-from">
           {balance && `Balance: ${formatBalance3(balance)}`}
           {max && (

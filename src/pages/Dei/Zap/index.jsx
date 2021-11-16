@@ -132,7 +132,7 @@ const Zap = () => {
                     setAmountOut(result.lp)
                     setPercentage(fromWei(result.percentage, 4))
                 } else {
-                    setAmountOutParams([result.percentage, result.lp, result.swapAmountUsdc, "0"])
+                    setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount, result.swapAmountUsdc])
                     setAmountOut(result.lp)
                     setPercentage(fromWei(result.percentage, 4))
                 }

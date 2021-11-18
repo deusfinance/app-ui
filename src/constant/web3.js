@@ -131,7 +131,7 @@ export const rpcConfig = {
         blockExplorerUrls: ["https://cchain.explorer.avax.network/"],
     },
     [ChainId.FTM]: {
-        chainId: "250",
+        chainId: "0xFA",
         chainName: "Fantom Opera",
         nativeCurrency: {
             name: "Fantom",

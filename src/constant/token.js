@@ -119,7 +119,7 @@ export const DEITokens = {
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.FTM], decimals: 18, chainId: ChainId.FTM},
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.FTM], decimals: 6, chainId: ChainId.FTM, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.FTM], decimals: 18, chainId: ChainId.FTM, pairID: 1 },
-        { logo: "/tokens/eth-logo.svg", symbol: "FANTOM", address: "0x", decimals: 18, chainId: ChainId.FTM },
+        { logo: "/tokens/eth-logo.svg", symbol: "FTM", address: "0x", decimals: 18, chainId: ChainId.FTM },
     ],
 }
 //END DEI

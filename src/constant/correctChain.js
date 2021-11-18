@@ -12,7 +12,7 @@ export const correctChains = [
     },
     {
         url: "/stable",
-        chains: [ChainId.ETH, ChainId.MATIC],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.FTM],
     },
     {
         url: "/migrator",
@@ -41,7 +41,7 @@ export const correctChains = [
     },
     {
         url: "/bridge",
-        chains: [ChainId.ETH,ChainId.MATIC],
+        chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
         url: "/bridge2",

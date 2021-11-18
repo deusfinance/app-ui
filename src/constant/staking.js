@@ -95,4 +95,39 @@ export const StakingConfig = {
       apy: "50"
     }
   ],
+  [ChainId.FTM]: [
+    {
+      id: 0,
+      title: "DEI-USDC",
+      pic1: "/tokens/dei.svg",
+      pic2: "/tokens/usdc.svg",
+      depositToken: deiCollateralLpToken[ChainId.FTM],
+      stakingContract: DEI_COLLATERAL_STAKING[ChainId.FTM],
+      // zapperContract: DEI_COLLATERAL_ZAP[ChainId.FTM],
+      provideLink: "https://swap.spiritswap.finance/#/add/0x04068DA6C83AFCFA0e13ba15A6696662335D5B75/0xF3c3A1dD9E0347eE513c9e51b79d6263193da809",
+      apy: "50"
+    },
+    {
+      id: 1,
+      title: "DEI-DEUS",
+      pic1: "/tokens/dei.svg",
+      pic2: "/tokens/deus.svg",
+      depositToken: deiDeusLpToken[ChainId.FTM],
+      stakingContract: DEI_DEUS_STAKING[ChainId.FTM],
+      // zapperContract: DEI_DEUS_ZAP[ChainId.FTM],
+      provideLink: "https://swap.spiritswap.finance/#/add/0x98d1bb87993F84F916F27CcE9162e1ff5CAB11Bc/0xF3c3A1dD9E0347eE513c9e51b79d6263193da809",
+      apy: "100"
+    },
+    {
+      id: 2,
+      title: "DEUS-FTM",
+      pic1: "/tokens/deus.svg",
+      pic2: "/tokens/eth_logo.svg",
+      depositToken: DeusNativeLpToken[ChainId.FTM],
+      stakingContract: DEUS_NATIVE_STAKING[ChainId.FTM],
+      // zapperContract: DEI_DEUS_ZAP[ChainId.FTM],
+      provideLink: "https://swap.spiritswap.finance/#/add/FTM/0x98d1bb87993F84F916F27CcE9162e1ff5CAB11Bc",
+      apy: "50"
+    }
+  ],
 }

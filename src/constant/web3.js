@@ -130,4 +130,15 @@ export const rpcConfig = {
         rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
         blockExplorerUrls: ["https://cchain.explorer.avax.network/"],
     },
+    [ChainId.FTM]: {
+        chainId: "250",
+        chainName: "Fantom Opera",
+        nativeCurrency: {
+            name: "Fantom",
+            symbol: "FTM",
+            decimals: 18,
+        },
+        rpcUrls: ["https://rpc.ftm.tools/"],
+        blockExplorerUrls: ["https://ftmscan.com/"],
+    },
 }

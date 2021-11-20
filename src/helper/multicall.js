@@ -5,7 +5,6 @@ const multicall = async (web3, abi, calls, chainId) => {
     const multi = getMultiCallContract(web3, chainId)
 
     const itf = new Interface(abi)
-
     const calldata = calls.map((call) => [
         call.address.toLowerCase(),
         itf.encodeFunctionData(call.name, call.params),

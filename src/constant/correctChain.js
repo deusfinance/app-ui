@@ -12,40 +12,15 @@ export const correctChains = [
     },
     {
         url: "/stable",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.FTM],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.FTM,ChainId.BSC_TESTNET],
     },
     {
         url: "/migrator",
         chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
-        url: "/crosschain/xdai",
-        chains: [ChainId.XDAI],
-    },
-    {
-        url: "/crosschain/bsc",
-        chains: [ChainId.BSC, ChainId.BSC_TESTNET],
-    },
-    {
-        url: "/crosschain/bsc/muon-presale",
-        chains: [ChainId.BSC_TESTNET, ChainId.BSC],
-    },
-    {
-        url: "/crosschain/xdai/muon-presale",
-        chains: [ChainId.XDAI],
-    },
-    {
-        url: "/muon-presale",
-        chains: [ChainId.ETH],
-        exact: true,
-    },
-    {
         url: "/bridge",
         chains: [ChainId.ETH, ChainId.MATIC],
-    },
-    {
-        url: "/bridge2",
-        chains: [ChainId.RINKEBY, ChainId.BSC_TESTNET],
     },
     {
         url: "/not-found",

@@ -53,7 +53,6 @@ const Dei = () => {
     const [slippage, setSlippage] = useState(0.5)
     const [amountOutParams, setAmountOutParams] = useState([])
     const contractAddress = useMemo(() => proxy ? NEW_PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
-
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
         .filter((token) => (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
         , [chainId, collatRatio])
@@ -101,7 +100,7 @@ const Dei = () => {
     const debouncedAmountIn = useDebounce(amountIn, 1000);
     const debouncedAmountOut = useDebounce(amountOut, 1000);
     const [pairToken, setPairToken] = useState({ address: null })
-
+    console.log(chainId);
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 

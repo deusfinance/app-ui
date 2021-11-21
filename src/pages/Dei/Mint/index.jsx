@@ -100,7 +100,6 @@ const Dei = () => {
     const debouncedAmountIn = useDebounce(amountIn, 1000);
     const debouncedAmountOut = useDebounce(amountOut, 1000);
     const [pairToken, setPairToken] = useState({ address: null })
-    console.log(chainId);
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 

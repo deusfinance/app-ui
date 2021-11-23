@@ -53,9 +53,16 @@ const Dei = () => {
     const [slippage, setSlippage] = useState(0.5)
     const [amountOutParams, setAmountOutParams] = useState([])
     const contractAddress = useMemo(() => proxy ? NEW_PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
+
+    const hasProxy = useMemo(() => {
+        if (!NEW_PROXY_MINT_ADDRESS[chainId]) return false
+        return true
+    }, [chainId])
+
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
-        .filter((token) => (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
-        , [chainId, collatRatio])
+        .filter((token) => !hasProxy || (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
+        , [chainId, hasProxy, collatRatio])
+
     const pairedTokens = useMemo(() => {
         let pTokens = []
         for (let i = 0; i < tokens.length; i++) {
@@ -70,11 +77,12 @@ const Dei = () => {
         return pTokens
     }, [tokens])
 
-
+    const tokensMap = useMemo(() =>
     //eslint-disable-next-line
-    const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
+    (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
 
+    // console.log(tokensMap);
     const balances = useTokenBalances(tokensMap, chainId)
 
     const TokensMap = balances
@@ -134,6 +142,10 @@ const Dei = () => {
     }, [debouncedAmountIn, amountInPair, debouncedAmountOut, mintingFee, deiPrices]);// eslint-disable-line
 
 
+
+
+
+
     const getAmountsTokens = async (in1, in2, out) => {
 
         if (deiPrices) {
@@ -175,26 +187,29 @@ const Dei = () => {
         }
     }
 
-    // useEffect(() => {
-    //     const changeFromTokens = () => {
-    //         let primaryToken = null
-    //         setIsPair(false)
-    //         if (collatRatio === 100) {
-    //             primaryToken = tokens[0]
-    //         } else if (collatRatio > 0 && collatRatio < 100) {
-    //             primaryToken = tokens[1]
-    //             let secondToken = tokens[2]
-    //             setIsPair(true)
-    //             setPairToken(secondToken)
-    //         } else if (collatRatio === 0) {
-    //             primaryToken = tokens[1]
-    //         }
-
-    //         setSwapState({ to: deiToken[chainId], from: primaryToken })
-
-    //     }
-    //     if (collatRatio != null) changeFromTokens()
-    // }, [collatRatio, tokens, chainId]);// eslint-disable-line
+    useEffect(() => {
+        const changeFromTokens = () => {
+            console.log(tokens);
+            let primaryToken = null
+            setIsPair(false)
+            let salt = 0
+            if (!hasProxy) {
+                salt = 1
+            }
+            if (collatRatio === 100) {
+                primaryToken = tokens[0]
+            } else if (collatRatio > 0 && collatRatio < 100) {
+                primaryToken = tokens[1 + salt]
+                let secondToken = tokens[2 + salt]
+                setIsPair(true)
+                setPairToken(secondToken)
+            } else if (collatRatio === 0) {
+                primaryToken = tokens[1]
+            }
+            setSwapState({ to: deiToken[chainId], from: primaryToken })
+        }
+        if (collatRatio != null) changeFromTokens()
+    }, [collatRatio, tokens, chainId]);// eslint-disable-line
 
     useEffect(() => {
         setSwapState({ from: tokens[0], to: deiToken[chainId] })
@@ -313,6 +328,13 @@ const Dei = () => {
         setIsPair(false)
         setSwapState({ ...swapState, [type]: token })
     }
+
+
+    useEffect(() => {
+        if (!hasProxy) {
+            changeToken(pairedTokens[1][0], "from")
+        }
+    }, [hasProxy, pairedTokens]); // eslint-disable-line
 
     // TODO: loader animation --> needs to fix at the end
 

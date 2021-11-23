@@ -17,7 +17,6 @@ export const deposit = (amount, fromCurrency, toCurrency, web3, account) => {
 
 
 export const getClaimTokens = async (networks, account, web3s) => {
-
     let claims = []
 
     for (let index = 0; index < networks.length; index++) {

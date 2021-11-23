@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js"
 import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH } from "../constant/contracts"
-import { isZero } from "../constant/number"
+import { isZero, TEN } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
@@ -13,21 +13,19 @@ const baseUrl = "https://oracle4.deus.finance/dei"
 
 export const dollarDecimals = 6
 export const collatUsdPrice = "1000000"
-const LENGTH_COLLAT = {
-    [ChainId.BSC_TESTNET]:1,
-    [ChainId.RINKEBY]:1,
-}
+const LENGTH_COLLAT = {}
 
 const COLLAT_PRICE = {
     [ChainId.BSC_TESTNET]:"1000000000000000000",
+    [ChainId.BSC]:"1000000000000000000",
 }
 
 
-export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null) => {
+export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null,decimals=6) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(poolBalance) + ' / ' + formatUnitAmount(ceiling) : null
-    const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance)) : null
+    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(poolBalance) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals-6))) : null
+    const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance).div(TEN.pow(decimals-6))) : null
     return [{
         name: 'DEI PRICE',
         value: dp
@@ -307,7 +305,6 @@ export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price =
         collaterals.push(COLLAT_PRICE[chainId]??collat_usd_price);
     }
     
-    console.log(collaterals);
     return getDeiContract(web3, chainId)
         .methods
         .dei_info(collaterals)

@@ -14,10 +14,10 @@ import { BridgeTokens } from '../../constant/token'
 import { useApprove } from '../../hooks/useApprove';
 import BigNumber from 'bignumber.js';
 import { BRIDGE_ADDRESS } from '../../constant/contracts';
-import './bridge.css'
 import Muon from 'muon'
 import { useClaim, useDeposit, useGetNewClaim } from '../../hooks/useBridge';
 import { ChainId, NameChainId } from '../../constant/web3';
+import './bridge.css'
 
 
 const Bridge = () => {

@@ -1,5 +1,5 @@
 import { DEI_COLLATERAL_STAKING, DEI_DEUS_STAKING, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_NATIVE_STAKING } from "./contracts"
-import { deiDeusLpToken, deiCollateralLpToken, DeusNativeLpToken, collateralToken } from "./token"
+import { deiDeusLpToken, deiCollateralLpToken, DeusNativeLpToken } from "./token"
 import { ChainId } from "./web3"
 
 export const urls = [{
@@ -92,73 +92,6 @@ export const StakingConfig = {
       stakingContract: DEUS_NATIVE_STAKING[ChainId.ETH],
       zapperContract: DEI_DEUS_ZAP[ChainId.ETH],
       provideLink: "https://app.uniswap.org/#/add/v2/ETH/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44",
-      apy: "50"
-    }
-  ],
-  [ChainId.FTM]: [
-    {
-      id: 0,
-      title: "DEI-USDC",
-      pic1: "/tokens/dei.svg",
-      pic2: "/tokens/usdc.svg",
-      depositToken: deiCollateralLpToken[ChainId.FTM],
-      stakingContract: DEI_COLLATERAL_STAKING[ChainId.FTM],
-      // zapperContract: DEI_COLLATERAL_ZAP[ChainId.FTM],
-      provideLink: "https://swap.spiritswap.finance/#/add/0x04068DA6C83AFCFA0e13ba15A6696662335D5B75/0xF3c3A1dD9E0347eE513c9e51b79d6263193da809",
-      apy: "50"
-    },
-    {
-      id: 1,
-      title: "DEI-DEUS",
-      pic1: "/tokens/dei.svg",
-      pic2: "/tokens/deus.svg",
-      depositToken: deiDeusLpToken[ChainId.FTM],
-      stakingContract: DEI_DEUS_STAKING[ChainId.FTM],
-      // zapperContract: DEI_DEUS_ZAP[ChainId.FTM],
-      provideLink: "https://swap.spiritswap.finance/#/add/0x98d1bb87993F84F916F27CcE9162e1ff5CAB11Bc/0xF3c3A1dD9E0347eE513c9e51b79d6263193da809",
-      apy: "100"
-    },
-    {
-      id: 2,
-      title: "DEUS-FTM",
-      pic1: "/tokens/deus.svg",
-      pic2: "/tokens/eth_logo.svg",
-      depositToken: DeusNativeLpToken[ChainId.FTM],
-      stakingContract: DEUS_NATIVE_STAKING[ChainId.FTM],
-      // zapperContract: DEI_DEUS_ZAP[ChainId.FTM],
-      provideLink: "https://swap.spiritswap.finance/#/add/FTM/0x98d1bb87993F84F916F27CcE9162e1ff5CAB11Bc",
-      apy: "50"
-    }
-  ],
-  [ChainId.BSC_TESTNET]: [
-    {
-      id: 0,
-      title: "DEI-BUSD",
-      pic1: "/tokens/dei.svg",
-      pic2: "/tokens/usdc.svg",
-      depositToken: deiCollateralLpToken[ChainId.BSC_TESTNET],
-      stakingContract: DEI_COLLATERAL_STAKING[ChainId.BSC_TESTNET],
-      provideLink: `https://pancakeswap.finance/#/add/0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3/${collateralToken[ChainId.BSC_TESTNET].address}`,
-      apy: "50"
-    },
-    {
-      id: 1,
-      title: "DEI-DEUS",
-      pic1: "/tokens/dei.svg",
-      pic2: "/tokens/deus.svg",
-      depositToken: deiDeusLpToken[ChainId.BSC_TESTNET],
-      stakingContract: DEI_DEUS_STAKING[ChainId.BSC_TESTNET],
-      provideLink: "https://pancakeswap.finance/#/add/0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44",
-      apy: "100"
-    },
-    {
-      id: 2,
-      title: "DEUS-BNB",
-      pic1: "/tokens/deus.svg",
-      pic2: "/tokens/eth_logo.svg",
-      depositToken: DeusNativeLpToken[ChainId.BSC_TESTNET],
-      stakingContract: DEUS_NATIVE_STAKING[ChainId.BSC_TESTNET],
-      provideLink: "https://pancakeswap.finance/#/add/BNB/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44",
       apy: "50"
     }
   ],

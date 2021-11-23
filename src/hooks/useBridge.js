@@ -7,7 +7,7 @@ import { SendWithToast } from '../helper/deiHelper'
 import { fromWei } from '../helper/formatBalance'
 import BridgeABI from '../config/abi/BridgeABI.json'
 import { BRIDGE_ADDRESS } from '../constant/contracts'
-import { NameChainId } from '../constant/web3'
+import { ChainId, NameChainId } from '../constant/web3'
 import { getBridgeContract } from '../helper/contractHelpers'
 import { formatBalance3 } from '../utils/utils'
 
@@ -20,16 +20,18 @@ export const useGetNewClaim = () => {
     //     4: useCrossWeb3(4),
     //     97: useCrossWeb3(97)
     // }
-    const rinkWeb3 = useCrossWeb3(1)
-    const bscWeb3 = useCrossWeb3(137)
+    const ethWeb3 = useCrossWeb3(ChainId.ETH)
+    const bscWeb3 = useCrossWeb3(ChainId.BSC)
+    const ftmWeb3 = useCrossWeb3(ChainId.FTM)
+    const polygonWeb3 = useCrossWeb3(ChainId.MATIC)
 
     const getClaim = useCallback(async () => {
-        const networks = [1, 137]
-        if (account && rinkWeb3 && bscWeb3) {
-            const res = await getClaimTokens(networks, account, { 1: rinkWeb3, 137: bscWeb3 })
+        const networks = [ChainId.ETH, ChainId.BSC,ChainId.FTM,ChainId.MATIC]
+        if (account && ethWeb3 && bscWeb3 && polygonWeb3 && ftmWeb3) {
+            const res = await getClaimTokens(networks, account, { [ChainId.ETH]: ethWeb3,[ChainId.FTM]:ftmWeb3,[ChainId.MATIC]:polygonWeb3 ,[ChainId.BSC]: bscWeb3 })
             return res
         }
-    }, [account, rinkWeb3, bscWeb3, fastRefresh]) // eslint-disable-line
+    }, [account, ethWeb3, bscWeb3,ftmWeb3,polygonWeb3, fastRefresh]) // eslint-disable-line
     return { getClaim }
 }
 

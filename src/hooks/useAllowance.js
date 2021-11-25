@@ -21,8 +21,12 @@ export const useAllowance = (currency, contractAddress, validChainId) => {
             if (contract === null) setAllowance(ethers.constants.MaxUint256)
             else if (currency.allowance) { setAllowance(currency.allowance) }
             else {
-                const res = await contract.methods.allowance(account, contractAddress).call()
-                setAllowance(new BigNumber(res))
+                try {
+                    const res = await contract.methods.allowance(account, contractAddress).call()
+                    setAllowance(new BigNumber(res))
+                } catch (error) {
+                    console.log("error useAllowance",error);
+                }
             }
         }
         if (account && tokenAddress) {

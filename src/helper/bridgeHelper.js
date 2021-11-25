@@ -7,7 +7,7 @@ import { blockTimes } from "../components/Bridge/data"
 import { forEach } from "lodash"
 
 
-export const deposit = (amount, fromCurrency, toCurrency, web3, account) => {
+export const deposit = (amount, fromCurrency, toCurrency, web3) => {
     const amountWie = getToWei(amount, fromCurrency.decimals).toFixed(0)
     console.log("deposit", amount, amountWie, toCurrency.chainId, fromCurrency.id)
     return getBridgeContract(web3, fromCurrency.chainId)
@@ -26,8 +26,14 @@ export const getClaimTokens = async (networks, account, web3s) => {
         let userTxs = []
         let userTxsResponse = []
         let pendingClaimTxs = []
-        let currentBlockNo = await web3s[chainId].eth.getBlockNumber()
+        let currentBlockNo = 0
 
+        try {
+            currentBlockNo = await web3s[chainId].eth.getBlockNumber()
+        } catch (error) {
+            console.log("getBlockNumber error", error);
+        }
+        
         for (let i = 0; i < dest.length; i++) {
             const destChainId = dest[i]
             const userTx = {
@@ -43,7 +49,7 @@ export const getClaimTokens = async (networks, account, web3s) => {
             userTxsResponse = mul
             // console.log("userTxsResponse", userTxsResponse);
         } catch (error) {
-            console.log("getUserTxs failed", error)
+            console.log("getUserTxs failed with chainId",chainId, error)
         }
 
         for (let i = 0; i < dest.length; i++) {
@@ -59,7 +65,7 @@ export const getClaimTokens = async (networks, account, web3s) => {
                 pendingClaimTxs = [...pendingClaimTxs, ...pendingTxs]
 
             } catch (error) {
-                console.log("pendingTxs failed", error)
+                console.log("pendingTxs failed with chainId", destChainId,error)
             }
         }
 
@@ -83,7 +89,7 @@ export const getClaimTokens = async (networks, account, web3s) => {
             // console.log("Txs = ", mul);
             claims = [...claims, ...mulWithClaimBlock]
         } catch (error) {
-            console.log("Txs failed", error)
+            console.log("Txs failed chainId ",chainId, error)
         }
     }
     return claims

@@ -28,8 +28,12 @@ export const useGetNewClaim = () => {
     const getClaim = useCallback(async () => {
         const networks = [ChainId.ETH, ChainId.BSC,ChainId.FTM,ChainId.MATIC]
         if (account && ethWeb3 && bscWeb3 && polygonWeb3 && ftmWeb3) {
-            const res = await getClaimTokens(networks, account, { [ChainId.ETH]: ethWeb3,[ChainId.FTM]:ftmWeb3,[ChainId.MATIC]:polygonWeb3 ,[ChainId.BSC]: bscWeb3 })
-            return res
+            try {
+                  return await getClaimTokens(networks, account, { [ChainId.ETH]: ethWeb3,[ChainId.FTM]:ftmWeb3,[ChainId.MATIC]:polygonWeb3 ,[ChainId.BSC]: bscWeb3 })
+            } catch (error) {
+                console.log(error, 'getClaimTokens');
+                return []
+            }
         }
     }, [account, ethWeb3, bscWeb3,ftmWeb3,polygonWeb3, fastRefresh]) // eslint-disable-line
     return { getClaim }

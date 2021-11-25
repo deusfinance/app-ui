@@ -29,6 +29,8 @@ export const NameChainId = {
     43114: "AVALANCHE"
 }
 
+
+
 export const rpcConfig = {
     [ChainId.ETH]: {
         chainId: "0x1",
@@ -83,7 +85,7 @@ export const rpcConfig = {
             symbol: "BNB",
             decimals: 18,
         },
-        rpcUrls: ["https://bsc-dataseed.binance.org/", "https://bsc-dataseed1.defibit.io/"],
+        rpcUrls: ["https://bsc-dataseed.binance.org/","https://bsc-dataseed1.defibit.io/","https://bsc-dataseed1.ninicoin.io/"],
         blockExplorerUrls: ["https://bscscan.com"],
     },
     [ChainId.BSC_TESTNET]: {

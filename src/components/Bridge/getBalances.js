@@ -6,11 +6,16 @@ import { ERC20ABI } from '../../utils/StakingABI'
 import { getBalanceNumber } from '../../helper/formatBalance'
 import multicall from '../../helper/multicall'
 import { useCrossWeb3 } from '../../hooks/useWeb3'
+import { ChainId } from '../../constant/web3'
 
 const useTokenBalances = (chains, tokens, fetchData) => {
   const [balances, setBalances] = useState(tokens)
   const { account, chainId } = useWeb3React()
-  const web3s = { 1: useCrossWeb3(1), 137: useCrossWeb3(137) }
+  const ethWeb3 = useCrossWeb3(ChainId.ETH)
+  const bscWeb3 = useCrossWeb3(ChainId.BSC)
+  const ftmWeb3 = useCrossWeb3(ChainId.FTM)
+  const polygonWeb3 = useCrossWeb3(ChainId.MATIC)
+  const web3s = { [ChainId.ETH]: ethWeb3,[ChainId.FTM]:ftmWeb3,[ChainId.MATIC]:polygonWeb3 ,[ChainId.BSC]: bscWeb3 }
 
   useEffect(() => {
     const fetchBalances = async () => {
@@ -23,24 +28,16 @@ const useTokenBalances = (chains, tokens, fetchData) => {
           }
         })
 
-        const result = await multicall(
-          web3s[chain.network],
-          ERC20ABI,
-          calls,
-          chain.network
-        )
-
-        for (let i = 0; i < result.length; i++) {
+        try {
+          const result = await multicall(web3s[chain.network],ERC20ABI,calls,chain.network)
+          for (let i = 0; i < result.length; i++) {
           const balance = result[i]
           const address = calls[i].address
-
-          let token = tokens.find(
-            (token) => token.address[chain.network] === address
-          )
-          token.balances[chain.network] = getBalanceNumber(
-            balance,
-            tokens[address]?.decimals
-          )
+          let token = tokens.find((token) => token.address[chain.network] === address)
+          token.balances[chain.network] = getBalanceNumber(balance,tokens[address]?.decimals)
+        }
+        } catch (error) {
+          console.log("error at useTokenBalances",error);
         }
       })
       setBalances(tokens)

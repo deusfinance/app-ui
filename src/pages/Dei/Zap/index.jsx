@@ -29,7 +29,7 @@ import { fromWei } from '../../../helper/formatBalance';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
-import { DEI_DEUS_ZAP } from '../../../constant/contracts';
+import { DEI_DEUS_ZAP, DEUS_NATIVE_ZAP } from '../../../constant/contracts';
 
 const Zap = () => {
     const location = useLocation()
@@ -118,17 +118,18 @@ const Zap = () => {
     useEffect(() => {
         const get = async () => {
             const result = await getAmountsOut()
-            // console.log("swap ", amount);
             if (result === "") {
                 setAmountOut("")
                 setAmountOutParams(null)
                 setPercentage("")
             }
             else {
-                console.log(result);
-                // const result.
-                if (contractAddress === DEI_DEUS_ZAP) {
+                if (contractAddress === DEI_DEUS_ZAP[chainId]) {
                     setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount])
+                    setAmountOut(result.lp)
+                    setPercentage(fromWei(result.percentage, 4))
+                } else if (contractAddress === DEUS_NATIVE_ZAP[chainId]) {
+                    setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount, result.swapAmount])
                     setAmountOut(result.lp)
                     setPercentage(fromWei(result.percentage, 4))
                 } else {

@@ -139,27 +139,33 @@ export const DEI_DEUS_ZAP = {
 }
 
 export const DEUS_NATIVE_ZAP = {
-    [ChainId.HECO]: "0xd25CF1D484CFE0d6DaeaF890D31AcC40b1DAc5f8",
-    [ChainId.RINKEBY]: "0x2D6b0130775EE72bAF3e59cc7A82a2CF479a8D8f",
-    [ChainId.AVALANCHE]: "0x591832987934843AAa8e868e713A7d35b9c59c71",
-    [ChainId.MATIC]: "",
-    [ChainId.ETH]: '0x38C89aE559cc0A2a81aa40D173919Aaa79Dc0bD8',
+  [ChainId.HECO]: "0xd25CF1D484CFE0d6DaeaF890D31AcC40b1DAc5f8",
+  [ChainId.RINKEBY]: "0x2D6b0130775EE72bAF3e59cc7A82a2CF479a8D8f",
+  [ChainId.AVALANCHE]: "0x591832987934843AAa8e868e713A7d35b9c59c71",
+  [ChainId.MATIC]: "0x26F0BA461ea8c6185E2Bdb57A1915A0CF1CB197b",
+  [ChainId.ETH]: '0x38C89aE559cc0A2a81aa40D173919Aaa79Dc0bD8',
+}
+
+export const wMaticAddress = "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270" // on matic network
+export const wETHAddress = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619" // on matic network
+
+export const TO_MATIC_PATH = {
+  [ChainId.MATIC]: {
+    DEUS: [DEUS_ADDRESS[ChainId.MATIC], wMaticAddress],
+    DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress],
+    WETH: [wETHAddress, COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress],
+    USDC: [COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress],
+    MATIC: [wMaticAddress]
+  },
 }
 
 export const MINT_PATH = {
   [ChainId.MATIC]: {
-    DEUS: [DEUS_ADDRESS[ChainId.MATIC], "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", COLLATERAL_ADDRESS[ChainId.MATIC]],
+    DEUS: [DEUS_ADDRESS[ChainId.MATIC], wMaticAddress, COLLATERAL_ADDRESS[ChainId.MATIC]],
     DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
-    WETH: [
-      '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-      COLLATERAL_ADDRESS[ChainId.MATIC]
-    ],
+    WETH: [ wETHAddress, COLLATERAL_ADDRESS[ChainId.MATIC]],
     USDC: [COLLATERAL_ADDRESS[ChainId.MATIC]],
-    MATIC: [
-      '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
-      '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-      COLLATERAL_ADDRESS[ChainId.MATIC]
-    ]
+    MATIC: [wMaticAddress, wETHAddress, COLLATERAL_ADDRESS[ChainId.MATIC]]
   },
   [ChainId.RINKEBY]: {
     DEUS: [DEUS_ADDRESS[ChainId.RINKEBY], DEI_ADDRESS[ChainId.RINKEBY]],

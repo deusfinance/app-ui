@@ -68,7 +68,6 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
             let path = "/mint-fractional"
             const result = await makeDeiRequest(path, validChainId)
 
-            // console.log(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, result, amountOutParams, false, web3, chainId);
             const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, result, amountOutParams, false, web3, chainId)
             const payload = currency.address === "0x" ? { value: amountInToWei } : {}   
             return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
@@ -90,8 +89,6 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         try {
             let result = null
-            // if (currency.address !== DEUS_ADDRESS[validChainId] && currency.address !== DEI_ADDRESS[validChainId]) {
-                // }
             let path = "/mint-fractional"
             result = await makeDeiRequest(path, validChainId)
 

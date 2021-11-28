@@ -9,9 +9,10 @@ import { ExternalLink } from '../Link';
 
 const CostPriceTitle = styled.span`
     opacity: 0.55;
+    margin-right: 2px;
 `
 
-const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
+const IMG = <img src="/img/spinner.svg" width="17" height="17" alt="sp" />
 
 function truncate(str, n = 10) {
     return (str.length > n) ? str.substr(0, 6) + '...' + str.substr(str.length - 4, str.length) : str;
@@ -38,7 +39,7 @@ export const CostBoxBuyBack = ({ chainId }) => {
                         <FeePrice>
                             <CostPriceTitle> {cost.title1} </CostPriceTitle>
                             {cost.isLink ? <ExternalLink href={cost.path}>{cost.value1 ? cost.value1 : IMG}</ExternalLink>
-                                : <span> {cost.value1 ? cost.value1 : IMG} </span>
+                                : cost.value1 ? cost.value1 : IMG
                             }
                         </FeePrice>
 

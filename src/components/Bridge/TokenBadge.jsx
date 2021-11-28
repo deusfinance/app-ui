@@ -1,11 +1,10 @@
 import React from 'react'
 
 const TokenBadge = (props) => {
-  const { chain, icon } = props
+  const { logo } = props
   return (
     <div className="notify-bridge">
-      <img src={`/img/bridge/${icon}`} alt={icon} />
-      <span className={`badge badge-${chain}`}>{chain}</span>
+      <img src={`${logo}`} alt={logo} />
     </div>
   )
 }

@@ -1,44 +1,52 @@
 @font-face {
-  font-family: 'Monument Grotesk Semi';
-  src: url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff2')
-      format('woff2'),
-    url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff')
-      format('woff')
-      url('../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.otf')
-      format('otf');
+  font-family: "Monument Grotesk Semi";
+  src: url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff2") format("woff2"),
+    url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.woff") format("woff")
+      url("../../assets/fonts/EduMonumentGroteskSemi-Mono/EduMonumentGroteskSemi-Mono-Regular.otf") format("otf");
 }
 
 @font-face {
-  font-family: 'Monument Grotesk';
-  src: url('../../assets/fonts/MonumentGrotesk/MonumentGrotesk-Regular.woff')
-    format('woff');
+  font-family: "Monument Grotesk";
+  src: url("../../assets/fonts/MonumentGrotesk/MonumentGrotesk-Regular.woff") format("woff");
 }
 
 .wrap-bridge .pink-color {
   color: #e87ba5;
 }
+
+.wrap-bridge .blue-color {
+  color: #325cfe;
+}
+
 .market-nav-wrap {
   display: none;
 }
+
 .flex-between {
   display: flex;
   justify-content: space-between;
 }
+
 .pointer {
   cursor: pointer;
 }
+
 .mb-5 {
   margin-bottom: 5px;
 }
+
 .mt-20 {
   margin-top: 20px;
 }
+
 .mb-20 {
   margin-bottom: 20px;
 }
+
 .mt-100 {
   margin-top: 100px;
 }
+
 .pt-13 {
   padding-top: 13px;
 }
@@ -46,17 +54,20 @@
 input:focus {
   outline: none;
 }
+
 .wrap-bridge .input-transparent {
   background: transparent;
   border: transparent;
 }
+
 .wrap-bridge {
   padding: 20px 5px;
   display: flex;
-  background: linear-gradient(360deg, #272727 62.11%, #000000 100%);
+  /* background: linear-gradient(360deg, #272727 62.11%, #000000 100%); */
 }
+
 .wrap-bridge .container-bridge {
-  font-family: 'Monument Grotesk Semi';
+  font-family: "Monument Grotesk Semi";
   max-width: 646.79px;
   display: flex;
   flex-direction: column;
@@ -65,12 +76,13 @@ input:focus {
   align-items: center;
   position: relative;
 }
+
 .wrap-bridge .container-bridge > img {
   width: 100%;
 }
 
 .wrap-bridge .bridge-title h1 {
-  height: 82px;
+  height: 65px;
   font-style: normal;
   font-weight: normal;
   font-size: 35px;
@@ -80,12 +92,27 @@ input:focus {
   background: linear-gradient(90deg, #dff4fe 0%, #8eb5ff 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 32px;
+  margin-bottom: -6px;
+}
+
+.wrap-bridge h3 {
+  font-size: 17px;
+  font-style: normal;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  background: linear-gradient(135deg, #5b62f1, #9555ed 33.76%, #f3a761);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 auto;
+  margin-bottom: 26px;
 }
 
 .wrap-bridge .bridge {
   position: relative;
 }
+
 /* .bridge img {
   width: 100%;
 } */
@@ -93,8 +120,9 @@ input:focus {
 .relative {
   position: relative;
 }
-.wrap-bridge .wrapp-bridge-box {
-  width: 70%;
+
+.wrap-bridge .wrap-bridge-box {
+  width: 85%;
   max-width: 552px;
   background: linear-gradient(90deg, #dff4fe 0%, #8eb5ff 100%);
   border: 1px solid #ffffff;
@@ -102,6 +130,7 @@ input:focus {
   border-radius: 15px;
   padding: 11px;
 }
+
 .wrap-bridge .bridge-box {
   height: 90px;
   padding: 15px;
@@ -112,6 +141,7 @@ input:focus {
   color: #000000;
   margin-bottom: 3px;
 }
+
 .wrap-bridge .container-btn {
   display: flex;
   justify-content: space-between;
@@ -121,11 +151,13 @@ input:focus {
 }
 
 .wrap-bridge .select-token-btn {
-  font-family: 'Monument Grotesk Semi';
+  font-family: "Monument Grotesk Semi";
   max-width: 170px;
   width: 100%;
   height: 35px;
-  background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%);
+  /* background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%); */
+  /* background: linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%); */
+  background: #cbe5fc;
   border-radius: 6px;
   font-style: normal;
   font-weight: normal;
@@ -135,30 +167,60 @@ input:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  border-radius: 10px;
+  padding: 0 10px;
+  background: rgb(205, 230, 254);
 }
+
 .wrap-bridge .select-token {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .wrap-bridge .bridge-approve {
   max-width: 255px;
   width: 100%;
   height: 55px;
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: normal;
-  background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%);
+  /* background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%); */
+  /* background: linear-gradient(90deg, #5BB0FF -0.01%, #ea2c62 93.44%); */
+  background: #325cfe;
   /* box-shadow: 0px 2px 4px rgba(100, 100, 100, 0.498039); */
+  /* background: linear-gradient(90deg, #5bb0ff -0.01%, #ea2c62 93.44%); */
+  /* color: rgba(0, 0, 0, 0.5); */
+  background-color: rgb(40, 145, 249);
+  color: white;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 3px;
   text-transform: uppercase;
-  color: #000000;
+  color: #FFF;
 }
+/* 
+
+    background-color: rgb(40, 145, 249);
+    color: white;
+
+background-color: rgb(237, 238, 242);
+    color: rgb(136, 141, 155);
+
+
+        background-color: rgb(205, 230, 254);
+    color: rgb(10, 22, 71);
+
+
+    background-color: rgb(237, 238, 242);
+    color: rgb(136, 141, 155);
+
+*/
+
 .wrap-bridge .bridge-deposit {
   display: flex;
   justify-content: center;
@@ -172,10 +234,14 @@ input:focus {
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
-  color: rgba(0, 0, 0, 0.5);
+  /* color: rgba(0, 0, 0, 0.5); */
+  color: rgba(120, 120, 120, 0.75);
   margin: 0 3px;
   text-transform: uppercase;
+  background-color: rgb(237, 238, 242);
+  color: rgb(136, 141, 155);
 }
+
 .wrap-bridge .bridge-from {
   height: 14.98px;
   display: flex;
@@ -183,13 +249,13 @@ input:focus {
   font-weight: normal;
   font-size: 12px;
   line-height: 17px;
-
   color: rgba(0, 0, 0, 0.5);
 }
+
 .wrap-bridge .bridge-amount {
   width: 100%;
   height: 29px;
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   font-style: normal;
   font-weight: normal;
   font-size: 30px;
@@ -203,7 +269,7 @@ input:focus {
   font-weight: normal;
   font-size: 12px;
   text-transform: uppercase;
-  color: #e87ba5;
+  color: #325cfe;
   margin-left: 5px;
 }
 
@@ -213,6 +279,7 @@ input:focus {
   align-items: center;
   justify-content: space-between;
 }
+
 .wrap-bridge .bridge-token img {
   height: 22px;
 }
@@ -224,11 +291,13 @@ input:focus {
   justify-content: flex-start;
   margin-right: 28px;
 }
+
 .bridge-token .badge {
   position: absolute;
   top: -7px !important;
   right: -23px !important;
 }
+
 .token-item .badge {
   position: absolute;
   top: -8px !important;
@@ -241,7 +310,6 @@ input:focus {
   right: -16px;
   width: 30px;
   height: 15px;
-
   border-radius: 3px;
   font-style: normal;
   font-weight: normal;
@@ -251,12 +319,14 @@ input:focus {
   align-items: center;
   justify-content: center;
 }
+
 .content-modal-bridge .bridge-container-badge-modal {
   display: flex;
   align-items: center;
   font-size: 21px;
   margin-left: 5px;
 }
+
 .content-modal-bridge .modal-badge {
   width: 34px;
   height: 15px;
@@ -269,23 +339,27 @@ input:focus {
   justify-content: center;
   margin: 3px 1px 1px;
 }
+
 .content-modal-bridge .container-token::-webkit-scrollbar {
   width: 5px;
 }
 
 /* Track */
+
 .content-modal-bridge .container-token::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
 }
 
 /* Handle */
+
 .content-modal-bridge .container-token::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
 }
 
 /* Handle on hover */
+
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
@@ -294,14 +368,17 @@ input:focus {
   background: #fbc856;
   color: #000000 !important;
 }
+
 .badge-ETH {
   background: #335cff;
   color: #ffffff;
 }
+
 .badge-FTM {
   background: #286cf6;
   color: #ffffff;
 }
+
 .wrap-bridge .wrap-box {
   position: absolute;
   position: absolute;
@@ -313,6 +390,7 @@ input:focus {
   height: 246px;
   align-items: center;
 }
+
 .wrap-bridge .bridge-assets {
   /* width: 85px; */
   height: 35px;
@@ -332,29 +410,39 @@ input:focus {
 }
 
 /* The Modal (background) */
+
 .show {
   display: block !important;
   z-index: 1050 !important;
 }
 
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
 }
 
 /* Modal Content */
-.modal-content {
-  font-family: 'Monument Grotesk';
 
+.modal-content {
+  font-family: "Monument Grotesk";
   position: relative;
   width: 560px;
   background: #242424;
@@ -368,6 +456,7 @@ input:focus {
 }
 
 /* Add Animation */
+
 @-webkit-keyframes animatetop {
   from {
     top: -300px;
@@ -389,15 +478,18 @@ input:focus {
     opacity: 1;
   }
 }
+
 .ReactModal__Body--open {
   overflow-y: hidden;
 }
 
 /* The Close Button */
+
 .close {
   color: white;
   font-size: 45px;
 }
+
 .close:hover,
 .close:focus {
   color: #fff;
@@ -412,13 +504,14 @@ input:focus {
   line-height: 27px;
   display: flex;
   align-items: center;
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   justify-content: space-between;
   color: #ffffff;
   margin-bottom: 23px;
 }
+
 .modal-title {
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -438,10 +531,12 @@ input:focus {
   border-radius: 10px;
   color: #ffffff;
 } */
+
 .content-modal-bridge {
   display: flex;
   flex-direction: column;
 }
+
 /* .content-modal-bridge label {
   font-style: normal;
   font-weight: normal;
@@ -514,8 +609,9 @@ input[type='checkbox']:checked:after {
   font-size: 15px;
   line-height: 21px;
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
 }
+
 .bridge-checkbox {
   padding: 5px 0 0;
   display: flex;
@@ -525,8 +621,9 @@ input[type='checkbox']:checked:after {
   font-weight: normal;
   font-size: 15px;
   line-height: 21px;
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
 }
+
 /* .bridge-checkbox > span {
   display: flex;
   align-items: center;
@@ -540,43 +637,48 @@ input[type='checkbox']:checked:after {
 .wrap-bridge .border-bottom-claim {
   border-bottom: 1px solid #1c1c1c;
 }
+
 .wrap-bridge .desc-claim {
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   font-style: normal;
   font-weight: normal;
   font-size: 15px;
   line-height: 20px;
   text-align: center;
-
   margin-top: 30px;
 }
+
 .wrap-bridge .desc-claim > span {
   padding-right: 5px;
 }
+
 .content-modal-bridge .token-name {
   padding: 37px 0 5px;
   font-style: normal;
   font-weight: normal;
   font-size: 15px;
   line-height: 21px;
-
   color: rgba(255, 255, 255, 0.5);
 }
+
 .content-modal-bridge .container-token {
   overflow-y: auto;
   height: calc(50vh - 100px);
   box-sizing: border-box;
   padding: 20px 0;
 }
+
 .content-modal-bridge .token-list {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 13px 15px 0;
 }
+
 .pt-20 {
   padding-top: 20px;
 }
+
 .pr-13 {
   padding-right: 13px;
 }
@@ -589,6 +691,7 @@ input[type='checkbox']:checked:after {
 .content-modal-bridge .token-list-item img {
   width: 40px;
 }
+
 .token-list-item div {
   display: flex;
   align-items: center;
@@ -599,22 +702,27 @@ input[type='checkbox']:checked:after {
   color: rgba(255, 255, 255, 0.75);
   margin-left: 5px;
 }
+
 .flex-center {
   display: flex;
   justify-content: center;
 }
+
 .opacity-5 {
   opacity: 0.5;
 }
+
 .opacity-1 {
   opacity: 1;
 }
+
 .width-340 {
   max-width: 340px;
   width: 100%;
 }
+
 .wrap-bridge .instruction {
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   width: 100%;
   padding: 20px 25px;
   background: #0d0d0d;
@@ -628,14 +736,13 @@ input[type='checkbox']:checked:after {
 }
 
 .wrap-bridge .instruction-title {
-  font-family: 'Monument Grotesk Semi';
+  font-family: "Monument Grotesk Semi";
   padding-bottom: 14px;
   font-style: normal;
   font-weight: normal;
   font-size: 11.5px;
   line-height: 16px;
   /* identical to box height */
-
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -646,6 +753,7 @@ input[type='checkbox']:checked:after {
 .wrap-bridge .ptb-6 {
   padding: 6px 0;
 }
+
 .wrap-bridge .content-collapse {
   padding: 10px 2px;
 }
@@ -657,12 +765,13 @@ input[type='checkbox']:checked:after {
   max-width: 530px;
   width: 100%;
 }
+
 .wrap-bridge .status-button {
   width: 50%;
   display: flex;
   justify-content: space-between;
   border-top: 2px solid;
-  border-image-source: linear-gradient(0deg, #fdcad5, #fdcad5);
+  /* border-image-source: linear-gradient(0deg, #fdcad5, #fdcad5); */
   border-image-slice: 5;
   padding-top: 24px;
   margin-top: 22px;
@@ -681,13 +790,16 @@ input[type='checkbox']:checked:after {
   justify-content: center;
   align-items: center;
 }
+
 .wrap-bridge .status-button .active {
-  background: #fdb8af;
-  color: #000000;
+  background: #325cfe;
+  color: #FFF;
 }
+
 .wrap-bridge .green-color {
   color: #00d16c;
 }
+
 .wrap-bridge .arrow {
   position: absolute;
   top: 50%;
@@ -703,6 +815,7 @@ input[type='checkbox']:checked:after {
   align-items: center;
   transform: translate(-50%, -50%);
 }
+
 .wrap-bridge .arrow img {
   width: 16px;
 }
@@ -710,7 +823,8 @@ input[type='checkbox']:checked:after {
 .wrap-bridge .pink-btn {
   width: 100%;
   height: 55px;
-  background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%);
+  /* background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%); */
+  background: #325cfe;
   border-radius: 10px;
   max-width: 530px;
   display: flex;
@@ -741,7 +855,7 @@ input[type='checkbox']:checked:after {
   text-transform: uppercase;
   font-style: normal;
   font-weight: normal;
-  font-size: 25px;
+  font-size: 18px;
   margin-top: 15px;
 }
 
@@ -753,12 +867,12 @@ input[type='checkbox']:checked:after {
   border-radius: 10px;
   padding: 20px;
 }
+
 .wrap-bridge .claim-token-title {
   font-style: normal;
   font-weight: normal;
   font-size: 11.5px;
   line-height: 16px;
-
   color: #ffffff;
   padding-bottom: 8px;
   border-bottom: 1px solid #1c1c1c;
@@ -773,6 +887,7 @@ input[type='checkbox']:checked:after {
 .wrap-bridge .token-item img {
   width: 25px;
 }
+
 .wrap-bridge .token-item span {
   font-style: normal;
   font-weight: normal;
@@ -780,9 +895,9 @@ input[type='checkbox']:checked:after {
   line-height: 17px;
   display: flex;
   align-items: center;
-
   color: rgba(255, 255, 255, 0.75);
 }
+
 .wrap-bridge .claim-amount {
   font-style: normal;
   font-weight: normal;
@@ -791,9 +906,9 @@ input[type='checkbox']:checked:after {
   display: flex;
   align-items: center;
   text-align: right;
-
   color: rgba(255, 255, 255, 0.75);
 }
+
 .wrap-bridge .container-claim-btn {
   margin: 15px 0 20px;
   max-width: 297px;
@@ -809,37 +924,51 @@ input[type='checkbox']:checked:after {
   justify-content: center;
   text-align: center;
   padding: 0 3px;
-  font-family: 'Monument Grotesk Semi';
+  font-family: "Monument Grotesk Semi";
   font-size: 12px;
   line-height: 17px;
 }
+
 .wrap-bridge .claim-btn {
-  background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%);
-  color: #000000;
+  /* background: linear-gradient(90deg, #e26ba2 0%, #fdb9af 100%); */
+  /* background: linear-gradient(90deg, #325cfe 0%, #93baff 100%); */
+  background-color: #325cfe;
+  color: #FFF;
 }
+
 .wrap-bridge .change-claim {
   background: #1c1c1c;
   border: 1px solid #000000;
   color: rgba(255, 255, 255, 0.5);
 }
+
+.wrap-bridge .switch-claim {
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 164, 81, 0.2);
+    border: 1px solid rgb(255, 164, 81);
+}
+
 .wrap-bridge .ftm-logo {
   width: 32px !important;
   position: absolute;
   left: 50%;
   top: 17%;
 }
+
 .wrap-bridge .bsc-logo {
   width: 25px !important;
   position: absolute;
   top: 21%;
   left: 10%;
 }
+
 .wrap-bridge .eth-logo {
   width: 32px !important;
   position: absolute;
   right: 1%;
-  top: 33%;
+  top: 30%;
 }
+
 /* .container-checkbox {
   display: flex;
   justify-content: center;
@@ -938,11 +1067,13 @@ input[type='checkbox']:checked:after {
 ul.bridge-radio {
   list-style-type: none;
 }
+
 ul.bridge-radio li {
   float: left;
   padding: 0;
   position: relative;
 }
+
 ul.bridge-radio li label {
   display: flex;
   justify-content: center;
@@ -962,7 +1093,8 @@ ul.bridge-radio li label {
   color: rgba(255, 255, 255, 0.5);
   margin-right: 15px;
 }
-ul.bridge-radio li input[type='radio'] {
+
+ul.bridge-radio li input[type="radio"] {
   opacity: 0;
   width: 1px;
   height: 1px;
@@ -970,27 +1102,30 @@ ul.bridge-radio li input[type='radio'] {
   left: 15px;
 }
 
-ul.bridge-radio li input[type='radio']:disabled ~ label {
+ul.bridge-radio li input[type="radio"]:disabled ~ label {
   opacity: 0.4;
 }
-ul.bridge-radio li input[type='radio']:checked ~ label.BSC {
+
+ul.bridge-radio li input[type="radio"]:checked ~ label.BSC {
   background: #fbc856;
   color: #000000;
   border: transparent;
 }
-ul.bridge-radio li input[type='radio']:checked ~ label.FTM {
+
+ul.bridge-radio li input[type="radio"]:checked ~ label.FTM {
   background: #286cf6;
   color: #ffffff;
   border: transparent;
 }
-ul.bridge-radio li input[type='radio']:checked ~ label.ETH {
+
+ul.bridge-radio li input[type="radio"]:checked ~ label.ETH {
   background: #335cff;
   color: #ffffff;
   border: transparent;
 }
 
 .desc-select-chain {
-  font-family: 'Monument Grotesk';
+  font-family: "Monument Grotesk";
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -998,11 +1133,11 @@ ul.bridge-radio li input[type='radio']:checked ~ label.ETH {
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: rgba(255, 255, 255, 0.75);
 }
 
 /* Chrome, Safari, Edge, Opera */
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -1010,7 +1145,8 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -1021,26 +1157,29 @@ input[type='number'] {
     justify-content: center;
     align-items: center;
   }
-
   .wrap-bridge .wrap-box {
     height: 285px;
   }
 }
+
 @media screen and (min-width: 992px) and (max-width: 1200px) {
   .wrap-bridge .wrap-box {
     height: 269px;
   }
 }
+
 @media screen and (min-width: 768px) and (max-width: 992px) {
   .wrap-bridge .wrap-box {
     height: 269px;
   }
 }
+
 @media screen and (min-width: 576px) and (max-width: 768px) {
   .wrap-bridge .wrap-box {
     height: 254px;
   }
 }
+
 @media screen and (min-width: 415px) and (max-width: 576px) {
   ul.bridge-radio li label {
     width: 100px;
@@ -1056,6 +1195,7 @@ input[type='number'] {
     width: 11px;
   }
 }
+
 @media screen and (min-width: 415px) and (max-width: 460px) {
   .wrap-bridge .ftm-logo {
     top: 20%;
@@ -1114,6 +1254,7 @@ input[type='number'] {
     font-size: 18px;
   }
 }
+
 @media screen and (max-width: 415px) {
   ul.bridge-radio li label {
     width: 70px;
@@ -1135,7 +1276,6 @@ input[type='number'] {
   .content-modal-bridge .token-list-item img {
     width: 25px;
   }
-
   .wrap-bridge .wrap-box {
     height: 180px;
   }

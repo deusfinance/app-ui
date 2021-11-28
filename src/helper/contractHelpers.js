@@ -5,8 +5,6 @@ import DeusAMMAbi from '../config/abi/DeusAMM.json'
 import UniswapRouterAbi from '../config/abi/uniswapRouterAbi.json'
 import UniswapV2Abi from '../config/abi/UniswapV2Abi.json'
 import MultiCallAbi from '../config/abi/Multicall.json'
-import MuonPresaleAbi from '../config/abi/MuonPresale.json'
-import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleCrossChain.json'
 import SealedSwapperAbi from '../config/abi/SealedSwapperAbi.json'
 import DeiPoolAbi from '../config/abi/DeiPoolAbi.json'
 import DeiAbi from '../config/abi/DEIAbi.json'
@@ -21,7 +19,8 @@ import DeiDeusZapAbi from '../config/abi/DeiDeusZap.json'
 import DeusSwapAbi from '../config/abi/DeusSwapAbi.json'
 import MigrationAbi from '../config/abi/MigrationAbi.json'
 import BakktAbi from '../config/abi/bakktAbi.json'
-import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, PROXY_MINT_ADDRESS, MIGRATOR_ADDRESS, DEI_DEUS_ZAP, NEW_PROXY_MINT_ADDRESS, DEUS_SWAP_ADDRESS } from '../constant/contracts'
+import BridgeABI from '../config/abi/BridgeABI.json'
+import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, PROXY_MINT_ADDRESS, MIGRATOR_ADDRESS, DEI_DEUS_ZAP, NEW_PROXY_MINT_ADDRESS, BRIDGE_ADDRESS, DEUS_SWAP_ADDRESS } from '../constant/contracts'
 import { ChainId } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
 import { SyncData } from '../constant/synchronizer'
@@ -65,11 +64,6 @@ export const getSealedSwapperContract = (address, web3) => {
     return getContract(SealedSwapperAbi, address, web3)
 }
 
-export const getMuonContract = (web3, chainId = ChainId.ETH) => {
-    if (chainId === ChainId.ETH)
-        return getContract(MuonPresaleAbi, getContractAddr("muon_presale", chainId), web3)
-    return getContract(MuonPresaleCrossChainAbi, getContractAddr("muon_presale", chainId), web3)
-}
 
 export const getDeiPoolContract = (web3, chainId = ChainId.RINKEBY) => {
     return getContract(DeiPoolAbi, DEI_POOL_ADDRESS[chainId], web3)
@@ -107,4 +101,8 @@ export const getDeusSwapContract = (web3, chainId = ChainId.MATIC) => {
 
 export const getBakktMigrationContract = (web3, chainId = ChainId.ETH) => {
     return getContract(BakktAbi, "0x702ed7074b2ee71896d386efaf78e1ddc221e34e", web3, chainId)
+}
+
+export const getBridgeContract = (web3, chainId = ChainId.MATIC) => {
+    return getContract(BridgeABI, BRIDGE_ADDRESS[chainId], web3, chainId)
 }

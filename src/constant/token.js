@@ -110,6 +110,24 @@ export const DEITokens = {
     ],
 }
 //END DEI
+export const BridgeTokens = {
+    [ChainId.RINKEBY]: [
+        { logo: "/tokens/deus.svg", symbol: "TestToken", address: "0x43922ea6ef5995e94680000ed9e20b68974cd902",id:"0", decimals: 18, chainId: 4 },
+        { logo: "/tokens/dei.svg", symbol: "TestToken2", address: "0x63461Bc35341523b319c12a366A9E9af24Eea6Eb",id:"1", decimals: 18, chainId: 4 },
+    ],
+    [ChainId.BSC_TESTNET]: [
+        { logo: "/tokens/deus.svg", symbol: "TestToken", address: "0x15633ea478d0272516b763c25e8e62a9e43ae28a",id:"0", decimals: 18, chainId: 97 },
+        { logo: "/tokens/dei.svg", symbol: "TestToken2", address: "0x1c2a9D1F6284EC5f4424e7FC2f1dAD12822b4e32", id:"1",decimals: 18, chainId: 97 },
+    ],
+    [ChainId.MATIC]: [
+        { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.MATIC], decimals: 18,id:"0",  chainId: ChainId.MATIC },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.MATIC], decimals: 18, id:"1", chainId: ChainId.MATIC },
+    ],
+    [ChainId.ETH]: [
+        { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.ETH], decimals: 18,id:"0",  chainId: ChainId.ETH },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ETH], decimals: 18, id:"1", chainId: ChainId.ETH },
+    ],
+}
 
 export const isNative = (address, chainId) => {
     return address === "0x"

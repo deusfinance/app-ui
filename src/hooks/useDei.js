@@ -563,7 +563,6 @@ export const useHusdPoolData = (validChainId) => {
                     redeemDEUSBalances,
                     redeemCollateralBalances,
                 ] = mul
-
                 const updateState = {
                     collatDollarBalance: fromWei(collatDollarBalance, 18),
                     availableExcessCollatDV: new BigNumber(availableExcessCollatDV).div(1e18).toFixed(),
@@ -655,11 +654,13 @@ export const useAllowance = (currency, contractAddress, validChainId, fastUpdate
     useEffect(() => {
         const fetchAllowance = async () => {
             if (!tokenAddress || contractAddress === undefined) return setAllowance(ZERO)
+            if (currency.chainId && currency.chainId !== validChainId) return setAllowance(ZERO)
             if (validChainId && chainId !== validChainId) setAllowance(ZERO)
             if (contract === null) setAllowance(ethers.constants.MaxUint256)
             else if (currency.allowance) { setAllowance(currency.allowance) }
             else {
                 try {
+
                     const res = await contract.methods.allowance(account, contractAddress).call()
                     setAllowance(new BigNumber(res))
                 } catch (error) {

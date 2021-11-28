@@ -1,16 +1,11 @@
 import { makeContract } from '../../utils/Stakefun'
 import { BridgeABI } from '../../utils/StakingABI'
+import { BRIDGE_ADDRESS } from '../../constant/contracts'
 import Web3 from 'web3'
 
-const validNetworks = [4, 97, 4002]
-
-// const BSCDEAToken='0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D'
-// const FTMDEAToken='0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
-
-const BridgeContractAddress = {
-  4: '0xdAa80B54725147169614EF40C4a8EdeeA0F34D03',
-  97: '0x11B650B8D2bbc60CdC434bd300F1b643ac77BAdA',
-  4002: '0x05dFC221471F7Ea525c794Cfd3b5eC58D0d6B115'
+const blockTimes = {
+  1: 24,
+  137: 256,
 }
 
 const bscWeb3 = new Web3(
@@ -21,27 +16,39 @@ const bscWeb3 = new Web3(
 
 const ethWeb3 = new Web3(
   new Web3.providers.HttpProvider(
-    'https://rinkeby.infura.io/v3/cf6ea736e00b4ee4bc43dfdb68f51093'
+    `https://rinkeby.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
   )
-)
-
-const ftmWeb3 = new Web3(
-  new Web3.providers.HttpProvider('https://rpc.testnet.fantom.network/')
 )
 
 const NetworkWeb3 = {
   4: ethWeb3,
-  97: bscWeb3,
-  4002: ftmWeb3
+  97: bscWeb3
 }
 
 const Contract = {
-  4: makeContract(ethWeb3, BridgeABI, BridgeContractAddress[4]),
-  97: makeContract(bscWeb3, BridgeABI, BridgeContractAddress[97]),
-  4002: makeContract(ftmWeb3, BridgeABI, BridgeContractAddress[4002])
+  4: makeContract(ethWeb3, BridgeABI, BRIDGE_ADDRESS[4]),
+  97: makeContract(bscWeb3, BridgeABI, BRIDGE_ADDRESS[97])
 }
 
 const tokens = [
+  {
+    name: 'DEI',
+    decimals: 18,
+    tokenId: '0',
+    balances: {
+      4: '0',
+      97: '0',
+      1: '0',
+      137: '0'
+    },
+    address: {
+      4: '0x43922ea6ef5995e94680000ed9e20b68974cd902',
+      97: '0x15633ea478d0272516b763c25e8e62a9e43ae28a',
+      1: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      137: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+    },
+    icon: '/tokens/dei.svg'
+  },
   {
     name: 'DEUS',
     decimals: 18,
@@ -49,85 +56,22 @@ const tokens = [
     balances: {
       4: '0',
       97: '0',
-      4002: '0'
+     1: '0',
+      137: '0'
     },
     address: {
-      4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
-      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
+      4: '0x63461Bc35341523b319c12a366A9E9af24Eea6Eb',
+      97: '0x1c2a9D1F6284EC5f4424e7FC2f1dAD12822b4e32',
+      1: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
+      137: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
     },
-    icon: 'DEUS.svg'
+    icon: '/tokens/deus.svg'
   },
-  {
-    name: 'DEA',
-    tokenId: '2',
-    decimals: 18,
-    balances: {
-      4: '0',
-      97: '0',
-      4002: '0'
-    },
-    address: {
-      4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
-      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
-    },
-    icon: 'DEA.svg'
-  },
-  {
-    name: 'BPT',
-    tokenId: '3',
-    decimals: 18,
-    balances: {
-      4: '0',
-      97: '0',
-      4002: '0'
-    },
-    address: {
-      4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
-      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
-    },
-    icon: 'BPT.svg'
-  },
-  {
-    name: 'sDEA',
-    tokenId: '4',
-    decimals: 18,
-    balances: {
-      4: '0',
-      97: '0',
-      4002: '0'
-    },
-    address: {
-      4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
-      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
-    },
-    icon: 'sDEA.svg'
-  },
-  {
-    name: 'sDEUS',
-    tokenId: '5',
-    decimals: 18,
-    balances: {
-      4: '0',
-      97: '0',
-      4002: '0'
-    },
-    address: {
-      4: '0xb9B5FFC3e1404E3Bb7352e656316D6C5ce6940A1',
-      97: '0xf93aAFF20124C9fbEDEA364Ea17B33dfEC09b34D',
-      4002: '0xb79201Cb9f758dAb0cacEd4bFADC02D9465b5Cab'
-    },
-    icon: 'sDEUS.svg'
-  }
 ]
 
 const chains = [
-  { name: 'ETH', network: 4, networkName: 'rinkeby', web3: ethWeb3 },
-  { name: 'BSC', network: 97, networkName: 'bsctest', web3: bscWeb3 },
-  { name: 'FTM', network: 4002, networkName: 'ftmtest', web3: ftmWeb3 }
+  { name: 'ETH', network: 1, networkName: 'eth'},
+  { name: 'POLYGON', network: 137, networkName: 'polygon' },
 ]
 
 const instructions = [
@@ -157,8 +101,7 @@ export {
   tokens,
   chains,
   instructions,
-  validNetworks,
-  BridgeContractAddress,
   NetworkWeb3,
-  Contract
+  Contract,
+  blockTimes
 }

@@ -5,6 +5,17 @@
     "exact": true
   },
   {
+    "id": "BRIDGE",
+    "text": "BRIDGE",
+    "path": "/bridge",
+    "exact": true
+  },
+  {
+    "id": "SWAP",
+    "text": "SWAP",
+    "path": "/swap"
+  },
+  {
     "id": "STABLE COIN",
     "text": "STABLE COIN",
     "children": [
@@ -34,11 +45,6 @@
         "path": "/stable/buyback-recollat"
       }
     ]
-  },
-  {
-    "id": "MUON PRESALE",
-    "path": "/muon-presale",
-    "exact": true
   },
   {
     "id": "medium",

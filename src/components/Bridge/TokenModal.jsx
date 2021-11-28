@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactModal from 'react-modal'
+import { BridgeTokens } from '../../constant/token'
 import { chains } from './data'
 if (typeof window !== 'undefined') {
   ReactModal.setAppElement('body')
 }
 const customStyles = {
   overlay: {
+    zIndex: 2,
     backgroundColor: 'rgba(0,0,0,0.5)'
   },
   content: {
@@ -29,14 +31,8 @@ const customStyles = {
 
 const TokenModal = (props) => {
   const { open, hide, changeToken, tokens, tokenId, selectedChain } = props
-  const [chain, setChain] = React.useState('')
+  const [chain, setChain] = React.useState(chains[1])
   const [showTokens, setShowTokens] = React.useState(tokens)
-  // const [checked, setChecked] = React.useState({
-  //   FTM: true,
-  //   ETH: true,
-  //   BSC: true
-  // })
-
   React.useEffect(() => {
     if (tokenId) {
       let result = showTokens.filter((token) => token.tokenId === tokenId)
@@ -59,7 +55,6 @@ const TokenModal = (props) => {
       shouldCloseOnOverlayClick={true}
     >
       <div>
-        {/* <> */}
         <div className="modal-header">
           <div className="modal-title">Select an asset</div>
           <span onClick={closeModal} className="close">
@@ -78,6 +73,7 @@ const TokenModal = (props) => {
                   id={chain.name}
                   name="chainRadio"
                   onChange={() => setChain(chain)}
+                  // checked={chain.name === selectedChain.name}
                   disabled={chain.network === selectedChain}
                 />
                 <label htmlFor={chain.name} className={`${chain.name} pointer`}>
@@ -93,20 +89,17 @@ const TokenModal = (props) => {
           <div className="border-bottom"></div>
           <div className="container-token">
             {chain ? (
-              showTokens.map((token, index) => {
-                return (
-                  <div className="token-list" key={index}>
-                    <div className="token-list-item ">
-                      <img src={`/img/bridge/${token.icon}`} alt={token.icon} />
+              BridgeTokens[Number(chain.network)].map((token, index) => {
 
-                      <div
-                        className="pointer"
-                        onClick={() => {
-                          changeToken(token, chain.network)
-                          closeModal()
-                        }}
-                      >
-                        {token.name}
+                return (
+                  <div className="token-list pointer" key={index} onClick={() => {
+                    changeToken(token, chain.network)
+                    closeModal()
+                  }}>
+                    <div className="token-list-item ">
+                      <img src={`${token.logo}`} alt={token.logo} />
+                      <div>
+                        {token.symbol}
                         <span className="bridge-container-badge-modal">
                           (
                           <span
@@ -118,7 +111,7 @@ const TokenModal = (props) => {
                         </span>
                       </div>
                     </div>
-                    <div>{token.balances[chain.network]}</div>
+                    <div>{tokens[index].balances[chain.network]}</div>
                   </div>
                 )
               })
@@ -127,7 +120,6 @@ const TokenModal = (props) => {
             )}
           </div>
         </div>
-        {/* </div> */}
       </div>
     </ReactModal>
   )

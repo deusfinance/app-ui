@@ -6,10 +6,13 @@ import { WaveLoading } from 'react-loadingg';
 import { useWeb3React } from '@web3-react/core';
 import { isGt, isZero } from '../../../constant/number';
 import Wallets from '../../common/Navbar/Wallets';
+import { addRPC } from '../../../services/addRPC';
+import { NameChainId } from '../../../constant/web3';
+
 
 const errors = {
     NotConnected: "CONNECT WALLET",
-    WrongNetwork: "WRONG NETWORK",
+    SWITCH: "SWITCH TO",
     EMPTY: "ENTER AN AMOUNT",
     INSUFFICIENT: "INSUFFICIENT BALANCE",
     LOADING: "LOADING...",
@@ -26,38 +29,37 @@ const WrapActions = styled.div`
     }
 `
 const ButtonSwap = styled(ButtonSyncActive)`
-  background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
-  color: ${({ theme }) => theme.text1};
-  font-size:${({ fontSize }) => fontSize || "20px"};
+    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
+    color: ${({ theme, txColor }) => txColor ? theme[txColor] : theme.text1_2};
+    font-size:${({ fontSize }) => fontSize || "20px"};
 `
 
 const WrapStep = styled(FlexCenter)`
-margin-top:10px;
+    margin-top:10px;
 `
 
 const CycleNumber = styled(FlexCenter)`
-width:20px;
-height:20px;
-border-radius:20px;
-background: ${({ theme, bgColor, active }) => active ? bgColor ? theme[bgColor] : theme.grad3 : theme.border1};
-/* color: ${({ theme, active }) => active ? theme.text1_2 : theme.text1}; */
-color: ${({ theme, active }) => active ? theme.text1 : theme.text1};
-z-index: 0;
-font-size:12px;
-margin:0 -1px;
+    width:20px;
+    height:20px;
+    border-radius:20px;
+    font-weight:400;
+    background: ${({ theme, bgColor, active }) => active ? bgColor ? theme[bgColor] : theme.grad3 : theme.border1};
+    color: ${({ theme, active, txColor }) => active ? txColor ? theme[txColor] : theme.text1_2 : theme.text1};
+    z-index: 0;
+    font-size:12px;
+    margin:0 -1px;
 `
 const Line = styled.div`
-background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
-height: 2px;
-width: 50%;
+    background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
+    height: 2px;
+    width: 50%;
 `
-const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, validNetworks = [4, 1], handleApprove, handleSwap, bgColor }) => {
+const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapState, TokensMap, isApproved, loading, validNetwork, handleApprove, handleSwap, bgColor, txColor }) => {
 
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
 
     const checkError = () => {
-        if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return errors.EMPTY
         if (TokensMap && isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT
         if (isNaN(amountOut)) return errors.LOADING
@@ -72,11 +74,21 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
     if (!account) {
         return <WrapActions>
             <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
-            <ButtonSwap bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
+            <ButtonSwap txColor={txColor} bgColor={bgColor} active={true} onClick={() => setShowWallets(true)}>
                 CONNECT WALLET
             </ButtonSwap>
         </WrapActions>
     }
+
+    if (chainId && chainId !== validNetwork) {
+        return <WrapActions>
+            <Wallets showWallets={showWallets} setShowWallets={setShowWallets} />
+            <ButtonSwap txColor={txColor} bgColor={bgColor} active={true} onClick={() => addRPC(account, validNetwork)}>
+                SWITCH TO {NameChainId[validNetwork].toUpperCase()}
+            </ButtonSwap>
+        </WrapActions>
+    }
+
 
     if (checkError()) {
         return <WrapActions>
@@ -95,18 +107,18 @@ const SwapAction = ({ text = "SWAP", isPreApproved, amountIn, amountOut, swapSta
     return (<>
         {isPreApproved ?
             <WrapActions>
-                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} bgColor={bgColor}>{text}</ButtonSwap>
+                <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} txColor={txColor} bgColor={bgColor}>{text}</ButtonSwap>
             </WrapActions> : <>
                 <WrapActions>
                     {!isApproved ? <>
-                        <ButtonSwap bgColor={bgColor} active={true} onClick={handleApprove} >
+                        <ButtonSwap txColor={txColor} bgColor={bgColor} active={true} onClick={handleApprove} >
                             APPROVE
                             {loading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="35" height="35" />}
                         </ButtonSwap>
-                        <ButtonSyncDeactivated>{text}</ButtonSyncDeactivated>
+                        <ButtonSyncDeactivated> {text}</ButtonSyncDeactivated>
                     </> : <>
                         <ButtonSyncDeactivated>APPROVED</ButtonSyncDeactivated>
-                        <ButtonSwap bgColor={bgColor} active={true} onClick={handleSwap}>
+                        <ButtonSwap txColor={txColor} bgColor={bgColor} active={true} onClick={handleSwap}>
                             {text}
                         </ButtonSwap>
                     </>

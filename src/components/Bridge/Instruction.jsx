@@ -9,17 +9,17 @@ const Instruction = (props) => {
       {instructions.map((instruction, index) => {
         return <div key={index}>{instruction.title}</div>
       })}
-      <div className="instruction-title mt-20">
+      {/* <div className="instruction-title mt-20">
         If you need more help visit the{' '}
-        <a href="#" className="pink-color" target="_blank">
+        <a href="#" className="blue-color" target="_blank">
           wiki
         </a>{' '}
         or watch this step by step{' '}
-        <a href="#" className="pink-color" target="_blank">
+        <a href="#" className="blue-color" target="_blank">
           explainer video
         </a>
         .
-      </div>
+      </div> */}
     </div>
   )
 }

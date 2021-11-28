@@ -83,7 +83,7 @@ export const rpcConfig = {
             symbol: "BNB",
             decimals: 18,
         },
-        rpcUrls: ["https://bsc-dataseed.binance.org", "https://bsc-dataseed1.defibit.io"],
+        rpcUrls: ["https://bsc-dataseed.binance.org/", "https://bsc-dataseed1.defibit.io/"],
         blockExplorerUrls: ["https://bscscan.com"],
     },
     [ChainId.BSC_TESTNET]: {
@@ -94,7 +94,7 @@ export const rpcConfig = {
             symbol: "BNB",
             decimals: 18,
         },
-        rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545", "https://data-seed-prebsc-2-s1.binance.org:8545"],
+        rpcUrls: ["https://data-seed-prebsc-2-s2.binance.org:8545", "https://data-seed-prebsc-1-s3.binance.org:8545"],
         blockExplorerUrls: ["https://testnet.bscscan.com"],
     },
     [ChainId.HECO]: {

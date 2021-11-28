@@ -33,8 +33,10 @@ export const FeeTitle = styled.span`
     color: #0DB0F4;
 `
 
-export const FeePrice = styled.span`
-    display: block;
+export const FeePrice = styled.div`
+    display: flex;
+    align-items: center;
+    height: 18px;
 `
 
 export const CostBox = ({ type, chainId }) => {

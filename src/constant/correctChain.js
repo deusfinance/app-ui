@@ -41,6 +41,10 @@ export const correctChains = [
     },
     {
         url: "/bridge",
+        chains: [ChainId.ETH,ChainId.MATIC],
+    },
+    {
+        url: "/bridge2",
         chains: [ChainId.RINKEBY, ChainId.BSC_TESTNET],
     },
     {

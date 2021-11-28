@@ -283,6 +283,7 @@ const Dei = () => {
                         <SwapAction
                             bgColor={"grad_dei"}
                             text="BUYBACK"
+                            validNetwork={chainId}
                             isPreApproved={isPreApproved}
                             validNetworks={validNetworks}
                             isApproved={isApproved}
@@ -342,6 +343,7 @@ const Dei = () => {
                         <SwapAction
                             bgColor={"grad_dei"}
                             text="RECOLLATERALIZE"
+                            validNetwork={chainId}
                             isPreApproved={isPreApproved}
                             validNetworks={validNetworks}
                             isApproved={isApproved}

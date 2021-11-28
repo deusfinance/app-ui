@@ -293,7 +293,6 @@ export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price =
 
 
 export const makeDeiRequest = async (path, chainId = 4) => {
-
     return fetcher(baseUrl + path + `?chainId=${chainId}`)
 }
 

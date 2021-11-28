@@ -63,7 +63,7 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         // const minLpAmountToWei = getToWei(minLpAmount, 18).toFixed(0)
         const minLpAmountToWei = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(0, 1)
-        // const minLpAmountToWei = "0" //TODO
+        // const minLpAmountToWei = "0"
         try {
             let path = "/mint-fractional"
             const result = await makeDeiRequest(path, validChainId)
@@ -90,10 +90,10 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         try {
             let result = null
-            if (currency.address !== DEUS_ADDRESS[validChainId] && currency.address !== DEI_ADDRESS[validChainId]) {
-                let path = "/mint-fractional"
-                result = await makeDeiRequest(path, validChainId)
-            }
+            // if (currency.address !== DEUS_ADDRESS[validChainId] && currency.address !== DEI_ADDRESS[validChainId]) {
+                // }
+            let path = "/mint-fractional"
+            result = await makeDeiRequest(path, validChainId)
 
             const amount = await getZapAmountsOut(
                 currency,

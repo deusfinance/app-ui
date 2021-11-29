@@ -174,7 +174,21 @@ export const MINT_PATH = {
       '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       COLLATERAL_ADDRESS[ChainId.ETH]
     ]
-  }
+  },
+  [ChainId.BSC]: { // FIXME: It is not completed yet.
+    DEUS: [DEUS_ADDRESS[ChainId.BSC], DEI_ADDRESS[ChainId.BSC], COLLATERAL_ADDRESS[ChainId.BSC]],
+    DEI: [DEI_ADDRESS[ChainId.BSC], COLLATERAL_ADDRESS[ChainId.BSC]],
+    WETH: [
+      '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+      COLLATERAL_ADDRESS[ChainId.BSC]
+    ],
+    USDC: [COLLATERAL_ADDRESS[ChainId.BSC]],
+    BSC: [
+      '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+      COLLATERAL_ADDRESS[ChainId.BSC]
+    ]
+  },
 }
 //END DEI
 export const BRIDGE_ADDRESS = {

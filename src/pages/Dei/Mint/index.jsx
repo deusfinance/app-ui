@@ -63,8 +63,6 @@ const Dei = () => {
         .filter((token) => !hasProxy || (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
         , [chainId, hasProxy, collatRatio])
 
-    // console.log(tokens);
-
     const pairedTokens = useMemo(() => {
         let pTokens = []
         for (let i = 0; i < tokens.length; i++) {
@@ -112,7 +110,6 @@ const Dei = () => {
     const allowancePairToken = useAllowance(pairToken, contractAddress, chainId)
 
     useEffect(() => {
-        // console.log("called", focusType);
         if (amountIn === "" && focusType === "from1") {
             setAmountOut("")
             setAmountInPair("")
@@ -133,7 +130,6 @@ const Dei = () => {
             getAmountsTokens(debouncedAmountIn, null, null)
         }
         if (focusType === "from2" && amountInPair !== "") {
-            // console.log(amountInPair);
             getAmountsTokens(null, amountInPair, null)
         }
         if (focusType === "to" && amountOut !== "" && debouncedAmountOut === amountOut) {
@@ -147,7 +143,6 @@ const Dei = () => {
 
 
     const getAmountsTokens = async (in1, in2, out) => {
-
         if (deiPrices) {
             const { collateral_price, deus_price } = deiPrices
 
@@ -176,6 +171,7 @@ const Dei = () => {
                     }
                 }
             } else {
+                console.log("proxy");
                 amountIn1 = in1
                 const amountOutProxy = await getAmountOutProxy(swapState.from, amountIn1, deus_price, collateral_price, web3, chainId)
                 setAmountOutParams([amountOutProxy[0], amountOutProxy[1], amountOutProxy[2]])
@@ -189,7 +185,6 @@ const Dei = () => {
 
     useEffect(() => {
         const changeFromTokens = () => {
-            // console.log(tokens);
             let primaryToken = null
             setIsPair(false)
             let salt = 0

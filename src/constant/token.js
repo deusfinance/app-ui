@@ -27,7 +27,7 @@ export const collateralToken = {
     [ChainId.MATIC]: new Token(ChainId.MATIC, COLLATERAL_ADDRESS[ChainId.MATIC], 6, "USDC", "USDC", "/tokens/usdc.svg"),
     [ChainId.ETH]: new Token(ChainId.ETH, COLLATERAL_ADDRESS[ChainId.ETH], 6, "USDC", "USDC", "/tokens/usdc.svg"),
     [ChainId.FTM]: new Token(ChainId.FTM, COLLATERAL_ADDRESS[ChainId.FTM], 6, "USDC", "USDC", "/tokens/usdc.svg"),
-    [ChainId.BSC]: new Token(ChainId.BSC, COLLATERAL_ADDRESS[ChainId.BSC], 6, "USDC", "USDC", "/tokens/usdc.svg"),
+    [ChainId.BSC]: new Token(ChainId.BSC, COLLATERAL_ADDRESS[ChainId.BSC], 18, "USDC", "USDC", "/tokens/usdc.svg"),
 }
 
 export const deiCollateralLpToken = {

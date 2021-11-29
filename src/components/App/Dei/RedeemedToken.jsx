@@ -90,8 +90,8 @@ const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
 const RedeemedToken = ({ title, currencies, chainId }) => {
   let poolData = useRecoilValue(husdPoolDataState)
-  const price1 = poolData ? poolData["redeemCollateralBalances"] : null
-  const price2 = poolData ? poolData["redeemDEUSBalances"] : null
+  const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
+  const redeemDEUSBalances = poolData ? poolData["redeemDEUSBalances"] : null
 
   const { onClaimAll } = useClaimAll(chainId)
 
@@ -111,7 +111,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
   return (
     useMemo(() => {
       return <>
-        {(price1 && price2 && (isGt(price1, 0) || isGt(price2, 0))) && <SmallWrapper>
+        {(redeemCollateralBalances && redeemDEUSBalances && (isGt(redeemCollateralBalances, 0) || isGt(redeemDEUSBalances, 0))) && <SmallWrapper>
           <MyText> {title} </MyText>
           {currencies.map(({ symbol, logo }, index) => {
             return <TokenInfo key={index + logo}>
@@ -120,7 +120,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
               <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
 
               <NumberWrapper color="text1" ml="7px" mr="9px">
-                {index === 0 ? price1 ? parseFloat(price1).toFixed(3) : IMG : price2 ? parseFloat(price2).toFixed(3) : IMG}
+                {index === 0 ? redeemCollateralBalances ? parseFloat(redeemCollateralBalances).toFixed(3) : IMG : redeemDEUSBalances ? parseFloat(redeemDEUSBalances).toFixed(3) : IMG}
               </NumberWrapper>
 
             </TokenInfo>
@@ -129,7 +129,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
           <ButtonSwap active={true} bgColor={"grad_dei"} onClick={handleClaim}> CLAIM ALL </ButtonSwap>
         </SmallWrapper>}
       </>
-    }, [title, currencies, price1, price2, handleClaim])
+    }, [title, currencies, redeemCollateralBalances, redeemDEUSBalances, handleClaim])
   );
 }
 

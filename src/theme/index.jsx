@@ -68,6 +68,7 @@ export function colors(darkMode) {
     ChainId: {
       1: "#4169e1",
       4: "#FFA500",
+      56: "rgb(231, 189, 36)",
       137: "#7951DD",
       250: "linear-gradient(#53D784 0%, #61D4DC 75%)",
     }

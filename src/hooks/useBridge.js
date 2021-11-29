@@ -41,14 +41,10 @@ export const useGetNewClaim = () => {
 
 
 export const useClaim = (muon, lock, setLock, setFetch) => {
-
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
 
-
-
     const handleClaim = useCallback(async (claimTemp, network) => {
-
         const claim = {
             fromChain: claimTemp.fromChain.toString(),
             toChain: claimTemp.toChain.toString(),
@@ -58,8 +54,7 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
             tokenId: claimTemp.tokenId.toString(),
         }
 
-        console.log("claim = ", claim);
-
+        // console.log("claim = ", claim);
 
         if (
             chainId !== network || (lock &&
@@ -122,8 +117,6 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
     }, [lock, setLock, setFetch, muon, account, web3, chainId])
     return { handleClaim }
 }
-
-
 
 export const useDeposit = (amount, swapState) => {
     const { account, chainId } = useWeb3React()

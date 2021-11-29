@@ -57,8 +57,7 @@ export const DEUS_ADDRESS = {
   [ChainId.ETH]: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44'
 }
 
-export const DEI_POOL_ADDRESS = {
-  // DEI Pool library
+export const DEI_POOL_ADDRESS = { // DEI Pool library
   [ChainId.HECO]: '0xAAb7c66d8857bFdC5d7Ff28290E88711BFb00cC0',
   [ChainId.RINKEBY]: '0x5dB942E60E0d38D9bD033bEC2dA83EA132C808E2',
   [ChainId.AVALANCHE]: '0xA2fCe691f555e91663A0Afb9b090Ad5f2Cc15eA1',
@@ -126,8 +125,8 @@ export const DEI_COLLATERAL_STAKING = {
 }
 
 export const DEI_COLLATERAL_ZAP = {
-  [ChainId.ETH]: '',
   [ChainId.MATIC]: "0x30e75E68538c81d0556C8B7a30Ba2eb5Ce0DC80A",
+  [ChainId.ETH]: '',
 }
 
 export const DEI_DEUS_ZAP = {
@@ -146,26 +145,38 @@ export const DEUS_NATIVE_ZAP = {
   [ChainId.ETH]: '0x38C89aE559cc0A2a81aa40D173919Aaa79Dc0bD8',
 }
 
-export const wMaticAddress = "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270" // on matic network
-export const wETHAddress = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619" // on matic network
+export const wMaticAddress = {
+  [ChainId.MATIC]: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+}
+
+export const wETHAddress = {
+  [ChainId.MATIC]: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+  [ChainId.ETH]: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+}
 
 export const TO_MATIC_PATH = {
   [ChainId.MATIC]: {
-    DEUS: [DEUS_ADDRESS[ChainId.MATIC], wMaticAddress],
-    DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress],
-    WETH: [wETHAddress, COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress],
-    USDC: [COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress],
-    MATIC: [wMaticAddress]
+    MATIC: [wMaticAddress[ChainId.MATIC]],
+    DEUS: [DEUS_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
+    DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
+    WETH: [wETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
+    USDC: [COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
+  },
+  [ChainId.ETH]: {
+    WETH: [wETHAddress[ChainId.ETH]],
+    DEUS: [DEUS_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],
+    DEI: [DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],
+    USDC: [COLLATERAL_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],
   },
 }
 
 export const MINT_PATH = {
   [ChainId.MATIC]: {
-    DEUS: [DEUS_ADDRESS[ChainId.MATIC], wMaticAddress, COLLATERAL_ADDRESS[ChainId.MATIC]],
+    DEUS: [DEUS_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
     DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
-    WETH: [ wETHAddress, COLLATERAL_ADDRESS[ChainId.MATIC]],
+    WETH: [ wETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
     USDC: [COLLATERAL_ADDRESS[ChainId.MATIC]],
-    MATIC: [wMaticAddress, wETHAddress, COLLATERAL_ADDRESS[ChainId.MATIC]]
+    MATIC: [wMaticAddress[ChainId.MATIC], wETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]]
   },
   [ChainId.RINKEBY]: {
     DEUS: [DEUS_ADDRESS[ChainId.RINKEBY], DEI_ADDRESS[ChainId.RINKEBY]],

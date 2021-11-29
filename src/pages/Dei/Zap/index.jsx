@@ -118,6 +118,8 @@ const Zap = () => {
     useEffect(() => {
         const get = async () => {
             const result = await getAmountsOut()
+            console.log("getAmountsOut", result);
+            
             if (result === "") {
                 setAmountOut("")
                 setAmountOutParams(null)

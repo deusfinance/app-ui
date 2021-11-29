@@ -163,6 +163,7 @@ export const TO_NATIVE_PATH = {
     USDC: [COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
   },
   [ChainId.ETH]: {
+    ETH: [wETHAddress[ChainId.ETH]],
     WETH: [wETHAddress[ChainId.ETH]],
     DEUS: [DEUS_ADDRESS[ChainId.ETH], DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],
     DEI: [DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],

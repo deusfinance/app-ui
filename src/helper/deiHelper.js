@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js"
 import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, 
-    DEUS_NATIVE_ZAP, MINT_PATH, TO_MATIC_PATH } from "../constant/contracts"
+    DEUS_NATIVE_ZAP, MINT_PATH, TO_NATIVE_PATH } from "../constant/contracts"
 import { isZero } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
@@ -359,7 +359,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
 
 export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
-    const toMaticPath = TO_MATIC_PATH[chainId][currency.symbol]
+    const toMaticPath = TO_NATIVE_PATH[chainId][currency.symbol]
     const { collateral_price, deus_price } = result
 
     if (zapperAddress === DEI_COLLATERAL_ZAP[chainId]) {
@@ -405,7 +405,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
 
 export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual,  web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
-    const toMaticPath = TO_MATIC_PATH[chainId][currency.symbol]
+    const toMaticPath = TO_NATIVE_PATH[chainId][currency.symbol]
     const { collateral_price, deus_price, expire_block, signature } = result
 
     let proxyTuple = []

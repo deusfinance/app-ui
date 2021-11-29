@@ -142,7 +142,7 @@ export const DEUS_NATIVE_ZAP = {
   [ChainId.RINKEBY]: "0x2D6b0130775EE72bAF3e59cc7A82a2CF479a8D8f",
   [ChainId.AVALANCHE]: "0x591832987934843AAa8e868e713A7d35b9c59c71",
   [ChainId.MATIC]: "0x26F0BA461ea8c6185E2Bdb57A1915A0CF1CB197b",
-  [ChainId.ETH]: '0x38C89aE559cc0A2a81aa40D173919Aaa79Dc0bD8',
+  [ChainId.ETH]: '0xd8e79FeC03dd3ca0dCF4d7525d2dC438E8Fc0606',
 }
 
 export const wMaticAddress = {
@@ -154,7 +154,7 @@ export const wETHAddress = {
   [ChainId.ETH]: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
 }
 
-export const TO_MATIC_PATH = {
+export const TO_NATIVE_PATH = {
   [ChainId.MATIC]: {
     MATIC: [wMaticAddress[ChainId.MATIC]],
     DEUS: [DEUS_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
@@ -164,7 +164,7 @@ export const TO_MATIC_PATH = {
   },
   [ChainId.ETH]: {
     WETH: [wETHAddress[ChainId.ETH]],
-    DEUS: [DEUS_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],
+    DEUS: [DEUS_ADDRESS[ChainId.ETH], DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],
     DEI: [DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],
     USDC: [COLLATERAL_ADDRESS[ChainId.ETH], wETHAddress[ChainId.ETH]],
   },
@@ -192,9 +192,9 @@ export const MINT_PATH = {
     DEI: [DEI_ADDRESS[ChainId.RINKEBY], COLLATERAL_ADDRESS[ChainId.RINKEBY]]
   },
   [ChainId.ETH]: {
-    DEUS: [DEUS_ADDRESS[ChainId.ETH], DEI_ADDRESS[ChainId.ETH]],
+    DEUS: [DEUS_ADDRESS[ChainId.ETH], DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH]],
     ETH: [
-      '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+      wETHAddress[ChainId.ETH],
       COLLATERAL_ADDRESS[ChainId.ETH]
     ],
     USDC: [COLLATERAL_ADDRESS[ChainId.ETH]],
@@ -205,7 +205,7 @@ export const MINT_PATH = {
     DEI: [DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH]],
     wBTC: [
       '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-      '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+      wETHAddress[ChainId.ETH],
       COLLATERAL_ADDRESS[ChainId.ETH]
     ]
   }

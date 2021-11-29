@@ -68,7 +68,7 @@ export const StakingConfig = {
       pic2: "/tokens/usdc.svg",
       depositToken: deiCollateralLpToken[ChainId.ETH],
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.ETH],
-      zapperContract: DEI_COLLATERAL_ZAP[ChainId.ETH],
+      zapperContract: null,
       provideLink: "https://curve.fi/factory/47/deposit",
       apy: "50"
     },

@@ -28,15 +28,13 @@ const useTokenBalances = (tokensMap, validChainId) => {
                 }
             })
 
-            console.log(calls);
-            console.log(tokensMap);
-            const result = await multicall(web3, ERC20Abi, calls, validChainId)//TODO chainId
-            console.log(result);
+            const result = await multicall(web3, ERC20Abi, calls, validChainId)
             for (let i = 0; i < result.length; i++) {
                 const balance = result[i];
                 const address = web3.utils.toChecksumAddress(calls[i].address)
-                if( tokensMap[address])
-                tokensMap[address].balance = getFullDisplayBalance(balance, tokensMap[address]?.decimals)
+                if (tokensMap[address]){
+                    tokensMap[address].balance = getFullDisplayBalance(balance, tokensMap[address]?.decimals)
+                }
             }
 
             if (tokensMap["0x"]) {

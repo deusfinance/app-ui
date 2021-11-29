@@ -63,6 +63,8 @@ const Dei = () => {
         .filter((token) => !hasProxy || (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
         , [chainId, hasProxy, collatRatio])
 
+    // console.log(tokens);
+
     const pairedTokens = useMemo(() => {
         let pTokens = []
         for (let i = 0; i < tokens.length; i++) {
@@ -82,9 +84,7 @@ const Dei = () => {
     (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
     ), [tokens])
 
-    // console.log(tokensMap);
     const balances = useTokenBalances(tokensMap, chainId)
-
     const TokensMap = balances
 
     useEffect(() => {
@@ -189,7 +189,7 @@ const Dei = () => {
 
     useEffect(() => {
         const changeFromTokens = () => {
-            console.log(tokens);
+            // console.log(tokens);
             let primaryToken = null
             setIsPair(false)
             let salt = 0

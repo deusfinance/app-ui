@@ -369,13 +369,6 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
         return lpAmount
     }
     else if (zapperAddress === DEUS_NATIVE_ZAP[chainId]) {
-        console.log("amountInToWei", amountInToWei);
-        console.log("deus_price", deus_price);
-        console.log("collateral_price", collateral_price);
-        console.log("erc20Path", erc20Path);
-        console.log("toMaticPath", toMaticPath);
-        console.log("-------------------");
-
         const lpAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOut([amountInToWei, deus_price, collateral_price, 20, [...erc20Path], [...toMaticPath], 0]).call()
@@ -383,17 +376,14 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
     }
 
     if (currency.address === DEUS_ADDRESS[chainId]) {
-        console.log("getAmountOutLPDEUS ", amountInToWei);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOutLPDEUS(amountInToWei).call()
     } else if (currency.address === DEI_ADDRESS[chainId]) {
-        console.log("getAmountOutLPDEI ", amountInToWei, zapperAddress);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOutLPDEI(amountInToWei).call()
     }
-    console.log("getAmountOutLPERC20ORNativecoin ", amountInToWei, result.deus_price, result.collateral_price, erc20Path);
     return getZapContract(web3, zapperAddress, chainId)
         .methods
         .getAmountOutLPERC20ORNativecoin(amountInToWei, result.deus_price, result.collateral_price, erc20Path).call()
@@ -433,19 +423,16 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
         ]
     if (zapperAddress === DEI_DEUS_ZAP[chainId]) {
         if (currency.address === "0x") {
-            // console.log("zapInNativecoin ", amountIn, minLpAmount, transferResidual);
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .zapInNativecoin(proxyTuple, minLpAmount, erc20Path, transferResidual)
         }
         else if (currency.address === DEUS_ADDRESS[chainId]) {
-            // console.log("zapInDEUS ", amountIn, minLpAmount, transferResidual);
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .zapInDEUS(amountIn, minLpAmount, transferResidual)
         }
         else if (currency.address === DEI_ADDRESS[chainId]) {
-            // console.log("zapInDEI ", amountIn, minLpAmount, transferResidual);
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .zapInDEI(amountIn, minLpAmount, transferResidual)
@@ -461,24 +448,15 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
                 .methods
                 .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, toMaticPath, erc20Path, amountOutParams[4])
         }
-        console.log("minLpAmount", minLpAmount)
-        console.log("transferResidual", transferResidual)
-        console.log("proxyTuple", proxyTuple)
-        console.log("toMaticPath", toMaticPath)
-        console.log("erc20Path", erc20Path)
-        console.log("amountOutParams[4]", amountOutParams[4])
-
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInERC20(minLpAmount, transferResidual, proxyTuple, toMaticPath, erc20Path, amountOutParams[4])
     } else {
         if (currency.address === "0x") {
-            // console.log(erc20Path, minLpAmount, transferResidual);
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
         }
-        // console.log(erc20Path, amountIn, minLpAmount, transferResidual, amountOutParams[4]);
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInERC20(amountIn, minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])

@@ -21,23 +21,24 @@ const NameItemsDiv = styled.div`
     border-radius: 6px;
     cursor: pointer;
     opacity: 0.5;
-    border: 1px solid ${({ row, currRow }) => (row === currRow) ? "black" : "transparent"};
-    opacity: ${({ row, currRow }) => (row === currRow) && "1"};
-    background: ${({ theme, row, currRow }) => (row === currRow) && theme.ChainId[row]};
+    opacity: ${({ chain, currRow }) => (chain === currRow) && "1"};
+    color: ${({ chain, currRow }) => (chain === currRow) ? "#000" : "#FFF"};
+    font-weight: ${({ chain, currRow }) => (chain === currRow) ? "600" : "normal"};
+    background: ${({ theme, chain, currRow }) => (chain === currRow) && theme.ChainId[chain]};
+    border: 1px solid ${({ chain, currRow }) => (chain === currRow) ? "black" : "transparent"};
 `
 
 const SelectBox = ({ currRow, validNetworks, account, web3 }) => {
-    const rows = validNetworks
+    const networks = validNetworks
     return (<MainItemsDiv>
-        {rows.map((row, id) => {
-            return <span key={id} onClick={() => addRPC(account, row, web3)}>
-                <NameItemsDiv row={row} currRow={currRow}>
-                    {NameChainId[row].toUpperCase()}
+        {networks.map((chain, id) => {
+            return <span key={id} onClick={() => addRPC(account, chain, web3)}>
+                <NameItemsDiv chain={chain} currRow={currRow}>
+                    {NameChainId[chain].toUpperCase()}
                 </NameItemsDiv>
             </span>
         })}
     </MainItemsDiv>
-
     );
 }
 

@@ -38,11 +38,6 @@
         "id": "FARMS",
         "text": "FARMS",
         "path": "/stable/farms"
-      },
-      {
-        "id": "BUYBACK & RECOLLAT",
-        "text": "BUYBACK & RECOLLAT",
-        "path": "/stable/buyback-recollat"
       }
     ]
   },

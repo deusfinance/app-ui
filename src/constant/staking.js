@@ -18,10 +18,6 @@ export const urls = [{
   name: 'Farms',
   link: '/stable/farms'
 },
-{
-  name: 'Buyback & Recollateralize',
-  link: '/stable/buyback-recollat'
-},
 ]
 
 export const StakingConfig = {

@@ -313,7 +313,7 @@ export const getAmountOutDeusSwap = async (fromCurrency, amountIn, deus_price, c
     const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
     let method = ""
     let params = [amountInToWei, deusPriceWei, collateralPriceWei]
-    console.log(chainId, amountInToWei);
+    // console.log(chainId, amountInToWei);
 
     const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
 
@@ -327,7 +327,7 @@ export const getAmountOutDeusSwap = async (fromCurrency, amountIn, deus_price, c
         }
         params.push(erc20Path)
     }
-    console.log(method, params);
+    // console.log(method, params);
     return getDeusSwapContract(web3, chainId).methods[method](...params).call()
 }
 
@@ -338,7 +338,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
     const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
     let method = ""
     let params = [amountInToWei, deusPriceWei, collateralPriceWei]
-    console.log(chainId, amountInToWei);
+    // console.log(chainId, amountInToWei);
 
     const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
 
@@ -352,7 +352,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
         }
         params.push(erc20Path)
     }
-    console.log(method, params);
+    // console.log(method, params);
     return getNewProxyMinterContract(web3, chainId).methods[method](...params).call()
 }
 
@@ -369,7 +369,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
         return lpAmount
     }
     else if (zapperAddress === DEUS_NATIVE_ZAP[chainId]) {
-        console.log("getZapAmountsOut", amountInToWei, deus_price, collateral_price, erc20Path, toNativePath);
+        // console.log("getZapAmountsOut", amountInToWei, deus_price, collateral_price, erc20Path, toNativePath);
 
         const lpAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods

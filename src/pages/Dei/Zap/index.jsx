@@ -173,7 +173,7 @@ const Zap = () => {
             const tx = await onZap()
             setSwapLoading(false)
             if (tx.status) {
-                console.log("swap did");
+                // console.log("swap did");
                 setAmountIn("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {

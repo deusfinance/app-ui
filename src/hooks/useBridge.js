@@ -88,7 +88,8 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
                     hashTimestamp: false
                 })
                 .call()
-            // console.log("muonResponse", muonResponse)
+            console.log("muonResponse", muonResponse)
+            console.log("res", muonResponse.data.result)
             let { sigs, reqId } = muonResponse
             let currentBlockNo = muonResponse.data.result.currentBlockNo
             setLock(claim)

@@ -121,6 +121,12 @@ export const BridgeTokens = {
         { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.ETH], decimals: 18,id:"0",  chainId: ChainId.ETH },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ETH], decimals: 18, id:"1", chainId: ChainId.ETH },
     ],
+    [ChainId.RINKEBY]: [
+        { logo: "/tokens/dei.svg", symbol: "TT", address: "0x4b16E272421FD67E6D41a14ac27789AB2AFE7bcb", decimals: 18, id: "2", chainId: ChainId.RINKEBY },
+    ],
+    [ChainId.BSC_TESTNET]: [
+        { logo: "/tokens/dei.svg", symbol: "TT", address: "0x39a571d0FF892aF5e5780AF286f5152784d15A9f", decimals: 18, id: "2", chainId: ChainId.BSC_TESTNET },
+    ],
 }
 
 export const isNative = (address, chainId) => {

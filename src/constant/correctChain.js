@@ -16,7 +16,7 @@ export const correctChains = [
     },
     {
         url: "/stable",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.FTM,ChainId.BSC],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC],
     },
     {
         url: "/migrator",
@@ -24,7 +24,7 @@ export const correctChains = [
     },
     {
         url: "/bridge",
-        chains: [ChainId.ETH, ChainId.MATIC,ChainId.BSC,ChainId.FTM],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.RINKEBY],
     },
     {
         url: "/not-found",

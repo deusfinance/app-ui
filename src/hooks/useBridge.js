@@ -22,20 +22,30 @@ export const useGetNewClaim = () => {
     // }
     const ethWeb3 = useCrossWeb3(ChainId.ETH)
     const bscWeb3 = useCrossWeb3(ChainId.BSC)
+    const rinkebyWeb3 = useCrossWeb3(ChainId.BSC_TESTNET)
+    const bscTestWeb3 = useCrossWeb3(ChainId.RINKEBY)
     const ftmWeb3 = useCrossWeb3(ChainId.FTM)
     const polygonWeb3 = useCrossWeb3(ChainId.MATIC)
+    const web3s = {
+        [ChainId.ETH]: ethWeb3,
+        [ChainId.FTM]: ftmWeb3,
+        [ChainId.MATIC]: polygonWeb3,
+        [ChainId.BSC]: bscWeb3,
+        [ChainId.RINKEBY]: rinkebyWeb3,
+        [ChainId.BSC_TESTNET]: bscTestWeb3,
+    }
 
     const getClaim = useCallback(async () => {
-        const networks = [ChainId.ETH, ChainId.BSC,ChainId.FTM,ChainId.MATIC]
-        if (account && ethWeb3 && bscWeb3 && polygonWeb3 && ftmWeb3) {
+        const networks = Object.keys(web3s)
+        if (account && ethWeb3 && bscWeb3 && polygonWeb3 && ftmWeb3 && rinkebyWeb3 && bscTestWeb3) {
             try {
-                  return await getClaimTokens(networks, account, { [ChainId.ETH]: ethWeb3,[ChainId.FTM]:ftmWeb3,[ChainId.MATIC]:polygonWeb3 ,[ChainId.BSC]: bscWeb3 })
+                return await getClaimTokens(networks, account,)
             } catch (error) {
                 console.log(error, 'getClaimTokens');
                 return []
             }
         }
-    }, [account, ethWeb3, bscWeb3,ftmWeb3,polygonWeb3, fastRefresh]) // eslint-disable-line
+    }, [account, ethWeb3, bscWeb3, ftmWeb3, polygonWeb3, rinkebyWeb3, bscTestWeb3, fastRefresh]) // eslint-disable-line
     return { getClaim }
 }
 

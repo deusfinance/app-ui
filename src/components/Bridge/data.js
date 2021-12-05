@@ -15,7 +15,7 @@ const tokens = [
     decimals: 18,
     tokenId: '0',
     balances: {
-        56: '0',
+      56: '0',
       250: '0',
       1: '0',
       137: '0'
@@ -35,7 +35,7 @@ const tokens = [
     balances: {
       56: '0',
       250: '0',
-     1: '0',
+      1: '0',
       137: '0'
     },
     address: {
@@ -71,12 +71,12 @@ const tokens = [
 ]
 
 const chains = [
-  { name: 'ETH', network: ChainId.ETH, networkName: 'eth'},
+  { name: 'ETH', network: ChainId.ETH, networkName: 'eth' },
   { name: 'POLYGON', network: ChainId.MATIC, networkName: 'polygon' },
   { name: 'BSC', network: ChainId.BSC, networkName: 'bsc' },
   { name: 'FTM', network: ChainId.FTM, networkName: 'ftm' },
-  { name: 'BSC_TESTNET', network: ChainId.FTM, networkName: 'bsc test' },
-  { name: 'RINKEBY', network: ChainId.FTM, networkName: 'rinkeby' },
+  { name: 'BSC_TESTNET', network: ChainId.BSC_TESTNET, networkName: 'bsc test' },
+  { name: 'RINKEBY', network: ChainId.RINKEBY, networkName: 'rinkeby' },
 ]
 
 const instructions = [
@@ -102,4 +102,4 @@ const instructions = [
   }
 ]
 
-export { tokens,  chains, instructions, blockTimes }
+export { tokens, chains, instructions, blockTimes }

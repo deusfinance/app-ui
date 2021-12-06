@@ -48,9 +48,9 @@ const Bridge = () => {
 
     const [amountOut, setAmountOut] = useState("")
     const contractAddress = BRIDGE_ADDRESS[syncChainId]
-    // console.log(contractAddress, chainId, swapState);
     const allowance = useAllowance(swapState.from, contractAddress, syncChainId)
-
+    
+    // console.log(contractAddress, chainId, swapState);
 
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -120,13 +120,16 @@ const Bridge = () => {
         setOpen(true)
     }
 
-    //TODO
+
     const changeToken = (token, chainId) => {
-        const other = target === "from" ? "to" : "from"
-        setSwapState((prev) => ({
-            [other]: BridgeTokens[prev[other].chainId === chainId ? chainId === 1 ? 137 : 1 : prev[other].chainId].filter(t => t.id === token.id)[0],
-            [target]: { ...token }
-        }))
+        const type = target
+        setSwapState({ ...swapState, [type]: token })
+
+        // const other = target === "from" ? "to" : "from"
+        // setSwapState((prev) => ({
+        //     [other]: BridgeTokens[prev[other].chainId === chainId ? chainId === 1 ? 137 : 1 : prev[other].chainId].filter(t => t.id === token.id)[0],
+        //     [target]: { ...token }
+        // }))
     }
 
 

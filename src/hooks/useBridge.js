@@ -15,15 +15,15 @@ import { formatBalance3 } from '../utils/utils'
 export const useGetNewClaim = () => {
     const { account } = useWeb3React()
     const { fastRefresh } = useRefresh()
-    //idn why but it tried to use the same state twice
+    //idk why but it tried to use the same state twice
     // const web3s = {
     //     4: useCrossWeb3(4),
     //     97: useCrossWeb3(97)
     // }
     const ethWeb3 = useCrossWeb3(ChainId.ETH)
     const bscWeb3 = useCrossWeb3(ChainId.BSC)
-    const rinkebyWeb3 = useCrossWeb3(ChainId.BSC_TESTNET)
-    const bscTestWeb3 = useCrossWeb3(ChainId.RINKEBY)
+    const rinkebyWeb3 = useCrossWeb3(ChainId.RINKEBY)
+    const bscTestWeb3 = useCrossWeb3(ChainId.BSC_TESTNET)
     const ftmWeb3 = useCrossWeb3(ChainId.FTM)
     const polygonWeb3 = useCrossWeb3(ChainId.MATIC)
     const web3s = {
@@ -39,7 +39,7 @@ export const useGetNewClaim = () => {
         const networks = Object.keys(web3s)
         if (account && ethWeb3 && bscWeb3 && polygonWeb3 && ftmWeb3 && rinkebyWeb3 && bscTestWeb3) {
             try {
-                return await getClaimTokens(networks, account,)
+                return await getClaimTokens(networks, account, web3s)
             } catch (error) {
                 console.log(error, 'getClaimTokens');
                 return []

@@ -17,18 +17,17 @@ export const ChainId = {
 export const NameChainId = {
     1: "ETH",
     2: "Ropsten",
-    4: "Rinkeby",
+    4: "RINKEBY",
     100: "xDAI",
     250: "FTM",
     4002: "FTMT",
     56: "BSC",
     128: "HECO",
     256: "HECOT",
-    97: "BSCT",
+    97: "BSCTEST",
     137: "POLYGON",
     43114: "AVALANCHE"
 }
-
 
 
 export const rpcConfig = {

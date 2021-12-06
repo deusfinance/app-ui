@@ -88,31 +88,46 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
         })
 
         try {
+            // const muonResponse = await muon
+            //     .app('eth')
+            //     .method('call', {
+            //         address: BRIDGE_ADDRESS[Number(claim.fromChain)],
+            //         method: 'getTx',
+            //         params: [claim.txId],
+            //         abi,
+            //         network: networkName,
+            //         hashTimestamp: false
+            //     })
+            //     .call()
             const muonResponse = await muon
-                .app('eth')
-                .method('call', {
-                    address: BRIDGE_ADDRESS[Number(claim.fromChain)],
-                    method: 'getTx',
-                    params: [claim.txId],
-                    abi,
-                    network: networkName,
-                    hashTimestamp: false
+                .app('deus_bridge')
+                .method('claim', {
+                    depositAddress: BRIDGE_ADDRESS[Number(claim.fromChain)],
+                    depositTxId: claim.txId,
+                    depositNetwork: networkName
                 })
                 .call()
             console.log("muonResponse", muonResponse)
             console.log("res", muonResponse.data.result)
             let { sigs, reqId } = muonResponse
-            let currentBlockNo = muonResponse.data.result.currentBlockNo
+            // let currentBlockNo = muonResponse.data.result.currentBlockNo
             setLock(claim)
-            console.log("chainId = ", getBridgeContract[chainId]);
+            console.log(account,
+                claim.amount,
+                Number(claim.fromChain),
+                Number(claim.toChain),
+                claim.tokenId,
+                claim.txId,
+                reqId,
+                sigs);
             const fn = getBridgeContract(web3, chainId).methods.claim(
                 account,
                 claim.amount,
                 Number(claim.fromChain),
                 Number(claim.toChain),
                 claim.tokenId,
-                currentBlockNo,
-                claim.txBlockNo,
+                // currentBlockNo,
+                // claim.txBlockNo,
                 claim.txId,
                 reqId,
                 sigs

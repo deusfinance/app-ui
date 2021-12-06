@@ -40,7 +40,8 @@ const Bridge = () => {
     const tokenIndex = 0
     const [swapState, setSwapState] = useState({
         from: BridgeTokens[syncChainId][tokenIndex],
-        to: BridgeTokens[syncChainId === ChainId.ETH ? ChainId.MATIC : ChainId.ETH][tokenIndex],
+        // to: BridgeTokens[syncChainId === ChainId.ETH ? ChainId.MATIC : ChainId.ETH][tokenIndex],
+        to: "",
     })
 
     const [amountIn, setAmountIn] = useState("")
@@ -123,10 +124,7 @@ const Bridge = () => {
 
     const changeToken = (token, chainId) => {
         const type = target
-        // console.log(target, token, chainId);
-        // console.log(swapState);
         setSwapState({ ...swapState, [type]: { ...token } })
-        // console.log(swapState);
 
         // const other = target === "from" ? "to" : "from"
         // setSwapState((prev) => ({

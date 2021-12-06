@@ -2,10 +2,10 @@ import { BRIDGE_ADDRESS } from "../constant/contracts"
 import { getBridgeContract, } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import multicall from "./multicall"
-import BridgeABI from '../config/abi/BridgeABI.json'
+// import BridgeABI from '../config/abi/BridgeABI.json'
+import BridgeABI from '../config/abi/NewBridgeABI.json'
 import { blockTimes } from "../components/Bridge/data"
 import { forEach } from "lodash"
-
 
 export const deposit = (amount, fromCurrency, toCurrency, web3) => {
     const amountWie = getToWei(amount, fromCurrency.decimals).toFixed(0)
@@ -73,7 +73,7 @@ export const getClaimTokens = async (networks, account, web3s) => {
         for (let k = 0; k < pendingClaimTxs.length; k++) {
             const tx = {
                 address: BRIDGE_ADDRESS[chainId],
-                name: "txs",
+                name: "getTransaction",
                 params: [pendingClaimTxs[k]]
             }
             Txs.push(tx)

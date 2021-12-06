@@ -102,7 +102,7 @@ const Bridge = () => {
     useEffect(() => {
         const get = async () => {
             const claims = await getClaim()
-            console.log("claims", claims);
+            // console.log("claims", claims);
             setClaims(claims)
         }
         if (account) {
@@ -123,7 +123,10 @@ const Bridge = () => {
 
     const changeToken = (token, chainId) => {
         const type = target
-        setSwapState({ ...swapState, [type]: token })
+        // console.log(target, token, chainId);
+        // console.log(swapState);
+        setSwapState({ ...swapState, [type]: { ...token } })
+        // console.log(swapState);
 
         // const other = target === "from" ? "to" : "from"
         // setSwapState((prev) => ({
@@ -162,7 +165,7 @@ const Bridge = () => {
         try {
             const tx = await onDeposit()
             if (tx.status) {
-                console.log("swap did");
+                // console.log("swap did");
                 setAmountIn("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {

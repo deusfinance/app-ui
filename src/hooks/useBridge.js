@@ -5,7 +5,8 @@ import useRefresh from './useRefresh'
 import { deposit, getClaimTokens } from '../helper/bridgeHelper'
 import { SendWithToast } from '../helper/deiHelper'
 import { fromWei } from '../helper/formatBalance'
-import BridgeABI from '../config/abi/BridgeABI.json'
+// import BridgeABI from '../config/abi/BridgeABI.json'
+import BridgeABI from '../config/abi/NewBridgeABI.json'
 import { BRIDGE_ADDRESS } from '../constant/contracts'
 import { ChainId, NameChainId } from '../constant/web3'
 import { getBridgeContract } from '../helper/contractHelpers'
@@ -60,7 +61,7 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
             toChain: claimTemp.toChain.toString(),
             txId: claimTemp.txId.toString(),
             amount: claimTemp.amount.toString(),
-            txBlockNo: claimTemp.txBlockNo.toString(),
+            // txBlockNo: claimTemp.txBlockNo.toString(),
             tokenId: claimTemp.tokenId.toString(),
         }
 
@@ -133,7 +134,7 @@ export const useDeposit = (amount, swapState) => {
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
     const onDeposit = useCallback(async () => {
-        console.log(amount, swapState);
+        // console.log(amount, swapState);
         if (chainId !== swapState.from.chainId || !swapState.to.chainId || !account || amount === '0' || amount === '') return
 
         try {

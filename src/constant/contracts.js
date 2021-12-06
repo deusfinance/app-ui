@@ -161,6 +161,7 @@ export const TO_NATIVE_PATH = {
     DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
     WETH: [wETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
     USDC: [COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
+    WBTC: ["0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6", COLLATERAL_ADDRESS[ChainId.MATIC], wMaticAddress[ChainId.MATIC]],
   },
   [ChainId.ETH]: {
     ETH: [wETHAddress[ChainId.ETH]],
@@ -177,7 +178,8 @@ export const MINT_PATH = {
     DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
     WETH: [ wETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
     USDC: [COLLATERAL_ADDRESS[ChainId.MATIC]],
-    MATIC: [wMaticAddress[ChainId.MATIC], wETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]]
+    MATIC: [wMaticAddress[ChainId.MATIC], wETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
+    WBTC: ["0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6", COLLATERAL_ADDRESS[ChainId.MATIC]],
   },
   [ChainId.RINKEBY]: {
     DEUS: [DEUS_ADDRESS[ChainId.RINKEBY], DEI_ADDRESS[ChainId.RINKEBY]],

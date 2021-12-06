@@ -75,6 +75,11 @@ const Zap = () => {
         })
     }, [tokens, currChain])
 
+    //change zapper contract when chainId changed
+    useEffect(() => {
+        setStakingInfo(availableStaking[lpIndex])
+    }, [availableStaking, lpIndex])
+
     const balances = useTokenBalances(tokensMap, currChain)
 
     const TokensMap = tokensMap

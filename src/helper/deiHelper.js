@@ -13,6 +13,12 @@ const baseUrl = "https://oracle4.deus.finance/dei"
 
 export const dollarDecimals = 6
 export const collatUsdPrice = "1000000"
+const LENGTH_COLLAT = {}
+
+const COLLAT_PRICE = {
+    [ChainId.BSC_TESTNET]: "1000000000000000000",
+    [ChainId.BSC]: "1000000000000000000",
+}
 
 export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
@@ -113,16 +119,22 @@ export const getStakingTokenData = (conf, account) => {
     ]
 }
 export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account) => {
+    const LEN = LENGTH_COLLAT[chainId] ?? 3
+    let collaterals = []
+    for (let i = 0; i < LEN; i++) {
+        collaterals.push(COLLAT_PRICE[chainId] ?? collat_usd_price);
+    }
+    
     let calls = [
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'collatDollarBalance',
-            params: [collat_usd_price],
+            params: [COLLAT_PRICE[chainId] ?? collat_usd_price],
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'availableExcessCollatDV',
-            params: [[collat_usd_price, collat_usd_price]]
+            params: [collaterals]
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -285,9 +297,16 @@ export const getClaimAll = async (account, web3, chainId = ChainId.ETH) => {
 
 //READ FUNCTIONS
 export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price = collatUsdPrice) => {
+    const LEN = LENGTH_COLLAT[chainId] ?? 3
+    let collaterals = []
+    for (let i = 0; i < LEN; i++) {
+        // console.log(COLLAT_PRICE[chainId], collat_usd_price);
+        collaterals.push(COLLAT_PRICE[chainId] ?? collat_usd_price);
+    }
+
     return getDeiContract(web3, chainId)
         .methods
-        .dei_info([collat_usd_price, collat_usd_price])
+        .dei_info(collaterals)
         .call()
 }
 

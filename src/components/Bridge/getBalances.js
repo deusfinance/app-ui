@@ -22,8 +22,8 @@ const useTokenBalances = (chains, tokens, fetchData) => {
     [ChainId.FTM]: ftmWeb3,
     [ChainId.MATIC]: polygonWeb3,
     [ChainId.BSC]: bscWeb3,
-    [ChainId.RINKEBY]: rinkebyWeb3,
-    [ChainId.BSC_TESTNET]: bscTestWeb3,
+    // [ChainId.RINKEBY]: rinkebyWeb3,
+    // [ChainId.BSC_TESTNET]: bscTestWeb3,
   }
   useEffect(() => {
     const fetchBalances = async () => {

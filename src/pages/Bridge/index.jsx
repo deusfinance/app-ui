@@ -37,15 +37,15 @@ const Bridge = () => {
 
     const tokensBalance = useTokenBalances(chains, tokens, fetch)
 
-    const getAnotherChainId = () => {
-        let residualChains = validNetworks.filter((a) => a !== syncChainId);
+    const getAnotherChainId = (myChainId) => {
+        let residualChains = validNetworks.filter((a) => a !== myChainId);
         return residualChains[0]
     }
 
     const tokenIndex = 0
     const [swapState, setSwapState] = useState({
         from: BridgeTokens[syncChainId][tokenIndex],
-        to: BridgeTokens[getAnotherChainId()][tokenIndex],
+        to: BridgeTokens[getAnotherChainId(syncChainId)][tokenIndex],
     })
 
     const [amountIn, setAmountIn] = useState("")
@@ -124,15 +124,14 @@ const Bridge = () => {
 
 
     const changeToken = (token, chainId) => {
-        const type = target
-        setSwapState({ ...swapState, [type]: { ...token } })
-
-        // const other = target === "from" ? "to" : "from"
-        // setSwapState((prev) => ({
-            // [target]: { ...token },
-            // [other]: BridgeTokens[prev[other].chainId === chainId ? chainId === 1 ? 137 : 1 : prev[other].chainId].filter(t => t.id === token.id)[0],
-            // [other]: BridgeTokens[getAnotherChainId()].filter(t => t.id === token.id)[0],
-        // }))
+        // const type = target
+        // setSwapState({ ...swapState, [type]: { ...token } })
+        
+        const other = target === "from" ? "to" : "from"
+        setSwapState((prev) => ({
+            [target]: { ...token },
+            [other]: BridgeTokens[prev[other].chainId === chainId ? getAnotherChainId(chainId) : prev[other].chainId].filter(t => t.id === token.id)[0],
+        }))
     }
 
 

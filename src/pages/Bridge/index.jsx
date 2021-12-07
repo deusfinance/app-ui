@@ -37,11 +37,15 @@ const Bridge = () => {
 
     const tokensBalance = useTokenBalances(chains, tokens, fetch)
 
+    const getAnotherChainId = () => {
+        let residualChains = validNetworks.filter((a) => a !== syncChainId);
+        return residualChains[0]
+    }
+
     const tokenIndex = 0
     const [swapState, setSwapState] = useState({
         from: BridgeTokens[syncChainId][tokenIndex],
-        to: "",
-        // to: BridgeTokens[syncChainId === ChainId.ETH ? ChainId.MATIC : ChainId.ETH][tokenIndex],
+        to: BridgeTokens[getAnotherChainId()][tokenIndex],
     })
 
     const [amountIn, setAmountIn] = useState("")
@@ -50,8 +54,6 @@ const Bridge = () => {
     const [amountOut, setAmountOut] = useState("")
     const contractAddress = BRIDGE_ADDRESS[syncChainId]
     const allowance = useAllowance(swapState.from, contractAddress, syncChainId)
-    
-    // console.log(contractAddress, chainId, swapState);
 
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -103,7 +105,6 @@ const Bridge = () => {
     useEffect(() => {
         const get = async () => {
             const claims = await getClaim()
-            // console.log("claims", claims);
             setClaims(claims)
         }
         if (account) {
@@ -128,8 +129,9 @@ const Bridge = () => {
 
         // const other = target === "from" ? "to" : "from"
         // setSwapState((prev) => ({
-        //     [other]: BridgeTokens[prev[other].chainId === chainId ? chainId === 1 ? 137 : 1 : prev[other].chainId].filter(t => t.id === token.id)[0],
-        //     [target]: { ...token }
+            // [target]: { ...token },
+            // [other]: BridgeTokens[prev[other].chainId === chainId ? chainId === 1 ? 137 : 1 : prev[other].chainId].filter(t => t.id === token.id)[0],
+            // [other]: BridgeTokens[getAnotherChainId()].filter(t => t.id === token.id)[0],
         // }))
     }
 

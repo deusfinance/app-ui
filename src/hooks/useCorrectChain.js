@@ -4,7 +4,8 @@ import useChain from './useChain'
 
 const useCorrectChain = () => {
     const location = useLocation()
-    const validNetworks = getCorrectChains(location.pathname)
+    let validNetworks = getCorrectChains(location.pathname)
+    validNetworks = validNetworks.filter((a) => a);
     const chainId = useChain(validNetworks)
     return { validNetworks, chainId }
 }

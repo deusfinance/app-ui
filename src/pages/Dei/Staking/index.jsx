@@ -3,6 +3,7 @@ import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
 import { Type } from '../../../components/App/Text';
 import { useDeiUpdateRedeem } from '../../../hooks/useDei';
+import { useWeb3React } from '@web3-react/core';
 import Staking from '../../../components/App/Dei/Staking/Staking';
 import { StakingConfig } from '../../../constant/staking';
 import styled from 'styled-components';
@@ -39,7 +40,8 @@ const MainWrapper = styled.div`
 const Dei = () => {
     const location = useLocation()
     const validNetworks = getCorrectChains(location.pathname)
-    const chainId = useChain(validNetworks)
+    // const chainId = useChain(validNetworks)
+    const { chainId } = useWeb3React()
     useDeiUpdateRedeem(chainId)
     // const APY = useAPY(chainId)
 
@@ -47,11 +49,15 @@ const Dei = () => {
         <MainWrapper>
             <Type.XL fontWeight="300" mb="3">Farms</Type.XL>
             <Type.MD fontWeight="300" mb="4" opacity="0.5">Stake LP tokens to earn.</Type.MD>
-            <StakingContainer>
-                <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={StakingConfig[chainId][0].apy} />
-                <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={StakingConfig[chainId][1].apy} />
-                <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2].apy} />
-            </StakingContainer>
+            {StakingConfig[chainId] &&
+                <StakingContainer>
+                    <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={StakingConfig[chainId][0].apy} />
+                    <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={StakingConfig[chainId][1].apy} />
+                    <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2].apy} />
+                </StakingContainer>}
+            {!StakingConfig[chainId] && 
+                <Type.LG fontWeight="300" mb="4" opacity="0.5">Not available in this chain.</Type.LG>
+            }
         </MainWrapper>
 
         <div className='tut-left-wrap'>

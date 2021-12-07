@@ -119,9 +119,9 @@ export const getStakingTokenData = (conf, account) => {
         }
     ]
 }
+
 export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account) => {
-   
-    const LEN = LENGTH_COLLAT[chainId] ?? 2
+    const LEN = LENGTH_COLLAT[chainId] ?? 3
     let collaterals = []
     for (let i = 0; i < LEN; i++) {
         collaterals.push(COLLAT_PRICE[chainId]??collat_usd_price);
@@ -299,12 +299,13 @@ export const getClaimAll = async (account, web3, chainId = ChainId.ETH) => {
 
 //READ FUNCTIONS
 export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price = collatUsdPrice) => {
-    const LEN = LENGTH_COLLAT[chainId] ?? 2
+    const LEN = LENGTH_COLLAT[chainId] ?? 3
     let collaterals = []
     for (let i = 0; i < LEN; i++) {
+        // console.log(COLLAT_PRICE[chainId], collat_usd_price);
         collaterals.push(COLLAT_PRICE[chainId]??collat_usd_price);
     }
-    
+
     return getDeiContract(web3, chainId)
         .methods
         .dei_info(collaterals)

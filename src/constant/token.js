@@ -34,6 +34,8 @@ export const deiCollateralLpToken = {
     [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_COLLATERAL_LP[ChainId.RINKEBY], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
     [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_COLLATERAL_LP[ChainId.MATIC], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
     [ChainId.ETH]: new Token(ChainId.ETH, DEI_COLLATERAL_LP[ChainId.ETH], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
+    [ChainId.FTM]: new Token(ChainId.FTM, DEI_COLLATERAL_LP[ChainId.FTM], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
+    [ChainId.BSC]: new Token(ChainId.BSC, DEI_COLLATERAL_LP[ChainId.BSC], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
 }
 
 export const deiDeusLpToken = {
@@ -41,12 +43,15 @@ export const deiDeusLpToken = {
     [ChainId.HECO]: new Token(ChainId.HECO, DEI_DEUS_LP[ChainId.HECO], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_DEUS_LP[ChainId.MATIC], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.ETH]: new Token(ChainId.ETH, DEI_DEUS_LP[ChainId.ETH], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
+    [ChainId.FTM]: new Token(ChainId.FTM, DEI_DEUS_LP[ChainId.FTM], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
+    [ChainId.BSC]: new Token(ChainId.BSC, DEI_DEUS_LP[ChainId.BSC], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
 }
 
 export const DeusNativeLpToken = {
     [ChainId.MATIC]: new Token(ChainId.MATIC, DEUS_NATIVE_LP[ChainId.MATIC], 18, "DEUS-MATIC LP", "DEUS-MATIC LP", "/tokens/deus.svg"),
     [ChainId.ETH]: new Token(ChainId.ETH, DEUS_NATIVE_LP[ChainId.ETH], 18, "DEUS-ETH LP", "DEUS-ETH LP", "/tokens/deus.svg"),
     [ChainId.FTM]: new Token(ChainId.FTM, DEUS_NATIVE_LP[ChainId.FTM], 18, "DEUS-FTM LP", "DEUS-FTM LP", "/tokens/deus.svg"),
+    [ChainId.BSC]: new Token(ChainId.BSC, DEUS_NATIVE_LP[ChainId.BSC], 18, "DEUS-BNB LP", "DEUS-BNB LP", "/tokens/deus.svg"),
 }
 
 

@@ -62,12 +62,12 @@ const LpTokens = ({ chainId = 1 }) => {
         useMemo(() => {
             return <MainWrapper>
                 <EachUrl>
-                    <p className="deus" onClick={() => addToken({ ...deusNativeLp, symbol: "UNI-V2" })}>Add {deusNativeLp.symbol} to MetaMask <img src="/img/metamask.png" alt="metamask" /> </p>
+                    <p className="deus" onClick={() => addToken({ ...deusNativeLp, symbol: "UNI-V2" })}>Add {deusNativeLp?.symbol} to MetaMask <img src="/img/metamask.png" alt="metamask" /> </p>
                 </EachUrl>
                 <EachUrl>
-                    <CopyToClipboard text={deusNativeLp.address}
+                    <CopyToClipboard text={deusNativeLp?.address}
                         onCopy={() => setState({ ...state, "deusNativeLp": true })}>
-                        <p className="deus">Copy {deusNativeLp.symbol} Contract
+                        <p className="deus">Copy {deusNativeLp?.symbol} Contract
                             {state["deusNativeLp"] ? <CheckCircle width="15px" style={{ marginLeft: "3px" }} /> : <Copy width="15px" style={{ marginLeft: "3px" }} />}
                         </p>
                     </CopyToClipboard>
@@ -77,7 +77,7 @@ const LpTokens = ({ chainId = 1 }) => {
                     <p className="deus" onClick={() => addToken({ ...deiDeusLp, symbol: "UNI-V2" })}>Add  DEI-DEUS LP to MetaMask <img src="/img/metamask.png" alt="metamask" /> </p>
                 </EachUrl>
                 <EachUrl>
-                    <CopyToClipboard text={deiDeusLp.address}
+                    <CopyToClipboard text={deiDeusLp?.address}
                         onCopy={() => setState({ ...state, "deiDeus": true })}>
                         <p className="deus">Copy DEI-DEUS LP Contract
                             {state["deiDeus"] ? <CheckCircle width="15px" style={{ marginLeft: "3px" }} /> : <Copy width="15px" style={{ marginLeft: "3px" }} />}
@@ -90,7 +90,7 @@ const LpTokens = ({ chainId = 1 }) => {
                     <p className="dei" onClick={() => addToken({ ...deiCollateralLp, symbol: "UNI-V2" })}>Add DEI-USDC LP to MetaMask <img src="/img/metamask.png" alt="metamask" /> </p>
                 </EachUrl>
                 <EachUrl>
-                    <CopyToClipboard text={deiCollateralLp.address}
+                    <CopyToClipboard text={deiCollateralLp?.address}
                         onCopy={() => setState({ ...state, "deiCollateral": true })}>
                         <p className="dei">Copy DEI-USDC LP Contract
                             {state["deiCollateral"] ? <CheckCircle width="15px" style={{ marginLeft: "3px" }} /> : <Copy width="15px" style={{ marginLeft: "3px" }} />}

@@ -40,7 +40,7 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling 
     }]
 }
 
-export const makeCostDataRedeem = (collatRatio, poolBalance, chainId) => {
+export const makeCostDataRedeem = (collatRatio, poolBalance, chainId = ChainId.ETH) => {
     const cToken = collateralToken[chainId]
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
     const pb = poolBalance !== null ? `${formatUnitAmount(poolBalance)} ${cToken.symbol}` : null

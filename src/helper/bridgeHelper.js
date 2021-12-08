@@ -2,7 +2,6 @@ import { BRIDGE_ADDRESS } from "../constant/contracts"
 import { getBridgeContract, } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 import multicall from "./multicall"
-// import BridgeABI from '../config/abi/BridgeABI.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
 import { blockTimes } from "../components/Bridge/data"
 import { forEach } from "lodash"

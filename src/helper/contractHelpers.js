@@ -1,5 +1,5 @@
 import { getWeb3NoAccount } from '../hooks/web3'
-import muliSwapAbi from '../config/abi/muliSwapAbi.json'
+import multiSwapAbi from '../config/abi/multiSwapAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import DeusAMMAbi from '../config/abi/DeusAMM.json'
 import UniswapRouterAbi from '../config/abi/uniswapRouterAbi.json'
@@ -33,7 +33,7 @@ const getContract = (abi, address, web3, chainId) => {
 }
 
 export const getMultiSwapContract = (web3, chainId = ChainId.ETH) => {
-    return getContract(muliSwapAbi, getContractAddr("multi_swap_contract", chainId), web3)
+    return getContract(multiSwapAbi, getContractAddr("multi_swap_contract", chainId), web3)
 }
 
 export const getSynchronizerContract = (web3, chainId = ChainId.ETH) => {

@@ -367,7 +367,7 @@ input:focus {
 }
 
 .badge-FTM {
-  background: #286cf6;
+  background: linear-gradient(#53D784 0%, #61D4DC 75%);
   color: #ffffff;
 }
 
@@ -1091,7 +1091,7 @@ ul.bridge-radio li input[type="radio"]:checked~label.BSC_TESTNET {
 }
 
 ul.bridge-radio li input[type="radio"]:checked~label.FTM {
-  background: #286cf6;
+  background: linear-gradient(#53D784 0%, #61D4DC 75%);
   color: #ffffff;
   border: transparent;
 }

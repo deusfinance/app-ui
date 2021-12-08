@@ -63,13 +63,13 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         // const minLpAmountToWei = getToWei(minLpAmount, 18).toFixed(0)
         const minLpAmountToWei = new BigNumber(amountOut).multipliedBy((100 - Number(slippage)) / 100).toFixed(0, 1)
-        // const minLpAmountToWei = "0" //TODO
+        // const minLpAmountToWei = "0"
         try {
             let path = "/mint-fractional"
             const result = await makeDeiRequest(path, validChainId)
 
             const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, result, amountOutParams, false, web3, chainId)
-            const payload = currency.address === "0x" ? { value: amountInToWei } : {}
+            const payload = currency.address === "0x" ? { value: amountInToWei } : {}   
             return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
         } catch (error) {
             console.log(error);
@@ -89,10 +89,8 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         try {
             let result = null
-            if (currency.address !== DEUS_ADDRESS[validChainId] && currency.address !== DEI_ADDRESS[validChainId]) {
-                let path = "/mint-fractional"
-                result = await makeDeiRequest(path, validChainId)
-            }
+            let path = "/mint-fractional"
+            result = await makeDeiRequest(path, validChainId)
 
             const amount = await getZapAmountsOut(
                 currency,
@@ -537,7 +535,6 @@ export const useHusdPoolData = (validChainId) => {
     const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
     const { slowRefresh } = useRefresh()
-    // const forceRefresh = useRedemptionDelay()
     const setHusdPoolData = useSetRecoilState(husdPoolDataState)
 
     useEffect(() => {

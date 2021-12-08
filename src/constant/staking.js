@@ -1,4 +1,4 @@
-import { DEI_COLLATERAL_STAKING, DEI_DEUS_STAKING, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_NATIVE_STAKING } from "./contracts"
+import { DEI_COLLATERAL_STAKING, DEI_DEUS_STAKING, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_NATIVE_STAKING, DEUS_NATIVE_ZAP } from "./contracts"
 import { deiDeusLpToken, deiCollateralLpToken, DeusNativeLpToken } from "./token"
 import { ChainId } from "./web3"
 
@@ -48,10 +48,10 @@ export const StakingConfig = {
       id: 2,
       title: "DEUS-MATIC",
       pic1: "/tokens/dei.svg",
-      pic2: "/tokens/matic.png",
+      pic2: "/tokens/matic.jpg",
       depositToken: DeusNativeLpToken[ChainId.MATIC],
       stakingContract: DEUS_NATIVE_STAKING[ChainId.MATIC],
-      zapperContract: DEI_DEUS_ZAP[ChainId.MATIC],
+      zapperContract: DEUS_NATIVE_ZAP[ChainId.MATIC],
       provideLink: "https://quickswap.exchange/#/add/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44/ETH",
       apy: "50"
     }
@@ -64,7 +64,7 @@ export const StakingConfig = {
       pic2: "/tokens/usdc.svg",
       depositToken: deiCollateralLpToken[ChainId.ETH],
       stakingContract: DEI_COLLATERAL_STAKING[ChainId.ETH],
-      zapperContract: DEI_COLLATERAL_ZAP[ChainId.ETH],
+      zapperContract: null,
       provideLink: "https://curve.fi/factory/47/deposit",
       apy: "50"
     },
@@ -83,10 +83,10 @@ export const StakingConfig = {
       id: 2,
       title: "DEUS-ETH",
       pic1: "/tokens/deus.svg",
-      pic2: "/tokens/eth_logo.svg",
+      pic2: "/tokens/eth-logo.svg",
       depositToken: DeusNativeLpToken[ChainId.ETH],
       stakingContract: DEUS_NATIVE_STAKING[ChainId.ETH],
-      zapperContract: DEI_DEUS_ZAP[ChainId.ETH],
+      zapperContract: DEUS_NATIVE_ZAP[ChainId.ETH],
       provideLink: "https://app.uniswap.org/#/add/v2/ETH/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44",
       apy: "50"
     }

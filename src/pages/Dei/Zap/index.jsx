@@ -4,7 +4,6 @@ import { ZapTokens, deiToken } from '../../../constant/token';
 import { StakingConfig } from '../../../constant/staking';
 import { Flex } from 'rebass';
 import { CostBox } from '../../../components/App/Dei/CostBox';
-import SwapCard from '../../../components/App/Swap/SwapCard';
 import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { Type } from '../../../components/App/Text';
@@ -30,6 +29,7 @@ import { fromWei } from '../../../helper/formatBalance';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
+import { DEI_DEUS_ZAP, DEUS_NATIVE_ZAP } from '../../../constant/contracts';
 
 const Zap = () => {
     const location = useLocation()
@@ -53,16 +53,16 @@ const Zap = () => {
     const [swapLoading, setSwapLoading] = useState(false)
     const [escapedType, setEscapedType] = useState("from")
     const [activeSearchBox, setActiveSearchBox] = useState(false)
-    // const [activeStakingList, setActiveStakingList] = useState(false)
-    const activeStakingList = false
-    const availableStaking = StakingConfig[currChain]
+    const [activeStakingList, setActiveStakingList] = useState(false)
+    const availableStaking = StakingConfig[currChain].filter(item => item.zapperContract !== null)
     const resultLp = queryParams.lp ? availableStaking.filter(staking => staking.title.toLowerCase() === queryParams.lp) : []
-    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 1
+    const lpIndex = resultLp.length > 0 ? resultLp[0].id : 0
     const [stakingInfo, setStakingInfo] = useState(availableStaking[lpIndex])
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
     const [amountOutParams, setAmountOutParams] = useState(null)
-    const tokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain])
+    const PrimaryTokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain, stakingInfo])
+    const tokens = useMemo(() => PrimaryTokens.filter((token) => !(chainId === 1 && stakingInfo.id === 2 && (token.symbol === "DEI" || token.symbol === "DEUS"))), [PrimaryTokens])
 
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
@@ -70,7 +70,7 @@ const Zap = () => {
 
     useEffect(() => {
         setSwapState({
-            from: tokens[0],
+            from: tokens[1],
             to: deiToken[currChain]
         })
     }, [tokens, currChain])
@@ -78,13 +78,13 @@ const Zap = () => {
     //change zapper contract when chainId changed
     useEffect(() => {
         setStakingInfo(availableStaking[lpIndex])
-    }, [availableStaking, lpIndex])
+    }, [availableStaking[lpIndex]])
 
     const balances = useTokenBalances(tokensMap, currChain)
 
     const TokensMap = tokensMap
     const [swapState, setSwapState] = useState({
-        from: tokens[0],
+        from: tokens[1],
         to: deiToken[currChain],
     })
 
@@ -124,18 +124,26 @@ const Zap = () => {
     useEffect(() => {
         const get = async () => {
             const result = await getAmountsOut()
-            // console.log("swap ", amount);
+            // console.log("getAmountsOut", result);
             if (result === "") {
                 setAmountOut("")
                 setAmountOutParams(null)
                 setPercentage("")
             }
             else {
-                console.log(result);
-                // const result.
-                setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount])
-                setAmountOut(result.lp)
-                setPercentage(fromWei(result.percentage, 4))
+                if (contractAddress === DEI_DEUS_ZAP[chainId]) {
+                    setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount])
+                    setAmountOut(result.lp)
+                    setPercentage(fromWei(result.percentage, 4))
+                } else if (contractAddress === DEUS_NATIVE_ZAP[chainId]) {
+                    setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount, result.swapAmount])
+                    setAmountOut(result.lp)
+                    setPercentage(fromWei(result.percentage, 4))
+                } else {
+                    setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount, result.swapAmountUsdc])
+                    setAmountOut(result.lp)
+                    setPercentage(fromWei(result.percentage, 4))
+                }
             }
         }
         get()
@@ -170,7 +178,7 @@ const Zap = () => {
             const tx = await onZap()
             setSwapLoading(false)
             if (tx.status) {
-                console.log("swap did");
+                // console.log("swap did");
                 setAmountIn("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {
@@ -254,7 +262,7 @@ const Zap = () => {
                             focusType="to"
                             inputAmount={amountOut}
                             setInputAmount={setAmountOut}
-                            setActive={null} // setActiveStakingList
+                            setActive={setActiveStakingList}
                             TokensMap={TokensMap}
                             currency={swapState.to}
                             fastUpdate={fastUpdate}
@@ -287,7 +295,7 @@ const Zap = () => {
                 </SwapWrapper>
 
                 <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} style={{ maxWidth: "560px" }} />
-                <SwapCard title="Zapping Fee" value={mintingFee ? `${mintingFee} %` : ""} style={{ maxWidth: "560px" }} />
+                {/* <SwapCard title="Zapping Fee" value={mintingFee ? `${mintingFee} %` : ""} style={{ maxWidth: "560px" }} /> */}
             </ContentWrapper>
         </MainWrapper>}
 

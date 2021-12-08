@@ -125,14 +125,20 @@ export const DEI_COLLATERAL_STAKING = {
 }
 
 export const DEI_COLLATERAL_ZAP = {
-  [ChainId.MATIC]: "0x38C89aE559cc0A2a81aa40D173919Aaa79Dc0bD9",
-  [ChainId.ETH]: '',
-  [ChainId.FTM]: '',
+  [ChainId.MATIC]: "0x30e75E68538c81d0556C8B7a30Ba2eb5Ce0DC80A",
 }
 
 export const DEI_DEUS_ZAP = {
   [ChainId.MATIC]: "0x6c7D6D5142bB40bb5482c2A63B976dBA51b387b4",
   [ChainId.ETH]: '0x38C89aE559cc0A2a81aa40D173919Aaa79Dc0bD9',
+}
+
+export const DEUS_NATIVE_ZAP = {
+  // [ChainId.HECO]: "0xd25CF1D484CFE0d6DaeaF890D31AcC40b1DAc5f8",
+  // [ChainId.RINKEBY]: "0x2D6b0130775EE72bAF3e59cc7A82a2CF479a8D8f",
+  // [ChainId.AVALANCHE]: "0x591832987934843AAa8e868e713A7d35b9c59c71",
+  [ChainId.MATIC]: "0xA1AAC2e32A140622d14d6AaE106A7923A7b88E64",
+  [ChainId.ETH]: '0xd8e79FeC03dd3ca0dCF4d7525d2dC438E8Fc0606',
 }
 
 export const WMaticAddress = {
@@ -147,6 +153,24 @@ export const WETHAddress = {
   [ChainId.MATIC]: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
   [ChainId.ETH]: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   [ChainId.BSC]: "0x2170Ed0880ac9A755fd29B2688956BD959F933F8", // Binance-Peg Ethereum Token
+}
+
+export const TO_NATIVE_PATH = {
+  [ChainId.MATIC]: {
+    MATIC: [WMaticAddress[ChainId.MATIC]],
+    DEUS: [DEUS_ADDRESS[ChainId.MATIC], WMaticAddress[ChainId.MATIC]],
+    DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC], WMaticAddress[ChainId.MATIC]],
+    WETH: [WETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC], WMaticAddress[ChainId.MATIC]],
+    USDC: [COLLATERAL_ADDRESS[ChainId.MATIC], WMaticAddress[ChainId.MATIC]],
+    WBTC: ["0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6", COLLATERAL_ADDRESS[ChainId.MATIC], WMaticAddress[ChainId.MATIC]],
+  },
+  [ChainId.ETH]: {
+    ETH: [WETHAddress[ChainId.ETH]],
+    WETH: [WETHAddress[ChainId.ETH]],
+    DEUS: [DEUS_ADDRESS[ChainId.ETH], DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], WETHAddress[ChainId.ETH]],
+    DEI: [DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], WETHAddress[ChainId.ETH]],
+    USDC: [COLLATERAL_ADDRESS[ChainId.ETH], WETHAddress[ChainId.ETH]],
+  },
 }
 
 export const MINT_PATH = {

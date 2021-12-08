@@ -1,0 +1,913 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_pairAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deusAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_ethAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_uniswapRouter",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_stakingAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_mulitSwapAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deiAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_usdcAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deiProxy",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_dei2deusPath",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "staking",
+                "type": "address"
+            }
+        ],
+        "name": "StakingSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "key",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Temp",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "input_token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "output_token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "input_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "output_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "transfer_residual",
+                "type": "bool"
+            }
+        ],
+        "name": "ZappedIn",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }
+        ],
+        "name": "approve",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "dei2deusPath",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "deiAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "deiProxy",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "deusAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "emergencyWithdrawERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "recv",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "emergencyWithdrawETH",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ethAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amountIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "iterations",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "toUSDCPath",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "toETHPath",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxRemainAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct ZapperInput",
+                "name": "input",
+                "type": "tuple"
+            }
+        ],
+        "name": "getAmountOut",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "percentage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "usdcForMintAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deusNeededAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "swapAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deusPriceUSD",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "colPriceUSD",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "path",
+                "type": "address[]"
+            }
+        ],
+        "name": "getERC202DEUSInputs",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "usdcForMintAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deusNeededAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amountIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "iterations",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "toUSDCPath",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "toETHPath",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxRemainAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct ZapperInput",
+                "name": "input",
+                "type": "tuple"
+            }
+        ],
+        "name": "getSwapAmountERC20",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amountIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "iterations",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "toUSDCPath",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "toETHPath",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxRemainAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct ZapperInput",
+                "name": "input",
+                "type": "tuple"
+            }
+        ],
+        "name": "getSwapAmountETH",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deusPriceUSD",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "colPriceUSD",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUSDC2DEUSInputs",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "usdcForMintAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deusNeededAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "multiSwapAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pairAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakingAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setStaking",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_pairAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deusAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_ethAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_uniswapRouter",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_stakingAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_mulitSwapAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deiAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_usdcAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_deiProxy",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_dei2deusPath",
+                "type": "address[]"
+            }
+        ],
+        "name": "setVariables",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "stakingAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "stopped",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "toggleContractActive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "uniswapRouter",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "usdcAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "minLPAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "transferResidual",
+                "type": "bool"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amountIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minAmountOut",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "colPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "usdcForMintAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusNeededAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expireBlock",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes[]",
+                        "name": "sigs",
+                        "type": "bytes[]"
+                    }
+                ],
+                "internalType": "struct ProxyInput",
+                "name": "proxyInput",
+                "type": "tuple"
+            },
+            {
+                "internalType": "address[]",
+                "name": "toETHPath",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "toUSDCPath",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountToDeus",
+                "type": "uint256"
+            }
+        ],
+        "name": "zapInERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "minLPAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "transferResidual",
+                "type": "bool"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amountIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minAmountOut",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "colPriceUSD",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "usdcForMintAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deusNeededAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expireBlock",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes[]",
+                        "name": "sigs",
+                        "type": "bytes[]"
+                    }
+                ],
+                "internalType": "struct ProxyInput",
+                "name": "proxyInput",
+                "type": "tuple"
+            },
+            {
+                "internalType": "address[]",
+                "name": "toETHPath",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "toUSDCPath",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountToDeus",
+                "type": "uint256"
+            }
+        ],
+        "name": "zapInNativecoin",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]

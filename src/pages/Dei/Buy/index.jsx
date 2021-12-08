@@ -136,7 +136,7 @@ const Dei = () => {
             amountIn1 = in1
             const amountOutProxy = await getAmountOutDeusSwap(swapState.from, amountIn1, deus_price, collateral_price, web3, chainId)
             console.log(amountOutProxy);
-            setAmountOutParams([amountOutProxy[0], amountOutProxy[1], amountOutProxy[2]])
+            setAmountOutParams(amountOutProxy)//zero didn't use
             amountOut = amountOutProxy ? fromWei(amountOutProxy[0], swapState.to.decimals) : ""
             setAmountIn(amountIn1)
             setAmountOut(amountOut)

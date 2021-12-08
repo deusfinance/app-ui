@@ -20,7 +20,6 @@ const COLLAT_PRICE = {
     [ChainId.BSC]:"1000000000000000000",
 }
 
-
 export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null,decimals=6) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
@@ -124,14 +123,14 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
     const LEN = LENGTH_COLLAT[chainId] ?? 3
     let collaterals = []
     for (let i = 0; i < LEN; i++) {
-        collaterals.push(COLLAT_PRICE[chainId]??collat_usd_price);
+        collaterals.push(COLLAT_PRICE[chainId] ?? collat_usd_price);
     }
     
     let calls = [
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'collatDollarBalance',
-            params: [COLLAT_PRICE[chainId]??collat_usd_price],
+            params: [COLLAT_PRICE[chainId] ?? collat_usd_price],
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -303,7 +302,7 @@ export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price =
     let collaterals = []
     for (let i = 0; i < LEN; i++) {
         // console.log(COLLAT_PRICE[chainId], collat_usd_price);
-        collaterals.push(COLLAT_PRICE[chainId]??collat_usd_price);
+        collaterals.push(COLLAT_PRICE[chainId] ?? collat_usd_price);
     }
 
     return getDeiContract(web3, chainId)

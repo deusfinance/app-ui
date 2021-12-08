@@ -661,7 +661,7 @@ export const useAllowance = (currency, contractAddress, validChainId, fastUpdate
                     const res = await contract.methods.allowance(account, contractAddress).call()
                     setAllowance(new BigNumber(res))
                 } catch (error) {
-                    console.log("useAllowance ", error);
+                    console.log("useAllowance ", currency, contractAddress, validChainId,error);
                 }
 
             }

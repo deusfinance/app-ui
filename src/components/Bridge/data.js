@@ -1,33 +1,12 @@
-import { makeContract } from '../../utils/Stakefun'
-import { BridgeABI } from '../../utils/StakingABI'
-import { BRIDGE_ADDRESS } from '../../constant/contracts'
-import Web3 from 'web3'
+import { ChainId } from '../../constant/web3'
 
 const blockTimes = {
   1: 24,
   137: 256,
-}
-
-const bscWeb3 = new Web3(
-  new Web3.providers.HttpProvider(
-    'https://data-seed-prebsc-1-s1.binance.org:8545/'
-  )
-)
-
-const ethWeb3 = new Web3(
-  new Web3.providers.HttpProvider(
-    `https://rinkeby.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
-  )
-)
-
-const NetworkWeb3 = {
-  4: ethWeb3,
-  97: bscWeb3
-}
-
-const Contract = {
-  4: makeContract(ethWeb3, BridgeABI, BRIDGE_ADDRESS[4]),
-  97: makeContract(bscWeb3, BridgeABI, BRIDGE_ADDRESS[97])
+  250: 6,
+  57: 30,
+  97: 30,
+  4: 24,
 }
 
 const tokens = [
@@ -36,14 +15,14 @@ const tokens = [
     decimals: 18,
     tokenId: '0',
     balances: {
-      4: '0',
-      97: '0',
+      56: '0',
+      250: '0',
       1: '0',
       137: '0'
     },
     address: {
-      4: '0x43922ea6ef5995e94680000ed9e20b68974cd902',
-      97: '0x15633ea478d0272516b763c25e8e62a9e43ae28a',
+      56: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      250: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
       1: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
       137: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
     },
@@ -54,24 +33,50 @@ const tokens = [
     decimals: 18,
     tokenId: '1',
     balances: {
-      4: '0',
-      97: '0',
-     1: '0',
+      56: '0',
+      250: '0',
+      1: '0',
       137: '0'
     },
     address: {
-      4: '0x63461Bc35341523b319c12a366A9E9af24Eea6Eb',
-      97: '0x1c2a9D1F6284EC5f4424e7FC2f1dAD12822b4e32',
+      56: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
+      250: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
       1: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
       137: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
     },
     icon: '/tokens/deus.svg'
   },
+  {
+    name: 'TT',
+    decimals: 18,
+    tokenId: '2',
+    balances: {
+      56: '0',
+      250: '0',
+      1: '0',
+      137: '0',
+      4: '0',
+      97: '0',
+    },
+    address: {
+      56: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      250: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      1: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      137: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      4: "0x4b16E272421FD67E6D41a14ac27789AB2AFE7bcb",
+      97: "0x39a571d0FF892aF5e5780AF286f5152784d15A9f",
+    },
+    icon: '/tokens/dei.svg'
+  },
 ]
 
 const chains = [
-  { name: 'ETH', network: 1, networkName: 'eth'},
-  { name: 'POLYGON', network: 137, networkName: 'polygon' },
+  { name: 'ETH', network: ChainId.ETH, networkName: 'eth' },
+  { name: 'POLYGON', network: ChainId.MATIC, networkName: 'polygon' },
+  { name: 'BSC', network: ChainId.BSC, networkName: 'bsc' },
+  { name: 'FTM', network: ChainId.FTM, networkName: 'ftm' },
+  // { name: 'BSC_TESTNET', network: ChainId.BSC_TESTNET, networkName: 'bsc test' },
+  // { name: 'RINKEBY', network: ChainId.RINKEBY, networkName: 'rinkeby' },
 ]
 
 const instructions = [
@@ -97,11 +102,4 @@ const instructions = [
   }
 ]
 
-export {
-  tokens,
-  chains,
-  instructions,
-  NetworkWeb3,
-  Contract,
-  blockTimes
-}
+export { tokens, chains, instructions, blockTimes }

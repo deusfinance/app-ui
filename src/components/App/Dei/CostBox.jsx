@@ -4,6 +4,7 @@ import { makeCostDataRedeem, makeCostData } from '../../../helper/deiHelper'
 import { useRecoilValue } from 'recoil';
 import { collatRatioState, deiPricesState } from '../../../store/dei';
 import { husdPoolDataState } from '../../../store/dei'
+import { ChainId } from '../../../constant/web3';
 
 export const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
@@ -37,6 +38,9 @@ export const FeePrice = styled.div`
     display: flex;
     align-items: center;
     height: 18px;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+      justify-content: center;
+    `}
 `
 
 export const CostBox = ({ type, chainId }) => {
@@ -46,7 +50,7 @@ export const CostBox = ({ type, chainId }) => {
     const collatRatio = useRecoilValue(collatRatioState)
     const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance } = useRecoilValue(husdPoolDataState)
     let costs = null
-    if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling)
+    if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling, chainId === ChainId.BSC ? 18 : 6)
     else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance, chainId)
 
     return (

@@ -1,7 +1,6 @@
 import BigNumber from "bignumber.js"
-import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, 
-    DEUS_NATIVE_ZAP, MINT_PATH, TO_NATIVE_PATH } from "../constant/contracts"
-import { isZero } from "../constant/number"
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH } from "../constant/contracts"
+import { isZero, TEN } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
 import { TransactionState } from "../utils/constant"
@@ -14,12 +13,18 @@ const baseUrl = "https://oracle4.deus.finance/dei"
 
 export const dollarDecimals = 6
 export const collatUsdPrice = "1000000"
+const LENGTH_COLLAT = {}
 
-export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null) => {
+const COLLAT_PRICE = {
+    [ChainId.BSC_TESTNET]:"1000000000000000000",
+    [ChainId.BSC]:"1000000000000000000",
+}
+
+export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null,decimals=6) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(poolBalance) + ' / ' + formatUnitAmount(ceiling) : null
-    const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance)) : null
+    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(poolBalance) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals-6))) : null
+    const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance).div(TEN.pow(decimals-6))) : null
     return [{
         name: 'DEI PRICE',
         value: dp
@@ -35,7 +40,7 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling 
     }]
 }
 
-export const makeCostDataRedeem = (collatRatio, poolBalance, chainId) => {
+export const makeCostDataRedeem = (collatRatio, poolBalance, chainId = ChainId.ETH) => {
     const cToken = collateralToken[chainId]
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
     const pb = poolBalance !== null ? `${formatUnitAmount(poolBalance)} ${cToken.symbol}` : null
@@ -113,17 +118,24 @@ export const getStakingTokenData = (conf, account) => {
         }
     ]
 }
+
 export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account) => {
+    const LEN = LENGTH_COLLAT[chainId] ?? 3
+    let collaterals = []
+    for (let i = 0; i < LEN; i++) {
+        collaterals.push(COLLAT_PRICE[chainId] ?? collat_usd_price);
+    }
+    
     let calls = [
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'collatDollarBalance',
-            params: [collat_usd_price],
+            params: [COLLAT_PRICE[chainId] ?? collat_usd_price],
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'availableExcessCollatDV',
-            params: [[collat_usd_price, collat_usd_price]]
+            params: [collaterals]
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -286,12 +298,18 @@ export const getClaimAll = async (account, web3, chainId = ChainId.ETH) => {
 
 //READ FUNCTIONS
 export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price = collatUsdPrice) => {
+    const LEN = LENGTH_COLLAT[chainId] ?? 3
+    let collaterals = []
+    for (let i = 0; i < LEN; i++) {
+        // console.log(COLLAT_PRICE[chainId], collat_usd_price);
+        collaterals.push(COLLAT_PRICE[chainId] ?? collat_usd_price);
+    }
+
     return getDeiContract(web3, chainId)
         .methods
-        .dei_info([collat_usd_price, collat_usd_price])
+        .dei_info(collaterals)
         .call()
 }
-
 
 export const makeDeiRequest = async (path, chainId = 4) => {
     return fetcher(baseUrl + path + `?chainId=${chainId}`)

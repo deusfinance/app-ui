@@ -17,17 +17,18 @@ export const ChainId = {
 export const NameChainId = {
     1: "ETH",
     2: "Ropsten",
-    4: "Rinkeby",
+    4: "RINKEBY",
     100: "xDAI",
     250: "FTM",
     4002: "FTMT",
     56: "BSC",
     128: "HECO",
     256: "HECOT",
-    97: "BSCT",
+    97: "BSCTEST",
     137: "POLYGON",
     43114: "AVALANCHE"
 }
+
 
 export const rpcConfig = {
     [ChainId.ETH]: {
@@ -83,7 +84,7 @@ export const rpcConfig = {
             symbol: "BNB",
             decimals: 18,
         },
-        rpcUrls: ["https://bsc-dataseed.binance.org/", "https://bsc-dataseed1.defibit.io/"],
+        rpcUrls: ["https://bsc-dataseed.binance.org/","https://bsc-dataseed1.defibit.io/","https://bsc-dataseed1.ninicoin.io/"],
         blockExplorerUrls: ["https://bscscan.com"],
     },
     [ChainId.BSC_TESTNET]: {
@@ -94,7 +95,7 @@ export const rpcConfig = {
             symbol: "BNB",
             decimals: 18,
         },
-        rpcUrls: ["https://data-seed-prebsc-2-s2.binance.org:8545", "https://data-seed-prebsc-1-s3.binance.org:8545"],
+        rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
         blockExplorerUrls: ["https://testnet.bscscan.com"],
     },
     [ChainId.HECO]: {
@@ -129,5 +130,16 @@ export const rpcConfig = {
         },
         rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
         blockExplorerUrls: ["https://cchain.explorer.avax.network/"],
+    },
+    [ChainId.FTM]: {
+        chainId: "0xFA",
+        chainName: "Fantom Opera",
+        nativeCurrency: {
+            name: "Fantom",
+            symbol: "FTM",
+            decimals: 18,
+        },
+        rpcUrls: ["https://rpc.ftm.tools/"],
+        blockExplorerUrls: ["https://ftmscan.com/"],
     },
 }

@@ -14,10 +14,10 @@ import { BridgeTokens } from '../../constant/token'
 import { useApprove } from '../../hooks/useApprove';
 import BigNumber from 'bignumber.js';
 import { BRIDGE_ADDRESS } from '../../constant/contracts';
-import './bridge.css'
 import Muon from 'muon'
 import { useClaim, useDeposit, useGetNewClaim } from '../../hooks/useBridge';
 import { ChainId, NameChainId } from '../../constant/web3';
+import './bridge.css'
 
 
 const Bridge = () => {
@@ -37,10 +37,15 @@ const Bridge = () => {
 
     const tokensBalance = useTokenBalances(chains, tokens, fetch)
 
+    const getAnotherChainId = (myChainId) => {
+        let residualChains = validNetworks.filter((a) => a !== myChainId);
+        return residualChains[0]
+    }
+
     const tokenIndex = 0
     const [swapState, setSwapState] = useState({
         from: BridgeTokens[syncChainId][tokenIndex],
-        to: BridgeTokens[syncChainId === ChainId.ETH ? ChainId.MATIC : ChainId.ETH][tokenIndex],
+        to: BridgeTokens[getAnotherChainId(syncChainId)][tokenIndex],
     })
 
     const [amountIn, setAmountIn] = useState("")
@@ -48,9 +53,7 @@ const Bridge = () => {
 
     const [amountOut, setAmountOut] = useState("")
     const contractAddress = BRIDGE_ADDRESS[syncChainId]
-    // console.log(contractAddress, chainId, swapState);
     const allowance = useAllowance(swapState.from, contractAddress, syncChainId)
-
 
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
@@ -102,7 +105,6 @@ const Bridge = () => {
     useEffect(() => {
         const get = async () => {
             const claims = await getClaim()
-            console.log("claims", claims);
             setClaims(claims)
         }
         if (account) {
@@ -120,12 +122,15 @@ const Bridge = () => {
         setOpen(true)
     }
 
-    //TODO
+
     const changeToken = (token, chainId) => {
+        // const type = target
+        // setSwapState({ ...swapState, [type]: { ...token } })
+        
         const other = target === "from" ? "to" : "from"
         setSwapState((prev) => ({
-            [other]: BridgeTokens[prev[other].chainId === chainId ? chainId === 1 ? 137 : 1 : prev[other].chainId].filter(t => t.id === token.id)[0],
-            [target]: { ...token }
+            [target]: { ...token },
+            [other]: BridgeTokens[prev[other].chainId === chainId ? getAnotherChainId(chainId) : prev[other].chainId].filter(t => t.id === token.id)[0],
         }))
     }
 
@@ -159,7 +164,7 @@ const Bridge = () => {
         try {
             const tx = await onDeposit()
             if (tx.status) {
-                console.log("swap did");
+                // console.log("swap did");
                 setAmountIn("")
                 setFastUpdate(fastUpdate => fastUpdate + 1)
             } else {

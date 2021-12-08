@@ -65,7 +65,7 @@ input:focus {
   position: relative;
 }
 
-.wrap-bridge .container-bridge > img {
+.wrap-bridge .container-bridge>img {
   width: 100%;
 }
 
@@ -341,7 +341,12 @@ input:focus {
   color: #000000 !important;
 }
 
-.badge-BSCT {
+.badge-BSCTEST {
+  background: #fbc856;
+  color: #000000 !important;
+}
+
+.badge-BSC_TESTNET {
   background: #fbc856;
   color: #000000 !important;
 }
@@ -362,7 +367,7 @@ input:focus {
 }
 
 .badge-FTM {
-  background: #286cf6;
+  background: linear-gradient(#53D784 0%, #61D4DC 75%);
   color: #ffffff;
 }
 
@@ -448,6 +453,7 @@ input:focus {
     top: -300px;
     opacity: 0;
   }
+
   to {
     top: 0;
     opacity: 1;
@@ -459,6 +465,7 @@ input:focus {
     top: -300px;
     opacity: 0;
   }
+
   to {
     top: 0;
     opacity: 1;
@@ -619,7 +626,7 @@ input[type='checkbox']:checked:after {
   margin-top: 30px;
 }
 
-.wrap-bridge .desc-claim > span {
+.wrap-bridge .desc-claim>span {
   padding-right: 5px;
 }
 
@@ -908,9 +915,9 @@ input[type='checkbox']:checked:after {
 
 .wrap-bridge .switch-claim {
   cursor: pointer;
-    color: rgba(255, 255, 255, 1);
-    background: rgba(255, 164, 81, 0.2);
-    border: 1px solid rgb(255, 164, 81);
+  color: rgba(255, 255, 255, 1);
+  background: rgba(255, 164, 81, 0.2);
+  border: 1px solid rgb(255, 164, 81);
 }
 
 .wrap-bridge .ftm-logo {
@@ -1067,29 +1074,41 @@ ul.bridge-radio li input[type="radio"] {
   left: 15px;
 }
 
-ul.bridge-radio li input[type="radio"]:disabled ~ label {
+ul.bridge-radio li input[type="radio"]:disabled~label {
   opacity: 0.4;
 }
 
-ul.bridge-radio li input[type="radio"]:checked ~ label.BSC {
+ul.bridge-radio li input[type="radio"]:checked~label.BSC {
   background: #fbc856;
   color: #000000;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked ~ label.FTM {
-  background: #286cf6;
+ul.bridge-radio li input[type="radio"]:checked~label.BSC_TESTNET {
+  background: #fbc856;
+  color: #000000;
+  border: transparent;
+}
+
+ul.bridge-radio li input[type="radio"]:checked~label.FTM {
+  background: linear-gradient(#53D784 0%, #61D4DC 75%);
   color: #ffffff;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked ~ label.ETH {
+ul.bridge-radio li input[type="radio"]:checked~label.ETH {
   background: #335cff;
   color: #ffffff;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked ~ label.POLYGON {
+ul.bridge-radio li input[type="radio"]:checked~label.RINKEBY {
+  background: #335cff;
+  color: #ffffff;
+  border: transparent;
+}
+
+ul.bridge-radio li input[type="radio"]:checked~label.POLYGON {
   background: #d045e2;
   color: #ffffff;
   border: transparent;
@@ -1126,6 +1145,7 @@ input[type="number"] {
     justify-content: center;
     align-items: center;
   }
+
   .wrap-bridge .wrap-box {
     height: 285px;
   }
@@ -1153,13 +1173,16 @@ input[type="number"] {
   ul.bridge-radio li label {
     width: 100px;
   }
+
   .wrap-bridge .wrap-box {
     height: 240px;
   }
+
   .wrap-bridge .arrow {
     width: 25px;
     height: 25px;
   }
+
   .wrap-bridge .arrow img {
     width: 11px;
   }
@@ -1169,56 +1192,71 @@ input[type="number"] {
   .wrap-bridge .ftm-logo {
     top: 20%;
   }
+
   .wrap-bridge .bsc-logo {
     top: 23%;
   }
+
   .wrap-bridge .wrap-box {
     height: 187px;
   }
+
   .wrap-bridge .bridge-box {
     height: 70px;
     padding: 10px;
   }
+
   .wrap-bridge .bridge-from {
     font-size: 10px;
     height: 8px;
   }
+
   .wrap-bridge .bridge-amount {
     font-size: 18px;
   }
+
   .wrap-bridge .bridge-max {
     font-size: 9px;
     height: 18px;
     line-height: 15px;
   }
+
   .wrap-bridge .bridge-assets {
     font-size: 16px;
   }
+
   .wrap-bridge .bridge-token img {
     width: 15px;
   }
+
   .notify-bridge .badge {
     width: 25px;
     font-size: 8px;
   }
+
   .wrap-bridge .bridge-approve {
     height: 43px;
     font-size: 16px;
   }
+
   .wrap-bridge .bridge-deposit {
     height: 45px;
     font-size: 16px;
   }
+
   .wrap-bridge .arrow {
     width: 17px;
     height: 17px;
   }
+
   .wrap-bridge .arrow img {
     width: 11px;
   }
+
   .wrap-bridge .wrong-network {
     font-size: 18px;
   }
+
   .wrap-bridge .pink-btn {
     font-size: 18px;
   }
@@ -1228,70 +1266,89 @@ input[type="number"] {
   ul.bridge-radio li label {
     width: 70px;
   }
+
   .wrap-bridge .select-token-btn {
     max-width: 150px;
     font-size: 12px;
     padding: 0 10px;
   }
+
   .wrap-bridge .ftm-logo {
     top: 22%;
   }
+
   .wrap-bridge .bsc-logo {
     top: 24%;
   }
-  .token-list-item > span {
+
+  .token-list-item>span {
     font-size: 15px;
   }
+
   .content-modal-bridge .token-list-item img {
     width: 25px;
   }
+
   .wrap-bridge .wrap-box {
     height: 180px;
   }
+
   .wrap-bridge .bridge-box {
     height: 70px;
     padding: 10px;
   }
+
   .wrap-bridge .bridge-from {
     font-size: 10px;
     height: 8px;
   }
+
   .wrap-bridge .bridge-amount {
     font-size: 18px;
   }
+
   .wrap-bridge .bridge-max {
     font-size: 9px;
     height: 18px;
     line-height: 15px;
   }
+
   .wrap-bridge .bridge-assets {
     font-size: 16px;
   }
+
   .wrap-bridge .bridge-token img {
     width: 15px;
   }
+
   .notify-bridge .badge {
     width: 25px;
     font-size: 8px;
   }
+
   .wrap-bridge .bridge-approve {
     height: 43px;
     font-size: 13px;
   }
+
   .wrap-bridge .bridge-deposit {
     height: 45px;
     font-size: 13px;
   }
+
   .wrap-bridge .arrow {
     width: 17px;
     height: 17px;
   }
+
   .wrap-bridge .arrow img {
     width: 11px;
   }
+
   .wrap-bridge .wrong-network {
     font-size: 18px;
   }
+
   .wrap-bridge .pink-btn {
     font-size: 18px;
   }

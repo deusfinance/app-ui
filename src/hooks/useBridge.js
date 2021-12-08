@@ -5,9 +5,10 @@ import useRefresh from './useRefresh'
 import { deposit, getClaimTokens } from '../helper/bridgeHelper'
 import { SendWithToast } from '../helper/deiHelper'
 import { fromWei } from '../helper/formatBalance'
-import BridgeABI from '../config/abi/BridgeABI.json'
+// import BridgeABI from '../config/abi/BridgeABI.json'
+import BridgeABI from '../config/abi/NewBridgeABI.json'
 import { BRIDGE_ADDRESS } from '../constant/contracts'
-import { NameChainId } from '../constant/web3'
+import { ChainId, NameChainId } from '../constant/web3'
 import { getBridgeContract } from '../helper/contractHelpers'
 import { formatBalance3 } from '../utils/utils'
 
@@ -15,45 +16,56 @@ import { formatBalance3 } from '../utils/utils'
 export const useGetNewClaim = () => {
     const { account } = useWeb3React()
     const { fastRefresh } = useRefresh()
-    //idn why but it tried to use the same state twice
+    //idk why but it tried to use the same state twice
     // const web3s = {
     //     4: useCrossWeb3(4),
     //     97: useCrossWeb3(97)
     // }
-    const rinkWeb3 = useCrossWeb3(1)
-    const bscWeb3 = useCrossWeb3(137)
+    const ethWeb3 = useCrossWeb3(ChainId.ETH)
+    const bscWeb3 = useCrossWeb3(ChainId.BSC)
+    const rinkebyWeb3 = useCrossWeb3(ChainId.RINKEBY)
+    const bscTestWeb3 = useCrossWeb3(ChainId.BSC_TESTNET)
+    const ftmWeb3 = useCrossWeb3(ChainId.FTM)
+    const polygonWeb3 = useCrossWeb3(ChainId.MATIC)
+    const web3s = {
+        [ChainId.ETH]: ethWeb3,
+        [ChainId.FTM]: ftmWeb3,
+        [ChainId.MATIC]: polygonWeb3,
+        [ChainId.BSC]: bscWeb3,
+        // [ChainId.RINKEBY]: rinkebyWeb3,
+        // [ChainId.BSC_TESTNET]: bscTestWeb3,
+    }
 
     const getClaim = useCallback(async () => {
-        const networks = [1, 137]
-        if (account && rinkWeb3 && bscWeb3) {
-            const res = await getClaimTokens(networks, account, { 1: rinkWeb3, 137: bscWeb3 })
-            return res
+        const networks = Object.keys(web3s)
+        if (account && ethWeb3 && bscWeb3 && polygonWeb3 && ftmWeb3 && rinkebyWeb3 && bscTestWeb3) {
+            try {
+                return await getClaimTokens(networks, account, web3s)
+            } catch (error) {
+                console.log(error, 'getClaimTokens');
+                return []
+            }
         }
-    }, [account, rinkWeb3, bscWeb3, fastRefresh]) // eslint-disable-line
+    }, [account, ethWeb3, bscWeb3, ftmWeb3, polygonWeb3, rinkebyWeb3, bscTestWeb3, fastRefresh]) // eslint-disable-line
     return { getClaim }
 }
 
 
 export const useClaim = (muon, lock, setLock, setFetch) => {
-
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
 
-
-
     const handleClaim = useCallback(async (claimTemp, network) => {
-
         const claim = {
             fromChain: claimTemp.fromChain.toString(),
             toChain: claimTemp.toChain.toString(),
             txId: claimTemp.txId.toString(),
             amount: claimTemp.amount.toString(),
-            txBlockNo: claimTemp.txBlockNo.toString(),
+            // txBlockNo: claimTemp.txBlockNo.toString(),
             tokenId: claimTemp.tokenId.toString(),
         }
 
-        console.log("claim = ", claim);
-
+        // console.log("claim = ", claim);
 
         if (
             chainId !== network || (lock &&
@@ -76,30 +88,46 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
         })
 
         try {
+            // const muonResponse = await muon
+            //     .app('eth')
+            //     .method('call', {
+            //         address: BRIDGE_ADDRESS[Number(claim.fromChain)],
+            //         method: 'getTx',
+            //         params: [claim.txId],
+            //         abi,
+            //         network: networkName,
+            //         hashTimestamp: false
+            //     })
+            //     .call()
             const muonResponse = await muon
-                .app('eth')
-                .method('call', {
-                    address: BRIDGE_ADDRESS[Number(claim.fromChain)],
-                    method: 'getTx',
-                    params: [claim.txId],
-                    abi,
-                    network: networkName,
-                    hashTimestamp: false
+                .app('deus_bridge')
+                .method('claim', {
+                    depositAddress: BRIDGE_ADDRESS[Number(claim.fromChain)],
+                    depositTxId: claim.txId,
+                    depositNetwork: networkName
                 })
                 .call()
-            // console.log("muonResponse", muonResponse)
+            console.log("muonResponse", muonResponse)
+            console.log("res", muonResponse.data.result)
             let { sigs, reqId } = muonResponse
-            let currentBlockNo = muonResponse.data.result.currentBlockNo
+            // let currentBlockNo = muonResponse.data.result.currentBlockNo
             setLock(claim)
-            console.log("chainId = ", getBridgeContract[chainId]);
+            console.log(account,
+                claim.amount,
+                Number(claim.fromChain),
+                Number(claim.toChain),
+                claim.tokenId,
+                claim.txId,
+                reqId,
+                sigs);
             const fn = getBridgeContract(web3, chainId).methods.claim(
                 account,
                 claim.amount,
                 Number(claim.fromChain),
                 Number(claim.toChain),
                 claim.tokenId,
-                currentBlockNo,
-                claim.txBlockNo,
+                // currentBlockNo,
+                // claim.txBlockNo,
                 claim.txId,
                 reqId,
                 sigs
@@ -117,13 +145,11 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
     return { handleClaim }
 }
 
-
-
 export const useDeposit = (amount, swapState) => {
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
     const onDeposit = useCallback(async () => {
-        console.log(amount, swapState);
+        // console.log(amount, swapState);
         if (chainId !== swapState.from.chainId || !swapState.to.chainId || !account || amount === '0' || amount === '') return
 
         try {

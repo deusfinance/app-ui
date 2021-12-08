@@ -28,8 +28,6 @@ const BakktMigrator = () => {
 
     const contractAddress = "0x702ed7074b2ee71896d386efaf78e1ddc221e34e"
 
-    // const tokens = useMemo(() => DefaultTokens.filter((token) => !token.chainId || token.chainId === chainId), [chainId])
-
     const [swapState, setSwapState] = useState({
         from: bakktToken,
         to: dBakktToken,

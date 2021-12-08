@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js"
-import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH } from "../constant/contracts"
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP } from "../constant/contracts"
 import { isZero, TEN } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"

@@ -22,7 +22,7 @@ const NameItemsDiv = styled.div`
     cursor: pointer;
     opacity: 0.5;
     opacity: ${({ chain, currRow }) => (chain === currRow) && "1"};
-    color: ${({ chain, currRow }) => (chain === currRow) ? "#000" : "#FFF"};
+    color: ${({ chain, currRow }) => (chain === currRow && currRow === 56) ? "#000" : "#FFF"};
     font-weight: ${({ chain, currRow }) => (chain === currRow) ? "600" : "normal"};
     background: ${({ theme, chain, currRow }) => (chain === currRow) && theme.ChainId[chain]};
     border: 1px solid ${({ chain, currRow }) => (chain === currRow) ? "black" : "transparent"};

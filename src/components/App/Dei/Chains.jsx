@@ -14,17 +14,22 @@ export const MainWrapper = styled.div`
     font-weight: normal;
     font-size: 15px;
     line-height: 20px;
-    margin-bottom: 18px;
     padding-top: 10px;
     padding-bottom: 0;
     font-weight: 300;
 `
 
+export const TopWrapper = styled.div`
+    padding-bottom: 18px;
+`
+
 export const Chains = ({ validChainId, validNetworks }) => {
     const { account } = useWeb3React()
-    return (<MainWrapper>
-        <p style={{ opacity: "0.7", fontSize: "13px" }}>Select Chain  <span style={{ color: "#d28787" }}>{!account ? "(Connect your wallet)" : ""}</span> </p>
-        <SelectBox currRow={validChainId} validNetworks={validNetworks} account={account} />
-    </MainWrapper>
+    return (<TopWrapper>
+        <MainWrapper>
+            <p style={{ opacity: "0.7", fontSize: "13px" }}>Select Chain  <span style={{ color: "#d28787" }}>{!account ? "(Connect your wallet)" : ""}</span> </p>
+            <SelectBox currRow={validChainId} validNetworks={validNetworks} account={account} />
+        </MainWrapper>
+    </TopWrapper>
     )
 }

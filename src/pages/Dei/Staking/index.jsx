@@ -66,7 +66,7 @@ const Dei = () => {
         </div>
 
         <div className='tut-right-wrap'>
-            <LpTokens chainId={chainId} />
+            {StakingConfig[chainId] && <LpTokens chainId={chainId} />}
             <BuyDEUS />
             <Chains validChainId={chainId} validNetworks={validNetworks} />
         </div>

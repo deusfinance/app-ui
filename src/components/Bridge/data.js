@@ -1,12 +1,12 @@
 import { ChainId } from '../../constant/web3'
 
 const blockTimes = {
-  1: 24,
-  137: 256,
-  250: 6,
-  57: 30,
-  97: 30,
-  4: 24,
+  [ChainId.ETH]: 24,
+  [ChainId.MATIC]: 256,
+  [ChainId.FTM]: 6,
+  [ChainId.BSC]: 30,
+  [ChainId.BSC_TESTNET]: 30,
+  [ChainId.RINKEBY]: 24,
 }
 
 const tokens = [
@@ -15,16 +15,16 @@ const tokens = [
     decimals: 18,
     tokenId: '0',
     balances: {
-      56: '0',
-      250: '0',
-      1: '0',
-      137: '0'
+      [ChainId.BSC]: '0',
+      [ChainId.FTM]: '0',
+      [ChainId.ETH]: '0',
+      [ChainId.MATIC]: '0'
     },
     address: {
-      56: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
-      250: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
-      1: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
-      137: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      [ChainId.BSC]: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      [ChainId.FTM]: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      [ChainId.ETH]: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      [ChainId.MATIC]: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
     },
     icon: '/tokens/dei.svg'
   },
@@ -33,16 +33,16 @@ const tokens = [
     decimals: 18,
     tokenId: '1',
     balances: {
-      56: '0',
-      250: '0',
-      1: '0',
-      137: '0'
+      [ChainId.BSC]: '0',
+      [ChainId.FTM]: '0',
+      [ChainId.ETH]: '0',
+      [ChainId.MATIC]: '0'
     },
     address: {
-      56: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
-      250: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
-      1: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
-      137: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
+      [ChainId.BSC]: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
+      [ChainId.FTM]: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
+      [ChainId.ETH]: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
+      [ChainId.MATIC]: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
     },
     icon: '/tokens/deus.svg'
   },
@@ -51,20 +51,20 @@ const tokens = [
     decimals: 18,
     tokenId: '2',
     balances: {
-      56: '0',
-      250: '0',
-      1: '0',
-      137: '0',
-      4: '0',
-      97: '0',
+      [ChainId.BSC]: '0',
+      [ChainId.FTM]: '0',
+      [ChainId.ETH]: '0',
+      [ChainId.MATIC]: '0',
+      [ChainId.RINKEBY]: '0',
+      [ChainId.BSC_TESTNET]: '0',
     },
     address: {
-      56: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
-      250: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
-      1: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
-      137: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
-      4: "0x4b16E272421FD67E6D41a14ac27789AB2AFE7bcb",
-      97: "0x39a571d0FF892aF5e5780AF286f5152784d15A9f",
+      [ChainId.BSC]: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      [ChainId.FTM]: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      [ChainId.ETH]: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      [ChainId.MATIC]: "0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3",
+      [ChainId.RINKEBY]: "0x4b16E272421FD67E6D41a14ac27789AB2AFE7bcb",
+      [ChainId.BSC_TESTNET]: "0x39a571d0FF892aF5e5780AF286f5152784d15A9f",
     },
     icon: '/tokens/dei.svg'
   },

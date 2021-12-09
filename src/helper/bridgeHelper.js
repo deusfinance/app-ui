@@ -83,6 +83,8 @@ export const getClaimTokens = async (networks, account, web3s) => {
             let mulWithClaimBlock = []
             forEach(mul, (res, index) => {
                 mulWithClaimBlock.push({ ...res, remainingBlock: Number(res.txBlockNo) + blockTimes[chainId] - Number(currentBlockNo) })
+                // console.log(res.txBlockNo.toString(), currentBlockNo, blockTimes[chainId]);
+                // console.log(Number(res.txBlockNo) + blockTimes[chainId] - Number(currentBlockNo));
             })
 
             // console.log("Txs = ", mul);

@@ -76,7 +76,6 @@ const Dei = () => {
     ), [tokens])
 
     const balances = useTokenBalances(tokensMap, chainId)
-
     const TokensMap = balances
 
     useEffect(() => {
@@ -103,7 +102,6 @@ const Dei = () => {
     const allowance = useAllowance(swapState.from, contractAddress, chainId)
 
     useEffect(() => {
-        // console.log("called", focusType);
         if (amountIn === "" && focusType === "from1") {
             setAmountOut("")
             setAmountInPair("")
@@ -112,7 +110,6 @@ const Dei = () => {
             setAmountInPair("")
             setAmountIn("")
         }
-
     }, [amountIn, amountOut, amountInPair, focusType]);
 
     useEffect(() => {
@@ -126,7 +123,6 @@ const Dei = () => {
 
 
     const getAmountsTokens = async (in1, out) => {
-
         if (deiPrices) {
             const { collateral_price, deus_price } = deiPrices
 
@@ -135,34 +131,13 @@ const Dei = () => {
 
             amountIn1 = in1
             const amountOutProxy = await getAmountOutDeusSwap(swapState.from, amountIn1, deus_price, collateral_price, web3, chainId)
-            console.log(amountOutProxy);
-            setAmountOutParams(amountOutProxy)//zero didn't use
+            // console.log(amountOutProxy);
+            setAmountOutParams(amountOutProxy) //zero didn't use
             amountOut = amountOutProxy ? fromWei(amountOutProxy[0], swapState.to.decimals) : ""
             setAmountIn(amountIn1)
             setAmountOut(amountOut)
         }
     }
-
-    // useEffect(() => {
-    //     const changeFromTokens = () => {
-    //         let primaryToken = null
-    //         setIsPair(false)
-    //         if (collatRatio === 100) {
-    //             primaryToken = tokens[0]
-    //         } else if (collatRatio > 0 && collatRatio < 100) {
-    //             primaryToken = tokens[1]
-    //             let secondToken = tokens[2]
-    //             setIsPair(true)
-    //             setPairToken(secondToken)
-    //         } else if (collatRatio === 0) {
-    //             primaryToken = tokens[1]
-    //         }
-
-    //         setSwapState({ to: deiToken[chainId], from: primaryToken })
-
-    //     }
-    //     if (collatRatio != null) changeFromTokens()
-    // }, [collatRatio, tokens, chainId]);// eslint-disable-line
 
     useEffect(() => {
         setSwapState({ from: tokens[0], to: deusToken[chainId] })
@@ -170,9 +145,6 @@ const Dei = () => {
         setAmountOut("")
         setAmountOutParams([])
     }, [tokens, chainId]);// eslint-disable-line
-
-
-
 
     useEffect(() => {
         // setIsPreApproved(null)
@@ -190,10 +162,6 @@ const Dei = () => {
         //eslint-disable-next-line 
     }, [allowance, isApproved, proxy, isPair, contractAddress]) //isPreApproved ?
 
-
-
-
-
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onMint } = useSwap(swapState.from, swapState.to, amountIn, amountOut, collatRatio, slippage, proxy, amountOutParams, chainId)
 
@@ -205,7 +173,6 @@ const Dei = () => {
                 console.log("Approved");
             } else {
                 console.log("Approve Failed");
-
             }
             setApproveLoading(false)
 
@@ -217,7 +184,6 @@ const Dei = () => {
 
     const handleSwap = useCallback(async () => {
         setSwapLoading(true)
-
         try {
             const tx = await onMint()
             setSwapLoading(false)
@@ -241,7 +207,6 @@ const Dei = () => {
         setEscapedType(type)
         setActiveSearchBox(active)
     }
-
     const changeToken = (token, type) => {
         setActiveSearchBox(false)
         setAmountIn("")
@@ -267,7 +232,6 @@ const Dei = () => {
     }
 
     // TODO: loader animation --> needs to fix at the end
-
     if (!swapState.from.address || collatRatio === null || mintingFee === null) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
@@ -275,7 +239,6 @@ const Dei = () => {
     }
 
     return (<>
-
         <SearchBox
             account={account}
             pairedTokens={pairedTokens}
@@ -286,7 +249,6 @@ const Dei = () => {
             disableLoading={false}
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
-
 
         <MainWrapper>
             <ContentWrapper deactivated={mintPaused}>
@@ -308,8 +270,6 @@ const Dei = () => {
                     // proxy={proxy}
                     // placeHolder={""}
                     />
-
-
 
                     <Image src="/img/swap/single-arrow.svg" size="20px" my="15px" />
 
@@ -351,7 +311,6 @@ const Dei = () => {
                         amountOut={amountOut}
                         isMint={true}
                     />
-
                 </SwapWrapper>
 
                 <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />

@@ -377,7 +377,8 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
             const erc20Path = MINT_PATH[chainId][from1Currency.symbol]
             let method = ""
             let proxyTuple = []
-            if (amountOutParams.length > 0 && amountOutParams[0] === amountOutToWei)
+
+            if (!!amountOutParams && amountOutParams[0] === amountOutToWei)
                 proxyTuple = [
                     amount1toWei,
                     minAmountOutToWei,
@@ -393,7 +394,6 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
             if (from1Currency.address === "0x") {
                 method = "Nativecoin2DEUS"
                 param.push(erc20Path)
-
             }
             else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
                 method = "USDC2DEUS"
@@ -408,7 +408,6 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
                 param.push(erc20Path)
             }
             console.log(method, param);
-
             fn = getDeusSwapContract(web3, chainId).methods[method](...param)
 
         } catch (error) {

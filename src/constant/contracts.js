@@ -173,13 +173,13 @@ export const TO_NATIVE_PATH = {
   },
 }
 
-export const MINT_PATH = {
+export const MINT_PATH = { // TO_USDC_PATH
   [ChainId.MATIC]: {
     DEUS: [DEUS_ADDRESS[ChainId.MATIC], WMaticAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
     DEI: [DEI_ADDRESS[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
     WETH: [WETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]],
     USDC: [COLLATERAL_ADDRESS[ChainId.MATIC]],
-    MATIC: [WMaticAddress[ChainId.MATIC], WETHAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]]
+    MATIC: [WMaticAddress[ChainId.MATIC], COLLATERAL_ADDRESS[ChainId.MATIC]]
   },
   [ChainId.RINKEBY]: {
     DEUS: [DEUS_ADDRESS[ChainId.RINKEBY], DEI_ADDRESS[ChainId.RINKEBY]],

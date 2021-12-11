@@ -2,8 +2,8 @@ import { Token } from '../utils/classes';
 import { ChainId } from './web3';
 
 export const registrar = ["https://oracle1.deus.finance/registrar-detail.json"]
-const signatures = ["https://oracle4.deus.finance/signature", "https://oracle5.deus.finance/signature"]
-const prices = ["https://oracle4.deus.finance/price"]
+const signatures = ["https://oracle1.deus.finance/api/signature", "https://oracle3.deus.finance/api/signature"]
+const prices = ["https://oracle1.deus.finance/api/price"]
 
 export const SyncData = {
     [ChainId.ETH]: {

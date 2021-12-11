@@ -14,6 +14,8 @@ import './assets/styles/base.scss'
 
 const Migrator = React.lazy(() => import('./pages/Migrator'))
 const burn = React.lazy(() => import('./pages/burn'))
+const sync2 = React.lazy(() => import('./pages/Sync2'))
+const sync3 = React.lazy(() => import('./pages/Sync3'))
 
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
@@ -52,6 +54,8 @@ function App() {
                   <Route exact path="/stable/redeem" component={DeiRedeem} />
                   <Route exact path="/stable/buyback-recollat" component={DeiBuyBackRecollateralize} />
                   <Route exact path="/muon-presale" component={Muon} />
+                  <Route exact path="/sync2" component={sync2} />
+                  <Route exact path="/sync3" component={sync3} />
                   <Route path="/crosschain/:id/muon-presale" component={Muon} />
                   <Redirect exact from="/" to="/migrator" />
                   <Redirect to="not-found" />

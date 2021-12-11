@@ -41,19 +41,21 @@ const syncDefaultFuncMaker = (fromCurrency, toCurrency, amountInWei, amountOutWe
 
     const salt = chainId !== ChainId.XDAI ? "For" : ""
     let params = chainId !== ChainId.XDAI ? [account] : []
+    const defaultDecimal = 18
 
     params = [
         ...params,
         oracles[0].multiplier,
         currCurrency.address,
         amount,
-        oracles[0].fee,
+        (oracles[0].fee * 10**defaultDecimal).toString(),
         data.map(oracle => oracle.block_number),
-        data.map(oracle => oracle.price),
+        data.map(oracle => (oracle.price * 10 ** defaultDecimal).toString()),
         data.map(oracle => oracle["signature"].v),
         data.map(oracle => oracle["signature"].r),
         data.map(oracle => oracle["signature"].s)
     ]
+    console.log(params);
 
     return getSynchronizerContract(web3, chainId)
         .methods[type + salt](...params)

@@ -20,7 +20,7 @@ const COLLAT_PRICE = {
     [ChainId.BSC]:"1000000000000000000",
 }
 
-export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null,decimals=6) => {
+export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, decimals=6) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
     const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(poolBalance) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals-6))) : null
@@ -378,20 +378,19 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
 export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId) => {
     const erc20Path = MINT_PATH[chainId][currency.symbol]
     const toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
-    const { collateral_price, deus_price } = result
+    const collateral_price_toWei = getToWei(result.collateral_price, 6).toFixed(0)
+    const deus_price_toWei = getToWei(result.deus_price, 6).toFixed(0)
 
     if (zapperAddress === DEI_COLLATERAL_ZAP[chainId]) {
         const lpAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods
-            .getAmountOut([amountInToWei, deus_price, collateral_price, 4, [...erc20Path], []]).call()
+            .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, 4, [...erc20Path], []]).call()
         return lpAmount
     }
     else if (zapperAddress === DEUS_NATIVE_ZAP[chainId]) {
-        // console.log("getZapAmountsOut", amountInToWei, deus_price, collateral_price, erc20Path, toNativePath);
-
         const lpAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods
-            .getAmountOut([amountInToWei, deus_price, collateral_price, 20, [...erc20Path], [...toNativePath], 0]).call()
+            .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, 20, [...erc20Path], [...toNativePath], 0]).call()
         return lpAmount
     }
 
@@ -406,7 +405,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
     }
     return getZapContract(web3, zapperAddress, chainId)
         .methods
-        .getAmountOutLPERC20ORNativecoin(amountInToWei, result.deus_price, result.collateral_price, erc20Path).call()
+        .getAmountOutLPERC20ORNativecoin(amountInToWei, deus_price_toWei, collateral_price_toWei, erc20Path).call()
 }
 
 

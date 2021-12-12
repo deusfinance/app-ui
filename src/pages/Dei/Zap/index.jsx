@@ -18,7 +18,7 @@ import useTokenBalances from '../../../hooks/useTokenBalances';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { ContentWrapper } from '../../../components/App/Dei';
 import { useDeiUpdate, useZap, useAllowance, useGetAmountsOutZap } from '../../../hooks/useDei';
-import { collatRatioState, husdPoolDataState } from '../../../store/dei';
+import { collatRatioState, husdPoolDataState, deiPricesState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
@@ -34,6 +34,7 @@ import { DEI_DEUS_ZAP, DEUS_NATIVE_ZAP } from '../../../constant/contracts';
 const Zap = () => {
     const location = useLocation()
     const { account, chainId } = useWeb3React()
+    const deiPrices = useRecoilValue(deiPricesState)
     const tempChain = null
     const userChain = tempChain ? tempChain : chainId
     const validChains = getCorrectChains(location.pathname)
@@ -119,7 +120,7 @@ const Zap = () => {
 
     const { onApprove } = useApprove(swapState.from, contractAddress, currChain)
     const { onZap } = useZap(swapState.from, stakingInfo, debouncedAmountIn, slippage, amountOut, amountOutParams, currChain)
-    const { getAmountsOut } = useGetAmountsOutZap(swapState.from, contractAddress, amountIn, debouncedAmountIn, chainId)
+    const { getAmountsOut } = useGetAmountsOutZap(swapState.from, contractAddress, amountIn, debouncedAmountIn, deiPrices, chainId)
 
     useEffect(() => {
         const get = async () => {
@@ -216,7 +217,6 @@ const Zap = () => {
     }
 
     return (<>
-
         <SearchBox
             account={account}
             currencies={balances}
@@ -227,9 +227,7 @@ const Zap = () => {
             active={activeSearchBox}
             setActive={setActiveSearchBox} />
 
-        {/* <Under /> */}
-
-        {true && <MainWrapper >
+        <MainWrapper >
             <ContentWrapper deactivated={mintPaused}>
                 <Type.XL fontWeight="300">Zap</Type.XL>
                 <SwapWrapper style={{ marginTop: "25px", maxWidth: "560px" }}>
@@ -295,9 +293,8 @@ const Zap = () => {
                 </SwapWrapper>
 
                 <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} style={{ maxWidth: "560px" }} />
-                {/* <SwapCard title="Zapping Fee" value={mintingFee ? `${mintingFee} %` : ""} style={{ maxWidth: "560px" }} /> */}
             </ContentWrapper>
-        </MainWrapper>}
+        </MainWrapper>
 
         <div className='tut-left-wrap'>
             <LinkBox />

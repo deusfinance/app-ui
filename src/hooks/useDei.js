@@ -81,16 +81,16 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
 
 
 
-export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debouncedAmountIn, validChainId) => {
+export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debouncedAmountIn, result, validChainId) => {
     const web3 = useWeb3()
 
     const handleGetAmountOut = useCallback(async () => {
         if (!validChainId || !currency || !amountIn || amountIn === "" || isZero(amountIn) || !zapperContract || debouncedAmountIn !== amountIn) return ""
         const amountInToWei = getToWei(amountIn, currency.decimals).toFixed(0)
         try {
-            let result = null
-            let path = "/mint-fractional"
-            result = await makeDeiRequest(path, validChainId)
+            // let result = null
+            // let path = "/mint-fractional"
+            // result = await makeDeiRequest(path, validChainId)
 
             const amount = await getZapAmountsOut(
                 currency,

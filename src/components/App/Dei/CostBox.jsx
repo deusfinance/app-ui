@@ -44,7 +44,6 @@ export const FeePrice = styled.div`
 `
 
 export const CostBox = ({ type, chainId }) => {
-
     const deusPrices = useRecoilValue(deiPricesState)
     const deiPrice = deusPrices ? deusPrices.dei_price : null
     const collatRatio = useRecoilValue(collatRatioState)

@@ -27,6 +27,7 @@ const Migrator = () => {
     const coolDown = useRecoilValue(coolDownState)
     const [seconds, setSeconds] = useState(0)
     const setCoolDown = useSetRecoilState(coolDownState)
+    const [swapLoading, setSwapLoading] = useState(false)
 
     const search = useLocation().search;
     const queryParams = {
@@ -93,12 +94,15 @@ const Migrator = () => {
     const { onMigrate } = useMigrate(migrateList, SyncChainId, fastUpdate, true)
 
     const handleMigrate = useCallback(async () => {
+        setSwapLoading(true)
         try {
             const tx = await onMigrate()
+            setSwapLoading(false)
             console.log(tx);
             setFastUpdate(fastUpdate => fastUpdate + 1)
         } catch (e) {
             console.error(e)
+            setSwapLoading(false)
         }
     }, [onMigrate])
 
@@ -145,7 +149,6 @@ const Migrator = () => {
 
             <Line bgColor={'black'}></Line>
 
-
             <SwapAction
                 bgColor={"grad_dei"}
                 text="Migrate"
@@ -153,8 +156,7 @@ const Migrator = () => {
                 isPreApproved={true}
                 isApproved={false}
                 validNetwork={SyncChainId}
-                loading={false}
-                swapLoading={false}
+                swapLoading={swapLoading}
                 handleApprove={null}
                 handleSwap={handleMigrate}
                 amountIn={1}

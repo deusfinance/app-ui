@@ -265,7 +265,6 @@ const Dei = () => {
 
     const handleSwap = useCallback(async () => {
         setSwapLoading(true)
-
         try {
             const tx = await onMint()
             setSwapLoading(false)

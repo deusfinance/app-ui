@@ -71,7 +71,7 @@ const SwapAction = ({ text = "SWAP", swapLoading = false, migrateList, validNetw
     return (<>
         <WrapActions>
             <ButtonSwap active={true} fontSize={"25px"} onClick={handleSwap} style={{ fontWeight: "300" }} bgColor={bgColor}>{text}
-                {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner.svg" width="40" height="40" />}
+                {swapLoading && <img style={{ position: "absolute", right: "10px" }} alt="sp" src="/img/spinner-gold.svg" width="40" height="40" />}
             </ButtonSwap>
         </WrapActions>
     </>);

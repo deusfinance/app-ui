@@ -50,7 +50,7 @@ export const CostBox = ({ type, chainId }) => {
     const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance } = useRecoilValue(husdPoolDataState)
     let costs = null
     if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling, chainId === ChainId.BSC ? 18 : 6)
-    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance, chainId)
+    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance, chainId, chainId === ChainId.BSC ? 18 : 6)
 
     return (
         useMemo(() => {

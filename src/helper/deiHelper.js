@@ -23,7 +23,7 @@ const COLLAT_PRICE = {
 export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, decimals=6) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(poolBalance) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals-6))) : null
+    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6))) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals-6))) : null
     const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance).div(TEN.pow(decimals-6))) : null
     return [{
         name: 'DEI PRICE',

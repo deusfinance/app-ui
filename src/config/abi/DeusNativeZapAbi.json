@@ -423,6 +423,16 @@
                 "internalType": "struct ZapperInput",
                 "name": "input",
                 "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "reservedDeus",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "reservedMatic",
+                "type": "uint256"
             }
         ],
         "name": "getSwapAmountERC20",
@@ -484,6 +494,16 @@
                 "internalType": "struct ZapperInput",
                 "name": "input",
                 "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "reservedDeus",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "reservedMatic",
+                "type": "uint256"
             }
         ],
         "name": "getSwapAmountMatic",

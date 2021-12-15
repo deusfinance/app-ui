@@ -376,7 +376,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
 
 
 export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId) => {
-    const erc20Path = MINT_PATH[chainId][currency.symbol]
+    let erc20Path = MINT_PATH[chainId][currency.symbol]
     const toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
     const collateral_price_toWei = getToWei(result.collateral_price, 6).toFixed(0)
     const deus_price_toWei = getToWei(result.deus_price, 6).toFixed(0)
@@ -388,6 +388,9 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
         return lpAmount
     }
     else if (zapperAddress === DEUS_NATIVE_ZAP[chainId]) {
+        if (currency.symbol === "DEUS" && chainId === ChainId.MATIC)
+            erc20Path = MINT_PATH[chainId]["DEUS_edited"]
+
         const lpAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, 20, [...erc20Path], [...toNativePath], 0]).call()
@@ -423,7 +426,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
 
 
 export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual,  web3, chainId) => {
-    const erc20Path = MINT_PATH[chainId][currency.symbol]
+    let erc20Path = MINT_PATH[chainId][currency.symbol]
     const toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
     const { collateral_price, deus_price, expire_block, signature } = result
 
@@ -462,6 +465,9 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
 
     } else if (zapperAddress === DEUS_NATIVE_ZAP[chainId]) {
         proxyTuple[1] = 0;
+        if (currency.symbol === "DEUS" && chainId === ChainId.MATIC)
+            erc20Path = MINT_PATH[chainId]["DEUS_edited"]
+
         if (currency.address === "0x") {
             return getZapContract(web3, zapperAddress, chainId)
                 .methods

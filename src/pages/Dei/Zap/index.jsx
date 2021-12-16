@@ -125,7 +125,6 @@ const Zap = () => {
     useEffect(() => {
         const get = async () => {
             const result = await getAmountsOut()
-            // console.log("getAmountsOut", result);
             if (result === "") {
                 setAmountOut("")
                 setAmountOutParams(null)
@@ -141,7 +140,7 @@ const Zap = () => {
                     setAmountOut(result.lp)
                     setPercentage(fromWei(result.percentage, 4))
                 } else {
-                    setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount, result.swapAmountUsdc])
+                    setAmountOutParams([result.percentage, result.lp, result.usdcForMintAmount, result.deusNeededAmount, result.swapAmount])
                     setAmountOut(result.lp)
                     setPercentage(fromWei(result.percentage, 4))
                 }

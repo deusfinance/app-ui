@@ -200,7 +200,6 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
 
 //WRITE FUNCTIONS
 export const SendWithToast = (fn, account, chainId, message, payload = {}) => {
-
     if (!fn) return
     let hash = null
     const value = payload.value ? { value: payload.value } : {}
@@ -431,7 +430,6 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
     const { collateral_price, deus_price, expire_block, signature } = result
 
     let proxyTuple = []
-
     if (amountOutParams.length > 0)
         proxyTuple = [
             amountIn,
@@ -476,7 +474,7 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInERC20(minLpAmount, transferResidual, proxyTuple, toNativePath, erc20Path, amountOutParams[4])
-    } else {
+    } else { // DEUS_COLLATERAL_ZAP
         if (currency.address === "0x") {
             return getZapContract(web3, zapperAddress, chainId)
                 .methods

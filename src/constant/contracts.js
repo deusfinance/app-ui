@@ -125,7 +125,7 @@ export const DEI_COLLATERAL_STAKING = {
 }
 
 export const DEI_COLLATERAL_ZAP = {
-  [ChainId.MATIC]: "0x30e75E68538c81d0556C8B7a30Ba2eb5Ce0DC80A",
+  [ChainId.MATIC]: "0x537243C2d9b512983F968039cBeBe551b332594c",
 }
 
 export const DEI_DEUS_ZAP = {

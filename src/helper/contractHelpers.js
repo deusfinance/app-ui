@@ -94,8 +94,9 @@ export const getZapContract = (web3, address, chainId = ChainId.AVALANCHE) => {
             return getContract(DeusNativeZapAbi, address, web3, chainId)
         else if (chainId === ChainId.ETH)
             return getContract(DeusNativeZapAbiETH, address, web3, chainId)
+    } else {
+        return getContract(DeiCollateralZapAbi, address, web3, chainId)
     }
-    return getContract(DeiCollateralZapAbi, address, web3, chainId)
 }
 
 export const getMigrationContract = (web3, chainId = ChainId.RINKEBY) => {

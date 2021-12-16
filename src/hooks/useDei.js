@@ -69,7 +69,7 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
             const result = await makeDeiRequest(path, validChainId)
 
             const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, result, amountOutParams, false, web3, chainId)
-            const payload = currency.address === "0x" ? { value: amountInToWei } : {}   
+            const payload = currency.address === "0x" ? { value: amountInToWei } : {}
             return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
         } catch (error) {
             console.log(error);
@@ -77,8 +77,6 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
     }, [currency, stakingInfo, amountIn, amountOut, amountOutParams, validChainId, chainId, account, web3, slippage])
     return { onZap: handleZap }
 }
-
-
 
 
 export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debouncedAmountIn, result, validChainId) => {

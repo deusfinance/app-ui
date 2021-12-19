@@ -13,11 +13,14 @@ const baseUrl = "https://oracle4.deus.finance/dei"
 
 export const dollarDecimals = 6
 export const collatUsdPrice = "1000000"
-const LENGTH_COLLAT = {}
+const LENGTH_COLLAT = {
+    [ChainId.ETH]: 3,
+    [ChainId.MATIC]: 4,
+}
 
 const COLLAT_PRICE = {
-    [ChainId.BSC_TESTNET]:"1000000000000000000",
-    [ChainId.BSC]:"1000000000000000000",
+    [ChainId.BSC_TESTNET]: "1000000000000000000",
+    [ChainId.BSC]: "1000000000000000000",
 }
 
 export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, decimals=6) => {

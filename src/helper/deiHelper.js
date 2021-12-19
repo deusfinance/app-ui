@@ -15,6 +15,8 @@ export const dollarDecimals = 6
 export const collatUsdPrice = "1000000"
 const LENGTH_COLLAT = {
     [ChainId.ETH]: 3,
+    [ChainId.BSC]: 3,
+    [ChainId.FTM]: 3,
     [ChainId.MATIC]: 4,
 }
 

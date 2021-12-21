@@ -48,7 +48,7 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling 
 export const makeCostDataRedeem = (collatRatio, poolBalance, chainId = ChainId.ETH, decimals = 6) => {
     const cToken = collateralToken[chainId]
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pb = poolBalance !== null ? `${formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6)))} ${cToken.symbol}` : null
+    const pb = poolBalance !== null ? `${formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6)))} ${cToken?.symbol}` : null
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
@@ -65,11 +65,11 @@ export const makeCostDataBuyBack = (deus_price, dei_price, pool, buyBack, recoll
     const deiPrice = dei_price !== null && !isNaN(dei_price) ? `$${new BigNumber(dei_price).toFixed(3)}` : null
     const p = pool ? pool : null
     const bb = buyBack !== null && !isNaN(buyBack) ? `${formatUnitAmount(buyBack)} DEUS` : null
-    const rc = recollateralize !== null && !isNaN(recollateralize) ? `${formatUnitAmount(recollateralize)} ${cToken.symbol}` : null
+    const rc = recollateralize !== null && !isNaN(recollateralize) ? `${formatUnitAmount(recollateralize)} ${cToken?.symbol}` : null
 
     return [{
         name: 'EXCHANGE RATES',
-        title1: cToken.symbol,
+        title1: cToken?.symbol,
         value1: deiPrice,
         title2: 'DEUS: ',
         value2: deusPrice

@@ -14,6 +14,7 @@ import useChain from '../../../hooks/useChain';
 import { Chains } from '../../../components/App/Dei/Chains';
 import LpTokens from '../../../components/App/Dei/LpTokens';
 import BuyDEUS from '../../../components/App/Dei/BuyDEUS';
+import { ChainId } from '../../../constant/web3';
 
 const StakingContainer = styled.div`
     display: flex;
@@ -37,11 +38,16 @@ const MainWrapper = styled.div`
     text-align: center;
 `
 
+const EmptyTextWrapper = styled.div`
+    margin-top: 120px;
+`
+
 const Dei = () => {
     const location = useLocation()
     const validNetworks = getCorrectChains(location.pathname)
     // const chainId = useChain(validNetworks)
-    const { chainId } = useWeb3React()
+    const { account, chainId } = useWeb3React()
+    console.log(account);
     useDeiUpdateRedeem(chainId)
     // const APY = useAPY(chainId)
 
@@ -55,8 +61,16 @@ const Dei = () => {
                     <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={StakingConfig[chainId][1].apy} />
                     <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2].apy} />
                 </StakingContainer>}
-            {!StakingConfig[chainId] && 
-                <Type.LG fontWeight="300" mb="4" opacity="0.5">Not available on this chain.</Type.LG>
+            {!StakingConfig[chainId] && !account &&
+                <StakingContainer>
+                    <Staking config={StakingConfig[ChainId.ETH][0]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][0].apy} />
+                    <Staking config={StakingConfig[ChainId.ETH][1]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][1].apy} />
+                    <Staking config={StakingConfig[ChainId.ETH][2]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][2].apy} />
+                </StakingContainer>}
+            {!StakingConfig[chainId] && account && <EmptyTextWrapper>
+                <Type.LG fontWeight="300" mb="3" opacity="0.6">Not available on this chain</Type.LG>
+                <Type.MD fontWeight="250" mb="4" opacity="0.4">(Switch to ETH or POLYGON)</Type.MD>
+            </EmptyTextWrapper>
             }
         </MainWrapper>
 

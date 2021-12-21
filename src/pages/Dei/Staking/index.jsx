@@ -56,7 +56,7 @@ const Dei = () => {
                     <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2].apy} />
                 </StakingContainer>}
             {!StakingConfig[chainId] && 
-                <Type.LG fontWeight="300" mb="4" opacity="0.5">Not available in this chain.</Type.LG>
+                <Type.LG fontWeight="300" mb="4" opacity="0.5">Not available on this chain.</Type.LG>
             }
         </MainWrapper>
 

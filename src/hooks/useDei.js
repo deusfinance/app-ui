@@ -572,7 +572,7 @@ export const useHusdPoolData = (validChainId) => {
                     buyBackPaused: buyBackPaused[0],
                     recollateralizePaused: recollateralizePaused[0],
                     redeemDEUSBalances: account ? fromWei(redeemDEUSBalances, 18) : "0",
-                    redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, collateralToken[validChainId].decimals) : "0",
+                    redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, collateralToken[validChainId]?.decimals) : "0",
                 }
                 setHusdPoolData({ ...updateState })
             } catch (error) {
@@ -603,12 +603,6 @@ export const useCollatRatio = (validChainId) => {
 }
 
 export const useDeiUpdate = (validChainId) => {
-    useCollatRatio(validChainId)
-    useDeiPrices(validChainId)
-    useHusdPoolData(validChainId)
-}
-
-export const useDeiUpdateRedeem = (validChainId) => {
     useCollatRatio(validChainId)
     useDeiPrices(validChainId)
     useHusdPoolData(validChainId)

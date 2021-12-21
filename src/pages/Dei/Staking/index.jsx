@@ -2,7 +2,7 @@ import React from 'react';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
 import { Type } from '../../../components/App/Text';
-import { useDeiUpdateRedeem } from '../../../hooks/useDei';
+import { useDeiUpdate } from '../../../hooks/useDei';
 import { useWeb3React } from '@web3-react/core';
 import Staking from '../../../components/App/Dei/Staking/Staking';
 import { StakingConfig } from '../../../constant/staking';
@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import useChain from '../../../hooks/useChain';
-// import { useAPY } from '../../../hooks/useDei';
 import { Chains } from '../../../components/App/Dei/Chains';
 import LpTokens from '../../../components/App/Dei/LpTokens';
 import BuyDEUS from '../../../components/App/Dei/BuyDEUS';
@@ -44,12 +43,10 @@ const EmptyTextWrapper = styled.div`
 
 const Dei = () => {
     const location = useLocation()
-    const validNetworks = getCorrectChains(location.pathname)
-    // const chainId = useChain(validNetworks)
     const { account, chainId } = useWeb3React()
-    console.log(account);
-    useDeiUpdateRedeem(chainId)
-    // const APY = useAPY(chainId)
+    const validChains = getCorrectChains(location.pathname)
+    const currChain = chainId && validChains.indexOf(chainId) !== -1 ? chainId : ChainId.ETH
+    useDeiUpdate(currChain)
 
     return (<>
         <MainWrapper>
@@ -82,7 +79,7 @@ const Dei = () => {
         <div className='tut-right-wrap'>
             {StakingConfig[chainId] && <LpTokens chainId={chainId} />}
             <BuyDEUS />
-            <Chains validChainId={chainId} validNetworks={validNetworks} />
+            <Chains validChainId={chainId} validNetworks={validChains} />
         </div>
     </>);
 }

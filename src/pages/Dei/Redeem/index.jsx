@@ -18,7 +18,7 @@ import { Type } from '../../../components/App/Text';
 import { isZero } from '../../../constant/number';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
-import { useDeiUpdateRedeem, useRedeem, useAllowance } from '../../../hooks/useDei';
+import { useDeiUpdate, useRedeem, useAllowance } from '../../../hooks/useDei';
 import { PlusImg } from '../../../components/App/Dei';
 import { RemoveTrailingZero } from '../../../helper/formatBalance';
 import { ContentWrapper } from '../../../components/App/Dei';
@@ -33,7 +33,7 @@ const Dei = () => {
     const location = useLocation()
     const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
-    useDeiUpdateRedeem(chainId)
+    useDeiUpdate(chainId)
 
     const collatRatio = useRecoilValue(collatRatioState)
     const deiPrices = useRecoilValue(deiPricesState)

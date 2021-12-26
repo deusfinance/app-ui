@@ -64,7 +64,7 @@ const ZapBox = ({ setActive, availableStaking, activeStakingList, stakingInfo, s
                         size={"35px"}
                         bgColor="#000000"
                     />
-                    <Type.XL fontWeight="300" color="text1" ml="10px" mr="9px">{info.title}</Type.XL>
+                    <Type.LG fontWeight="300" color="text1" ml="10px" mr="9px">{info.title}</Type.LG>
                 </StakingListWrap>
             })}
 

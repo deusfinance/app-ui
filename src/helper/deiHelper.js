@@ -25,11 +25,11 @@ const COLLAT_PRICE = {
     [ChainId.BSC]: "1000000000000000000",
 }
 
-export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, decimals=6) => {
+export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, decimals = 6) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6))) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals-6))) : null
-    const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance).div(TEN.pow(decimals-6))) : null
+    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6))) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals - 6))) : null
+    const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance).div(TEN.pow(decimals - 6))) : null
     return [{
         name: 'DEI PRICE',
         value: dp
@@ -130,7 +130,7 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
     for (let i = 0; i < LEN; i++) {
         collaterals.push(COLLAT_PRICE[chainId] ?? collat_usd_price);
     }
-    
+
     let calls = [
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -381,7 +381,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
 
 export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId) => {
     let erc20Path = MINT_PATH[chainId][currency.symbol]
-    const toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
+    let toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
     const collateral_price_toWei = getToWei(result.collateral_price, 6).toFixed(0)
     const deus_price_toWei = getToWei(result.deus_price, 6).toFixed(0)
 
@@ -392,8 +392,10 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
         return lpAmount
     }
     else if (zapperAddress === DEUS_NATIVE_ZAP[chainId]) {
-        if (currency.symbol === "DEUS" && chainId === ChainId.MATIC)
+        if (currency.symbol === "DEUS" && chainId === ChainId.MATIC) {
             erc20Path = MINT_PATH[chainId]["DEUS_edited"]
+            toNativePath = TO_NATIVE_PATH[chainId]["DEUS_edited"]
+        }
 
         const lpAmount = await getZapContract(web3, zapperAddress, chainId)
             .methods
@@ -416,7 +418,6 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
 }
 
 
-
 // struct ProxyInput DEI_COLLATERAL_ZAP {
 // 	uint amountIn;
 // 	uint minAmountOut;
@@ -428,10 +429,9 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
 // 	bytes[] sigs;
 // }
 
-
-export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual,  web3, chainId) => {
+export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, amountOutParams, transferResidual, web3, chainId) => {
     let erc20Path = MINT_PATH[chainId][currency.symbol]
-    const toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
+    let toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
     const { collateral_price, deus_price, expire_block, signature } = result
 
     let proxyTuple = []
@@ -468,8 +468,10 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
 
     } else if (zapperAddress === DEUS_NATIVE_ZAP[chainId]) {
         proxyTuple[1] = 0;
-        if (currency.symbol === "DEUS" && chainId === ChainId.MATIC)
+        if (currency.symbol === "DEUS" && chainId === ChainId.MATIC) {
             erc20Path = MINT_PATH[chainId]["DEUS_edited"]
+            toNativePath = TO_NATIVE_PATH[chainId]["DEUS_edited"]
+        }
 
         if (currency.address === "0x") {
             return getZapContract(web3, zapperAddress, chainId)

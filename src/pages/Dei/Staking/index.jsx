@@ -21,7 +21,7 @@ const StakingContainer = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     text-align: center;
-    margin:auto;
+    margin: auto;
     width: calc(100% - 540px);
     @media screen and (max-width: 1600px) {
         flex-direction: column;

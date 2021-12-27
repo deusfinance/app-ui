@@ -12,6 +12,8 @@ import { RecoilRoot } from 'recoil'
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
+const Preido = React.lazy(() => import('./pages/Preido'))
+
 const BakktMigrator = React.lazy(() => import('./pages/BakktMigrator'))
 const Migrator = React.lazy(() => import('./pages/Migrator'))
 const MigratorOther = React.lazy(() => import('./pages/Migrator/Other'))
@@ -44,6 +46,7 @@ function App() {
                 <ToastContainer style={{ maxWidth: '450px', width: '90%' }} />
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
+                  <Route exact path="/preido" component={Preido} />
                   <Route exact path="/bakkt-migrator" component={BakktMigrator} />
                   <Route exact path="/migrator" component={Migrator} />
                   <Route exact path="/migrator/other" component={MigratorOther} />

@@ -22,21 +22,44 @@ import BakktAbi from '../config/abi/bakktAbi.json'
 import DeusNativeZapAbi from '../config/abi/DeusNativeZapAbi.json'
 import DeusNativeZapAbiETH from '../config/abi/DeusNativeZapAbiETH.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
-import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, PROXY_MINT_ADDRESS, MIGRATOR_ADDRESS, DEI_DEUS_ZAP, NEW_PROXY_MINT_ADDRESS, BRIDGE_ADDRESS, DEUS_SWAP_ADDRESS, DEUS_NATIVE_ZAP } from '../constant/contracts'
+import PreIdoABI from '../config/abi/PreIdoAbi.json'
+import {
+    DEI_ADDRESS,
+    DEI_POOL_ADDRESS,
+    COLLATERAL_POOL_ADDRESS,
+    MULTICALL_NETWORKS,
+    PROXY_MINT_ADDRESS,
+    MIGRATOR_ADDRESS,
+    DEI_DEUS_ZAP,
+    NEW_PROXY_MINT_ADDRESS,
+    BRIDGE_ADDRESS,
+    DEUS_SWAP_ADDRESS,
+    DEUS_NATIVE_ZAP,
+    PRE_IDO_ADDRESS
+} from '../constant/contracts'
 import { ChainId } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
 import { SyncData } from '../constant/synchronizer'
 
-const getContract = (abi, address, web3, chainId) => {
+const getContract = (abi,
+    address,
+    web3,
+    chainId) => {
     const _web3 = web3 ?? getWeb3NoAccount(chainId)
-    return new _web3.eth.Contract(abi, address)
+    return new _web3.eth.Contract(abi,
+        address)
 }
 
-export const getMultiSwapContract = (web3, chainId = ChainId.ETH) => {
-    return getContract(multiSwapAbi, getContractAddr("multi_swap_contract", chainId), web3)
+export const getMultiSwapContract = (web3,
+    chainId = ChainId.ETH) => {
+    return getContract(multiSwapAbi,
+        getContractAddr("multi_swap_contract",
+            chainId),
+        web3)
 }
 
-export const getSynchronizerContract = (web3, chainId = ChainId.ETH) => {
+export const getSynchronizerContract = (web3,
+    chainId = ChainId.ETH) => {
     if (chainId === ChainId.XDAI)
         return getContract(XdaiProxyAbi, SyncData[chainId].contract, web3)
     return getContract(SyncAbi, SyncData[chainId].contract, web3)
@@ -89,7 +112,7 @@ export const getProxyMinterContract = (web3, chainId = ChainId.AVALANCHE) => {
 export const getZapContract = (web3, address, chainId = ChainId.AVALANCHE) => {
     if (address === DEI_DEUS_ZAP[chainId])
         return getContract(DeiDeusZapAbi, address, web3, chainId)
-    else if (address === DEUS_NATIVE_ZAP[chainId]){
+    else if (address === DEUS_NATIVE_ZAP[chainId]) {
         if (chainId === ChainId.MATIC)
             return getContract(DeusNativeZapAbi, address, web3, chainId)
         else if (chainId === ChainId.ETH)
@@ -117,4 +140,8 @@ export const getBakktMigrationContract = (web3, chainId = ChainId.ETH) => {
 
 export const getBridgeContract = (web3, chainId = ChainId.MATIC) => {
     return getContract(BridgeABI, BRIDGE_ADDRESS[chainId], web3, chainId)
+}
+
+export const getPreIdoContract = (web3, chainId = ChainId.MATIC) => {
+    return getContract(PreIdoABI, PRE_IDO_ADDRESS[chainId], web3, chainId)
 }

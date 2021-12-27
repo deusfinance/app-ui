@@ -22,7 +22,7 @@ import {
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
-import { COLLATERAL_ADDRESS, DEI_ADDRESS, DEUS_ADDRESS, MINT_PATH } from '../constant/contracts'
+import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
 import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
 
 
@@ -104,7 +104,7 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
             return false
         }
 
-    }, [currency, zapperContract, amountIn, debouncedAmountIn, validChainId, web3])
+    }, [currency, result, zapperContract, amountIn, debouncedAmountIn, validChainId, web3])
     return { getAmountsOut: handleGetAmountOut }
 }
 
@@ -652,7 +652,7 @@ export const useAllowance = (currency, contractAddress, validChainId, fastUpdate
                     const res = await contract.methods.allowance(account, contractAddress).call()
                     setAllowance(new BigNumber(res))
                 } catch (error) {
-                    console.log("useAllowance ", currency, contractAddress, validChainId,error);
+                    console.log("useAllowance ", currency, contractAddress, validChainId, error);
                 }
 
             }

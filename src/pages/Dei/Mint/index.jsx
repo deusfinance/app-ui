@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, NEW_PROXY_MINT_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
@@ -52,12 +52,12 @@ const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [slippage, setSlippage] = useState(0.5)
     const [amountOutParams, setAmountOutParams] = useState([])
-    const contractAddress = useMemo(() => proxy ? NEW_PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
+    const contractAddress = useMemo(() => proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy])
 
     const hasProxy = useMemo(() => {
-        if (!NEW_PROXY_MINT_ADDRESS[chainId]) return false
+        if (!PROXY_MINT_ADDRESS[chainId]) return false
         return true
-    }, [NEW_PROXY_MINT_ADDRESS, chainId])
+    }, [chainId])
 
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
         .filter((token) => !hasProxy || (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
@@ -289,7 +289,8 @@ const Dei = () => {
         setActiveSearchBox(active)
     }
 
-    const changeToken = (token, type) => {
+
+    const changeToken = useCallback((token, type) => {
         setActiveSearchBox(false)
         setAmountIn("")
         setAmountInPair("")
@@ -314,7 +315,8 @@ const Dei = () => {
         }
         setIsPair(false)
         setSwapState({ ...swapState, [type]: token })
-    }
+    }, [chainId, collatRatio, isPair, swapState, tokens])
+
 
     // TODO: loader animation --> needs to fix at the end
     useEffect(() => {
@@ -323,7 +325,8 @@ const Dei = () => {
         } else {
             changeToken(tokens[0], "from")
         }
-    }, [hasProxy, pairedTokens]);
+    }, [hasProxy, pairedTokens, tokens]); // eslint-disable-line
+
 
     if (!swapState.from.address || collatRatio === null || mintingFee === null) {
         return (<div className="loader-wrap">

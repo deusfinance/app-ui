@@ -24,7 +24,7 @@ export const correctChains = [
     },
     {
         url: "/bridge",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, , ChainId.FTM], // ChainId.BSC_TESTNET, ChainId.RINKEBY
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM], // ChainId.BSC_TESTNET, ChainId.RINKEBY
     },
     {
         url: "/not-found",

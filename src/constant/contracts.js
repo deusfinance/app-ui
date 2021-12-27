@@ -74,10 +74,8 @@ export const COLLATERAL_POOL_ADDRESS = {
   [ChainId.BSC_TESTNET]: '0xa0F395aD5df1Fceb319e162CCf1Ef6645dE8508f',
 }
 
+
 export const PROXY_MINT_ADDRESS = {
-  [ChainId.MATIC]: '0xd8e79FeC03dd3ca0dCF4d7525d2dC438E8Fc0606',
-}
-export const NEW_PROXY_MINT_ADDRESS = {
   [ChainId.MATIC]: '0x8E17742983CBa809bc554868D8a69A37e3a8a207',
   [ChainId.ETH]: '0xB095aA0A0A206ed943FAA7f5BD28A47Aaf2fEc09',
 }
@@ -87,7 +85,7 @@ export const DEUS_SWAP_ADDRESS = {
   [ChainId.MATIC]: "0xEa798f9c3eDD2A66ec036Ec754BB4561074DaCA2",
 }
 
-//Staking
+//LP
 export const DEI_DEUS_LP = {
   [ChainId.MATIC]: '0x2Bc3ce6D7cfc0B476E60aDaA1B27DE76DB95EE4e',
   [ChainId.ETH]: '0xd6dd359B8C9d18CCB3FE8627060F88D1776d2993',
@@ -106,6 +104,7 @@ export const DEUS_NATIVE_LP = {
   [ChainId.FTM]: "0x2599Eba5fD1e49F294C76D034557948034d6C96E",
 }
 
+/************STAKING****************/
 export const DEUS_NATIVE_STAKING = {
   [ChainId.MATIC]: "0x4C48f1421F62d923d9130834135FB4A58E2F4298",
   [ChainId.ETH]: '0x4C48f1421F62d923d9130834135FB4A58E2F4298',
@@ -124,6 +123,7 @@ export const DEI_COLLATERAL_STAKING = {
   [ChainId.FTM]: '0xa78Ea447ce5AA4669A5f0cD8D27bF5883E1Bf20f',
 }
 
+/************ZAPPER****************/
 export const DEI_COLLATERAL_ZAP = {
   [ChainId.MATIC]: "0xeb562C1DE6806081760b9B81Dc68f1bA69835C0f",
 }
@@ -138,6 +138,8 @@ export const DEUS_NATIVE_ZAP = {
   [ChainId.ETH]: '0xd8e79FeC03dd3ca0dCF4d7525d2dC438E8Fc0606',
 }
 
+
+//WRAP NATIVE
 export const WMaticAddress = {
   [ChainId.MATIC]: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
 }

@@ -16,7 +16,7 @@ import BigNumber from 'bignumber.js';
 import { BRIDGE_ADDRESS } from '../../constant/contracts';
 import Muon from 'muon'
 import { useClaim, useDeposit, useGetNewClaim } from '../../hooks/useBridge';
-import { ChainId, NameChainId } from '../../constant/web3';
+import { NameChainId } from '../../constant/web3';
 import './bridge.css'
 
 
@@ -126,7 +126,7 @@ const Bridge = () => {
     const changeToken = (token, chainId) => {
         // const type = target
         // setSwapState({ ...swapState, [type]: { ...token } })
-        
+
         const other = target === "from" ? "to" : "from"
         setSwapState((prev) => ({
             [target]: { ...token },

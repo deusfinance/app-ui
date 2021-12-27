@@ -9,7 +9,6 @@ import { StakingConfig } from '../../../constant/staking';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import useChain from '../../../hooks/useChain';
 import { Chains } from '../../../components/App/Dei/Chains';
 import LpTokens from '../../../components/App/Dei/LpTokens';
 import BuyDEUS from '../../../components/App/Dei/BuyDEUS';

@@ -58,12 +58,13 @@ const Zap = () => {
     const availableStaking = StakingConfig[currChain].filter(item => item.zapperContract !== null)
     const resultLp = queryParams.lp ? availableStaking.filter(staking => staking.title.toLowerCase() === queryParams.lp) : []
     const lpIndex = resultLp.length > 0 ? resultLp[0].id : 0
-    const [stakingInfo, setStakingInfo] = useState(availableStaking[lpIndex])
+    const currStakingInfo = availableStaking[lpIndex]
+    const [stakingInfo, setStakingInfo] = useState(currStakingInfo)
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
     const [amountOutParams, setAmountOutParams] = useState(null)
-    const PrimaryTokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain, stakingInfo])
-    const tokens = useMemo(() => PrimaryTokens.filter((token) => !(chainId === 1 && stakingInfo.id === 2 && (token.symbol === "DEI" || token.symbol === "DEUS"))), [PrimaryTokens])
+    const PrimaryTokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain])
+    const tokens = useMemo(() => PrimaryTokens.filter((token) => !(chainId === 1 && stakingInfo.id === 2 && (token.symbol === "DEI" || token.symbol === "DEUS"))), [PrimaryTokens, chainId, stakingInfo.id])
 
     //eslint-disable-next-line
     const tokensMap = useMemo(() => (tokens.reduce((map, token) => (map[token.address] = { ...token, address: token.address }, map), {})
@@ -76,10 +77,10 @@ const Zap = () => {
         })
     }, [tokens, currChain])
 
-    //change zapper contract when chainId changed
+    // //change zapper contract when chainId changed
     useEffect(() => {
-        setStakingInfo(availableStaking[lpIndex])
-    }, [availableStaking[lpIndex]])
+        setStakingInfo(currStakingInfo)
+    }, [currStakingInfo])
 
     const balances = useTokenBalances(tokensMap, currChain)
 

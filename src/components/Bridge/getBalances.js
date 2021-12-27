@@ -13,8 +13,8 @@ const useTokenBalances = (chains, tokens, fetchData) => {
   const { account, chainId } = useWeb3React()
   const ethWeb3 = useCrossWeb3(ChainId.ETH)
   const bscWeb3 = useCrossWeb3(ChainId.BSC)
-  const rinkebyWeb3 = useCrossWeb3(ChainId.RINKEBY)
-  const bscTestWeb3 = useCrossWeb3(ChainId.BSC_TESTNET)
+  // const rinkebyWeb3 = useCrossWeb3(ChainId.RINKEBY)
+  // const bscTestWeb3 = useCrossWeb3(ChainId.BSC_TESTNET)
   const ftmWeb3 = useCrossWeb3(ChainId.FTM)
   const polygonWeb3 = useCrossWeb3(ChainId.MATIC)
   const web3s = {

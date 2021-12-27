@@ -12,7 +12,6 @@ import SyncAbi from '../config/abi/Sync.json'
 import XdaiProxyAbi from '../config/abi/XdaiProxyAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import CollateralAbi from '../config/abi/HusdPoolAbi.json'
-import ProxyMinterAbi from '../config/abi/ProxyMinterAbi.json'
 import NewProxyMinterAbi from '../config/abi/NewProxyAbi'
 import DeiCollateralZapAbi from '../config/abi/DeiCollateralZapAbi.json'
 import DeiDeusZapAbi from '../config/abi/DeiDeusZap.json'
@@ -22,7 +21,7 @@ import BakktAbi from '../config/abi/bakktAbi.json'
 import DeusNativeZapAbi from '../config/abi/DeusNativeZapAbi.json'
 import DeusNativeZapAbiETH from '../config/abi/DeusNativeZapAbiETH.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
-import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, PROXY_MINT_ADDRESS, MIGRATOR_ADDRESS, DEI_DEUS_ZAP, NEW_PROXY_MINT_ADDRESS, BRIDGE_ADDRESS, DEUS_SWAP_ADDRESS, DEUS_NATIVE_ZAP } from '../constant/contracts'
+import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, MIGRATOR_ADDRESS, DEI_DEUS_ZAP, PROXY_MINT_ADDRESS, BRIDGE_ADDRESS, DEUS_SWAP_ADDRESS, DEUS_NATIVE_ZAP } from '../constant/contracts'
 import { ChainId } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
 import { SyncData } from '../constant/synchronizer'
@@ -82,14 +81,10 @@ export const getDeiStakingContract = (web3, address) => {
     return getContract(StakingDeiAbi, address, web3)
 }
 
-export const getProxyMinterContract = (web3, chainId = ChainId.AVALANCHE) => {
-    return getContract(ProxyMinterAbi, PROXY_MINT_ADDRESS[chainId], web3, chainId)
-}
-
 export const getZapContract = (web3, address, chainId = ChainId.AVALANCHE) => {
     if (address === DEI_DEUS_ZAP[chainId])
         return getContract(DeiDeusZapAbi, address, web3, chainId)
-    else if (address === DEUS_NATIVE_ZAP[chainId]){
+    else if (address === DEUS_NATIVE_ZAP[chainId]) {
         if (chainId === ChainId.MATIC)
             return getContract(DeusNativeZapAbi, address, web3, chainId)
         else if (chainId === ChainId.ETH)
@@ -104,7 +99,7 @@ export const getMigrationContract = (web3, chainId = ChainId.RINKEBY) => {
 }
 
 export const getNewProxyMinterContract = (web3, chainId = ChainId.MATIC) => {
-    return getContract(NewProxyMinterAbi, NEW_PROXY_MINT_ADDRESS[chainId], web3, chainId)
+    return getContract(NewProxyMinterAbi, PROXY_MINT_ADDRESS[chainId], web3, chainId)
 }
 
 export const getDeusSwapContract = (web3, chainId = ChainId.MATIC) => {

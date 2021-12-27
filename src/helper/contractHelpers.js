@@ -20,7 +20,7 @@ import MigrationAbi from '../config/abi/MigrationAbi.json'
 import BakktAbi from '../config/abi/bakktAbi.json'
 import DeusNativeZapAbi from '../config/abi/DeusNativeZapAbi.json'
 import DeusNativeZapAbiETH from '../config/abi/DeusNativeZapAbiETH.json'
-import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleCrossChain.json'
+import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleMatic.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
 import {
     DEI_ADDRESS,

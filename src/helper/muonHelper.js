@@ -26,7 +26,7 @@ export const deposit = async (fromCurrency, toCurrency, amountIn, amountOut, res
             result.forAddress,
             result.addressMaxCap,
             `0x${cid.substr(1)}`,
-            signs.map(s => s.signature))
+            signs)
         .send(sendArgs)
         .once('transactionHash', (tx) => {
             hash = tx

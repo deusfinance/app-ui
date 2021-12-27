@@ -20,8 +20,21 @@ import MigrationAbi from '../config/abi/MigrationAbi.json'
 import BakktAbi from '../config/abi/bakktAbi.json'
 import DeusNativeZapAbi from '../config/abi/DeusNativeZapAbi.json'
 import DeusNativeZapAbiETH from '../config/abi/DeusNativeZapAbiETH.json'
+import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleCrossChain.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
-import { DEI_ADDRESS, DEI_POOL_ADDRESS, COLLATERAL_POOL_ADDRESS, MULTICALL_NETWORKS, MIGRATOR_ADDRESS, DEI_DEUS_ZAP, PROXY_MINT_ADDRESS, BRIDGE_ADDRESS, DEUS_SWAP_ADDRESS, DEUS_NATIVE_ZAP } from '../constant/contracts'
+import {
+    DEI_ADDRESS,
+    MUON_PRESALE_ADDRESS,
+    DEI_POOL_ADDRESS,
+    COLLATERAL_POOL_ADDRESS,
+    MULTICALL_NETWORKS,
+    MIGRATOR_ADDRESS,
+    DEI_DEUS_ZAP,
+    PROXY_MINT_ADDRESS,
+    BRIDGE_ADDRESS,
+    DEUS_SWAP_ADDRESS,
+    DEUS_NATIVE_ZAP
+} from '../constant/contracts'
 import { ChainId } from '../constant/web3'
 import { getContractAddr } from '../utils/contracts'
 import { SyncData } from '../constant/synchronizer'
@@ -112,4 +125,8 @@ export const getBakktMigrationContract = (web3, chainId = ChainId.ETH) => {
 
 export const getBridgeContract = (web3, chainId = ChainId.MATIC) => {
     return getContract(BridgeABI, BRIDGE_ADDRESS[chainId], web3, chainId)
+}
+
+export const getMuonContract = (web3, chainId = ChainId.MATIC) => {
+    return getContract(MuonPresaleCrossChainAbi, MUON_PRESALE_ADDRESS[chainId], web3)
 }

@@ -20,7 +20,6 @@ const TitleWrap = styled.div`
 
         }
     `}
-
 `
 
 const TLG = styled(Type.LG)`
@@ -35,6 +34,7 @@ const TLG = styled(Type.LG)`
 `
 
 const MigrationTitle = ({ config, toggleId, active }) => {
+    // console.log(config);
     const { title, id } = config
     return (<TitleWrap>
         <div style={{ display: 'flex', justifyContent: "flex-start", alignItems: "center", cursor: "pointer" }} onClick={() => toggleId(id, active, null, null)}>

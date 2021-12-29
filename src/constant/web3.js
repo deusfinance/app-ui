@@ -12,6 +12,8 @@ export const ChainId = {
     MATIC: 137,
     MATIC_TESTNET: 0,
     AVALANCHE: 43114,
+    METIS: 1088,
+    ARBITRUM: 42161,
 }
 
 export const NameChainId = {
@@ -26,9 +28,10 @@ export const NameChainId = {
     256: "HECOT",
     97: "BSCTEST",
     137: "POLYGON",
-    43114: "AVALANCHE"
+    43114: "AVALANCHE",
+    1088: "Metis",
+    42161: "Arbitrum",
 }
-
 
 export const rpcConfig = {
     [ChainId.ETH]: {
@@ -141,5 +144,27 @@ export const rpcConfig = {
         },
         rpcUrls: ["https://rpc.ftm.tools/"],
         blockExplorerUrls: ["https://ftmscan.com/"],
+    },
+    [ChainId.METIS]: {
+        chainId: "0x440",
+        chainName: "Metis Andromeda Mainnet",
+        nativeCurrency: {
+            name: "METIS",
+            symbol: "METIS",
+            decimals: 18,
+        },
+        rpcUrls: ["https://andromeda.metis.io/?owner=1088"],
+        blockExplorerUrls: ["https://andromeda-explorer.metis.io/"],
+    },
+    [ChainId.ARBITRUM]: {
+        chainId: "0xA4B1",
+        chainName: "Arbitrum",
+        nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18,
+        },
+        rpcUrls: ["https://arb1.arbitrum.io/rpc"],
+        blockExplorerUrls: ["https://arbiscan.io/"],
     },
 }

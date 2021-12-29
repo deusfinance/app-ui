@@ -109,6 +109,7 @@ const Migrator = () => {
 
     // Array of migrated id
     const migratedList = useUserStatus(account)
+    console.log(migratedList);
 
     if (account && !migratedList) {
         return (<div className="loader-wrap">
@@ -117,6 +118,7 @@ const Migrator = () => {
     }
 
     const currUnMigratedList = userSnap.filter(config => !migratedList?.includes(config.id) && config.tokens.from.filter(token => token.balance > 0).length > 0)
+    console.log(currUnMigratedList);
 
     return (<MainWrapper>
         <Type.XXL fontWeight="300" marginBottom="20px">Migrator</Type.XXL>
@@ -125,7 +127,7 @@ const Migrator = () => {
         {account && <MainDiv>
             {currUnMigratedList.length > 0 ? currUnMigratedList.map(config => {
                 return <div key={config.id}>
-                    <Container >
+                    <Container>
                         <MigrationTitle toggleId={toggleId} active={migrateList[config.id]} config={config} />
                         <RowBetween align={"flex-start"}>
                             <MultipleBox currency={config.tokens.from} fastUpdate={fastUpdate} />

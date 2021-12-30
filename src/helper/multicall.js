@@ -9,12 +9,17 @@ const multicall = async (web3, abi, calls, chainId) => {
         call.address.toLowerCase(),
         itf.encodeFunctionData(call.name, call.params),
     ])
-    const { returnData } = await multi.methods.aggregate(calldata).call()
-    const res = returnData.map((call, i) =>
-        itf.decodeFunctionResult(calls[i].name, call)
-    )
+    try {
+        const { returnData } = await multi.methods.aggregate(calldata).call()
+        const res = returnData.map((call, i) =>
+            itf.decodeFunctionResult(calls[i].name, call)
+        )
+        return res
 
-    return res
+    } catch (error) {
+        console.log("error happened in multicall with chainId", chainId, error);
+    }
+
 }
 
 export { multicall }

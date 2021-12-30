@@ -17,8 +17,7 @@ const useTokenBalances = (chains, tokens, fetchData) => {
   const ftmWeb3 = useCrossWeb3(ChainId.FTM)
   const polygonWeb3 = useCrossWeb3(ChainId.MATIC)
   const metisWeb3 = useCrossWeb3(ChainId.METIS)
-  // const arbiWeb3 = useCrossWeb3(ChainId.ARBITRUM)
-  // const optimisticWeb3 = useCrossWeb3(ChainId.OPTIMISTIC)
+  const arbiWeb3 = useCrossWeb3(ChainId.ARBITRUM)
 
   const web3s = {
     [ChainId.ETH]: ethWeb3,
@@ -26,8 +25,7 @@ const useTokenBalances = (chains, tokens, fetchData) => {
     [ChainId.MATIC]: polygonWeb3,
     [ChainId.BSC]: bscWeb3,
     [ChainId.METIS]: metisWeb3,
-    // [ChainId.ARBITRUM]: arbiWeb3,
-    // [ChainId.OPTIMISTIC]: optimisticWeb3,
+    [ChainId.ARBITRUM]: arbiWeb3,
   }
 
   useEffect(() => {
@@ -40,11 +38,11 @@ const useTokenBalances = (chains, tokens, fetchData) => {
             params: [account]
           }
         })
+        // if (currChainId == ChainId.OPTIMISTIC) {
+        //   console.log(calls);
+        // }
         try {
           const result = await multicall(web3s[currChainId], ERC20ABI, calls, currChainId)
-          if (currChainId === ChainId.METIS) {
-            console.log(result);
-          }
           for (let i = 0; i < result.length; i++) {
             const balance = result[i]
             const address = calls[i].address
@@ -52,7 +50,8 @@ const useTokenBalances = (chains, tokens, fetchData) => {
             token.balances[currChainId] = getBalanceNumber(balance, tokens[address]?.decimals)
           }
         } catch (error) {
-          console.log("error at useTokenBalances", error);
+
+          console.log("error at useTokenBalances", currChainId, error);
         }
       })
       setBalances(tokens)

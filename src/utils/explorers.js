@@ -20,6 +20,9 @@ const EXPLORER_PREFIXES = {
   137: '',
   256: 'testnet.',
   [ChainId.AVALANCHE]: '',
+  [ChainId.METIS]: '',
+  [ChainId.ARBITRUM]: '',
+  [ChainId.OPTIMISTIC]: '',
 }
 
 function getEtherscanLink(chainId, data, type) {
@@ -124,6 +127,23 @@ function getHecoLink(chainId, data, type) {
   }
 }
 
+function getMetisLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1088]
+    }andromeda-explorer.metis.io/`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
 export function getTransactionLink(chainId, data, type) {
   switch (chainId) {
     case 1:
@@ -149,6 +169,15 @@ export function getTransactionLink(chainId, data, type) {
     case ChainId.AVALANCHE: {
       return getAvalancheLink(chainId, data, type)
     }
+    case ChainId.METIS: {
+      return getMetisLink(chainId, data, type)
+    }
+    // case ChainId.ARBITRUM: {
+    //   return getArbitrumLink(chainId, data, type)
+    // }
+    // case ChainId.OPTIMISTIC: {
+    //   return getOptimisticLink(chainId, data, type)
+    // }
     default: {
       return getEtherscanLink(chainId, data, type)
     }

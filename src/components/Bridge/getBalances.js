@@ -11,6 +11,7 @@ const useTokenBalances = (chains, tokens, fetchData) => {
   // console.log(tokens);
   const [balances, setBalances] = useState(tokens)
   const { account, chainId } = useWeb3React()
+
   const ethWeb3 = useCrossWeb3(ChainId.ETH)
   const bscWeb3 = useCrossWeb3(ChainId.BSC)
   const ftmWeb3 = useCrossWeb3(ChainId.FTM)

@@ -45,7 +45,10 @@ const tokens = [
       [ChainId.BSC]: '0',
       [ChainId.FTM]: '0',
       [ChainId.ETH]: '0',
-      [ChainId.MATIC]: '0'
+      [ChainId.MATIC]: '0',
+      [ChainId.METIS]: '0',
+      [ChainId.ARBITRUM]: '0',
+      [ChainId.OPTIMISTIC]: '0',
     },
     address: {
       [ChainId.BSC]: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',

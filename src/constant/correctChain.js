@@ -15,16 +15,16 @@ export const correctChains = [
         chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
-        url: "/stable",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS, ChainId.ARBITRUM, ChainId.OPTIMISTIC],
-    },
-    {
         url: "/migrator",
         chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
+        url: "/stable",
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS, ChainId.ARBITRUM],
+    },
+    {
         url: "/bridge",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS, ChainId.ARBITRUM, ChainId.OPTIMISTIC],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS, ChainId.ARBITRUM],
     },
     {
         url: "/not-found",

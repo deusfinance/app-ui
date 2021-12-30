@@ -18,6 +18,8 @@ const LENGTH_COLLAT = {
     [ChainId.BSC]: 3,
     [ChainId.FTM]: 3,
     [ChainId.MATIC]: 4,
+    [ChainId.METIS]: 2,
+    [ChainId.ARBITRUM]: 2,
 }
 
 const COLLAT_PRICE = {

@@ -6,10 +6,9 @@ import {
 } from 'styled-components'
 import { useIsDarkMode } from '../hooks/user'
 
-const white = '#FFFFFF'
-const black = '#000000'
+const white = '#FFF'
+const black = '#000'
 const red = "#d40000"
-
 
 export function colors(darkMode) {
   return {
@@ -85,7 +84,7 @@ export function colors(darkMode) {
       97: "#000",
       137: "#FFF",
       250: "#FFF",
-      1088: "#FFF",
+      1088: "#000",
       42161: "#29a0f0",
     }
   }
@@ -124,7 +123,6 @@ export function theme(darkMode) {
 
     // media queries
     mediaWidth: mediaWidthTemplates,
-
   }
 }
 
@@ -164,7 +162,7 @@ export const ThemedGlobalStyle = createGlobalStyle`
 html {
   color: ${({ theme }) => theme.text1};
   /* background-color: ${({ theme }) => theme.bg1}; */
-  background: radial-gradient(49.81% 49.81% at 50% 49.81%, #272727 0%, #000000 100%);
+  background: radial-gradient(49.81% 49.81% at 50% 49.81%, #272727 0%, #000 100%);
 }
 a{
       color: inherit;

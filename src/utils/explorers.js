@@ -129,7 +129,7 @@ function getHecoLink(chainId, data, type) {
 
 function getMetisLink(chainId, data, type) {
   const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.METIS]
-    }andromeda-explorer.metis.io/`
+    }andromeda-explorer.metis.io`
 
   switch (type) {
     case 'transaction': {
@@ -146,7 +146,7 @@ function getMetisLink(chainId, data, type) {
 
 function getArbitrumLink(chainId, data, type) {
   const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.ARBITRUM]
-    }arbiscan.io/`
+    }arbiscan.io`
 
   switch (type) {
     case 'transaction': {

@@ -20,11 +20,10 @@ const NameItemsDiv = styled.div`
     font-size: 15px;
     border-radius: 6px;
     cursor: pointer;
-    opacity: 0.5;
-    opacity: ${({ chain, currRow }) => (chain === currRow) && "1"};
-    color: ${({ chain, currRow, theme }) => (chain === currRow) ? theme.ChainId_text[chain] : "#FFF"};
+    opacity: ${({ chain, currRow }) => (chain === currRow) ? "1" : "0.5"};
     font-weight: ${({ chain, currRow }) => (chain === currRow) ? "600" : "normal"};
     background: ${({ theme, chain, currRow }) => (chain === currRow) && theme.ChainId[chain]};
+    color: ${({ chain, currRow, theme }) => (chain === currRow) ? theme.ChainId_text[chain] : "#FFF"};
     border: 1px solid ${({ chain, currRow }) => (chain === currRow) ? "black" : "transparent"};
 `
 

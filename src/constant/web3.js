@@ -14,6 +14,7 @@ export const ChainId = {
     AVALANCHE: 43114,
     METIS: 1088,
     ARBITRUM: 42161,
+    OPTIMISTIC: 10,
 }
 
 export const NameChainId = {
@@ -31,6 +32,7 @@ export const NameChainId = {
     43114: "AVALANCHE",
     1088: "Metis",
     42161: "Arbitrum",
+    10: "OPTIMISTIC",
 }
 
 export const rpcConfig = {
@@ -166,5 +168,16 @@ export const rpcConfig = {
         },
         rpcUrls: ["https://arb1.arbitrum.io/rpc"],
         blockExplorerUrls: ["https://arbiscan.io/"],
+    },
+    [ChainId.OPTIMISTIC]: {
+        chainId: "0xA",
+        chainName: "Optimistic Ethereum",
+        nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18,
+        },
+        rpcUrls: ["https://mainnet.optimism.io"],
+        blockExplorerUrls: ["https://optimistic.etherscan.io"],
     },
 }

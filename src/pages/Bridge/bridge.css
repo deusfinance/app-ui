@@ -371,6 +371,21 @@ input:focus {
   color: #ffffff;
 }
 
+.badge-METIS {
+  background: #aafffe;
+  color: #000;
+}
+
+.badge-ARBITRUM {
+  background: #2d374b;
+  color: #29a0f0;
+}
+
+.badge-OPTIMISTIC {
+  background: #FF0000;
+  color: #FFF;
+}
+
 .wrap-bridge .wrap-box {
   position: absolute;
   position: absolute;
@@ -1093,6 +1108,24 @@ ul.bridge-radio li input[type="radio"]:checked~label.BSC_TESTNET {
 ul.bridge-radio li input[type="radio"]:checked~label.FTM {
   background: linear-gradient(#53D784 0%, #61D4DC 75%);
   color: #ffffff;
+  border: transparent;
+}
+
+ul.bridge-radio li input[type="radio"]:checked~label.METIS {
+  background: #aafffe;
+  color: #000;
+  border: transparent;
+}
+
+ul.bridge-radio li input[type="radio"]:checked~label.ARBITRUM {
+  background: #2d374b;
+  color: #29a0f0;
+  border: transparent;
+}
+
+ul.bridge-radio li input[type="radio"]:checked~label.OPTIMISTIC {
+  background: #FF0000;
+  color: #FFF;
   border: transparent;
 }
 

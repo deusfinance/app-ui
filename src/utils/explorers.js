@@ -128,8 +128,25 @@ function getHecoLink(chainId, data, type) {
 }
 
 function getMetisLink(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1088]
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.METIS]
     }andromeda-explorer.metis.io/`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
+function getArbitrumLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.ARBITRUM]
+    }arbiscan.io/`
 
   switch (type) {
     case 'transaction': {
@@ -172,9 +189,9 @@ export function getTransactionLink(chainId, data, type) {
     case ChainId.METIS: {
       return getMetisLink(chainId, data, type)
     }
-    // case ChainId.ARBITRUM: {
-    //   return getArbitrumLink(chainId, data, type)
-    // }
+    case ChainId.ARBITRUM: {
+      return getArbitrumLink(chainId, data, type)
+    }
     // case ChainId.OPTIMISTIC: {
     //   return getOptimisticLink(chainId, data, type)
     // }

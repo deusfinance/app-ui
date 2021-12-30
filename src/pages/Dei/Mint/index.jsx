@@ -304,11 +304,19 @@ const Dei = () => {
         if (swapState[vsType].symbol === token.symbol) {
             return setSwapState({ ...swapState, [type]: token, [vsType]: swapState[type] })
         }
+
         if (token.pairID) {
             setIsPair(true)
             let secondToken = tokens.filter(currToken => {
                 return currToken.pairID === token.pairID && currToken.address !== token.address
             })[0]
+
+            //swap pair tokens if first one is deus
+            if (token.symbol === "DEUS") {
+                setSwapState({ ...swapState, from: secondToken })
+                setPairToken(token)
+                return
+            }
             setPairToken(secondToken)
             setSwapState({ ...swapState, [type]: token })
             return

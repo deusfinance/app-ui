@@ -38,7 +38,7 @@ export const useGetNewClaim = () => {
         [ChainId.METIS]: metisWeb3,
         [ChainId.ARBITRUM]: arbiWeb3,
         // [ChainId.RINKEBY]: rinkebyWeb3,
-        // [ChainId.BSC_TESTNET]: bscTestWeb3,
+        // [ChainId.BSC_TESTNET]: bscTestWeb3,  
     }
 
     const getClaim = useCallback(async () => {
@@ -70,8 +70,6 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
             tokenId: claimTemp.tokenId.toString(),
         }
 
-        // console.log("claim = ", claim);
-
         if (
             chainId !== network || (lock &&
                 lock.fromChain === claim.fromChain &&
@@ -83,39 +81,26 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
 
         let amount = fromWei(claim.amount)
         let abi = [BridgeABI.find(({ name, type }) => name === 'getTx' && type === 'function')]
-        const networkName = NameChainId[claim.fromChain].toLowerCase()
         console.log({
             address: BRIDGE_ADDRESS[Number(claim.fromChain)],
             method: 'getTx',
             params: [claim.txId],
             abi,
-            network: networkName
+            network: claim.fromChain
         })
 
         try {
-            // const muonResponse = await muon
-            //     .app('eth')
-            //     .method('call', {
-            //         address: BRIDGE_ADDRESS[Number(claim.fromChain)],
-            //         method: 'getTx',
-            //         params: [claim.txId],
-            //         abi,
-            //         network: networkName,
-            //         hashTimestamp: false
-            //     })
-            //     .call()
             const muonResponse = await muon
                 .app('deus_bridge')
                 .method('claim', {
                     depositAddress: BRIDGE_ADDRESS[Number(claim.fromChain)],
                     depositTxId: claim.txId,
-                    depositNetwork: networkName
+                    depositNetwork: Number(claim.fromChain)
                 })
                 .call()
             console.log("muonResponse", muonResponse)
             console.log("res", muonResponse.data.result)
             let { sigs, reqId } = muonResponse
-            // let currentBlockNo = muonResponse.data.result.currentBlockNo
             setLock(claim)
             console.log(account,
                 claim.amount,
@@ -131,8 +116,6 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
                 Number(claim.fromChain),
                 Number(claim.toChain),
                 claim.tokenId,
-                // currentBlockNo,
-                // claim.txBlockNo,
                 claim.txId,
                 reqId,
                 sigs
@@ -154,7 +137,6 @@ export const useDeposit = (amount, swapState) => {
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
     const onDeposit = useCallback(async () => {
-        // console.log(amount, swapState);
         if (chainId !== swapState.from.chainId || !swapState.to.chainId || !account || amount === '0' || amount === '') return
 
         try {

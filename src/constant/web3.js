@@ -30,8 +30,8 @@ export const NameChainId = {
     97: "BSCTEST",
     137: "POLYGON",
     43114: "AVALANCHE",
-    1088: "Metis",
-    42161: "Arbitrum",
+    1088: "METIS",
+    42161: "ARBITRUM",
     10: "OPTIMISTIC",
 }
 

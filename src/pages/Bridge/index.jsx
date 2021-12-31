@@ -123,9 +123,6 @@ const Bridge = () => {
 
 
     const changeToken = (token, chainId) => {
-        // const type = target
-        // setSwapState({ ...swapState, [type]: { ...token } })
-
         const other = target === "from" ? "to" : "from"
         setSwapState((prev) => ({
             [target]: { ...token },

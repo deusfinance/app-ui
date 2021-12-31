@@ -13,6 +13,7 @@ const EXPLORER_PREFIXES = {
   1: '',
   3: 'ropsten.',
   4: 'rinkeby.',
+  10: 'optimistic',
   56: '',
   100: 'mainnet',
   97: 'testnet.',
@@ -165,7 +166,8 @@ export function getTransactionLink(chainId, data, type) {
   switch (chainId) {
     case 1:
     case 3:
-    case 4: {
+    case 4:
+    case 10: {
       return getEtherscanLink(chainId, data, type)
     }
     case ChainId.BSC:
@@ -175,7 +177,6 @@ export function getTransactionLink(chainId, data, type) {
     case ChainId.XDAI: {
       return getXdaiLink(chainId, data, type)
     }
-
     case ChainId.HECO_TESTNET:
     case ChainId.HECO: {
       return getHecoLink(chainId, data, type)
@@ -192,9 +193,6 @@ export function getTransactionLink(chainId, data, type) {
     case ChainId.ARBITRUM: {
       return getArbitrumLink(chainId, data, type)
     }
-    // case ChainId.OPTIMISTIC: {
-    //   return getOptimisticLink(chainId, data, type)
-    // }
     default: {
       return getEtherscanLink(chainId, data, type)
     }

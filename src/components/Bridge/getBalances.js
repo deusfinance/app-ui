@@ -8,7 +8,6 @@ import { useCrossWeb3 } from '../../hooks/useWeb3'
 import { ChainId } from '../../constant/web3'
 
 const useTokenBalances = (chains, tokens, fetchData) => {
-  // console.log(tokens);
   const [balances, setBalances] = useState(tokens)
   const { account, chainId } = useWeb3React()
 
@@ -38,9 +37,6 @@ const useTokenBalances = (chains, tokens, fetchData) => {
             params: [account]
           }
         })
-        // if (currChainId == ChainId.OPTIMISTIC) {
-        //   console.log(calls);
-        // }
         try {
           const result = await multicall(web3s[currChainId], ERC20ABI, calls, currChainId)
           for (let i = 0; i < result.length; i++) {

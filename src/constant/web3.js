@@ -1,6 +1,6 @@
 export const ChainId = {
     ETH: 1,
-    ROPSTEN: 2,
+    ROPSTEN: 3,
     RINKEBY: 4,
     XDAI: 100,
     FTM: 250,

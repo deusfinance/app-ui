@@ -10,16 +10,16 @@ export function shortenHex(hex, length = 4) {
 }
 
 const EXPLORER_PREFIXES = {
-  1: '',
-  3: 'ropsten.',
-  4: 'rinkeby.',
-  10: 'optimistic',
-  56: '',
-  100: 'mainnet',
-  97: 'testnet.',
-  128: '',
-  137: '',
-  256: 'testnet.',
+  [ChainId.ETH]: '',
+  [ChainId.ROPSTEN]: 'ropsten.',
+  [ChainId.RINKEBY]: 'rinkeby.',
+  [ChainId.OPTIMISTIC]: 'optimistic',
+  [ChainId.XDAI]: 'mainnet',
+  [ChainId.BSC]: '',
+  [ChainId.BSC_TESTNET]: 'testnet.',
+  [ChainId.HECO]: '',
+  [ChainId.HECO_TESTNET]: 'testnet.',
+  [ChainId.MATIC]: '',
   [ChainId.AVALANCHE]: '',
   [ChainId.METIS]: '',
   [ChainId.ARBITRUM]: '',
@@ -164,10 +164,10 @@ function getArbitrumLink(chainId, data, type) {
 
 export function getTransactionLink(chainId, data, type) {
   switch (chainId) {
-    case 1:
-    case 3:
-    case 4:
-    case 10: {
+    case ChainId.ETH:
+    case ChainId.ROPSTEN:
+    case ChainId.RINKEBY:
+    case ChainId.OPTIMISTIC: {
       return getEtherscanLink(chainId, data, type)
     }
     case ChainId.BSC:

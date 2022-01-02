@@ -7,7 +7,7 @@ import { SendWithToast } from '../helper/deiHelper'
 import { fromWei } from '../helper/formatBalance'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
 import { BRIDGE_ADDRESS } from '../constant/contracts'
-import { ChainId, NameChainId } from '../constant/web3'
+import { ChainId } from '../constant/web3'
 import { getBridgeContract } from '../helper/contractHelpers'
 import { formatBalance3 } from '../utils/utils'
 

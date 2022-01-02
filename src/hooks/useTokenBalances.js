@@ -17,7 +17,6 @@ const useTokenBalances = (tokensMap, validChainId) => {
     useEffect(() => {
 
         const fetchBalances = async () => {
-
             if (validChainId !== chainId) return
 
             const calls = Object.keys(tokensMap).filter((address) => isAddress(address)).map((address) => {

@@ -93,7 +93,7 @@ const chains = [
   // { name: 'BSC_TESTNET', network: ChainId.BSC_TESTNET, networkName: 'bsc test' },
   // { name: 'RINKEBY', network: ChainId.RINKEBY, networkName: 'rinkeby' },
   { name: 'METIS', network: ChainId.METIS, networkName: 'metis' },
-  { name: 'ARBITRUM', network: ChainId.ARBITRUM, networkName: 'arbitrum' },
+  // { name: 'ARBITRUM', network: ChainId.ARBITRUM, networkName: 'arbitrum' },
   // { name: 'OPTIMISTIC', network: ChainId.OPTIMISTIC, networkName: 'optimistic' },
 ]
 

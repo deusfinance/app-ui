@@ -27,7 +27,7 @@ export const useGetNewClaim = () => {
     const ftmWeb3 = useCrossWeb3(ChainId.FTM)
     const polygonWeb3 = useCrossWeb3(ChainId.MATIC)
     const metisWeb3 = useCrossWeb3(ChainId.METIS)
-    const arbiWeb3 = useCrossWeb3(ChainId.ARBITRUM)
+    // const arbiWeb3 = useCrossWeb3(ChainId.ARBITRUM)
 
 
     const web3s = {
@@ -36,7 +36,7 @@ export const useGetNewClaim = () => {
         [ChainId.MATIC]: polygonWeb3,
         [ChainId.BSC]: bscWeb3,
         [ChainId.METIS]: metisWeb3,
-        [ChainId.ARBITRUM]: arbiWeb3,
+        // [ChainId.ARBITRUM]: arbiWeb3,
         // [ChainId.RINKEBY]: rinkebyWeb3,
         // [ChainId.BSC_TESTNET]: bscTestWeb3,  
     }

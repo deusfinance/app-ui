@@ -20,11 +20,11 @@ export const correctChains = [
     },
     {
         url: "/stable",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS, ChainId.ARBITRUM],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS],
     },
     {
         url: "/bridge",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS, ChainId.ARBITRUM],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS],
     },
     {
         url: "/not-found",

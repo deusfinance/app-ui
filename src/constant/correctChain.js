@@ -23,6 +23,10 @@ export const correctChains = [
         chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
+        url: "/presale",
+        chains: [ChainId.MATIC],
+    },
+    {
         url: "/bridge",
         chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM], // ChainId.BSC_TESTNET, ChainId.RINKEBY
     },

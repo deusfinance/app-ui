@@ -45,7 +45,7 @@ function App() {
                 <ToastContainer style={{ maxWidth: '450px', width: '90%' }} />
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
-                  <Route exact path="/presale" component={Presale} />
+                  <Route exact path="/muon-presale" component={Presale} />
                   <Route exact path="/bakkt-migrator" component={BakktMigrator} />
                   <Route exact path="/migrator" component={Migrator} />
                   <Route exact path="/migrator/other" component={MigratorOther} />

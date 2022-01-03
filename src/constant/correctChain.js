@@ -23,7 +23,7 @@ export const correctChains = [
         chains: [ChainId.ETH, ChainId.MATIC],
     },
     {
-        url: "/presale",
+        url: "/muon-presale",
         chains: [ChainId.MATIC],
     },
     {

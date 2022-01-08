@@ -8,9 +8,11 @@ DEUS Finance Evolution is a marketplace of decentralized financial services. We 
 
 - Home website: [deus.finance](http://deus.finance/)
 - App interface: [app.deus.finance](https://app.deus.finance/stable/mint/)
-- Twitter: [@DeusDao](https://twitter.com/DeusDao)
+
 - Discord: [DEUS](https://discord.gg/xTTaBBAMgG)
+- Twitter: [@DeusDao](https://twitter.com/DeusDao)
+- Meduim: [@deusfinance](https://medium.com/@deusfinance)
 - Telegram Community group: [@deusfinance](https://t.me/deusfinance)
 - Telegram Announcement Channel: [@deusfinance_news](https://t.me/deusfinance_news)
-- Meduim: [@deusfinance](https://medium.com/@deusfinance)
+
 

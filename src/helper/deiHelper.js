@@ -17,7 +17,7 @@ const LENGTH_COLLAT = {
     [ChainId.ETH]: 3,
     [ChainId.BSC]: 3,
     [ChainId.FTM]: 3,
-    [ChainId.MATIC]: 4,
+    [ChainId.MATIC]: 5,
     [ChainId.METIS]: 2,
     [ChainId.ARBITRUM]: 2,
 }

@@ -648,13 +648,11 @@ export const useAllowance = (currency, contractAddress, validChainId, fastUpdate
             else if (currency.allowance) { setAllowance(currency.allowance) }
             else {
                 try {
-
                     const res = await contract.methods.allowance(account, contractAddress).call()
                     setAllowance(new BigNumber(res))
                 } catch (error) {
                     console.log("useAllowance ", currency, contractAddress, validChainId, error);
                 }
-
             }
         }
         if (account && tokenAddress) {

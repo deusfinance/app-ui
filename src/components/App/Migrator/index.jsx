@@ -15,9 +15,6 @@ export const MainDiv = styled.div`
     margin: "auto";
     justify-content: "center";
     margin: 0 auto;
-    /* ${({ theme }) => theme.mediaWidth.upToSmall`
-        max-width: 450px;
-    `} */
 `
 
 export const Container = styled.div`
@@ -28,7 +25,6 @@ export const Container = styled.div`
     border-radius: 15px;
     padding-bottom: ${({ pb }) => pb ?? "0"} ;
     overflow: hidden;
-
 `
 
 export const TokensContainer = styled.div`

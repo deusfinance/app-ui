@@ -2,7 +2,6 @@ import React from 'react';
 import { Flex, Box } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { formatBalance3 } from '../../../utils/utils';
-// import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';
 import { Type } from '../Text';
 
 const PlusImg = styled.img`

@@ -6,10 +6,9 @@ import {
 } from 'styled-components'
 import { useIsDarkMode } from '../hooks/user'
 
-const white = '#FFFFFF'
-const black = '#000000'
+const white = '#FFF'
+const black = '#000'
 const red = "#d40000"
-
 
 export function colors(darkMode) {
   return {
@@ -68,10 +67,25 @@ export function colors(darkMode) {
     ChainId: {
       1: "#4169e1",
       4: "#FFA500",
-      56: "rgb(231, 189, 36)",
-      97: "rgb(231, 189, 36)",
+      10: "#FF0000",
+      56: "#e7bd24",
+      97: "#e7bd24",
       137: "#7951DD",
-      250: "linear-gradient(#53D784 0%, #61D4DC 75%)",
+      250: "#367cfd",
+      1088: "#aafffe",
+      42161: "#2d374b",
+    },
+
+    ChainId_text: {
+      1: "#FFF",
+      4: "#FFF",
+      10: "#FFF",
+      56: "#000",
+      97: "#000",
+      137: "#FFF",
+      250: "#FFF",
+      1088: "#000",
+      42161: "#29a0f0",
     }
   }
 }
@@ -109,7 +123,6 @@ export function theme(darkMode) {
 
     // media queries
     mediaWidth: mediaWidthTemplates,
-
   }
 }
 
@@ -149,7 +162,7 @@ export const ThemedGlobalStyle = createGlobalStyle`
 html {
   color: ${({ theme }) => theme.text1};
   /* background-color: ${({ theme }) => theme.bg1}; */
-  background: radial-gradient(49.81% 49.81% at 50% 49.81%, #272727 0%, #000000 100%);
+  background: radial-gradient(49.81% 49.81% at 50% 49.81%, #272727 0%, #000 100%);
 }
 a{
       color: inherit;

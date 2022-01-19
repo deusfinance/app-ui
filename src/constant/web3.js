@@ -1,6 +1,6 @@
 export const ChainId = {
     ETH: 1,
-    ROPSTEN: 2,
+    ROPSTEN: 3,
     RINKEBY: 4,
     XDAI: 100,
     FTM: 250,
@@ -12,6 +12,9 @@ export const ChainId = {
     MATIC: 137,
     MATIC_TESTNET: 0,
     AVALANCHE: 43114,
+    METIS: 1088,
+    ARBITRUM: 42161,
+    OPTIMISTIC: 10,
 }
 
 export const NameChainId = {
@@ -26,9 +29,11 @@ export const NameChainId = {
     256: "HECOT",
     97: "BSCTEST",
     137: "POLYGON",
-    43114: "AVALANCHE"
+    43114: "AVALANCHE",
+    1088: "METIS",
+    42161: "ARBITRUM",
+    10: "OPTIMISTIC",
 }
-
 
 export const rpcConfig = {
     [ChainId.ETH]: {
@@ -141,5 +146,38 @@ export const rpcConfig = {
         },
         rpcUrls: ["https://rpc.ftm.tools/"],
         blockExplorerUrls: ["https://ftmscan.com/"],
+    },
+    [ChainId.METIS]: {
+        chainId: "0x440",
+        chainName: "Metis Andromeda Mainnet",
+        nativeCurrency: {
+            name: "METIS",
+            symbol: "METIS",
+            decimals: 18,
+        },
+        rpcUrls: ["https://andromeda.metis.io/?owner=1088"],
+        blockExplorerUrls: ["https://andromeda-explorer.metis.io/"],
+    },
+    [ChainId.ARBITRUM]: {
+        chainId: "0xA4B1",
+        chainName: "Arbitrum",
+        nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18,
+        },
+        rpcUrls: ["https://arb1.arbitrum.io/rpc"],
+        blockExplorerUrls: ["https://arbiscan.io/"],
+    },
+    [ChainId.OPTIMISTIC]: {
+        chainId: "0xA",
+        chainName: "Optimistic Ethereum",
+        nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18,
+        },
+        rpcUrls: ["https://mainnet.optimism.io"],
+        blockExplorerUrls: ["https://optimistic.etherscan.io"],
     },
 }

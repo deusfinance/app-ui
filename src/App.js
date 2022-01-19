@@ -57,7 +57,7 @@ function App() {
                   <Route exact path="/stable/farms" component={DeiStaking} />
                   <Route exact path="/stable/redeem" component={DeiRedeem} />
                   <Route exact path="/bridge" component={Bridge} />
-                  <Redirect exact from="/" to="/migrator" />
+                  <Redirect exact from="/" to="/stable/mint" />
                   <Redirect to="not-found" />
                 </Switch>
               </div>

@@ -211,7 +211,6 @@ const Dei = () => {
     }, [tokens, chainId]);// eslint-disable-line
 
 
-
     useEffect(() => {
         // setIsPreApproved(null)
         setIsApproved(null)
@@ -220,7 +219,6 @@ const Dei = () => {
     useEffect(() => {
         setProxy(isProxyMinter(swapState.from, isPair, collatRatio, chainId))
     }, [swapState.from, isPair, chainId, collatRatio])
-
 
 
     useEffect(() => {

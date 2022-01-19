@@ -19,7 +19,6 @@ import { useClaim, useDeposit, useGetNewClaim } from '../../hooks/useBridge';
 import { NameChainId } from '../../constant/web3';
 import './bridge.css'
 
-
 const Bridge = () => {
     const muon = new Muon(process.env.REACT_APP_MUON_NODE_GATEWAY)
     const { validNetworks, chainId } = useCorrectChain()
@@ -124,9 +123,6 @@ const Bridge = () => {
 
 
     const changeToken = (token, chainId) => {
-        // const type = target
-        // setSwapState({ ...swapState, [type]: { ...token } })
-
         const other = target === "from" ? "to" : "from"
         setSwapState((prev) => ({
             [target]: { ...token },

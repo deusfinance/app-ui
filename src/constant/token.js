@@ -5,7 +5,7 @@ import { ChainId } from './web3';
 export const bakktToken = new Token(1, "0x11Aa73194769882521e4576D245ffacd4E98aCB4", 18, "ioBAKKT", "ioBAKKT", "/tokens/bakkt.svg");
 export const dBakktToken = new Token(1, "0x023466190D8dffF0fae089Cf1a05277E7203f89F", 18, "dBKKT", "dBKKT", "/tokens/BKKT.png");
 
-//START DEI
+// START DEI
 export const deiToken = {
     [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEI_ADDRESS[ChainId.RINKEBY], 18, "DEI", "DEI", "/tokens/dei.svg"),
     [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_ADDRESS[ChainId.MATIC], 18, "DEI", "DEI", "/tokens/dei.svg"),
@@ -13,6 +13,9 @@ export const deiToken = {
     [ChainId.FTM]: new Token(ChainId.FTM, DEI_ADDRESS[ChainId.FTM], 18, "DEI", "DEI", "/tokens/dei.svg"),
     [ChainId.BSC]: new Token(ChainId.BSC, DEI_ADDRESS[ChainId.BSC], 18, "DEI", "DEI", "/tokens/dei.svg"),
     [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, DEI_ADDRESS[ChainId.BSC_TESTNET], 18, "DEI", "DEI", "/tokens/dei.svg"),
+    [ChainId.METIS]: new Token(ChainId.METIS, DEI_ADDRESS[ChainId.METIS], 18, "DEI", "DEI", "/tokens/dei.svg"),
+    [ChainId.ARBITRUM]: new Token(ChainId.ARBITRUM, DEI_ADDRESS[ChainId.ARBITRUM], 18, "DEI", "DEI", "/tokens/dei.svg"),
+    [ChainId.OPTIMISTIC]: new Token(ChainId.OPTIMISTIC, DEI_ADDRESS[ChainId.OPTIMISTIC], 18, "DEI", "DEI", "/tokens/dei.svg"),
 };
 export const deusToken = {
     [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, DEUS_ADDRESS[ChainId.RINKEBY], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
@@ -21,6 +24,9 @@ export const deusToken = {
     [ChainId.FTM]: new Token(ChainId.FTM, DEUS_ADDRESS[ChainId.FTM], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
     [ChainId.BSC]: new Token(ChainId.BSC, DEUS_ADDRESS[ChainId.BSC], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
     [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, DEUS_ADDRESS[ChainId.BSC_TESTNET], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
+    [ChainId.METIS]: new Token(ChainId.METIS, DEUS_ADDRESS[ChainId.METIS], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
+    [ChainId.ARBITRUM]: new Token(ChainId.ARBITRUM, DEUS_ADDRESS[ChainId.ARBITRUM], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
+    [ChainId.OPTIMISTIC]: new Token(ChainId.OPTIMISTIC, DEUS_ADDRESS[ChainId.OPTIMISTIC], 18, "DEUS", "DEUS", "/tokens/deus.svg"),
 };
 
 export const collateralToken = {
@@ -28,6 +34,9 @@ export const collateralToken = {
     [ChainId.ETH]: new Token(ChainId.ETH, COLLATERAL_ADDRESS[ChainId.ETH], 6, "USDC", "USDC", "/tokens/usdc.svg"),
     [ChainId.FTM]: new Token(ChainId.FTM, COLLATERAL_ADDRESS[ChainId.FTM], 6, "USDC", "USDC", "/tokens/usdc.svg"),
     [ChainId.BSC]: new Token(ChainId.BSC, COLLATERAL_ADDRESS[ChainId.BSC], 18, "USDC", "USDC", "/tokens/usdc.svg"),
+    [ChainId.METIS]: new Token(ChainId.METIS, COLLATERAL_ADDRESS[ChainId.METIS], 6, "USDC", "USDC", "/tokens/usdc.svg"),
+    [ChainId.ARBITRUM]: new Token(ChainId.ARBITRUM, COLLATERAL_ADDRESS[ChainId.ARBITRUM], 6, "USDC", "USDC", "/tokens/usdc.svg"),
+    [ChainId.OPTIMISTIC]: new Token(ChainId.OPTIMISTIC, COLLATERAL_ADDRESS[ChainId.OPTIMISTIC], 6, "USDC", "USDC", "/tokens/usdc.svg"),
 }
 
 export const deiCollateralLpToken = {
@@ -36,6 +45,9 @@ export const deiCollateralLpToken = {
     [ChainId.ETH]: new Token(ChainId.ETH, DEI_COLLATERAL_LP[ChainId.ETH], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
     [ChainId.FTM]: new Token(ChainId.FTM, DEI_COLLATERAL_LP[ChainId.FTM], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
     [ChainId.BSC]: new Token(ChainId.BSC, DEI_COLLATERAL_LP[ChainId.BSC], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
+    [ChainId.METIS]: new Token(ChainId.METIS, DEI_COLLATERAL_LP[ChainId.METIS], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
+    [ChainId.ARBITRUM]: new Token(ChainId.ARBITRUM, DEI_COLLATERAL_LP[ChainId.ARBITRUM], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
+    [ChainId.OPTIMISTIC]: new Token(ChainId.OPTIMISTIC, DEI_COLLATERAL_LP[ChainId.OPTIMISTIC], 18, "DEI-USDC LP", "DEI-USDC LP", "/tokens/dei.svg"),
 }
 
 export const deiDeusLpToken = {
@@ -45,6 +57,9 @@ export const deiDeusLpToken = {
     [ChainId.ETH]: new Token(ChainId.ETH, DEI_DEUS_LP[ChainId.ETH], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.FTM]: new Token(ChainId.FTM, DEI_DEUS_LP[ChainId.FTM], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.BSC]: new Token(ChainId.BSC, DEI_DEUS_LP[ChainId.BSC], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
+    [ChainId.METIS]: new Token(ChainId.METIS, DEI_DEUS_LP[ChainId.METIS], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
+    [ChainId.ARBITRUM]: new Token(ChainId.ARBITRUM, DEI_DEUS_LP[ChainId.ARBITRUM], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
+    [ChainId.OPTIMISTIC]: new Token(ChainId.OPTIMISTIC, DEI_DEUS_LP[ChainId.OPTIMISTIC], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
 }
 
 export const DeusNativeLpToken = {
@@ -52,6 +67,9 @@ export const DeusNativeLpToken = {
     [ChainId.ETH]: new Token(ChainId.ETH, DEUS_NATIVE_LP[ChainId.ETH], 18, "DEUS-ETH LP", "DEUS-ETH LP", "/tokens/deus.svg"),
     [ChainId.FTM]: new Token(ChainId.FTM, DEUS_NATIVE_LP[ChainId.FTM], 18, "DEUS-FTM LP", "DEUS-FTM LP", "/tokens/deus.svg"),
     [ChainId.BSC]: new Token(ChainId.BSC, DEUS_NATIVE_LP[ChainId.BSC], 18, "DEUS-BNB LP", "DEUS-BNB LP", "/tokens/deus.svg"),
+    [ChainId.METIS]: new Token(ChainId.METIS, DEUS_NATIVE_LP[ChainId.METIS], 18, "DEUS-METIS LP", "DEUS-METIS LP", "/tokens/deus.svg"),
+    [ChainId.ARBITRUM]: new Token(ChainId.ARBITRUM, DEUS_NATIVE_LP[ChainId.ARBITRUM], 18, "DEUS-ETH LP", "DEUS-ETH LP", "/tokens/deus.svg"),
+    [ChainId.OPTIMISTIC]: new Token(ChainId.OPTIMISTIC, DEUS_NATIVE_LP[ChainId.OPTIMISTIC], 18, "DEUS-ETH LP", "DEUS-ETH LP", "/tokens/deus.svg"),
 }
 
 
@@ -107,8 +125,26 @@ export const DEITokens = {
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.BSC], decimals: 18, chainId: ChainId.BSC, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.BSC], decimals: 18, chainId: ChainId.BSC, pairID: 1 },
     ],
+    [ChainId.METIS]: [
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.METIS], decimals: 6, chainId: ChainId.METIS },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.METIS], decimals: 18, chainId: ChainId.METIS },
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.METIS], decimals: 6, chainId: ChainId.METIS, pairID: 1 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.METIS], decimals: 18, chainId: ChainId.METIS, pairID: 1 },
+    ],
+    [ChainId.ARBITRUM]: [
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.ARBITRUM], decimals: 6, chainId: ChainId.ARBITRUM },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ARBITRUM], decimals: 18, chainId: ChainId.ARBITRUM },
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.ARBITRUM], decimals: 6, chainId: ChainId.ARBITRUM, pairID: 1 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ARBITRUM], decimals: 18, chainId: ChainId.ARBITRUM, pairID: 1 },
+    ],
+    [ChainId.OPTIMISTIC]: [
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.OPTIMISTIC], decimals: 6, chainId: ChainId.OPTIMISTIC },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.OPTIMISTIC], decimals: 18, chainId: ChainId.OPTIMISTIC },
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.OPTIMISTIC], decimals: 6, chainId: ChainId.OPTIMISTIC, pairID: 1 },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.OPTIMISTIC], decimals: 18, chainId: ChainId.OPTIMISTIC, pairID: 1 },
+    ],
 }
-//END DEI
+// END DEI
 export const BridgeTokens = {
     [ChainId.BSC]: [
         { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.BSC], decimals: 18, id: "0", chainId: ChainId.BSC },
@@ -126,11 +162,17 @@ export const BridgeTokens = {
         { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.ETH], decimals: 18, id: "0", chainId: ChainId.ETH },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ETH], decimals: 18, id: "1", chainId: ChainId.ETH },
     ],
-    [ChainId.RINKEBY]: [
-        { logo: "/tokens/dei.svg", symbol: "TT", address: "0x4b16E272421FD67E6D41a14ac27789AB2AFE7bcb", decimals: 18, id: "2", chainId: ChainId.RINKEBY },
+    [ChainId.METIS]: [
+        { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.METIS], decimals: 18, id: "0", chainId: ChainId.METIS },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.METIS], decimals: 18, id: "1", chainId: ChainId.METIS },
     ],
-    [ChainId.BSC_TESTNET]: [
-        { logo: "/tokens/dei.svg", symbol: "TT", address: "0x39a571d0FF892aF5e5780AF286f5152784d15A9f", decimals: 18, id: "2", chainId: ChainId.BSC_TESTNET },
+    [ChainId.ARBITRUM]: [
+        { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.ARBITRUM], decimals: 18, id: "0", chainId: ChainId.ARBITRUM },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ARBITRUM], decimals: 18, id: "1", chainId: ChainId.ARBITRUM },
+    ],
+    [ChainId.OPTIMISTIC]: [
+        { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.OPTIMISTIC], decimals: 18, id: "0", chainId: ChainId.OPTIMISTIC },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.OPTIMISTIC], decimals: 18, id: "1", chainId: ChainId.OPTIMISTIC },
     ],
 }
 

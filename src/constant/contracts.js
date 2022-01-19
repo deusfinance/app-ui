@@ -66,6 +66,10 @@ export const DEUS_ADDRESS = {
   [ChainId.BSC_TESTNET]: '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
 }
 
+export const VE_DEUS_ADDRESS = {
+  [ChainId.MATIC]: '0x4D3A7828aa8a7f579c4cD8f5Ba96b2AFCA0150ba',
+}
+
 export const DEI_POOL_ADDRESS = {
   // DEI Pool library
   [ChainId.MATIC]: '0xc63eAf6BC162531b153Dfc61F225E62d2edB4488',

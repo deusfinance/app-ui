@@ -24,6 +24,8 @@ const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
 const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
 
+const VeDeus = React.lazy(() => import('./pages/VeDeus'))
+const VeDeus2 = React.lazy(() => import('./pages/VeDeus/index2'))
 const Bridge = React.lazy(() => import('./pages/Bridge'))
 const NotFound = React.lazy(() => import('./pages/Errors'))
 // const Under = React.lazy(() => import('./pages/Maintenance/Under'));
@@ -57,7 +59,9 @@ function App() {
                   <Route exact path="/stable/farms" component={DeiStaking} />
                   <Route exact path="/stable/redeem" component={DeiRedeem} />
                   <Route exact path="/bridge" component={Bridge} />
-                  <Redirect exact from="/" to="/migrator" />
+                  <Route exact path="/veDeus" component={VeDeus} />
+                  <Route exact path="/VeDeus2" component={VeDeus2} />
+                  <Redirect exact from="/" to="/stable/mint" />
                   <Redirect to="not-found" />
                 </Switch>
               </div>

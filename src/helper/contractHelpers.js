@@ -22,6 +22,8 @@ import DeusNativeZapAbi from '../config/abi/DeusNativeZapAbi.json'
 import DeusNativeZapAbiETH from '../config/abi/DeusNativeZapAbiETH.json'
 import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleMatic.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
+import VeDeusAbi from '../config/abi/VeDeUSAbi.json'
+
 import {
     DEI_ADDRESS,
     MUON_PRESALE_ADDRESS,
@@ -129,4 +131,8 @@ export const getBridgeContract = (web3, chainId = ChainId.MATIC) => {
 
 export const getMuonContract = (web3, chainId = ChainId.MATIC) => {
     return getContract(MuonPresaleCrossChainAbi, MUON_PRESALE_ADDRESS[chainId], web3)
+}
+
+export const getVeDEUSContract = (address, web3) => {
+    return getContract(VeDeusAbi, address, web3)
 }

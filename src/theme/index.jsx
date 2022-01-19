@@ -71,7 +71,7 @@ export function colors(darkMode) {
       56: "#e7bd24",
       97: "#e7bd24",
       137: "#7951DD",
-      250: "linear-gradient(#53D784 0%, #61D4DC 75%)",
+      250: "#367cfd",
       1088: "#aafffe",
       42161: "#2d374b",
     },

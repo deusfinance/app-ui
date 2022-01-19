@@ -65,7 +65,7 @@ input:focus {
   position: relative;
 }
 
-.wrap-bridge .container-bridge>img {
+.wrap-bridge .container-bridge > img {
   width: 100%;
 }
 
@@ -367,7 +367,7 @@ input:focus {
 }
 
 .badge-FTM {
-  background: linear-gradient(#53D784 0%, #61D4DC 75%);
+  background: #367cfd;
   color: #ffffff;
 }
 
@@ -382,8 +382,8 @@ input:focus {
 }
 
 .badge-OPTIMISTIC {
-  background: #FF0000;
-  color: #FFF;
+  background: #ff0000;
+  color: #fff;
 }
 
 .wrap-bridge .wrap-box {
@@ -641,7 +641,7 @@ input[type='checkbox']:checked:after {
   margin-top: 30px;
 }
 
-.wrap-bridge .desc-claim>span {
+.wrap-bridge .desc-claim > span {
   padding-right: 5px;
 }
 
@@ -1089,59 +1089,59 @@ ul.bridge-radio li input[type="radio"] {
   left: 15px;
 }
 
-ul.bridge-radio li input[type="radio"]:disabled~label {
+ul.bridge-radio li input[type="radio"]:disabled ~ label {
   opacity: 0.4;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.BSC {
+ul.bridge-radio li input[type="radio"]:checked ~ label.BSC {
   background: #fbc856;
   color: #000000;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.BSC_TESTNET {
+ul.bridge-radio li input[type="radio"]:checked ~ label.BSC_TESTNET {
   background: #fbc856;
   color: #000000;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.FTM {
-  background: linear-gradient(#53D784 0%, #61D4DC 75%);
+ul.bridge-radio li input[type="radio"]:checked ~ label.FTM {
+  background: #367cfd;
   color: #ffffff;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.METIS {
+ul.bridge-radio li input[type="radio"]:checked ~ label.METIS {
   background: #aafffe;
   color: #000;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.ARBITRUM {
+ul.bridge-radio li input[type="radio"]:checked ~ label.ARBITRUM {
   background: #2d374b;
   color: #29a0f0;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.OPTIMISTIC {
-  background: #FF0000;
-  color: #FFF;
+ul.bridge-radio li input[type="radio"]:checked ~ label.OPTIMISTIC {
+  background: #ff0000;
+  color: #fff;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.ETH {
+ul.bridge-radio li input[type="radio"]:checked ~ label.ETH {
   background: #335cff;
   color: #ffffff;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.RINKEBY {
+ul.bridge-radio li input[type="radio"]:checked ~ label.RINKEBY {
   background: #335cff;
   color: #ffffff;
   border: transparent;
 }
 
-ul.bridge-radio li input[type="radio"]:checked~label.POLYGON {
+ul.bridge-radio li input[type="radio"]:checked ~ label.POLYGON {
   background: #d045e2;
   color: #ffffff;
   border: transparent;
@@ -1314,7 +1314,7 @@ input[type="number"] {
     top: 24%;
   }
 
-  .token-list-item>span {
+  .token-list-item > span {
     font-size: 15px;
   }
 

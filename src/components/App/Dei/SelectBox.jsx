@@ -21,7 +21,7 @@ const NameItemsDiv = styled.div`
     border-radius: 6px;
     cursor: pointer;
     opacity: ${({ chain, currRow }) => (chain === currRow) ? "1" : "0.5"};
-    font-weight: ${({ chain, currRow }) => (chain === currRow) ? "600" : "normal"};
+    font-weight: ${({ chain, currRow }) => (chain === currRow) ? "400" : "normal"};
     background: ${({ theme, chain, currRow }) => (chain === currRow) && theme.ChainId[chain]};
     color: ${({ chain, currRow, theme }) => (chain === currRow) ? theme.ChainId_text[chain] : "#FFF"};
     border: 1px solid ${({ chain, currRow }) => (chain === currRow) ? "black" : "transparent"};

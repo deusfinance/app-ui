@@ -12,7 +12,7 @@ import multicall from '../helper/multicall'
 import { useCrossERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
-import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState } from '../store/dei'
+import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, depositAmountState } from '../store/dei'
 import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
@@ -50,6 +50,23 @@ export const useAPY = (validChainId) => {
     }, [validChainId])
 
     return apy
+}
+
+export const useDepositAmount = (validChainId) => {
+    const { slowRefresh } = useRefresh()
+    const setDepositAmount = useSetRecoilState(depositAmountState)
+
+    useEffect(() => {
+        const get = async () => {
+            try {
+                const result = await makeDeiRequest("/info", validChainId)
+                setDepositAmount(result.staked_amount)
+            } catch (error) {
+                console.log("useDepositAmount ", error);
+            }
+        }
+        get()
+    }, [slowRefresh, validChainId, setDepositAmount])
 }
 
 
@@ -606,6 +623,7 @@ export const useDeiUpdate = (validChainId) => {
     useCollatRatio(validChainId)
     useDeiPrices(validChainId)
     useHusdPoolData(validChainId)
+    useDepositAmount(validChainId)
 }
 
 export const useDeiUpdateBuyBack = (validChainId) => {

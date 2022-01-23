@@ -61,3 +61,8 @@ export const APYState = atom({
     key: 'APY',
     default: "",
 });
+
+export const depositAmountState = atom({
+    key: 'depositAmount',
+    default: "",
+});

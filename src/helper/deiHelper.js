@@ -27,11 +27,13 @@ const COLLAT_PRICE = {
     [ChainId.BSC]: "1000000000000000000",
 }
 
-export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, decimals = 6) => {
+export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, depositAmount = 0, decimals = 6) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6))) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals - 6))) : null
+    const poolBalanceValue = new BigNumber(poolBalance).div(TEN.pow(decimals - 6))
+    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(new BigNumber.sum(poolBalanceValue, new BigNumber(depositAmount)).toString()) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals - 6))) : null
     const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance).div(TEN.pow(decimals - 6))) : null
+
     return [{
         name: 'DEI PRICE',
         value: dp
@@ -47,10 +49,11 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling 
     }]
 }
 
-export const makeCostDataRedeem = (collatRatio, poolBalance, chainId = ChainId.ETH, decimals = 6) => {
+export const makeCostDataRedeem = (collatRatio, poolBalance, chainId = ChainId.ETH, depositAmount = 0, decimals = 6) => {
     const cToken = collateralToken[chainId] ? collateralToken[chainId] : collateralToken[ChainId.ETH]
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pb = poolBalance !== null ? `${formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6)))} ${cToken?.symbol}` : null
+    const poolBalanceValue = new BigNumber(poolBalance).div(TEN.pow(decimals - 6))
+    const pb = poolBalance !== null ? `${formatUnitAmount(new BigNumber.sum(poolBalanceValue, new BigNumber(depositAmount)).toString())} ${cToken?.symbol}` : null
     return [{
         name: 'COLLATERAL RATIO',
         value: cr

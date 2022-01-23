@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { makeCostDataRedeem, makeCostData } from '../../../helper/deiHelper'
 import { useRecoilValue } from 'recoil';
-import { collatRatioState, deiPricesState } from '../../../store/dei';
+import { collatRatioState, deiPricesState, depositAmountState } from '../../../store/dei';
 import { husdPoolDataState } from '../../../store/dei'
 import { ChainId } from '../../../constant/web3';
 
@@ -48,9 +48,10 @@ export const CostBox = ({ type, chainId }) => {
     const deiPrice = deusPrices ? deusPrices.dei_price : null
     const collatRatio = useRecoilValue(collatRatioState)
     const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance } = useRecoilValue(husdPoolDataState)
+    const depositAmount = useRecoilValue(depositAmountState)
     let costs = null
-    if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling, chainId === ChainId.BSC ? 18 : 6)
-    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance, chainId, chainId === ChainId.BSC ? 18 : 6)
+    if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling, depositAmount, chainId === ChainId.BSC ? 18 : 6)
+    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance, chainId, depositAmount, chainId === ChainId.BSC ? 18 : 6)
 
     return (
         useMemo(() => {

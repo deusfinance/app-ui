@@ -23,7 +23,7 @@ const EXPLORER_PREFIXES = {
   [ChainId.AVALANCHE]: '',
   [ChainId.METIS]: '',
   [ChainId.ARBITRUM]: '',
-  [ChainId.OPTIMISTIC]: '',
+  [ChainId.FTM]: '',
 }
 
 function getEtherscanLink(chainId, data, type) {

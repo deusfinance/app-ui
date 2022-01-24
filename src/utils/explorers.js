@@ -162,6 +162,23 @@ function getArbitrumLink(chainId, data, type) {
   }
 }
 
+function getFTMLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.FTM]
+    }ftmscan.com`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
 export function getTransactionLink(chainId, data, type) {
   switch (chainId) {
     case ChainId.ETH:
@@ -192,6 +209,9 @@ export function getTransactionLink(chainId, data, type) {
     }
     case ChainId.ARBITRUM: {
       return getArbitrumLink(chainId, data, type)
+    }
+    case ChainId.FTM: {
+      return getFTMLink(chainId, data, type)
     }
     default: {
       return getEtherscanLink(chainId, data, type)

@@ -12,7 +12,7 @@ export const correctChains = [
     },
     {
         url: "/stable/farms",
-        chains: [ChainId.ETH, ChainId.MATIC],
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.FTM],
     },
     {
         url: "/migrator",

@@ -89,7 +89,7 @@ export const rpcConfig = {
             symbol: "BNB",
             decimals: 18,
         },
-        rpcUrls: ["https://bsc-dataseed.binance.org/","https://bsc-dataseed1.defibit.io/","https://bsc-dataseed1.ninicoin.io/"],
+        rpcUrls: ["https://bsc-dataseed.binance.org/", "https://bsc-dataseed1.defibit.io/", "https://bsc-dataseed1.ninicoin.io/"],
         blockExplorerUrls: ["https://bscscan.com"],
     },
     [ChainId.BSC_TESTNET]: {
@@ -144,7 +144,7 @@ export const rpcConfig = {
             symbol: "FTM",
             decimals: 18,
         },
-        rpcUrls: ["https://rpc.ftm.tools/"],
+        rpcUrls: ["https://ftmrpc.ultimatenodes.io/"],
         blockExplorerUrls: ["https://ftmscan.com/"],
     },
     [ChainId.METIS]: {
@@ -180,4 +180,10 @@ export const rpcConfig = {
         rpcUrls: ["https://mainnet.optimism.io"],
         blockExplorerUrls: ["https://optimistic.etherscan.io"],
     },
+}
+
+
+export const isSupportEIP1559 = {
+    [ChainId.MATIC]: true,
+    [ChainId.ETH]: true
 }

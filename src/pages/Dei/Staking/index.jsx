@@ -53,9 +53,9 @@ const Dei = () => {
             <Type.MD fontWeight="300" mb="4" opacity="0.5">Stake LP tokens to earn.</Type.MD>
             {StakingConfig[chainId] &&
                 <StakingContainer>
-                    <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={StakingConfig[chainId][0].apy} />
-                    <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={StakingConfig[chainId][1].apy} />
-                    <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2].apy} />
+                    <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={StakingConfig[chainId][0]?.apy} />
+                    <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={StakingConfig[chainId][1]?.apy} />
+                    {StakingConfig[chainId][2] && <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2]?.apy} />}
                 </StakingContainer>}
             {!StakingConfig[chainId] && !account &&
                 <StakingContainer>

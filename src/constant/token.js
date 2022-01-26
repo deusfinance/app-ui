@@ -55,7 +55,7 @@ export const deiDeusLpToken = {
     [ChainId.HECO]: new Token(ChainId.HECO, DEI_DEUS_LP[ChainId.HECO], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.MATIC]: new Token(ChainId.MATIC, DEI_DEUS_LP[ChainId.MATIC], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.ETH]: new Token(ChainId.ETH, DEI_DEUS_LP[ChainId.ETH], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
-    [ChainId.FTM]: new Token(ChainId.FTM, DEI_DEUS_LP[ChainId.FTM], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
+    // [ChainId.FTM]: new Token(ChainId.FTM, DEI_DEUS_LP[ChainId.FTM], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.BSC]: new Token(ChainId.BSC, DEI_DEUS_LP[ChainId.BSC], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.METIS]: new Token(ChainId.METIS, DEI_DEUS_LP[ChainId.METIS], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),
     [ChainId.ARBITRUM]: new Token(ChainId.ARBITRUM, DEI_DEUS_LP[ChainId.ARBITRUM], 18, "DEI-DEUS LP", "DEI-DEUS LP", "/tokens/deus.svg"),

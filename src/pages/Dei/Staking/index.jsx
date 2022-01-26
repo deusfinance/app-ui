@@ -13,7 +13,6 @@ import { Chains } from '../../../components/App/Dei/Chains';
 import LpTokens from '../../../components/App/Dei/LpTokens';
 import BuyDEUS from '../../../components/App/Dei/BuyDEUS';
 import { ChainId } from '../../../constant/web3';
-import { useEffect } from 'react';
 
 const StakingContainer = styled.div`
     display: flex;

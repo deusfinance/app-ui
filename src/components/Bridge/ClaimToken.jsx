@@ -57,14 +57,11 @@ const ClaimToken = (props) => {
               </div>
             )
           })}
-          {/* <div className="desc-claim">
-            <span className="blue-color opacity-1">
-              Change to the destination Network
-            </span>
-            <span className="opacity-5">
-              to claim your token on respective networks.
-            </span>
-          </div> */}
+          <div className="desc-claim">
+            <Type.XS>Updated every 30s.
+              <br />
+              *depending on RPC, this list may be incomplete*</Type.XS>
+          </div>
         </div>
       )}
       {claims.length === 0 && <div className="claim-token" style={{ textAlign: "center" }}>

@@ -26,6 +26,10 @@ const EachUrl = styled.span`
     font-size: 15px;
     margin:10px 0;
     font-weight: 300;
+    &.spirit:hover{
+        color: #52d784;
+        opacity: 1;
+    }
     &.uni:hover{
         color: #f62d8d;
         opacity: 1;
@@ -35,10 +39,10 @@ const EachUrl = styled.span`
         opacity: 1;
     }
     &.uni{
-        opacity: 0.75;
+        opacity: 0.85;
     }
     &.quick{
-        opacity: 0.75;
+        opacity: 0.85;
     }
     &.deusSwap:hover{
         color: #6db7ff;
@@ -56,6 +60,9 @@ const DeiTokenBox = () => {
             return <MainWrapper>
                 <EachUrl className="deusSwap" >
                     <NavLink textDecoration="none" to={"/swap"}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  DEUS Swap </NavLink>
+                </EachUrl>
+                <EachUrl className="spirit" >
+                    <ExternalLink textDecoration="none" href={`https://swap.spiritswap.finance/#/exchange/swap/FTM/${deusToken.address}`}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  SpiritSwap <img src="/img/spirit.png" style={{ width: "20px", marginLeft: "4px" }} alt="uniswap" /></ExternalLink>
                 </EachUrl>
                 <EachUrl className="uni" >
                     <ExternalLink textDecoration="none" href={`https://app.uniswap.org/#/swap?use=V2&outputCurrency=${deusToken.address}&inputCurrency=ETH`}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  Uniswap <img src="/img/uniswap.png" style={{ width: "20px", marginLeft: "4px" }} alt="uniswap" /></ExternalLink>

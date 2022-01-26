@@ -636,10 +636,10 @@ input[type='checkbox']:checked:after {
 }
 
 .wrap-bridge .desc-claim {
-  font-size: 15px;
-  line-height: 20px;
+  /* font-size: 15px; */
+  /* line-height: 20px; */
   text-align: center;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 
 .wrap-bridge .desc-claim > span {

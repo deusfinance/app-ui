@@ -48,9 +48,6 @@ const Dei = () => {
     const currChain = chainId && validChains.indexOf(chainId) !== -1 ? chainId : ChainId.ETH
     const dynamicApy = useAPY(chainId)
     useDeiUpdate(currChain)
-    useEffect(() => {
-        console.log(dynamicApy);
-    }, [dynamicApy])
 
     return (<>
         <MainWrapper>
@@ -59,8 +56,8 @@ const Dei = () => {
             {StakingConfig[chainId] &&
                 <StakingContainer>
                     <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={dynamicApy[StakingConfig[chainId][0].apyKey]} />
-                    <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={dynamicApy[StakingConfig[chainId][1].apyKey]} />
-                    <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={dynamicApy[StakingConfig[chainId][2].apyKey]} />
+                    {StakingConfig[chainId][1] && <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={dynamicApy[StakingConfig[chainId][1].apyKey]} />}
+                    {StakingConfig[chainId][2] && <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={dynamicApy[StakingConfig[chainId][2].apyKey]} />}
                 </StakingContainer>}
             {!StakingConfig[chainId] && !account &&
                 <StakingContainer>

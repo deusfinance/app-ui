@@ -24,29 +24,12 @@ const EXPLORER_PREFIXES = {
   [ChainId.AVALANCHE]: '',
   [ChainId.METIS]: '',
   [ChainId.ARBITRUM]: '',
-  [ChainId.OPTIMISTIC]: '',
+  [ChainId.FTM]: '',
 }
 
 function getEtherscanLink(chainId, data, type) {
   const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
     }etherscan.io`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
-}
-
-function getFtmScan(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
-    }ftmscan.com`
 
   switch (type) {
     case 'transaction': {
@@ -180,6 +163,23 @@ function getArbitrumLink(chainId, data, type) {
   }
 }
 
+function getFTMLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
+    }ftmscan.com`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
 export function getTransactionLink(chainId, data, type) {
   switch (chainId) {
     case ChainId.ETH:
@@ -212,7 +212,7 @@ export function getTransactionLink(chainId, data, type) {
       return getArbitrumLink(chainId, data, type)
     }
     case ChainId.FTM: {
-      return getFtmScan(chainId, data, type)
+      return getFTMLink(chainId, data, type)
     }
     default: {
       return getEtherscanLink(chainId, data, type)

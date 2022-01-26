@@ -400,14 +400,14 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
 
 export const useAPY = (validChainId) => {
     const web3 = useCrossWeb3(validChainId)
-    const { slowRefresh } = useRefresh()
-    const [apy, setApy] = useState(null)
+    const { mediumRefresh } = useRefresh()
+    const [apy, setApy] = useState({})
 
     useEffect(() => {
         const get = async () => {
             try {
                 const apy = await makeDeiRequest("/apy", validChainId)
-                const apyValue = apy ? apy : null
+                const apyValue = apy ? apy : {}
                 setApy(apyValue)
             } catch (error) {
                 console.log("useAPY ", error);
@@ -415,10 +415,10 @@ export const useAPY = (validChainId) => {
         }
         if (validChainId)
             get()
-    }, [slowRefresh, web3, setApy, validChainId])
+    }, [mediumRefresh, web3, setApy, validChainId])
 
     useEffect(() => {
-        setApy(null)
+        setApy({})
     }, [validChainId])
 
     return apy

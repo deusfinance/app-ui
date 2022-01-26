@@ -2,7 +2,7 @@ import React from 'react';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
 import { Type } from '../../../components/App/Text';
-import { useDeiUpdate } from '../../../hooks/useDei';
+import { useDeiUpdate, useAPY } from '../../../hooks/useDei';
 import { useWeb3React } from '@web3-react/core';
 import Staking from '../../../components/App/Dei/Staking/Staking';
 import { StakingConfig } from '../../../constant/staking';
@@ -13,6 +13,7 @@ import { Chains } from '../../../components/App/Dei/Chains';
 import LpTokens from '../../../components/App/Dei/LpTokens';
 import BuyDEUS from '../../../components/App/Dei/BuyDEUS';
 import { ChainId } from '../../../constant/web3';
+import { useEffect } from 'react';
 
 const StakingContainer = styled.div`
     display: flex;
@@ -45,7 +46,11 @@ const Dei = () => {
     const { account, chainId } = useWeb3React()
     const validChains = getCorrectChains(location.pathname)
     const currChain = chainId && validChains.indexOf(chainId) !== -1 ? chainId : ChainId.ETH
+    const dynamicApy = useAPY(chainId)
     useDeiUpdate(currChain)
+    useEffect(() => {
+        console.log(dynamicApy);
+    }, [dynamicApy])
 
     return (<>
         <MainWrapper>
@@ -53,15 +58,15 @@ const Dei = () => {
             <Type.MD fontWeight="300" mb="4" opacity="0.5">Stake LP tokens to earn.</Type.MD>
             {StakingConfig[chainId] &&
                 <StakingContainer>
-                    <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={StakingConfig[chainId][0].apy} />
-                    <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={StakingConfig[chainId][1].apy} />
-                    <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2].apy} />
+                    <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={dynamicApy[StakingConfig[chainId][0].apyKey]} />
+                    <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={dynamicApy[StakingConfig[chainId][1].apyKey]} />
+                    <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={dynamicApy[StakingConfig[chainId][2].apyKey]} />
                 </StakingContainer>}
             {!StakingConfig[chainId] && !account &&
                 <StakingContainer>
-                    <Staking config={StakingConfig[ChainId.ETH][0]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][0].apy} />
-                    <Staking config={StakingConfig[ChainId.ETH][1]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][1].apy} />
-                    <Staking config={StakingConfig[ChainId.ETH][2]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][2].apy} />
+                    <Staking config={StakingConfig[ChainId.ETH][0]} chainId={ChainId.ETH} apyValue={dynamicApy[StakingConfig[ChainId.ETH][0].apyKey]} />
+                    <Staking config={StakingConfig[ChainId.ETH][1]} chainId={ChainId.ETH} apyValue={dynamicApy[StakingConfig[ChainId.ETH][1].apyKey]} />
+                    <Staking config={StakingConfig[ChainId.ETH][2]} chainId={ChainId.ETH} apyValue={dynamicApy[StakingConfig[ChainId.ETH][2].apyKey]} />
                 </StakingContainer>}
             {!StakingConfig[chainId] && account && <EmptyTextWrapper>
                 <Type.LG fontWeight="300" mb="3" opacity="0.6">Not available on this chain</Type.LG>

@@ -444,11 +444,14 @@ export const useDepositAmount = (validChainId) => {
 export const getGasData = async (web3, fn, chainId, account) => {
     const payload = {}
     try {
+        if (fn) {
+            const estimateGas = await fn.estimateGas({ from: account })
+            payload.estimateGas = new BigNumber(estimateGas * 1.2).toFixed(0)
+        }
         const gasPrice = await web3.eth.getGasPrice()
-        const estimateGas = await fn.estimateGas({ from: account })
-        const block = await web3.eth.getBlock("pending")
-        payload.estimateGas = new BigNumber(estimateGas * 1.2).toFixed(0)
         payload.gasPrice = Number(gasPrice)
+
+        const block = await web3.eth.getBlock("pending")
 
         if (isSupportEIP1559[chainId]) {
             payload.baseFeePerGas = Number(block.baseFeePerGas || 0) //just use gasPrice if current chain dont support eip1559

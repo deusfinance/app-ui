@@ -6,15 +6,21 @@ import { formatBalance3 } from '../../utils/utils'
 import { NameChainId } from '../../constant/web3'
 import { addRPC } from '../../services/addRPC'
 import { useWeb3React } from '@web3-react/core'
+import { Type } from '../App/Text'
+import { RowBetween, RowCenter } from '../App/Row/index';
 
 const ClaimToken = (props) => {
-  const { claims, chainId, handleClaim } = props
+  const { claims, chainId, handleClaim, claimsLoading } = props
   const { account } = useWeb3React()
   return (
     <>
       {claims.length > 0 && (
         <div className="claim-token">
-          <div className="claim-token-title">CLAIM TOKENS</div>
+          <RowBetween className="claim-token-title" alignItems={"center"}>
+            <div >Claim Tokens</div>
+            {claimsLoading && <img alt="sp" src="/img/spinner.svg" width="25" />}
+          </RowBetween>
+
           {claims.map((claim, index) => {
             let amount = fromWei(claim.amount.toString())
             let token = tokens.find((item) => item.tokenId === claim.tokenId.toString())
@@ -30,7 +36,7 @@ const ClaimToken = (props) => {
                 </div>
                 {chain.network !== chainId ? (
                   <div className=" container-claim-btn switch-claim" onClick={() => addRPC(account, chain.network)}>
-                    SWITCH TO {NameChainId[chain.network]}
+                    Switch to {NameChainId[chain.network]}
                   </div>
                 ) : (
                   <div
@@ -41,7 +47,7 @@ const ClaimToken = (props) => {
                     }}
                     onClick={() => handleClaim(claim, chain.network)}
                   >
-                    <span> CLAIM &nbsp;</span>
+                    <span> Claim &nbsp;</span>
                     {Number(claim?.remainingBlock?.toString()) > 0 && <span style={{ fontWeight: 'bold' }}>
                       {` (${Number(claim?.remainingBlock?.toString())} blocks left)`}
                     </span>}
@@ -61,6 +67,13 @@ const ClaimToken = (props) => {
           </div> */}
         </div>
       )}
+      {claims.length === 0 && <div className="claim-token" style={{ textAlign: "center" }}>
+        <img style={{ margin: "0 auto 5px", }} alt="sp" src="/img/bridge/claim.svg" width="50" />
+        <RowCenter style={{ alignItems: "center", height: "25px" }}>
+          <Type.SM>nothing to claim yet</Type.SM>
+          {claimsLoading && <img alt="sp" src="/img/spinner.svg" width="25" />}
+        </RowCenter>
+      </div>}
     </>
   )
 }

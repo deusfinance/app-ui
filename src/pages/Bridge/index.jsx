@@ -26,6 +26,8 @@ const Bridge = () => {
     const { account } = useWeb3React()
     const [open, setOpen] = useState(false)
     const [claims, setClaims] = useState([])
+    const [claimsLoading, setClaimsLoading] = useState(true)
+
     const [tokenId, setTokenId] = useState('')
     const [lock, setLock] = useState('')
     const [target, setTarget] = useState()
@@ -101,10 +103,18 @@ const Bridge = () => {
     const { getClaim } = useGetNewClaim()
     const { handleClaim } = useClaim(muon, lock, setLock, setFetch)
 
+
+    useEffect(() => {
+        setClaimsLoading(true)
+        setClaims([])
+    }, [account])
+
     useEffect(() => {
         const get = async () => {
+            setClaimsLoading(true)
             const claims = await getClaim()
             setClaims(claims)
+            setClaimsLoading(false)
         }
         if (account) {
             get()
@@ -240,14 +250,15 @@ const Bridge = () => {
                 changeToken={(token, chainId) => changeToken(token, chainId)}
             />
         </div>
-        <div className="width-340">
+        {account && <div className="width-340">
             <ClaimToken
                 claims={claims}
                 chainId={chainId}
+                claimsLoading={claimsLoading}
                 setFetch={(data) => setFetch(data)}
                 handleClaim={(claim, network) => handleClaim(claim, network)}
             />
-        </div>
+        </div>}
     </div>);
 }
 

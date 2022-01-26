@@ -32,6 +32,9 @@ const ButtonSwap = styled(ButtonSyncActive)`
     background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
     color: ${({ theme, txColor }) => txColor ? theme[txColor] : theme.text1_2};
     font-size:${({ fontSize }) => fontSize || "20px"};
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+          font-size: 15px;
+  `}
 `
 
 const WrapStep = styled(FlexCenter)`

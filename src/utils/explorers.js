@@ -11,6 +11,7 @@ export function shortenHex(hex, length = 4) {
 
 const EXPLORER_PREFIXES = {
   [ChainId.ETH]: '',
+  [ChainId.FTM]: '',
   [ChainId.ROPSTEN]: 'ropsten.',
   [ChainId.RINKEBY]: 'rinkeby.',
   [ChainId.OPTIMISTIC]: 'optimistic',
@@ -163,7 +164,7 @@ function getArbitrumLink(chainId, data, type) {
 }
 
 function getFTMLink(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.FTM]
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
     }ftmscan.com`
 
   switch (type) {
@@ -458,11 +459,37 @@ export function CustomTransaction(type, payload, option = { autoClose: true }) {
       )
       break
 
+
     case TransactionState.FAILED:
+      console.log(payload.error);
+      console.log({ code: payload.error.code });
+      console.log(payload.receipt);
+
+      // if (payload.error.code === 4001) {
+      //   console.log("User denied transaction signature!");
+      // }
+
       if (!payload.hash) {
         ToastTransaction('warn', 'Transaction Rejected', "", { autoClose: true })
         return
       }
+
+      if (!payload.receipt) {
+        ToastTransaction('info', 'Transaction Unknown',
+          <ExternalLink
+            href={getTransactionLink(
+              payload.chainId,
+              payload.hash,
+              'transaction'
+            )}
+          >
+            {`View On Explorer ↗`}
+          </ExternalLink>
+          , { autoClose: true })
+        return
+      }
+
+
       ToastTransaction(
         'warn',
         'Transaction Failed',

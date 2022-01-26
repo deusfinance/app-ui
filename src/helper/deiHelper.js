@@ -209,11 +209,27 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
 }
 
 //WRITE FUNCTIONS
+//We should use new ui asap. 
+
+/**
+maxFeePerGas: new BigNumber(payload.baseFeePerGas * 14 / 10).toFixed(0),
+maxFeePerGas: payload.gasPrice && new BigNumber(Math.max(payload.gasPrice, payload.baseFeePerGas) * 1.2).toFixed(0),
+maxPriorityFeePerGas: payload.baseFeePerGas && Math.max(1200000000, payload.gasPrice - payload.baseFeePerGas)
+ */
+
+
+
+
 export const SendWithToast = (fn, account, chainId, message, payload = {}) => {
     if (!fn) return
     let hash = null
-    const value = payload.value ? { value: payload.value } : {}
-    const customSend = { from: account, ...value }
+
+    console.log(payload);
+    const customSend = {
+        from: account,
+        ...payload
+    }
+
     return fn
         .send(customSend)
         .once('transactionHash', (tx) => {
@@ -229,10 +245,12 @@ export const SendWithToast = (fn, account, chainId, message, payload = {}) => {
             chainId: chainId,
             message: message,
         }))
-        .once('error', () => CustomTransaction(TransactionState.FAILED, {
+        .once('error', (error, receipt) => CustomTransaction(TransactionState.FAILED, {
             hash,
             chainId: chainId,
             message: message,
+            error,
+            receipt
         }))
 }
 

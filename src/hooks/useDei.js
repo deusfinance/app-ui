@@ -24,51 +24,7 @@ import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
 import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
 import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
-
-
-export const useAPY = (validChainId) => {
-    const web3 = useCrossWeb3(validChainId)
-    const { slowRefresh } = useRefresh()
-    const [apy, setApy] = useState(null)
-
-    useEffect(() => {
-        const get = async () => {
-            try {
-                const apy = await makeDeiRequest("/apy", validChainId)
-                const apyValue = apy ? apy : null
-                setApy(apyValue)
-            } catch (error) {
-                console.log("useAPY ", error);
-            }
-        }
-        if (validChainId)
-            get()
-    }, [slowRefresh, web3, setApy, validChainId])
-
-    useEffect(() => {
-        setApy(null)
-    }, [validChainId])
-
-    return apy
-}
-
-export const useDepositAmount = (validChainId) => {
-    const { slowRefresh } = useRefresh()
-    const setDepositAmount = useSetRecoilState(depositAmountState)
-
-    useEffect(() => {
-        const get = async () => {
-            try {
-                const result = await makeDeiRequest("/info", validChainId)
-                setDepositAmount(result.staked_amount)
-            } catch (error) {
-                console.log("useDepositAmount ", error);
-            }
-        }
-        get()
-    }, [slowRefresh, validChainId, setDepositAmount])
-}
-
+import { ChainId, isSupportEIP1559 } from '../constant/web3'
 
 export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
     const web3 = useWeb3()
@@ -86,7 +42,8 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
             const result = await makeDeiRequest(path, validChainId)
 
             const fn = zapIn(currency, stakingInfo.zapperContract, amountInToWei, minLpAmountToWei, result, amountOutParams, false, web3, chainId)
-            const payload = currency.address === "0x" ? { value: amountInToWei } : {}
+            const payload = await getGasData(web3, fn, validChainId, account)
+            if (currency.address === "0x") { payload.value = amountInToWei }
             return await SendWithToast(fn, account, chainId, `Zap ${amountIn} ${currency.symbol} to ${stakingInfo?.title} `, payload)
         } catch (error) {
             console.log(error);
@@ -94,7 +51,6 @@ export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amo
     }, [currency, stakingInfo, amountIn, amountOut, amountOutParams, validChainId, chainId, account, web3, slippage])
     return { onZap: handleZap }
 }
-
 
 export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debouncedAmountIn, result, validChainId) => {
     const web3 = useWeb3()
@@ -125,7 +81,6 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
     return { getAmountsOut: handleGetAmountOut }
 }
 
-
 export const useDeposit = (currency, amount, address, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
@@ -134,8 +89,8 @@ export const useDeposit = (currency, amount, address, validChainId) => {
         if (validChainId && chainId !== validChainId) return false
         console.log(amount);
         const fn = DeiDeposit(currency, amount, address, web3)
-
-        return await SendWithToast(fn, account, chainId, `Stake ${amount} ${currency.symbol}`)
+        const payload = await getGasData(web3, fn, validChainId, account)
+        return await SendWithToast(fn, account, chainId, `Stake ${amount} ${currency.symbol}`, payload)
     }, [currency, amount, address, validChainId, chainId, account, web3])
     return { onDeposit: handleDeposit }
 }
@@ -148,7 +103,8 @@ export const useWithdraw = (currency, amount, address, validChainId) => {
         if (validChainId && chainId !== validChainId) return false
         const fn = DeiWithdraw(currency, amount, address, web3)
         const message = isZero(amount) ? `Claim DEUS` : `Withdraw ${amount} ${currency.symbol}`
-        return await SendWithToast(fn, account, chainId, message)
+        const payload = await getGasData(web3, fn, validChainId, account)
+        return await SendWithToast(fn, account, chainId, message, payload)
     }, [currency, amount, address, validChainId, chainId, account, web3])
     return { onWithdraw: handleWithdraw }
 }
@@ -202,6 +158,7 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
     return { onRecollat: handleRecollat }
 }
 
+//TODO
 export const useClaimAll = (validChainId = 4) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
@@ -253,7 +210,8 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
                 web3,
             )
         }
-        return await SendWithToast(fn, account, chainId, `Redeem ${amountIn} ${fromCurrency.symbol}`)
+        const payload = await getGasData(web3, fn, validChainId, account)
+        return await SendWithToast(fn, account, chainId, `Redeem ${amountIn} ${fromCurrency.symbol}`, payload)
     }, [fromCurrency, amountIn, account, chainId, collatRatio, validChainId, web3])
 
     return { onRedeem: handleRedeem }
@@ -264,10 +222,8 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
     const { account, chainId } = useWeb3React()
 
     const handleMint = useCallback(async () => {
-
         if (validChainId && chainId !== validChainId) return false
         if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
-
         const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
         const amountOutToWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
         const minAmountOutToWei = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
@@ -357,7 +313,8 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                 console.log(error);
             }
         }
-        const payload = from1Currency.address === "0x" ? { value: amount1toWei } : {}
+        const payload = await getGasData(web3, fn, validChainId, account)
+        if (from1Currency.address === "0x") { payload.value = amount1toWei }
 
         try {
             return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`, payload)
@@ -368,7 +325,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
     return { onMint: handleMint }
 }
-
 
 export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatRatio, slippage, proxy, amountOutParams, validChainId) => {
     const web3 = useWeb3()
@@ -428,7 +384,8 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
         } catch (error) {
             console.log(error);
         }
-        const payload = from1Currency.address === "0x" ? { value: amount1toWei } : {}
+        const payload = await getGasData(web3, fn, validChainId, account)
+        if (from1Currency.address === "0x") { payload.value = amount1toWei }
 
         try {
             return await SendWithToast(fn, account, chainId, `Mint ${amountOut} ${toCurrency.symbol}`, payload)
@@ -440,6 +397,71 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
     return { onMint: handleMint }
 }
 
+
+export const useAPY = (validChainId) => {
+    const web3 = useCrossWeb3(validChainId)
+    const { slowRefresh } = useRefresh()
+    const [apy, setApy] = useState(null)
+
+    useEffect(() => {
+        const get = async () => {
+            try {
+                const apy = await makeDeiRequest("/apy", validChainId)
+                const apyValue = apy ? apy : null
+                setApy(apyValue)
+            } catch (error) {
+                console.log("useAPY ", error);
+            }
+        }
+        if (validChainId)
+            get()
+    }, [slowRefresh, web3, setApy, validChainId])
+
+    useEffect(() => {
+        setApy(null)
+    }, [validChainId])
+
+    return apy
+}
+
+export const useDepositAmount = (validChainId) => {
+    const { slowRefresh } = useRefresh()
+    const setDepositAmount = useSetRecoilState(depositAmountState)
+
+    useEffect(() => {
+        const get = async () => {
+            try {
+                const result = await makeDeiRequest("/info", validChainId)
+                setDepositAmount(result.staked_amount)
+            } catch (error) {
+                console.log("useDepositAmount ", error);
+            }
+        }
+        get()
+    }, [slowRefresh, validChainId, setDepositAmount])
+}
+
+export const getGasData = async (web3, fn, chainId, account) => {
+    const payload = {}
+    try {
+        const gasPrice = await web3.eth.getGasPrice()
+        const estimateGas = await fn.estimateGas({ from: account })
+        const block = await web3.eth.getBlock("pending")
+        payload.estimateGas = new BigNumber(estimateGas * 1.2).toFixed(0)
+        payload.gasPrice = Number(gasPrice)
+
+        if (isSupportEIP1559[chainId]) {
+            payload.baseFeePerGas = Number(block.baseFeePerGas || 0) //just use gasPrice if current chain dont support eip1559
+            payload.maxFeePerGas = new BigNumber(Math.max(payload.gasPrice, payload.baseFeePerGas) * 1.2).toFixed(0)
+            if (chainId === ChainId.MATIC) {
+                payload.maxPriorityFeePerGas = Math.max(29000000000, Number(payload.maxFeePerGas) - payload.baseFeePerGas)
+            }
+        }
+    } catch (error) {
+        console.log("error happened in getGasData", error);
+    }
+    return payload
+}
 
 export const useStakingInfo = (conf, validChainId) => {
     const web3 = useCrossWeb3(validChainId)
@@ -680,3 +702,19 @@ export const useAllowance = (currency, contractAddress, validChainId, fastUpdate
 
     return allowance
 }
+
+/* const formatOutput = (data) => {
+    console.log(data);
+    const numBlocks = 1
+    let blocks = []
+    for (let i = 0; i < numBlocks; i++) {
+        blocks.push({
+            blockNumber: Number(data.oldestBlock) + i,
+            reward: data.reward[i].map(r => Math.round(Number(r) / 10 ** 9)),
+            baseFeePerGas: Math.round(Number(data.baseFeePerGas[i]) / 10 ** 9),
+            gasUsedRatio: data.gasUsedRatio[i],
+        })
+    }
+    return blocks;
+} */
+

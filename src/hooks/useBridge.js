@@ -10,11 +10,12 @@ import { BRIDGE_ADDRESS } from '../constant/contracts'
 import { ChainId } from '../constant/web3'
 import { getBridgeContract } from '../helper/contractHelpers'
 import { formatBalance3 } from '../utils/utils'
+import { getGasData } from './useDei'
 
 
 export const useGetNewClaim = () => {
     const { account } = useWeb3React()
-    const { fastRefresh } = useRefresh()
+    const { mediumRefresh } = useRefresh()
     //idk why but it tried to use the same state twice
     // const web3s = {
     //     4: useCrossWeb3(4),
@@ -51,7 +52,7 @@ export const useGetNewClaim = () => {
                 return []
             }
         }
-    }, [account, ethWeb3, bscWeb3, ftmWeb3, polygonWeb3, rinkebyWeb3, bscTestWeb3, fastRefresh]) // eslint-disable-line
+    }, [account, ethWeb3, bscWeb3, ftmWeb3, polygonWeb3, rinkebyWeb3, bscTestWeb3, mediumRefresh]) // eslint-disable-line
     return { getClaim }
 }
 
@@ -121,10 +122,11 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
                 sigs
             )
             //TODO find token with id
+            const payload = await getGasData(web3, fn, chainId, account)
             SendWithToast(fn, account, chainId, `Claim ${formatBalance3(amount)}`).then(() => {
                 setFetch(claim)
                 setLock('')
-            })
+            }, payload)
         } catch (error) {
             console.log('error happened in Claim', error)
         }
@@ -141,7 +143,8 @@ export const useDeposit = (amount, swapState) => {
 
         try {
             const fn = deposit(amount, swapState.from, swapState.to, web3, account)
-            return await SendWithToast(fn, account, chainId, `Deposit ${amount} ${swapState.from.symbol}`)
+            const payload = await getGasData(web3, fn, chainId, account)
+            return await SendWithToast(fn, account, chainId, `Deposit ${amount} ${swapState.from.symbol}`, payload)
         } catch (error) {
             console.log("error happened at useDeposit");
         }

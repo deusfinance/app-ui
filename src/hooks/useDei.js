@@ -399,9 +399,12 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
 
 
 export const useAPY = (validChainId) => {
-    const web3 = useCrossWeb3(validChainId)
     const { mediumRefresh } = useRefresh()
     const [apy, setApy] = useState({})
+
+    useEffect(() => {
+        setApy({})
+    }, [validChainId])
 
     useEffect(() => {
         const get = async () => {
@@ -415,11 +418,9 @@ export const useAPY = (validChainId) => {
         }
         if (validChainId)
             get()
-    }, [mediumRefresh, web3, setApy, validChainId])
+    }, [mediumRefresh, setApy, validChainId])
 
-    useEffect(() => {
-        setApy({})
-    }, [validChainId])
+
 
     return apy
 }

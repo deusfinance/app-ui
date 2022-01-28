@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import Davatar from "@davatar/react";
 import { NavbarSideWrap, NavButton, NavWarningButton } from '../../App/Navbar';
 import { addRPC } from '../../../services/addRPC';
 import { NameChainId } from '../../../constant/web3';
@@ -7,12 +8,14 @@ import useWeb3 from '../../../hooks/useWeb3';
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router';
 import { getCorrectChains } from '../../../constant/correctChain';
+import { useENS } from '../../../hooks/useENS';
 
 const NavSide = ({ handleConnect, open, setOpen, chainId, account }) => {
     const web3 = useWeb3()
     const location = useLocation()
     const validChains = getCorrectChains(location.pathname)
     const { t } = useTranslation()
+    const { ensName } = useENS(account)
 
     return useMemo(() => {
 
@@ -27,7 +30,10 @@ const NavSide = ({ handleConnect, open, setOpen, chainId, account }) => {
                         <svg width={8} height={8} style={{ marginRight: "5px" }} viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx={4} cy={4} r={4} fill="#00E376" />
                         </svg>
-                        {formatAddress(account)}
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Davatar size={20} address={account} />
+                            <div style={{ marginLeft: '6px' }}>{ensName || formatAddress(account)}</div>
+                        </div>
                     </NavButton>
                 }
             </>}

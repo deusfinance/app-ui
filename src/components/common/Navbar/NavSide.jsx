@@ -56,7 +56,7 @@ const NavSide = ({ handleConnect, open, setOpen, chainId, account }) => {
 
             <svg className="hamb" onClick={() => setOpen(!open)} width={22} height={16} viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15H1" stroke="white" strokeWidth={2} strokeLinecap="round" /><path d="M21 8H1" stroke="white" strokeWidth={2} strokeLinecap="round" /><path d="M21 1H1" stroke="white" strokeWidth={2} strokeLinecap="round" /></svg>
         </NavbarSideWrap>
-    }, [chainId, account, web3, validChains, handleConnect, setOpen, open, t])
+    }, [ensName, chainId, account, web3, validChains, handleConnect, setOpen, open, t])
 }
 
 export default NavSide;

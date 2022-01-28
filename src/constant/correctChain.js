@@ -4,19 +4,19 @@ import { ChainId } from "./web3";
 export const correctChains = [
     {
         url: "/swap",
-        chains: [ChainId.ETH, ChainId.MATIC],
+        chains: [ChainId.MATIC, ChainId.ETH],
     },
     {
         url: "/stable/zap",
-        chains: [ChainId.ETH, ChainId.MATIC],
+        chains: [ChainId.MATIC, ChainId.ETH],
     },
     {
         url: "/stable/farms",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.FTM],
+        chains: [ChainId.FTM, ChainId.MATIC, ChainId.ETH],
     },
     {
         url: "/migrator",
-        chains: [ChainId.ETH, ChainId.MATIC],
+        chains: [ChainId.MATIC, ChainId.ETH],
     },
     {
         url: "/muon-presale",
@@ -24,11 +24,11 @@ export const correctChains = [
     },
     {
         url: "/stable",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS],
+        chains: [ChainId.FTM, ChainId.MATIC, ChainId.ETH, ChainId.BSC, ChainId.METIS],
     },
     {
         url: "/bridge",
-        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM, ChainId.METIS],
+        chains: [ChainId.FTM, ChainId.MATIC, ChainId.ETH, ChainId.BSC, ChainId.METIS],
     },
     {
         url: "/not-found",

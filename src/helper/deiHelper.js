@@ -372,6 +372,7 @@ export const getAmountOutDeusSwap = async (fromCurrency, amountIn, deus_price, c
         }
         params.push(erc20Path)
     }
+    
     // console.log(method, params);
     return getDeusSwapContract(web3, chainId).methods[method](...params).call()
 }

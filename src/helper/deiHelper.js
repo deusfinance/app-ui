@@ -383,20 +383,25 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
     const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
     let method = ""
     let params = [amountInToWei, deusPriceWei, collateralPriceWei]
-    // console.log(chainId, amountInToWei);
 
     const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
 
-    if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
-        method = "getUSDC2DEIInputs"
-    } else {
-        method = "getERC202DEIInputs"
-        if (!erc20Path) {
-            console.error("INVALID PATH with ", fromCurrency)
-            return
-        }
+    if (chainId == ChainId.FTM) {
+        method = "getAmountsOut"
         params.push(erc20Path)
+    } else {
+        if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
+            method = "getUSDC2DEIInputs"
+        } else {
+            method = "getERC202DEIInputs"
+            if (!erc20Path) {
+                console.error("INVALID PATH with ", fromCurrency)
+                return
+            }
+            params.push(erc20Path)
+        }
     }
+
     // console.log(method, params);
     return getNewProxyMinterContract(web3, chainId).methods[method](...params).call()
 }

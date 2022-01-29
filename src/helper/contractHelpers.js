@@ -21,6 +21,7 @@ import BakktAbi from '../config/abi/bakktAbi.json'
 import DeusNativeZapAbi from '../config/abi/DeusNativeZapAbi.json'
 import DeusNativeZapAbiETH from '../config/abi/DeusNativeZapAbiETH.json'
 import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleMatic.json'
+import proxyMinterAbi_FTM from '../config/abi/proxyMinterAbi_FTM.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
 import {
     DEI_ADDRESS,
@@ -112,6 +113,8 @@ export const getMigrationContract = (web3, chainId = ChainId.RINKEBY) => {
 }
 
 export const getNewProxyMinterContract = (web3, chainId = ChainId.MATIC) => {
+    if (chainId === ChainId.FTM)
+        return getContract(proxyMinterAbi_FTM, PROXY_MINT_ADDRESS[chainId], web3, chainId)
     return getContract(NewProxyMinterAbi, PROXY_MINT_ADDRESS[chainId], web3, chainId)
 }
 

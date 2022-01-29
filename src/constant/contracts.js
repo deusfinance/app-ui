@@ -107,6 +107,7 @@ export const COLLATERAL_POOL_ADDRESS = {
 export const PROXY_MINT_ADDRESS = {
   [ChainId.MATIC]: '0x8E17742983CBa809bc554868D8a69A37e3a8a207',
   [ChainId.ETH]: '0xB095aA0A0A206ed943FAA7f5BD28A47Aaf2fEc09',
+  [ChainId.FTM]: '0xD6739b3012Dd4179C0Cb45C57e6eADD063983143',
 }
 
 export const DEUS_SWAP_ADDRESS = {
@@ -195,7 +196,7 @@ export const WMETISAddress = {
 }
 
 export const WFTMAddress = {
-  [ChainId.FTM]: "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
+  [ChainId.FTM]: "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
 }
 
 export const WETHAddress = {
@@ -254,6 +255,12 @@ export const MINT_PATH = { // TO_USDC_PATH
     DEI: [DEI_ADDRESS[ChainId.BSC], COLLATERAL_ADDRESS[ChainId.BSC]],
     WETH: [WETHAddress[ChainId.BSC], COLLATERAL_ADDRESS[ChainId.BSC]],
     USDC: [COLLATERAL_ADDRESS[ChainId.BSC]],
+  },
+  [ChainId.FTM]: {
+    USDC: [COLLATERAL_ADDRESS[ChainId.FTM]],
+    FTM: [WFTMAddress[ChainId.FTM], COLLATERAL_ADDRESS[ChainId.FTM]],
+    DAI: ['0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E', COLLATERAL_ADDRESS[ChainId.FTM]],
+    wBTC: ['0x321162Cd933E2Be498Cd2267a90534A804051b11', WFTMAddress[ChainId.FTM], COLLATERAL_ADDRESS[ChainId.FTM]]
   },
 }
 

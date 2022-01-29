@@ -288,25 +288,37 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                     ]
                 let param = [proxyTuple]
 
-                if (from1Currency.address === "0x") {
-                    method = "Nativecoin2DEI"
-                    param.push(erc20Path)
-
-                }
-                else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
-                    method = "USDC2DEI"
-                }
-
-                else {
-                    if (!erc20Path) {
-                        console.error("INVALID PATH with ", from1Currency)
-                        return
+                if (chainId === ChainId.FTM) {
+                    if (from1Currency.address === "0x") {
+                        method = "Nativecoin2DEI"
+                        param = [amount1toWei, proxyTuple, erc20Path]
+                    } else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
+                        method = "USDC2DEI"
+                    } else {
+                        if (!erc20Path) {
+                            console.error("INVALID PATH with ", from1Currency)
+                            return
+                        }
+                        method = "ERC202DEI"
+                        param.push(erc20Path)
                     }
-                    method = "ERC202DEI"
-                    param.push(erc20Path)
+                } else {
+                    if (from1Currency.address === "0x") {
+                        method = "Nativecoin2DEI"
+                        param.push(erc20Path)
+                    } else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
+                        method = "USDC2DEI"
+                    } else {
+                        if (!erc20Path) {
+                            console.error("INVALID PATH with ", from1Currency)
+                            return
+                        }
+                        method = "ERC202DEI"
+                        param.push(erc20Path)
+                    }
                 }
-                console.log(method, param);
 
+                console.log(method, param);
                 fn = getNewProxyMinterContract(web3, chainId).methods[method](...param)
 
             } catch (error) {
@@ -419,8 +431,6 @@ export const useAPY = (validChainId) => {
         if (validChainId)
             get()
     }, [mediumRefresh, setApy, validChainId])
-
-
 
     return apy
 }

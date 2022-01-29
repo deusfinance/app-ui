@@ -386,7 +386,7 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
 
     const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
 
-    if (chainId == ChainId.FTM) {
+    if (chainId === ChainId.FTM) {
         method = "getAmountsOut"
         params.push(erc20Path)
     } else {

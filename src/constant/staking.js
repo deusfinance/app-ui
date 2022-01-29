@@ -110,18 +110,6 @@ export const StakingConfig = {
       apy: "50",
       apyKey: "dei_usdc"
     },
-    // {
-    //   id: 1,
-    //   title: "DEI-DEUS",
-    //   pic1: "/tokens/dei.svg",
-    //   pic2: "/tokens/deus.svg",
-    //   depositToken: deiDeusLpToken[ChainId.FTM],
-    //   stakingContract: DEI_DEUS_STAKING[ChainId.FTM],
-    //   zapperContract: null,
-    //   provideLink: "https://swap.spiritswap.finance/#/add/0xDE12c7959E1a72bbe8a5f7A1dc8f8EeF9Ab011B3/0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44",
-    //   apy: "100",
-    //  apyKey: "deus_dei"
-    // },
     {
       id: 2,
       title: "DEUS-FTM",

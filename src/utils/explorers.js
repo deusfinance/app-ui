@@ -2,40 +2,22 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { ExternalLink } from '../components/App/Link'
 import { Type } from '../components/App/Text'
-import { ChainId } from '../constant/web3'
-import { TransactionState } from './constant'
+import { ChainId, rpcConfig, TransactionState } from '../constant/web3'
 
-export function shortenHex(hex, length = 4) {
-  return `${hex.substring(0, length + 2)}…${hex.substring(hex.length - length)}`
+export const ExplorerDataType = {
+  ADDRESS: "address",
+  TRANSACTION: "transaction",
+  TOKEN: "token"
 }
 
-const EXPLORER_PREFIXES = {
-  [ChainId.ETH]: '',
-  [ChainId.FTM]: '',
-  [ChainId.ROPSTEN]: 'ropsten.',
-  [ChainId.RINKEBY]: 'rinkeby.',
-  [ChainId.OPTIMISTIC]: 'optimistic',
-  [ChainId.XDAI]: 'mainnet',
-  [ChainId.BSC]: '',
-  [ChainId.BSC_TESTNET]: 'testnet.',
-  [ChainId.HECO]: '',
-  [ChainId.HECO_TESTNET]: 'testnet.',
-  [ChainId.MATIC]: '',
-  [ChainId.AVALANCHE]: '',
-  [ChainId.METIS]: '',
-  [ChainId.ARBITRUM]: '',
-  [ChainId.FTM]: '',
-}
-
-function getEtherscanLink(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
-    }etherscan.io`
+function getDefaultLink(chainId, data, type) {
+  const prefix = rpcConfig[chainId].blockExplorerUrls || rpcConfig[ChainId.ETH].blockExplorerUrls
 
   switch (type) {
-    case 'transaction': {
+    case ExplorerDataType.TRANSACTION: {
       return `${prefix}/tx/${data}`
     }
-    case 'token': {
+    case ExplorerDataType.TOKEN: {
       return `${prefix}/token/${data}`
     }
     default: {
@@ -43,32 +25,16 @@ function getEtherscanLink(chainId, data, type) {
     }
   }
 }
+
 
 function getXdaiLink(chainId, data, type) {
-  const prefix = `https://blockscout.com/xdai${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[100]
-    }`
+  const prefix = rpcConfig[chainId].blockExplorerUrls || rpcConfig[ChainId.ETH].blockExplorerUrls
 
   switch (type) {
-    case 'transaction': {
+    case ExplorerDataType.TRANSACTION: {
       return `${prefix}/tx/${data}`
     }
-    case 'token': {
-      return `${prefix}/tokens/${data}`
-    }
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
-}
-function getAvalancheLink(chainId, data, type) {
-  const prefix = `https://cchain.explorer.avax.network${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
-    }`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
+    case ExplorerDataType.TOKEN: {
       return `${prefix}/tokens/${data}`
     }
     default: {
@@ -77,145 +43,29 @@ function getAvalancheLink(chainId, data, type) {
   }
 }
 
-function getBscScanLink(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[56]
-    }bscscan.com`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
-}
-
-function getPolygonScan(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[137]
-    }polygonscan.com`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
-}
-
-
-function getHecoLink(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[128]
-    }hecoinfo.com`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
-}
-
-function getMetisLink(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.METIS]
-    }andromeda-explorer.metis.io`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
-}
-
-function getArbitrumLink(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.ARBITRUM]
-    }arbiscan.io`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
-}
-
-function getFTMLink(chainId, data, type) {
-  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
-    }ftmscan.com`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
-}
 
 export function getTransactionLink(chainId, data, type) {
+
   switch (chainId) {
     case ChainId.ETH:
-    case ChainId.ROPSTEN:
     case ChainId.RINKEBY:
-    case ChainId.OPTIMISTIC: {
-      return getEtherscanLink(chainId, data, type)
-    }
+    case ChainId.OPTIMISTIC:
     case ChainId.BSC:
-    case ChainId.BSC_TESTNET: {
-      return getBscScanLink(chainId, data, type)
+    case ChainId.BSC_TESTNET:
+    case ChainId.FTM:
+    case ChainId.METIS:
+    case ChainId.AVALANCHE:
+    case ChainId.ARBITRUM:
+    case ChainId.MATIC: {
+      return getDefaultLink(chainId, data, type)
     }
+
     case ChainId.XDAI: {
       return getXdaiLink(chainId, data, type)
     }
-    case ChainId.HECO_TESTNET:
-    case ChainId.HECO: {
-      return getHecoLink(chainId, data, type)
-    }
-    case ChainId.MATIC: {
-      return getPolygonScan(chainId, data, type)
-    }
-    case ChainId.AVALANCHE: {
-      return getAvalancheLink(chainId, data, type)
-    }
-    case ChainId.METIS: {
-      return getMetisLink(chainId, data, type)
-    }
-    case ChainId.ARBITRUM: {
-      return getArbitrumLink(chainId, data, type)
-    }
-    case ChainId.FTM: {
-      return getFTMLink(chainId, data, type)
-    }
+
     default: {
-      return getEtherscanLink(chainId, data, type)
+      return getDefaultLink(chainId, data, type)
     }
   }
 }

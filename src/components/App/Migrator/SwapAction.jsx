@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ButtonSyncDeactivated, ButtonSyncActive } from '../Button';
 import { useWeb3React } from '@web3-react/core';
 import Wallets from '../../common/Navbar/Wallets';
-import { addRPC } from '../../../services/addRPC';
+import { addRPC } from '../../../utils/addRPC';
 import { NameChainId } from '../../../constant/web3';
 
 const errors = {

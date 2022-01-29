@@ -35,13 +35,6 @@ export const walletconnect_eth = new WalletConnectConnector({
   pollingInterval: POLLING_INTERVAL
 })
 
-//bsc
-// export const walletconnect_Rinkeby = new WalletConnectConnector({
-//   rpc: { 4: RPC_URLS[4] },
-//   qrcode: true,
-//   // bridge: 'https://pancakeswap.bridge.walletconnect.org/',
-//   pollingInterval: POLLING_INTERVAL
-// })
 export const walletconnect_polygon = new WalletConnectConnector({
   rpc: { [ChainId.MATIC]: rpcConfig[ChainId.MATIC].rpcUrls[0] },
   qrcode: true,
@@ -63,7 +56,6 @@ export const frame = new FrameConnector({ supportedChainIds: [1] })
 export const ConnectorNames = {
   Injected: 'MetaMask',
   WalletConnect_ETH: 'WalletConnect (ETH)',
-  // WalletConnect_Rinkeby: 'WalletConnect (Rinkeby)',
   WalletConnect_Polygon: 'WalletConnect (Polygon)',
   WalletLink: 'WalletLink (ETH)',
   Ledger: 'Ledger',
@@ -76,7 +68,6 @@ export const ConnectorNames = {
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect_ETH]: walletconnect_eth,
-  // [ConnectorNames.WalletConnect_Rinkeby]: walletconnect_Rinkeby,
   [ConnectorNames.WalletConnect_Polygon]: walletconnect_polygon,
   [ConnectorNames.WalletLink]: walletlink,
   [ConnectorNames.Fortmatic]: fortmatic

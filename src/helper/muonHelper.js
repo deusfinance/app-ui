@@ -1,4 +1,4 @@
-import { TransactionState } from "../utils/constant"
+import { TransactionState } from "../constant/web3"
 import { SwapTransaction, ToastTransaction } from "../utils/explorers"
 import { getMuonContract } from "./contractHelpers"
 import { fromWei, getToWei } from "./formatBalance"

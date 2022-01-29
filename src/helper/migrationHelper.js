@@ -6,7 +6,7 @@ import axios from "axios"
 import BigNumber from "bignumber.js"
 import { getMigrationContract } from "./contractHelpers"
 import { ChainId } from "../constant/web3"
-import { TransactionState } from "../utils/constant"
+import { TransactionState } from "../constant/web3"
 
 const NameChainId = {
     1: 'ETH Mainnet',

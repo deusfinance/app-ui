@@ -1,4 +1,4 @@
-import { TransactionState } from "../utils/constant"
+import { TransactionState } from "../constant/web3"
 import { CustomTransaction, SwapTransaction } from "../utils/explorers"
 
 export const SendWithToast = (fn, payload = {}, chainId, message) => {

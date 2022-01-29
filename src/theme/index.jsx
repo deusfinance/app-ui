@@ -4,7 +4,7 @@ import {
   createGlobalStyle,
   css
 } from 'styled-components'
-import { useIsDarkMode } from '../hooks/user'
+import { useIsDarkMode } from '../hooks/useDarkMode'
 
 const white = '#FFF'
 const black = '#000'

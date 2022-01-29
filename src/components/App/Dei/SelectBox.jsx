@@ -1,7 +1,7 @@
 import React from 'react';
 import { NameChainId } from '../../../constant/web3';
 import styled from 'styled-components'
-import { addRPC } from '../../../services/addRPC';
+import { addRPC } from '../../../utils/addRPC';
 
 const MainItemsDiv = styled.div`
     display: flex;

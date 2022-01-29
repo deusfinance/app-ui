@@ -3,7 +3,7 @@ import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERA
 import { isZero, TEN } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
-import { TransactionState } from "../utils/constant"
+import { TransactionState } from "../constant/web3"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { fetcher, formatUnitAmount } from "../utils/utils"
 import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract } from "./contractHelpers"

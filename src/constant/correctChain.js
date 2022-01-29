@@ -31,6 +31,14 @@ export const correctChains = [
         chains: [ChainId.FTM, ChainId.MATIC, ChainId.ETH, ChainId.BSC, ChainId.METIS],
     },
     {
+        url: "/vedeus",
+        chains: [ChainId.ETH, ChainId.MATIC, ChainId.BSC, ChainId.FTM], // ChainId.BSC_TESTNET, ChainId.RINKEBY
+    },
+    {
+        url: "/vedeus2",
+        chains: [ChainId.MATIC, ChainId.BSC, ChainId.FTM], // ChainId.BSC_TESTNET, ChainId.RINKEBY
+    },
+    {
         url: "/not-found",
         chains: Object.values(ChainId),
     },
@@ -38,10 +46,11 @@ export const correctChains = [
 
 export function getCorrectChains(path) {
     if (path === "/") return [ChainId.ETH]
+    const lowerPath = path.toLowerCase()
     for (let i = 0; i < correctChains.length; i++) {
-        if (path.includes(correctChains[i].url)) {
+        if (lowerPath.includes(correctChains[i].url)) {
             if (correctChains[i].exact) {
-                if (correctChains[i].url === path)
+                if (correctChains[i].url === lowerPath)
                     return correctChains[i].chains
                 else
                     return [ChainId.ETH]

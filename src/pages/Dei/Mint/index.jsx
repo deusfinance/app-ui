@@ -32,6 +32,7 @@ import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
 import { isZero } from '../../../constant/number';
 
+
 const Dei = () => {
     const location = useLocation()
     const validNetworks = getCorrectChains(location.pathname)

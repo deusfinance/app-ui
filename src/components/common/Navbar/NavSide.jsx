@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Davatar from "@davatar/react";
 import { NavbarSideWrap, NavButton, NavWarningButton } from '../../App/Navbar';
-import { addRPC } from '../../../services/addRPC';
+import { addRPC } from '../../../utils/addRPC';
 import { NameChainId } from '../../../constant/web3';
 import { formatAddress } from '../../../utils/utils';
 import useWeb3 from '../../../hooks/useWeb3';

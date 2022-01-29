@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-// import { isAddress } from '@ethersproject/address'
-import { ERC20ABI } from '../../utils/StakingABI'
+import ERC20ABI from '../../config/abi/ERC20Abi.json'
 import { getBalanceNumber } from '../../helper/formatBalance'
 import multicall from '../../helper/multicall'
 import { useCrossWeb3 } from '../../hooks/useWeb3'

@@ -4,7 +4,7 @@ import { chains, tokens } from './data'
 import { fromWei } from '../../helper/formatBalance'
 import { formatBalance3 } from '../../utils/utils'
 import { NameChainId } from '../../constant/web3'
-import { addRPC } from '../../services/addRPC'
+import { addRPC } from '../../utils/addRPC'
 import { useWeb3React } from '@web3-react/core'
 import { Type } from '../App/Text'
 import { RowBetween, RowCenter } from '../App/Row/index';

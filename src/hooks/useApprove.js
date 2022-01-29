@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { approve } from '../helper/swapHelper'
+import { approve } from '../helper/erc20Helper'
 import { useERC20 } from './useContract'
 import useWeb3 from './useWeb3'
 import { getGasData } from './useDei'
@@ -14,7 +14,6 @@ export const useApprove = (currency, contractAddress, validChainId) => {
         try {
             if (validChainId && chainId !== validChainId) return null
             const payload = await getGasData(web3, null, validChainId, account)
-            // console.log(payload);
             const tx = await approve(
                 contract,
                 contractAddress,

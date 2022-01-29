@@ -2,7 +2,7 @@ import React from 'react';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
 import { Type } from '../../../components/App/Text';
-import { useDeiUpdate } from '../../../hooks/useDei';
+import { useDeiUpdate, useAPY } from '../../../hooks/useDei';
 import { useWeb3React } from '@web3-react/core';
 import Staking from '../../../components/App/Dei/Staking/Staking';
 import { StakingConfig } from '../../../constant/staking';
@@ -44,26 +44,21 @@ const Dei = () => {
     const location = useLocation()
     const { account, chainId } = useWeb3React()
     const validChains = getCorrectChains(location.pathname)
-    const currChain = chainId && validChains.indexOf(chainId) !== -1 ? chainId : ChainId.ETH
+    const currChain = chainId && validChains.indexOf(chainId) !== -1 ? chainId : ChainId.FTM
+    const dynamicApy = useAPY(currChain)
     useDeiUpdate(currChain)
 
     return (<>
         <MainWrapper>
             <Type.XL fontWeight="300" mb="3">Farms</Type.XL>
             <Type.MD fontWeight="300" mb="4" opacity="0.5">Stake LP tokens to earn.</Type.MD>
-            {StakingConfig[chainId] &&
+            {StakingConfig[currChain] &&
                 <StakingContainer>
-                    <Staking config={StakingConfig[chainId][0]} chainId={chainId} apyValue={StakingConfig[chainId][0].apy} />
-                    <Staking config={StakingConfig[chainId][1]} chainId={chainId} apyValue={StakingConfig[chainId][1].apy} />
-                    <Staking config={StakingConfig[chainId][2]} chainId={chainId} apyValue={StakingConfig[chainId][2].apy} />
+                    {StakingConfig[currChain].map((staking) => {
+                        return <Staking key={staking.apyKey} config={staking} chainId={currChain} apyValue={dynamicApy[staking.apyKey]} />
+                    })}
                 </StakingContainer>}
-            {!StakingConfig[chainId] && !account &&
-                <StakingContainer>
-                    <Staking config={StakingConfig[ChainId.ETH][0]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][0].apy} />
-                    <Staking config={StakingConfig[ChainId.ETH][1]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][1].apy} />
-                    <Staking config={StakingConfig[ChainId.ETH][2]} chainId={ChainId.ETH} apyValue={StakingConfig[ChainId.ETH][2].apy} />
-                </StakingContainer>}
-            {!StakingConfig[chainId] && account && <EmptyTextWrapper>
+            {!StakingConfig[currChain] && account && <EmptyTextWrapper>
                 <Type.LG fontWeight="300" mb="3" opacity="0.6">Not available on this chain</Type.LG>
                 <Type.MD fontWeight="250" mb="4" opacity="0.4">(Switch to ETH or POLYGON)</Type.MD>
             </EmptyTextWrapper>
@@ -72,13 +67,13 @@ const Dei = () => {
 
         <div className='tut-left-wrap'>
             <LinkBox />
-            <CostBox type={'redeem'} chainId={chainId} />
+            <CostBox type={'redeem'} chainId={currChain} />
         </div>
 
         <div className='tut-right-wrap'>
-            {StakingConfig[chainId] && <LpTokens chainId={chainId} />}
+            {StakingConfig[currChain] && <LpTokens chainId={currChain} />}
             <BuyDEUS />
-            <Chains validChainId={chainId} validNetworks={validChains} />
+            <Chains validChainId={currChain} validNetworks={validChains} />
         </div>
     </>);
 }

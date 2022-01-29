@@ -73,19 +73,21 @@ const LpTokens = ({ chainId = 1 }) => {
                     </CopyToClipboard>
                 </EachUrl>
                 <Line />
-                <EachUrl>
-                    <p className="deus" onClick={() => addToken({ ...deiDeusLp, symbol: "UNI-V2" })}>Add  DEI-DEUS LP to MetaMask <img src="/img/metamask.png" alt="metamask" /> </p>
-                </EachUrl>
-                <EachUrl>
-                    <CopyToClipboard text={deiDeusLp?.address}
-                        onCopy={() => setState({ ...state, "deiDeus": true })}>
-                        <p className="deus">Copy DEI-DEUS LP Contract
-                            {state["deiDeus"] ? <CheckCircle width="15px" style={{ marginLeft: "3px" }} /> : <Copy width="15px" style={{ marginLeft: "3px" }} />}
-                        </p>
-                    </CopyToClipboard>
+                {deiDeusLp?.address && <>
+                    <EachUrl>
+                        <p className="deus" onClick={() => addToken({ ...deiDeusLp, symbol: "UNI-V2" })}>Add  DEI-DEUS LP to MetaMask <img src="/img/metamask.png" alt="metamask" /> </p>
+                    </EachUrl>
+                    <EachUrl>
+                        <CopyToClipboard text={deiDeusLp?.address}
+                            onCopy={() => setState({ ...state, "deiDeus": true })}>
+                            <p className="deus">Copy DEI-DEUS LP Contract
+                                {state["deiDeus"] ? <CheckCircle width="15px" style={{ marginLeft: "3px" }} /> : <Copy width="15px" style={{ marginLeft: "3px" }} />}
+                            </p>
+                        </CopyToClipboard>
+                    </EachUrl>
+                    <Line />
+                </>}
 
-                </EachUrl>
-                <Line />
                 <EachUrl>
                     <p className="dei" onClick={() => addToken({ ...deiCollateralLp, symbol: "UNI-V2" })}>Add DEI-USDC LP to MetaMask <img src="/img/metamask.png" alt="metamask" /> </p>
                 </EachUrl>

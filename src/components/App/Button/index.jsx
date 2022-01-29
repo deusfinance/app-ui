@@ -48,6 +48,10 @@ const ButtonSync = styled(Base).attrs({
   borderRadius: "10px",
 })`
   font-size:20px;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+          font-size: 15px;
+          height:45px;
+  `}
 `
 
 export const ButtonSyncDeactivated = styled(ButtonSync)`

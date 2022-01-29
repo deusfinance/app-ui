@@ -10,16 +10,21 @@ export function shortenHex(hex, length = 4) {
 }
 
 const EXPLORER_PREFIXES = {
-  1: '',
-  3: 'ropsten.',
-  4: 'rinkeby.',
-  56: '',
-  100: 'mainnet',
-  97: 'testnet.',
-  128: '',
-  137: '',
-  256: 'testnet.',
+  [ChainId.ETH]: '',
+  [ChainId.FTM]: '',
+  [ChainId.ROPSTEN]: 'ropsten.',
+  [ChainId.RINKEBY]: 'rinkeby.',
+  [ChainId.OPTIMISTIC]: 'optimistic',
+  [ChainId.XDAI]: 'mainnet',
+  [ChainId.BSC]: '',
+  [ChainId.BSC_TESTNET]: 'testnet.',
+  [ChainId.HECO]: '',
+  [ChainId.HECO_TESTNET]: 'testnet.',
+  [ChainId.MATIC]: '',
   [ChainId.AVALANCHE]: '',
+  [ChainId.METIS]: '',
+  [ChainId.ARBITRUM]: '',
+  [ChainId.FTM]: '',
 }
 
 function getEtherscanLink(chainId, data, type) {
@@ -124,11 +129,63 @@ function getHecoLink(chainId, data, type) {
   }
 }
 
+function getMetisLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.METIS]
+    }andromeda-explorer.metis.io`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
+function getArbitrumLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[ChainId.ARBITRUM]
+    }arbiscan.io`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
+function getFTMLink(chainId, data, type) {
+  const prefix = `https://${EXPLORER_PREFIXES[chainId] || EXPLORER_PREFIXES[1]
+    }ftmscan.com`
+
+  switch (type) {
+    case 'transaction': {
+      return `${prefix}/tx/${data}`
+    }
+    case 'token': {
+      return `${prefix}/token/${data}`
+    }
+    default: {
+      return `${prefix}/address/${data}`
+    }
+  }
+}
+
 export function getTransactionLink(chainId, data, type) {
   switch (chainId) {
-    case 1:
-    case 3:
-    case 4: {
+    case ChainId.ETH:
+    case ChainId.ROPSTEN:
+    case ChainId.RINKEBY:
+    case ChainId.OPTIMISTIC: {
       return getEtherscanLink(chainId, data, type)
     }
     case ChainId.BSC:
@@ -138,7 +195,6 @@ export function getTransactionLink(chainId, data, type) {
     case ChainId.XDAI: {
       return getXdaiLink(chainId, data, type)
     }
-
     case ChainId.HECO_TESTNET:
     case ChainId.HECO: {
       return getHecoLink(chainId, data, type)
@@ -148,6 +204,15 @@ export function getTransactionLink(chainId, data, type) {
     }
     case ChainId.AVALANCHE: {
       return getAvalancheLink(chainId, data, type)
+    }
+    case ChainId.METIS: {
+      return getMetisLink(chainId, data, type)
+    }
+    case ChainId.ARBITRUM: {
+      return getArbitrumLink(chainId, data, type)
+    }
+    case ChainId.FTM: {
+      return getFTMLink(chainId, data, type)
     }
     default: {
       return getEtherscanLink(chainId, data, type)
@@ -394,11 +459,37 @@ export function CustomTransaction(type, payload, option = { autoClose: true }) {
       )
       break
 
+
     case TransactionState.FAILED:
+      console.log(payload.error);
+      console.log({ code: payload.error.code });
+      console.log(payload.receipt);
+
+      // if (payload.error.code === 4001) {
+      //   console.log("User denied transaction signature!");
+      // }
+
       if (!payload.hash) {
         ToastTransaction('warn', 'Transaction Rejected', "", { autoClose: true })
         return
       }
+
+      if (!payload.receipt) {
+        ToastTransaction('info', 'Transaction Unknown',
+          <ExternalLink
+            href={getTransactionLink(
+              payload.chainId,
+              payload.hash,
+              'transaction'
+            )}
+          >
+            {`View On Explorer ↗`}
+          </ExternalLink>
+          , { autoClose: true })
+        return
+      }
+
+
       ToastTransaction(
         'warn',
         'Transaction Failed',

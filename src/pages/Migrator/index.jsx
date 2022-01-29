@@ -125,7 +125,7 @@ const Migrator = () => {
         {account && <MainDiv>
             {currUnMigratedList.length > 0 ? currUnMigratedList.map(config => {
                 return <div key={config.id}>
-                    <Container >
+                    <Container>
                         <MigrationTitle toggleId={toggleId} active={migrateList[config.id]} config={config} />
                         <RowBetween align={"flex-start"}>
                             <MultipleBox currency={config.tokens.from} fastUpdate={fastUpdate} />

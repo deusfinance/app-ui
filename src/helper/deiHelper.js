@@ -17,7 +17,9 @@ const LENGTH_COLLAT = {
     [ChainId.ETH]: 3,
     [ChainId.BSC]: 3,
     [ChainId.FTM]: 3,
-    [ChainId.MATIC]: 4,
+    [ChainId.MATIC]: 5,
+    [ChainId.METIS]: 2,
+    [ChainId.ARBITRUM]: 2,
 }
 
 const COLLAT_PRICE = {
@@ -25,11 +27,13 @@ const COLLAT_PRICE = {
     [ChainId.BSC]: "1000000000000000000",
 }
 
-export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, decimals = 6) => {
+export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling = null, depositAmount = 0, decimals = 6) => {
     const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6))) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals - 6))) : null
+    const poolBalanceValue = new BigNumber(poolBalance).div(TEN.pow(decimals - 6))
+    const pc = poolBalance !== null && ceiling !== null ? formatUnitAmount(new BigNumber.sum(poolBalanceValue, new BigNumber(depositAmount)).toString()) + ' / ' + formatUnitAmount(new BigNumber(ceiling).div(TEN.pow(decimals - 6))) : null
     const av = pc ? formatUnitAmount(new BigNumber(ceiling).minus(poolBalance).div(TEN.pow(decimals - 6))) : null
+
     return [{
         name: 'DEI PRICE',
         value: dp
@@ -45,10 +49,11 @@ export const makeCostData = (deiPrice, collatRatio, poolBalance = null, ceiling 
     }]
 }
 
-export const makeCostDataRedeem = (collatRatio, poolBalance, chainId = ChainId.ETH, decimals = 6) => {
+export const makeCostDataRedeem = (collatRatio, poolBalance, chainId = ChainId.ETH, depositAmount = 0, decimals = 6) => {
     const cToken = collateralToken[chainId] ? collateralToken[chainId] : collateralToken[ChainId.ETH]
     const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null
-    const pb = poolBalance !== null ? `${formatUnitAmount(new BigNumber(poolBalance).div(TEN.pow(decimals - 6)))} ${cToken?.symbol}` : null
+    const poolBalanceValue = new BigNumber(poolBalance).div(TEN.pow(decimals - 6))
+    const pb = poolBalance !== null ? `${formatUnitAmount(new BigNumber.sum(poolBalanceValue, new BigNumber(depositAmount)).toString())} ${cToken?.symbol}` : null
     return [{
         name: 'COLLATERAL RATIO',
         value: cr
@@ -204,11 +209,27 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
 }
 
 //WRITE FUNCTIONS
+//We should use new ui asap. 
+
+/**
+maxFeePerGas: new BigNumber(payload.baseFeePerGas * 14 / 10).toFixed(0),
+maxFeePerGas: payload.gasPrice && new BigNumber(Math.max(payload.gasPrice, payload.baseFeePerGas) * 1.2).toFixed(0),
+maxPriorityFeePerGas: payload.baseFeePerGas && Math.max(1200000000, payload.gasPrice - payload.baseFeePerGas)
+ */
+
+
+
+
 export const SendWithToast = (fn, account, chainId, message, payload = {}) => {
     if (!fn) return
     let hash = null
-    const value = payload.value ? { value: payload.value } : {}
-    const customSend = { from: account, ...value }
+
+    console.log(payload);
+    const customSend = {
+        from: account,
+        ...payload
+    }
+
     return fn
         .send(customSend)
         .once('transactionHash', (tx) => {
@@ -224,10 +245,12 @@ export const SendWithToast = (fn, account, chainId, message, payload = {}) => {
             chainId: chainId,
             message: message,
         }))
-        .once('error', () => CustomTransaction(TransactionState.FAILED, {
+        .once('error', (error, receipt) => CustomTransaction(TransactionState.FAILED, {
             hash,
             chainId: chainId,
             message: message,
+            error,
+            receipt
         }))
 }
 

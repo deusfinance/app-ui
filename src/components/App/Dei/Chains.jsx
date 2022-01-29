@@ -6,7 +6,7 @@ import SelectBox from './SelectBox';
 export const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
     width: 100%;
-    padding: 20px 25px;
+    padding: 20px 23px;
     background: #0d0d0d;
     border: 1px solid #1c1c1c;
     border-radius: 10px;

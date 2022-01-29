@@ -14,7 +14,7 @@ export const approve = async (contract, contractAddress, account, payload) => {
     let hash = null
     return contract.methods
         .approve(contractAddress, ethers.constants.MaxUint256.toString())
-        .send({ from: account })
+        .send({ from: account, ...payload })
         .once('transactionHash', (tx) => {
             hash = tx
             ApproveTransaction(TransactionState.LOADING, {

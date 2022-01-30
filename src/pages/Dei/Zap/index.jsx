@@ -77,7 +77,7 @@ const Zap = () => {
         })
     }, [tokens, currChain])
 
-    // //change zapper contract when chainId changed
+    // change zapper contract when chainId changed
     useEffect(() => {
         setStakingInfo(currStakingInfo)
     }, [currStakingInfo])

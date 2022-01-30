@@ -424,12 +424,13 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
         if (currency.symbol === "DEUS" && chainId === ChainId.MATIC) {
             erc20Path = MINT_PATH[chainId]["DEUS_edited"]
             toNativePath = TO_NATIVE_PATH[chainId]["DEUS_edited"]
+        } else if (chainId === ChainId.FTM){
+            return await getZapContract(web3, zapperAddress, chainId).methods
+                .getAmountOut(amountInToWei, [...toNativePath]).call()
         }
 
-        const lpAmount = await getZapContract(web3, zapperAddress, chainId)
-            .methods
+        return await getZapContract(web3, zapperAddress, chainId).methods
             .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, 20, [...erc20Path], [...toNativePath], 0]).call()
-        return lpAmount
     }
 
     if (currency.address === DEUS_ADDRESS[chainId]) {
@@ -503,9 +504,19 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
         }
 
         if (currency.address === "0x") {
+            if (chainId === ChainId.FTM) {
+                return getZapContract(web3, zapperAddress, chainId)
+                    .methods
+                    .zapInNativecoin(minLpAmount, transferResidual, amountOutParams[4])
+            }
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, toNativePath, erc20Path, amountOutParams[4])
+        }
+        if (chainId === ChainId.FTM) {
+            return getZapContract(web3, zapperAddress, chainId)
+                .methods
+                .zapInERC20(amountIn, minLpAmount, transferResidual, toNativePath, amountOutParams[4])
         }
         return getZapContract(web3, zapperAddress, chainId)
             .methods

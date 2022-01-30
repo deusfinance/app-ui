@@ -92,6 +92,15 @@ export const ZapTokens = {
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ETH], decimals: 18, chainId: 1, pairID: 1 },
         { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, chainId: 1 },
     ],
+    [ChainId.FTM]: [
+        { logo: "/tokens/dei.svg", symbol: "DEI", address: DEI_ADDRESS[ChainId.FTM], decimals: 18, chainId: ChainId.FTM },
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.FTM], decimals: 6, chainId: ChainId.FTM },
+        { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.FTM], decimals: 18, chainId: ChainId.FTM },
+        // { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.FTM], decimals: 6, chainId: ChainId.FTM, pairID: 1 },
+        // { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.FTM], decimals: 18, chainId: ChainId.FTM, pairID: 1 },
+        { logo: "/tokens/ftm.svg", symbol: "FTM", address: "0x", decimals: 18, chainId: ChainId.FTM },
+        { logo: "/tokens/wbtc.png", symbol: "wBTC", address: "0x321162Cd933E2Be498Cd2267a90534A804051b11", decimals: 8, chainId: ChainId.FTM },
+    ],
 }
 
 

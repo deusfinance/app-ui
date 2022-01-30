@@ -175,6 +175,7 @@ export const DEI_COLLATERAL_STAKING = {
 /************ ZAPPER ****************/
 export const DEI_COLLATERAL_ZAP = {
   [ChainId.MATIC]: "0xeb562C1DE6806081760b9B81Dc68f1bA69835C0f",
+  [ChainId.FTM]: '0xfD153e8C5c1f131F9c9F0d68a24bC00a06Ca4043',
 }
 
 export const DEI_DEUS_ZAP = {
@@ -225,6 +226,15 @@ export const TO_NATIVE_PATH = {
     DEUS: [DEUS_ADDRESS[ChainId.ETH], DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], WETHAddress[ChainId.ETH]],
     DEI: [DEI_ADDRESS[ChainId.ETH], COLLATERAL_ADDRESS[ChainId.ETH], WETHAddress[ChainId.ETH]],
     USDC: [COLLATERAL_ADDRESS[ChainId.ETH], WETHAddress[ChainId.ETH]],
+  },
+  [ChainId.FTM]: {
+    FTM: [WFTMAddress[ChainId.FTM]],
+    WFTM: [WFTMAddress[ChainId.FTM]],
+    WETH: [WETHAddress[ChainId.FTM], WFTMAddress[ChainId.FTM]],
+    DEUS: [DEUS_ADDRESS[ChainId.FTM], WFTMAddress[ChainId.FTM]],
+    DEI: [DEI_ADDRESS[ChainId.FTM], COLLATERAL_ADDRESS[ChainId.FTM], WFTMAddress[ChainId.FTM]],
+    USDC: [COLLATERAL_ADDRESS[ChainId.FTM], WFTMAddress[ChainId.FTM]],
+    wBTC: ["0x321162Cd933E2Be498Cd2267a90534A804051b11", WFTMAddress[ChainId.FTM]],
   },
 }
 

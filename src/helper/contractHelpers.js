@@ -13,6 +13,7 @@ import MigrationAbi from '../config/abi/MigrationAbi.json'
 import BakktAbi from '../config/abi/bakktAbi.json'
 import DeusNativeZapAbi from '../config/abi/DeusNativeZapAbi.json'
 import DeusNativeZapAbiETH from '../config/abi/DeusNativeZapAbiETH.json'
+import DeusNativeZapAbiFTM from '../config/abi/DeusNativeZapAbiFTM.json'
 import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleMatic.json'
 import proxyMinterAbi_FTM from '../config/abi/proxyMinterAbi_FTM.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
@@ -71,6 +72,8 @@ export const getZapContract = (web3, address, chainId = ChainId.AVALANCHE) => {
             return getContract(DeusNativeZapAbi, address, web3, chainId)
         else if (chainId === ChainId.ETH)
             return getContract(DeusNativeZapAbiETH, address, web3, chainId)
+        else if (chainId === ChainId.FTM)
+            return getContract(DeusNativeZapAbiFTM, address, web3, chainId)
     } else {
         return getContract(DeiCollateralZapAbi, address, web3, chainId)
     }

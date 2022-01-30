@@ -290,7 +290,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
                 if (chainId === ChainId.FTM) {
                     if (from1Currency.address === "0x") {
-                        method = "Nativecoin2DEI" // FIXME: has bug here.
+                        method = "Nativecoin2DEI"
                         param.push(erc20Path)
                     } else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
                         method = "USDC2DEI"

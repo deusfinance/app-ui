@@ -25,6 +25,7 @@ import { collateralToken } from '../constant/token'
 import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
 import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
 import { ChainId, isSupportEIP1559 } from '../constant/web3'
+import { DEI_COLLATERAL_ZAP } from '../constant/contracts';
 
 export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
     const web3 = useWeb3()
@@ -62,8 +63,9 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
             // let result = null
             // let path = "/mint-fractional"
             // result = await makeDeiRequest(path, validChainId)
+            let useMinter = false
 
-            const amount = await getZapAmountsOut(
+            let amount = await getZapAmountsOut(
                 currency,
                 amountInToWei,
                 zapperContract,
@@ -71,7 +73,25 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
                 web3,
                 validChainId,
             )
-            return amount
+
+            if (zapperContract === DEI_COLLATERAL_ZAP[ChainId.FTM]) {
+                const amountWithMint = await getZapAmountsOut(
+                    currency,
+                    amountInToWei,
+                    zapperContract,
+                    result,
+                    web3,
+                    validChainId,
+                    true,
+                )
+
+                if (amount.lp <= 1.03 * amountWithMint.lp){
+                    amount = amountWithMint
+                    useMinter = true
+                }
+            }
+
+            return {...amount, useMinter}
         } catch (e) {
             console.log(e);
             return false
@@ -288,25 +308,37 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                     ]
                 let param = [proxyTuple]
 
-                if (from1Currency.address === "0x") {
-                    method = "Nativecoin2DEI"
-                    param.push(erc20Path)
-
-                }
-                else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
-                    method = "USDC2DEI"
-                }
-
-                else {
-                    if (!erc20Path) {
-                        console.error("INVALID PATH with ", from1Currency)
-                        return
+                if (chainId === ChainId.FTM) {
+                    if (from1Currency.address === "0x") {
+                        method = "Nativecoin2DEI"
+                        param.push(erc20Path)
+                    } else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
+                        method = "USDC2DEI"
+                    } else {
+                        if (!erc20Path) {
+                            console.error("INVALID PATH with ", from1Currency)
+                            return
+                        }
+                        method = "ERC202DEI"
+                        param.push(erc20Path)
                     }
-                    method = "ERC202DEI"
-                    param.push(erc20Path)
+                } else {
+                    if (from1Currency.address === "0x") {
+                        method = "Nativecoin2DEI"
+                        param.push(erc20Path)
+                    } else if (from1Currency.address === COLLATERAL_ADDRESS[chainId]) {
+                        method = "USDC2DEI"
+                    } else {
+                        if (!erc20Path) {
+                            console.error("INVALID PATH with ", from1Currency)
+                            return
+                        }
+                        method = "ERC202DEI"
+                        param.push(erc20Path)
+                    }
                 }
-                console.log(method, param);
 
+                console.log(method, param);
                 fn = getNewProxyMinterContract(web3, chainId).methods[method](...param)
 
             } catch (error) {
@@ -419,8 +451,6 @@ export const useAPY = (validChainId) => {
         if (validChainId)
             get()
     }, [mediumRefresh, setApy, validChainId])
-
-
 
     return apy
 }

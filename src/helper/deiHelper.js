@@ -372,6 +372,7 @@ export const getAmountOutDeusSwap = async (fromCurrency, amountIn, deus_price, c
         }
         params.push(erc20Path)
     }
+    
     // console.log(method, params);
     return getDeusSwapContract(web3, chainId).methods[method](...params).call()
 }
@@ -383,50 +384,59 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
     const deusPriceWei = getToWei(deus_price, 6).toFixed(0)
     let method = ""
     let params = [amountInToWei, deusPriceWei, collateralPriceWei]
-    // console.log(chainId, amountInToWei);
 
     const erc20Path = MINT_PATH[chainId][fromCurrency.symbol]
 
-    if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
-        method = "getUSDC2DEIInputs"
-    } else {
-        method = "getERC202DEIInputs"
-        if (!erc20Path) {
-            console.error("INVALID PATH with ", fromCurrency)
-            return
-        }
+    if (chainId === ChainId.FTM) {
+        method = "getAmountsOut"
         params.push(erc20Path)
+    } else {
+        if (fromCurrency.address === COLLATERAL_ADDRESS[chainId]) {
+            method = "getUSDC2DEIInputs"
+        } else {
+            method = "getERC202DEIInputs"
+            if (!erc20Path) {
+                console.error("INVALID PATH with ", fromCurrency)
+                return
+            }
+            params.push(erc20Path)
+        }
     }
+
     // console.log(method, params);
     return getNewProxyMinterContract(web3, chainId).methods[method](...params).call()
 }
 
 
-export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId) => {
+export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId, useMinter=false) => {
     let erc20Path = MINT_PATH[chainId][currency.symbol]
     let toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
     const collateral_price_toWei = getToWei(result.collateral_price, 6).toFixed(0)
     const deus_price_toWei = getToWei(result.deus_price, 6).toFixed(0)
 
     if (zapperAddress === DEI_COLLATERAL_ZAP[chainId]) {
-        const lpAmount = await getZapContract(web3, zapperAddress, chainId)
+        if (chainId === ChainId.FTM){
+            return await getZapContract(web3, zapperAddress, chainId)
+                .methods
+                .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, [...erc20Path], [...toNativePath]], useMinter).call()
+        }
+        return await getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, 4, [...erc20Path], []]).call()
-        return lpAmount
     }
     else if (zapperAddress === DEUS_NATIVE_ZAP[chainId]) {
         if (currency.symbol === "DEUS" && chainId === ChainId.MATIC) {
             erc20Path = MINT_PATH[chainId]["DEUS_edited"]
             toNativePath = TO_NATIVE_PATH[chainId]["DEUS_edited"]
+        } else if (chainId === ChainId.FTM){
+            return await getZapContract(web3, zapperAddress, chainId).methods
+                .getAmountOut(amountInToWei, [...toNativePath]).call()
         }
 
-        const lpAmount = await getZapContract(web3, zapperAddress, chainId)
-            .methods
+        return await getZapContract(web3, zapperAddress, chainId).methods
             .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, 20, [...erc20Path], [...toNativePath], 0]).call()
-        return lpAmount
     }
-
-    if (currency.address === DEUS_ADDRESS[chainId]) {
+    else if (currency.address === DEUS_ADDRESS[chainId]) {
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOutLPDEUS(amountInToWei).call()
@@ -497,18 +507,48 @@ export const zapIn = (currency, zapperAddress, amountIn, minLpAmount, result, am
         }
 
         if (currency.address === "0x") {
+            if (chainId === ChainId.FTM) {
+                return getZapContract(web3, zapperAddress, chainId)
+                    .methods
+                    .zapInNativecoin(minLpAmount, transferResidual, amountOutParams[4])
+            }
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, toNativePath, erc20Path, amountOutParams[4])
         }
+        if (chainId === ChainId.FTM) {
+            return getZapContract(web3, zapperAddress, chainId)
+                .methods
+                .zapInERC20(amountIn, minLpAmount, transferResidual, toNativePath, amountOutParams[4])
+        }
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .zapInERC20(minLpAmount, transferResidual, proxyTuple, toNativePath, erc20Path, amountOutParams[4])
-    } else { // DEUS_COLLATERAL_ZAP
+    } else { // DEI_COLLATERAL_ZAP
         if (currency.address === "0x") {
+            if (chainId === ChainId.FTM) {
+                if (amountOutParams[5] === true) {
+                    return getZapContract(web3, zapperAddress, chainId)
+                        .methods
+                        .zapInNativecoinWithMinting(minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
+                }
+                return getZapContract(web3, zapperAddress, chainId)
+                    .methods
+                    .zapInNativecoinWithoutMinting(minLpAmount, transferResidual, erc20Path, amountOutParams[4])
+            }
             return getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .zapInNativecoin(minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
+        }
+        if (chainId === ChainId.FTM) {
+            if (amountOutParams[5] === true) {
+                return getZapContract(web3, zapperAddress, chainId)
+                    .methods
+                    .zapInERC20WithMinting(amountIn, minLpAmount, transferResidual, proxyTuple, erc20Path, amountOutParams[4])
+            }
+            return getZapContract(web3, zapperAddress, chainId)
+                .methods
+                .zapInERC20WithoutMinting(amountIn, minLpAmount, transferResidual, erc20Path, amountOutParams[4])
         }
         return getZapContract(web3, zapperAddress, chainId)
             .methods

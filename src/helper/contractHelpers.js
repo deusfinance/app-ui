@@ -13,7 +13,10 @@ import MigrationAbi from '../config/abi/MigrationAbi.json'
 import BakktAbi from '../config/abi/bakktAbi.json'
 import DeusNativeZapAbi from '../config/abi/DeusNativeZapAbi.json'
 import DeusNativeZapAbiETH from '../config/abi/DeusNativeZapAbiETH.json'
+import DeusNativeZapAbiFTM from '../config/abi/DeusNativeZapAbiFTM.json'
+import DeiCollateralZapAbiFTM from '../config/abi/DeiCollateralZapAbiFTM.json'
 import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleMatic.json'
+import proxyMinterAbi_FTM from '../config/abi/proxyMinterAbi_FTM.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
 import VeDeusAbi from '../config/abi/VeDeUSAbi.json'
 
@@ -70,7 +73,11 @@ export const getZapContract = (web3, address, chainId = ChainId.AVALANCHE) => {
             return getContract(DeusNativeZapAbi, address, web3, chainId)
         else if (chainId === ChainId.ETH)
             return getContract(DeusNativeZapAbiETH, address, web3, chainId)
+        else if (chainId === ChainId.FTM)
+            return getContract(DeusNativeZapAbiFTM, address, web3, chainId)
     } else {
+        if (chainId === ChainId.FTM)
+            return getContract(DeiCollateralZapAbiFTM, address, web3, chainId)
         return getContract(DeiCollateralZapAbi, address, web3, chainId)
     }
 }
@@ -80,6 +87,8 @@ export const getMigrationContract = (web3, chainId = ChainId.RINKEBY) => {
 }
 
 export const getNewProxyMinterContract = (web3, chainId = ChainId.MATIC) => {
+    if (chainId === ChainId.FTM)
+        return getContract(proxyMinterAbi_FTM, PROXY_MINT_ADDRESS[chainId], web3, chainId)
     return getContract(NewProxyMinterAbi, PROXY_MINT_ADDRESS[chainId], web3, chainId)
 }
 

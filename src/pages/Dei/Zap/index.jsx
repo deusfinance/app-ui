@@ -62,7 +62,6 @@ const Zap = () => {
     const [stakingInfo, setStakingInfo] = useState(currStakingInfo)
     const contractAddress = stakingInfo.zapperContract
     const [slippage, setSlippage] = useState(0.5)
-    const [useMinter, setUseMinter] = useState(false)
     const [amountOutParams, setAmountOutParams] = useState(null)
     const PrimaryTokens = useMemo(() => currChain ? ZapTokens[currChain].filter((token) => !token.pairID) : [], [currChain])
     const tokens = useMemo(() => PrimaryTokens.filter((token) => !(chainId === 1 && stakingInfo.id === 2 && (token.symbol === "DEI" || token.symbol === "DEUS"))), [PrimaryTokens, chainId, stakingInfo.id])
@@ -82,6 +81,13 @@ const Zap = () => {
     useEffect(() => {
         setStakingInfo(currStakingInfo)
     }, [currStakingInfo])
+
+    useEffect(() => {
+        if (contractAddress === DEI_COLLATERAL_ZAP[ChainId.FTM])
+            setSlippage(1)
+        else
+            setSlippage(0.5)
+    }, [setSlippage, currChain, contractAddress])
 
     const balances = useTokenBalances(tokensMap, currChain)
 

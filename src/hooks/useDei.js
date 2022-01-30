@@ -84,10 +84,8 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
                     validChainId,
                     true,
                 )
-                // console.log(amount.lp);
-                // console.log(amountWithMint.lp);
 
-                if (amountWithMint.lp <= 1.03 * amount){
+                if (amount.lp <= 1.03 * amountWithMint.lp){
                     amount = amountWithMint
                     useMinter = true
                 }

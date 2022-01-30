@@ -436,8 +436,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
         return await getZapContract(web3, zapperAddress, chainId).methods
             .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, 20, [...erc20Path], [...toNativePath], 0]).call()
     }
-
-    if (currency.address === DEUS_ADDRESS[chainId]) {
+    else if (currency.address === DEUS_ADDRESS[chainId]) {
         return getZapContract(web3, zapperAddress, chainId)
             .methods
             .getAmountOutLPDEUS(amountInToWei).call()

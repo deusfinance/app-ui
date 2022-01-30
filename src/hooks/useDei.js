@@ -25,6 +25,7 @@ import { collateralToken } from '../constant/token'
 import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
 import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
 import { ChainId, isSupportEIP1559 } from '../constant/web3'
+import { DEI_COLLATERAL_ZAP } from '../constant/contracts';
 
 export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
     const web3 = useWeb3()
@@ -62,8 +63,9 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
             // let result = null
             // let path = "/mint-fractional"
             // result = await makeDeiRequest(path, validChainId)
+            let useMinter = false
 
-            const amount = await getZapAmountsOut(
+            let amount = await getZapAmountsOut(
                 currency,
                 amountInToWei,
                 zapperContract,
@@ -71,7 +73,27 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
                 web3,
                 validChainId,
             )
-            return amount
+
+            if (zapperContract === DEI_COLLATERAL_ZAP[ChainId.FTM]) {
+                const amountWithMint = await getZapAmountsOut(
+                    currency,
+                    amountInToWei,
+                    zapperContract,
+                    result,
+                    web3,
+                    validChainId,
+                    true,
+                )
+                // console.log(amount.lp);
+                // console.log(amountWithMint.lp);
+
+                if (amountWithMint.lp <= 1.03 * amount){
+                    amount = amountWithMint
+                    useMinter = true
+                }
+            }
+
+            return {...amount, useMinter}
         } catch (e) {
             console.log(e);
             return false

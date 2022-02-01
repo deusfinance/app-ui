@@ -28,7 +28,7 @@ export const snapShotMaker = (snap) => {
                     { symbol: "sDEUS", balance: snap["box2_in_sDEUS"], fromStaking: snap["box2_in_sDEUS_staking"] },
                 ],
                 to: [
-                    // { symbol: "DEUS/DEI LP", amount: snap["box2_out_DDLP"] },
+                    { symbol: "DEUS/DEI LP", amount: snap["box2_out_DDLP"], isHidden: true },
                     { symbol: "DEUS", amount: snap["box2_out_DEUS"] },
                     { symbol: "bETH", amount: null },
                     { symbol: "ETH", amount: null },
@@ -49,7 +49,7 @@ export const snapShotMaker = (snap) => {
                     { symbol: "BPT", balance: snap["box3_in_BPT"], fromStaking: snap["box3_in_BPT_staking"] },
                 ],
                 to: [
-                    // { symbol: "DEUS/DEI LP", amount: snap["box3_out_DDLP"] },
+                    { symbol: "DEUS/DEI LP", amount: snap["box3_out_DDLP"], isHidden: true },
                     { symbol: "DEUS", amount: snap["box3_out_DEUS"] },
                 ]
             }
@@ -65,7 +65,7 @@ export const snapShotMaker = (snap) => {
                     { symbol: "Uni-DEUS/DEA", balance: snap["box4_in_UniDD"], fromStaking: snap["box4_in_UniDD_staking"] },
                 ],
                 to: [
-                    // { symbol: "DEUS/DEI LP", amount: snap["box4_out_DDLP"] },
+                    { symbol: "DEUS/DEI LP", amount: snap["box4_out_DDLP"], isHidden: true },
                     { symbol: "DEUS", amount: snap["box4_out_DEUS"] },
                 ]
             }
@@ -81,7 +81,7 @@ export const snapShotMaker = (snap) => {
                     { symbol: "Uni-DEA/USDC", balance: snap["box5_in_UniDU"], fromStaking: snap["box5_in_UniDU_staking"] },
                 ],
                 to: [
-                    // { symbol: "DEUS/DEI LP", amount: snap["box5_out_DDLP"] },
+                    { symbol: "DEUS/DEI LP", amount: snap["box5_out_DDLP"], isHidden: true },
                     { symbol: "DEUS", amount: snap["box5_out_DEUS"] },
                     { isDU: true, symbol: "DEUS,USDC", amountDEUS: snap["box5_out_dea->DEUS"], amountUSDC: snap["box5_out_USDC"] },
                 ]
@@ -98,7 +98,7 @@ export const snapShotMaker = (snap) => {
                     { symbol: "Uni-DEUS/ETH", balance: snap["box6_in_UniDE"], fromStaking: snap["box6_in_UniDE_staking"] },
                 ],
                 to: [
-                    // { symbol: "DEUS/DEI LP", amount: snap["box6_out_DDLP"], },
+                    { symbol: "DEUS/DEI LP", amount: snap["box6_out_DDLP"], isHidden: true },
                     { symbol: "DEUS", amount: snap["box6_out_DEUS"], },
                 ]
             }

@@ -76,6 +76,7 @@ const DeusV2Tokens = ({ config, toggleId, active }) => {
     return (<MainWrapper>
         <TokensContainer>
             {tokens.to.map((token, index) => {
+                if (token.isHidden === true) return <span key={token.symbol} style={{display: "none"}}></span>
                 const active = token.symbol === activeToken
                 return <Token key={token.symbol} active={active} style={{ pointerEvents: token.amount === null && "none", opacity: token.amount === null && "1" }} onClick={() => toggleId(id, false, token.symbol, index)}>
                     {token.isDU ? <>

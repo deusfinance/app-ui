@@ -34,8 +34,8 @@ const TLG = styled(Type.LG)`
 `
 
 const MigrationTitle = ({ config, toggleId, active }) => {
-    // console.log(config);
     const { title, id } = config
+
     return (<TitleWrap>
         <div style={{ display: 'flex', justifyContent: "flex-start", alignItems: "center", cursor: "pointer" }} onClick={() => toggleId(id, active, null, null)}>
             {active ? <svg width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -232,8 +232,8 @@ const Dei = () => {
     }, [swapState.from, isPair, chainId, collatRatio])
 
     useEffect(() => {
-        setSsp(isSspMinter(swapState.from, amountIn, lowerBound, topBound, leftMintableDei, chainId))
-    }, [swapState.from, amountIn, lowerBound, topBound, leftMintableDei, chainId])
+        setSsp(isSspMinter(swapState.from, isPair, amountIn, lowerBound, topBound, leftMintableDei, chainId))
+    }, [swapState.from, isPair, amountIn, lowerBound, topBound, leftMintableDei, chainId])
 
     useEffect(() => {
         if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {

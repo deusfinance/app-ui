@@ -374,12 +374,15 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
     return true
 }
 
-export const isSspMinter = (token, amountIn, lowerBound, topBound, deiLeftInSSP, chainId) => {
+export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLeftInSSP, chainId) => {
 
     // console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
-
     if (!token || !token.symbol) {
         console.error("token is null.")
+        return false
+    }
+    if (isPair) {
+        console.log("just with single usdcl.")
         return false
     }
     if (!chainId) {

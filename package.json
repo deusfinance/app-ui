@@ -1,6 +1,6 @@
 {
   "name": "app.deus.finance",
-  "version": "0.2.72",
+  "version": "0.2.73",
   "private": true,
   "dependencies": {
     "@davatar/react": "^1.8.1",

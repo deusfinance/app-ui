@@ -692,6 +692,8 @@ export const useSSPData = (validChainId) => {
         }
         if (SSP_ADDRESS[validChainId]) {
             get()
+        } else {
+            setSspData({})
         }
     }, [setSspData, fastRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
 }

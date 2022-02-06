@@ -16,7 +16,7 @@ export const collatUsdPrice = "1000000"
 const LENGTH_COLLAT = {
     [ChainId.ETH]: 4,
     [ChainId.BSC]: 3,
-    [ChainId.FTM]: 3,
+    [ChainId.FTM]: 4,
     [ChainId.MATIC]: 5,
     [ChainId.METIS]: 2,
     [ChainId.ARBITRUM]: 2,
@@ -376,27 +376,27 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
 
 export const isSspMinter = (token, amountIn, lowerBound, topBound, deiLeftInSSP, chainId) => {
 
-    console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
+    // console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
 
     if (!token || !token.symbol) {
         console.error("token is null.")
-        return
+        return false
     }
     if (!chainId) {
         console.error("chainId is null.")
-        return
+        return false
     }
     if (token.address !== COLLATERAL_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
-        return
+        return false
     }
-    if (!amountIn || new BigNumber(amountIn).comparedTo(lowerBound) < 0 || new BigNumber(amountIn).comparedTo(topBound) > 0) {
+    if ((!amountIn && !new BigNumber(lowerBound).isZero()) || new BigNumber(amountIn).comparedTo(lowerBound) < 0 || new BigNumber(amountIn).comparedTo(topBound) > 0) {
         console.log("amountIn is not valid for ssp.")
-        return
+        return false
     }
 
     if (new BigNumber(amountIn).comparedTo(deiLeftInSSP) > 0) {
         console.log("amountIn is bigger than deiLeftInSSP.")
-        return
+        return false
     }
     return true
 }

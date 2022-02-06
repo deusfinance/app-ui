@@ -23,7 +23,7 @@ import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
 import { isProxyMinter, getAmountOutProxy, isSspMinter } from '../../../helper/deiHelper';
-import { getSwapVsType, formatBalance3 } from '../../../utils/utils';
+import { getSwapVsType, formatUnitAmount } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
 import useTokenBalances from '../../../hooks/useTokenBalances';
@@ -31,6 +31,9 @@ import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
 import { isZero } from '../../../constant/number';
+import { Info } from 'react-feather';
+import ReactTooltip from "react-tooltip";
+import { RowStart } from '../../../components/App/Row/index';
 
 
 const Dei = () => {
@@ -449,7 +452,19 @@ const Dei = () => {
                 <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />
                 <SwapCard title="Minter Contract" value={proxy === null ? "..." : ssp ? `SSP` : proxy ? "Proxy" : "Collateral Pool"} />
                 <SwapCard title="Minting Fee" value={ssp ? "Zero" : mintingFee ? `${mintingFee} %` : ""} />
-                {leftMintableDei && <SwapCard title="DEI Left in SSP" value={`${formatBalance3(leftMintableDei, 4)} DEI`} />}
+
+                {leftMintableDei && <SwapCard title={<>
+                    <RowStart style={{ alignItems: "center", cursor: "pointer" }} data-tip data-for='ssp-info'>
+                        <p style={{ marginRight: "5px" }}>Supply remaining</p>
+                        <Info size={15} color="#ffffff" />
+                    </RowStart>
+
+                    <ReactTooltip id='ssp-info' place="bottom" effect="solid" type="info">
+                        <div >DEI remaining for sale at zero slippage</div>
+                        {/* {topBound && <div style={{ fontSize: "10px" }}>*Max amount per each transaction is {formatUnitAmount(topBound, 0)} USDC.*</div>} */}
+                    </ReactTooltip>
+                </>} value={`${formatUnitAmount(leftMintableDei, 2)} DEI`} />}
+
             </ContentWrapper>
         </MainWrapper>
 

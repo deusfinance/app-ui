@@ -1,12 +1,12 @@
 import BigNumber from "bignumber.js"
-import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP } from "../constant/contracts"
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP, SSP_ADDRESS } from "../constant/contracts"
 import { isZero, TEN } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
 import { TransactionState } from "../constant/web3"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { fetcher, formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract, getSSPContract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 
 const baseUrl = "https://oracle4.deus.finance/dei"
@@ -126,6 +126,24 @@ export const getStakingTokenData = (conf, account) => {
             name: "balanceOf",
             params: [conf.stakingContract]
         }
+    ]
+}
+export const getSspData = (chainId = ChainId.FTM) => {
+    if (!SSP_ADDRESS[chainId]) return []
+
+    return [
+        {
+            address: SSP_ADDRESS[chainId],
+            name: "lowerBound",
+        },
+        {
+            address: SSP_ADDRESS[chainId],
+            name: "topBound",
+        },
+        {
+            address: SSP_ADDRESS[chainId],
+            name: "leftMintableDei",
+        },
     ]
 }
 
@@ -279,7 +297,13 @@ export const RecollateralizeDEI = (collateral_price, deus_price, expire_block, s
         .recollateralizeDEI([amountIn, pool_collateral_price, [collateral_price], deus_price, expire_block, [signature]])
 }
 
-//HUSD MINT
+//MINT DEI
+export const mintDEIWithSSP = (amountIn, chainId, web3) => {
+    return getSSPContract(web3, chainId)
+        .methods
+        .buyDei(amountIn)
+}
+
 export const mint1t1DEI = (collateral_amount, collateral_price, expire_block, signature, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
@@ -350,6 +374,33 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
     return true
 }
 
+export const isSspMinter = (token, amountIn, lowerBound, topBound, deiLeftInSSP, chainId) => {
+
+    console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
+
+    if (!token || !token.symbol) {
+        console.error("token is null.")
+        return
+    }
+    if (!chainId) {
+        console.error("chainId is null.")
+        return
+    }
+    if (token.address !== COLLATERAL_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
+        return
+    }
+    if (!amountIn || new BigNumber(amountIn).comparedTo(lowerBound) < 0 || new BigNumber(amountIn).comparedTo(topBound) > 0) {
+        console.log("amountIn is not valid for ssp.")
+        return
+    }
+
+    if (new BigNumber(amountIn).comparedTo(deiLeftInSSP) > 0) {
+        console.log("amountIn is bigger than deiLeftInSSP.")
+        return
+    }
+    return true
+}
+
 
 export const getAmountOutDeusSwap = async (fromCurrency, amountIn, deus_price, collateral_price, web3, chainId) => {
     if (!fromCurrency || !amountIn || isZero(amountIn) || deus_price === undefined) return ""
@@ -372,7 +423,7 @@ export const getAmountOutDeusSwap = async (fromCurrency, amountIn, deus_price, c
         }
         params.push(erc20Path)
     }
-    
+
     // console.log(method, params);
     return getDeusSwapContract(web3, chainId).methods[method](...params).call()
 }
@@ -408,14 +459,14 @@ export const getAmountOutProxy = async (fromCurrency, amountIn, deus_price, coll
 }
 
 
-export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId, useMinter=false) => {
+export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, result, web3, chainId, useMinter = false) => {
     let erc20Path = MINT_PATH[chainId][currency.symbol]
     let toNativePath = TO_NATIVE_PATH[chainId][currency.symbol]
     const collateral_price_toWei = getToWei(result.collateral_price, 6).toFixed(0)
     const deus_price_toWei = getToWei(result.deus_price, 6).toFixed(0)
 
     if (zapperAddress === DEI_COLLATERAL_ZAP[chainId]) {
-        if (chainId === ChainId.FTM){
+        if (chainId === ChainId.FTM) {
             return await getZapContract(web3, zapperAddress, chainId)
                 .methods
                 .getAmountOut([amountInToWei, deus_price_toWei, collateral_price_toWei, [...erc20Path], [...toNativePath]], useMinter).call()
@@ -428,7 +479,7 @@ export const getZapAmountsOut = async (currency, amountInToWei, zapperAddress, r
         if (currency.symbol === "DEUS" && chainId === ChainId.MATIC) {
             erc20Path = MINT_PATH[chainId]["DEUS_edited"]
             toNativePath = TO_NATIVE_PATH[chainId]["DEUS_edited"]
-        } else if (chainId === ChainId.FTM){
+        } else if (chainId === ChainId.FTM) {
             return await getZapContract(web3, zapperAddress, chainId).methods
                 .getAmountOut(amountInToWei, [...toNativePath]).call()
         }

@@ -116,6 +116,10 @@ export const DEUS_SWAP_ADDRESS = {
   [ChainId.MATIC]: "0xEa798f9c3eDD2A66ec036Ec754BB4561074DaCA2",
 }
 
+export const SSP_ADDRESS = {
+  [ChainId.FTM]: '0xef0b04E1ade75e27A589773f68002A7bFc5c28bD',
+}
+
 /************ LP ****************/
 export const DEI_DEUS_LP = {
   [ChainId.MATIC]: '0x2Bc3ce6D7cfc0B476E60aDaA1B27DE76DB95EE4e',

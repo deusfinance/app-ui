@@ -19,6 +19,7 @@ import MuonPresaleCrossChainAbi from '../config/abi/MuonPresaleMatic.json'
 import proxyMinterAbi_FTM from '../config/abi/proxyMinterAbi_FTM.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
 import VeDeusAbi from '../config/abi/VeDeUSAbi.json'
+import SspAbi from '../config/abi/SspAbi.json'
 
 import {
     DEI_ADDRESS,
@@ -31,7 +32,8 @@ import {
     PROXY_MINT_ADDRESS,
     BRIDGE_ADDRESS,
     DEUS_SWAP_ADDRESS,
-    DEUS_NATIVE_ZAP
+    DEUS_NATIVE_ZAP,
+    SSP_ADDRESS
 } from '../constant/contracts'
 import { ChainId } from '../constant/web3'
 
@@ -106,6 +108,10 @@ export const getBridgeContract = (web3, chainId = ChainId.MATIC) => {
 
 export const getMuonContract = (web3, chainId = ChainId.MATIC) => {
     return getContract(MuonPresaleCrossChainAbi, MUON_PRESALE_ADDRESS[chainId], web3)
+}
+
+export const getSSPContract = (web3, chainId = ChainId.FTM) => {
+    return getContract(SspAbi, SSP_ADDRESS[chainId], web3)
 }
 
 export const getVeDEUSContract = (address, web3) => {

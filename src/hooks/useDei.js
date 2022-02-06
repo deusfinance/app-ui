@@ -7,22 +7,23 @@ import { fromWei, getToWei, RemoveTrailingZero } from '../helper/formatBalance'
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
+import SspAbi from '../config/abi/SspAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import multicall from '../helper/multicall'
 import { useCrossERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
-import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, depositAmountState } from '../store/dei'
+import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, depositAmountState, sspDataState } from '../store/dei'
 import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
-    mint1t1DEI, collatUsdPrice, zapIn, getZapAmountsOut
+    mint1t1DEI, collatUsdPrice, zapIn, getZapAmountsOut, mintDEIWithSSP, getSspData
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
 import { collateralToken } from '../constant/token'
-import { COLLATERAL_ADDRESS, MINT_PATH } from '../constant/contracts'
+import { COLLATERAL_ADDRESS, MINT_PATH, SSP_ADDRESS } from '../constant/contracts'
 import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
 import { ChainId, isSupportEIP1559 } from '../constant/web3'
 import { DEI_COLLATERAL_ZAP } from '../constant/contracts';
@@ -85,13 +86,13 @@ export const useGetAmountsOutZap = (currency, zapperContract, amountIn, debounce
                     true,
                 )
 
-                if (amount.lp <= 1.03 * amountWithMint.lp){
+                if (amount.lp <= 1.03 * amountWithMint.lp) {
                     amount = amountWithMint
                     useMinter = true
                 }
             }
 
-            return {...amount, useMinter}
+            return { ...amount, useMinter }
         } catch (e) {
             console.log(e);
             return false
@@ -237,7 +238,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
     return { onRedeem: handleRedeem }
 }
 
-export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, amountOutParams, validChainId) => {
+export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, ssp, amountOutParams, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
@@ -250,7 +251,11 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
         let path = "/mint-algorithmic"
         let fn = null
-        if (!proxy) {
+
+        if (ssp) {
+            fn = mintDEIWithSSP(amount1toWei, chainId, web3)
+        }
+        else if (!proxy) {
             if (collatRatio === 100) {
                 path = "/mint-1to1"
                 const result = await makeDeiRequest(path, validChainId)
@@ -353,7 +358,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         } catch (error) {
             console.log(error);
         }
-    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, amountOutParams, account, chainId, validChainId, web3])
+    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, ssp, amountOutParams, account, chainId, validChainId, web3])
 
     return { onMint: handleMint }
 }
@@ -657,6 +662,40 @@ export const useHusdPoolData = (validChainId) => {
     }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
 }
 
+export const useSSPData = (validChainId) => {
+    const web3 = useCrossWeb3(validChainId)
+    const { account, chainId } = useWeb3React()
+    const { fastRefresh } = useRefresh()
+    const setSspData = useSetRecoilState(sspDataState)
+
+    useEffect(() => {
+        const get = async () => {
+
+            try {
+                const mul = await multicall(web3, SspAbi, getSspData(validChainId), validChainId)
+
+                const [
+                    lowerBound,
+                    topBound,
+                    leftMintableDei,
+                ] = mul
+                const updateState = {
+                    lowerBound: fromWei(lowerBound, 6),
+                    topBound: fromWei(topBound, 6),
+                    leftMintableDei: fromWei(leftMintableDei, 18),
+                }
+                setSspData({ ...updateState })
+            } catch (error) {
+                console.log("useSSPData ", error);
+            }
+
+        }
+        if (SSP_ADDRESS[validChainId]) {
+            get()
+        }
+    }, [setSspData, fastRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
+}
+
 export const useCollatRatio = (validChainId) => {
     const web3 = useCrossWeb3(validChainId)
     const { slowRefresh } = useRefresh()
@@ -680,6 +719,7 @@ export const useDeiUpdate = (validChainId) => {
     useDeiPrices(validChainId)
     useHusdPoolData(validChainId)
     useDepositAmount(validChainId)
+    useSSPData(validChainId)
 }
 
 export const useDeiUpdateBuyBack = (validChainId) => {

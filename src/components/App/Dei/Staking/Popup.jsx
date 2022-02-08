@@ -20,7 +20,7 @@ const Popup = ({
     title,
     active = true,
     setActive = undefined,
-    balance = "1000",
+    balance = "0",
     buttonText,
     isPreApproved,
     isApproved,

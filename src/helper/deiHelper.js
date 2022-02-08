@@ -16,7 +16,7 @@ export const collatUsdPrice = "1000000"
 const LENGTH_COLLAT = {
     [ChainId.ETH]: 4,
     [ChainId.BSC]: 3,
-    [ChainId.FTM]: 4,
+    [ChainId.FTM]: 5,
     [ChainId.MATIC]: 5,
     [ChainId.METIS]: 2,
     [ChainId.ARBITRUM]: 2,
@@ -355,7 +355,7 @@ export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price =
         // console.log(COLLAT_PRICE[chainId], collat_usd_price);
         collaterals.push(COLLAT_PRICE[chainId] ?? collat_usd_price);
     }
-
+    // console.log(collaterals);
     return getDeiContract(web3, chainId)
         .methods
         .dei_info(collaterals)

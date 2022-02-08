@@ -11,6 +11,23 @@
     "exact": true
   },
   {
+    "id": "FRONTENDS",
+    "text": "FRONTENDS",
+    "path": "/frontends",
+    "children": [
+      {
+        "id": "Use DEUS",
+        "text": "USEDEUS",
+        "path": "/frontends/use-deus"
+      },
+      {
+        "id": "Run   a Frontends",
+        "text": "RUN",
+        "path": "/frontends/run"
+      }
+    ]
+  },
+  {
     "id": "SWAP",
     "text": "SWAP",
     "path": "/swap"

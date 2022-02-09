@@ -8,7 +8,7 @@ export const correctChains = [
     },
     {
         url: "/stable/zap",
-        chains: [ChainId.FTM, ChainId.MATIC, ChainId.ETH],
+        chains: [ChainId.MATIC, ChainId.ETH],
     },
     {
         url: "/stable/farms",

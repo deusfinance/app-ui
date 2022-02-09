@@ -11,6 +11,8 @@ import { ChainId } from '../constant/web3'
 import { getBridgeContract } from '../helper/contractHelpers'
 import { formatBalance3 } from '../utils/utils'
 import { getGasData } from './useDei'
+import { toast } from 'react-toastify'
+import { ToastTransaction } from '../utils/explorers'
 
 
 export const useGetNewClaim = () => {
@@ -99,8 +101,12 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
                     depositNetwork: Number(claim.fromChain)
                 })
                 .call()
-            console.log("muonResponse", muonResponse)
-            console.log("res", muonResponse.data.result)
+            if (muonResponse.success === false) {
+                ToastTransaction("warn", "Muon Response:", muonResponse.error, { autoClose: true })
+                console.log("muonResponse", muonResponse)
+                console.log("res", muonResponse.data.result)
+                return
+            }
             let { sigs, reqId } = muonResponse
             setLock(claim)
             console.log(account,

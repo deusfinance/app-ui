@@ -1,16 +1,5 @@
 [
   {
-    "id": "V2 MIGRATOR",
-    "path": "/migrator",
-    "exact": true
-  },
-  {
-    "id": "BRIDGE",
-    "text": "BRIDGE",
-    "path": "/bridge",
-    "exact": true
-  },
-  {
     "id": "FRONTENDS",
     "text": "FRONTENDS",
     "path": "/frontends",
@@ -26,6 +15,17 @@
         "path": "/frontends/run"
       }
     ]
+  },
+  {
+    "id": "V2 MIGRATOR",
+    "path": "/migrator",
+    "exact": true
+  },
+  {
+    "id": "BRIDGE",
+    "text": "BRIDGE",
+    "path": "/bridge",
+    "exact": true
   },
   {
     "id": "SWAP",

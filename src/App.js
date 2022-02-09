@@ -13,7 +13,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import './assets/styles/base.scss'
 
 const Presale = React.lazy(() => import('./pages/Muon'))
-const BakktMigrator = React.lazy(() => import('./pages/BakktMigrator'))
+// const BakktMigrator = React.lazy(() => import('./pages/BakktMigrator'))
+const RunAFrontend = React.lazy(() => import('./pages/Frontend/RunAFrontend'))
+const UseDeus = React.lazy(() => import('./pages/Frontend/UseDeus'))
 const Migrator = React.lazy(() => import('./pages/Migrator'))
 const MigratorOther = React.lazy(() => import('./pages/Migrator/Other'))
 const Burn = React.lazy(() => import('./pages/burn'))
@@ -46,7 +48,8 @@ function App() {
                 <Switch>
                   <Route exact path="/not-found" component={NotFound} />
                   <Route exact path="/muon-presale" component={Presale} />
-                  <Route exact path="/bakkt-migrator" component={BakktMigrator} />
+                  <Route exact path="/frontends/run" component={RunAFrontend} />
+                  <Route exact path="/frontends/use-deus" component={UseDeus} />
                   <Route exact path="/migrator" component={Migrator} />
                   <Route exact path="/migrator/other" component={MigratorOther} />
                   <Route exact path="/swap" component={BuyDEUS} />

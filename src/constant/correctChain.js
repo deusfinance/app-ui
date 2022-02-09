@@ -42,6 +42,10 @@ export const correctChains = [
         url: "/not-found",
         chains: Object.values(ChainId),
     },
+    {
+        url: "/frontends",
+        chains: Object.values(ChainId),
+    },
 ]
 
 export function getCorrectChains(path) {

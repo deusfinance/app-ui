@@ -1,0 +1,75 @@
+{
+    "run_a_frontend": {
+        "header": {
+            "title": "Frontend Operators",
+            "description": "Frontend Operators provide a web interface to the end-user, connecting them to the Liquity protocol and receiving LQTY rewards in return."
+        },
+        "items": [
+            [
+                {
+                    "title": "Decentralized frontends",
+                    "description": "As a company, Liquity AG is not running its own frontend — making the system more decentralized and censorship-resistant. Instead, Liquity is leaning on its ecosystem to bootstrap access to the protocol.."
+                },
+                {
+                    "title": "How does it work?",
+                    "description": "The protocol pays out LQTY rewards pro rata to users who deposit LUSD to the Stability Pool. Frontend Operators can receive a portion of these rewards by tagging deposits facilitated by their interface and specifying the percentage of LQTY to “kickback” to their users."
+                }
+            ]
+        ],
+        "operator": {
+            "header": {
+                "title": "Become a Frontend Operator",
+                "description": "Anybody with some web space and technical understanding can become a Frontend Operator."
+            },
+            "items": [
+                [
+                    {
+                        "title": "Launch kit",
+                        "description": "You can download the launch kit from GitHub. This can be done by cloning the repository or using Docker. This will typically be spun up by power users and or users looking for a good starting point for their frontend."
+                    },
+                    {
+                        "title": "SDK",
+                        "description": "You use our technical documentation (SDK) and the middleware library we provide to create your own front end application. We assume that wallet and integrator services will use this and integrate our protocol in their existing platform."
+                    }
+                ]
+            ]
+        }
+    },
+    "use_deus": {
+        "header": {
+            "title": "Use DEUS",
+            "description": "To interact with the DEUS Protocol, users may choose from the list of Frontend Operators below."
+        },
+        "items": [
+            [
+                {
+                    "title": "Decentralized frontends",
+                    "description": "As a company, DEUS AG is not running its own frontend — making the system more decentralized and censorship-resistant. To open loans, make deposits etc., users thus have to use one of the frontends provided by third parties."
+                },
+                {
+                    "title": "Which frontend do I pick?",
+                    "description": "Deciding which frontend to use is a personal decision that may be based on various factors including UI, UX, features, tools, and the Frontend Operator's \"kickback rate\"."
+                }
+            ],
+            [
+                {
+                    "title": "What is a \"kickback\" rate?",
+                    "description": "The kickback rate is a rate between 0% and 100% that determines the fraction of LQTY that will be paid out to Stability Providers using a particular frontend. For example, a kickback rate of 60% means a frontend's users would receive 60% of their earned LQTY rewards while the frontend receives the remaining 40%."
+                },
+                {
+                    "title": "List Disclaimer",
+                    "description": "The list of Frontend Operators is provided for informational purposes only. Neither is the list conclusive, nor has DEUS AG conducted any due diligence on these operators. Accordingly, Liquity AG does not make any statement regarding technical functionality and/or the trustworthiness of the Frontend Operators listed below. Descriptions are provided by Frontend Operators, not Liquity AG."
+                }
+            ]
+        ],
+        "list": [
+            {
+                "name": "dSynths",
+                "image_url": "/img/frontends/dsynths.png",
+                "description": "To interact with the DEUS Protocol, users may choose from the list of Frontend Operators below.",
+                "kickback": "100%",
+                "link": "https://www.dsynths.com/"
+            }
+        ]
+    }
+}

@@ -67,21 +67,21 @@ const VisitButton = styled.p`
     cursor:pointer;
 `
 
-const ListItem = () => {
+const ListItem = ({ data }) => {
     return (<Wrap>
         <Container>
             <InnerItem>
                 <ImageWrap >
-                    <Image src='/img/frontends/dsynths.png' />
+                    <Image src={data["image_url"]} />
                 </ImageWrap>
-                <SiteName>dSynths</SiteName>
+                <SiteName>{data["name"]}</SiteName>
             </InnerItem>
             <Details>
-                Zerion is the ultimate investment interface for decentralized finance (DeFi), allowing users to discover every asset on the market, trade at the best rates and manage their entire portfolio from one place. Our interface supports borrowing of LUSD and staking of LUSD, LQTY and LUSD/ETH Uniswap Pool.
+                {data["description"]}
             </Details>
             <KickbackWrap>
-                <Rate>100%</Rate>
-                <ExternalLink href="https://www.dsynths.com/">
+                <Rate>{data["kickback"]}</Rate>
+                <ExternalLink href={data["link"]}>
                     <VisitButton>Visit</VisitButton>
                 </ExternalLink>
             </KickbackWrap>

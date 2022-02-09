@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { RowCenter } from '../Row';
-import ItemInfo from './ItemInfo';
+import Items from './Items';
 
 const Wrap = styled.div`
     max-width:1200px;
@@ -36,22 +35,17 @@ const Description = styled.p`
     color: #959595;
 `
 
-
-
-const BecameOperator = () => {
+const BecameOperator = ({ data }) => {
     return (<Wrap>
         <Header>
             <Title>
-                Become a Frontend Operator
+                {data["header"]["title"]}
             </Title>
             <Description>
-                Anybody with some web space and technical understanding can become a Frontend Operator.
+                {data["header"]["description"]}
             </Description>
         </Header>
-        <RowCenter style={{ alignItems: "flex-start", flexWrap: "wrap" }}>
-            <ItemInfo title={"Launch kit"} description={"You can download the launch kit from GitHub. This can be done by cloning the repository or using Docker. This will typically be spun up by power users and or users looking for a good starting point for their frontend."} />
-            <ItemInfo title={"SDK"} description={"You use our technical documentation (SDK) and the middleware library we provide to create your own front end application. We assume that wallet and integrator services will use this and integrate our protocol in their existing platform."} />
-        </RowCenter>
+        <Items data={data} />
     </Wrap>);
 }
 

@@ -57,7 +57,7 @@ const ListContent = styled.div`
     background-color: #e7e7e7;
     `
 
-const List = () => {
+const FrontendList = ({ data }) => {
     return (<Wrap>
         <RowBetween>
             <ChooseText>
@@ -76,9 +76,9 @@ const List = () => {
             </HeaderTitle>
         </Header>
         <ListContent>
-            <ListItem />
+            {React.Children.toArray(data.map(item => (<ListItem data={item} />)))}
         </ListContent>
     </Wrap>);
 }
 
-export default List;
+export default FrontendList;

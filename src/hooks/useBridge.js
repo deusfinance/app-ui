@@ -11,7 +11,6 @@ import { ChainId } from '../constant/web3'
 import { getBridgeContract } from '../helper/contractHelpers'
 import { formatBalance3 } from '../utils/utils'
 import { getGasData } from './useDei'
-import { toast } from 'react-toastify'
 import { ToastTransaction } from '../utils/explorers'
 
 

@@ -8,6 +8,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import SspAbi from '../config/abi/SspAbi.json'
+import SspOracleAbi from '../config/abi/SspOracleAbi.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import multicall from '../helper/multicall'
 import { useCrossERC20 } from './useContract'
@@ -18,7 +19,7 @@ import {
     makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
-    mint1t1DEI, collatUsdPrice, zapIn, getZapAmountsOut, mintDEIWithSSP, getSspData
+    mint1t1DEI, collatUsdPrice, zapIn, getZapAmountsOut, mintDeiSSP, mintDeiSSPWithOracle, getSspData
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
@@ -253,7 +254,11 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         let fn = null
 
         if (ssp) {
-            fn = mintDEIWithSSP(amount1toWei, chainId, web3)
+            if (validChainId !== ChainId.FTM) {
+                const result = await makeDeiRequest(path, validChainId)
+                fn = mintDeiSSPWithOracle(amount1toWei, result, chainId, web3)
+            }
+            fn = mintDeiSSP(amount1toWei, chainId, web3)
         }
         else if (!proxy) {
             if (collatRatio === 100) {
@@ -662,7 +667,7 @@ export const useHusdPoolData = (validChainId) => {
     }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
 }
 
-export const useSSPData = (validChainId) => {
+export const useSSPData = (validChainId, oracleResponse) => {
     const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
     const { fastRefresh } = useRefresh()
@@ -672,7 +677,9 @@ export const useSSPData = (validChainId) => {
         const get = async () => {
 
             try {
-                const mul = await multicall(web3, SspAbi, getSspData(validChainId), validChainId)
+                console.log(getSspData(validChainId, oracleResponse));
+                const validABI = ChainId.FTM === validChainId ? SspAbi : SspOracleAbi
+                const mul = await multicall(web3, validABI, getSspData(validChainId, oracleResponse), validChainId)
 
                 const [
                     lowerBound,
@@ -695,7 +702,7 @@ export const useSSPData = (validChainId) => {
         } else {
             setSspData({})
         }
-    }, [setSspData, fastRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
+    }, [setSspData, oracleResponse, fastRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
 }
 
 export const useCollatRatio = (validChainId) => {
@@ -721,7 +728,6 @@ export const useDeiUpdate = (validChainId) => {
     useDeiPrices(validChainId)
     useHusdPoolData(validChainId)
     useDepositAmount(validChainId)
-    useSSPData(validChainId)
 }
 
 export const useDeiUpdateBuyBack = (validChainId) => {

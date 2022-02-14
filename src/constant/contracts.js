@@ -118,6 +118,7 @@ export const DEUS_SWAP_ADDRESS = {
 
 export const SSP_ADDRESS = {
   [ChainId.FTM]: '0xef0b04E1ade75e27A589773f68002A7bFc5c28bD',
+  [ChainId.BSC]: '0xD6739b3012Dd4179C0Cb45C57e6eADD063983143',
 }
 
 /************ LP ****************/

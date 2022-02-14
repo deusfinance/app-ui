@@ -16,7 +16,7 @@ import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS, SSP_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useMint, useAllowance } from '../../../hooks/useDei';
+import { useDeiUpdate, useMint, useAllowance, useSSPData } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState, sspDataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
@@ -34,18 +34,21 @@ import { isZero } from '../../../constant/number';
 import { Info } from 'react-feather';
 import ReactTooltip from "react-tooltip";
 import { RowStart } from '../../../components/App/Row/index';
+import { ChainId } from '../../../constant/web3';
 
 
 const Dei = () => {
     const location = useLocation()
     const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
+    const deiPrices = useRecoilValue(deiPricesState)
     useDeiUpdate(chainId)
+    useSSPData(chainId, deiPrices)
     const collatRatio = useRecoilValue(collatRatioState)
     const web3 = useCrossWeb3(chainId)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const { lowerBound, topBound, leftMintableDei } = useRecoilValue(sspDataState)
-    const deiPrices = useRecoilValue(deiPricesState)
+
     const [fastUpdate, setFastUpdate] = useState(0)
     const [proxy, setProxy] = useState(null)
     const [ssp, setSsp] = useState(null)
@@ -348,7 +351,7 @@ const Dei = () => {
     }, [hasProxy, pairedTokens, tokens]); // eslint-disable-line
 
 
-    if (!swapState.from.address || collatRatio === null || mintingFee === null) {
+    if (!swapState.from.address || collatRatio === null || mintingFee === null || (chainId === ChainId.BSC && !deiPrices.deus_price)) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)

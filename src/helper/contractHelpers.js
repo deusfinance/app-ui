@@ -20,6 +20,7 @@ import proxyMinterAbi_FTM from '../config/abi/proxyMinterAbi_FTM.json'
 import BridgeABI from '../config/abi/NewBridgeABI.json'
 import VeDeusAbi from '../config/abi/VeDeUSAbi.json'
 import SspAbi from '../config/abi/SspAbi.json'
+import SspOracleAbi from '../config/abi/SspOracleAbi.json'
 
 import {
     DEI_ADDRESS,
@@ -111,6 +112,9 @@ export const getMuonContract = (web3, chainId = ChainId.MATIC) => {
 }
 
 export const getSSPContract = (web3, chainId = ChainId.FTM) => {
+    if (chainId !== ChainId.FTM)
+        return getContract(SspOracleAbi, SSP_ADDRESS[chainId], web3)
+
     return getContract(SspAbi, SSP_ADDRESS[chainId], web3)
 }
 

@@ -128,8 +128,11 @@ export const getStakingTokenData = (conf, account) => {
         }
     ]
 }
-export const getSspData = (chainId = ChainId.FTM) => {
+export const getSspData = (chainId = ChainId.FTM, oracleResponse) => {
     if (!SSP_ADDRESS[chainId]) return []
+    if (chainId !== ChainId.FTM && !oracleResponse?.deus_price) return []
+
+    const leftMintableParams = chainId !== ChainId.FTM ? { params: [getToWei(oracleResponse.deus_price, 18).toFixed(0)] } : {}
 
     return [
         {
@@ -143,7 +146,8 @@ export const getSspData = (chainId = ChainId.FTM) => {
         {
             address: SSP_ADDRESS[chainId],
             name: "leftMintableDei",
-        },
+            ...leftMintableParams
+        }
     ]
 }
 
@@ -229,15 +233,6 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
 //WRITE FUNCTIONS
 //We should use new ui asap. 
 
-/**
-maxFeePerGas: new BigNumber(payload.baseFeePerGas * 14 / 10).toFixed(0),
-maxFeePerGas: payload.gasPrice && new BigNumber(Math.max(payload.gasPrice, payload.baseFeePerGas) * 1.2).toFixed(0),
-maxPriorityFeePerGas: payload.baseFeePerGas && Math.max(1200000000, payload.gasPrice - payload.baseFeePerGas)
- */
-
-
-
-
 export const SendWithToast = (fn, account, chainId, message, payload = {}) => {
     if (!fn) return
     let hash = null
@@ -298,10 +293,16 @@ export const RecollateralizeDEI = (collateral_price, deus_price, expire_block, s
 }
 
 //MINT DEI
-export const mintDEIWithSSP = (amountIn, chainId, web3) => {
+export const mintDeiSSP = (amountIn, chainId, web3) => {
     return getSSPContract(web3, chainId)
         .methods
         .buyDei(amountIn)
+}
+
+export const mintDeiSSPWithOracle = (amountIn, chainId, web3, deusPrice, expireBlock, sigs) => {
+    return getSSPContract(web3, chainId)
+        .methods
+        .buyDei(amountIn, deusPrice, expireBlock, sigs)
 }
 
 export const mint1t1DEI = (collateral_amount, collateral_price, expire_block, signature, chainId, web3) => {
@@ -376,7 +377,7 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
 
 export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLeftInSSP, chainId) => {
 
-    // console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
+    console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
     if (!token || !token.symbol) {
         console.error("token is null.")
         return false

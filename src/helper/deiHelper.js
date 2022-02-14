@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js"
-import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP, SSP_ADDRESS } from "../constant/contracts"
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP, SSP_ADDRESS, SSP_COLLATERA_ADDRESS } from "../constant/contracts"
 import { isZero, TEN } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
@@ -299,10 +299,11 @@ export const mintDeiSSP = (amountIn, chainId, web3) => {
         .buyDei(amountIn)
 }
 
-export const mintDeiSSPWithOracle = (amountIn, chainId, web3, deusPrice, expireBlock, sigs) => {
+export const mintDeiSSPWithOracle = (amountIn, result, chainId, web3) => {
+    console.log(amountIn, result.deus_price, result.expire_block, [result.signature]);
     return getSSPContract(web3, chainId)
         .methods
-        .buyDei(amountIn, deusPrice, expireBlock, sigs)
+        .buyDei(amountIn, result.deus_price, result.expire_block, [result.signature])
 }
 
 export const mint1t1DEI = (collateral_amount, collateral_price, expire_block, signature, chainId, web3) => {
@@ -390,7 +391,7 @@ export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLe
         console.error("chainId is null.")
         return false
     }
-    if (token.address !== COLLATERAL_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
+    if (token.address !== SSP_COLLATERA_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
         return false
     }
     if ((!amountIn && !new BigNumber(lowerBound).isZero()) || new BigNumber(amountIn).comparedTo(lowerBound) < 0 || new BigNumber(amountIn).comparedTo(topBound) > 0) {

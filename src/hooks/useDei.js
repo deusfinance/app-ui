@@ -255,10 +255,12 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
         if (ssp) {
             if (validChainId !== ChainId.FTM) {
+                path = "/ssp"
                 const result = await makeDeiRequest(path, validChainId)
                 fn = mintDeiSSPWithOracle(amount1toWei, result, chainId, web3)
+            } else {
+                fn = mintDeiSSP(amount1toWei, chainId, web3)
             }
-            fn = mintDeiSSP(amount1toWei, chainId, web3)
         }
         else if (!proxy) {
             if (collatRatio === 100) {

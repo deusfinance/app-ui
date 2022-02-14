@@ -121,6 +121,11 @@ export const SSP_ADDRESS = {
   [ChainId.BSC]: '0xD6739b3012Dd4179C0Cb45C57e6eADD063983143',
 }
 
+export const SSP_COLLATERA_ADDRESS = {
+  [ChainId.FTM]: '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75',
+  [ChainId.BSC]: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+}
+
 /************ LP ****************/
 export const DEI_DEUS_LP = {
   [ChainId.MATIC]: '0x2Bc3ce6D7cfc0B476E60aDaA1B27DE76DB95EE4e',

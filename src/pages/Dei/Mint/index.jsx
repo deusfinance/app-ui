@@ -68,9 +68,16 @@ const Dei = () => {
         return true
     }, [chainId])
 
+    const hasSSP = useMemo(() => {
+        if (!SSP_ADDRESS[chainId]) return false
+        return true
+    }, [chainId])
+
     const tokens = useMemo(() => chainId ? DEITokens[chainId]
-        .filter((token) => !hasProxy || (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
-        , [chainId, hasProxy, collatRatio])
+        .filter((token) => !hasSSP || !hasProxy || (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
+        , [chainId, hasProxy, hasSSP, collatRatio])
+
+    // console.log(tokens);
 
     const pairedTokens = useMemo(() => {
         let pTokens = []
@@ -180,7 +187,7 @@ const Dei = () => {
                         else if (isZero(amountIn2)) amountIn2 = amountIn1
                     }
                 }
-            } else {
+            } else if (proxy) {
                 console.log("proxy");
                 amountIn1 = in1
                 const amountOutProxy = await getAmountOutProxy(swapState.from, amountIn1, deus_price, collateral_price, web3, chainId)
@@ -343,15 +350,18 @@ const Dei = () => {
 
     // TODO: loader animation --> needs to fix at the end
     useEffect(() => {
-        if (!hasProxy) {
+        if (hasSSP && chainId === ChainId.BSC) {
+            changeToken(tokens[4], "from")
+        }
+        else if (!hasProxy) {
             changeToken(pairedTokens[2][1], "from")
         } else {
             changeToken(tokens[0], "from")
         }
-    }, [hasProxy, pairedTokens, tokens]); // eslint-disable-line
+    }, [hasProxy, hasSSP, pairedTokens, tokens]); // eslint-disable-line
 
 
-    if (!swapState.from.address || collatRatio === null || mintingFee === null || (chainId === ChainId.BSC && !deiPrices.deus_price)) {
+    if (!swapState.from.address || collatRatio === null || mintingFee === null || (chainId === ChainId.BSC && !deiPrices?.deus_price)) {
         return (<div className="loader-wrap">
             {<img className="loader" src={process.env.PUBLIC_URL + "/img/loading.png"} alt="loader" />}
         </div>)
@@ -381,7 +391,7 @@ const Dei = () => {
                         hasMax={true}
                         inputAmount={amountIn}
                         setInputAmount={setAmountIn}
-                        setActive={hasProxy ? showSearchBox : null}
+                        setActive={(hasProxy || hasSSP) ? showSearchBox : null}
                         currency={swapState.from}
                         TokensMap={TokensMap}
                         // disabledTitle="Please enter the desired DEI amount"

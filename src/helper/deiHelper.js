@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js"
-import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP, SSP_ADDRESS, SSP_COLLATERA_ADDRESS } from "../constant/contracts"
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP, SSP_ADDRESS, SSP_COLLATERAL_ADDRESS, PROXY_MINT_ADDRESS } from "../constant/contracts"
 import { isZero, TEN } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
@@ -370,6 +370,7 @@ export const makeDeiRequest = async (path, chainId = 4) => {
 
 export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
     if (!token || !token.symbol || collatRatio === null) return null
+    if (!PROXY_MINT_ADDRESS[chainId]) return false
     if ((collatRatio === 100 && token.symbol === collateralToken[chainId]?.symbol && !isPair) ||
         (collatRatio === 0 && token.symbol === "DEUS" && !isPair) ||
         (collatRatio > 0 && collatRatio < 100 && isPair)) return false
@@ -384,14 +385,14 @@ export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLe
         return false
     }
     if (isPair) {
-        console.log("just with single usdcl.")
+        console.log("just with single usdc or usdt.")
         return false
     }
     if (!chainId) {
         console.error("chainId is null.")
         return false
     }
-    if (token.address !== SSP_COLLATERA_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
+    if (token.address !== SSP_COLLATERAL_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
         return false
     }
     if ((!amountIn && !new BigNumber(lowerBound).isZero()) || new BigNumber(amountIn).comparedTo(lowerBound) < 0 || new BigNumber(amountIn).comparedTo(topBound) > 0) {

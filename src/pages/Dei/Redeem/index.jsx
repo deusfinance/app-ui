@@ -7,7 +7,7 @@ import SwapCard from '../../../components/App/Swap/SwapCard';
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
-import { DEITokens, deiToken } from '../../../constant/token';
+import { DEITokens, deiToken, deusToken, collateralToken } from '../../../constant/token';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { COLLATERAL_POOL_ADDRESS } from '../../../constant/contracts';
@@ -140,30 +140,30 @@ const Dei = () => {
             if (collatRatio === 100) {
                 primaryToken = tokens[0]
             } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = tokens[2]
-                let secondToken = tokens[3]
+                primaryToken = collateralToken[chainId]
+                let secondToken = deusToken[chainId]
                 setIsPair(true)
                 setPairToken(secondToken)
             } else if (isZero(collatRatio)) {
-                primaryToken = tokens[1]
+                primaryToken = tokens[0]
             }
             setSwapState({ ...swapState, to: primaryToken })
         }
         if (collatRatio !== null) changeToTokens()
-    }, [collatRatio, tokens]);// eslint-disable-line
+    }, [collatRatio, tokens, chainId]);// eslint-disable-line
 
-    //TODO
-    useEffect(() => {
-        const token = swapState.to
-        setIsPair(false)
-        if (swapState?.to?.pairID) {
-            setIsPair(true)
-            let secondToken = tokens.filter(currToken => {
-                return currToken.pairID === token.pairID && currToken.address !== token.address
-            })[0]
-            setPairToken(secondToken)
-        }
-    }, [swapState, tokens])
+    // //TODO
+    // useEffect(() => {
+    //     const token = swapState.to
+    //     setIsPair(false)
+    //     if (swapState?.to?.pairID) {
+    //         setIsPair(true)
+    //         let secondToken = tokens.filter(currToken => {
+    //             return currToken.pairID === token.pairID && currToken.address !== token.address
+    //         })[0]
+    //         setPairToken(secondToken)
+    //     }
+    // }, [swapState, tokens])
 
     useEffect(() => {
         if (isPreApproved == null) {

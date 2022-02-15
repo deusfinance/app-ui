@@ -1,5 +1,5 @@
 import { Token } from '../utils/classes';
-import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEI_DEUS_LP, DEI_COLLATERAL_LP, DEUS_ADDRESS, DEUS_NATIVE_LP } from './contracts';
+import { DEI_ADDRESS, COLLATERAL_ADDRESS, DEI_DEUS_LP, DEI_COLLATERAL_LP, DEUS_ADDRESS, DEUS_NATIVE_LP, SSP_COLLATERAL_ADDRESS } from './contracts';
 import { ChainId } from './web3';
 
 export const bakktToken = new Token(1, "0x11Aa73194769882521e4576D245ffacd4E98aCB4", 18, "ioBAKKT", "ioBAKKT", "/tokens/bakkt.svg");
@@ -110,33 +110,32 @@ export const DEITokens = {
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.MATIC], decimals: 18, chainId: ChainId.MATIC },
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.MATIC], decimals: 6, chainId: ChainId.MATIC, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.MATIC], decimals: 18, chainId: ChainId.MATIC, pairID: 1 },
-        { logo: "/tokens/matic.jpg", symbol: "MATIC", address: "0x", decimals: 18, chainId: ChainId.MATIC },
-        { logo: "/tokens/eth-logo.svg", symbol: "WETH", address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", decimals: 18, chainId: ChainId.MATIC },
+        // { logo: "/tokens/matic.jpg", symbol: "MATIC", address: "0x", decimals: 18, chainId: ChainId.MATIC },
+        // { logo: "/tokens/eth-logo.svg", symbol: "WETH", address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", decimals: 18, chainId: ChainId.MATIC },
     ],
     [ChainId.ETH]: [
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.ETH], decimals: 6, chainId: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ETH], decimals: 18, chainId: 1 },
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.ETH], decimals: 6, chainId: 1, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.ETH], decimals: 18, chainId: 1, pairID: 1 },
-        { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, chainId: 1 },
-        { logo: "/tokens/dai.png", symbol: "DAI", address: "0x6B175474E89094C44Da98b954EedeAC495271d0F", decimals: 18, chainId: 1 },
-        { logo: "/tokens/wbtc.png", symbol: "wBTC", address: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599", decimals: 8, chainId: 1 },
+        // { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, chainId: 1 },
+        // { logo: "/tokens/dai.png", symbol: "DAI", address: "0x6B175474E89094C44Da98b954EedeAC495271d0F", decimals: 18, chainId: 1 },
+        // { logo: "/tokens/wbtc.png", symbol: "wBTC", address: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599", decimals: 8, chainId: 1 },
     ],
     [ChainId.FTM]: [
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.FTM], decimals: 6, chainId: ChainId.FTM },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.FTM], decimals: 18, chainId: ChainId.FTM },
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.FTM], decimals: 6, chainId: ChainId.FTM, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.FTM], decimals: 18, chainId: ChainId.FTM, pairID: 1 },
-        { logo: "/tokens/ftm.svg", symbol: "FTM", address: "0x", decimals: 18, chainId: ChainId.FTM },
-        { logo: "/tokens/dai.png", symbol: "DAI", address: "0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E", decimals: 18, chainId: ChainId.FTM },
-        { logo: "/tokens/wbtc.png", symbol: "wBTC", address: "0x321162Cd933E2Be498Cd2267a90534A804051b11", decimals: 8, chainId: ChainId.FTM },
+        // { logo: "/tokens/ftm.svg", symbol: "FTM", address: "0x", decimals: 18, chainId: ChainId.FTM },
+        // { logo: "/tokens/dai.png", symbol: "DAI", address: "0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E", decimals: 18, chainId: ChainId.FTM },
+        // { logo: "/tokens/wbtc.png", symbol: "wBTC", address: "0x321162Cd933E2Be498Cd2267a90534A804051b11", decimals: 8, chainId: ChainId.FTM },
     ],
     [ChainId.BSC]: [
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.BSC], decimals: 18, chainId: ChainId.BSC },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.BSC], decimals: 18, chainId: ChainId.BSC },
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.BSC], decimals: 18, chainId: ChainId.BSC, pairID: 1 },
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.BSC], decimals: 18, chainId: ChainId.BSC, pairID: 1 },
-        { logo: "/tokens/busd.svg", symbol: "BUSD", address: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", decimals: 18, chainId: ChainId.BSC },
     ],
     [ChainId.METIS]: [
         { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.METIS], decimals: 6, chainId: ChainId.METIS },
@@ -157,6 +156,35 @@ export const DEITokens = {
         { logo: "/tokens/deus.svg", symbol: "DEUS", address: DEUS_ADDRESS[ChainId.OPTIMISTIC], decimals: 18, chainId: ChainId.OPTIMISTIC, pairID: 1 },
     ],
 }
+
+export const ProxyTokens = {
+    [ChainId.MATIC]: [
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.MATIC], decimals: 6, chainId: ChainId.MATIC },
+        { logo: "/tokens/matic.jpg", symbol: "MATIC", address: "0x", decimals: 18, chainId: ChainId.MATIC },
+        { logo: "/tokens/eth-logo.svg", symbol: "WETH", address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", decimals: 18, chainId: ChainId.MATIC },
+    ],
+    [ChainId.ETH]: [
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.ETH], decimals: 6, chainId: 1 },
+        { logo: "/tokens/eth-logo.svg", symbol: "ETH", address: "0x", decimals: 18, chainId: 1 },
+        { logo: "/tokens/dai.png", symbol: "DAI", address: "0x6B175474E89094C44Da98b954EedeAC495271d0F", decimals: 18, chainId: 1 },
+        { logo: "/tokens/wbtc.png", symbol: "wBTC", address: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599", decimals: 8, chainId: 1 },
+    ],
+    [ChainId.FTM]: [
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: COLLATERAL_ADDRESS[ChainId.FTM], decimals: 6, chainId: ChainId.FTM },
+        { logo: "/tokens/ftm.svg", symbol: "FTM", address: "0x", decimals: 18, chainId: ChainId.FTM },
+        { logo: "/tokens/dai.png", symbol: "DAI", address: "0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E", decimals: 18, chainId: ChainId.FTM },
+        { logo: "/tokens/wbtc.png", symbol: "wBTC", address: "0x321162Cd933E2Be498Cd2267a90534A804051b11", decimals: 8, chainId: ChainId.FTM },
+    ],
+}
+export const SSP_Tokens = {
+    [ChainId.FTM]: [
+        { logo: "/tokens/usdc.svg", symbol: "USDC", address: SSP_COLLATERAL_ADDRESS[ChainId.FTM], decimals: 6, chainId: ChainId.FTM },
+    ],
+    [ChainId.BSC]: [
+        { logo: "/tokens/busd.svg", symbol: "BUSD", address: SSP_COLLATERAL_ADDRESS[ChainId.BSC], decimals: 18, chainId: ChainId.BSC },
+    ],
+}
+
 // END DEI
 export const BridgeTokens = {
     [ChainId.BSC]: [

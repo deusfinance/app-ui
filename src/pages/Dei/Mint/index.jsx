@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MainWrapper, SwapWrapper } from '../../../components/App/Swap';
-import { DEITokens, deiToken } from '../../../constant/token';
+import { DEITokens, deiToken, ProxyTokens, SSP_Tokens } from '../../../constant/token';
 import { CostBox } from '../../../components/App/Dei/CostBox';
 import SwapCard from '../../../components/App/Swap/SwapCard';
 import SlippageTolerance from '../../../components/App/Swap/SlippageTolerance';
@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS, SSP_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS, SSP_ADDRESS, SSP_COLLATERAL_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
 import { useDeiUpdate, useMint, useAllowance, useSSPData } from '../../../hooks/useDei';
 import { collatRatioState, deiPricesState, husdPoolDataState, sspDataState } from '../../../store/dei';
@@ -35,7 +35,7 @@ import { Info } from 'react-feather';
 import ReactTooltip from "react-tooltip";
 import { RowStart } from '../../../components/App/Row/index';
 import { ChainId } from '../../../constant/web3';
-
+import concat from 'lodash/concat';
 
 const Dei = () => {
     const location = useLocation()
@@ -73,9 +73,28 @@ const Dei = () => {
         return true
     }, [chainId])
 
-    const tokens = useMemo(() => chainId ? DEITokens[chainId]
-        .filter((token) => !hasSSP || !hasProxy || (!token.pairID && (collatRatio !== 0 && token.address !== DEUS_ADDRESS[chainId])) || (token.pairID && ((collatRatio > 0 && collatRatio < 100)))) : []
-        , [chainId, hasProxy, hasSSP, collatRatio])
+    const tokens = useMemo(() => {
+        if (!chainId) return []
+        let allTokens = []
+        allTokens = concat(allTokens,
+            DEITokens[chainId]
+                .filter((token) =>
+                    (!token.pairID && collatRatio === 0 && token.address === DEUS_ADDRESS[chainId])
+                    || (!token.pairID && collatRatio === 100 && token.address === COLLATERAL_ADDRESS[chainId])
+                    || (token.pairID && (collatRatio > 0 && collatRatio < 100)))
+            ?? [])
+
+        allTokens = concat(ProxyTokens[chainId] ?? [], allTokens)
+
+        //add ssp tokens if not included yet
+        if (SSP_Tokens[chainId]) {
+            const hasSSPToken = allTokens.filter(token => !token.pairID && token.address === SSP_COLLATERAL_ADDRESS[chainId])
+            if (hasSSPToken.length === 0)
+                allTokens = concat(allTokens, SSP_Tokens[chainId])
+        }
+        return allTokens
+    }
+        , [chainId, collatRatio])
 
     // console.log(tokens);
 
@@ -169,6 +188,9 @@ const Dei = () => {
                 amountIn1 = in1
                 amountOut = amountIn1
             }
+            else if (chainId === ChainId.BSC && !isPair) {
+                amountIn1 = in1
+            }
             else if (!proxy) {
                 if (in1) {
                     amountIn1 = in1
@@ -200,23 +222,25 @@ const Dei = () => {
         }
     }
 
+    // console.log({ isPair, proxy });
+
     useEffect(() => {
         const changeFromTokens = () => {
             let primaryToken = null
             setIsPair(false)
-            let salt = 0
-            if (!hasProxy) {
-                salt = 1
-            }
+            // let salt = 0
+            // if (!hasProxy) {
+            //     salt = 1
+            // }
             if (collatRatio === 100) {
                 primaryToken = tokens[0]
             } else if (collatRatio > 0 && collatRatio < 100) {
-                primaryToken = tokens[1 + salt]
-                let secondToken = tokens[2 + salt]
+                primaryToken = tokens[0]
+                let secondToken = tokens[1]
                 setIsPair(true)
                 setPairToken(secondToken)
             } else if (collatRatio === 0) {
-                primaryToken = tokens[1]
+                primaryToken = tokens[0]
             }
             setSwapState({ to: deiToken[chainId], from: primaryToken })
         }
@@ -275,7 +299,6 @@ const Dei = () => {
                 console.log("Approved");
             } else {
                 console.log("Approve Failed");
-
             }
             setApproveLoading(false)
 
@@ -351,7 +374,7 @@ const Dei = () => {
     // TODO: loader animation --> needs to fix at the end
     useEffect(() => {
         if (hasSSP && chainId === ChainId.BSC) {
-            changeToken(tokens[4], "from")
+            changeToken(tokens[tokens.length - 1], "from")
         }
         else if (!hasProxy) {
             changeToken(pairedTokens[2][1], "from")

@@ -131,8 +131,7 @@ export const getStakingTokenData = (conf, account) => {
 export const getSspData = (chainId = ChainId.FTM, oracleResponse) => {
     if (!SSP_ADDRESS[chainId]) return []
     if (chainId !== ChainId.FTM && !oracleResponse?.deus_price) return []
-
-    const leftMintableParams = chainId !== ChainId.FTM ? { params: [getToWei(oracleResponse.deus_price, 18).toFixed(0)] } : {}
+    const leftMintableParams = chainId !== ChainId.FTM ? { params: [getToWei(oracleResponse.deus_price, 6).toFixed(0)] } : {}
 
     return [
         {

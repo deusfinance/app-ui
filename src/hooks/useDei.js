@@ -689,8 +689,8 @@ export const useSSPData = (validChainId, oracleResponse) => {
                     leftMintableDei,
                 ] = mul
                 const updateState = {
-                    lowerBound: fromWei(lowerBound, 6),
-                    topBound: fromWei(topBound, 6),
+                    lowerBound: fromWei(lowerBound, collateralToken[validChainId].decimals),
+                    topBound: fromWei(topBound, collateralToken[validChainId].decimals),
                     leftMintableDei: fromWei(leftMintableDei, 18),
                 }
                 setSspData({ ...updateState })

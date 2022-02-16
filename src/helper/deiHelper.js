@@ -378,7 +378,7 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
 
 export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLeftInSSP, chainId) => {
 
-    console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
+    // console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
     if (!token || !token.symbol) {
         console.error("token is null.")
         return false
@@ -394,6 +394,13 @@ export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLe
     if (token.address !== SSP_COLLATERAL_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
         return false
     }
+
+    if (chainId === ChainId.BSC) return true
+
+    return checkSSPvalidInput(amountIn, lowerBound, topBound, deiLeftInSSP)
+}
+
+export const checkSSPvalidInput = (amountIn, lowerBound, topBound, deiLeftInSSP) => {
     if ((!amountIn && !new BigNumber(lowerBound).isZero()) || new BigNumber(amountIn).comparedTo(lowerBound) < 0 || new BigNumber(amountIn).comparedTo(topBound) > 0) {
         console.log("amountIn is not valid for ssp.")
         return false

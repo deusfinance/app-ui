@@ -22,7 +22,7 @@ import { useRecoilValue } from 'recoil';
 import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import { isProxyMinter, getAmountOutProxy, isSspMinter } from '../../../helper/deiHelper';
+import { isProxyMinter, getAmountOutProxy, isSspMinter, checkSSPvalidInput } from '../../../helper/deiHelper';
 import { getSwapVsType, formatUnitAmount } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
@@ -481,6 +481,7 @@ const Dei = () => {
                         amountIn={amountIn}
                         amountOut={amountOut}
                         isMint={true}
+                        inputError={ssp && !checkSSPvalidInput(amountIn, lowerBound, topBound, leftMintableDei)}
                     />
 
                 </SwapWrapper>

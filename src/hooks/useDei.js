@@ -679,7 +679,6 @@ export const useSSPData = (validChainId, oracleResponse) => {
         const get = async () => {
 
             try {
-                console.log(getSspData(validChainId, oracleResponse));
                 const validABI = ChainId.FTM === validChainId ? SspAbi : SspOracleAbi
                 const mul = await multicall(web3, validABI, getSspData(validChainId, oracleResponse), validChainId)
 

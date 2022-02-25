@@ -493,7 +493,7 @@ const Dei = () => {
                 <SwapCard title="Minter Contract" value={proxy === null ? "..." : <ExternalLink href={getTransactionLink(chainId, contractAddress)} >{ssp ? `SSP` : proxy ? "Proxy" : "Collateral Pool"} <IconLink size={"12px"} style={{ marginBottom: "-2px", marginLeft: "-2px" }} /></ExternalLink>} />
                 <SwapCard title="Minting Fee" value={ssp ? "Zero" : mintingFee ? `${mintingFee} %` : ""} />
 
-                {leftMintableDei && <SwapCard title={<>
+                {leftMintableDei && ssp && <SwapCard title={<>
                     <RowStart style={{ alignItems: "center", cursor: "pointer" }} data-tip data-for='ssp-info'>
                         <p style={{ marginRight: "5px" }}>Supply remaining</p>
                         <Info size={15} color="#ffffff" />

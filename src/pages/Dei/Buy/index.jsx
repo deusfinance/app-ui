@@ -285,11 +285,8 @@ const Dei = () => {
                         currency={swapState.to}
                         fastUpdate={fastUpdate}
                         chainId={chainId}
-                        hasMax={!proxy}
-                        disabled={proxy}
-
-                    // proxy={proxy}
-                    // placeHolder={"ENTER AMOUNT"}
+                        hasMax={false}
+                        disabled={true}
                     />
 
                     <RateBox state={swapState} amountIn={debouncedAmountIn} amountOut={amountOut} invert={invert} setInvert={setInvert} />

@@ -36,6 +36,9 @@ import ReactTooltip from "react-tooltip";
 import { RowStart } from '../../../components/App/Row/index';
 import { ChainId } from '../../../constant/web3';
 import concat from 'lodash/concat';
+import { ExternalLink } from '../../../components/App/Link';
+import { getTransactionLink } from '../../../utils/explorers';
+import { ExternalLink as IconLink } from 'react-feather';
 
 const Dei = () => {
     const location = useLocation()
@@ -485,9 +488,9 @@ const Dei = () => {
                     />
 
                 </SwapWrapper>
-
-                <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />
-                <SwapCard title="Minter Contract" value={proxy === null ? "..." : ssp ? `SSP` : proxy ? "Proxy" : "Collateral Pool"} />
+                {!ssp && <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />}
+                {/* <SwapCard title="Minter Contract" value={proxy === null ? "..." : ssp ? `SSP` : proxy ? "Proxy" : "Collateral Pool"} /> */}
+                <SwapCard title="Minter Contract" value={proxy === null ? "..." : <ExternalLink href={getTransactionLink(chainId, contractAddress)} >{ssp ? `SSP` : proxy ? "Proxy" : "Collateral Pool"} <IconLink size={"12px"} style={{ marginBottom: "-2px", marginLeft: "-2px" }} /></ExternalLink>} />
                 <SwapCard title="Minting Fee" value={ssp ? "Zero" : mintingFee ? `${mintingFee} %` : ""} />
 
                 {leftMintableDei && <SwapCard title={<>
@@ -496,8 +499,8 @@ const Dei = () => {
                         <Info size={15} color="#ffffff" />
                     </RowStart>
 
-                    <ReactTooltip id='ssp-info' place="bottom" effect="solid" type="info">
-                        <div >DEI remaining for sale at zero slippage</div>
+                    <ReactTooltip id='ssp-info' place="bottom" effect="solid" type="info" >
+                        <div >DEI remaining for <br /> sale at zero slippage</div>
                         {/* {topBound && <div style={{ fontSize: "10px" }}>*Max amount per each transaction is {formatUnitAmount(topBound, 0)} USDC.*</div>} */}
                     </ReactTooltip>
                 </>} value={`${formatUnitAmount(leftMintableDei, 2)} DEI`} />}

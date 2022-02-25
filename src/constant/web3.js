@@ -45,7 +45,7 @@ export const rpcConfig = {
             decimals: 18,
         },
         rpcUrls: ["https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY],
-        blockExplorerUrls: ["https://etherscan.io/"],
+        blockExplorerUrls: ["https://etherscan.io"],
     },
     [ChainId.RINKEBY]: {
         chainId: "0x4",
@@ -56,7 +56,7 @@ export const rpcConfig = {
             decimals: 18,
         },
         rpcUrls: ["https://rinkeby.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY],
-        blockExplorerUrls: ["https://rinkeby.etherscan.io/"],
+        blockExplorerUrls: ["https://rinkeby.etherscan.io"],
     },
     [ChainId.XDAI]: {
         chainId: "0x64",
@@ -67,7 +67,7 @@ export const rpcConfig = {
             decimals: 18,
         },
         rpcUrls: ["https://rpc.xdaichain.com/"],
-        blockExplorerUrls: ["https://blockscout.com/poa/xdai/"],
+        blockExplorerUrls: ["https://blockscout.com/poa/xdai"],
     },
     [ChainId.MATIC]: {
         chainId: "0x89",
@@ -78,7 +78,7 @@ export const rpcConfig = {
             decimals: 18,
         },
         rpcUrls: ["https://polygon-rpc.com/"],
-        blockExplorerUrls: ["https://polygonscan.com/"],
+        blockExplorerUrls: ["https://polygonscan.com"],
         iconUrls: []
     },
     [ChainId.BSC]: {
@@ -134,7 +134,7 @@ export const rpcConfig = {
             decimals: 18,
         },
         rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
-        blockExplorerUrls: ["https://cchain.explorer.avax.network/"],
+        blockExplorerUrls: ["https://cchain.explorer.avax.network"],
     },
     [ChainId.FTM]: {
         chainId: "0xFA",
@@ -145,7 +145,7 @@ export const rpcConfig = {
             decimals: 18,
         },
         rpcUrls: ["https://ftmrpc.ultimatenodes.io/"],
-        blockExplorerUrls: ["https://ftmscan.com/"],
+        blockExplorerUrls: ["https://ftmscan.com"],
     },
     [ChainId.METIS]: {
         chainId: "0x440",
@@ -156,7 +156,7 @@ export const rpcConfig = {
             decimals: 18,
         },
         rpcUrls: ["https://andromeda.metis.io/?owner=1088"],
-        blockExplorerUrls: ["https://andromeda-explorer.metis.io/"],
+        blockExplorerUrls: ["https://andromeda-explorer.metis.io"],
     },
     [ChainId.ARBITRUM]: {
         chainId: "0xA4B1",
@@ -167,7 +167,7 @@ export const rpcConfig = {
             decimals: 18,
         },
         rpcUrls: ["https://arb1.arbitrum.io/rpc"],
-        blockExplorerUrls: ["https://arbiscan.io/"],
+        blockExplorerUrls: ["https://arbiscan.io"],
     },
     [ChainId.OPTIMISTIC]: {
         chainId: "0xA",

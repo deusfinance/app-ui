@@ -28,6 +28,7 @@ import { COLLATERAL_ADDRESS, MINT_PATH, SSP_ADDRESS } from '../constant/contract
 import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
 import { ChainId, isSupportEIP1559 } from '../constant/web3'
 import { DEI_COLLATERAL_ZAP } from '../constant/contracts';
+import { ToastTransaction } from '../utils/explorers'
 
 export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
     const web3 = useWeb3()
@@ -200,8 +201,9 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
     const handleRedeem = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
         let fn = null
+        let result = null
         if (collatRatio === 100) {
-            const result = await makeDeiRequest("/redeem-1to1", validChainId)
+            result = await makeDeiRequest("/redeem-1to1", validChainId)
             fn = redeem1to1Dei(
                 getToWei(amountIn, fromCurrency.decimals).toFixed(0),
                 result.collateral_price,
@@ -211,7 +213,11 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
                 web3,
             )
         } else if (collatRatio > 0) {
-            const result = await makeDeiRequest("/redeem-fractional", validChainId)
+            result = await makeDeiRequest("/redeem-fractional", validChainId)
+            if (result.status === "ERROR") {
+                ToastTransaction("info", "Redeem Failed.", result.message)
+                return
+            }
             fn = redeemFractionalDei(
                 result.collateral_price,
                 result.deus_price,
@@ -222,7 +228,7 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
                 web3,
             )
         } else {
-            const result = await makeDeiRequest("/redeem-algorithmic", validChainId)
+            result = await makeDeiRequest("/redeem-algorithmic", validChainId)
             fn = redeemAlgorithmicDei(
                 result.deus_price,
                 result.expire_block,
@@ -277,6 +283,10 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             } else if (collatRatio > 0) {
                 path = "/mint-fractional"
                 const result = await makeDeiRequest(path, validChainId)
+                if (result.status === "ERROR") {
+                    ToastTransaction("info", "Mint Failed.", result.message)
+                    return
+                }
                 const amount2toWei = getToWei(amountIn2, from2Currency.decimals).toFixed(0)
                 fn = mintFractional(
                     amount1toWei,
@@ -303,6 +313,10 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             path = "/mint-fractional"
             try {
                 const result = await makeDeiRequest(path, validChainId)
+                if (result.status === "ERROR") {
+                    ToastTransaction("info", "Mint Failed.", result.message)
+                    return
+                }
                 const { collateral_price, deus_price, expire_block, signature } = result
                 const erc20Path = MINT_PATH[chainId][from1Currency.symbol]
                 let method = ""
@@ -388,6 +402,10 @@ export const useSwap = (from1Currency, toCurrency, amountIn1, amountOut, collatR
         let path = "/mint-fractional"
         try {
             const result = await makeDeiRequest(path, validChainId)
+            if (result.status === "ERROR") {
+                ToastTransaction("info", "Swap Failed.", result.message)
+                return
+            }
             const { collateral_price, deus_price, expire_block, signature } = result
             const erc20Path = MINT_PATH[chainId][from1Currency.symbol]
             let method = ""

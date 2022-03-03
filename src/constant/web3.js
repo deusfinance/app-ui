@@ -144,7 +144,7 @@ export const rpcConfig = {
             symbol: "FTM",
             decimals: 18,
         },
-        rpcUrls: ["https://ftmrpc.ultimatenodes.io/"],
+        rpcUrls: ["https://rpc.ankr.com/fantom", "https://rpc.ftm.tools"],
         blockExplorerUrls: ["https://ftmscan.com"],
     },
     [ChainId.METIS]: {

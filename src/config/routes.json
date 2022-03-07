@@ -1,5 +1,10 @@
 [
   {
+    "id": "VOTE",
+    "path": "https://snapshot.org/#/dea.eth",
+    "exact": true
+  },
+  {
     "id": "V2 MIGRATOR",
     "path": "/migrator",
     "exact": true

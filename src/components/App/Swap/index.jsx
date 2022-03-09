@@ -75,4 +75,7 @@ export const SmallWrapper = styled(FlexCenter)`
     /* margin-top:${({ mt }) => mt || "-1px"}; */
     margin-top: -1px;
     padding:0 20px;
+    .inner-title{
+        z-index:2;
+    }
 `

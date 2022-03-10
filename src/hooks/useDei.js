@@ -757,7 +757,7 @@ export const useDeiUpdateBuyBack = (validChainId) => {
 }
 
 export const useDeiPrices = (validChainId) => {
-    const { slowRefresh } = useRefresh()
+    const { fastRefresh } = useRefresh()
     const setRefreshRatio = useSetRecoilState(deiPricesState)
     useEffect(() => {
         const get = async () => {
@@ -769,7 +769,7 @@ export const useDeiPrices = (validChainId) => {
             }
         }
         get()
-    }, [slowRefresh, validChainId, setRefreshRatio])
+    }, [fastRefresh, validChainId, setRefreshRatio])
 }
 
 export const useAllowance = (currency, contractAddress, validChainId, fastUpdate) => {

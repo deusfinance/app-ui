@@ -128,7 +128,7 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
             )
             //TODO find token with id
             const payload = await getGasData(web3, fn, chainId, account)
-            SendWithToast(fn, account, chainId, `Claim ${formatBalance3(amount)}`).then(() => {
+            return await SendWithToast(fn, account, chainId, `Claim ${formatBalance3(amount)}`).then(() => {
                 setFetch(claim)
                 setLock('')
             }, payload)

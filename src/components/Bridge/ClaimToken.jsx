@@ -10,8 +10,9 @@ import { Type } from '../App/Text'
 import { RowBetween, RowCenter } from '../App/Row/index';
 
 const ClaimToken = (props) => {
-  const { claims, chainId, handleClaim, claimsLoading } = props
+  const { claims, chainId, handleClaim, setClaimingIndex, claimingIndex, claimsLoading } = props
   const { account } = useWeb3React()
+
   return (
     <>
       {claims.length > 0 && (
@@ -45,11 +46,16 @@ const ClaimToken = (props) => {
                       pointerEvents: !!(Number(claim?.remainingBlock?.toString()) > 0) ? 'none' : 'auto',
                       opacity: !!(Number(claim?.remainingBlock?.toString()) > 0) ? 0.55 : 1
                     }}
-                    onClick={() => handleClaim(claim, chain.network)}
+                    onClick={() => {
+                      setClaimingIndex(index)
+                      handleClaim(claim, chain.network)
+                    }}
                   >
                     <span> Claim &nbsp;</span>
+                    {claimingIndex === index && <img alt="sp" src="/img/spinner.svg" width="20" />}
                     {Number(claim?.remainingBlock?.toString()) > 0 && <span style={{ fontWeight: 'bold' }}>
                       {` (${Number(claim?.remainingBlock?.toString())} blocks left)`}
+
                     </span>}
                   </div>
                 )}

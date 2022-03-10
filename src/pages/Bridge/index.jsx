@@ -27,6 +27,7 @@ const Bridge = () => {
     const [open, setOpen] = useState(false)
     const [claims, setClaims] = useState([])
     const [claimsLoading, setClaimsLoading] = useState(true)
+    const [claimingIndex, setClaimingIndex] = useState(null)
 
     const [tokenId, setTokenId] = useState('')
     const [lock, setLock] = useState('')
@@ -165,6 +166,20 @@ const Bridge = () => {
         }
     }, [onApprove])
 
+    const handleClaimToken = useCallback(async (claim, network) => {
+        try {
+            setApproveLoading(true)
+            const tx = await handleClaim(claim, network)
+            if (!tx.status) {
+                console.log("Claim Failed");
+            }
+            setClaimingIndex(null)
+        } catch (e) {
+            setClaimingIndex(false)
+            console.error(e)
+        }
+    }, [handleClaim])
+
 
     const handleSwap = useCallback(async () => {
         try {
@@ -256,7 +271,9 @@ const Bridge = () => {
                 chainId={chainId}
                 claimsLoading={claimsLoading}
                 setFetch={(data) => setFetch(data)}
-                handleClaim={(claim, network) => handleClaim(claim, network)}
+                handleClaim={(claim, network) => handleClaimToken(claim, network)}
+                claimingIndex={claimingIndex}
+                setClaimingIndex={setClaimingIndex}
             />
         </div>}
     </div>);

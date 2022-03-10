@@ -58,7 +58,7 @@ export const useGetNewClaim = () => {
 }
 
 
-export const useClaim = (muon, lock, setLock, setFetch) => {
+export const useClaim = (muon) => {
     const { account, chainId } = useWeb3React()
     const web3 = useWeb3()
 
@@ -72,14 +72,14 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
             tokenId: claimTemp.tokenId.toString(),
         }
 
-        if (
-            chainId !== network || (lock &&
-                lock.fromChain === claim.fromChain &&
-                lock.toChain === claim.toChain &&
-                lock.txId === claim.txId)
-        ) {
-            return
-        }
+        // if (
+        //     chainId !== network || (lock &&
+        //         lock.fromChain === claim.fromChain &&
+        //         lock.toChain === claim.toChain &&
+        //         lock.txId === claim.txId)
+        // ) {
+        //     return
+        // }
 
         let amount = fromWei(claim.amount)
         let abi = [BridgeABI.find(({ name, type }) => name === 'getTx' && type === 'function')]
@@ -107,15 +107,15 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
                 return
             }
             let { sigs, reqId } = muonResponse
-            setLock(claim)
-            console.log(account,
-                claim.amount,
-                Number(claim.fromChain),
-                Number(claim.toChain),
-                claim.tokenId,
-                claim.txId,
-                reqId,
-                sigs);
+            // setLock(claim)
+            // console.log(account,
+            //     claim.amount,
+            //     Number(claim.fromChain),
+            //     Number(claim.toChain),
+            //     claim.tokenId,
+            //     claim.txId,
+            //     reqId,
+            //     sigs);
             const fn = getBridgeContract(web3, chainId).methods.claim(
                 account,
                 claim.amount,
@@ -129,14 +129,14 @@ export const useClaim = (muon, lock, setLock, setFetch) => {
             //TODO find token with id
             const payload = await getGasData(web3, fn, chainId, account)
             return await SendWithToast(fn, account, chainId, `Claim ${formatBalance3(amount)}`).then(() => {
-                setFetch(claim)
-                setLock('')
+                // setFetch(claim)
+                // setLock('')
             }, payload)
         } catch (error) {
             console.log('error happened in Claim', error)
         }
 
-    }, [lock, setLock, setFetch, muon, account, web3, chainId])
+    }, [muon, account, web3, chainId])
     return { handleClaim }
 }
 

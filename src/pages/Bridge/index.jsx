@@ -33,7 +33,7 @@ const Bridge = () => {
     const [lock, setLock] = useState('')
     const [target, setTarget] = useState()
     const [selectedChain, setSelectedChain] = useState('')
-    const [fetch, setFetch] = useState('')
+    // const [fetch, setFetch] = useState('')
 
     const [fastUpdate, setFastUpdate] = useState(0)
 
@@ -102,7 +102,7 @@ const Bridge = () => {
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onDeposit } = useDeposit(amountIn, swapState)
     const { getClaim } = useGetNewClaim()
-    const { handleClaim } = useClaim(muon, lock, setLock, setFetch)
+    const { handleClaim } = useClaim(muon, lock, setLock)
 
 
     useEffect(() => {
@@ -270,7 +270,7 @@ const Bridge = () => {
                 claims={claims}
                 chainId={chainId}
                 claimsLoading={claimsLoading}
-                setFetch={(data) => setFetch(data)}
+                // setFetch={(data) => setFetch(data)}
                 handleClaim={(claim, network) => handleClaimToken(claim, network)}
                 claimingIndex={claimingIndex}
                 setClaimingIndex={setClaimingIndex}

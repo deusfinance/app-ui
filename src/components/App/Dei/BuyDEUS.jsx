@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { ExternalLink } from '../Link';
 import { DEITokens } from '../../../constant/token';
-import { NavLink } from 'react-router-dom';
 
 const MainWrapper = styled.div`
     font-family: 'Monument Grotesk';
@@ -30,22 +29,12 @@ const EachUrl = styled.span`
         color: #52d784;
         opacity: 1;
     }
-    &.uni:hover{
-        color: #f62d8d;
+    &.solidly:hover{
+        color: #58ecff;
         opacity: 1;
     }
-    &.quick:hover{
-        color: #6db7ff;
-        opacity: 1;
-    }
-    &.uni{
+    &.solidly{
         opacity: 0.85;
-    }
-    &.quick{
-        opacity: 0.85;
-    }
-    &.deusSwap:hover{
-        color: #6db7ff;
     }
     a{
         display: flex;
@@ -58,17 +47,11 @@ const DeiTokenBox = () => {
     return (
         useMemo(() => {
             return <MainWrapper>
-                <EachUrl className="deusSwap" >
-                    <NavLink textDecoration="none" to={"/swap"}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  DEUS Swap </NavLink>
+                <EachUrl className="solidly" >
+                    <ExternalLink textDecoration="none" href={`https://solidly.vision/swap`}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  Solidly <img src="/img/Solidly.svg" style={{ width: "20px", marginLeft: "4px" }} alt="solidly" /></ExternalLink>
                 </EachUrl>
                 <EachUrl className="spirit" >
                     <ExternalLink textDecoration="none" href={`https://swap.spiritswap.finance/#/exchange/swap/FTM/${deusToken.address}`}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  SpiritSwap <img src="/img/spirit.png" style={{ width: "20px", marginLeft: "4px" }} alt="uniswap" /></ExternalLink>
-                </EachUrl>
-                <EachUrl className="uni" >
-                    <ExternalLink textDecoration="none" href={`https://app.uniswap.org/#/swap?use=V2&outputCurrency=${deusToken.address}&inputCurrency=ETH`}> Buy  <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px" }} alt="deus" />DEUS on  Uniswap <img src="/img/uniswap.png" style={{ width: "20px", marginLeft: "4px" }} alt="uniswap" /></ExternalLink>
-                </EachUrl>
-                <EachUrl className="quick">
-                    <ExternalLink textDecoration="none" href={`https://quickswap.exchange/#/swap?outputCurrency=${deusToken.address}&inputCurrency=MATIC`}> Buy <img src="/tokens/deus.svg" style={{ width: "20px", marginLeft: "4px", marginRight: "2px", }} alt="deus" />DEUS on QuickSwap <img src="/img/quickswap.png" style={{ width: "20px", marginLeft: "4px", borderRadius: "50%" }} alt="quickswap" /></ExternalLink>
                 </EachUrl>
 
             </MainWrapper>

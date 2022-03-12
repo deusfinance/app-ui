@@ -18,7 +18,6 @@ const Migrator = React.lazy(() => import('./pages/Migrator'))
 const MigratorOther = React.lazy(() => import('./pages/Migrator/Other'))
 const Burn = React.lazy(() => import('./pages/burn'))
 
-const BuyDEUS = React.lazy(() => import('./pages/Dei/Buy'))
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
 const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
@@ -49,7 +48,6 @@ function App() {
                   <Route exact path="/bakkt-migrator" component={BakktMigrator} />
                   <Route exact path="/migrator" component={Migrator} />
                   <Route exact path="/migrator/other" component={MigratorOther} />
-                  <Route exact path="/swap" component={BuyDEUS} />
                   <Route exact path="/burn-for-admin" component={Burn} />
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />

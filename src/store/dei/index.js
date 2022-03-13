@@ -3,7 +3,7 @@ import { atom, selector } from 'recoil';
 
 export const collatRatioState = atom({
     key: 'collatRatio',
-    default: null,
+    default: 80,
 });
 
 export const collatRatioPercent = selector({

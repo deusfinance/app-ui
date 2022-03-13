@@ -10,7 +10,6 @@ import { useApprove } from '../../../../hooks/useApprove';
 import { useWeb3React } from '@web3-react/core';
 import { ExternalLink } from '../../Link';
 import { Link } from 'react-router-dom';
-import { formatBalance3 } from '../../../../utils/utils';
 
 const Wrapper = styled.div`
     display: inline-block;
@@ -209,7 +208,7 @@ const Staking = ({ config = {}, chainId, apyValue }) => {
                 handleApprove={handleApprove}
                 handleAction={handleDeposit}
             />
-            <ActionWrap active={active}>
+            <ActionWrap active={active} style={{ pointerEvents: 'none', opacity: '0.5' }}>
                 {stakingInfo.provideLink.charAt(0) === "/" ?
                     <Link to={stakingInfo.provideLink} style={{ display: "flex", flex: "1" }}>
                         <ActionContainer style={{ borderRadius: "6px 0 0 0" }} >
@@ -230,7 +229,7 @@ const Staking = ({ config = {}, chainId, apyValue }) => {
             <Type.XXL mb="4" mt="4">{stakingInfo.title}</Type.XXL>
 
             <Type.LG mt="3" mb="3">
-                {(apyValue || apyValue === 0) && <span> {formatBalance3(apyValue, 4)}% APY </span>}
+                {(apyValue || apyValue === 0) && <span> {0}% APY </span>}
                 {!apyValue && apyValue !== 0 && <img alt="sp" src="/img/spinner.svg" width="40" height="40" />}
             </Type.LG>
 

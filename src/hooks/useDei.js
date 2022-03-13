@@ -14,9 +14,9 @@ import multicall from '../helper/multicall'
 import { useCrossERC20 } from './useContract'
 import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
-import { collatRatioState, deiPricesState, husdPoolDataState, availableRecollatState, depositAmountState, sspDataState } from '../store/dei'
+import { deiPricesState, husdPoolDataState, depositAmountState, sspDataState } from '../store/dei'
 import {
-    makeDeiRequest, getDeiInfo, dollarDecimals, getHusdPoolData,
+    makeDeiRequest, getHusdPoolData,
     redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
     buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
     mint1t1DEI, collatUsdPrice, zapIn, getZapAmountsOut, mintDeiSSP, mintDeiSSPWithOracle, getSspData
@@ -595,26 +595,6 @@ export const useTokenInfo = (conf, validChainId) => {
     return res
 }
 
-export const useAvailableRecollat = (validChainId) => {
-    const web3 = useCrossWeb3(validChainId)
-
-    const { slowRefresh } = useRefresh()
-    const setAvailableRecollat = useSetRecoilState(availableRecollatState)
-
-    useEffect(() => {
-        const get = async () => {
-            try {
-                const dei_info_result = await getDeiInfo(web3, validChainId)
-                let { "0": dei_total_supply, "1": global_collateral_ratio, "2": global_collat_value } = dei_info_result
-                let recollat_possible = fromWei((global_collateral_ratio * dei_total_supply - (global_collat_value * (1e6))) / (1e6), 18);
-                setAvailableRecollat(recollat_possible)
-            } catch (error) {
-                console.log("useAvailableRecollat ", error);
-            }
-        }
-        get()
-    }, [setAvailableRecollat, slowRefresh, validChainId, web3])
-}
 
 export const useRedemptionDelay = () => {
     const poolData = useRecoilValue(husdPoolDataState)
@@ -645,7 +625,7 @@ export const useHusdPoolData = (validChainId) => {
 
                 const [
                     collatDollarBalance,
-                    availableExcessCollatDV,
+                    // availableExcessCollatDV,
                     pool_ceiling,
                     redemption_fee,
                     minting_fee,
@@ -662,7 +642,7 @@ export const useHusdPoolData = (validChainId) => {
                 ] = mul
                 const updateState = {
                     collatDollarBalance: fromWei(collatDollarBalance, 18),
-                    availableExcessCollatDV: new BigNumber(availableExcessCollatDV).div(1e18).toFixed(),
+                    // availableExcessCollatDV: new BigNumber(availableExcessCollatDV).div(1e18).toFixed(),
                     pool_ceiling: fromWei(pool_ceiling, 6),
                     redemption_fee: new BigNumber(redemption_fee).div(10000).toNumber(),
                     minting_fee: new BigNumber(minting_fee).div(10000).toNumber(),
@@ -724,23 +704,12 @@ export const useSSPData = (validChainId, oracleResponse) => {
     }, [setSspData, oracleResponse, fastRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
 }
 
-export const useCollatRatio = (validChainId) => {
-    const web3 = useCrossWeb3(validChainId)
-    const { slowRefresh } = useRefresh()
-    const setCollatRatio = useSetRecoilState(collatRatioState)
 
-    useEffect(() => {
-        const get = async () => {
-            try {
-                const cr = await getDeiInfo(web3, validChainId)
-                setCollatRatio(new BigNumber(fromWei(cr[1], dollarDecimals)).times(100).toNumber())
-            } catch (error) {
-                console.log("useCollatRatio ", error);
-            }
-        }
-        get()
-    }, [slowRefresh, web3, setCollatRatio, validChainId])
+export const useCollatRatio = () => {
+    // const setCollatRatio = useSetRecoilState(collatRatioState)
+    // setCollatRatio(80)
 }
+
 
 export const useDeiUpdate = (validChainId) => {
     useCollatRatio(validChainId)
@@ -751,9 +720,7 @@ export const useDeiUpdate = (validChainId) => {
 
 export const useDeiUpdateBuyBack = (validChainId) => {
     useDeiPrices(validChainId)
-    useAvailableRecollat(validChainId)
     useHusdPoolData(validChainId)
-
 }
 
 export const useDeiPrices = (validChainId) => {

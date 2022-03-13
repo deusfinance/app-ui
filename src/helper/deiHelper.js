@@ -163,11 +163,11 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
             name: 'collatDollarBalance',
             params: [COLLAT_PRICE[chainId] ?? collat_usd_price],
         },
-        {
-            address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'availableExcessCollatDV',
-            params: [collaterals]
-        },
+        // {
+        //     address: COLLATERAL_POOL_ADDRESS[chainId],
+        //     name: 'availableExcessCollatDV',
+        //     params: [collaterals]
+        // },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
             name: 'pool_ceiling',

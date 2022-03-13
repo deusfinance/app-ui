@@ -19,7 +19,7 @@ const MigratorOther = React.lazy(() => import('./pages/Migrator/Other'))
 const Burn = React.lazy(() => import('./pages/burn'))
 
 const DeiMint = React.lazy(() => import('./pages/Dei/Mint'))
-const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
+// const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
 const DeiStaking = React.lazy(() => import('./pages/Dei/Staking'))
 const DeiRedeem = React.lazy(() => import('./pages/Dei/Redeem'))
 
@@ -51,7 +51,7 @@ function App() {
                   <Route exact path="/burn-for-admin" component={Burn} />
                   <Redirect exact from="/stable" to="/stable/mint" />
                   <Route exact path="/stable/mint" component={DeiMint} />
-                  <Route exact path="/stable/zap" component={DeiZap} />
+                  {/* <Route exact path="/stable/zap" component={DeiZap} /> */}
                   <Route exact path="/stable/farms" component={DeiStaking} />
                   <Route exact path="/stable/redeem" component={DeiRedeem} />
                   <Route exact path="/bridge" component={Bridge} />

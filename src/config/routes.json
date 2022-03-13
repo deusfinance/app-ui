@@ -5,6 +5,11 @@
     "exact": true
   },
   {
+    "id": "BORROW",
+    "path": "http://app.dei.finance/borrow",
+    "exact": true
+  },
+  {
     "id": "V2 MIGRATOR",
     "path": "/migrator",
     "exact": true
@@ -33,11 +38,6 @@
         "id": "REDEEM",
         "text": "REDEEM",
         "path": "/stable/redeem"
-      },
-      {
-        "id": "ZAP",
-        "text": "ZAP",
-        "path": "/stable/zap"
       },
       {
         "id": "FARMS",

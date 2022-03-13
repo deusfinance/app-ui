@@ -8,12 +8,12 @@ import OutsideClickHandler from 'react-outside-click-handler';
 const NavMobile = ({ routes, open, setOpen }) => {
     const { t } = useTranslation()
     const CurrRoutes = [
-        ...routes.slice(0, 5),
+        ...routes.slice(0, 6),
         {
             "id": "APP",
             "text": "APP",
             "children": [
-                ...routes.slice(5)
+                ...routes.slice(6)
             ]
         },
     ]

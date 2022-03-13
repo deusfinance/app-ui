@@ -1,16 +1,19 @@
 [
   {
     "id": "VOTE",
+    "text": "VOTE",
     "path": "https://snapshot.org/#/dea.eth",
     "exact": true
   },
   {
     "id": "BORROW",
-    "path": "http://app.dei.finance/borrow",
+    "text": "BORROW",
+    "path": "https://app.dei.finance",
     "exact": true
   },
   {
     "id": "V2 MIGRATOR",
+    "text": "V2 MIGRATOR",
     "path": "/migrator",
     "exact": true
   },

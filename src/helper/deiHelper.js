@@ -384,11 +384,11 @@ export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLe
         return false
     }
     if (isPair) {
-        console.log("just with single usdc or usdt.")
+        //console.log("just with single usdc or usdt.")
         return false
     }
     if (!chainId) {
-        console.error("chainId is null.")
+        //console.error("chainId is null.")
         return false
     }
     if (token.address !== SSP_COLLATERAL_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
@@ -402,12 +402,12 @@ export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLe
 
 export const checkSSPvalidInput = (amountIn, lowerBound, topBound, deiLeftInSSP) => {
     if ((!amountIn && !new BigNumber(lowerBound).isZero()) || new BigNumber(amountIn).comparedTo(lowerBound) < 0 || new BigNumber(amountIn).comparedTo(topBound) > 0) {
-        console.log("amountIn is not valid for ssp.")
+        //console.log("amountIn is not valid for ssp.")
         return false
     }
 
     if (new BigNumber(amountIn).comparedTo(deiLeftInSSP) > 0) {
-        console.log("amountIn is bigger than deiLeftInSSP.")
+        //console.log("amountIn is bigger than deiLeftInSSP.")
         return false
     }
     return true

@@ -50,6 +50,17 @@
     ]
   },
   {
+    "id": "FRONTENDS",
+    "text": "FRONTENDS",
+    "children": [
+      {
+        "id": "dSYNTHS",
+        "text": "dSYNTHS",
+        "path": "https://app.dsynths.com"
+      }
+    ]
+  },
+  {
     "id": "medium",
     "image": true,
     "path": "https://medium.com/@deusfinance"

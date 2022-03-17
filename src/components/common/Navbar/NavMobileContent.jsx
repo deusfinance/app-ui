@@ -8,12 +8,12 @@ import OutsideClickHandler from 'react-outside-click-handler';
 const NavMobile = ({ routes, open, setOpen }) => {
     const { t } = useTranslation()
     const CurrRoutes = [
-        ...routes.slice(0, 7),
+        ...routes.slice(0, 8),
         {
             "id": "APP",
             "text": "APP",
             "children": [
-                ...routes.slice(7)
+                ...routes.slice(8)
             ]
         },
     ]
@@ -54,7 +54,7 @@ const NavMobile = ({ routes, open, setOpen }) => {
                         if (nav.children && !nav.image) {
                             res = <div key={index} > {res}
                                 {nav.children.map((subnav, index) => {
-                                    if (subnav.path.charAt(0) === "/")
+                                    if (subnav && subnav.path?.charAt(0) === "/")
                                         return <li key={subnav.id + "_mobile" + index} className="nav-item-box"><NavLink className="nav-item-text mobile-nav-text" to={subnav.path} > {t(subnav.id)} </NavLink></li>
                                     return <li key={subnav.id + "_mobile" + index} className="nav-item-box"><ExternalLink className="nav-item-text" href={subnav.path} textDecoration="none">
                                         <span>{t(subnav.id)}</span>

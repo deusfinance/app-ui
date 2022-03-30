@@ -501,7 +501,7 @@ const Dei = () => {
                     <ReactTooltip id='ssp-info' place="bottom" effect="solid" type="info">
                         <div >DEI remaining for <br /> sale at zero slippage : {formatUnitAmount(leftMintableDei, 2)} DEI</div>
                     </ReactTooltip>
-                </>} value={` ${Number(leftMintableDei) < 100_000 ? "<100K" : formatUnitAmount(leftMintableDei, 2)} DEI`} />}
+                </>} value={` ${Number(leftMintableDei) < 10_000 ? "<10K" : formatUnitAmount(leftMintableDei, 2)} DEI`} />}
 
             </ContentWrapper>
         </MainWrapper>

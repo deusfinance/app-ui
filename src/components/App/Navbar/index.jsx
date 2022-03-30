@@ -33,18 +33,18 @@ export const NavbarWrap = styled(RowBetween)`
         }
     `}
 
-    @media screen and (max-width: 1400px) {
+    @media screen and (max-width: 1600px) {
         font-size: 12px;
     }
     
-    @media screen and (max-width: 1150px) {
+    @media screen and (max-width: 1400px) {
         font-size: 11px;
         .tvl{
             top: 13px;
             left: 145px;
         }
     }
-    @media screen and (max-width: 1050px) {
+    @media screen and (max-width: 1210px) {
         .hamb{
             display: block;
         }
@@ -69,6 +69,7 @@ export const NavbarMobileContent = styled.div`
     background-color: #0c0c0c;
     border-left: 1px solid #1c1c1c;
     overflow-y: auto;
+    overflow-x: hidden;
     background: ${({ theme }) => theme.bg1};
     margin-right: ${({ open }) => open ? "0" : "-300px"};
     z-index: 10;
@@ -208,9 +209,10 @@ export const NavbarContentWrap = styled.ul`
     left:0;
     right:0;
     margin:auto;
-    @media screen and (max-width: 1050px) {
+    @media screen and (max-width: 1210px) {
         display:none;
     }
+
     >li{
         padding: 0 15px;
         position:relative;
@@ -224,9 +226,9 @@ export const NavbarContentWrap = styled.ul`
             flex-direction: column;
         }
         cursor:pointer;
-        ${({ theme }) => theme.mediaWidth.upToLarge`
+        @media screen and (max-width: 1400px) {
             padding: 0 10px;
-        `}
+        }
         .polygon{
             display: none;
             position: absolute;

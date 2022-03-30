@@ -12,6 +12,12 @@
     "exact": true
   },
   {
+    "id": "VEST",
+    "text": "VEST",
+    "path": "http://app.dei.finance/vest/create",
+    "exact": true
+  },
+  {
     "id": "V2 MIGRATOR",
     "text": "V2 MIGRATOR",
     "path": "/migrator",

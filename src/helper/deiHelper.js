@@ -378,7 +378,6 @@ export const isProxyMinter = (token, isPair, collatRatio, chainId) => {
 
 export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLeftInSSP, chainId) => {
 
-    // console.log({ amountIn, lowerBound, topBound, deiLeftInSSP })
     if (!token || !token.symbol) {
         console.error("token is null.")
         return false
@@ -406,7 +405,7 @@ export const checkSSPvalidInput = (amountIn, lowerBound, topBound, deiLeftInSSP)
         return false
     }
 
-    if (new BigNumber(amountIn).comparedTo(deiLeftInSSP) > 0) {
+    if (new BigNumber(amountIn).comparedTo(deiLeftInSSP) > 0 || new BigNumber(deiLeftInSSP).comparedTo(1_000) < 0) {
         //console.log("amountIn is bigger than deiLeftInSSP.")
         return false
     }

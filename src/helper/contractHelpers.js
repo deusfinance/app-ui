@@ -21,6 +21,7 @@ import BridgeABI from '../config/abi/NewBridgeABI.json'
 import VeDeusAbi from '../config/abi/VeDeUSAbi.json'
 import SspAbi from '../config/abi/SspAbi.json'
 import SspOracleAbi from '../config/abi/SspOracleAbi.json'
+import SspV4Abi from '../config/abi/SSPV4_ABI.json'
 
 import {
     DEI_ADDRESS,
@@ -34,7 +35,8 @@ import {
     BRIDGE_ADDRESS,
     DEUS_SWAP_ADDRESS,
     DEUS_NATIVE_ZAP,
-    SSP_ADDRESS
+    SSP_ADDRESS,
+    SSPV4_ADDRESS
 } from '../constant/contracts'
 import { ChainId } from '../constant/web3'
 
@@ -116,6 +118,9 @@ export const getSSPContract = (web3, chainId = ChainId.FTM) => {
         return getContract(SspOracleAbi, SSP_ADDRESS[chainId], web3)
 
     return getContract(SspAbi, SSP_ADDRESS[chainId], web3)
+}
+export const getSSPV4Contract = (web3, chainId = ChainId.FTM) => {
+    return getContract(SspV4Abi, SSPV4_ADDRESS[chainId], web3)
 }
 
 export const getVeDEUSContract = (address, web3) => {

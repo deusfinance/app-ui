@@ -14,15 +14,15 @@ import BigNumber from 'bignumber.js';
 import { useApprove } from '../../../hooks/useApprove';
 import useChain from '../../../hooks/useChain';
 import { useDebounce } from '../../../hooks/useDebounce';
-import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS, SSP_ADDRESS, SSP_COLLATERAL_ADDRESS } from '../../../constant/contracts';
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEUS_ADDRESS, PROXY_MINT_ADDRESS, SSPV4_ADDRESS, SSP_ADDRESS, SSP_COLLATERAL_ADDRESS } from '../../../constant/contracts';
 import { ContentWrapper, PlusImg } from '../../../components/App/Dei';
-import { useDeiUpdate, useMint, useAllowance, useSSPData } from '../../../hooks/useDei';
-import { collatRatioState, deiPricesState, husdPoolDataState, sspDataState } from '../../../store/dei';
+import { useDeiUpdate, useMint, useAllowance, useSSPData, useSSPV4Data } from '../../../hooks/useDei';
+import { collatRatioState, deiPricesState, husdPoolDataState, sspDataState, sspV4DataState } from '../../../store/dei';
 import { useRecoilValue } from 'recoil';
 import { fromWei, RemoveTrailingZero } from '../../../helper/formatBalance';
 import { useLocation } from 'react-router-dom';
 import { getCorrectChains } from '../../../constant/correctChain';
-import { isProxyMinter, getAmountOutProxy, isSspMinter, checkSSPvalidInput } from '../../../helper/deiHelper';
+import { isProxyMinter, getAmountOutProxy, isSspMinter, checkSSPvalidInput, isSspV4Minter } from '../../../helper/deiHelper';
 import { getSwapVsType, formatUnitAmount } from '../../../utils/utils';
 import SearchBox from '../../../components/App/Dei/SearchBox';
 import { useCrossWeb3 } from '../../../hooks/useWeb3';
@@ -47,14 +47,18 @@ const Dei = () => {
     const deiPrices = useRecoilValue(deiPricesState)
     useDeiUpdate(chainId)
     useSSPData(chainId, deiPrices)
+    useSSPV4Data(chainId)
     const collatRatio = useRecoilValue(collatRatioState)
     const web3 = useCrossWeb3(chainId)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
+    const { lowerBoundV4, topBoundV4, mintFeeV4, pausedV4 } = useRecoilValue(sspV4DataState)
+    console.log({ lowerBoundV4, topBoundV4, mintFeeV4, pausedV4 });
     const { lowerBound, topBound, leftMintableDei } = useRecoilValue(sspDataState)
 
     const [fastUpdate, setFastUpdate] = useState(0)
     const [proxy, setProxy] = useState(null)
     const [ssp, setSsp] = useState(null)
+    const [sspV4, setSspV4] = useState(null)
     const [isApproved, setIsApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
     const [swapLoading, setSwapLoading] = useState(false)
@@ -64,7 +68,29 @@ const Dei = () => {
     const [activeSearchBox, setActiveSearchBox] = useState(false)
     const [slippage, setSlippage] = useState(0.5)
     const [amountOutParams, setAmountOutParams] = useState([])
-    const contractAddress = useMemo(() => ssp ? SSP_ADDRESS[chainId] : proxy ? PROXY_MINT_ADDRESS[chainId] : COLLATERAL_POOL_ADDRESS[chainId], [chainId, proxy, ssp])
+    const contractAddress = useMemo(() => {
+        if (ssp) return SSP_ADDRESS[chainId]
+        if (sspV4) return SSPV4_ADDRESS[chainId]
+        if (proxy) return PROXY_MINT_ADDRESS[chainId]
+        return COLLATERAL_POOL_ADDRESS[chainId]
+    }, [chainId, sspV4, ssp, proxy])
+
+    const contractName = useMemo(() => {
+        if (contractAddress === SSP_ADDRESS[chainId]) return 'SSP'
+        if (contractAddress === SSPV4_ADDRESS[chainId]) return 'SSPv4'
+        if (contractAddress === PROXY_MINT_ADDRESS[chainId]) return 'Proxy'
+        return 'Collateral Pool'
+    }, [contractAddress, chainId])
+
+    console.log({ sspV4, ssp, proxy });
+
+
+    const currMintingFee = useMemo(() => {
+        if (ssp) return 'Zero'
+        if (sspV4) return isZero(mintFeeV4) ? "Zero" : `${mintFeeV4} %`
+        if (mintingFee) return `${mintingFee} %`
+        return ''
+    }, [mintingFee, mintFeeV4, sspV4, ssp])
 
     const hasProxy = useMemo(() => {
         if (!PROXY_MINT_ADDRESS[chainId]) return false
@@ -73,6 +99,11 @@ const Dei = () => {
 
     const hasSSP = useMemo(() => {
         if (!SSP_ADDRESS[chainId]) return false
+        return true
+    }, [chainId])
+
+    const hasSSPV4 = useMemo(() => {
+        if (!SSPV4_ADDRESS[chainId]) return false
         return true
     }, [chainId])
 
@@ -194,6 +225,10 @@ const Dei = () => {
             else if (chainId === ChainId.BSC && !isPair) {
                 amountIn1 = in1
             }
+            else if (sspV4) {
+                amountIn1 = in1
+                amountOut = RemoveTrailingZero(new BigNumber(amountIn1).times(100 - mintFeeV4).div(100).toFixed(6), 6)
+            }
             else if (!proxy) {
                 if (in1) {
                     amountIn1 = in1
@@ -273,6 +308,10 @@ const Dei = () => {
     }, [swapState.from, isPair, amountIn, lowerBound, topBound, leftMintableDei, chainId])
 
     useEffect(() => {
+        setSspV4(isSspV4Minter(swapState.from, isPair, amountIn, lowerBoundV4, topBoundV4, pausedV4, chainId))
+    }, [swapState.from, isPair, amountIn, lowerBoundV4, topBoundV4, pausedV4, chainId])
+
+    useEffect(() => {
         if (allowance.gt(0) && (isPair ? allowancePairToken.gt(0) : true)) {
             setIsApproved(true)
         } else {
@@ -292,7 +331,7 @@ const Dei = () => {
 
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, ssp, amountOutParams, chainId)
+    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, ssp, sspV4, amountOutParams, chainId)
 
     const handleApprove = useCallback(async () => {
         try {
@@ -417,7 +456,7 @@ const Dei = () => {
                         hasMax={true}
                         inputAmount={amountIn}
                         setInputAmount={setAmountIn}
-                        setActive={(hasProxy || hasSSP) ? showSearchBox : null}
+                        setActive={(hasProxy || hasSSP || hasSSPV4) ? showSearchBox : null}
                         currency={swapState.from}
                         TokensMap={TokensMap}
                         // disabledTitle="Please enter the desired DEI amount"
@@ -488,9 +527,9 @@ const Dei = () => {
                     />
 
                 </SwapWrapper>
-                {!ssp && <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />}
-                <SwapCard title="Minter Contract" value={proxy === null ? "..." : <ExternalLink href={getTransactionLink(chainId, contractAddress)} >{ssp ? `SSP` : proxy ? "Proxy" : "Collateral Pool"} <IconLink size={"12px"} style={{ marginBottom: "-2px", marginLeft: "-2px" }} /></ExternalLink>} />
-                <SwapCard title="Minting Fee" value={ssp ? "Zero" : mintingFee ? `${mintingFee} %` : ""} />
+                {!(ssp || sspV4) && <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />}
+                <SwapCard title="Minter Contract" value={proxy === null ? "..." : <ExternalLink href={getTransactionLink(chainId, contractAddress)} >{contractName} <IconLink size={"12px"} style={{ marginBottom: "-2px", marginLeft: "-2px" }} /></ExternalLink>} />
+                <SwapCard title="Minting Fee" value={currMintingFee} />
 
                 {leftMintableDei && ssp && <SwapCard title={<>
                     <RowStart style={{ alignItems: "center", cursor: "pointer" }} data-tip data-for='ssp-info'>

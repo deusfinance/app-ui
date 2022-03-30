@@ -61,6 +61,11 @@ export const sspDataState = atom({
     default: {},
 });
 
+export const sspV4DataState = atom({
+    key: 'sspV4Data',
+    default: {},
+});
+
 export const APYState = atom({
     key: 'APY',
     default: "",

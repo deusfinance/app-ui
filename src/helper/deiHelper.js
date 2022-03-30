@@ -1,12 +1,12 @@
 import BigNumber from "bignumber.js"
-import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP, SSP_ADDRESS, SSP_COLLATERAL_ADDRESS, PROXY_MINT_ADDRESS } from "../constant/contracts"
+import { COLLATERAL_ADDRESS, COLLATERAL_POOL_ADDRESS, DEI_ADDRESS, DEI_COLLATERAL_ZAP, DEI_DEUS_ZAP, DEUS_ADDRESS, MINT_PATH, TO_NATIVE_PATH, DEUS_NATIVE_ZAP, SSP_ADDRESS, SSP_COLLATERAL_ADDRESS, PROXY_MINT_ADDRESS, SSPV4_ADDRESS } from "../constant/contracts"
 import { isZero, TEN } from "../constant/number"
 import { collateralToken } from "../constant/token"
 import { ChainId } from "../constant/web3"
 import { TransactionState } from "../constant/web3"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { fetcher, formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract, getSSPContract } from "./contractHelpers"
+import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract, getSSPContract, getSSPV4Contract } from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 
 const baseUrl = "https://oracle4.deus.finance/dei"
@@ -147,6 +147,32 @@ export const getSspData = (chainId = ChainId.FTM, oracleResponse) => {
             name: "leftMintableDei",
             ...leftMintableParams
         }
+    ]
+}
+export const getSspV4Data = (chainId = ChainId.FTM) => {
+    if (!SSPV4_ADDRESS[chainId]) return []
+
+    return [
+        {
+            address: SSPV4_ADDRESS[chainId],
+            name: "lowerBound",
+        },
+        {
+            address: SSPV4_ADDRESS[chainId],
+            name: "topBound",
+        },
+        {
+            address: SSPV4_ADDRESS[chainId],
+            name: "mintFeeRate",
+        },
+        {
+            address: SSPV4_ADDRESS[chainId],
+            name: "MINT_FEE_PRECISION",
+        },
+        {
+            address: SSPV4_ADDRESS[chainId],
+            name: "paused",
+        },
     ]
 }
 
@@ -297,6 +323,11 @@ export const mintDeiSSP = (amountIn, chainId, web3) => {
         .methods
         .buyDei(amountIn)
 }
+export const mintDeiSSPv4 = (amountIn, chainId, web3) => {
+    return getSSPV4Contract(web3, chainId)
+        .methods
+        .buyDei(amountIn)
+}
 
 export const mintDeiSSPWithOracle = (amountIn, result, chainId, web3) => {
     console.log(amountIn, result.deus_price, result.expire_block, [result.signature]);
@@ -390,13 +421,37 @@ export const isSspMinter = (token, isPair, amountIn, lowerBound, topBound, deiLe
         //console.error("chainId is null.")
         return false
     }
-    if (token.address !== SSP_COLLATERAL_ADDRESS[chainId] || !SSP_ADDRESS[chainId]) {
+    if (token.address !== SSP_COLLATERAL_ADDRESS[chainId] || (!SSP_ADDRESS[chainId])) {
         return false
     }
 
     if (chainId === ChainId.BSC) return true
 
     return checkSSPvalidInput(amountIn, lowerBound, topBound, deiLeftInSSP)
+}
+export const isSspV4Minter = (token, isPair, amountIn, lowerBound, topBound, paused, chainId) => {
+
+    if (!token || !token.symbol) {
+        console.error("token is null.")
+        return false
+    }
+    if (isPair) {
+        return false
+    }
+    if (!chainId) {
+        return false
+    }
+    if (paused) {
+        console.log("sspv4 contract is paused.")
+        return false
+    }
+    if (token.address !== SSP_COLLATERAL_ADDRESS[chainId] || !SSPV4_ADDRESS[chainId]) {
+        return false
+    }
+
+    if (chainId === ChainId.BSC) return true
+
+    return checkSSPV4validInput(amountIn, lowerBound, topBound)
 }
 
 export const checkSSPvalidInput = (amountIn, lowerBound, topBound, deiLeftInSSP) => {
@@ -407,6 +462,13 @@ export const checkSSPvalidInput = (amountIn, lowerBound, topBound, deiLeftInSSP)
 
     if (new BigNumber(amountIn).comparedTo(deiLeftInSSP) > 0 || new BigNumber(deiLeftInSSP).comparedTo(1_000) < 0) {
         //console.log("amountIn is bigger than deiLeftInSSP.")
+        return false
+    }
+    return true
+}
+
+export const checkSSPV4validInput = (amountIn, lowerBound, topBound) => {
+    if ((!amountIn && !new BigNumber(lowerBound).isZero()) || new BigNumber(amountIn).comparedTo(lowerBound) < 0 || new BigNumber(amountIn).comparedTo(topBound) > 0) {
         return false
     }
     return true

@@ -246,16 +246,18 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
     return { onRedeem: handleRedeem }
 }
 
-export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, ssp, sspV4, amountOutParams, validChainId) => {
+export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, deusApiPrice, slippage, proxy, ssp, sspV4, amountOutParams, validChainId) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
     const handleMint = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        if (!from1Currency || !toCurrency || !amountIn1 || !amountOut) return
-        const amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
+        if (!from1Currency || !toCurrency || !amountIn1 || !amountOut || !deusApiPrice) return
+        let amount1toWei = getToWei(amountIn1, from1Currency.decimals).toFixed(0)
         const amountOutToWei = getToWei(amountOut, toCurrency.decimals).toFixed(0)
         const minAmountOutToWei = getToWei(amountOut, toCurrency.decimals).times(1 - (slippage / 100)).toFixed(0)
+
+        const deusPriceApiToWei = getToWei(deusApiPrice, from1Currency.decimals).toNumber()
 
         let path = "/mint-algorithmic"
         let fn = null
@@ -291,7 +293,30 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
                     ToastTransaction("info", "Mint Failed.", result.message)
                     return
                 }
-                const amount2toWei = getToWei(amountIn2, from2Currency.decimals).toFixed(0)
+                const diffPrices = deusPriceApiToWei - result.deus_price
+                // if (isZero(diffPrices)) {
+                //     console.log("Same")
+                // } else {
+                //     console.log("Different")
+                // }
+                const isValidDiff = Math.abs(diffPrices / deusPriceApiToWei) < (slippage / 100)
+                if (isValidDiff) {
+                    // console.log("Yes", diffPrices, deusPriceApiToWei, result?.deus_price)
+                } else {
+                    console.log("increase your slippage", diffPrices, deusPriceApiToWei, result?.deus_price)
+                    return
+                }
+                let correctAmount2 = amountIn2
+                const deusPriceOracle = fromWei(result?.deus_price, 6)
+                if (diffPrices < 0) {
+                    correctAmount2 = new BigNumber(amountIn1).times(100 - collatRatio).div(collatRatio).div(deusPriceOracle).toNumber()
+                } else if (diffPrices > 0) {
+                    const cAmountIn1 = new BigNumber(correctAmount2).times(deusPriceOracle).times(collatRatio).div(100 - collatRatio).toNumber()
+                    amount1toWei = getToWei(cAmountIn1, from1Currency.decimals).toFixed(0)
+                }
+
+                const amount2toWei = getToWei(correctAmount2, from2Currency.decimals).toFixed(0)
+
                 fn = mintFractional(
                     amount1toWei,
                     amount2toWei,
@@ -383,7 +408,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         } catch (error) {
             console.log(error);
         }
-    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, proxy, ssp, sspV4, amountOutParams, account, chainId, validChainId, web3])
+    }, [from1Currency, from2Currency, toCurrency, amountIn1, amountIn2, amountOut, collatRatio, slippage, deusApiPrice, proxy, ssp, sspV4, amountOutParams, account, chainId, validChainId, web3])
 
     return { onMint: handleMint }
 }
@@ -734,7 +759,6 @@ export const useSSPV4Data = (validChainId) => {
                     mintFeeV4: Number(mintFeeRate) / Number(MINT_FEE_PRECISION) * 100,
                     pausedV4: paused.length && paused[0],
                 }
-                console.log(updateState);
                 setSspData({ ...updateState })
             } catch (error) {
                 console.log("useSSPV4Data ", error);

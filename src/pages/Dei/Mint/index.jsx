@@ -52,7 +52,6 @@ const Dei = () => {
     const web3 = useCrossWeb3(chainId)
     const { minting_fee: mintingFee, mintPaused } = useRecoilValue(husdPoolDataState)
     const { lowerBoundV4, topBoundV4, mintFeeV4, pausedV4 } = useRecoilValue(sspV4DataState)
-    console.log({ lowerBoundV4, topBoundV4, mintFeeV4, pausedV4 });
     const { lowerBound, topBound, leftMintableDei } = useRecoilValue(sspDataState)
 
     const [fastUpdate, setFastUpdate] = useState(0)
@@ -81,9 +80,6 @@ const Dei = () => {
         if (contractAddress === PROXY_MINT_ADDRESS[chainId]) return 'Proxy'
         return 'Collateral Pool'
     }, [contractAddress, chainId])
-
-    console.log({ sspV4, ssp, proxy });
-
 
     const currMintingFee = useMemo(() => {
         if (ssp) return 'Zero'
@@ -331,7 +327,7 @@ const Dei = () => {
 
 
     const { onApprove } = useApprove(targetToken, contractAddress, chainId)
-    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, slippage, proxy, ssp, sspV4, amountOutParams, chainId)
+    const { onMint } = useMint(swapState.from, pairToken, swapState.to, amountIn, amountInPair, amountOut, collatRatio, deiPrices?.deus_price, slippage, proxy, ssp, sspV4, amountOutParams, chainId)
 
     const handleApprove = useCallback(async () => {
         try {

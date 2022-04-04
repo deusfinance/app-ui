@@ -122,7 +122,7 @@ export const SSP_ADDRESS = {
 }
 
 export const SSPV4_ADDRESS = {
-  [ChainId.FTM]: '0xa943C2867aF32144D7106176Fc9cf6888C279112',
+  [ChainId.FTM]: '0xbe9dE5747317F27f9A39ea5924ed4c51b34fB0d1',
 }
 
 export const SSP_COLLATERAL_ADDRESS = {

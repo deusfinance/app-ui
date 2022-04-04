@@ -120,7 +120,12 @@ const Migrator = () => {
 
     return (<MainWrapper>
         <Type.XXL fontWeight="300" marginBottom="20px">Migrator</Type.XXL>
-        <Type.MD fontWeight="300" margin="auto" mb="4" opacity="0.5" maxWidth="700px" width="80%" >Please check the box corresponding to the tokens you wish to migrate. Note that all tokens checked will be migrated to the chosen network. Each token type can only be migrated ONCE.</Type.MD>
+        <Type.MD fontWeight="300" margin="auto" mb="4" opacity="0.5" maxWidth="700px" width="80%" >
+            Please check the box corresponding to the tokens you wish to migrate. Note that all tokens checked will be migrated to the chosen network. Each token type can only be migrated ONCE.
+            <br />
+            <br />
+            DEUS v1 and v2 are not the same tokens. DEUS v1 is the legacy ETH-bonded token and swaps to DEUS v2 at a ratio of 30:1. DEA and DEUS v2 swap 1:1
+        </Type.MD>
 
         {account && <MainDiv>
             {currUnMigratedList.length > 0 ? currUnMigratedList.map(config => {
@@ -134,7 +139,9 @@ const Migrator = () => {
                     </Container>
                     {(config.id + 1) !== userSnap.length && <Image src="/img/dei/arrow-down.svg" size="35px" my="15px" />}
                 </div>
-            }) : <div style={{ borderRadius: "8px", display: "inline-block", padding: "10px 20px", backgroundColor: "#2b2d34", margin: "20px auto" }}><Type.MD>No eligible tokens for migration found</Type.MD></div>}
+            }) : <div style={{ borderRadius: "8px", display: "inline-block", padding: "10px 20px", backgroundColor: "#2b2d34", margin: "20px auto" }}>
+                <Type.MD>No eligible tokens for migration found</Type.MD>
+            </div>}
         </MainDiv>}
 
         <div style={{ margin: "40px 0" }}></div>

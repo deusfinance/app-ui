@@ -18,6 +18,7 @@ import { useMigrate, useUserStatus } from '../../hooks/useMigrate';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { coolDownState } from '../../store/dei';
 import { getCurrentTimeStamp } from '../../utils/utils';
+import { ExternalLink } from '../../components/App/Link';
 
 const Migrator = () => {
     const { account, chainId } = useWeb3React()
@@ -124,7 +125,8 @@ const Migrator = () => {
             Please check the box corresponding to the tokens you wish to migrate. Note that all tokens checked will be migrated to the chosen network. Each token type can only be migrated ONCE.
             <br />
             <br />
-            DEUS v1 and v2 are not the same tokens. DEUS v1 is the legacy ETH-bonded token and swaps to DEUS v2 at a ratio of 30:1. DEA and DEUS v2 swap 1:1
+            DEUS v1 and v2 are not the same tokens. DEUS v1 is the legacy ETH-bonded token and swaps to DEUS v2 at a ratio of 30:1. DEA and DEUS v2 swap 1:1.
+            Read more about DEUS v2 <ExternalLink active={true} href={"https://medium.com/@deusfinance/deus-finance-v2-apollo-is-here-everything-you-need-to-know-about-the-migrator-a22e01251a16"}>here</ExternalLink>.
         </Type.MD>
 
         {account && <MainDiv>

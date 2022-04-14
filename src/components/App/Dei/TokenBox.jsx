@@ -3,7 +3,7 @@ import { Flex, Box, Image } from 'rebass/styled-components';
 import styled from 'styled-components';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
 import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';
-import { formatBalance3 } from '../../../utils/utils';
+import { formatBalance3, validateKeyPress } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';
 import { InputAmount } from '../Swap';
@@ -76,7 +76,7 @@ const TokenBox = ({ hasMax, proxy, placeHolder, title, currency, inputAmount = "
                 mt="5px"
                 onFocus={() => setFocusType(focusType)}
             >
-                <InputAmount placeholder={proxy ? placeHolder : "0.0"} min="0" value={isNaN(inputAmount) ? "" : inputAmount} disabled={disabled} title={disabledTitle ?? ""} onChange={(e) => {
+                <InputAmount placeholder={proxy ? placeHolder : "0.0"} min="0" onKeyPress={validateKeyPress} value={isNaN(inputAmount) ? "" : inputAmount} disabled={disabled} title={disabledTitle ?? ""} onChange={(e) => {
                     // setFocusType(focusType)
                     setInputAmount(e.currentTarget.value)
                 }} />

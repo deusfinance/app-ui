@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { isZero } from '../../../constant/number';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
 import useCrossTokenBalance from '../../../hooks/useCrossTokenBalance';
-import { formatBalance3 } from '../../../utils/utils';
+import { formatBalance3, validateKeyPress } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';
 import { InputAmount } from '../Swap';
@@ -93,7 +93,7 @@ const ZapBox = ({ hasMax, title, currency, inputAmount = "", setInputAmount, set
             padding="0 8px"
             style={{ borderRadius: "10px" }}
         >
-            <InputAmount fontSize="20px" placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+            <InputAmount fontSize="20px" placeholder="0.0" min="0" onKeyPress={validateKeyPress} value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
                 setFocusType(focusType)
                 setInputAmount(e.currentTarget.value)
             }} />

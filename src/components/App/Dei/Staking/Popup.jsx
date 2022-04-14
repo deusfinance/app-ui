@@ -8,7 +8,7 @@ import { ButtonMax } from '../../Button';
 import { ExternalLink } from '../../Link';
 import { FlexCenter } from '../../Container';
 import SwapAction from '../SwapAction';
-import { formatBalance3 } from '../../../../utils/utils';
+import { formatBalance3, validateKeyPress } from '../../../../utils/utils';
 import { getTransactionLink } from '../../../../utils/explorers';
 
 ReactModal.setAppElement("#root")
@@ -148,6 +148,8 @@ const Popup = ({
                         <InputAmount
                             placeholder="0.0"
                             width="0"
+                            min="0"
+                            onKeyPress={validateKeyPress}
                             value={amount} onChange={(e) => setAmount(e.currentTarget.value)} />
                         {hasMax && !onMax && <ButtonMax width={"40px"} active={true}
                             style={{ background: "#616161" }}

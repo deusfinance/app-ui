@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { InputAmount } from '.';
 import { getFullDisplayBalance } from '../../../helper/formatBalance';
 import useTokenBalance from '../../../hooks/useTokenBalance';
-import { formatBalance3 } from '../../../utils/utils';
+import { formatBalance3, validateKeyPress } from '../../../utils/utils';
 import { ButtonMax } from '../Button';
 import CurrencyLogo from '../Currency';
 import { Type } from '../Text';
@@ -73,7 +73,7 @@ const TokenBox = ({ hasMax, title, mt, currency, inputAmount = "", setInputAmoun
             alignItems="center"
             mt="5px"
         >
-            <InputAmount placeholder="0.0" min="0" value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
+            <InputAmount placeholder="0.0" min="0" onKeyPress={validateKeyPress} value={isNaN(inputAmount) ? "" : inputAmount} onChange={(e) => {
                 if (setFocusType) { setFocusType(type) }
                 setInputAmount(e.currentTarget.value)
             }} />

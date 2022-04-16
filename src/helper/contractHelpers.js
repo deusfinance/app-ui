@@ -5,6 +5,7 @@ import DeiPoolAbi from '../config/abi/DeiPoolAbi.json'
 import DeiAbi from '../config/abi/DEIAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import CollateralAbi from '../config/abi/HusdPoolAbi.json'
+import NewCollateralAbi from '../config/abi/DEIPool.json'
 import NewProxyMinterAbi from '../config/abi/NewProxyAbi'
 import DeiCollateralZapAbi from '../config/abi/DeiCollateralZapAbi.json'
 import DeiDeusZapAbi from '../config/abi/DeiDeusZap.json'
@@ -62,7 +63,12 @@ export const getDeiContract = (web3, chainId = ChainId.RINKEBY) => {
     return getContract(DeiAbi, DEI_ADDRESS[chainId], web3)
 }
 
+const newCollateralAbiSupportedChains = [];
+
 export const getCollateralPoolContract = (web3, chainId = ChainId.AVALANCHE) => {
+    if(newCollateralAbiSupportedChains.includes(chainId)) {
+        return getContract(NewCollateralAbi, COLLATERAL_POOL_ADDRESS[chainId], web3)
+    }
     return getContract(CollateralAbi, COLLATERAL_POOL_ADDRESS[chainId], web3)
 }
 

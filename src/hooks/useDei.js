@@ -195,7 +195,7 @@ export const useClaimAll = (validChainId = 4) => {
     return { onClaimAll: handleClaimAll }
 }
 
-export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, collatRatio, validChainId = 1) => {
+export const useRedeem = (fromCurrency, amountIn, collatRatio, validChainId = 1) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
@@ -204,40 +204,18 @@ export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amou
         let fn = null
         let result = null
         if (collatRatio === 100) {
-            result = await makeDeiRequest("/redeem-1to1", validChainId)
-            fn = redeem1to1Dei(
-                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
-                result.collateral_price,
-                result.expire_block,
-                result.signature,
-                chainId,
-                web3,
-            )
+            await makeDeiRequest("/redeem-1to1", validChainId)
+            fn = redeem1to1Dei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else if (collatRatio > 0) {
             result = await makeDeiRequest("/redeem-fractional", validChainId)
             if (result.status === "ERROR") {
                 ToastTransaction("info", "Redeem Failed.", result.message)
                 return
             }
-            fn = redeemFractionalDei(
-                result.collateral_price,
-                result.deus_price,
-                result.expire_block,
-                result.signature,
-                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
-                chainId,
-                web3,
-            )
+            fn = redeemFractionalDei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else {
-            result = await makeDeiRequest("/redeem-algorithmic", validChainId)
-            fn = redeemAlgorithmicDei(
-                result.deus_price,
-                result.expire_block,
-                result.signature,
-                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
-                chainId,
-                web3,
-            )
+            await makeDeiRequest("/redeem-algorithmic", validChainId)
+            fn = redeemAlgorithmicDei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         }
         const payload = await getGasData(web3, fn, validChainId, account)
         return await SendWithToast(fn, account, chainId, `Redeem ${amountIn} ${fromCurrency.symbol}`, payload)

@@ -185,7 +185,7 @@ const Dei = () => {
     }, [allowance]) //isPreApproved ?
 
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
-    const { onRedeem } = useRedeem(swapState.from, swapState.to, pairToken, amountIn, amountOut, amountOutPair, collatRatio, chainId)
+    const { onRedeem } = useRedeem(swapState.from, amountIn, collatRatio, chainId)
 
     const handleApprove = useCallback(async () => {
         try {

@@ -354,22 +354,22 @@ export const mintAlgorithmic = (deus_amount_d18, deus_current_price, expire_bloc
         .mintAlgorithmicDEI(deus_amount_d18, deus_current_price, expire_block, [signature])
 }
 
-export const redeem1to1Dei = (amountIn, collateral_price, expire_block, signature, chainId, web3) => {
+export const redeem1to1Dei = (amountIn, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .redeem1t1DEI(amountIn, collateral_price, expire_block, [signature])
+        .redeem1t1DEI(amountIn)
 }
 
-export const redeemFractionalDei = (collateral_price, deus_price, expire_block, signature, amountIn, chainId, web3) => {
+export const redeemFractionalDei = (amountIn, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .redeemFractionalDEI(amountIn, collateral_price, deus_price, expire_block, [signature])
+        .redeemFractionalDEI(amountIn)
 }
 
-export const redeemAlgorithmicDei = (deus_price, expire_block, signature, amountIn, chainId, web3) => {
+export const redeemAlgorithmicDei = (amountIn, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .redeemAlgorithmicDEI(amountIn, deus_price, expire_block, [signature])
+        .redeemAlgorithmicDEI(amountIn)
 }
 
 export const getClaimAll = async (account, web3, chainId = ChainId.ETH) => {

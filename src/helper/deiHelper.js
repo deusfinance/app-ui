@@ -196,23 +196,23 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
         // },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'pool_ceiling',
+            name: 'poolCeiling',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'redemption_fee',
+            name: 'redemptionFee',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'minting_fee',
+            name: 'mintingFee',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'buyback_fee',
+            name: 'buybackFee',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'recollat_fee',
+            name: 'recollatFee',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -232,18 +232,22 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'bonus_rate',
+            name: 'bonusRate',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'redemption_delay',
+            name: 'deusRedemptionDelay',
+        },
+        {
+            address: COLLATERAL_POOL_ADDRESS[chainId],
+            name: 'collateralRedemptionDelay',
         },
     ]
     if (account) {
         calls = [...calls,
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'redeemDEUSBalances',
+            name: 'getUnRedeemedPositions',
             params: [account]
         },
         {

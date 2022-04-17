@@ -5,7 +5,7 @@ import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
 import { fromWei, getToWei, RemoveTrailingZero } from '../helper/formatBalance'
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
+import DeiPoolAbi from '../config/abi/DEIPool.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import SspAbi from '../config/abi/SspAbi.json'
 import SspOracleAbi from '../config/abi/SspOracleAbi.json'
@@ -628,7 +628,7 @@ export const useHusdPoolData = (validChainId) => {
         const get = async () => {
 
             try {
-                const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
+                const mul = await multicall(web3, DeiPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
 
                 const [
                     collatDollarBalance,
@@ -643,8 +643,9 @@ export const useHusdPoolData = (validChainId) => {
                     mintPaused,
                     redeemPaused,
                     bonus_rate,
-                    redemption_delay,
-                    redeemDEUSBalances,
+                    deusRedemptionDelay,
+                    collateralRedemptionDelay,
+                    unRedeemedPositions,
                     redeemCollateralBalances,
                 ] = mul
                 const updateState = {
@@ -656,12 +657,13 @@ export const useHusdPoolData = (validChainId) => {
                     buyback_fee: new BigNumber(buyback_fee).toNumber(),
                     recollat_fee: new BigNumber(recollat_fee).toNumber(),
                     bonus_rate: new BigNumber(bonus_rate).toNumber(),
-                    redemption_delay: new BigNumber(redemption_delay).toNumber(),
+                    deusRedemptionDelay: new BigNumber(deusRedemptionDelay).toNumber(),
+                    collateralRedemptionDelay: new BigNumber(collateralRedemptionDelay).toNumber(),
                     redeemPaused: redeemPaused[0],
                     mintPaused: mintPaused[0],
                     buyBackPaused: buyBackPaused[0],
                     recollateralizePaused: recollateralizePaused[0],
-                    redeemDEUSBalances: account ? fromWei(redeemDEUSBalances, 18) : "0",
+                    unRedeemedPositions,
                     redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, collateralToken[validChainId]?.decimals) : "0",
                 }
                 setHusdPoolData({ ...updateState })

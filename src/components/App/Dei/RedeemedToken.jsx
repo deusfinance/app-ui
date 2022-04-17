@@ -91,7 +91,6 @@ const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 const RedeemedToken = ({ title, currencies, chainId }) => {
   let poolData = useRecoilValue(husdPoolDataState)
   const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
-  const redeemDEUSBalances = poolData ? poolData["redeemDEUSBalances"] : null
 
   const { onClaimAll } = useClaimAll(chainId)
 
@@ -108,19 +107,31 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
     }
   }, [onClaimAll])
 
+  function getNumberWrapper(index) {
+    if (index === 0) {
+      if (redeemCollateralBalances) {
+        return parseFloat(redeemCollateralBalances).toFixed(3);
+      } else {
+        return IMG;
+      }
+    } else {
+        return IMG;
+    }
+  }
+
   return (
     useMemo(() => {
       return <>
-        {(redeemCollateralBalances && redeemDEUSBalances && (isGt(redeemCollateralBalances, 0) || isGt(redeemDEUSBalances, 0))) && <SmallWrapper>
+        {(redeemCollateralBalances && isGt(redeemCollateralBalances, 0)) && <SmallWrapper>
           <MyText> {title} </MyText>
           {currencies.map(({ symbol, logo }, index) => {
             return <TokenInfo key={index + logo}>
-              <CurrencyLogo symbol={symbol} logo={logo} />
+              <CurrencyLogo symbol={symbol} logo={logo}/>
 
               <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
 
               <NumberWrapper color="text1" ml="7px" mr="9px">
-                {index === 0 ? redeemCollateralBalances ? parseFloat(redeemCollateralBalances).toFixed(3) : IMG : redeemDEUSBalances ? parseFloat(redeemDEUSBalances).toFixed(3) : IMG}
+                {getNumberWrapper(index)}
               </NumberWrapper>
 
             </TokenInfo>
@@ -129,7 +140,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
           <ButtonSwap active={true} bgColor={"grad_dei"} onClick={handleClaim}> CLAIM ALL </ButtonSwap>
         </SmallWrapper>}
       </>
-    }, [title, currencies, redeemCollateralBalances, redeemDEUSBalances, handleClaim])
+    }, [title, currencies, redeemCollateralBalances, handleClaim])
   );
 }
 

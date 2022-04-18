@@ -17,10 +17,31 @@ import { ethers } from "ethers";
 import { isZero, ZERO } from "../constant/number";
 import { deiPricesState, husdPoolDataState, depositAmountState, sspDataState, sspV4DataState } from '../store/dei'
 import {
-    makeDeiRequest, getHusdPoolData,
-    redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
-    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
-    mint1t1DEI, collatUsdPrice, zapIn, getZapAmountsOut, mintDeiSSP, mintDeiSSPWithOracle, getSspData, getSspV4Data, mintDeiSSPv4
+    makeDeiRequest,
+    getHusdPoolData,
+    redeem1to1Dei,
+    redeemFractionalDei,
+    redeemAlgorithmicDei,
+    collectCollateral,
+    mintFractional,
+    mintAlgorithmic,
+    buyBackDEUS,
+    RecollateralizeDEI,
+    getStakingData,
+    getStakingTokenData,
+    DeiDeposit,
+    DeiWithdraw,
+    SendWithToast,
+    mint1t1DEI,
+    collatUsdPrice,
+    zapIn,
+    getZapAmountsOut,
+    mintDeiSSP,
+    mintDeiSSPWithOracle,
+    getSspData,
+    getSspV4Data,
+    mintDeiSSPv4,
+    collectDeus
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
@@ -183,16 +204,23 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
 }
 
 //TODO
-export const useClaimAll = (validChainId = 4) => {
+export const useClaimRedeemedTokens = (validChainId = 4) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
-    const handleClaimAll = useCallback(async () => {
+    const handleCollectCollateral = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        const tx = await getClaimAll(account, web3, chainId)
+        const tx = await collectCollateral(account, web3, chainId)
         return tx
     }, [account, chainId, validChainId, web3])
-    return { onClaimAll: handleClaimAll }
+
+    const handleCollectDeus = useCallback(async () => {
+        if (validChainId && chainId !== validChainId) return false
+        const tx = await collectDeus(account, web3, chainId)
+        return tx
+    }, [account, chainId, validChainId, web3])
+
+    return { onCollectCollateral: handleCollectCollateral, onCollectDeus: handleCollectDeus }
 }
 
 export const useRedeem = (fromCurrency, amountIn, collatRatio, validChainId = 1) => {
@@ -207,11 +235,18 @@ export const useRedeem = (fromCurrency, amountIn, collatRatio, validChainId = 1)
             await makeDeiRequest("/redeem-1to1", validChainId)
             fn = redeem1to1Dei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else if (collatRatio > 0) {
-            result = await makeDeiRequest("/redeem-fractional", validChainId)
-            if (result.status === "ERROR") {
-                ToastTransaction("info", "Redeem Failed.", result.message)
-                return
-            }
+            // result = await muonClient
+            //     .app('redeem')
+            //     .method('signature', {
+            //         chainId: validChainId,
+            //         userAddress: account,
+            //         reedemId: 0, //TODO: get from nextRedeemId
+            //     })
+            //     .call()
+            // if (result.status === false) {
+            //     ToastTransaction("info", "Redeem Failed.", result.message)
+            //     return
+            // }
             fn = redeemFractionalDei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else {
             await makeDeiRequest("/redeem-algorithmic", validChainId)
@@ -295,16 +330,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
                 const amount2toWei = getToWei(correctAmount2, from2Currency.decimals).toFixed(0)
 
-                fn = mintFractional(
-                    amount1toWei,
-                    amount2toWei,
-                    result.collateral_price.toString(),
-                    result.deus_price,
-                    result.expire_block,
-                    result.signature,
-                    chainId,
-                    web3,
-                )
+                fn = mintFractional(amount1toWei, amount2toWei, result.deus_price, result.expire_block, result.signature, chainId, web3)
             } else {
                 const result = await makeDeiRequest(path, validChainId)
                 fn = mintAlgorithmic(
@@ -626,7 +652,6 @@ export const useHusdPoolData = (validChainId) => {
 
     useEffect(() => {
         const get = async () => {
-
             try {
                 const mul = await multicall(web3, DeiPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
 
@@ -645,7 +670,8 @@ export const useHusdPoolData = (validChainId) => {
                     bonus_rate,
                     deusRedemptionDelay,
                     collateralRedemptionDelay,
-                    unRedeemedPositions,
+                    allPositions,
+                    nextRedeemId,
                     redeemCollateralBalances,
                 ] = mul
                 const updateState = {
@@ -663,7 +689,8 @@ export const useHusdPoolData = (validChainId) => {
                     mintPaused: mintPaused[0],
                     buyBackPaused: buyBackPaused[0],
                     recollateralizePaused: recollateralizePaused[0],
-                    unRedeemedPositions,
+                    allPositions: allPositions.positinos,
+                    nextRedeemId,
                     redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, collateralToken[validChainId]?.decimals) : "0",
                 }
                 setHusdPoolData({ ...updateState })

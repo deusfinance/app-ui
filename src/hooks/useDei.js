@@ -45,12 +45,14 @@ import {
 } from '../helper/deiHelper'
 import { blockNumberState } from '../store/wallet'
 import { formatBalance3 } from '../utils/utils'
-import { collateralToken } from '../constant/token'
+import {collateralToken, deusToken} from '../constant/token'
 import { COLLATERAL_ADDRESS, MINT_PATH, SSP_ADDRESS } from '../constant/contracts'
 import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
 import { ChainId, isSupportEIP1559 } from '../constant/web3'
 import { DEI_COLLATERAL_ZAP, SSPV4_ADDRESS } from '../constant/contracts';
 import { ToastTransaction } from '../utils/explorers'
+import timestamp from "muon";
+import {muonClient} from "../constant/clients";
 
 export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
     const web3 = useWeb3()
@@ -214,9 +216,25 @@ export const useClaimRedeemedTokens = (validChainId = 4) => {
         return tx
     }, [account, chainId, validChainId, web3])
 
-    const handleCollectDeus = useCallback(async () => {
+    const handleCollectDeus = useCallback(async (index) => {
         if (validChainId && chainId !== validChainId) return false
-        const tx = await collectDeus(account, web3, chainId)
+
+        const result = await muonClient
+            .app('redeem')
+            .method('signature', {
+                chainId,
+                userAddress: account,
+                reedemId: index,
+            })
+            .call()
+        if (result.status === false) {
+            ToastTransaction("info", "Redeem Failed.", result.message)
+            return
+        }
+        console.log(result)
+        const price = result.result.data.result.price
+        const signatures = result.result.signatures
+        const tx = await collectDeus(account, web3, chainId, price, index, signatures)
         return tx
     }, [account, chainId, validChainId, web3])
 
@@ -235,18 +253,6 @@ export const useRedeem = (fromCurrency, amountIn, collatRatio, validChainId = 1)
             await makeDeiRequest("/redeem-1to1", validChainId)
             fn = redeem1to1Dei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else if (collatRatio > 0) {
-            // result = await muonClient
-            //     .app('redeem')
-            //     .method('signature', {
-            //         chainId: validChainId,
-            //         userAddress: account,
-            //         reedemId: 0, //TODO: get from nextRedeemId
-            //     })
-            //     .call()
-            // if (result.status === false) {
-            //     ToastTransaction("info", "Redeem Failed.", result.message)
-            //     return
-            // }
             fn = redeemFractionalDei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else {
             await makeDeiRequest("/redeem-algorithmic", validChainId)
@@ -654,7 +660,6 @@ export const useHusdPoolData = (validChainId) => {
         const get = async () => {
             try {
                 const mul = await multicall(web3, DeiPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
-
                 const [
                     collatDollarBalance,
                     // availableExcessCollatDV,

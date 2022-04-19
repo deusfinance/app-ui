@@ -7,9 +7,10 @@ import { useRecoilValue } from 'recoil';
 import { husdPoolDataState } from '../../../store/dei'
 import { isGt } from '../../../constant/number';
 import { useClaimRedeemedTokens } from '../../../hooks/useDei';
-import {collateralToken, deusToken} from "../../../constant/token";
 import useRefresh from "../../../hooks/useRefresh";
-import timestamp from "muon";
+import {fromWei, fromWeiBn} from "../../../helper/formatBalance";
+import {BigNumber} from "ethers";
+import {ToastTransaction} from "../../../utils/explorers";
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -78,7 +79,8 @@ const ClaimButton = styled.div`
   background-color: #325cfe;
   color: #FFF;
   cursor: pointer;
-  padding: 15px 20px;
+  padding: 15px 0px;
+  width: 100px;
 `
 
 function CurrencyLogo({
@@ -106,47 +108,64 @@ const ButtonSyncActive = styled(ButtonSync)`
   }
 `
 
-const ButtonSwap = styled(ButtonSyncActive)`
-  background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
-  color: ${({ theme }) => theme.text1_2};
-  font-size:${({ fontSize }) => fontSize || "15px"};
-`
-
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
 const useRedeemClaimTools = () => {
   const poolData = useRecoilValue(husdPoolDataState)
   const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
+  const nextRedeemId = (poolData && poolData["nextRedeemId"]) ? poolData["nextRedeemId"][0].toNumber() : 0
+  const pairTokenPositions = poolData ? poolData["allPositions"] : null
 
-  const diffTimeStamp = useCallback(
-      (redemptionDelay, timestampInSec) => {
-        const timestamp = new Date() / 1000
-        const diffInSec = redemptionDelay - (timestamp - timestampInSec)
-        const toTwoDigitNumber = (num) => {
-          let numStr = String(num)
-          if(numStr.length >= 2) {
-            return numStr
-          }
-          else return `0${numStr}`
-        }
-        if(diffInSec > 0) {
-          const minutes = toTwoDigitNumber(Math.floor(diffInSec / 60))
-          const seconds = toTwoDigitNumber(Math.ceil(diffInSec % 60))
-          return toTwoDigitNumber(`${minutes}:${seconds}`)
-        }
-        return null
-      },[],
-  );
+  const diffTimeStamp = (redemptionDelay, timestampInSec) => {
+    const timestamp = new Date() / 1000
+    const diffInSec = redemptionDelay - (timestamp - timestampInSec)
+    const toTwoDigitNumber = (num) => {
+      let numStr = String(num)
+      if(numStr.length >= 2) {
+        return numStr
+      }
+      else return `0${numStr}`
+    }
+    if(diffInSec > 0) {
+      const hours = toTwoDigitNumber(Math.floor(diffInSec / 3600))
+      const minutes = toTwoDigitNumber(Math.floor((diffInSec % 3600) / 60))
+      const seconds = toTwoDigitNumber(Math.ceil(diffInSec % 60))
+      return toTwoDigitNumber(`${hours}:${minutes}:${seconds}`)
+    }
+    return null
+  };
 
-  const collateralRedeemAvailabe = useMemo(() => {
+  const collateralRedeemAvailable = useMemo(() => {
     return redeemCollateralBalances && isGt(redeemCollateralBalances, 0)
   }, [redeemCollateralBalances])
 
-  const redeemAvailabe = useMemo(() => {
-    return collateralRedeemAvailabe
-  }, [collateralRedeemAvailabe])
+  const deusRedeemAvailable = useMemo(() => {
+    return pairTokenPositions && (pairTokenPositions.length > nextRedeemId)
+  }, [pairTokenPositions ,nextRedeemId])
 
-  return {redeemCollateralBalances, diffTimeStamp, collateralRedeemAvailabe, redeemAvailabe  }
+  const redeemAvailable = useMemo(() => {
+    return collateralRedeemAvailable || deusRedeemAvailable
+  }, [collateralRedeemAvailable ,deusRedeemAvailable])
+
+  return {redeemCollateralBalances, nextRedeemId, pairTokenPositions,
+      diffTimeStamp, collateralRedeemAvailable, redeemAvailable, deusRedeemAvailable  }
+}
+
+const RedeemTokenRow = ({token, handleClaim, remainingWaitTime, amount}) => {
+    return (
+        <TokenInfo>
+            <CurrencyLogo symbol={token.symbol} logo={token.logo}/>
+
+            <TextWrapper color="text1" ml="7px" mr="9px"> {token.symbol} </TextWrapper>
+
+            <NumberWrapper color="text1" ml="7px" mr="9px">
+                {amount ? parseFloat(amount).toFixed(3) : IMG}
+            </NumberWrapper>
+            <ClaimButton onClick={handleClaim}>
+                {remainingWaitTime ?? 'Claim'}</ClaimButton>
+
+        </TokenInfo>
+    )
 }
 
 const CollateralRedeem = ({ theCollateralToken, chainId }) => {
@@ -168,7 +187,7 @@ const CollateralRedeem = ({ theCollateralToken, chainId }) => {
         console.error(e)
       }
     }
-  }, [onCollectCollateral])
+  }, [onCollectCollateral, remainingWaitTime])
 
   useEffect(() => {
     if(poolData.allPositions?.length) {
@@ -177,44 +196,96 @@ const CollateralRedeem = ({ theCollateralToken, chainId }) => {
           diffTimeStamp(poolData.collateralRedemptionDelay, lastReedemTimestamp)
       )
     }
-  }, [poolData, fastRefresh])
+  }, [poolData, fastRefresh, diffTimeStamp])
 
   return (
-      <TokenInfo>
-        <CurrencyLogo symbol={theCollateralToken.symbol} logo={theCollateralToken.logo}/>
-
-        <TextWrapper color="text1" ml="7px" mr="9px"> {theCollateralToken.symbol} </TextWrapper>
-
-        <NumberWrapper color="text1" ml="7px" mr="9px">
-          {redeemCollateralBalances ? parseFloat(redeemCollateralBalances).toFixed(3) : IMG}
-        </NumberWrapper>
-        <ClaimButton onClick={handleClaim}>
-          {remainingWaitTime ?? 'Claim'}</ClaimButton>
-
-      </TokenInfo>
+      <RedeemTokenRow
+          token={theCollateralToken}
+          handleClaim={handleClaim}
+          remainingWaitTime={remainingWaitTime}
+          amount={redeemCollateralBalances}
+      />
   )
 }
 
-const RedeemedToken = ({ title, currencies, chainId }) => {
-  const { collateralRedeemAvailabe, redeemAvailabe } = useRedeemClaimTools()
+const PairRedeem = ({ pairToken, chainId, index, position }) => {
+    const poolData = useRecoilValue(husdPoolDataState)
+    const { fastRefresh } = useRefresh()
+    const [remainingWaitTime, setRemainingWaitTime] = useState(null);
+    const { onCollectDeus } = useClaimRedeemedTokens(chainId)
+    const { diffTimeStamp, nextRedeemId } = useRedeemClaimTools()
+    const handleClaim = useCallback(async () => {
+        if(!remainingWaitTime) {
+            if(index !== nextRedeemId) {
+                ToastTransaction("info", "Redeem Failed.", "first claim previous ones")
+                return
+            }
+            try {
+                const tx = await onCollectDeus(index)
+                if (tx.status) {
+                    console.log("claim did");
+                } else {
+                    console.log("claim Failed");
+                }
+            } catch (e) {
+                console.error(e)
+            }
+        }
+    }, [onCollectDeus, remainingWaitTime])
 
+    useEffect(() => {
+        setRemainingWaitTime(
+            diffTimeStamp(poolData.deusRedemptionDelay, position.timestamp.toNumber())
+        )
+    }, [poolData, fastRefresh, diffTimeStamp, position])
+    const amount = useMemo(() => {
+       return fromWei(position.amount.toString(), pairToken?.decimals)
+    },
+        [position, pairToken])
+    return (
+        <RedeemTokenRow
+            token={pairToken}
+            handleClaim={handleClaim}
+            remainingWaitTime={remainingWaitTime}
+            amount={amount}
+        />
+    )
+}
+
+const RedeemedToken = ({ title, currencies, chainId }) => {
+  const { collateralRedeemAvailable, redeemAvailable, pairTokenPositions, nextRedeemId } = useRedeemClaimTools()
 
   return (
-    useMemo(() => {
-      return <>
-        {redeemAvailabe &&
+      <>
+        {redeemAvailable &&
             <SmallWrapper>
               <MyText> {title} </MyText>
-              {collateralRedeemAvailabe &&
+              {collateralRedeemAvailable &&
                   <CollateralRedeem
                       chainId={chainId}
                       theCollateralToken={currencies[0]}
                   />
               }
+                {
+                    pairTokenPositions && pairTokenPositions.map(
+                        (pos, index) => (
+                            <>
+                                {index >= nextRedeemId && <PairRedeem
+                                    chainId={chainId}
+                                    pairToken={currencies[1]}
+                                    index={index}
+                                    position={pos}
+                                    />
+                                }
+                            </>
+                        )
+                    )
+                }
+
+
             </SmallWrapper>
         }
       </>
-    }, [title, currencies])
   );
 }
 

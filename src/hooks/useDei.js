@@ -1,10 +1,10 @@
-import useWeb3, { useCrossWeb3 } from './useWeb3'
-import { useEffect, useState, useCallback } from "react"
-import { useWeb3React } from '@web3-react/core'
+import useWeb3, {useCrossWeb3} from './useWeb3'
+import {useCallback, useEffect, useMemo, useState} from "react"
+import {useWeb3React} from '@web3-react/core'
 import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
-import { fromWei, getToWei, RemoveTrailingZero } from '../helper/formatBalance'
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import {fromWei, getToWei, RemoveTrailingZero} from '../helper/formatBalance'
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import DeiPoolAbi from '../config/abi/DEIPool.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import SspAbi from '../config/abi/SspAbi.json'
@@ -12,46 +12,44 @@ import SspOracleAbi from '../config/abi/SspOracleAbi.json'
 import SSPV4Abi from '../config/abi/SSPV4_ABI.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import multicall from '../helper/multicall'
-import { useCrossERC20 } from './useContract'
-import { ethers } from "ethers";
-import { isZero, ZERO } from "../constant/number";
-import { deiPricesState, husdPoolDataState, depositAmountState, sspDataState, sspV4DataState } from '../store/dei'
+import {useCrossERC20} from './useContract'
+import {ethers} from "ethers";
+import {isGt, isZero, ZERO} from "../constant/number";
+import {deiPricesState, depositAmountState, husdPoolDataState, sspDataState, sspV4DataState} from '../store/dei'
 import {
-    makeDeiRequest,
-    getHusdPoolData,
-    redeem1to1Dei,
-    redeemFractionalDei,
-    redeemAlgorithmicDei,
-    collectCollateral,
-    mintFractional,
-    mintAlgorithmic,
     buyBackDEUS,
-    RecollateralizeDEI,
-    getStakingData,
-    getStakingTokenData,
+    collatUsdPrice,
+    collectCollateral,
+    collectDeus,
     DeiDeposit,
     DeiWithdraw,
-    SendWithToast,
-    mint1t1DEI,
-    collatUsdPrice,
-    zapIn,
-    getZapAmountsOut,
-    mintDeiSSP,
-    mintDeiSSPWithOracle,
+    getHusdPoolData,
     getSspData,
     getSspV4Data,
+    getStakingData,
+    getStakingTokenData,
+    getZapAmountsOut,
+    makeDeiRequest,
+    mint1t1DEI,
+    mintAlgorithmic,
+    mintDeiSSP,
     mintDeiSSPv4,
-    collectDeus
+    mintDeiSSPWithOracle,
+    mintFractional,
+    RecollateralizeDEI,
+    redeem1to1Dei,
+    redeemAlgorithmicDei,
+    redeemFractionalDei,
+    SendWithToast,
+    zapIn
 } from '../helper/deiHelper'
-import { blockNumberState } from '../store/wallet'
-import { formatBalance3 } from '../utils/utils'
-import {collateralToken, deusToken} from '../constant/token'
-import { COLLATERAL_ADDRESS, MINT_PATH, SSP_ADDRESS } from '../constant/contracts'
-import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
-import { ChainId, isSupportEIP1559 } from '../constant/web3'
-import { DEI_COLLATERAL_ZAP, SSPV4_ADDRESS } from '../constant/contracts';
-import { ToastTransaction } from '../utils/explorers'
-import timestamp from "muon";
+import {blockNumberState} from '../store/wallet'
+import {formatBalance3} from '../utils/utils'
+import {collateralToken} from '../constant/token'
+import {COLLATERAL_ADDRESS, DEI_COLLATERAL_ZAP, MINT_PATH, SSP_ADDRESS, SSPV4_ADDRESS} from '../constant/contracts'
+import {getDeusSwapContract, getNewProxyMinterContract} from '../helper/contractHelpers'
+import {ChainId, isSupportEIP1559} from '../constant/web3'
+import {ToastTransaction} from '../utils/explorers'
 import {muonClient} from "../constant/clients";
 
 export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
@@ -867,3 +865,44 @@ export const useAllowance = (currency, contractAddress, validChainId, fastUpdate
     return blocks;
 } */
 
+export const useRedeemClaimTools = () => {
+    const poolData = useRecoilValue(husdPoolDataState)
+    const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
+    const nextRedeemId = (poolData && poolData["nextRedeemId"]) ? poolData["nextRedeemId"][0].toNumber() : 0
+    const pairTokenPositions = poolData ? poolData["allPositions"] : null
+
+    const diffTimeStamp = (redemptionDelay, timestampInSec) => {
+        const timestamp = new Date() / 1000
+        const diffInSec = redemptionDelay - (timestamp - timestampInSec)
+        const toTwoDigitNumber = (num) => {
+            let numStr = String(num)
+            if (numStr.length >= 2) {
+                return numStr
+            } else return `0${numStr}`
+        }
+        if (diffInSec > 0) {
+            const hours = toTwoDigitNumber(Math.floor(diffInSec / 3600))
+            const minutes = toTwoDigitNumber(Math.floor((diffInSec % 3600) / 60))
+            const seconds = toTwoDigitNumber(Math.ceil(diffInSec % 60))
+            return toTwoDigitNumber(`${hours}:${minutes}:${seconds}`)
+        }
+        return null
+    };
+
+    const collateralRedeemAvailable = useMemo(() => {
+        return redeemCollateralBalances && isGt(redeemCollateralBalances, 0)
+    }, [redeemCollateralBalances])
+
+    const deusRedeemAvailable = useMemo(() => {
+        return pairTokenPositions && (pairTokenPositions.length > nextRedeemId)
+    }, [pairTokenPositions, nextRedeemId])
+
+    const redeemAvailable = useMemo(() => {
+        return collateralRedeemAvailable || deusRedeemAvailable
+    }, [collateralRedeemAvailable, deusRedeemAvailable])
+
+    return {
+        redeemCollateralBalances, nextRedeemId, pairTokenPositions,
+        diffTimeStamp, collateralRedeemAvailable, redeemAvailable, deusRedeemAvailable
+    }
+}

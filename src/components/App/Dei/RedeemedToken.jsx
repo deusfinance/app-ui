@@ -1,15 +1,13 @@
-import React, {useMemo, useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components'
 import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
-import { Flex, Text } from 'rebass/styled-components';
-import { Base } from '../Button/index'
-import { useRecoilValue } from 'recoil';
-import { husdPoolDataState } from '../../../store/dei'
-import { isGt } from '../../../constant/number';
-import { useClaimRedeemedTokens } from '../../../hooks/useDei';
+import {Flex, Text} from 'rebass/styled-components';
+import {Base} from '../Button/index'
+import {useRecoilValue} from 'recoil';
+import {husdPoolDataState} from '../../../store/dei'
+import {useClaimRedeemedTokens, useRedeemClaimTools} from '../../../hooks/useDei';
 import useRefresh from "../../../hooks/useRefresh";
-import {fromWei, fromWeiBn} from "../../../helper/formatBalance";
-import {BigNumber} from "ethers";
+import {fromWei} from "../../../helper/formatBalance";
 import {ToastTransaction} from "../../../utils/explorers";
 
 const SmallWrapper = styled.div`
@@ -109,47 +107,6 @@ const ButtonSyncActive = styled(ButtonSync)`
 `
 
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
-
-const useRedeemClaimTools = () => {
-  const poolData = useRecoilValue(husdPoolDataState)
-  const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
-  const nextRedeemId = (poolData && poolData["nextRedeemId"]) ? poolData["nextRedeemId"][0].toNumber() : 0
-  const pairTokenPositions = poolData ? poolData["allPositions"] : null
-
-  const diffTimeStamp = (redemptionDelay, timestampInSec) => {
-    const timestamp = new Date() / 1000
-    const diffInSec = redemptionDelay - (timestamp - timestampInSec)
-    const toTwoDigitNumber = (num) => {
-      let numStr = String(num)
-      if(numStr.length >= 2) {
-        return numStr
-      }
-      else return `0${numStr}`
-    }
-    if(diffInSec > 0) {
-      const hours = toTwoDigitNumber(Math.floor(diffInSec / 3600))
-      const minutes = toTwoDigitNumber(Math.floor((diffInSec % 3600) / 60))
-      const seconds = toTwoDigitNumber(Math.ceil(diffInSec % 60))
-      return toTwoDigitNumber(`${hours}:${minutes}:${seconds}`)
-    }
-    return null
-  };
-
-  const collateralRedeemAvailable = useMemo(() => {
-    return redeemCollateralBalances && isGt(redeemCollateralBalances, 0)
-  }, [redeemCollateralBalances])
-
-  const deusRedeemAvailable = useMemo(() => {
-    return pairTokenPositions && (pairTokenPositions.length > nextRedeemId)
-  }, [pairTokenPositions ,nextRedeemId])
-
-  const redeemAvailable = useMemo(() => {
-    return collateralRedeemAvailable || deusRedeemAvailable
-  }, [collateralRedeemAvailable ,deusRedeemAvailable])
-
-  return {redeemCollateralBalances, nextRedeemId, pairTokenPositions,
-      diffTimeStamp, collateralRedeemAvailable, redeemAvailable, deusRedeemAvailable  }
-}
 
 const RedeemTokenRow = ({token, handleClaim, remainingWaitTime, amount}) => {
     return (

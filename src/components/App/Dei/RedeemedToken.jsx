@@ -258,7 +258,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
                                     key={index}
                                     chainId={chainId}
                                     pairToken={currencies[1]}
-                                    index={index}
+                                    index={index + nextRedeemId}
                                     position={pos}
                                 />
                             )

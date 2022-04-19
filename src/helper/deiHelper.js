@@ -391,7 +391,7 @@ export const collectCollateral = async (account, web3, chainId = ChainId.ETH) =>
 export const collectDeus= async (account, web3, chainId = ChainId.ETH,price, id, signatures) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .collectDeus(price, id, signatures)
+        .collectDeus(price, id, [signatures])
         .send({ from: account })
 }
 

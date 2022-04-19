@@ -135,7 +135,7 @@ const CollateralRedeem = ({ theCollateralToken, chainId }) => {
     if(!remainingWaitTime) {
       try {
         const tx = await onCollectCollateral()
-        if (tx.status) {
+        if (tx && tx.status) {
           console.log("claim did");
         } else {
           console.log("claim Failed");
@@ -179,7 +179,7 @@ const PairRedeem = ({ pairToken, chainId, index, position }) => {
             }
             try {
                 const tx = await onCollectDeus(index)
-                if (tx.status) {
+                if (tx && tx.status) {
                     console.log("claim did");
                 } else {
                     console.log("claim Failed");
@@ -224,19 +224,19 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
                   />
               }
                 {
-                    pairTokenPositions && pairTokenPositions.map(
-                        (pos, index) => (
-                            <>
-                                {index >= nextRedeemId && <PairRedeem
+                    pairTokenPositions && pairTokenPositions
+                        .slice(nextRedeemId)
+                        .map(
+                            (pos, index) => (
+                                <PairRedeem
+                                    key={index}
                                     chainId={chainId}
                                     pairToken={currencies[1]}
                                     index={index}
                                     position={pos}
-                                    />
-                                }
-                            </>
+                                />
+                            )
                         )
-                    )
                 }
 
 

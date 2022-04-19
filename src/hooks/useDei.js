@@ -225,11 +225,11 @@ export const useClaimRedeemedTokens = (validChainId = 4) => {
                 reedemId: index,
             })
             .call()
-        if (result.status === false) {
-            ToastTransaction("info", "Redeem Failed.", result.message)
+        if (result.success === false) {
+            console.error(result)
+            ToastTransaction("info", "Redeem Failed.", result.error)
             return
         }
-        console.log(result)
         const price = result.result.data.result.price
         const signatures = result.result.signatures
         const tx = await collectDeus(account, web3, chainId, price, index, signatures)

@@ -24,7 +24,7 @@ const SmallWrapper = styled.div`
 `
 
 const MyText = styled(Text)`
-    margin-top: 20px;
+    margin: 20px 0px;
     box-sizing: border-box;
     font-size: 12px;
     opacity: 0.75;
@@ -35,19 +35,22 @@ const TextWrapper = styled(Text)`
   color: ${({ color, theme }) => (theme)[color]};
   font-size: 16px;
   opacity: 0.75;
+  text-align: left;
+  margin-left: 7px;
 `
 
 const NumberWrapper = styled(Text)`
   color: ${({ color, theme }) => (theme)[color]};
   opacity: 0.75;
   font-size: 14px;
-  margin-left: auto;
+  margin-left: 15px;
 `
 
 const TokenInfo = styled(Flex)`
-    margin: 12px auto;
-    align-items:center;
-    background-color: #0D0D0D;
+  border-top: 1px solid ${({ theme }) => theme.bg5};
+  padding: 12px 0px;
+  align-items:center;
+  background-color: #0D0D0D;
 `
 
 const StyledLogo = styled.img`
@@ -58,7 +61,6 @@ const StyledLogo = styled.img`
 `
 
 const ClaimButton = styled.div`
-  margin: 15px 0 20px;
   max-width: 297px;
   height: 24px;
   border-radius: 10px;
@@ -70,15 +72,15 @@ const ClaimButton = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 3px;
   font-family: "Monument Grotesk Semi";
   font-size: 14px;
   line-height: 17px;
-  background-color: #325cfe;
+  background-color: ${({ disabled }) => disabled ? "#333333" : "#325cfe" };
   color: #FFF;
-  cursor: pointer;
+  cursor: ${({ disabled }) => disabled ? null : "pointer" };
   padding: 15px 0px;
   width: 100px;
+  margin-left: auto;
 `
 
 function CurrencyLogo({
@@ -108,24 +110,24 @@ const ButtonSyncActive = styled(ButtonSync)`
 
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
-const RedeemTokenRow = ({token, handleClaim, remainingWaitTime, amount}) => {
+const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabled}) => {
     return (
         <TokenInfo>
             <CurrencyLogo symbol={token.symbol} logo={token.logo}/>
 
-            <TextWrapper color="text1" ml="7px" mr="9px"> {token.symbol} </TextWrapper>
+            <TextWrapper color="text1"> {token.symbol} </TextWrapper>
 
-            <NumberWrapper color="text1" ml="7px" mr="9px">
+            <NumberWrapper>
                 {amount ? parseFloat(amount).toFixed(3) : IMG}
             </NumberWrapper>
-            <ClaimButton onClick={handleClaim}>
+            <ClaimButton onClick={handleClaim} disabled={disabled}>
                 {remainingWaitTime ?? 'Claim'}</ClaimButton>
 
         </TokenInfo>
     )
 }
 
-const CollateralRedeem = ({ theCollateralToken, chainId }) => {
+const CollateralClaim = ({ theCollateralToken, chainId }) => {
   const poolData = useRecoilValue(husdPoolDataState)
   const { fastRefresh } = useRefresh()
   const [remainingWaitTime, setRemainingWaitTime] = useState(null);
@@ -156,7 +158,8 @@ const CollateralRedeem = ({ theCollateralToken, chainId }) => {
   }, [poolData, fastRefresh, diffTimeStamp])
 
   return (
-      <RedeemTokenRow
+      <ClaimTokenRow
+          disabled={!!remainingWaitTime}
           token={theCollateralToken}
           handleClaim={handleClaim}
           remainingWaitTime={remainingWaitTime}
@@ -165,7 +168,7 @@ const CollateralRedeem = ({ theCollateralToken, chainId }) => {
   )
 }
 
-const PairRedeem = ({ pairToken, chainId, index, position }) => {
+const PairClaim = ({ pairToken, chainId, index, position }) => {
     const poolData = useRecoilValue(husdPoolDataState)
     const { fastRefresh } = useRefresh()
     const [remainingWaitTime, setRemainingWaitTime] = useState(null);
@@ -174,7 +177,7 @@ const PairRedeem = ({ pairToken, chainId, index, position }) => {
     const handleClaim = useCallback(async () => {
         if(!remainingWaitTime) {
             if(index !== nextRedeemId) {
-                ToastTransaction("info", "Redeem Failed.", "first claim previous ones")
+                ToastTransaction("info", "Unable to claim.", "first claim previous ones")
                 return
             }
             try {
@@ -200,7 +203,8 @@ const PairRedeem = ({ pairToken, chainId, index, position }) => {
     },
         [position, pairToken])
     return (
-        <RedeemTokenRow
+        <ClaimTokenRow
+            disabled={!!remainingWaitTime || index !== nextRedeemId}
             token={pairToken}
             handleClaim={handleClaim}
             remainingWaitTime={remainingWaitTime}
@@ -218,7 +222,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
             <SmallWrapper>
               <MyText> {title} </MyText>
               {collateralRedeemAvailable &&
-                  <CollateralRedeem
+                  <CollateralClaim
                       chainId={chainId}
                       theCollateralToken={currencies[0]}
                   />
@@ -228,7 +232,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
                         .slice(nextRedeemId)
                         .map(
                             (pos, index) => (
-                                <PairRedeem
+                                <PairClaim
                                     key={index}
                                     chainId={chainId}
                                     pairToken={currencies[1]}

@@ -222,12 +222,12 @@ export const useClaimRedeemedTokens = (validChainId = 4) => {
             .method('signature', {
                 chainId,
                 userAddress: account,
-                reedemId: index,
+                redeemId: index,
             })
             .call()
         if (result.success === false) {
             console.error(result)
-            ToastTransaction("info", "Redeem Failed.", result.error)
+            ToastTransaction("info", "Claim Failed.", result.error)
             return
         }
         const price = result.result.data.result.price

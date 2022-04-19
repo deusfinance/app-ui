@@ -246,7 +246,6 @@ export const useRedeem = (fromCurrency, amountIn, collatRatio, validChainId = 1)
     const handleRedeem = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
         let fn = null
-        let result = null
         if (collatRatio === 100) {
             await makeDeiRequest("/redeem-1to1", validChainId)
             fn = redeem1to1Dei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)

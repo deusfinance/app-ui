@@ -9,6 +9,7 @@ import {useClaimRedeemedTokens, useRedeemClaimTools} from '../../../hooks/useDei
 import useRefresh from "../../../hooks/useRefresh";
 import {fromWei} from "../../../helper/formatBalance";
 import {ToastTransaction} from "../../../utils/explorers";
+import ReactTooltip from "react-tooltip";
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -110,9 +111,10 @@ const ButtonSyncActive = styled(ButtonSync)`
 
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
-const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabled}) => {
+const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledTip, tipId}) => {
     return (
         <TokenInfo>
+
             <CurrencyLogo symbol={token.symbol} logo={token.logo}/>
 
             <TextWrapper color="text1"> {token.symbol} </TextWrapper>
@@ -120,9 +122,13 @@ const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabled}
             <NumberWrapper>
                 {amount ? parseFloat(amount).toFixed(3) : IMG}
             </NumberWrapper>
-            <ClaimButton onClick={handleClaim} disabled={disabled}>
+            <ClaimButton data-tip data-for={'disabled-tip-' + tipId} onClick={handleClaim} disabled={disabledTip}>
                 {remainingWaitTime ?? 'Claim'}</ClaimButton>
 
+
+            {disabledTip && <ReactTooltip id={'disabled-tip-' + tipId} place="bottom" effect="solid" type="info">
+                <div>{disabledTip}</div>
+            </ReactTooltip>}
         </TokenInfo>
     )
 }
@@ -157,13 +163,21 @@ const CollateralClaim = ({ theCollateralToken, chainId }) => {
     }
   }, [poolData, fastRefresh, diffTimeStamp])
 
+  const disabledTip = useMemo(() => {
+      if(!!remainingWaitTime) {
+          return "Wait until this time"
+      }
+      return ""
+  }, [remainingWaitTime])
+
   return (
       <ClaimTokenRow
-          disabled={!!remainingWaitTime}
+          disabledTip={disabledTip}
           token={theCollateralToken}
           handleClaim={handleClaim}
           remainingWaitTime={remainingWaitTime}
           amount={redeemCollateralBalances}
+          tipId={0}
       />
   )
 }
@@ -175,11 +189,7 @@ const PairClaim = ({ pairToken, chainId, index, position }) => {
     const { onCollectDeus } = useClaimRedeemedTokens(chainId)
     const { diffTimeStamp, nextRedeemId } = useRedeemClaimTools()
     const handleClaim = useCallback(async () => {
-        if(!remainingWaitTime) {
-            if(index !== nextRedeemId) {
-                ToastTransaction("info", "Unable to claim.", "first claim previous ones")
-                return
-            }
+        if(!remainingWaitTime && index === nextRedeemId) {
             try {
                 const tx = await onCollectDeus(index)
                 if (tx && tx.status) {
@@ -202,13 +212,25 @@ const PairClaim = ({ pairToken, chainId, index, position }) => {
        return fromWei(position.amount.toString(), pairToken?.decimals)
     },
         [position, pairToken])
+
+    const disabledTip = useMemo(() => {
+        if(!!remainingWaitTime) {
+            return "Wait until this time"
+        }
+        if(index !== nextRedeemId) {
+            return "First claim previous ones"
+        }
+        return ""
+    }, [remainingWaitTime, nextRedeemId, index])
+
     return (
         <ClaimTokenRow
-            disabled={!!remainingWaitTime || index !== nextRedeemId}
+            disabledTip={disabledTip}
             token={pairToken}
             handleClaim={handleClaim}
             remainingWaitTime={remainingWaitTime}
             amount={amount}
+            tipId={index + 1}
         />
     )
 }

@@ -9,6 +9,7 @@ import { isGt } from '../../../constant/number';
 import { useClaimRedeemedTokens } from '../../../hooks/useDei';
 import {collateralToken, deusToken} from "../../../constant/token";
 import useRefresh from "../../../hooks/useRefresh";
+import timestamp from "muon";
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -57,6 +58,29 @@ const StyledLogo = styled.img`
   vertical-align: "middle";
 `
 
+const ClaimButton = styled.div`
+  margin: 15px 0 20px;
+  max-width: 297px;
+  height: 24px;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 6px;
+  line-height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 3px;
+  font-family: "Monument Grotesk Semi";
+  font-size: 14px;
+  line-height: 17px;
+  background-color: #325cfe;
+  color: #FFF;
+  cursor: pointer;
+  padding: 15px 20px;
+`
+
 function CurrencyLogo({
   symbol,
   logo,
@@ -90,32 +114,67 @@ const ButtonSwap = styled(ButtonSyncActive)`
 
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
+const useRedeemClaimTools = () => {
+  const poolData = useRecoilValue(husdPoolDataState)
+  const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
+
+  const diffTimeStamp = useCallback(
+      (redemptionDelay, timestampInSec) => {
+        const timestamp = new Date() / 1000
+        const diffInSec = redemptionDelay - (timestamp - timestampInSec)
+        const toTwoDigitNumber = (num) => {
+          let numStr = String(num)
+          if(numStr.length >= 2) {
+            return numStr
+          }
+          else return `0${numStr}`
+        }
+        if(diffInSec > 0) {
+          const minutes = toTwoDigitNumber(Math.floor(diffInSec / 60))
+          const seconds = toTwoDigitNumber(Math.ceil(diffInSec % 60))
+          return toTwoDigitNumber(`${minutes}:${seconds}`)
+        }
+        return null
+      },[],
+  );
+
+  const collateralRedeemAvailabe = useMemo(() => {
+    return redeemCollateralBalances && isGt(redeemCollateralBalances, 0)
+  }, [redeemCollateralBalances])
+
+  const redeemAvailabe = useMemo(() => {
+    return collateralRedeemAvailabe
+  }, [collateralRedeemAvailabe])
+
+  return {redeemCollateralBalances, diffTimeStamp, collateralRedeemAvailabe, redeemAvailabe  }
+}
+
 const CollateralRedeem = ({ theCollateralToken, chainId }) => {
   const poolData = useRecoilValue(husdPoolDataState)
   const { fastRefresh } = useRefresh()
-  const [collateralRedeemRemainingWaitTime, setCollateralRedeemRemainingWaitTime] = useState(0);
-  const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
+  const [remainingWaitTime, setRemainingWaitTime] = useState(null);
   const { onCollectCollateral } = useClaimRedeemedTokens(chainId)
-
+  const { redeemCollateralBalances, diffTimeStamp } = useRedeemClaimTools()
   const handleClaim = useCallback(async () => {
-    try {
-      const tx = await onCollectCollateral()
-      if (tx.status) {
-        console.log("claim did");
-      } else {
-        console.log("claim Failed");
+    if(!remainingWaitTime) {
+      try {
+        const tx = await onCollectCollateral()
+        if (tx.status) {
+          console.log("claim did");
+        } else {
+          console.log("claim Failed");
+        }
+      } catch (e) {
+        console.error(e)
       }
-    } catch (e) {
-      console.error(e)
     }
   }, [onCollectCollateral])
 
   useEffect(() => {
     if(poolData.allPositions?.length) {
       const lastReedemTimestamp = poolData.allPositions[poolData.allPositions.length - 1].timestamp.toNumber()
-      const timestamp = new Date() / 1000
-      setCollateralRedeemRemainingWaitTime(
-          poolData.collateralRedemptionDelay - (timestamp - lastReedemTimestamp)
+      setRemainingWaitTime(
+          diffTimeStamp(poolData.collateralRedemptionDelay, lastReedemTimestamp)
       )
     }
   }, [poolData, fastRefresh])
@@ -129,47 +188,33 @@ const CollateralRedeem = ({ theCollateralToken, chainId }) => {
         <NumberWrapper color="text1" ml="7px" mr="9px">
           {redeemCollateralBalances ? parseFloat(redeemCollateralBalances).toFixed(3) : IMG}
         </NumberWrapper>
-        <div className="container-claim-btn claim-btn pointer" active={true} bgColor={"grad_dei"} onClick={handleClaim}>
-          Claim</div>
+        <ClaimButton onClick={handleClaim}>
+          {remainingWaitTime ?? 'Claim'}</ClaimButton>
 
       </TokenInfo>
   )
 }
 
 const RedeemedToken = ({ title, currencies, chainId }) => {
-  const poolData = useRecoilValue(husdPoolDataState)
-  const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
+  const { collateralRedeemAvailabe, redeemAvailabe } = useRedeemClaimTools()
 
-
-
-  function getNumberWrapper(index) {
-    if (index === 0) {
-      if (redeemCollateralBalances) {
-        return parseFloat(redeemCollateralBalances).toFixed(3);
-      } else {
-        return IMG;
-      }
-    } else {
-        return IMG;
-    }
-  }
-  function getDeusRedeem(){
-  }
 
   return (
     useMemo(() => {
       return <>
-        {(redeemCollateralBalances && isGt(redeemCollateralBalances, 0)) &&
+        {redeemAvailabe &&
             <SmallWrapper>
               <MyText> {title} </MyText>
-              <CollateralRedeem
-                chainId={chainId}
-                theCollateralToken={currencies[0]}
-              />
+              {collateralRedeemAvailabe &&
+                  <CollateralRedeem
+                      chainId={chainId}
+                      theCollateralToken={currencies[0]}
+                  />
+              }
             </SmallWrapper>
         }
       </>
-    }, [title, currencies, redeemCollateralBalances])
+    }, [title, currencies])
   );
 }
 

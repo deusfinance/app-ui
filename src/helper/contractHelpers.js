@@ -69,7 +69,7 @@ export const getCollateralPoolContract = (web3, chainId = ChainId.AVALANCHE) => 
     return getContract(NewCollateralAbi, COLLATERAL_POOL_ADDRESS[chainId], web3)
 }
 
-export const getUsdcTwapOracleAbi = (web3, chainId = ChainId.AVALANCHE) => {
+export const getUsdcTwapOracleContract = (web3, chainId = ChainId.AVALANCHE) => {
     return getContract(UsdcTwapOracleAbi, USDC_TWAP_ORACLE_ADDRESS[chainId], web3)
 }
 

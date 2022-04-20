@@ -6,7 +6,17 @@ import { ChainId } from "../constant/web3"
 import { TransactionState } from "../constant/web3"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { fetcher, formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract, getSSPContract, getSSPV4Contract } from "./contractHelpers"
+import {
+    getDeiContract,
+    getDeiStakingContract,
+    getCollateralPoolContract,
+    getZapContract,
+    getNewProxyMinterContract,
+    getDeusSwapContract,
+    getSSPContract,
+    getSSPV4Contract,
+    getUsdcTwapOracleContract
+} from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 
 const baseUrl = "https://oracle4.deus.finance/dei"
@@ -396,6 +406,13 @@ export const collectDeus= async (account, web3, chainId = ChainId.ETH,price, id,
 }
 
 //READ FUNCTIONS
+export const getUsdcTwapOracle = async (web3, tokenIn, amountIn, timestamp, duration) => {
+    return getUsdcTwapOracleContract(web3, ChainId.FTM)
+        .methods
+        .twap(tokenIn, amountIn, timestamp, duration)
+        .call()
+}
+
 export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price = collatUsdPrice) => {
     const LEN = LENGTH_COLLAT[chainId] ?? 3
     let collaterals = []

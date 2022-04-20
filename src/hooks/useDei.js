@@ -27,7 +27,7 @@ import {
     getSspData,
     getSspV4Data,
     getStakingData,
-    getStakingTokenData,
+    getStakingTokenData, getUsdcTwapOracle,
     getZapAmountsOut,
     makeDeiRequest,
     mint1t1DEI,
@@ -44,9 +44,16 @@ import {
     zapIn
 } from '../helper/deiHelper'
 import {blockNumberState} from '../store/wallet'
-import {formatBalance3} from '../utils/utils'
+import {formatBalance3, toTwoDigitNumber} from '../utils/utils'
 import {collateralToken} from '../constant/token'
-import {COLLATERAL_ADDRESS, DEI_COLLATERAL_ZAP, MINT_PATH, SSP_ADDRESS, SSPV4_ADDRESS} from '../constant/contracts'
+import {
+    COLLATERAL_ADDRESS,
+    DEI_COLLATERAL_ZAP,
+    DEUS_ADDRESS,
+    MINT_PATH,
+    SSP_ADDRESS,
+    SSPV4_ADDRESS
+} from '../constant/contracts'
 import {getDeusSwapContract, getNewProxyMinterContract} from '../helper/contractHelpers'
 import {ChainId, isSupportEIP1559} from '../constant/web3'
 import {ToastTransaction} from '../utils/explorers'
@@ -874,20 +881,19 @@ export const useRedeemClaimTools = () => {
     const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
     const nextRedeemId = (poolData && poolData["nextRedeemId"]) ? poolData["nextRedeemId"][0].toNumber() : 0
     const pairTokenPositions = poolData ? poolData["allPositions"] : null
+    const web3 = useWeb3()
 
     const diffTimeStamp = (redemptionDelay, timestampInSec) => {
         const timestamp = new Date() / 1000
-        const diffInSec = redemptionDelay - (timestamp - timestampInSec)
-        const toTwoDigitNumber = (num) => {
-            let numStr = String(num)
-            if (numStr.length >= 2) {
-                return numStr
-            } else return `0${numStr}`
-        }
-        if (diffInSec > 0) {
-            const hours = toTwoDigitNumber(Math.floor(diffInSec / 3600))
-            const minutes = toTwoDigitNumber(Math.floor((diffInSec % 3600) / 60))
-            const seconds = toTwoDigitNumber(Math.ceil(diffInSec % 60))
+        return redemptionDelay - (timestamp - timestampInSec)
+    }
+
+    const diffTimeStampStr = (redemptionDelay, timestampInSec) => {
+        const diffInSeconds = diffTimeStamp(redemptionDelay, timestampInSec)
+        if (diffInSeconds > 0) {
+            const hours = toTwoDigitNumber(Math.floor(diffInSeconds / 3600))
+            const minutes = toTwoDigitNumber(Math.floor((diffInSeconds % 3600) / 60))
+            const seconds = toTwoDigitNumber(Math.ceil(diffInSeconds % 60))
             return toTwoDigitNumber(`${hours}:${minutes}:${seconds}`)
         }
         return null
@@ -905,8 +911,13 @@ export const useRedeemClaimTools = () => {
         return collateralRedeemAvailable || deusRedeemAvailable
     }, [collateralRedeemAvailable, deusRedeemAvailable])
 
+    const getDeusTwapPrice = useCallback(async (timestamp) => {
+        return getUsdcTwapOracle(web3, DEUS_ADDRESS[ChainId.FTM], 1, timestamp, poolData.deusRedemptionDelay)
+    }, [])
+
     return {
-        redeemCollateralBalances, nextRedeemId, pairTokenPositions,
-        diffTimeStamp, collateralRedeemAvailable, redeemAvailable, deusRedeemAvailable
+        redeemCollateralBalances, nextRedeemId, pairTokenPositions, diffTimeStamp,
+        diffTimeStampStr, collateralRedeemAvailable, redeemAvailable, deusRedeemAvailable,
+        getDeusTwapPrice
     }
 }

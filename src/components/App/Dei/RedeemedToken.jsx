@@ -1,15 +1,16 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components'
-import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
-import {Flex, Text} from 'rebass/styled-components';
-import {Base} from '../Button/index'
+import ReactTooltip from "react-tooltip";
 import {useRecoilValue} from 'recoil';
+import {Flex, Text} from 'rebass/styled-components';
+import { AlertCircle } from 'react-feather';
+import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
+import {Base} from '../Button/index'
 import {husdPoolDataState} from '../../../store/dei'
 import {useClaimRedeemedTokens, useRedeemClaimTools} from '../../../hooks/useDei';
 import useRefresh from "../../../hooks/useRefresh";
 import {fromWei} from "../../../helper/formatBalance";
-import {ToastTransaction} from "../../../utils/explorers";
-import ReactTooltip from "react-tooltip";
+import {formatUnitAmount, handleSmallBalance} from "../../../utils/utils";
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -45,6 +46,9 @@ const NumberWrapper = styled(Text)`
   opacity: 0.75;
   font-size: 14px;
   margin-left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const TokenInfo = styled(Flex)`
@@ -111,7 +115,13 @@ const ButtonSyncActive = styled(ButtonSync)`
 
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 
-const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledTip, tipId}) => {
+const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledTip, tipId, amountError}) => {
+
+    const amountDisplay = useMemo(() => {
+        if(!amount) return IMG
+        return handleSmallBalance(amount, 3)
+    }, [amount])
+
     return (
         <TokenInfo>
 
@@ -120,11 +130,16 @@ const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledT
             <TextWrapper color="text1"> {token.symbol} </TextWrapper>
 
             <NumberWrapper>
-                {amount ? parseFloat(amount).toFixed(3) : IMG}
+                {amountError ?
+                    <AlertCircle color={"#ffe7a1"} size={'15px'} data-tip data-for={'amount-error-' + tipId} /> : amountDisplay}
             </NumberWrapper>
             <ClaimButton data-tip data-for={'disabled-tip-' + tipId} onClick={handleClaim} disabled={disabledTip}>
                 {remainingWaitTime ?? 'Claim'}</ClaimButton>
 
+
+            {amountError && <ReactTooltip id={'amount-error-' + tipId} place="bottom" effect="solid" type="info">
+                <div>{amountError}</div>
+            </ReactTooltip>}
 
             {disabledTip && <ReactTooltip id={'disabled-tip-' + tipId} place="bottom" effect="solid" type="info">
                 <div>{disabledTip}</div>
@@ -138,7 +153,7 @@ const CollateralClaim = ({ theCollateralToken, chainId }) => {
   const { fastRefresh } = useRefresh()
   const [remainingWaitTime, setRemainingWaitTime] = useState(null);
   const { onCollectCollateral } = useClaimRedeemedTokens(chainId)
-  const { redeemCollateralBalances, diffTimeStamp } = useRedeemClaimTools()
+  const { redeemCollateralBalances, diffTimeStampStr } = useRedeemClaimTools()
   const handleClaim = useCallback(async () => {
     if(!remainingWaitTime) {
       try {
@@ -158,10 +173,10 @@ const CollateralClaim = ({ theCollateralToken, chainId }) => {
     if(poolData.allPositions?.length) {
       const lastReedemTimestamp = poolData.allPositions[poolData.allPositions.length - 1].timestamp.toNumber()
       setRemainingWaitTime(
-          diffTimeStamp(poolData.collateralRedemptionDelay, lastReedemTimestamp)
+          diffTimeStampStr(poolData.collateralRedemptionDelay, lastReedemTimestamp)
       )
     }
-  }, [poolData, fastRefresh, diffTimeStamp])
+  }, [poolData, fastRefresh, diffTimeStampStr])
 
   const disabledTip = useMemo(() => {
       if(!!remainingWaitTime) {
@@ -177,6 +192,7 @@ const CollateralClaim = ({ theCollateralToken, chainId }) => {
           handleClaim={handleClaim}
           remainingWaitTime={remainingWaitTime}
           amount={redeemCollateralBalances}
+          amountError={null}
           tipId={0}
       />
   )
@@ -187,7 +203,7 @@ const PairClaim = ({ pairToken, chainId, index, position }) => {
     const { fastRefresh } = useRefresh()
     const [remainingWaitTime, setRemainingWaitTime] = useState(null);
     const { onCollectDeus } = useClaimRedeemedTokens(chainId)
-    const { diffTimeStamp, nextRedeemId } = useRedeemClaimTools()
+    const { diffTimeStamp, diffTimeStampStr, nextRedeemId, getDeusTwapPrice } = useRedeemClaimTools()
     const handleClaim = useCallback(async () => {
         if(!remainingWaitTime && index === nextRedeemId) {
             try {
@@ -205,13 +221,41 @@ const PairClaim = ({ pairToken, chainId, index, position }) => {
 
     useEffect(() => {
         setRemainingWaitTime(
-            diffTimeStamp(poolData.deusRedemptionDelay, position.timestamp.toNumber())
+            diffTimeStampStr(poolData.deusRedemptionDelay, position.timestamp.toNumber())
         )
-    }, [poolData, fastRefresh, diffTimeStamp, position])
-    const amount = useMemo(() => {
-       return fromWei(position.amount.toString(), pairToken?.decimals)
-    },
-        [position, pairToken])
+    }, [poolData, fastRefresh, diffTimeStampStr, position])
+
+    const [amount, setAmount] = useState("");
+    const [amountError, setAmountError] = useState("");
+    useEffect(() => {
+        let mounted = true
+        const fun = async () => {
+            const dollarAmount = fromWei(position.amount.toString(), pairToken?.decimals)
+
+            const diffInSeconds = diffTimeStamp(poolData.deusRedemptionDelay, position.timestamp.toNumber())
+            if(diffInSeconds > 0) {
+                const dollarAmountString = handleSmallBalance(dollarAmount, 3, "$")
+                if(mounted){
+                    setAmountError(`${dollarAmountString} DEUS at claim time`)
+                }
+                return
+            }
+
+            if(mounted) {
+                setAmountError("")
+            }
+            const deusTwapPrice = await getDeusTwapPrice(position.timestamp.toNumber())
+            if(mounted) {
+                setAmount(dollarAmount / deusTwapPrice)
+            }
+        }
+        fun()
+        return () => {
+            mounted = false;
+        };
+    },[position, pairToken, fastRefresh])
+
+
 
     const disabledTip = useMemo(() => {
         if(!!remainingWaitTime) {
@@ -231,6 +275,7 @@ const PairClaim = ({ pairToken, chainId, index, position }) => {
             remainingWaitTime={remainingWaitTime}
             amount={amount}
             tipId={index + 1}
+            amountError={amountError}
         />
     )
 }

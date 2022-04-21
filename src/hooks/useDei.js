@@ -703,7 +703,7 @@ export const useHusdPoolData = (validChainId) => {
                     mintPaused: mintPaused[0],
                     buyBackPaused: buyBackPaused[0],
                     recollateralizePaused: recollateralizePaused[0],
-                    allPositions: account ? allPositions.positinos : [],
+                    allPositions: account ? allPositions.positions : [],
                     nextRedeemId: account ? nextRedeemId : 0,
                     redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, collateralToken[validChainId]?.decimals) : "0",
                 }

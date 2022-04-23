@@ -217,8 +217,8 @@ export const useClaimRedeemedTokens = (validChainId = 4) => {
 
     const handleCollectCollateral = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        const tx = await collectCollateral(account, web3, chainId)
-        return tx
+        const fn = await collectCollateral(account, web3, chainId)
+        return SendWithToast(fn, account, chainId, `Claim USDC`)
     }, [account, chainId, validChainId, web3])
 
     const handleCollectDeus = useCallback(async (index) => {
@@ -244,8 +244,8 @@ export const useClaimRedeemedTokens = (validChainId = 4) => {
             result.data.init.nonceAddress
         ]
         const id = Number(result._id)
-        const tx = await collectDeus(account, web3, chainId, price, id, signatures)
-        return tx
+        const fn = collectDeus(account, web3, chainId, price, id, signatures)
+        return SendWithToast(fn, account, chainId, `Claim DEUS`)
     }, [account, chainId, validChainId, web3])
 
     return { onCollectCollateral: handleCollectCollateral, onCollectDeus: handleCollectDeus }

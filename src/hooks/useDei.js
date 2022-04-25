@@ -303,7 +303,6 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         else if (!proxy) {
             if (collatRatio === 100) {
                 path = "/mint-1to1"
-                const result = await makeDeiRequest(path, validChainId)
                 fn = mint1t1DEI(amount1toWei, chainId, web3)
             } else if (collatRatio > 0) {
                 path = "/mint-fractional"

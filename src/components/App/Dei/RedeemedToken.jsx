@@ -5,12 +5,11 @@ import {useRecoilValue} from 'recoil';
 import {Flex, Text} from 'rebass/styled-components';
 import { AlertCircle } from 'react-feather';
 import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
-import {Base} from '../Button/index'
 import {husdPoolDataState} from '../../../store/dei'
 import {useClaimRedeemedTokens, useRedeemClaimTools} from '../../../hooks/useDei';
 import useRefresh from "../../../hooks/useRefresh";
 import {fromWei} from "../../../helper/formatBalance";
-import {formatUnitAmount, handleSmallBalance} from "../../../utils/utils";
+import {handleSmallBalance} from "../../../utils/utils";
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -95,23 +94,6 @@ function CurrencyLogo({
 }) {
   return <StyledLogo size={size} src={logo || DefaultLogo} alt={`${symbol ?? 'token'} logo`} />
 }
-
-const ButtonSync = styled(Base).attrs({
-  width: "100%",
-  height: "36px",
-  borderRadius: "10px",
-  marginBottom: "20px",
-})`
-  font-size:20px;
-`
-
-const ButtonSyncActive = styled(ButtonSync)`
-  background: ${({ theme }) => theme.sync_active};
-  font-size: 25px;
-  &:hover{
-    filter:${({ active }) => active && "brightness(1.2)"};
-  }
-`
 
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 const IMG_GOLD = <img src="/img/spinner-gold.svg" width="25" height="25" alt="sp" />

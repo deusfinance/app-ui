@@ -355,10 +355,10 @@ export const mintDeiSSPWithOracle = (amountIn, result, chainId, web3) => {
         .buyDei(amountIn, result.deus_price, result.expire_block, [result.signature])
 }
 
-export const mint1t1DEI = (collateral_amount, collateral_price, expire_block, signature, chainId, web3) => {
+export const mint1t1DEI = (collateral_amount, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .mint1t1DEI(collateral_amount, collateral_price, expire_block, [signature])
+        .mint1t1DEI(collateral_amount)
 }
 
 export const mintFractional = (collateral_amount, deus_amount, deus_current_price, expireBlock, signature, chainId, web3) => {

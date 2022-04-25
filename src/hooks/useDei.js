@@ -259,12 +259,10 @@ export const useRedeem = (fromCurrency, amountIn, collatRatio, validChainId = 1)
         if (validChainId && chainId !== validChainId) return false
         let fn = null
         if (collatRatio === 100) {
-            await makeDeiRequest("/redeem-1to1", validChainId)
             fn = redeem1to1Dei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else if (collatRatio > 0) {
             fn = redeemFractionalDei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else {
-            await makeDeiRequest("/redeem-algorithmic", validChainId)
             fn = redeemAlgorithmicDei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         }
         const payload = await getGasData(web3, fn, validChainId, account)
@@ -306,14 +304,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
             if (collatRatio === 100) {
                 path = "/mint-1to1"
                 const result = await makeDeiRequest(path, validChainId)
-                fn = mint1t1DEI(
-                    amount1toWei,
-                    result.collateral_price,
-                    result.expire_block,
-                    result.signature,
-                    chainId,
-                    web3,
-                )
+                fn = mint1t1DEI(amount1toWei, chainId, web3)
             } else if (collatRatio > 0) {
                 path = "/mint-fractional"
                 const result = await makeDeiRequest(path, validChainId)
@@ -913,7 +904,7 @@ export const useRedeemClaimTools = () => {
 
     const getDeusTwapPrice = useCallback(async (timestamp) => {
         return getUsdcTwapOracle(web3, DEUS_ADDRESS[ChainId.FTM], 1, timestamp, poolData.deusRedemptionDelay)
-    }, [])
+    }, [poolData, web3])
 
     return {
         redeemCollateralBalances, nextRedeemId, pairTokenPositions, diffTimeStamp,

@@ -100,13 +100,11 @@ export const validateKeyPress = (e) => {
 
 export const toTwoDigitNumber = (num) => {
   let numStr = String(num)
-  if (numStr.length >= 2) {
-    return numStr
-  } else return `0${numStr}`
+  return numStr.padStart(2, "0")
 }
 
 export const handleSmallBalance = (balance, fixed, currencyStr="") => {
-  let balanceFloat = parseFloat(balance)
+  const balanceFloat = parseFloat(balance)
   const smallAmount = Math.pow(10, -fixed)
   return balanceFloat < smallAmount ?
       `<${currencyStr}${smallAmount}` : `${currencyStr}${balanceFloat.toFixed(fixed)}`

@@ -391,13 +391,13 @@ export const redeemAlgorithmicDei = (amountIn, chainId, web3) => {
         .redeemAlgorithmicDEI(amountIn)
 }
 
-export const collectCollateral = async (account, web3, chainId = ChainId.ETH) => {
+export const collectCollateral = (account, web3, chainId = ChainId.ETH) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
         .collectCollateral()
 }
 
-export const collectDeus= async (account, web3, chainId = ChainId.ETH,price, id, signatures) => {
+export const collectDeus = (account, web3, chainId = ChainId.ETH,price, id, signatures) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
         .collectDeus(price, id, [signatures])

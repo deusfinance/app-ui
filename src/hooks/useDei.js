@@ -245,6 +245,7 @@ export const useClaimRedeemedTokens = (validChainId = 4) => {
         ]
         const id = Number(result._id)
         const fn = collectDeus(account, web3, chainId, price, id, signatures)
+        console.log(fn)
         return SendWithToast(fn, account, chainId, `Claim DEUS`)
     }, [account, chainId, validChainId, web3])
 
@@ -704,7 +705,7 @@ export const useHusdPoolData = (validChainId, forceUpdate) => {
 
         }
         get()
-    }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId, forceUpdate]) //TODO forceRefresh
+    }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId, forceUpdate])
 }
 
 export const useSSPData = (validChainId, oracleResponse) => {

@@ -726,7 +726,7 @@
           }
         ],
         "internalType": "struct IDEIPool.RedeemPosition[]",
-        "name": "positions",
+        "name": "",
         "type": "tuple[]"
       }
     ],

@@ -140,7 +140,7 @@ const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledT
     )
 }
 
-const CollateralClaim = ({ theCollateralToken, chainId }) => {
+const CollateralClaim = ({ theCollateralToken, chainId, onClaimDone }) => {
   const poolData = useRecoilValue(husdPoolDataState)
   const { fastRefresh } = useRefresh()
   const [remainingWaitTime, setRemainingWaitTime] = useState(null);
@@ -156,6 +156,7 @@ const CollateralClaim = ({ theCollateralToken, chainId }) => {
         const tx = await onCollectCollateral()
         if (tx && tx.status) {
           console.log("claim did");
+          onClaimDone()
         } else {
           console.log("claim Failed");
         }
@@ -166,7 +167,7 @@ const CollateralClaim = ({ theCollateralToken, chainId }) => {
       if (mounted.current) {
           setLoading(false);
       }
-  }, [onCollectCollateral, remainingWaitTime])
+  }, [onCollectCollateral, remainingWaitTime, onClaimDone])
 
   useEffect(() => {
     mounted.current = true
@@ -202,7 +203,7 @@ const CollateralClaim = ({ theCollateralToken, chainId }) => {
   )
 }
 
-const PairClaim = ({ pairToken, chainId, index, position }) => {
+const PairClaim = ({ pairToken, chainId, index, position, onClaimDone }) => {
     const poolData = useRecoilValue(husdPoolDataState)
     const { fastRefresh } = useRefresh()
     const [remainingWaitTime, setRemainingWaitTime] = useState(null);
@@ -215,6 +216,7 @@ const PairClaim = ({ pairToken, chainId, index, position }) => {
         if (!remainingWaitTime && index === nextRedeemId) {
             try {
                 const tx = await onCollectDeus(index)
+                onClaimDone()
                 if (tx && tx.status) {
                     console.log("claim did");
                 } else {
@@ -227,7 +229,7 @@ const PairClaim = ({ pairToken, chainId, index, position }) => {
         if (mounted.current) {
             setLoading(false);
         }
-    }, [index, nextRedeemId, onCollectDeus, remainingWaitTime])
+    }, [index, nextRedeemId, onCollectDeus, remainingWaitTime, onClaimDone])
 
     useEffect(() => {
         setRemainingWaitTime(
@@ -291,8 +293,14 @@ const PairClaim = ({ pairToken, chainId, index, position }) => {
     )
 }
 
-const RedeemedToken = ({ title, currencies, chainId }) => {
+const RedeemedToken = ({ title, currencies, chainId, setFastUpdate }) => {
   const { collateralRedeemAvailable, redeemAvailable, pairTokenPositions, nextRedeemId } = useRedeemClaimTools()
+  const onClaimDone = useCallback(
+      () => {
+          setFastUpdate(fastUpdate => fastUpdate + 1)
+      },
+      [setFastUpdate],
+  );
 
   return (
       <>
@@ -301,6 +309,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
               <MyText> {title} </MyText>
               {collateralRedeemAvailable &&
                   <CollateralClaim
+                      onClaimDone={onClaimDone}
                       chainId={chainId}
                       theCollateralToken={currencies[0]}
                   />
@@ -311,6 +320,7 @@ const RedeemedToken = ({ title, currencies, chainId }) => {
                         .map(
                             (pos, index) => (
                                 <PairClaim
+                                    onClaimDone={onClaimDone}
                                     key={index}
                                     chainId={chainId}
                                     pairToken={currencies[1]}

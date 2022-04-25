@@ -33,12 +33,12 @@ const Dei = () => {
     const location = useLocation()
     const validNetworks = getCorrectChains(location.pathname)
     const chainId = useChain(validNetworks)
-    useDeiUpdate(chainId)
+    const [fastUpdate, setFastUpdate] = useState(0)
+    useDeiUpdate(chainId, fastUpdate)
 
     const collatRatio = useRecoilValue(collatRatioState)
     const deiPrices = useRecoilValue(deiPricesState)
     const { redemption_fee: redemptionFee, redeemPaused } = useRecoilValue(husdPoolDataState)
-    const [fastUpdate, setFastUpdate] = useState(0)
     const [isApproved, setIsApproved] = useState(null)
     const [isPreApproved, setIsPreApproved] = useState(null)
     const [approveLoading, setApproveLoading] = useState(false)
@@ -300,6 +300,7 @@ const Dei = () => {
                 <SwapCard title="Redemption Fee" value={redemptionFee ? `${redemptionFee} %` : ""} />
 
                 <RedeemedToken
+                    setFastUpdate={setFastUpdate}
                     chainId={chainId}
                     title="Redeemed Token ready for claim"
                     currencies={[secondaryToken, pairToken]}

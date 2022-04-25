@@ -649,7 +649,7 @@ export const useRedemptionDelay = () => {
     return forceRefresh
 }
 
-export const useHusdPoolData = (validChainId) => {
+export const useHusdPoolData = (validChainId, forceUpdate) => {
     const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
     const { slowRefresh } = useRefresh()
@@ -704,7 +704,7 @@ export const useHusdPoolData = (validChainId) => {
 
         }
         get()
-    }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
+    }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId, forceUpdate]) //TODO forceRefresh
 }
 
 export const useSSPData = (validChainId, oracleResponse) => {
@@ -791,10 +791,10 @@ export const useCollatRatio = () => {
 }
 
 
-export const useDeiUpdate = (validChainId) => {
+export const useDeiUpdate = (validChainId, forceUpdate = 0) => {
     useCollatRatio(validChainId)
     useDeiPrices(validChainId)
-    useHusdPoolData(validChainId)
+    useHusdPoolData(validChainId, forceUpdate)
     useDepositAmount(validChainId)
 }
 

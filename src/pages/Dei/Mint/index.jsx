@@ -82,7 +82,7 @@ const Dei = () => {
     }, [contractAddress, chainId])
 
     const currMintingFee = useMemo(() => {
-        if (ssp) return 'Zero'
+        if (ssp || mintingFee === 0) return 'Zero'
         if (sspV4) return isZero(mintFeeV4) ? "Zero" : `${mintFeeV4} %`
         if (mintingFee) return `${mintingFee} %`
         return ''

@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components'
 import ReactTooltip from "react-tooltip";
-import {useRecoilValue} from 'recoil';
-import {Flex, Text} from 'rebass/styled-components';
+import { useRecoilValue } from 'recoil';
+import { Flex, Text } from 'rebass/styled-components';
 import { AlertCircle } from 'react-feather';
 import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
-import {husdPoolDataState} from '../../../store/dei'
-import {useClaimRedeemedTokens, useRedeemClaimTools} from '../../../hooks/useDei';
+import { husdPoolDataState } from '../../../store/dei'
+import { useClaimRedeemedTokens, useRedeemClaimTools } from '../../../hooks/useDei';
 import useRefresh from "../../../hooks/useRefresh";
-import {fromWei} from "../../../helper/formatBalance";
-import {handleSmallBalance} from "../../../utils/utils";
+import { fromWei } from "../../../helper/formatBalance";
+import { handleSmallBalance } from "../../../utils/utils";
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -79,26 +79,26 @@ const ClaimButton = styled.div`
   font-family: "Monument Grotesk Semi";
   font-size: 14px;
   line-height: 17px;
-  background-color: ${({ disabled }) => disabled ? "#333333" : "#325cfe" };
+  background-color: ${({ disabled }) => disabled ? "#333333" : "#325cfe"};
   color: #FFF;
-  cursor: ${({ disabled }) => disabled ? null : "pointer" };
+  cursor: ${({ disabled }) => disabled ? null : "pointer"};
   padding: 15px 0px;
   width: 100px;
   margin-left: auto;
 `
 
 function CurrencyLogo({
-  symbol,
-  logo,
-  size = '25px',
+    symbol,
+    logo,
+    size = '25px',
 }) {
-  return <StyledLogo size={size} src={logo || DefaultLogo} alt={`${symbol ?? 'token'} logo`} />
+    return <StyledLogo size={size} src={logo || DefaultLogo} alt={`${symbol ?? 'token'} logo`} />
 }
 
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
 const IMG_GOLD = <img src="/img/spinner-gold.svg" width="25" height="25" alt="sp" />
 
-const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledTip, tipId, amountError, loading}) => {
+const ClaimTokenRow = ({ token, handleClaim, remainingWaitTime, amount, disabledTip, tipId, amountError, loading }) => {
 
     const onClaim = useCallback(
         () => {
@@ -110,14 +110,14 @@ const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledT
     );
 
     const amountDisplay = useMemo(() => {
-        if(!amount) return IMG
+        if (!amount) return IMG
         return handleSmallBalance(amount, 3)
     }, [amount])
 
     return (
         <TokenInfo>
 
-            <CurrencyLogo symbol={token.symbol} logo={token.logo}/>
+            <CurrencyLogo symbol={token.symbol} logo={token.logo} />
 
             <TextWrapper color="text1"> {token.symbol} </TextWrapper>
 
@@ -141,66 +141,66 @@ const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledT
 }
 
 const CollateralClaim = ({ theCollateralToken, chainId, onClaimDone }) => {
-  const poolData = useRecoilValue(husdPoolDataState)
-  const { fastRefresh } = useRefresh()
-  const [remainingWaitTime, setRemainingWaitTime] = useState(null);
-  const { onCollectCollateral } = useClaimRedeemedTokens(chainId)
-  const { redeemCollateralBalances, diffTimeStampStr } = useRedeemClaimTools()
-  const mounted = useRef(false);
-  const [loading, setLoading] = useState(false);
+    const poolData = useRecoilValue(husdPoolDataState)
+    const { fastRefresh } = useRefresh()
+    const [remainingWaitTime, setRemainingWaitTime] = useState(null);
+    const { onCollectCollateral } = useClaimRedeemedTokens(chainId)
+    const { redeemCollateralBalances, diffTimeStampStr } = useRedeemClaimTools()
+    const mounted = useRef(false);
+    const [loading, setLoading] = useState(false);
 
-  const handleClaim = useCallback(async () => {
-    setLoading(true);
-    if(!remainingWaitTime) {
-      try {
-        const tx = await onCollectCollateral()
-        if (tx && tx.status) {
-          console.log("claim did");
-          onClaimDone()
-        } else {
-          console.log("claim Failed");
+    const handleClaim = useCallback(async () => {
+        setLoading(true);
+        if (!remainingWaitTime) {
+            try {
+                const tx = await onCollectCollateral()
+                if (tx && tx.status) {
+                    console.log("claim did");
+                    onClaimDone()
+                } else {
+                    console.log("claim Failed");
+                }
+            } catch (e) {
+                console.error(e)
+            }
         }
-      } catch (e) {
-        console.error(e)
-      }
-    }
-      if (mounted.current) {
-          setLoading(false);
-      }
-  }, [onCollectCollateral, remainingWaitTime, onClaimDone])
+        if (mounted.current) {
+            setLoading(false);
+        }
+    }, [onCollectCollateral, remainingWaitTime, onClaimDone])
 
-  useEffect(() => {
-    mounted.current = true
-    if(poolData.allPositions?.length) {
-      const lastReedemTimestamp = poolData.allPositions[poolData.allPositions.length - 1].timestamp.toNumber()
-      setRemainingWaitTime(
-          diffTimeStampStr(poolData.collateralRedemptionDelay, lastReedemTimestamp)
-      )
-    }
-    return () => {
-      mounted.current = false;
-    };
-  }, [poolData, fastRefresh, diffTimeStampStr])
+    useEffect(() => {
+        mounted.current = true
+        if (poolData.allPositions?.length) {
+            const lastRedeemTimestamp = poolData.allPositions[poolData.allPositions.length - 1].timestamp.toNumber()
+            setRemainingWaitTime(
+                diffTimeStampStr(poolData.collateralRedemptionDelay, lastRedeemTimestamp)
+            )
+        }
+        return () => {
+            mounted.current = false;
+        };
+    }, [poolData, fastRefresh, diffTimeStampStr])
 
-  const disabledTip = useMemo(() => {
-      if(!!remainingWaitTime) {
-          return "Wait until this time"
-      }
-      return ""
-  }, [remainingWaitTime])
+    const disabledTip = useMemo(() => {
+        if (!!remainingWaitTime) {
+            return "period until DEUS is claimable"
+        }
+        return ""
+    }, [remainingWaitTime])
 
-  return (
-      <ClaimTokenRow
-          disabledTip={disabledTip}
-          token={theCollateralToken}
-          handleClaim={handleClaim}
-          remainingWaitTime={remainingWaitTime}
-          amount={redeemCollateralBalances}
-          amountError={null}
-          tipId={0}
-          loading={loading}
-      />
-  )
+    return (
+        <ClaimTokenRow
+            disabledTip={disabledTip}
+            token={theCollateralToken}
+            handleClaim={handleClaim}
+            remainingWaitTime={remainingWaitTime}
+            amount={redeemCollateralBalances}
+            amountError={null}
+            tipId={0}
+            loading={loading}
+        />
+    )
 }
 
 const PairClaim = ({ pairToken, chainId, index, position, onClaimDone }) => {
@@ -245,19 +245,19 @@ const PairClaim = ({ pairToken, chainId, index, position, onClaimDone }) => {
             const dollarAmount = fromWei(position.amount.toString(), pairToken?.decimals)
 
             const diffInSeconds = diffTimeStamp(poolData.deusRedemptionDelay, position.timestamp.toNumber())
-            if(diffInSeconds > 0) {
+            if (diffInSeconds > 0) {
                 const dollarAmountString = handleSmallBalance(dollarAmount, 3, "$")
-                if(mounted.current){
-                    setAmountError(`${dollarAmountString} DEUS at claim time`)
+                if (mounted.current) {
+                    setAmountError(`${dollarAmountString} worth of DEUS after cooldown`)
                 }
                 return
             }
 
-            if(mounted.current) {
+            if (mounted.current) {
                 setAmountError("")
             }
             const deusTwapPrice = await getDeusTwapPrice(position.timestamp.toNumber())
-            if(mounted.current) {
+            if (mounted.current) {
                 setAmount(dollarAmount / deusTwapPrice)
             }
         }
@@ -265,16 +265,16 @@ const PairClaim = ({ pairToken, chainId, index, position, onClaimDone }) => {
         return () => {
             mounted.current = false;
         };
-    },[position, pairToken, fastRefresh, diffTimeStamp, poolData.deusRedemptionDelay, getDeusTwapPrice])
+    }, [position, pairToken, fastRefresh, diffTimeStamp, poolData.deusRedemptionDelay, getDeusTwapPrice])
 
 
 
     const disabledTip = useMemo(() => {
-        if(!!remainingWaitTime) {
-            return "Wait until this time"
+        if (!!remainingWaitTime) {
+            return "period until DEUS is claimable"
         }
-        if(index !== nextRedeemId) {
-            return "First claim previous ones"
+        if (index !== nextRedeemId) {
+            return "start by the first position"
         }
         return ""
     }, [remainingWaitTime, nextRedeemId, index])
@@ -294,48 +294,48 @@ const PairClaim = ({ pairToken, chainId, index, position, onClaimDone }) => {
 }
 
 const RedeemedToken = ({ title, currencies, chainId, setFastUpdate }) => {
-  const { collateralRedeemAvailable, redeemAvailable, pairTokenPositions, nextRedeemId } = useRedeemClaimTools()
-  const onClaimDone = useCallback(
-      () => {
-          setFastUpdate(fastUpdate => fastUpdate + 1)
-      },
-      [setFastUpdate],
-  );
+    const { collateralRedeemAvailable, redeemAvailable, pairTokenPositions, nextRedeemId } = useRedeemClaimTools()
+    const onClaimDone = useCallback(
+        () => {
+            setFastUpdate(fastUpdate => fastUpdate + 1)
+        },
+        [setFastUpdate],
+    );
 
-  return (
-      <>
-        {redeemAvailable &&
-            <SmallWrapper>
-              <MyText> {title} </MyText>
-              {collateralRedeemAvailable &&
-                  <CollateralClaim
-                      onClaimDone={onClaimDone}
-                      chainId={chainId}
-                      theCollateralToken={currencies[0]}
-                  />
-              }
-                {
-                    pairTokenPositions && pairTokenPositions
-                        .slice(nextRedeemId)
-                        .map(
-                            (pos, index) => (
-                                <PairClaim
-                                    onClaimDone={onClaimDone}
-                                    key={index}
-                                    chainId={chainId}
-                                    pairToken={currencies[1]}
-                                    index={index + nextRedeemId}
-                                    position={pos}
-                                />
+    return (
+        <>
+            {redeemAvailable &&
+                <SmallWrapper>
+                    <MyText> {title} </MyText>
+                    {collateralRedeemAvailable &&
+                        <CollateralClaim
+                            onClaimDone={onClaimDone}
+                            chainId={chainId}
+                            theCollateralToken={currencies[0]}
+                        />
+                    }
+                    {
+                        pairTokenPositions && pairTokenPositions
+                            .slice(nextRedeemId)
+                            .map(
+                                (pos, index) => (
+                                    <PairClaim
+                                        onClaimDone={onClaimDone}
+                                        key={index}
+                                        chainId={chainId}
+                                        pairToken={currencies[1]}
+                                        index={index + nextRedeemId}
+                                        position={pos}
+                                    />
+                                )
                             )
-                        )
-                }
+                    }
 
 
-            </SmallWrapper>
-        }
-      </>
-  );
+                </SmallWrapper>
+            }
+        </>
+    );
 }
 
 export default RedeemedToken

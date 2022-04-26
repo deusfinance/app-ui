@@ -14,13 +14,12 @@ import { BridgeTokens } from '../../constant/token'
 import { useApprove } from '../../hooks/useApprove';
 import BigNumber from 'bignumber.js';
 import { BRIDGE_ADDRESS } from '../../constant/contracts';
-import Muon from 'muon'
 import { useClaim, useDeposit, useGetNewClaim } from '../../hooks/useBridge';
 import { NameChainId } from '../../constant/web3';
 import './bridge.css'
+import {muonClient} from "../../constant/clients";
 
 const Bridge = () => {
-    const muon = new Muon(process.env.REACT_APP_MUON_NODE_GATEWAY)
     const { validNetworks, chainId } = useCorrectChain()
     const [syncChainId, setSyncChainId] = useState(chainId)
     const { account } = useWeb3React()
@@ -102,7 +101,7 @@ const Bridge = () => {
     const { onApprove } = useApprove(swapState.from, contractAddress, chainId)
     const { onDeposit } = useDeposit(amountIn, swapState)
     const { getClaim } = useGetNewClaim()
-    const { handleClaim } = useClaim(muon, lock, setLock)
+    const { handleClaim } = useClaim(muonClient, lock, setLock)
 
 
     useEffect(() => {

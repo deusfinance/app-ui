@@ -1,35 +1,63 @@
-import useWeb3, { useCrossWeb3 } from './useWeb3'
-import { useEffect, useState, useCallback } from "react"
-import { useWeb3React } from '@web3-react/core'
+import useWeb3, {useCrossWeb3} from './useWeb3'
+import {useCallback, useEffect, useMemo, useState} from "react"
+import {useWeb3React} from '@web3-react/core'
 import useRefresh from './useRefresh'
 import BigNumber from 'bignumber.js'
-import { fromWei, getToWei, RemoveTrailingZero } from '../helper/formatBalance'
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import HusdPoolAbi from '../config/abi/HusdPoolAbi.json'
+import {fromWei, getToWei, RemoveTrailingZero} from '../helper/formatBalance'
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import DeiPoolAbi from '../config/abi/DEIPool.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
 import SspAbi from '../config/abi/SspAbi.json'
 import SspOracleAbi from '../config/abi/SspOracleAbi.json'
 import SSPV4Abi from '../config/abi/SSPV4_ABI.json'
 import ERC20Abi from '../config/abi/ERC20Abi.json'
 import multicall from '../helper/multicall'
-import { useCrossERC20 } from './useContract'
-import { ethers } from "ethers";
-import { isZero, ZERO } from "../constant/number";
-import { deiPricesState, husdPoolDataState, depositAmountState, sspDataState, sspV4DataState } from '../store/dei'
+import {useCrossERC20} from './useContract'
+import {ethers} from "ethers";
+import {isGt, isZero, ZERO} from "../constant/number";
+import {deiPricesState, depositAmountState, husdPoolDataState, sspDataState, sspV4DataState} from '../store/dei'
 import {
-    makeDeiRequest, getHusdPoolData,
-    redeem1to1Dei, redeemFractionalDei, redeemAlgorithmicDei, getClaimAll, mintFractional, mintAlgorithmic,
-    buyBackDEUS, RecollateralizeDEI, getStakingData, getStakingTokenData, DeiDeposit, DeiWithdraw, SendWithToast,
-    mint1t1DEI, collatUsdPrice, zapIn, getZapAmountsOut, mintDeiSSP, mintDeiSSPWithOracle, getSspData, getSspV4Data, mintDeiSSPv4
+    buyBackDEUS,
+    collatUsdPrice,
+    collectCollateral,
+    collectDeus,
+    DeiDeposit,
+    DeiWithdraw,
+    getHusdPoolData,
+    getSspData,
+    getSspV4Data,
+    getStakingData,
+    getStakingTokenData, getUsdcTwapOracle,
+    getZapAmountsOut,
+    makeDeiRequest,
+    mint1t1DEI,
+    mintAlgorithmic,
+    mintDeiSSP,
+    mintDeiSSPv4,
+    mintDeiSSPWithOracle,
+    mintFractional,
+    RecollateralizeDEI,
+    redeem1to1Dei,
+    redeemAlgorithmicDei,
+    redeemFractionalDei,
+    SendWithToast,
+    zapIn
 } from '../helper/deiHelper'
-import { blockNumberState } from '../store/wallet'
-import { formatBalance3 } from '../utils/utils'
-import { collateralToken } from '../constant/token'
-import { COLLATERAL_ADDRESS, MINT_PATH, SSP_ADDRESS } from '../constant/contracts'
-import { getDeusSwapContract, getNewProxyMinterContract } from '../helper/contractHelpers'
-import { ChainId, isSupportEIP1559 } from '../constant/web3'
-import { DEI_COLLATERAL_ZAP, SSPV4_ADDRESS } from '../constant/contracts';
-import { ToastTransaction } from '../utils/explorers'
+import {blockNumberState} from '../store/wallet'
+import {formatBalance3, toTwoDigitNumber} from '../utils/utils'
+import {collateralToken} from '../constant/token'
+import {
+    COLLATERAL_ADDRESS,
+    DEI_COLLATERAL_ZAP,
+    DEUS_ADDRESS,
+    MINT_PATH,
+    SSP_ADDRESS,
+    SSPV4_ADDRESS
+} from '../constant/contracts'
+import {getDeusSwapContract, getNewProxyMinterContract} from '../helper/contractHelpers'
+import {ChainId, isSupportEIP1559} from '../constant/web3'
+import {ToastTransaction} from '../utils/explorers'
+import {muonClient} from "../constant/clients";
 
 export const useZap = (currency, stakingInfo, amountIn, slippage, amountOut, amountOutParams, validChainId) => {
     const web3 = useWeb3()
@@ -183,61 +211,60 @@ export const useRecollat = (fromCurrency, toCurrency, amountIn, amountOut, valid
 }
 
 //TODO
-export const useClaimAll = (validChainId = 4) => {
+export const useClaimRedeemedTokens = (validChainId = 4) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
-    const handleClaimAll = useCallback(async () => {
+    const handleCollectCollateral = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
-        const tx = await getClaimAll(account, web3, chainId)
-        return tx
+        const fn = await collectCollateral(account, web3, chainId)
+        return SendWithToast(fn, account, chainId, `Claim USDC`)
     }, [account, chainId, validChainId, web3])
-    return { onClaimAll: handleClaimAll }
+
+    const handleCollectDeus = useCallback(async (index) => {
+        if (validChainId && chainId !== validChainId) return false
+
+        const result = await muonClient
+            .app('redeem')
+            .method('signature', {
+                chainId,
+                userAddress: account,
+                redeemId: index,
+            })
+            .call()
+        if (result.success === false) {
+            console.error(result)
+            ToastTransaction("info", "Claim Failed.", result.error)
+            return
+        }
+        const price = result.data.result.price
+        const signatures = [
+            result.signatures[0].signature,
+            result.signatures[0].owner,
+            result.data.init.nonceAddress
+        ]
+        const id = Number(result._id)
+        const fn = collectDeus(account, web3, chainId, price, id, signatures)
+        console.log(fn)
+        return SendWithToast(fn, account, chainId, `Claim DEUS`)
+    }, [account, chainId, validChainId, web3])
+
+    return { onCollectCollateral: handleCollectCollateral, onCollectDeus: handleCollectDeus }
 }
 
-export const useRedeem = (fromCurrency, to1Currency, to2Currency, amountIn, amountOut1, amountOut2, collatRatio, validChainId = 1) => {
+export const useRedeem = (fromCurrency, amountIn, collatRatio, validChainId = 1) => {
     const web3 = useWeb3()
     const { account, chainId } = useWeb3React()
 
     const handleRedeem = useCallback(async () => {
         if (validChainId && chainId !== validChainId) return false
         let fn = null
-        let result = null
         if (collatRatio === 100) {
-            result = await makeDeiRequest("/redeem-1to1", validChainId)
-            fn = redeem1to1Dei(
-                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
-                result.collateral_price,
-                result.expire_block,
-                result.signature,
-                chainId,
-                web3,
-            )
+            fn = redeem1to1Dei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else if (collatRatio > 0) {
-            result = await makeDeiRequest("/redeem-fractional", validChainId)
-            if (result.status === "ERROR") {
-                ToastTransaction("info", "Redeem Failed.", result.message)
-                return
-            }
-            fn = redeemFractionalDei(
-                result.collateral_price,
-                result.deus_price,
-                result.expire_block,
-                result.signature,
-                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
-                chainId,
-                web3,
-            )
+            fn = redeemFractionalDei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         } else {
-            result = await makeDeiRequest("/redeem-algorithmic", validChainId)
-            fn = redeemAlgorithmicDei(
-                result.deus_price,
-                result.expire_block,
-                result.signature,
-                getToWei(amountIn, fromCurrency.decimals).toFixed(0),
-                chainId,
-                web3,
-            )
+            fn = redeemAlgorithmicDei(getToWei(amountIn, fromCurrency.decimals).toFixed(0), chainId, web3)
         }
         const payload = await getGasData(web3, fn, validChainId, account)
         return await SendWithToast(fn, account, chainId, `Redeem ${amountIn} ${fromCurrency.symbol}`, payload)
@@ -277,15 +304,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
         else if (!proxy) {
             if (collatRatio === 100) {
                 path = "/mint-1to1"
-                const result = await makeDeiRequest(path, validChainId)
-                fn = mint1t1DEI(
-                    amount1toWei,
-                    result.collateral_price,
-                    result.expire_block,
-                    result.signature,
-                    chainId,
-                    web3,
-                )
+                fn = mint1t1DEI(amount1toWei, chainId, web3)
             } else if (collatRatio > 0) {
                 path = "/mint-fractional"
                 const result = await makeDeiRequest(path, validChainId)
@@ -317,16 +336,7 @@ export const useMint = (from1Currency, from2Currency, toCurrency, amountIn1, amo
 
                 const amount2toWei = getToWei(correctAmount2, from2Currency.decimals).toFixed(0)
 
-                fn = mintFractional(
-                    amount1toWei,
-                    amount2toWei,
-                    result.collateral_price.toString(),
-                    result.deus_price,
-                    result.expire_block,
-                    result.signature,
-                    chainId,
-                    web3,
-                )
+                fn = mintFractional(amount1toWei, amount2toWei, result.deus_price, result.expire_block, result.signature, chainId, web3)
             } else {
                 const result = await makeDeiRequest(path, validChainId)
                 fn = mintAlgorithmic(
@@ -640,7 +650,7 @@ export const useRedemptionDelay = () => {
     return forceRefresh
 }
 
-export const useHusdPoolData = (validChainId) => {
+export const useHusdPoolData = (validChainId, forceUpdate) => {
     const web3 = useCrossWeb3(validChainId)
     const { account, chainId } = useWeb3React()
     const { slowRefresh } = useRefresh()
@@ -648,10 +658,8 @@ export const useHusdPoolData = (validChainId) => {
 
     useEffect(() => {
         const get = async () => {
-
             try {
-                const mul = await multicall(web3, HusdPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
-
+                const mul = await multicall(web3, DeiPoolAbi, getHusdPoolData(validChainId, collatUsdPrice, account), validChainId)
                 const [
                     collatDollarBalance,
                     // availableExcessCollatDV,
@@ -665,8 +673,10 @@ export const useHusdPoolData = (validChainId) => {
                     mintPaused,
                     redeemPaused,
                     bonus_rate,
-                    redemption_delay,
-                    redeemDEUSBalances,
+                    deusRedemptionDelay,
+                    collateralRedemptionDelay,
+                    allPositions,
+                    nextRedeemId,
                     redeemCollateralBalances,
                 ] = mul
                 const updateState = {
@@ -678,12 +688,14 @@ export const useHusdPoolData = (validChainId) => {
                     buyback_fee: new BigNumber(buyback_fee).toNumber(),
                     recollat_fee: new BigNumber(recollat_fee).toNumber(),
                     bonus_rate: new BigNumber(bonus_rate).toNumber(),
-                    redemption_delay: new BigNumber(redemption_delay).toNumber(),
+                    deusRedemptionDelay: new BigNumber(deusRedemptionDelay).toNumber(),
+                    collateralRedemptionDelay: new BigNumber(collateralRedemptionDelay).toNumber(),
                     redeemPaused: redeemPaused[0],
                     mintPaused: mintPaused[0],
                     buyBackPaused: buyBackPaused[0],
                     recollateralizePaused: recollateralizePaused[0],
-                    redeemDEUSBalances: account ? fromWei(redeemDEUSBalances, 18) : "0",
+                    allPositions: account ? allPositions.positions : [],
+                    nextRedeemId: account ? nextRedeemId : 0,
                     redeemCollateralBalances: account ? fromWei(redeemCollateralBalances, collateralToken[validChainId]?.decimals) : "0",
                 }
                 setHusdPoolData({ ...updateState })
@@ -693,7 +705,7 @@ export const useHusdPoolData = (validChainId) => {
 
         }
         get()
-    }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId]) //TODO forceRefresh
+    }, [setHusdPoolData, slowRefresh, web3, account, validChainId, chainId, forceUpdate])
 }
 
 export const useSSPData = (validChainId, oracleResponse) => {
@@ -780,10 +792,10 @@ export const useCollatRatio = () => {
 }
 
 
-export const useDeiUpdate = (validChainId) => {
+export const useDeiUpdate = (validChainId, forceUpdate = 0) => {
     useCollatRatio(validChainId)
     useDeiPrices(validChainId)
-    useHusdPoolData(validChainId)
+    useHusdPoolData(validChainId, forceUpdate)
     useDepositAmount(validChainId)
 }
 
@@ -855,3 +867,48 @@ export const useAllowance = (currency, contractAddress, validChainId, fastUpdate
     return blocks;
 } */
 
+export const useRedeemClaimTools = () => {
+    const poolData = useRecoilValue(husdPoolDataState)
+    const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
+    const nextRedeemId = (poolData && poolData["nextRedeemId"]) ? poolData["nextRedeemId"][0].toNumber() : 0
+    const pairTokenPositions = poolData ? poolData["allPositions"] : null
+    const web3 = useWeb3()
+
+    const diffTimeStamp = (redemptionDelay, timestampInSec) => {
+        const timestamp = new Date() / 1000
+        return redemptionDelay - (timestamp - timestampInSec)
+    }
+
+    const diffTimeStampStr = (redemptionDelay, timestampInSec) => {
+        const diffInSeconds = diffTimeStamp(redemptionDelay, timestampInSec)
+        if (diffInSeconds > 0) {
+            const hours = toTwoDigitNumber(Math.floor(diffInSeconds / 3600))
+            const minutes = toTwoDigitNumber(Math.floor((diffInSeconds % 3600) / 60))
+            const seconds = toTwoDigitNumber(Math.ceil(diffInSeconds % 60))
+            return toTwoDigitNumber(`${hours}:${minutes}:${seconds}`)
+        }
+        return null
+    };
+
+    const collateralRedeemAvailable = useMemo(() => {
+        return redeemCollateralBalances && isGt(redeemCollateralBalances, 0)
+    }, [redeemCollateralBalances])
+
+    const deusRedeemAvailable = useMemo(() => {
+        return pairTokenPositions && (pairTokenPositions.length > nextRedeemId)
+    }, [pairTokenPositions, nextRedeemId])
+
+    const redeemAvailable = useMemo(() => {
+        return collateralRedeemAvailable || deusRedeemAvailable
+    }, [collateralRedeemAvailable, deusRedeemAvailable])
+
+    const getDeusTwapPrice = useCallback(async (timestamp) => {
+        return getUsdcTwapOracle(web3, DEUS_ADDRESS[ChainId.FTM], 1, timestamp, poolData.deusRedemptionDelay)
+    }, [poolData, web3])
+
+    return {
+        redeemCollateralBalances, nextRedeemId, pairTokenPositions, diffTimeStamp,
+        diffTimeStampStr, collateralRedeemAvailable, redeemAvailable, deusRedeemAvailable,
+        getDeusTwapPrice
+    }
+}

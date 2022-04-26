@@ -1,12 +1,15 @@
-import React, { useMemo, useCallback } from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import styled from 'styled-components'
+import ReactTooltip from "react-tooltip";
+import {useRecoilValue} from 'recoil';
+import {Flex, Text} from 'rebass/styled-components';
+import { AlertCircle } from 'react-feather';
 import DefaultLogo from '../../.../../../assets/images/empty-token.svg'
-import { Flex, Text } from 'rebass/styled-components';
-import { Base } from '../Button/index'
-import { useRecoilValue } from 'recoil';
-import { husdPoolDataState } from '../../../store/dei'
-import { isGt } from '../../../constant/number';
-import { useClaimAll } from '../../../hooks/useDei';
+import {husdPoolDataState} from '../../../store/dei'
+import {useClaimRedeemedTokens, useRedeemClaimTools} from '../../../hooks/useDei';
+import useRefresh from "../../../hooks/useRefresh";
+import {fromWei} from "../../../helper/formatBalance";
+import {handleSmallBalance} from "../../../utils/utils";
 
 const SmallWrapper = styled.div`
     padding:0 20px;
@@ -22,7 +25,7 @@ const SmallWrapper = styled.div`
 `
 
 const MyText = styled(Text)`
-    margin-top: 20px;
+    margin: 20px 0px;
     box-sizing: border-box;
     font-size: 12px;
     opacity: 0.75;
@@ -33,19 +36,25 @@ const TextWrapper = styled(Text)`
   color: ${({ color, theme }) => (theme)[color]};
   font-size: 16px;
   opacity: 0.75;
+  text-align: left;
+  margin-left: 7px;
 `
 
 const NumberWrapper = styled(Text)`
   color: ${({ color, theme }) => (theme)[color]};
   opacity: 0.75;
   font-size: 14px;
-  margin-left: auto;
+  margin-left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const TokenInfo = styled(Flex)`
-    margin: 12px auto;
-    align-items:center;
-    background-color: #0D0D0D;
+  border-top: 1px solid ${({ theme }) => theme.bg5};
+  padding: 12px 0px;
+  align-items:center;
+  background-color: #0D0D0D;
 `
 
 const StyledLogo = styled.img`
@@ -53,6 +62,29 @@ const StyledLogo = styled.img`
   height: ${({ size }) => size};
   border-radius: ${({ size }) => size};
   vertical-align: "middle";
+`
+
+const ClaimButton = styled.div`
+  max-width: 297px;
+  height: 24px;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 6px;
+  line-height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Monument Grotesk Semi";
+  font-size: 14px;
+  line-height: 17px;
+  background-color: ${({ disabled }) => disabled ? "#333333" : "#325cfe" };
+  color: #FFF;
+  cursor: ${({ disabled }) => disabled ? null : "pointer" };
+  padding: 15px 0px;
+  width: 100px;
+  margin-left: auto;
 `
 
 function CurrencyLogo({
@@ -63,73 +95,246 @@ function CurrencyLogo({
   return <StyledLogo size={size} src={logo || DefaultLogo} alt={`${symbol ?? 'token'} logo`} />
 }
 
-const ButtonSync = styled(Base).attrs({
-  width: "100%",
-  height: "36px",
-  borderRadius: "10px",
-  marginBottom: "20px",
-})`
-  font-size:20px;
-`
-
-const ButtonSyncActive = styled(ButtonSync)`
-  background: ${({ theme }) => theme.sync_active};
-  font-size: 25px;
-  &:hover{
-    filter:${({ active }) => active && "brightness(1.2)"};
-  }
-`
-
-const ButtonSwap = styled(ButtonSyncActive)`
-  background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3};
-  color: ${({ theme }) => theme.text1_2};
-  font-size:${({ fontSize }) => fontSize || "15px"};
-`
-
 const IMG = <img src="/img/spinner.svg" width="20" height="20" alt="sp" />
+const IMG_GOLD = <img src="/img/spinner-gold.svg" width="25" height="25" alt="sp" />
 
-const RedeemedToken = ({ title, currencies, chainId }) => {
-  let poolData = useRecoilValue(husdPoolDataState)
-  const redeemCollateralBalances = poolData ? poolData["redeemCollateralBalances"] : null
-  const redeemDEUSBalances = poolData ? poolData["redeemDEUSBalances"] : null
+const ClaimTokenRow = ({token, handleClaim, remainingWaitTime, amount, disabledTip, tipId, amountError, loading}) => {
 
-  const { onClaimAll } = useClaimAll(chainId)
+    const onClaim = useCallback(
+        () => {
+            if (!loading) {
+                handleClaim()
+            }
+        },
+        [handleClaim, loading],
+    );
+
+    const amountDisplay = useMemo(() => {
+        if(!amount) return IMG
+        return handleSmallBalance(amount, 3)
+    }, [amount])
+
+    return (
+        <TokenInfo>
+
+            <CurrencyLogo symbol={token.symbol} logo={token.logo}/>
+
+            <TextWrapper color="text1"> {token.symbol} </TextWrapper>
+
+            <NumberWrapper>
+                {amountError ?
+                    <AlertCircle color={"#ffe7a1"} size={'15px'} data-tip data-for={'amount-error-' + tipId} /> : amountDisplay}
+            </NumberWrapper>
+            <ClaimButton data-tip data-for={'disabled-tip-' + tipId} onClick={onClaim} disabled={disabledTip}>
+                {loading ? IMG_GOLD : (remainingWaitTime ?? 'Claim')}</ClaimButton>
+
+
+            {amountError && <ReactTooltip id={'amount-error-' + tipId} place="bottom" effect="solid" type="info">
+                <div>{amountError}</div>
+            </ReactTooltip>}
+
+            {disabledTip && <ReactTooltip id={'disabled-tip-' + tipId} place="bottom" effect="solid" type="info">
+                <div>{disabledTip}</div>
+            </ReactTooltip>}
+        </TokenInfo>
+    )
+}
+
+const CollateralClaim = ({ theCollateralToken, chainId, onClaimDone }) => {
+  const poolData = useRecoilValue(husdPoolDataState)
+  const { fastRefresh } = useRefresh()
+  const [remainingWaitTime, setRemainingWaitTime] = useState(null);
+  const { onCollectCollateral } = useClaimRedeemedTokens(chainId)
+  const { redeemCollateralBalances, diffTimeStampStr } = useRedeemClaimTools()
+  const mounted = useRef(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClaim = useCallback(async () => {
-    try {
-      const tx = await onClaimAll()
-      if (tx.status) {
-        console.log("claim did");
-      } else {
-        console.log("claim Failed");
+    setLoading(true);
+    if(!remainingWaitTime) {
+      try {
+        const tx = await onCollectCollateral()
+        if (tx && tx.status) {
+          console.log("claim did");
+          onClaimDone()
+        } else {
+          console.log("claim Failed");
+        }
+      } catch (e) {
+        console.error(e)
       }
-    } catch (e) {
-      console.error(e)
     }
-  }, [onClaimAll])
+      if (mounted.current) {
+          setLoading(false);
+      }
+  }, [onCollectCollateral, remainingWaitTime, onClaimDone])
+
+  useEffect(() => {
+    mounted.current = true
+    if(poolData.allPositions?.length) {
+      const lastReedemTimestamp = poolData.allPositions[poolData.allPositions.length - 1].timestamp.toNumber()
+      setRemainingWaitTime(
+          diffTimeStampStr(poolData.collateralRedemptionDelay, lastReedemTimestamp)
+      )
+    }
+    return () => {
+      mounted.current = false;
+    };
+  }, [poolData, fastRefresh, diffTimeStampStr])
+
+  const disabledTip = useMemo(() => {
+      if(!!remainingWaitTime) {
+          return "Wait until this time"
+      }
+      return ""
+  }, [remainingWaitTime])
 
   return (
-    useMemo(() => {
-      return <>
-        {(redeemCollateralBalances && redeemDEUSBalances && (isGt(redeemCollateralBalances, 0) || isGt(redeemDEUSBalances, 0))) && <SmallWrapper>
-          <MyText> {title} </MyText>
-          {currencies.map(({ symbol, logo }, index) => {
-            return <TokenInfo key={index + logo}>
-              <CurrencyLogo symbol={symbol} logo={logo} />
+      <ClaimTokenRow
+          disabledTip={disabledTip}
+          token={theCollateralToken}
+          handleClaim={handleClaim}
+          remainingWaitTime={remainingWaitTime}
+          amount={redeemCollateralBalances}
+          amountError={null}
+          tipId={0}
+          loading={loading}
+      />
+  )
+}
 
-              <TextWrapper color="text1" ml="7px" mr="9px"> {symbol} </TextWrapper>
+const PairClaim = ({ pairToken, chainId, index, position, onClaimDone }) => {
+    const poolData = useRecoilValue(husdPoolDataState)
+    const { fastRefresh } = useRefresh()
+    const [remainingWaitTime, setRemainingWaitTime] = useState(null);
+    const { onCollectDeus } = useClaimRedeemedTokens(chainId)
+    const { diffTimeStamp, diffTimeStampStr, nextRedeemId, getDeusTwapPrice } = useRedeemClaimTools()
+    const mounted = useRef(false);
+    const [loading, setLoading] = useState(false);
+    const handleClaim = useCallback(async () => {
+        setLoading(true);
+        if (!remainingWaitTime && index === nextRedeemId) {
+            try {
+                const tx = await onCollectDeus(index)
+                onClaimDone()
+                if (tx && tx.status) {
+                    console.log("claim did");
+                } else {
+                    console.log("claim Failed");
+                }
+            } catch (e) {
+                console.error(e)
+            }
+        }
+        if (mounted.current) {
+            setLoading(false);
+        }
+    }, [index, nextRedeemId, onCollectDeus, remainingWaitTime, onClaimDone])
 
-              <NumberWrapper color="text1" ml="7px" mr="9px">
-                {index === 0 ? redeemCollateralBalances ? parseFloat(redeemCollateralBalances).toFixed(3) : IMG : redeemDEUSBalances ? parseFloat(redeemDEUSBalances).toFixed(3) : IMG}
-              </NumberWrapper>
+    useEffect(() => {
+        setRemainingWaitTime(
+            diffTimeStampStr(poolData.deusRedemptionDelay, position.timestamp.toNumber())
+        )
+    }, [poolData, fastRefresh, diffTimeStampStr, position])
 
-            </TokenInfo>
-          })}
+    const [amount, setAmount] = useState("");
+    const [amountError, setAmountError] = useState("");
+    useEffect(() => {
+        mounted.current = true
+        const fun = async () => {
+            const dollarAmount = fromWei(position.amount.toString(), pairToken?.decimals)
 
-          <ButtonSwap active={true} bgColor={"grad_dei"} onClick={handleClaim}> CLAIM ALL </ButtonSwap>
-        </SmallWrapper>}
+            const diffInSeconds = diffTimeStamp(poolData.deusRedemptionDelay, position.timestamp.toNumber())
+            if(diffInSeconds > 0) {
+                const dollarAmountString = handleSmallBalance(dollarAmount, 3, "$")
+                if(mounted.current){
+                    setAmountError(`${dollarAmountString} DEUS at claim time`)
+                }
+                return
+            }
+
+            if(mounted.current) {
+                setAmountError("")
+            }
+            const deusTwapPrice = await getDeusTwapPrice(position.timestamp.toNumber())
+            if(mounted.current) {
+                setAmount(dollarAmount / deusTwapPrice)
+            }
+        }
+        fun()
+        return () => {
+            mounted.current = false;
+        };
+    },[position, pairToken, fastRefresh, diffTimeStamp, poolData.deusRedemptionDelay, getDeusTwapPrice])
+
+
+
+    const disabledTip = useMemo(() => {
+        if(!!remainingWaitTime) {
+            return "Wait until this time"
+        }
+        if(index !== nextRedeemId) {
+            return "First claim previous ones"
+        }
+        return ""
+    }, [remainingWaitTime, nextRedeemId, index])
+
+    return (
+        <ClaimTokenRow
+            disabledTip={disabledTip}
+            token={pairToken}
+            handleClaim={handleClaim}
+            remainingWaitTime={remainingWaitTime}
+            amount={amount}
+            tipId={index + 1}
+            amountError={amountError}
+            loading={loading}
+        />
+    )
+}
+
+const RedeemedToken = ({ title, currencies, chainId, setFastUpdate }) => {
+  const { collateralRedeemAvailable, redeemAvailable, pairTokenPositions, nextRedeemId } = useRedeemClaimTools()
+  const onClaimDone = useCallback(
+      () => {
+          setFastUpdate(fastUpdate => fastUpdate + 1)
+      },
+      [setFastUpdate],
+  );
+
+  return (
+      <>
+        {redeemAvailable &&
+            <SmallWrapper>
+              <MyText> {title} </MyText>
+              {collateralRedeemAvailable &&
+                  <CollateralClaim
+                      onClaimDone={onClaimDone}
+                      chainId={chainId}
+                      theCollateralToken={currencies[0]}
+                  />
+              }
+                {
+                    pairTokenPositions && pairTokenPositions
+                        .slice(nextRedeemId)
+                        .map(
+                            (pos, index) => (
+                                <PairClaim
+                                    onClaimDone={onClaimDone}
+                                    key={index}
+                                    chainId={chainId}
+                                    pairToken={currencies[1]}
+                                    index={index + nextRedeemId}
+                                    position={pos}
+                                />
+                            )
+                        )
+                }
+
+
+            </SmallWrapper>
+        }
       </>
-    }, [title, currencies, redeemCollateralBalances, redeemDEUSBalances, handleClaim])
   );
 }
 

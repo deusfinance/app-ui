@@ -97,3 +97,15 @@ export const validateKeyPress = (e) => {
     if (ev.preventDefault) ev.preventDefault();
   }
 };
+
+export const toTwoDigitNumber = (num) => {
+  let numStr = String(num)
+  return numStr.padStart(2, "0")
+}
+
+export const handleSmallBalance = (balance, fixed, currencyStr="") => {
+  const balanceFloat = parseFloat(balance)
+  const smallAmount = Math.pow(10, -fixed)
+  return balanceFloat < smallAmount ?
+      `<${currencyStr}${smallAmount}` : `${currencyStr}${balanceFloat.toFixed(fixed)}`
+}

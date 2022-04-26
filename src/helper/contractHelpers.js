@@ -4,7 +4,9 @@ import MultiCallAbi from '../config/abi/Multicall.json'
 import DeiPoolAbi from '../config/abi/DeiPoolAbi.json'
 import DeiAbi from '../config/abi/DEIAbi.json'
 import StakingDeiAbi from '../config/abi/StakingDeiAbi.json'
-import CollateralAbi from '../config/abi/HusdPoolAbi.json'
+// import CollateralAbi from '../config/abi/HusdPoolAbi.json'
+import NewCollateralAbi from '../config/abi/DEIPool.json'
+import UsdcTwapOracleAbi from '../config/abi/UsdcTwapOracle.json'
 import NewProxyMinterAbi from '../config/abi/NewProxyAbi'
 import DeiCollateralZapAbi from '../config/abi/DeiCollateralZapAbi.json'
 import DeiDeusZapAbi from '../config/abi/DeiDeusZap.json'
@@ -28,6 +30,7 @@ import {
     MUON_PRESALE_ADDRESS,
     DEI_POOL_ADDRESS,
     COLLATERAL_POOL_ADDRESS,
+    USDC_TWAP_ORACLE_ADDRESS,
     MULTICALL_NETWORKS,
     MIGRATOR_ADDRESS,
     DEI_DEUS_ZAP,
@@ -63,7 +66,11 @@ export const getDeiContract = (web3, chainId = ChainId.RINKEBY) => {
 }
 
 export const getCollateralPoolContract = (web3, chainId = ChainId.AVALANCHE) => {
-    return getContract(CollateralAbi, COLLATERAL_POOL_ADDRESS[chainId], web3)
+    return getContract(NewCollateralAbi, COLLATERAL_POOL_ADDRESS[chainId], web3)
+}
+
+export const getUsdcTwapOracleContract = (web3, chainId = ChainId.AVALANCHE) => {
+    return getContract(UsdcTwapOracleAbi, USDC_TWAP_ORACLE_ADDRESS[chainId], web3)
 }
 
 export const getDeiStakingContract = (web3, address) => {

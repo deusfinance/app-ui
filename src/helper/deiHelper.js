@@ -6,7 +6,17 @@ import { ChainId } from "../constant/web3"
 import { TransactionState } from "../constant/web3"
 import { CustomTransaction, getTransactionLink } from "../utils/explorers"
 import { fetcher, formatUnitAmount } from "../utils/utils"
-import { getDeiContract, getDeiStakingContract, getCollateralPoolContract, getZapContract, getNewProxyMinterContract, getDeusSwapContract, getSSPContract, getSSPV4Contract } from "./contractHelpers"
+import {
+    getDeiContract,
+    getDeiStakingContract,
+    getCollateralPoolContract,
+    getZapContract,
+    getNewProxyMinterContract,
+    getDeusSwapContract,
+    getSSPContract,
+    getSSPV4Contract,
+    getUsdcTwapOracleContract
+} from "./contractHelpers"
 import { getToWei } from "./formatBalance"
 
 const baseUrl = "https://oracle4.deus.finance/dei"
@@ -196,23 +206,23 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
         // },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'pool_ceiling',
+            name: 'poolCeiling',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'redemption_fee',
+            name: 'redemptionFee',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'minting_fee',
+            name: 'mintingFee',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'buyback_fee',
+            name: 'buybackFee',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'recollat_fee',
+            name: 'recollatFee',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
@@ -232,18 +242,27 @@ export const getHusdPoolData = (chainId = ChainId.ETH, collat_usd_price, account
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'bonus_rate',
+            name: 'bonusRate',
         },
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'redemption_delay',
+            name: 'deusRedemptionDelay',
+        },
+        {
+            address: COLLATERAL_POOL_ADDRESS[chainId],
+            name: 'collateralRedemptionDelay',
         },
     ]
     if (account) {
         calls = [...calls,
         {
             address: COLLATERAL_POOL_ADDRESS[chainId],
-            name: 'redeemDEUSBalances',
+            name: 'getAllPositions',
+            params: [account]
+        },
+        {
+            address: COLLATERAL_POOL_ADDRESS[chainId],
+            name: 'nextRedeemId',
             params: [account]
         },
         {
@@ -336,16 +355,16 @@ export const mintDeiSSPWithOracle = (amountIn, result, chainId, web3) => {
         .buyDei(amountIn, result.deus_price, result.expire_block, [result.signature])
 }
 
-export const mint1t1DEI = (collateral_amount, collateral_price, expire_block, signature, chainId, web3) => {
+export const mint1t1DEI = (collateral_amount, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .mint1t1DEI(collateral_amount, collateral_price, expire_block, [signature])
+        .mint1t1DEI(collateral_amount)
 }
 
-export const mintFractional = (collateral_amount, deus_amount, collateral_price, deus_current_price, expireBlock, signature, chainId, web3) => {
+export const mintFractional = (collateral_amount, deus_amount, deus_current_price, expireBlock, signature, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .mintFractionalDEI(collateral_amount, deus_amount, collateral_price, deus_current_price, expireBlock, [signature])
+        .mintFractionalDEI(collateral_amount, deus_amount, deus_current_price, expireBlock, [signature])
 }
 
 export const mintAlgorithmic = (deus_amount_d18, deus_current_price, expire_block, signature, chainId, web3) => {
@@ -354,32 +373,44 @@ export const mintAlgorithmic = (deus_amount_d18, deus_current_price, expire_bloc
         .mintAlgorithmicDEI(deus_amount_d18, deus_current_price, expire_block, [signature])
 }
 
-export const redeem1to1Dei = (amountIn, collateral_price, expire_block, signature, chainId, web3) => {
+export const redeem1to1Dei = (amountIn, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .redeem1t1DEI(amountIn, collateral_price, expire_block, [signature])
+        .redeem1t1DEI(amountIn)
 }
 
-export const redeemFractionalDei = (collateral_price, deus_price, expire_block, signature, amountIn, chainId, web3) => {
+export const redeemFractionalDei = (amountIn, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .redeemFractionalDEI(amountIn, collateral_price, deus_price, expire_block, [signature])
+        .redeemFractionalDEI(amountIn)
 }
 
-export const redeemAlgorithmicDei = (deus_price, expire_block, signature, amountIn, chainId, web3) => {
+export const redeemAlgorithmicDei = (amountIn, chainId, web3) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .redeemAlgorithmicDEI(amountIn, deus_price, expire_block, [signature])
+        .redeemAlgorithmicDEI(amountIn)
 }
 
-export const getClaimAll = async (account, web3, chainId = ChainId.ETH) => {
+export const collectCollateral = (account, web3, chainId = ChainId.ETH) => {
     return getCollateralPoolContract(web3, chainId)
         .methods
-        .collectRedemption()
-        .send({ from: account })
+        .collectCollateral()
+}
+
+export const collectDeus = (account, web3, chainId = ChainId.ETH,price, id, signatures) => {
+    return getCollateralPoolContract(web3, chainId)
+        .methods
+        .collectDeus(price, id, [signatures])
 }
 
 //READ FUNCTIONS
+export const getUsdcTwapOracle = async (web3, tokenIn, amountIn, timestamp, duration) => {
+    return getUsdcTwapOracleContract(web3, ChainId.FTM)
+        .methods
+        .twap(tokenIn, amountIn, timestamp, duration)
+        .call()
+}
+
 export const getDeiInfo = async (web3, chainId = ChainId.ETH, collat_usd_price = collatUsdPrice) => {
     const LEN = LENGTH_COLLAT[chainId] ?? 3
     let collaterals = []

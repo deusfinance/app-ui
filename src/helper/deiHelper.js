@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import {
+  OLD_COLLATERAL_ADDRESS,
   COLLATERAL_ADDRESS,
   COLLATERAL_POOL_ADDRESS,
   DEI_ADDRESS,
@@ -292,6 +293,12 @@ export const getHusdPoolData = (
   let calls = [
     {
       address: COLLATERAL_POOL_ADDRESS[chainId],
+      name: "collatDollarBalance",
+      params: [COLLAT_PRICE[chainId] ?? collat_usd_price],
+    },
+    //get old balance of dei pool
+    {
+      address: OLD_COLLATERAL_ADDRESS[chainId],
       name: "collatDollarBalance",
       params: [COLLAT_PRICE[chainId] ?? collat_usd_price],
     },

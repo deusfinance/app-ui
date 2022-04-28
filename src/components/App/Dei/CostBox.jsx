@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js';
 import { makeCostDataRedeem, makeCostData } from '../../../helper/deiHelper'
 import { useRecoilValue } from 'recoil';
 import { collatRatioState, deiPricesState, depositAmountState } from '../../../store/dei';
@@ -47,11 +48,12 @@ export const CostBox = ({ type, chainId }) => {
     const deusPrices = useRecoilValue(deiPricesState)
     const deiPrice = deusPrices ? deusPrices.dei_price : null
     const collatRatio = useRecoilValue(collatRatioState)
-    const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance } = useRecoilValue(husdPoolDataState)
+    const { pool_ceiling: poolCeiling, collatDollarBalance: poolBalance, oldCollatDollarBalance: oldPoolBalance } = useRecoilValue(husdPoolDataState)
+    const sumPoolsBalance = new BigNumber(poolBalance).plus(oldPoolBalance).toFixed(0)
     const depositAmount = useRecoilValue(depositAmountState)
     let costs = null
-    if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, poolBalance, poolCeiling, depositAmount, chainId === ChainId.BSC ? 18 : 6)
-    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, poolBalance, chainId, depositAmount, chainId === ChainId.BSC ? 18 : 6)
+    if (type === 'mint') costs = makeCostData(deiPrice, collatRatio, sumPoolsBalance, poolCeiling, depositAmount, chainId === ChainId.BSC ? 18 : 6)
+    else if (type === 'redeem') costs = makeCostDataRedeem(collatRatio, sumPoolsBalance, chainId, depositAmount, chainId === ChainId.BSC ? 18 : 6)
 
     return (
         useMemo(() => {

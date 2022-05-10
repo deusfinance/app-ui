@@ -14,6 +14,7 @@ const errors = {
     INSUFFICIENT: "INSUFFICIENT BALANCE",
     LOADING: "LOADING...",
     INPUT_ERROR: "INVALID AMOUNT",
+    UNDER_MAINTENANCE: "UNDER MAINTENANCE",
 }
 
 const WrapActions = styled.div`
@@ -51,10 +52,11 @@ background: ${({ theme, bgColor }) => bgColor ? theme[bgColor] : theme.grad3} ;
 height: 2px;
 width: 50%;
 `
-const SwapAction = ({ text = "SWAP", proxy, isPreApproved, amountIn, debouncedAmountIn, amountOut, swapState, TokensMap, isApproved, loading, swapLoading = false, validNetworks = [4, 1], handleApprove, handleSwap, bgColor, targetToken, isMint = false, inputError }) => {
+const SwapAction = ({ text = "SWAP", proxy, isPreApproved, amountIn, debouncedAmountIn, amountOut, swapState, TokensMap, isApproved, loading, swapLoading = false, validNetworks = [4, 1], handleApprove, handleSwap, bgColor, targetToken, isMint = false, inputError, underMaintenance = false }) => {
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
     const checkError = () => {
+        if (underMaintenance) return errors.UNDER_MAINTENANCE
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return proxy ? errors.EMPTY_PROXY : errors.EMPTY
         if (swapState && isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT

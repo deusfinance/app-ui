@@ -811,15 +811,13 @@ export const getGasData = async (web3, fn, chainId, account) => {
     }
     const gasPrice = await web3.eth.getGasPrice();
     payload.gasPrice = Number(gasPrice);
-
     const block = await web3.eth.getBlock("pending");
-
     if (isSupportEIP1559[chainId]) {
       payload.baseFeePerGas = Number(block.baseFeePerGas || 0); //just use gasPrice if current chain dont support eip1559
       payload.maxFeePerGas = new BigNumber(
         Math.max(payload.gasPrice, payload.baseFeePerGas) * 1.2
       ).toFixed(0);
-      if (chainId === ChainId.MATIC) {
+      if (chainId === ChainId.MATIC || chainId === ChainId.FTM) {
         payload.maxPriorityFeePerGas = Math.max(
           29000000000,
           Number(payload.maxFeePerGas) - payload.baseFeePerGas

@@ -233,9 +233,10 @@ const PairClaim = ({ pairToken, chainId, index, position, onClaimDone }) => {
 
     useEffect(() => {
         setRemainingWaitTime(
-            diffTimeStampStr(poolData.deusRedemptionDelay, position.timestamp.toNumber())
+            diffTimeStamp(poolData.deusRedemptionDelay, position.timestamp.toNumber()) < 1000 ?
+                diffTimeStampStr(poolData.deusRedemptionDelay, position.timestamp.toNumber()) : "N/A"
         )
-    }, [poolData, fastRefresh, diffTimeStampStr, position])
+    }, [poolData, fastRefresh, diffTimeStamp, diffTimeStampStr, position])
 
     const [amount, setAmount] = useState("");
     const [amountError, setAmountError] = useState("");

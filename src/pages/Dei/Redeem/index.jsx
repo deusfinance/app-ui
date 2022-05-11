@@ -293,7 +293,6 @@ const Dei = () => {
                         swapState={swapState}
                         amountIn={amountIn}
                         amountOut={amountOut}
-                        underMaintenance={true}
                     />
 
                 </SwapWrapper>

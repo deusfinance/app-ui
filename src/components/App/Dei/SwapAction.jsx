@@ -56,7 +56,7 @@ const SwapAction = ({ text = "SWAP", proxy, isPreApproved, amountIn, debouncedAm
     const { account, chainId } = useWeb3React()
     const [showWallets, setShowWallets] = useState(false)
     const checkError = () => {
-        if (underMaintenance) return errors.UNDER_MAINTENANCE
+        if (underMaintenance) return text
         if (chainId && validNetworks.indexOf(chainId) === -1) return errors.WrongNetwork
         if (amountIn === "" || isZero(amountIn)) return proxy ? errors.EMPTY_PROXY : errors.EMPTY
         if (swapState && isGt(amountIn, TokensMap[swapState.from.address]?.balance)) return errors.INSUFFICIENT

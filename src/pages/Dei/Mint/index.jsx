@@ -520,11 +520,13 @@ const Dei = () => {
                         amountOut={amountOut}
                         isMint={true}
                         inputError={ssp && !checkSSPvalidInput(amountIn, lowerBound, topBound, leftMintableDei)}
+                        underMaintenance={'Collateral Pool' === contractName}
                     />
 
                 </SwapWrapper>
                 {!(ssp || sspV4) && <SlippageTolerance slippage={slippage} setSlippage={setSlippage} bgColor={"grad_dei"} />}
-                <SwapCard title="Minter Contract" value={proxy === null ? "..." : <ExternalLink href={getTransactionLink(chainId, contractAddress)} >{contractName} <IconLink size={"12px"} style={{ marginBottom: "-2px", marginLeft: "-2px" }} /></ExternalLink>} />
+                {/* <SwapCard title="Minter Contract" value={proxy === null ? "..." : <ExternalLink href={getTransactionLink(chainId, contractAddress)} >{contractName} <IconLink size={"12px"} style={{ marginBottom: "-2px", marginLeft: "-2px" }} /></ExternalLink>} /> */}
+                <SwapCard title="Minter Contract" value={proxy === null ? "..." : contractName} />
                 <SwapCard title="Minting Fee" value={currMintingFee} />
 
                 {leftMintableDei && ssp && <SwapCard title={<>

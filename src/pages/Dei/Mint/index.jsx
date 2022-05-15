@@ -520,7 +520,7 @@ const Dei = () => {
                         amountOut={amountOut}
                         isMint={true}
                         inputError={ssp && !checkSSPvalidInput(amountIn, lowerBound, topBound, leftMintableDei)}
-                        underMaintenance={'Collateral Pool' === contractName}
+                    // underMaintenance={'Collateral Pool' === contractName}
                     />
 
                 </SwapWrapper>

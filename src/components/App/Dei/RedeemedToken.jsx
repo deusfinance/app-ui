@@ -24,6 +24,17 @@ const SmallWrapper = styled.div`
     max-width:500px;
 `
 
+
+export const InfoTextWrapper = styled.div`
+     max-width:700px;
+     width:80%;
+     margin:auto;
+    ${({ theme }) => theme.mediaWidth.upToLarge`
+     max-width:500px;
+    
+  `}
+`
+
 const MyText = styled(Text)`
     margin: 20px 0px;
     box-sizing: border-box;

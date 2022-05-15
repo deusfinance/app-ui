@@ -13,7 +13,7 @@ import { useDebounce } from '../../../hooks/useDebounce';
 import { COLLATERAL_POOL_ADDRESS } from '../../../constant/contracts';
 import LinkBox from '../../../components/App/Dei/LinkBox'
 import { CostBox } from '../../../components/App/Dei/CostBox'
-import RedeemedToken from '../../../components/App/Dei/RedeemedToken'
+import RedeemedToken, { InfoTextWrapper } from '../../../components/App/Dei/RedeemedToken'
 import { Type } from '../../../components/App/Text';
 import { isZero } from '../../../constant/number';
 import { collatRatioState, deiPricesState, husdPoolDataState } from '../../../store/dei';
@@ -27,6 +27,7 @@ import { getCorrectChains } from '../../../constant/correctChain';
 import { Chains } from '../../../components/App/Dei/Chains';
 import DeusTokenBox from '../../../components/App/Dei/DeusTokenBox';
 import DeiTokenBox from '../../../components/App/Dei/BuyDEUS';
+import { ExternalLink } from '../../../components/App/Link/index';
 
 
 const Dei = () => {
@@ -226,10 +227,22 @@ const Dei = () => {
         </div>)
     }
 
+
     return (<>
         <MainWrapper>
+            <InfoTextWrapper>
+                <Type.XXL fontWeight="300" marginBottom="20px">Redeem</Type.XXL>
+                <Type.MD fontWeight="300" margin="auto" mb="4" opacity="0.5">
+                    Redeem is currently halted while we implement DIP-7, a dynamic redeeming and bond program. Read more about DIP-7 <ExternalLink active={true} href={"https://lafayettetabor.medium.com/dip-7-treasury-bonds-4cc886148b9e"}>here</ExternalLink>.
+                    <br />
+                    <br />
+                    This is our response to making sure that DEI will always be redeemable at $1 while reducing the selling pressure on DEUS.
+                    The new redeem system should be ready in short time.
+                    Use the <ExternalLink active={true} href={"https://discord.gg/xTTaBBAMgG"}>Discord</ExternalLink> to join discussions about the DIP-7.
+                </Type.MD>
+            </InfoTextWrapper>
             <ContentWrapper deactivated={redeemPaused}>
-                <Type.XL fontWeight="300">Redeem</Type.XL>
+
                 <SwapWrapper style={{ marginTop: "25px", }}>
                     <TokenBox
                         type="from"

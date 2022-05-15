@@ -36,9 +36,9 @@ import ReactTooltip from "react-tooltip";
 import { RowStart } from '../../../components/App/Row/index';
 import { ChainId } from '../../../constant/web3';
 import concat from 'lodash/concat';
-import { ExternalLink } from '../../../components/App/Link';
-import { getTransactionLink } from '../../../utils/explorers';
-import { ExternalLink as IconLink } from 'react-feather';
+// import { ExternalLink } from '../../../components/App/Link';
+// import { getTransactionLink } from '../../../utils/explorers';
+// import { ExternalLink as IconLink } from 'react-feather';
 
 const Dei = () => {
     const location = useLocation()

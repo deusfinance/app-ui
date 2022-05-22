@@ -61,8 +61,7 @@ export const makeCostData = (
   decimals = 6
 ) => {
   const dp = deiPrice ? `$${new BigNumber(deiPrice).toFixed(2)}` : null;
-  const cr =
-    collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null;
+  // const cr = collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null;
   const poolBalanceValue = new BigNumber(poolBalance).div(
     TEN.pow(decimals - 6)
   );
@@ -90,7 +89,7 @@ export const makeCostData = (
     },
     {
       name: "COLLATERAL RATIO",
-      value: cr,
+      value: "43.00%",
     },
     {
       name: "POOL BALANCE / CEILING",
@@ -130,7 +129,7 @@ export const makeCostDataRedeem = (
   return [
     {
       name: "COLLATERAL RATIO",
-      value: cr,
+      value: "43.00%",
     },
     {
       name: "POOL BALANCE",

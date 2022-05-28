@@ -921,7 +921,6 @@ export const useHusdPoolData = (validChainId, forceUpdate) => {
   const { account, chainId } = useWeb3React();
   const { fastRefresh } = useRefresh();
   const setHusdPoolData = useSetRecoilState(husdPoolDataState);
-
   useEffect(() => {
     const get = async () => {
       try {
@@ -933,7 +932,6 @@ export const useHusdPoolData = (validChainId, forceUpdate) => {
         );
         const [
           collatDollarBalance,
-          oldCollatDollarBalance,
           pool_ceiling,
           redemption_fee,
           minting_fee,
@@ -952,7 +950,7 @@ export const useHusdPoolData = (validChainId, forceUpdate) => {
         ] = mul;
         const updateState = {
           collatDollarBalance: fromWei(collatDollarBalance, 18),
-          oldCollatDollarBalance: fromWei(oldCollatDollarBalance, 18),
+          oldCollatDollarBalance: 0,
           // availableExcessCollatDV: new BigNumber(availableExcessCollatDV).div(1e18).toFixed(),
           pool_ceiling: fromWei(pool_ceiling, 6),
           redemption_fee: new BigNumber(redemption_fee).div(10000).toNumber(),

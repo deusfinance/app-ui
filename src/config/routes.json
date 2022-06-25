@@ -6,12 +6,6 @@
     "exact": true
   },
   {
-    "id": "BORROW",
-    "text": "BORROW",
-    "path": "https://app.dei.finance",
-    "exact": true
-  },
-  {
     "id": "VEST",
     "text": "VEST",
     "path": "http://app.dei.finance/vest/create",
@@ -32,39 +26,7 @@
   {
     "id": "SWAP",
     "text": "SWAP",
-    "path": "https://solidly.vision/swap"
-  },
-  {
-    "id": "STABLE COIN",
-    "text": "STABLE COIN",
-    "children": [
-      {
-        "id": "MINT",
-        "text": "MINT",
-        "path": "/stable/mint"
-      },
-      {
-        "id": "REDEEM",
-        "text": "REDEEM",
-        "path": "/stable/redeem"
-      },
-      {
-        "id": "FARMS",
-        "text": "FARMS",
-        "path": "/stable/farms"
-      }
-    ]
-  },
-  {
-    "id": "FRONTENDS",
-    "text": "FRONTENDS",
-    "children": [
-      {
-        "id": "dSYNTHS",
-        "text": "dSYNTHS",
-        "path": "https://app.dsynths.com"
-      }
-    ]
+    "path": "https://app.firebird.finance/swap"
   },
   {
     "id": "medium",

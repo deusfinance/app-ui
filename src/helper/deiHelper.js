@@ -86,10 +86,10 @@ export const makeCostData = (
       name: "DEI PRICE",
       value: dp,
     },
-    {
-      name: "COLLATERAL RATIO",
-      value: "43.00%",
-    },
+    // {
+    //   name: "COLLATERAL RATIO",
+    //   value: "43.00%",
+    // },
     {
       name: "POOL BALANCE / CEILING",
       value: pc,
@@ -111,8 +111,8 @@ export const makeCostDataRedeem = (
   const cToken = collateralToken[chainId]
     ? collateralToken[chainId]
     : collateralToken[ChainId.ETH];
-  const cr =
-    collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null;
+  // const cr =
+  //   collatRatio !== null ? `${new BigNumber(collatRatio).toFixed(2)}%` : null;
   const poolBalanceValue = new BigNumber(poolBalance).div(
     TEN.pow(decimals - 6)
   );

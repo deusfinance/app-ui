@@ -16,9 +16,9 @@ const Migrator = React.lazy(() => import("./pages/Migrator"));
 const MigratorOther = React.lazy(() => import("./pages/Migrator/Other"));
 const Burn = React.lazy(() => import("./pages/burn"));
 
-const DeiMint = React.lazy(() => import("./pages/Dei/Mint"));
+// const DeiMint = React.lazy(() => import("./pages/Dei/Mint"));
 // const DeiZap = React.lazy(() => import('./pages/Dei/Zap'))
-const DeiStaking = React.lazy(() => import("./pages/Dei/Staking"));
+// const DeiStaking = React.lazy(() => import("./pages/Dei/Staking"));
 // const DeiRedeem = React.lazy(() => import("./pages/Dei/Redeem"));
 
 const Bridge = React.lazy(() => import("./pages/Bridge"));
@@ -49,10 +49,7 @@ function App() {
                     component={MigratorOther}
                   />
                   <Route exact path="/burn-for-admin" component={Burn} />
-                  <Redirect exact from="/stable" to="/stable/mint" />
-                  <Route exact path="/stable/mint" component={DeiMint} />
-                  {/* <Route exact path="/stable/zap" component={DeiZap} /> */}
-                  <Route exact path="/stable/farms" component={DeiStaking} />
+                  {/* <Redirect exact from="/stable" to="/stable/mint" /> */}
                   <Route
                     path="/stable/redeem"
                     component={() => {
@@ -61,8 +58,19 @@ function App() {
                       return null;
                     }}
                   />
+                  <Route
+                    path="/stable"
+                    component={() => {
+                      window.location.href =
+                        "https://app.dei.finance/dashboard";
+                      return null;
+                    }}
+                  />
+                  {/* <Route exact path="/stable/zap" component={DeiZap} /> */}
+                  {/* <Route exact path="/stable/farms" component={DeiStaking} /> */}
+
                   <Route exact path="/bridge" component={Bridge} />
-                  <Redirect exact from="/" to="/stable/mint" />
+                  <Redirect exact from="/" to="/bridge" />
                   <Redirect to="not-found" />
                 </Switch>
               </div>

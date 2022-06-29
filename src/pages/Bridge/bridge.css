@@ -5,6 +5,16 @@
 .wrap-bridge .blue-color {
   color: #325cfe;
 }
+.deactivated-text {
+  border: 1px solid #ff0000;
+  background: #170606;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  max-width: 460px;
+  box-shadow: 0px 0px 5px 1px #f70101;
+}
 
 .market-nav-wrap {
   display: none;
@@ -118,6 +128,7 @@ input:focus {
   box-sizing: border-box;
   border-radius: 15px;
   padding: 11px;
+  pointer-events: none;
 }
 
 .wrap-bridge .bridge-box {

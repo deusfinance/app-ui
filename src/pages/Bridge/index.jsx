@@ -17,7 +17,7 @@ import { BRIDGE_ADDRESS } from '../../constant/contracts';
 import { useClaim, useDeposit, useGetNewClaim } from '../../hooks/useBridge';
 import { NameChainId } from '../../constant/web3';
 import './bridge.css'
-import {muonClient} from "../../constant/clients";
+import { muonClient } from "../../constant/clients";
 
 const Bridge = () => {
     const { validNetworks, chainId } = useCorrectChain()
@@ -207,6 +207,12 @@ const Bridge = () => {
             </div>
             <h3>Secured by Muon</h3>
 
+            <div className='deactivated-text'>
+                The DEUS Bridge was deactivated. Muon is upgrading their threshold signature scheme to increase the security level to 20 out of 20 Signatures.
+                <br />
+                <br />
+                The upgrade should be done any time soon, the bridge will get reactivated asap by then.
+            </div>
             <div className="wrap-bridge-box">
                 <div className="relative">
                     <BridgeBox

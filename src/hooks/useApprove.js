@@ -14,6 +14,7 @@ export const useApprove = (currency, contractAddress, validChainId) => {
         try {
             if (validChainId && chainId !== validChainId) return null
             const payload = await getGasData(web3, null, validChainId, account)
+            console.log({ payload })
             const tx = await approve(
                 contract,
                 contractAddress,

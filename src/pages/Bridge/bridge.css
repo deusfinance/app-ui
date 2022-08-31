@@ -128,7 +128,6 @@ input:focus {
   box-sizing: border-box;
   border-radius: 15px;
   padding: 11px;
-  pointer-events: none;
 }
 
 .wrap-bridge .bridge-box {

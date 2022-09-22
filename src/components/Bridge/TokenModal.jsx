@@ -76,7 +76,7 @@ const TokenModal = (props) => {
                   // checked={chain.name === selectedChain.name}
                   disabled={chain.network === selectedChain}
                 />
-                <label style={{marginTop: "8px"}} htmlFor={chain.name} className={`${chain.name} pointer`}>
+                <label style={{ marginTop: "8px" }} htmlFor={chain.name} className={`${chain.name} pointer`}>
                   {chain.name}
                 </label>
               </li>
@@ -99,6 +99,7 @@ const TokenModal = (props) => {
                     <div className="token-list-item ">
                       <img src={`${token.logo}`} alt={token.logo} />
                       <div>
+                        {token.symbol === "DEI" && <span>legacy</span>}
                         {token.symbol}
                         <span className="bridge-container-badge-modal">
                           (

@@ -31,6 +31,7 @@ const ClaimToken = (props) => {
                 <div className="flex-between mb-5">
                   <div className="token-item">
                     <TokenBadge chain={chain.name} logo={token.icon} />
+                    {token.name === "DEI" && <span>legacy</span>}
                     <span>{`${token.name} (${chain.name})`}</span>
                   </div>
                   <div className="claim-amount">{formatBalance3(amount)}</div>

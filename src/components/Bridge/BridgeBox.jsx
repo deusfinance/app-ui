@@ -59,11 +59,12 @@ const BridgeBox = (props) => {
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
-        <div className="bridge-token ">
+        <div className="bridge-token">
           {currency.chainId && <TokenBadge chainId={currency.chainId} logo={currency.logo} />}
           <div className="bridge-assets pointer" onClick={handleOpenModal}>
             {currency.symbol ? (
               <div className="select-token">
+                {currency.symbol === "DEI" && <span>legacy</span>}
                 {currency.symbol}
                 <img src="/img/arrow-nav-black.svg" alt="arrow" />
               </div>

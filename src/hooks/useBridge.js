@@ -5,7 +5,6 @@ import useRefresh from "./useRefresh";
 import { deposit, getClaimTokens } from "../helper/bridgeHelper";
 import { SendWithToast } from "../helper/deiHelper";
 import { fromWei } from "../helper/formatBalance";
-import BridgeABI from "../config/abi/NewBridgeABI.json";
 import { BRIDGE_ADDRESS } from "../constant/contracts";
 import { ChainId } from "../constant/web3";
 import { getBridgeContract } from "../helper/contractHelpers";
@@ -98,18 +97,6 @@ export const useClaim = (muon) => {
       // }
 
       let amount = fromWei(claim.amount);
-      let abi = [
-        BridgeABI.find(
-          ({ name, type }) => name === "getTx" && type === "function"
-        ),
-      ];
-      console.log({
-        address: BRIDGE_ADDRESS[Number(claim.fromChain)],
-        method: "getTx",
-        params: [claim.txId],
-        abi,
-        network: claim.fromChain,
-      });
 
       try {
         const muonResponse = await muon

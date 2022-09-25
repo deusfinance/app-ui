@@ -816,7 +816,7 @@ export const getGasData = async (web3, fn, chainId, account) => {
       ).toFixed(0)
       if (chainId === ChainId.MATIC || chainId === ChainId.FTM) {
         payload.maxPriorityFeePerGas = Math.max(
-          29000000000,
+          1,
           Number(payload.maxFeePerGas) - payload.baseFeePerGas
         )
       }

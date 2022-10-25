@@ -810,7 +810,7 @@ export const getGasData = async (web3, fn, chainId, account) => {
     payload.gasPrice = Number(gasPrice)
     const block = await web3.eth.getBlock("pending")
     if (isSupportEIP1559[chainId]) {
-      payload.baseFeePerGas = Number(block.baseFeePerGas || 0) //just use gasPrice if current chain dont support eip1559
+      payload.baseFeePerGas = Number(block.baseFeePerGas || 0) //just use gasPrice if current chain don't support eip1559
       payload.maxFeePerGas = new BigNumber(
         Math.max(payload.gasPrice, payload.baseFeePerGas) * 1.2
       ).toFixed(0)
@@ -971,9 +971,9 @@ export const useHusdPoolData = (validChainId, forceUpdate) => {
           nextRedeemId: account ? nextRedeemId : 0,
           redeemCollateralBalances: account
             ? fromWei(
-                redeemCollateralBalances,
-                collateralToken[validChainId]?.decimals
-              )
+              redeemCollateralBalances,
+              collateralToken[validChainId]?.decimals
+            )
             : "0",
         }
         setHusdPoolData({ ...updateState })

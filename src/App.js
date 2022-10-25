@@ -68,9 +68,17 @@ function App() {
                   />
                   {/* <Route exact path="/stable/zap" component={DeiZap} /> */}
                   {/* <Route exact path="/stable/farms" component={DeiStaking} /> */}
+                  <Route
+                    path="/bridge"
+                    component={() => {
+                      window.location.href =
+                        "https://app.multichain.org/#/router";
+                      return null;
+                    }}
+                  />
 
-                  <Route exact path="/bridge" component={Bridge} />
-                  <Redirect exact from="/" to="/bridge" />
+                  <Route exact path="/bridge-old" component={Bridge} />
+                  <Redirect exact from="/" to="/migrator" />
                   <Redirect to="not-found" />
                 </Switch>
               </div>

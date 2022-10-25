@@ -16,8 +16,8 @@ import BigNumber from "bignumber.js"
 import { BRIDGE_ADDRESS } from "../../constant/contracts"
 import { useClaim, useDeposit, useGetNewClaim } from "../../hooks/useBridge"
 import { NameChainId } from "../../constant/web3"
-import "./bridge.css"
 import { muonClient } from "../../constant/clients"
+import "./bridge.css"
 
 const Bridge = () => {
     const { validNetworks, chainId } = useCorrectChain()

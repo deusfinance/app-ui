@@ -20,7 +20,7 @@
   {
     "id": "BRIDGE",
     "text": "BRIDGE",
-    "path": "/bridge",
+    "path": "https://app.multichain.org/#/router",
     "exact": true
   },
   {

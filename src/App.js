@@ -77,7 +77,7 @@ function App() {
                     }}
                   /> */}
 
-                  <Route exact path="/bridge-old" component={Bridge} />
+                  <Route exact path="/legacy-bridge" component={Bridge} />
                   <Redirect exact from="/" to="/migrator" />
                   <Redirect to="not-found" />
                 </Switch>

@@ -27,7 +27,7 @@ export const correctChains = [
         chains: [ChainId.FTM, ChainId.MATIC, ChainId.ETH, ChainId.BSC, ChainId.METIS],
     },
     {
-        url: "/bridge-old",
+        url: "/legacy-bridge",
         chains: [ChainId.FTM, ChainId.MATIC, ChainId.ETH, ChainId.BSC, ChainId.METIS],
     },
     {
